@@ -1,0 +1,7 @@
+﻿{
+	"name": "Celeste.Viewport",
+	"references": [
+		"Celeste.Parameters",
+		"Celeste.Events"
+	]
+}

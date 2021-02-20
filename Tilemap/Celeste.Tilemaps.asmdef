@@ -1,0 +1,7 @@
+﻿{
+	"name": "Celeste.Tilemaps",
+	"references": [
+		"Celeste.Parameters",
+		"Celeste.Events"
+	]
+}

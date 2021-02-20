@@ -1,0 +1,6 @@
+﻿{
+	"name": "Celeste.Memory",
+	"references": [
+		"Celeste.Tools"
+	]
+}

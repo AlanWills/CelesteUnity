@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.FSM.Editor",
+    "references": [
+        "XNode",
+        "XNodeEditor",
+        "Celeste.FSM",
+        "Celeste.Tools.Editor",
+        "Celeste.Validation.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
