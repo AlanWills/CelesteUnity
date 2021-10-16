@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BlueSpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: e43d99e592c902d4eaecd470230c4442, type: 3}
+    totalSpriteSurfaceArea: 100240
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 4c018ee0bbc759b4393f0a1095be064d, type: 3}
+  - {fileID: 21300000, guid: 0d17d41168d094346958e72f5338c001, type: 3}
+  - {fileID: 21300000, guid: 93b191518411679408e562bdf59f3468, type: 3}
+  - {fileID: 21300000, guid: 96a0c571461b09b40b134c17837de72c, type: 3}
+  - {fileID: 21300000, guid: 9d0d5103dd106b84e99004b824496c35, type: 3}
+  - {fileID: 21300000, guid: a72ff0e326695a84db55cb63dfc78b29, type: 3}
+  - {fileID: 21300000, guid: 4d1c51d405ea0ae46a9ab16e32a270b6, type: 3}
+  - {fileID: 21300000, guid: 9d6866f5e8bdf4f4ba30cebf12d73d8a, type: 3}
+  - {fileID: 21300000, guid: 86babc3607c247d47b0d009105f16820, type: 3}
+  - {fileID: 21300000, guid: 21d2e3a6842575c42be807d8b6a85cb3, type: 3}
+  - {fileID: 21300000, guid: 7ddbcea6f22ca284d8d40f27c6f97ce8, type: 3}
+  - {fileID: 21300000, guid: 113d5207b0624fe40a5a3d06694550c2, type: 3}
+  - {fileID: 21300000, guid: a19f0907b57f0b348a146811d1673e79, type: 3}
+  - {fileID: 21300000, guid: c1934ca7ab2759248aec550f2b70b615, type: 3}
+  - {fileID: 21300000, guid: d6fff048819e0a843b00ba1181bbc415, type: 3}
+  - {fileID: 21300000, guid: f26b5999f436335408d2014baebe49d4, type: 3}
+  - {fileID: 21300000, guid: 6760f10a9690df740814665ddaf1658d, type: 3}
+  - {fileID: 21300000, guid: 1de3b3eae99b0a643a0e0be50ceb6666, type: 3}
+  - {fileID: 21300000, guid: 80b05b7b5ad131a4598ec326f1617008, type: 3}
+  - {fileID: 21300000, guid: 052464bc791985c4b921076a234d1dab, type: 3}
+  - {fileID: 21300000, guid: 964ecc7de1527a84eafe6f184cba6a16, type: 3}
+  - {fileID: 21300000, guid: 75cae1dd1ec7c964cac687870942a5d7, type: 3}
+  - {fileID: 21300000, guid: 25f454ddba5aa154a8f186447c5e7b52, type: 3}
+  - {fileID: 21300000, guid: 41e678dd504e105478977d536bd3c6b5, type: 3}
+  - {fileID: 21300000, guid: b493a98e855ce6f408a27c0cf0045d13, type: 3}
+  - {fileID: 21300000, guid: 572904efd4b89e1488e7d1a3054ae5e3, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - blue_button10
+  - blue_button04
+  - blue_button08
+  - blue_button06
+  - blue_button00
+  - blue_checkmark
+  - blue_tick
+  - blue_button12
+  - blue_button11
+  - blue_boxCross
+  - blue_button02
+  - blue_button05
+  - blue_button07
+  - blue_sliderUp
+  - blue_button03
+  - blue_circle
+  - blue_sliderDown
+  - blue_button13
+  - blue_button01
+  - blue_cross
+  - blue_panel
+  - blue_sliderLeft
+  - blue_boxTick
+  - blue_button09
+  - blue_sliderRight
+  - blue_boxCheckmark
+  m_RenderDataMap: {}
+  m_Tag: BlueSpriteAtlas
+  m_IsVariant: 0

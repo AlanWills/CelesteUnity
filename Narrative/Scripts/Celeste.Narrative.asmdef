@@ -15,9 +15,10 @@
         "GUID:63423e2ab705d094891558ff032717e2",
         "GUID:659c1f5808f88f1458f6d8d74a0abafc",
         "GUID:0e2cf0bdf0b4fc54db141044a6b4c2fe",
-        "Celeste.Scene",
-        "Celeste.FSM.Nodes",
-        "Celeste.Debug"
+        "GUID:7cfedb47a7dec8d4e8681b760be55faf",
+        "GUID:64e1797b2e2f2194581475e207c0e421",
+        "GUID:f7b5d0e02af6ff2488cac962aeb93c2c",
+        "GUID:65c8501d5a500a346b1ea441b3126476"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

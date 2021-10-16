@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation
 {
-    [AddComponentMenu("GUS/Localisation/Localisation Manager")]
+    [AddComponentMenu("DnD/Localisation/Localisation Manager")]
     public class LocalisationManager : MonoBehaviour
     {
         #region Properties and Fields

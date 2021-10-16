@@ -1,0 +1,17 @@
+{
+    "name": "Celeste.Loading",
+    "rootNamespace": "Celeste.Loading",
+    "references": [
+        "GUID:7cfedb47a7dec8d4e8681b760be55faf",
+        "GUID:53010ec1db6f54b478952285443e341b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

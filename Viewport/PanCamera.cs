@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Celeste.Viewport
 {
-    [AddComponentMenu("GUS/Viewport/Pan Camera")]
+    [AddComponentMenu("DnD/Viewport/Pan Camera")]
     public class PanCamera : MonoBehaviour
     {
         #region Properties and Fields
