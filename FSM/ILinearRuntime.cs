@@ -1,0 +1,10 @@
+﻿using System.Collections;
+using UnityEngine;
+
+namespace Celeste.FSM
+{
+    public interface ILinearRuntime<TNode>
+    {
+        TNode CurrentNode { get; }
+    }
+}

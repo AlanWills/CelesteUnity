@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Options",
+    "rootNamespace": "Celeste.Options",
+    "references": [
+        "Celeste.Persistence",
+        "Celeste.Parameters",
+        "Celeste.Assets",
+        "Celeste.Log",
+        "Celeste.Objects",
+        "Celeste.DataStructures"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,23 @@
+{
+    "name": "Celeste.DS.Nodes",
+    "rootNamespace": "Celeste.DS.Nodes",
+    "references": [
+        "XNode",
+        "Unity.TextMeshPro",
+        "Celeste.DS",
+        "Celeste.Logic",
+        "Celeste.Parameters",
+        "Celeste.Input",
+        "Celeste.Scene",
+        "Celeste.Objects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

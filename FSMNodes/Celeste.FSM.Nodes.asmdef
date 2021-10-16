@@ -1,0 +1,29 @@
+{
+    "name": "Celeste.FSM.Nodes",
+    "rootNamespace": "Celeste.FSM.Nodes",
+    "references": [
+        "XNode",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "Celeste.FSM",
+        "Celeste.Events",
+        "Celeste.Parameters",
+        "Celeste.Application",
+        "Celeste.Scene",
+        "Celeste.Log",
+        "Celeste.Input",
+        "Celeste.Objects",
+        "Celeste.UI",
+        "Celeste.Logic",
+        "Celeste.Assets"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

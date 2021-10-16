@@ -1,0 +1,18 @@
+{
+    "name": "Celeste.Tilemaps.Editor",
+    "references": [
+        "Celeste.Tilemaps",
+        "Celeste.Tools.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

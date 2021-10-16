@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.Events",
+    "rootNamespace": "Celeste.Events",
+    "references": [
+        "Celeste.Parameters"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

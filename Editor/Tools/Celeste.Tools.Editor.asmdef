@@ -1,0 +1,19 @@
+{
+    "name": "Celeste.Tools.Editor",
+    "rootNamespace": "CelesteEditor.Tools",
+    "references": [
+        "Unity.Addressables.Editor",
+        "Celeste.Tools"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

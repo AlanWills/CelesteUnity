@@ -1,0 +1,19 @@
+﻿using Celeste.FSM;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+namespace Celeste.Narrative.UI
+{
+    public abstract class NarrativeView : MonoBehaviour
+    {
+        public abstract bool IsValidForNode(FSMNode fsmNode);
+        public abstract void OnNodeEnter(FSMNode fsmNode);
+        public abstract void OnNodeUpdate(FSMNode fsmNode);
+        public abstract void OnNodeExit(FSMNode fsmNode);
+    }
+}

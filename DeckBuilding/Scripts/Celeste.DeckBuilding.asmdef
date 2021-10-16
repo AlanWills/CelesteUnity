@@ -1,0 +1,32 @@
+{
+    "name": "Celeste.DeckBuilding",
+    "rootNamespace": "Celeste.DeckBuilding",
+    "references": [
+        "Celeste.Objects",
+        "Celeste.Persistence",
+        "Celeste.DataStructures",
+        "Celeste.Scene",
+        "Celeste.Tools",
+        "Celeste.Memory",
+        "Celeste.FSM",
+        "Celeste.BT",
+        "Celeste.Events",
+        "Celeste.Debug",
+        "Celeste.Log",
+        "Celeste.Maths",
+        "Celeste.FX",
+        "Celeste.Logic",
+        "Celeste.Constants",
+        "Unity.TextMeshPro",
+        "XNode"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

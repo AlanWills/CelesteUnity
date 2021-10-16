@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Persistence",
+    "rootNamespace": "Celeste.Persistence",
+    "references": [
+        "Celeste.Log",
+        "Celeste.Objects",
+        "Celeste.Tools",
+        "Celeste.Assets",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

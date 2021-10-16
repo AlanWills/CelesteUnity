@@ -1,0 +1,17 @@
+{
+    "name": "Celeste.Logic",
+    "rootNamespace": "Celeste.Logic",
+    "references": [
+        "GUID:891da734736f95846afa70d43384392f",
+        "GUID:c95af7bc4649e4b4da85b957be8cc138"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

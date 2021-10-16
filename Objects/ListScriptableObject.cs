@@ -1,0 +1,37 @@
+﻿using Celeste.DataStructures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace Celeste.Objects
+{
+    public class ListScriptableObject<T> : ScriptableObject, IIndexableItems<T>
+    {
+        #region Properties and Fields
+
+        public int NumItems { get { return items.Count; } }
+
+        [SerializeField] private List<T> items = new List<T>();
+
+        #endregion
+
+        public T GetItem(int index)
+        {
+#if INDEX_CHECKS
+            if (index < 0 || index >= NumItems)
+            {
+                return default;
+            }
+#endif
+            return items.Get(index);
+        }
+
+        public T FindItem(Predicate<T> predicate)
+        {
+            return items.Find(predicate);
+        }
+    }
+}

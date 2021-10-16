@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.Memory",
+    "rootNamespace": "Celeste.Memory",
+    "references": [
+        "Celeste.Tools"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.DS.Editor",
+    "rootNamespace": "CelesteEditor.DS",
+    "references": [
+        "XNode",
+        "Celeste.DS",
+        "XNode.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

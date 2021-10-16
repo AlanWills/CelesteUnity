@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.Assets",
+    "rootNamespace": "Celeste.Assets",
+    "references": [
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,27 @@
+{
+    "name": "Celeste.Narrative.Editor",
+    "rootNamespace": "CelesteEditor.Narrative",
+    "references": [
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
+        "GUID:002c1bbed08fa44d282ef34fd5edb138",
+        "GUID:fb92b9ba87101834883fcf38585e9964",
+        "GUID:ae2e7ad57e5e6e54a908990832d82fe2",
+        "GUID:909b758b489290d42b774e254ad17676",
+        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
+        "Celeste.Parameters",
+        "Celeste.FSM.Nodes",
+        "Celeste.FSM.Editor",
+        "Celeste.Scene.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

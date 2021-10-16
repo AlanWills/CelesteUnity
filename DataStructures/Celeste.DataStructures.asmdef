@@ -1,0 +1,14 @@
+{
+    "name": "Celeste.DataStructures",
+    "rootNamespace": "Celeste.DataStructures",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

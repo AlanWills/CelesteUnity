@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Input.Editor",
+    "rootNamespace": "CelesteEditor.Input",
+    "references": [
+        "Celeste.Input",
+        "Celeste.Tools.Editor",
+        "Celeste.Parameters",
+        "Celeste.Events"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

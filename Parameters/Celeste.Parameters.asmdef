@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.Parameters",
+    "rootNamespace": "Celeste.Parameters",
+    "references": [
+        "Celeste.Objects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
