@@ -11,7 +11,8 @@
         "Celeste.Parameters",
         "Celeste.FSM.Nodes",
         "Celeste.FSM.Editor",
-        "Celeste.Scene.Editor"
+        "Celeste.Scene.Editor",
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [
         "Editor"

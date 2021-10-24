@@ -11,6 +11,7 @@ namespace Celeste.Narrative
     {
         int NumChoices { get; }
 
+        T AddChoice<T>(string name) where T : Choice;
         Choice GetChoice(int index);
         void SelectChoice(IChoice choice);
     }

@@ -19,6 +19,12 @@ namespace Celeste.Narrative
     {
         #region Properties and Fields
 
+        Vector2 IDialogueNode.Position 
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
         public string Dialogue
         {
             get { return tokenizedDialogue; }
@@ -63,6 +69,7 @@ namespace Celeste.Narrative
         public Character Character
         {
             get { return character; }
+            set { character = value; }
         }
 
         [SerializeField, TextArea] private string dialogue;

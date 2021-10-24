@@ -39,7 +39,7 @@ namespace Celeste.Parameters
 
         public T Value
         {
-            get { return isConstant ? constantValue : referenceValue.Value; }
+            get { return isConstant ? constantValue : referenceValue != null ? referenceValue.Value : default; }
             set
             {
                 if (isConstant)

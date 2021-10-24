@@ -6,6 +6,18 @@ namespace Celeste.DataStructures
 {
     public static class ArrayExtensions
     {
+        public static bool Exists<T>(this T[] array, Predicate<T> predicate)
+        {
+#if NULL_CHECKS
+            if (array == null)
+            {
+                Debug.LogAssertion($"Null array.");
+                return default;
+            }
+#endif
+            return Array.Exists(array, predicate);
+        }
+
         public static T Find<T>(this T[] array, Predicate<T> predicate)
         {
 #if NULL_CHECKS
@@ -17,6 +29,19 @@ namespace Celeste.DataStructures
 #endif
             return Array.Find(array, predicate);
         }
+
+        public static int FindIndex<T>(this T[] array, Predicate<T> predicate)
+        {
+#if NULL_CHECKS
+            if (array == null)
+            {
+                Debug.LogAssertion($"Null array.");
+                return default;
+            }
+#endif
+            return Array.FindIndex(array, predicate);
+        }
+
         public static T Get<T>(this T[] array, int index)
         {
 #if NULL_CHECKS

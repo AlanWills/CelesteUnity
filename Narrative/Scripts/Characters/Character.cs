@@ -1,4 +1,5 @@
-﻿using Celeste.Objects;
+﻿using Celeste.Narrative.UI;
+using Celeste.Objects;
 using Celeste.Parameters;
 using Celeste.Parameters.Rendering;
 using UnityEngine;
@@ -26,16 +27,32 @@ namespace Celeste.Narrative.Characters
             set { characterAvatarIcon.Value = value; }
         }
 
+        public UIPosition DefaultUIPosition
+        {
+            get { return defaultUIPosition; }
+        }
+
         [SerializeField] private int guid;
         [SerializeField] private StringReference characterName;
         [SerializeField] private SpriteReference characterAvatarIcon;
+        [SerializeField] private UIPosition defaultUIPosition = UIPosition.Centre;
 
         #endregion
 
-        public static Character Create()
+        public static Character Create(string characterName, string directory)
         {
-            Character character = CreateInstance<Character>();
+            Character character = ScriptableObject.CreateInstance<Character>();
+            character.name = characterName;
+
+#if UNITY_EDITOR
+            string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath($"{directory}/{characterName}.asset");
+
+            UnityEditor.AssetDatabase.CreateAsset(character, assetPathAndName);
+            UnityEditor.AssetDatabase.SaveAssets();
+            UnityEditor.AssetDatabase.Refresh();
+#endif
             character.Repair();
+            character.CharacterName = characterName;
 
             return character;
         }

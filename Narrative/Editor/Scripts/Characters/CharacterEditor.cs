@@ -13,14 +13,8 @@ namespace CelesteEditor.Narrative.Characters
         [MenuItem("Assets/Create/Celeste/Narrative/Characters/Character")]
         public static void CreateCharacterMenuItem()
         {
-            Character character = Character.Create();
-            AssetUtility.CreateAsset(character, AssetUtility.GetSelectionObjectPath());
-            
-            SerializedObject characterObject = new SerializedObject(character);
-            Object characterName = characterObject.FindProperty("characterName").objectReferenceValue;
-            
-            AssetDatabase.AddObjectToAsset(characterName, character);
-            AssetDatabase.SaveAssets();
+            Character character = Character.Create(nameof(Character), AssetUtility.GetSelectionObjectPath());
+            AssetUtility.SelectAsset(character);
         }
 
         #endregion

@@ -1,17 +1,18 @@
-﻿using Celeste.Narrative.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Narrative.Characters;
+using Celeste.Narrative.UI;
+using UnityEngine;
 
 namespace Celeste.Narrative
 {
     public interface IDialogueNode
     {
+        string name { get; set; }
+        Vector2 Position { get; set; }
+
         string Dialogue { get; }
-        string RawDialogue { get; }
-        DialogueType DialogueType { get; }
-        UIPosition UIPosition { get; }
+        string RawDialogue { get; set; }
+        DialogueType DialogueType { get; set; }
+        UIPosition UIPosition { get; set; }
+        Character Character { get; set; }
     }
 }

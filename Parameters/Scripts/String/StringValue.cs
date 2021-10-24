@@ -15,7 +15,7 @@ namespace Celeste.Parameters
 
         public static bool operator ==(StringValue value, string s)
         {
-            return value.Value == s;
+            return value == null ? s == null : string.CompareOrdinal(value.Value, s) == 0;
         }
 
         public static StringValue operator +(StringValue value, string s)
@@ -26,12 +26,12 @@ namespace Celeste.Parameters
 
         public static bool operator !=(StringValue value, string s)
         {
-            return value.Value != s;
+            return !(value == s);
         }
 
         #endregion
 
-        #region
+        #region Equals / HashCode
 
         public override bool Equals(object obj)
         {

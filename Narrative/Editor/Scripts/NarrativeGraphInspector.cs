@@ -48,6 +48,26 @@ namespace CelesteEditor.Narrative
                 AssetDatabase.SaveAssets();
             }
 
+            if (GUILayout.Button("Remove All Sub Assets"))
+            {
+                var objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(graph));
+                Debug.Log($"Objects before: {objects.Length}");
+
+                foreach (var obj in objects)
+                {
+                    if (obj != graph)
+                    {
+                        DestroyImmediate(obj, true);
+                    }
+                }
+
+                EditorUtility.SetDirty(graph);
+                AssetDatabase.SaveAssets();
+
+                objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(graph));
+                Debug.Log($"Objects after: {objects.Length}");
+            }
+
             using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())
             {
                 fsmGraph = EditorGUILayout.ObjectField(fsmGraph, typeof(FSMGraph), false) as FSMGraph;

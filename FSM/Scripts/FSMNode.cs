@@ -112,6 +112,16 @@ namespace Celeste.FSM
             return GetConnectedNode(DEFAULT_OUTPUT_PORT_NAME);
         }
 
+        public NodePort GetDefaultOutputPort()
+        {
+            return GetOutputPort(DEFAULT_OUTPUT_PORT_NAME);
+        }
+
+        public NodePort GetDefaultInputPort()
+        {
+            return GetInputPort(DEFAULT_INPUT_PORT_NAME);
+        }
+
         #endregion
 
         #region Add/Remove/Copy

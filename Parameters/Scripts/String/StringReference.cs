@@ -15,7 +15,7 @@ namespace Celeste.Parameters
 
         public static bool operator ==(StringReference reference, string s)
         {
-            return reference.Value == s;
+            return reference == (object)null ? s == null : string.CompareOrdinal(reference.Value, s) == 0;
         }
 
         public static StringReference operator +(StringReference reference, string s)
@@ -26,7 +26,7 @@ namespace Celeste.Parameters
 
         public static bool operator !=(StringReference reference, string s)
         {
-            return reference.Value != s;
+            return !(reference == s);
         }
 
         #endregion

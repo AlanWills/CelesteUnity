@@ -35,30 +35,7 @@ namespace CelesteEditor.Narrative.Production
 
             if (GUILayout.Button("Find Characters"))
             {
-                NarrativeGraph narrativeGraph = chapter.NarrativeGraph;
-                HashSet<Character> characters = new HashSet<Character>();
-
-                foreach (FSMNode node in narrativeGraph.nodes)
-                {
-                    if (node is ICharacterNode)
-                    {
-                        ICharacterNode characterNode = node as ICharacterNode;
-
-                        if (characterNode.Character != null && !characters.Contains(characterNode.Character))
-                        {
-                            characters.Add(characterNode.Character);
-                        }
-                    }
-                }
-
-                int characterIndex = 0;
-                charactersProperty.arraySize = characters.Count;
-
-                foreach (Character character in characters)
-                {
-                    charactersProperty.GetArrayElementAtIndex(characterIndex).objectReferenceValue = character;
-                    ++characterIndex;
-                }
+                chapter.FindCharacters();
             }
 
             if (GUILayout.Button("Find Values"))

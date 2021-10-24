@@ -1,6 +1,9 @@
 ﻿using Celeste.DataStructures;
+using Celeste.FSM;
 using Celeste.Narrative.Characters;
 using Celeste.Parameters;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -100,6 +103,37 @@ namespace Celeste.Narrative
         public BoolValue FindBoolValue(string name)
         {
             return boolValues.Find(x => string.CompareOrdinal(x.name, name) == 0);
+        }
+
+        #endregion
+
+        #region Utility Functions
+
+        public void FindCharacters()
+        {
+            HashSet<Character> charactersLookup = new HashSet<Character>();
+
+            foreach (FSMNode node in narrativeGraph.nodes)
+            {
+                if (node is ICharacterNode)
+                {
+                    ICharacterNode characterNode = node as ICharacterNode;
+
+                    if (characterNode.Character != null && !charactersLookup.Contains(characterNode.Character))
+                    {
+                        charactersLookup.Add(characterNode.Character);
+                    }
+                }
+            }
+
+            Array.Resize(ref characters, charactersLookup.Count);
+            
+            int characterIndex = 0;
+            foreach (Character character in charactersLookup)
+            {
+                characters[characterIndex] = character;
+                ++characterIndex;
+            }
         }
 
         #endregion

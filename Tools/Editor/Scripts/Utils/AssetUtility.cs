@@ -23,15 +23,20 @@ namespace CelesteEditor.Tools
                 asset.name = typeof(T).Name;
             }
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(string.Format("{0}/{1}.asset", path, asset.name));
+			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{path}/{asset.name}.asset");
 
 			AssetDatabase.CreateAsset(asset, assetPathAndName);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 
-			Selection.activeObject = asset;
-			EditorUtility.FocusProjectWindow();
+			SelectAsset(asset);
 		}
+
+        public static void SelectAsset(Object o)
+        {
+            Selection.activeObject = o;
+            EditorUtility.FocusProjectWindow();
+        }
 
 		public static void CreateFolder(string parent, string folderName)
         {
