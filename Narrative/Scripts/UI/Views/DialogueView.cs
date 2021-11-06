@@ -85,6 +85,8 @@ namespace Celeste.Narrative.UI
         {
             UIPositionAnchor positionAnchor = Array.Find(uiPositionAnchors, x => x.uiPosition == uiPosition);
             RectTransform anchor = positionAnchor.anchor;
+            UnityEngine.Debug.Assert(anchor != null, $"Could not find anchor for UI Position {uiPosition}.  Perhaps it has not been set in the Inspector?");
+
             dialogueTransform.anchoredPosition = anchor.anchoredPosition;
             dialogueTransform.pivot = anchor.pivot;
             dialogueTransform.localPosition = anchor.localPosition;
