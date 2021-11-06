@@ -12,7 +12,9 @@
         "Celeste.FSM.Nodes",
         "Celeste.FSM.Editor",
         "Celeste.Scene.Editor",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Logic",
+        "Celeste.Events"
     ],
     "includePlatforms": [
         "Editor"

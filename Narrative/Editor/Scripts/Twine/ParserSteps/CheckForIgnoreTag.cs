@@ -1,6 +1,4 @@
-﻿using Celeste.FSM;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CelesteEditor.Narrative.Twine.ParserSteps
 {
@@ -9,12 +7,17 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
-            return parseContext.ImporterSettings.ContainsIgnoreTag(parseContext.TwineNode.tags);
+            return HasIgnoreTag(parseContext.ImporterSettings, parseContext.TwineNode);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
             parseContext.StopParsing = true;
+        }
+
+        private bool HasIgnoreTag(TwineStoryImporterSettings importerSettings, TwineNode twineNode)
+        {
+            return importerSettings.ContainsIgnoreTag(twineNode.tags);
         }
     }
 }

@@ -13,6 +13,6 @@ namespace Celeste.Narrative
         string RawDialogue { get; set; }
         DialogueType DialogueType { get; set; }
         UIPosition UIPosition { get; set; }
-        Character Character { get; set; }
+        ScriptableObject[] DialogueTokens { set; }
     }
 }

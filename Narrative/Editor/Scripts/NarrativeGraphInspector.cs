@@ -48,8 +48,12 @@ namespace CelesteEditor.Narrative
                 AssetDatabase.SaveAssets();
             }
 
-            if (GUILayout.Button("Remove All Sub Assets"))
+            if (GUILayout.Button("Remove All Nodes"))
             {
+                graph.nodes.Clear();
+                graph.startNode = null;
+                graph.finishNode = null;
+
                 var objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(graph));
                 Debug.Log($"Objects before: {objects.Length}");
 

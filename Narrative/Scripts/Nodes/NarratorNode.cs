@@ -1,16 +1,12 @@
-﻿using Celeste.FSM;
+﻿using Celeste.DataStructures;
+using Celeste.FSM;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using XNode.Attributes;
-using static XNode.Node;
 
 namespace Celeste.Narrative
 {
@@ -41,6 +37,11 @@ namespace Celeste.Narrative
                 UnityEditor.EditorUtility.SetDirty(this);
 #endif
             }
+        }
+
+        public ScriptableObject[] DialogueTokens
+        {
+            set { ArrayExtensions.ResizeAndCopyFrom(ref dialogueTokens, value); }
         }
 
         public DialogueType DialogueType
@@ -94,9 +95,13 @@ namespace Celeste.Narrative
 
         #endregion
 
+        #region IPointerClickHandler
+
         public void OnPointerClick(PointerEventData pointerEventData)
         {
             isRead = true;
         }
+
+        #endregion
     }
 }

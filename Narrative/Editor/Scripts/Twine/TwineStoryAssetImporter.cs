@@ -16,8 +16,11 @@ namespace CelesteEditor.Narrative.Twine
 
             foreach (var node in twineStory.passages)
             {
-                foreach (var link in node.links)
+                Debug.Assert(node != null, $"Null node found in twine story passages.");
+
+                for (int i = 0, n = node.links != null ? node.links.Length : 0; i < n; ++i)
                 {
+                    TwineNodeLink link = node.links[i];
                     Debug.Assert(!link.broken, $"Link {link.name} to node {link.link} on node {node.name} is broken.");
                 }
             }

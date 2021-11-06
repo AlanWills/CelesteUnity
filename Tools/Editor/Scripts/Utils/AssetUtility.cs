@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CelesteEditor.Tools.Utils;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -155,6 +156,31 @@ namespace CelesteEditor.Tools
             }
 
             FindAssetsImpl<T>(target, propertyName, targetFolder);
+        }
+
+        public static string[] FindAssets<T>(string name, string directory) where T : Object
+        {
+            if (!string.IsNullOrEmpty(directory))
+            {
+                string assetSearchString = new AssetDatabaseSearchBuilder().
+                    WithAssetName(name).
+                    WithType<T>().
+                    Build();
+                return AssetDatabase.FindAssets(assetSearchString, new string[] { directory });
+            }
+            else
+            {
+                return FindAssets<T>(name);
+            }
+        }
+
+        public static string[] FindAssets<T>(string name) where T : Object
+        {
+            string assetSearchString = new AssetDatabaseSearchBuilder().
+                       WithAssetName(name).
+                       WithType<T>().
+                       Build();
+            return AssetDatabase.FindAssets(assetSearchString);
         }
     }
 }

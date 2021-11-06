@@ -1,4 +1,5 @@
-﻿using Celeste.Logic;
+﻿using Celeste.DataStructures;
+using Celeste.Logic;
 using Celeste.Objects;
 using Celeste.Tools.Attributes.GUI;
 using System;
@@ -34,14 +35,19 @@ namespace Celeste.Narrative.Choices
             }
         }
 
+        public Condition[] Conditions
+        {
+            set { ArrayExtensions.ResizeAndCopyFrom(ref conditions, value); }
+        }
+
         public InvalidBehaviour InvalidBehaviour
         {
             get { return invalidBehaviour; }
         }
 
         [SerializeField] private string id;
-        [SerializeField] private Condition condition;
-        [SerializeField, HideIfNull(nameof(condition))] private InvalidBehaviour invalidBehaviour = InvalidBehaviour.Hide;
+        [SerializeField] private Condition[] conditions;
+        [SerializeField, HideIfNullOrEmpty(nameof(conditions))] private InvalidBehaviour invalidBehaviour = InvalidBehaviour.Hide;
 
         #endregion
 
@@ -49,11 +55,20 @@ namespace Celeste.Narrative.Choices
         {
             id = original.id;
             invalidBehaviour = original.invalidBehaviour;
+            Conditions = original.conditions;
         }
 
         public virtual bool IsValid()
         {
-            return condition == null || condition.Check();
+            for (int i = 0, n = conditions != null ? conditions.Length : 0; i < n; ++i)
+            {
+                if (!conditions[i].Check())
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public virtual void OnSelected() { }

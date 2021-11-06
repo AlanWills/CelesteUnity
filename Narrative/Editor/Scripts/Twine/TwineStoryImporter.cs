@@ -1,7 +1,5 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative;
-using Celeste.Narrative.Choices;
-using Celeste.Narrative.UI;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,8 +9,8 @@ using Celeste.DataStructures;
 using Celeste.Narrative.Characters;
 using static UnityEditor.EditorGUILayout;
 using static CelesteEditor.Narrative.Twine.TwineStoryImporterSettings;
-using CelesteEditor.Narrative.Nodes;
-using CelesteEditor.Narrative.Twine.ParserSteps;
+using Celeste.Logic;
+using CelesteEditor.Tools;
 
 namespace CelesteEditor.Narrative.Twine
 {
@@ -21,11 +19,12 @@ namespace CelesteEditor.Narrative.Twine
         #region Properties and Fields
 
         [SerializeField] private TwineStory twineStory;
-        [SerializeField] private NarrativeGraph narrativeGraph;
         [SerializeField] private TwineStoryImporterSettings importerSettings;
+        [SerializeField] private NarrativeGraph narrativeGraph;
 
-        private HashSet<string> missingCharacterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        private List<string> removedCharacterNames = new List<string>();
+        private TwineStoryAnalysis twineStoryAnalysis;
+        private List<string> removedUnresolvedTags = new List<string>();
+        private List<string> removedUnresolvedKeys = new List<string>();
 
         #endregion
 
@@ -44,8 +43,31 @@ namespace CelesteEditor.Narrative.Twine
         protected override bool DrawWizardGUI()
         {
             bool changed = base.DrawWizardGUI();
-            
-            changed |= DrawCharactersGUI();
+
+            if (twineStory != null && importerSettings != null && twineStoryAnalysis == null)
+            {
+                AnalyseStory();
+            }
+
+            Space();
+
+            using (HorizontalScope horizontal = new HorizontalScope())
+            {
+                if (GUILayout.Button("Analyse", GUILayout.ExpandWidth(false)))
+                {
+                    AnalyseStory();
+                }
+            }
+
+            if (twineStoryAnalysis != null)
+            {
+                DrawCharactersGUI();
+                DrawLocaTokensGUI();
+                DrawConditionsGUI();
+                DrawParametersGUI();
+                DrawUnresolvedTagsGUI();
+                DrawUnresolvedKeysGUI();
+            }
 
             return changed;
         }
@@ -76,10 +98,8 @@ namespace CelesteEditor.Narrative.Twine
             // Now resolve transitions
             foreach (TwineNode node in twineStory.passages)
             {
-                if (node.links != null && node.links.Length > 0)
+                if (node.links != null && node.links.Length > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                 {
-                    FSMNode graphNode = nodeLookup[node.pid];
-
                     if (graphNode is ChoiceNode)
                     {
                         foreach (TwineNodeLink link in node.links)
@@ -96,7 +116,7 @@ namespace CelesteEditor.Narrative.Twine
                             outputPort.Connect(inputPort);
                         }
                     }
-                    else if (graphNode is DialogueNode)
+                    else
                     {
                         foreach (TwineNodeLink link in node.links)
                         {
@@ -127,126 +147,251 @@ namespace CelesteEditor.Narrative.Twine
 
         #region GUI
 
-        private bool DrawCharactersGUI()
+        private void DrawCharactersGUI()
         {
-            bool changed = false;
+            Space();
+            LabelField("Characters", CelesteEditorStyles.BoldLabel);
+            Space();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Characters", CelesteEditorStyles.BoldLabel);
-            EditorGUILayout.Space();
-
-            using (HorizontalScope horizontal = new HorizontalScope())
+            foreach (string foundCharacter in twineStoryAnalysis.foundCharacters)
             {
-                if (GUILayout.Button("Detect Missing Characters In Settings", GUILayout.ExpandWidth(false)))
-                {
-                    missingCharacterNames.Clear();
+                LabelField(foundCharacter);
+            }
+        }
 
-                    foreach (var node in twineStory.passages)
+        private void DrawLocaTokensGUI()
+        {
+            Space();
+            LabelField("Loca Tokens", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundLocaToken in twineStoryAnalysis.foundLocaTokens)
+            {
+                LabelField(foundLocaToken);
+            }
+        }
+
+        private void DrawConditionsGUI()
+        {
+            Space();
+            LabelField("Conditions", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundCondition in twineStoryAnalysis.foundConditions)
+            {
+                LabelField(foundCondition);
+            }
+        }
+
+        private void DrawParametersGUI()
+        {
+            Space();
+            LabelField("Parameters", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundParameter in twineStoryAnalysis.foundParameters)
+            {
+                LabelField(foundParameter);
+            }
+        }
+
+        private void DrawUnresolvedTagsGUI()
+        {
+            if (twineStoryAnalysis.unrecognizedTags.Count > 0)
+            {
+                Space();
+                LabelField("Unresolved Tags", CelesteEditorStyles.BoldLabel);
+                Space();
+
+                foreach (string unresolvedTag in twineStoryAnalysis.unrecognizedTags)
+                {
+                    using (HorizontalScope horizontal = new HorizontalScope())
                     {
-                        foreach (string tag in node.tags)
+                        LabelField(unresolvedTag);
+
+                        if (GUILayout.Button("Find Or Create Character", GUILayout.ExpandWidth(false)))
                         {
-                            if (importerSettings.CouldBeUnregisteredCharacterTag(tag))
+                            if (FindOrCreateCharacterName(unresolvedTag))
                             {
-                                changed = true;
-                                missingCharacterNames.Add(tag);
+                                removedUnresolvedTags.Add(unresolvedTag);
+                                twineStoryAnalysis.foundCharacters.Add(unresolvedTag);
                             }
                         }
                     }
                 }
+            }
 
-                if (GUILayout.Button("Find Or Create All Missing Characters", GUILayout.ExpandWidth(false)))
+            foreach (string unresolvedTag in removedUnresolvedTags)
+            {
+                twineStoryAnalysis.unrecognizedTags.Remove(unresolvedTag);
+            }
+            removedUnresolvedTags.Clear();
+        }
+
+        private void DrawUnresolvedKeysGUI()
+        {
+            if (twineStoryAnalysis.unrecognizedKeys.Count > 0)
+            {
+                Space();
+                LabelField("Unresolved Keys", CelesteEditorStyles.BoldLabel);
+                Space();
+
+                foreach (string unresolvedKey in twineStoryAnalysis.unrecognizedKeys)
                 {
-                    foreach (string missingCharacterName in missingCharacterNames)
+                    using (HorizontalScope horizontal = new HorizontalScope())
                     {
-                        FindOrCreateCharacterName(missingCharacterName);
+                        LabelField(unresolvedKey);
+
+                        if (GUILayout.Button("Find Loca Token", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindLocaToken(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundLocaTokens.Add(unresolvedKey);
+                            }
+                        }
+
+                        if (GUILayout.Button("Find Condition", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindCondition(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundConditions.Add(unresolvedKey);
+                            }
+                        }
+
+                        if (GUILayout.Button("Find Parameter", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindParameter(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundParameters.Add(unresolvedKey);
+                            }
+                        }
                     }
                 }
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Missing In Settings:", CelesteEditorStyles.BoldLabel);
-            EditorGUILayout.Space();
-
-            foreach (string missingCharacterName in missingCharacterNames)
+            foreach (string unresolvedKey in removedUnresolvedKeys)
             {
-                using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
-                using (HorizontalScope horizontal = new HorizontalScope())
-                {
-                    EditorGUILayout.LabelField(missingCharacterName);
-
-                    if (GUILayout.Button("Find Or Create", GUILayout.ExpandWidth(false)))
-                    {
-                        FindOrCreateCharacterName(missingCharacterName);
-                    }
-                }
+                twineStoryAnalysis.unrecognizedKeys.Remove(unresolvedKey);
             }
-
-            if (removedCharacterNames.Count > 0)
-            {
-                foreach (string characterName in removedCharacterNames)
-                {
-                    missingCharacterNames.Remove(characterName);
-                }
-
-                removedCharacterNames.Clear();
-            }
-
-            return changed;
+            removedUnresolvedKeys.Clear();
         }
 
         #endregion
 
         #region Utility
 
-        private void FindOrCreateCharacterName(string characterName)
+        private void AnalyseStory()
         {
-            string[] characterGUIDs = AssetDatabase.FindAssets($"t:{nameof(Character)} {characterName}", new string[] { importerSettings.charactersDirectory });
-            if (characterGUIDs != null && characterGUIDs.Length > 0)
+            if (twineStoryAnalysis == null)
             {
-                if (characterGUIDs.Length == 1)
-                {
-                    string characterAssetPath = AssetDatabase.GUIDToAssetPath(characterGUIDs[0]);
-                    Character character = AssetDatabase.LoadAssetAtPath<Character>(characterAssetPath);
-                    Debug.Assert(character != null, $"Unable to load character {characterName} from path {characterAssetPath}.");
-                    AddCharacterToSettings(character);
-                }
-                else
-                {
-                    Debug.LogAssertion($"Found more than one character matching name {characterName}.  Skipping find or add...");
-                }
+                twineStoryAnalysis = new TwineStoryAnalysis();
             }
-            else
+
+            importerSettings.Analyse(twineStory, twineStoryAnalysis);
+        }
+
+        private bool FindOrCreateCharacterName(string characterName)
+        {
+            if (!TryFind(characterName, importerSettings.CharactersDirectory, out Character character))
             {
-                Character character = Character.Create(characterName, importerSettings.charactersDirectory);
-                AddCharacterToSettings(character);
+                character = Character.Create(characterName, importerSettings.CharactersDirectory);
             }
+            
+            AddCharacterToSettings(character);
+            return true;
+        }
+
+        private bool FindLocaToken(string locaTokenName)
+        {
+            if (TryFind(locaTokenName, importerSettings.LocaTokensDirectory, out ScriptableObject locaToken))
+            {
+                AddLocaTokenToSettings(locaToken);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool FindCondition(string conditionName)
+        {
+            if (TryFind(conditionName, importerSettings.ConditionsDirectory, out Condition condition))
+            {
+                AddConditionToSettings(condition);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool FindParameter(string parameterName)
+        {
+            if (TryFind(parameterName, importerSettings.ParametersDirectory, out ScriptableObject parameter))
+            {
+                AddParameterToSettings(parameter);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryFind<T>(string name, string directory, out T asset) where T : UnityEngine.Object
+        {
+            string[] guids = AssetUtility.FindAssets<T>(name, directory);
+            if (guids != null && guids.Length != 1)
+            {
+                Debug.LogAssertion($"Could not find single asset matching {name}.  Skipping find...");
+                asset = default;
+                return false;
+            }
+
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+            asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            Debug.Assert(asset != null, $"Unable to load asset {name} from path {assetPath}.");
+
+            return asset != null;
         }
 
         private void AddCharacterToSettings(Character character)
         {
             importerSettings.characterTags.Add(new CharacterTag(character.CharacterName, character));
-            removedCharacterNames.Add(character.CharacterName);
-            
+            RemoveUnresolvedTag(character.CharacterName);
+        }
+
+        private void AddLocaTokenToSettings(ScriptableObject locaToken)
+        {
+            importerSettings.locaTokenKeys.Add(new LocaTokenKey(locaToken.name, locaToken));
+            RemoveUnresolvedKey(locaToken.name);
+        }
+
+        private void AddConditionToSettings(Condition condition)
+        {
+            importerSettings.conditionKeys.Add(new ConditionKey(condition.name, condition));
+            RemoveUnresolvedKey(condition.name);
+        }
+
+        private void AddParameterToSettings(ScriptableObject parameter)
+        {
+            importerSettings.parameterKeys.Add(new ParameterKey(parameter.name, parameter));
+            RemoveUnresolvedKey(parameter.name);
+        }
+
+        private void RemoveUnresolvedTag(string tag)
+        {
+            removedUnresolvedTags.Add(tag);
+
             EditorUtility.SetDirty(importerSettings);
             AssetDatabase.SaveAssets();
         }
 
-        private void SetDialogueNodeValues(
-            DialogueNode dialogueNode, 
-            TwineNode node,
-            Vector2 startNodePosition)
+        private void RemoveUnresolvedKey(string key)
         {
-            Character character = importerSettings.FindCharacterFromTag(node.tags);
-            Debug.Assert(character != null, $"Could not find character for node {node.name} ({node.pid}).");
-            UIPosition characterDefaultPosition = character != null ? character.DefaultUIPosition : UIPosition.Centre;
+            removedUnresolvedKeys.Add(key);
 
-            DialogueNodeBuilder.
-                        WithNode(dialogueNode).
-                        WithName(node.name).
-                        WithPosition((node.position - startNodePosition) * importerSettings.nodeSpread).
-                        WithRawDialogue(node.text).
-                        WithCharacter(character).
-                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.tags, characterDefaultPosition));
+            EditorUtility.SetDirty(importerSettings);
+            AssetDatabase.SaveAssets();
         }
 
         #endregion

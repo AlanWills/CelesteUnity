@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Parameters
 {
     [Serializable]
-    public class ParameterReference<T, TValue, TReference> : ScriptableObject, ICopyable<TReference> 
+    public class ParameterReference<T, TValue, TReference> : ScriptableObject, IValue<T>, ICopyable<TReference> 
                 where TValue : ParameterValue<T>
                 where TReference : ParameterReference<T, TValue, TReference>
     {

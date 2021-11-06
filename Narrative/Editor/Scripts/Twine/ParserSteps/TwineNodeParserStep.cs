@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Narrative.Twine.ParserSteps
 {
-    public struct TwineNodeParseContext
+    public class TwineNodeParseContext
     {
         public TwineNode TwineNode { get; set; }
         public FSMGraph Graph { get; set; }

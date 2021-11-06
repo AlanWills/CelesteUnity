@@ -61,5 +61,27 @@ namespace Celeste.DataStructures
 
             return array[index];
         }
+
+        public static void ResizeAndCopyFrom<T>(ref T[] destinationArray, T[] sourceArray)
+        {
+#if NULL_CHECKS
+            if (sourceArray == null)
+            {
+                Array.Resize(ref destinationArray, 0);
+                Debug.LogAssertion($"Null source array.");
+                return;
+            }
+#endif
+            if (destinationArray == null)
+            {
+                destinationArray = new T[sourceArray.Length];
+            }
+            else if (destinationArray.Length != sourceArray.Length)
+            {
+                Array.Resize(ref destinationArray, sourceArray.Length);
+            }
+
+            Array.Copy(sourceArray, destinationArray, sourceArray.Length);
+        }
     }
 }

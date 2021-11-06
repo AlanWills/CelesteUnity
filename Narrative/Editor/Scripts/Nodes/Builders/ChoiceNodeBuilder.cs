@@ -1,7 +1,6 @@
-﻿using Celeste.Narrative;
-using Celeste.Narrative.Characters;
+﻿using Celeste.Logic;
+using Celeste.Narrative;
 using Celeste.Narrative.Choices;
-using Celeste.Narrative.UI;
 using UnityEngine;
 
 namespace CelesteEditor.Narrative.Nodes
@@ -28,10 +27,16 @@ namespace CelesteEditor.Narrative.Nodes
 
         #endregion
 
-        public ChoiceNodeBuilder WithTextChoice(string name, string displayText)
+        public ChoiceNodeBuilder WithTextChoice(
+            string name, 
+            string displayText,
+            ScriptableObject[] locaTokens,
+            Condition[] conditions)
         {
             TextChoice textChoice = choiceNode.AddChoice<TextChoice>(name);
             textChoice.DisplayText = displayText;
+            //textChoice.DisplayTokens = locaTokens;
+            textChoice.Conditions = conditions;
 
             return this;
         }

@@ -1,9 +1,7 @@
-﻿using Celeste.FSM;
-using Celeste.Narrative;
-using Celeste.Narrative.Characters;
-using Celeste.Narrative.UI;
+﻿using Celeste.Narrative;
 using CelesteEditor.Narrative.Nodes;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CelesteEditor.Narrative.Twine.ParserSteps
@@ -11,6 +9,12 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
     [CreateAssetMenu(fileName = "TryAddDialogue", menuName = "Celeste/Narrative/Twine/Parser Steps/Try Add Dialogue")]
     public class TryAddDialogue : TwineNodeParserStep
     {
+        #region Properties and Fields
+
+        [NonSerialized] private List<ScriptableObject> locaTokens = new List<ScriptableObject>();
+
+        #endregion
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
             return parseContext.FSMNode is IDialogueNode;
@@ -22,15 +26,30 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
             TwineNode node = parseContext.TwineNode;
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
-            Character character = importerSettings.FindCharacterFromTag(node.tags);
-            Debug.Assert(character != null, $"Could not find character for node {node.name} ({node.pid}).");
-            UIPosition characterDefaultPosition = character != null ? character.DefaultUIPosition : UIPosition.Centre;
+            string dialogueText = node.text;
+            dialogueText = StripLinksFromDialogue(dialogueText);
+            dialogueText = importerSettings.ReplaceLocaTokens(dialogueText, locaTokens);
 
             DialogueNodeBuilder.
                         WithNode(dialogueNode).
-                        WithRawDialogue(node.text).
-                        WithCharacter(character).
-                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.tags, characterDefaultPosition));
+                        WithRawDialogue(dialogueText).
+                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.tags, dialogueNode.UIPosition)).
+                        WithDialogueType(importerSettings.FindDialogueTypeFromTag(node.tags, DialogueType.Speech)).
+                        WithDialogueTokens(locaTokens.ToArray());
+        }
+
+        private string StripLinksFromDialogue(string dialogueText)
+        {
+            int delimiterStart = dialogueText.IndexOf("[[");
+
+            while (delimiterStart != -1)
+            {
+                int delimiterEnd = dialogueText.IndexOf("]]", delimiterStart + 2);
+                dialogueText = dialogueText.Remove(delimiterStart, delimiterEnd - delimiterStart + 2);
+                delimiterStart = dialogueText.IndexOf("[[", delimiterStart);
+            }
+            
+            return dialogueText.Trim();
         }
     }
 }

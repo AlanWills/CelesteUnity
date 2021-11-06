@@ -1,14 +1,6 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative;
-using CelesteEditor.Tools;
-using CelesteEditor.Validation.GUIs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
-using UnityEngine;
 using XNode;
 using XNodeEditor;
 

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [Serializable]
-    public class ParameterValue<T> : ScriptableObject
+    public class ParameterValue<T> : ScriptableObject, IValue<T>
     {
         #region Properties and Fields
 

@@ -2,6 +2,7 @@
 using Celeste.Narrative;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.UI;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,9 +54,15 @@ namespace CelesteEditor.Narrative.Nodes
             return this;
         }
 
-        public DialogueNodeBuilder WithCharacter(Character character)
+        public DialogueNodeBuilder WithDialogueType(DialogueType dialogueType)
         {
-            dialogueNode.Character = character;
+            dialogueNode.DialogueType = dialogueType;
+            return this;
+        }
+
+        public DialogueNodeBuilder WithDialogueTokens(ScriptableObject[] locaTokens)
+        {
+            dialogueNode.DialogueTokens = locaTokens;
             return this;
         }
     }
