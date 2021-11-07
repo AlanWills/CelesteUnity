@@ -1,14 +1,9 @@
 ﻿using Celeste.FSM;
 using Celeste.Tools;
+using Celeste.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Celeste.Narrative.UI
 {
@@ -87,9 +82,7 @@ namespace Celeste.Narrative.UI
             RectTransform anchor = positionAnchor.anchor;
             UnityEngine.Debug.Assert(anchor != null, $"Could not find anchor for UI Position {uiPosition}.  Perhaps it has not been set in the Inspector?");
 
-            dialogueTransform.anchoredPosition = anchor.anchoredPosition;
-            dialogueTransform.pivot = anchor.pivot;
-            dialogueTransform.localPosition = anchor.localPosition;
+            dialogueTransform.CopyLayoutFrom(anchor);
         }
     }
 }

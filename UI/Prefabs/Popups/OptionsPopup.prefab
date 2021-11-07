@@ -23,13 +23,21 @@ PrefabInstance:
       propertyPath: m_text
       value: Settings
       objectReference: {fileID: 0}
+    - target: {fileID: 4631722048366472811, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 4631722048366472811, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4631722048699673501, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: showPopup
       value: 
       objectReference: {fileID: 11400000, guid: 4a2acb5ce9dcd514d9bc46815f985054, type: 2}
     - target: {fileID: 4631722048699673502, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_Name
-      value: SettingsPopup
+      value: OptionsPopup
       objectReference: {fileID: 0}
     - target: {fileID: 4631722048699673503, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_RootOrder
@@ -87,6 +95,18 @@ PrefabInstance:
       propertyPath: m_text
       value: Save
       objectReference: {fileID: 0}
+    - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: m_fontSize
+      value: 26.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
 --- !u!1 &4590422454041409940 stripped

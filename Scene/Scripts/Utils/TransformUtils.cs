@@ -25,5 +25,15 @@ namespace Celeste.Utils
                 GameObject.DestroyImmediate(transform.GetChild(i - 1).gameObject);
             }
         }
+
+        public static void CopyLayoutFrom(this RectTransform targetRectTransform, RectTransform sourceRectTransform)
+        {
+            targetRectTransform.anchorMin = sourceRectTransform.anchorMin;
+            targetRectTransform.anchorMax = sourceRectTransform.anchorMax;
+            targetRectTransform.pivot = sourceRectTransform.pivot;
+            targetRectTransform.anchoredPosition = sourceRectTransform.anchoredPosition;
+            targetRectTransform.sizeDelta = sourceRectTransform.sizeDelta;
+        }
+            
     }
 }

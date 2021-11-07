@@ -79,8 +79,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Popup Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2820c74662c41b7439929ba4705c36f7, type: 2}
-  m_sharedMaterial: {fileID: 7257933887192780516, guid: 2820c74662c41b7439929ba4705c36f7, type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -235,10 +235,10 @@ RectTransform:
   m_Father: {fileID: 5616675362812257425}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 900}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: -60, y: -180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4631722049241556945
 CanvasRenderer:
@@ -528,6 +528,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4631722049241556947}
     m_Modifications:
+    - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6191592729197578152, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

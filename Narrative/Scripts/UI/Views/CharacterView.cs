@@ -1,10 +1,7 @@
-﻿using Celeste.FSM;
+﻿using Celeste.DataStructures;
+using Celeste.FSM;
 using Celeste.Narrative.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Celeste.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,10 +13,11 @@ namespace Celeste.Narrative.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private GameObject characterNameRoot;
+        [SerializeField] private GameObject characterNameUI;
         [SerializeField] private TextMeshProUGUI characterName;
         [SerializeField] private GameObject characterAvatarUI;
         [SerializeField] private Image characterAvatarIcon;
+        [SerializeField] private UIPositionAnchor[] uiPositionAnchors;
 
         #endregion
 
@@ -37,17 +35,33 @@ namespace Celeste.Narrative.UI
             characterName.text = character.CharacterName;
             characterAvatarIcon.sprite = character.CharacterAvatarIcon;
 
-            characterAvatarUI.SetActive(character.CharacterAvatarIcon != null);
-            characterNameRoot.SetActive(true);
+            bool showCharacter = character.CharacterAvatarIcon != null;
+            if (showCharacter)
+            {
+                SetUIPosition(characterNode.UIPosition);
+            }
+
+            characterNameUI.SetActive(true);
+            characterAvatarUI.SetActive(showCharacter);
         }
 
         public override void OnNodeUpdate(FSMNode fsmNode) { }
 
         public override void OnNodeExit(FSMNode fsmNode)
         {
-            characterNameRoot.SetActive(false);
+            characterNameUI.SetActive(false);
         }
 
         #endregion
+
+        public void SetUIPosition(UIPosition uiPosition)
+        {
+            UIPositionAnchor positionAnchor = uiPositionAnchors.Find(x => x.uiPosition == uiPosition);
+            RectTransform anchor = positionAnchor.anchor;
+            UnityEngine.Debug.Assert(anchor != null, $"Could not find anchor for UI Position {uiPosition}.  Perhaps it has not been set in the Inspector?");
+
+            RectTransform avatarTransform = characterAvatarUI.GetComponent<RectTransform>();
+            avatarTransform.CopyLayoutFrom(anchor);
+        }
     }
 }

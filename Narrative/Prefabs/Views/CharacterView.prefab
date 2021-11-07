@@ -48,4 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3adc1e9e120bf45a489a9954ca98cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterNameUI: {fileID: 0}
   characterName: {fileID: 0}
+  characterAvatarUI: {fileID: 0}
+  characterAvatarIcon: {fileID: 0}
+  uiPositionAnchors:
+  - uiPosition: 0
+    anchor: {fileID: 0}
+  - uiPosition: 2
+    anchor: {fileID: 0}
