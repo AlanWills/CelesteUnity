@@ -15,16 +15,6 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
                 return false;
             }
 
-            if (parseContext.TwineNode.links == null)
-            {
-                return false;
-            }
-
-            if (parseContext.TwineNode.links.Length != 1)
-            {
-                return false;
-            }
-
             string text = parseContext.TwineNode.text;
 
             if (string.IsNullOrWhiteSpace(text))

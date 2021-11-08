@@ -41,35 +41,9 @@ namespace CelesteEditor.Narrative
                 AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
             }
 
-            if (GUILayout.Button("Remove Null Nodes"))
-            {
-                graph.RemoveNullNodes_EditorOnly();
-                EditorUtility.SetDirty(target);
-                AssetDatabase.SaveAssets();
-            }
-
             if (GUILayout.Button("Remove All Nodes"))
             {
-                graph.nodes.Clear();
-                graph.startNode = null;
-                graph.finishNode = null;
-
-                var objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(graph));
-                Debug.Log($"Objects before: {objects.Length}");
-
-                foreach (var obj in objects)
-                {
-                    if (obj != graph)
-                    {
-                        DestroyImmediate(obj, true);
-                    }
-                }
-
-                EditorUtility.SetDirty(graph);
-                AssetDatabase.SaveAssets();
-
-                objects = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(graph));
-                Debug.Log($"Objects after: {objects.Length}");
+                graph.RemoveAllNodes();
             }
 
             using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())

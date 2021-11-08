@@ -26,6 +26,11 @@ namespace CelesteEditor.DataStructures
                 ItemsProperty.FindAssets<T>();
             }
 
+            if (GUILayout.Button("Find All In Folder Recursive"))
+            {
+                ItemsProperty.FindAssets<T>(AssetUtility.GetAssetFolderPath(target));
+            }
+
             DrawPropertiesExcluding(serializedObject, "m_Script");
 
             serializedObject.ApplyModifiedProperties();

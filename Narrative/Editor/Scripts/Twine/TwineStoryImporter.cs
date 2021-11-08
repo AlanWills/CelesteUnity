@@ -65,6 +65,7 @@ namespace CelesteEditor.Narrative.Twine
                 DrawLocaTokensGUI();
                 DrawConditionsGUI();
                 DrawParametersGUI();
+                DrawBackgroundsGUI();
                 DrawUnresolvedTagsGUI();
                 DrawUnresolvedKeysGUI();
             }
@@ -79,6 +80,8 @@ namespace CelesteEditor.Narrative.Twine
 
         private void OnWizardOtherButton()
         {
+            narrativeGraph.RemoveAllNodes();
+
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
             Vector2 startNodePosition = twineStory.passages.Find(x => x.pid == twineStory.startnode).position;
 
@@ -195,6 +198,18 @@ namespace CelesteEditor.Narrative.Twine
             }
         }
 
+        private void DrawBackgroundsGUI()
+        {
+            Space();
+            LabelField("Backgrounds", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundBackground in twineStoryAnalysis.foundBackgrounds)
+            {
+                LabelField(foundBackground);
+            }
+        }
+
         private void DrawUnresolvedTagsGUI()
         {
             if (twineStoryAnalysis.unrecognizedTags.Count > 0)
@@ -268,6 +283,15 @@ namespace CelesteEditor.Narrative.Twine
                                 twineStoryAnalysis.foundParameters.Add(unresolvedKey);
                             }
                         }
+
+                        if (GUILayout.Button("Find Background", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindBackground(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundBackgrounds.Add(unresolvedKey);
+                            }
+                        }
                     }
                 }
             }
@@ -337,6 +361,17 @@ namespace CelesteEditor.Narrative.Twine
             return false;
         }
 
+        private bool FindBackground(string backgroundName)
+        {
+            if (TryFind(backgroundName, importerSettings.BackgroundsDirectory, out Background background))
+            {
+                AddBackgroundToSettings(background);
+                return true;
+            }
+
+            return false;
+        }
+
         private bool TryFind<T>(string name, string directory, out T asset) where T : UnityEngine.Object
         {
             string[] guids = AssetUtility.FindAssets<T>(name, directory);
@@ -376,6 +411,12 @@ namespace CelesteEditor.Narrative.Twine
         {
             importerSettings.parameterKeys.Add(new ParameterKey(parameter.name, parameter));
             RemoveUnresolvedKey(parameter.name);
+        }
+
+        private void AddBackgroundToSettings(Background background)
+        {
+            importerSettings.backgroundKeys.Add(new BackgroundKey(background.name, background));
+            RemoveUnresolvedKey(background.name);
         }
 
         private void RemoveUnresolvedTag(string tag)

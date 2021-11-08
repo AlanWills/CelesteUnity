@@ -1,9 +1,6 @@
-﻿using Celeste.Narrative.Characters;
-using Celeste.Narrative.Parameters;
+﻿using Celeste.Narrative.Parameters;
 using Celeste.Persistence;
 using System;
-using System.Collections;
-using System.IO;
 using UnityEngine;
 
 namespace Celeste.Narrative.Persistence
@@ -20,7 +17,6 @@ namespace Celeste.Narrative.Persistence
         }
 
         [SerializeField] private StoryCatalogue storyCatalogue;
-        [SerializeField] private ChapterRecordValue currentChapterRecord;
 
         [NonSerialized] private ProductionRecord productionRecord = new ProductionRecord();
 
@@ -72,6 +68,8 @@ namespace Celeste.Narrative.Persistence
                     Chapter chapter = story.FindChapter(chapterDTO.guid);
                     UnityEngine.Debug.Assert(chapter != null, $"Could not find Chapter with guid {chapterDTO.guid} in story {story.name}.");
                     ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodeGuid);
+
+                    chapterRecord.CurrentBackgroundGuid = chapterDTO.currentBackgroundGuid;
 
                     foreach (CharacterDTO characterDTO in chapterDTO.characters)
                     {

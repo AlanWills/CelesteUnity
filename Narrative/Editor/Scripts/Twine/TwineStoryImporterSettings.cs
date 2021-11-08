@@ -107,6 +107,23 @@ namespace CelesteEditor.Narrative.Twine
 
         #endregion
 
+        #region Background Key Struct
+
+        [Serializable]
+        public struct BackgroundKey
+        {
+            public string key;
+            public Background background;
+
+            public BackgroundKey(string key, Background background)
+            {
+                this.key = key;
+                this.background = background;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public string CharactersDirectory
@@ -129,6 +146,11 @@ namespace CelesteEditor.Narrative.Twine
             get { return Path.Combine(rootDirectory, parametersDirectory); }
         }
 
+        public string BackgroundsDirectory
+        {
+            get { return Path.Combine(rootDirectory, backgroundsDirectory); }
+        }
+
         [SerializeField] private TwineNodeParserStep[] parserSteps;
         [SerializeField] private TwineNodeAnalysisStep[] analysisSteps;
 
@@ -139,6 +161,8 @@ namespace CelesteEditor.Narrative.Twine
         [SerializeField] private char conditionEndDelimiter = '#';
         [SerializeField] private char parameterStartDelimiter = '$';
         [SerializeField] private char parameterEndDelimiter = '$';
+        [SerializeField] private string linkStartDelimiter = "[[";
+        [SerializeField] private string linkEndDelimiter = "]]";
 
         [Header("Tags")]
         [SerializeField] private string ignoreTag = "Ignore";
@@ -151,12 +175,15 @@ namespace CelesteEditor.Narrative.Twine
         public List<LocaTokenKey> locaTokenKeys = new List<LocaTokenKey>();
         public List<ConditionKey> conditionKeys = new List<ConditionKey>();
         public List<ParameterKey> parameterKeys = new List<ParameterKey>();
+        public List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
 
         [Header("Script Instructions")]
         [SerializeField] private string setParameterInstruction = "SetParameter";
+        [SerializeField] private string setBackgroundInstruction = "SetBackground";
 
         [Header("Events")]
         public Celeste.Events.Event finishEvent;
+        public Celeste.Events.BackgroundEvent setBackgroundEvent;
 
         [Header("Graph Settings")]
         public Vector2 nodeSpread = new Vector2(2, 2);
@@ -167,6 +194,7 @@ namespace CelesteEditor.Narrative.Twine
         [SerializeField] private string locaTokensDirectory = "LocaTokens";
         [SerializeField] private string conditionsDirectory = "Conditions";
         [SerializeField] private string parametersDirectory = "Parameters";
+        [SerializeField] private string backgroundsDirectory = "Backgrounds";
 
         #endregion
 
@@ -225,6 +253,20 @@ namespace CelesteEditor.Narrative.Twine
             
             output = parseContext.FSMNode;
             return output != null;
+        }
+
+        public string StripLinksFromText(string text)
+        {
+            int delimiterStart = text.IndexOf(linkStartDelimiter);
+
+            while (delimiterStart != -1)
+            {
+                int delimiterEnd = text.IndexOf(linkEndDelimiter, delimiterStart + 2);
+                text = text.Remove(delimiterStart, delimiterEnd - delimiterStart + 2);
+                delimiterStart = text.IndexOf(linkStartDelimiter, delimiterStart);
+            }
+
+            return text.Trim();
         }
 
         #endregion
@@ -358,12 +400,22 @@ namespace CelesteEditor.Narrative.Twine
                 return true;
             }
 
+            if (IsSetBackgroundInstruction(text))
+            {
+                return true;
+            }
+
             return false;
         }
 
         public bool IsSetParameterInstruction(string text)
         {
             return string.CompareOrdinal(text, setParameterInstruction) == 0;
+        }
+
+        public bool IsSetBackgroundInstruction(string text)
+        {
+            return string.CompareOrdinal(text, setBackgroundInstruction) == 0;
         }
 
         #endregion
@@ -514,6 +566,44 @@ namespace CelesteEditor.Narrative.Twine
                 else
                 {
                     analysis.unrecognizedKeys.Add(key);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Background Utility
+
+        public bool IsRegisteredBackgroundKey(string key)
+        {
+            return backgroundKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        public Background FindBackground(string key)
+        {
+            return backgroundKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).background;
+        }
+
+        public void FindBackgrounds(string nodeText, TwineStoryAnalysis analysis)
+        {
+            if (!string.IsNullOrWhiteSpace(nodeText))
+            {
+                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                
+                if (splitText != null && 
+                    splitText.Length >= 2 &&
+                    IsSetBackgroundInstruction(splitText[0]))
+                {
+                    string backgroundName = splitText[1];
+
+                    if (IsRegisteredBackgroundKey(backgroundName))
+                    {
+                        analysis.foundBackgrounds.Add(backgroundName);
+                    }
+                    else
+                    {
+                        analysis.unrecognizedKeys.Add(backgroundName);
+                    }
                 }
             }
         }

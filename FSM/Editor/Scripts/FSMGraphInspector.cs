@@ -40,13 +40,6 @@ namespace CelesteEditor.FSM
                 AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
             }
 
-            if (GUILayout.Button("Remove Null Nodes"))
-            {
-                graph.RemoveNullNodes_EditorOnly();
-                EditorUtility.SetDirty(target);
-                AssetDatabase.SaveAssets();
-            }
-
             using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())
             {
                 fsmGraph = EditorGUILayout.ObjectField(fsmGraph, typeof(FSMGraph), false) as FSMGraph;

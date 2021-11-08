@@ -7,10 +7,6 @@ namespace Celeste.Narrative.Characters
     [AddComponentMenu("Celeste/Narrative/Characters/Character Manager")]
     public class CharacterManager : MonoBehaviour
     {
-        // Take care of tracking character positions and records
-        // Hook into Enter/Exit for Narrative Runtime like view manager?
-        // Will also need access to the record
-
         #region Properties and Fields
 
         [SerializeField] private CharacterCustomisationCatalogue customisationCatalogue;

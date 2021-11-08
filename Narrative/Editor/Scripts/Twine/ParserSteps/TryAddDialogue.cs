@@ -27,7 +27,7 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
             string dialogueText = node.text;
-            dialogueText = StripLinksFromDialogue(dialogueText);
+            dialogueText = importerSettings.StripLinksFromText(dialogueText);
             dialogueText = importerSettings.ReplaceLocaTokens(dialogueText, locaTokens);
 
             DialogueNodeBuilder.
@@ -36,20 +36,6 @@ namespace CelesteEditor.Narrative.Twine.ParserSteps
                         WithUIPosition(importerSettings.FindUIPositionFromTag(node.tags, dialogueNode.UIPosition)).
                         WithDialogueType(importerSettings.FindDialogueTypeFromTag(node.tags, DialogueType.Speech)).
                         WithDialogueTokens(locaTokens.ToArray());
-        }
-
-        private string StripLinksFromDialogue(string dialogueText)
-        {
-            int delimiterStart = dialogueText.IndexOf("[[");
-
-            while (delimiterStart != -1)
-            {
-                int delimiterEnd = dialogueText.IndexOf("]]", delimiterStart + 2);
-                dialogueText = dialogueText.Remove(delimiterStart, delimiterEnd - delimiterStart + 2);
-                delimiterStart = dialogueText.IndexOf("[[", delimiterStart);
-            }
-            
-            return dialogueText.Trim();
         }
     }
 }

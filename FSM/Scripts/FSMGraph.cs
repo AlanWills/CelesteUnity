@@ -59,9 +59,35 @@ namespace Celeste.FSM
             return nodes.Find(x => x is FSMNode && predicate(x as FSMNode)) as FSMNode;
         }
 
-        #endregion
+        public void RemoveAllNodes()
+        {
+            nodes.Clear();
+            startNode = null;
+            finishNode = null;
 
-        #region Parameter Utility Methods
+#if UNITY_EDITOR
+            var objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(UnityEditor.AssetDatabase.GetAssetPath(this));
+            Debug.Log($"Objects before: {objects.Length}");
+
+            foreach (var obj in objects)
+            {
+                if (obj != this)
+                {
+                    DestroyImmediate(obj, true);
+                }
+            }
+
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.SaveAssets();
+
+            objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(UnityEditor.AssetDatabase.GetAssetPath(this));
+            Debug.Log($"Objects after: {objects.Length}");
+#endif
+        }
+
+#endregion
+
+#region Parameter Utility Methods
 
         public T CreateParameter<T>(string name) where T : ScriptableObject
         {
@@ -98,17 +124,6 @@ namespace Celeste.FSM
             }
         }
 
-        #endregion
-
-        #region Validation Methods
-
-#if UNITY_EDITOR
-        public void RemoveNullNodes_EditorOnly()
-        {
-            nodes.RemoveAll(x => x == null);
-        }
-#endif
-
-        #endregion
+#endregion
     }
 }

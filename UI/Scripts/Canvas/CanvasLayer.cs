@@ -1,0 +1,25 @@
+﻿using UnityEngine;
+
+namespace Celeste.UI
+{
+    [CreateAssetMenu(fileName = nameof(CanvasLayer), menuName = "Celeste/UI/Canvas Layer")]
+    public class CanvasLayer : ScriptableObject
+    {
+        public int SortOrder
+        {
+            get { return sortOrder; }
+            set
+            {
+                if (sortOrder != value)
+                {
+                    sortOrder = value;
+#if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(this);
+#endif
+                }
+            }
+        }
+
+        [SerializeField] private int sortOrder = 0;
+    }
+}

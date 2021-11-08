@@ -16,6 +16,7 @@ namespace Celeste.Narrative.Persistence
         public StoryRecord StoryRecord { get; }
         public Chapter Chapter { get; }
         public string CurrentNodeGuid { get; set; }
+        public int CurrentBackgroundGuid { get; set; }
         public float Progress { get; private set; }
 
         public string ChapterName

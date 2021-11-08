@@ -9,10 +9,12 @@
         "GUID:909b758b489290d42b774e254ad17676",
         "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
         "Celeste.Parameters",
+        "Celeste.Parameters.Editor",
         "Celeste.FSM.Nodes",
         "Celeste.FSM.Editor",
         "Celeste.Scene.Editor",
         "Celeste.DataStructures",
+        "Celeste.DataStructures.Editor",
         "Celeste.Logic",
         "Celeste.Events"
     ],

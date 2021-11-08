@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.UI.Editor",
+    "rootNamespace": "CelesteEditor.UI",
+    "references": [
+        "GUID:63423e2ab705d094891558ff032717e2",
+        "Celeste.Objects",
+        "Celeste.DataStructures.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
