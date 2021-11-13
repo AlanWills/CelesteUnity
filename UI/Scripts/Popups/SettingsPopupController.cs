@@ -1,3 +1,4 @@
+using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.UI
@@ -7,7 +8,7 @@ namespace Celeste.UI
     {
         #region IPopupController
 
-        public void OnShow()
+        public void OnShow(ShowPopupArgs args)
         {
         }
 

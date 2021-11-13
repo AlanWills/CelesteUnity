@@ -2,7 +2,7 @@
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.UI;
 
-namespace CelesteEditor.Narrative.Nodes
+namespace Celeste.Narrative.Nodes
 {
     public struct CharacterNodeBuilder
     {

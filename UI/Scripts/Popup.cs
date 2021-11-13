@@ -1,21 +1,13 @@
 ﻿using Celeste.Events;
-using Celeste.Parameters;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 using Event = Celeste.Events.Event;
 
 namespace Celeste.UI
 {
     [AddComponentMenu("Celeste/UI/Popup")]
-    public class Popup : MonoBehaviour, IEventListener
+    public class Popup : MonoBehaviour, IEventListener<ShowPopupArgs>
     {
         #region Properties and Fields
 
@@ -24,8 +16,10 @@ namespace Celeste.UI
         [SerializeField] private GameObject popupRoot;
         [SerializeField] private Animator animator;
 
-        [Header("Events")]
-        [SerializeField] private Event showPopup;
+        [Header("Required Events")]
+        [SerializeField] private ShowPopupEvent showPopup;
+
+        [Header("Optional Events")]
         [SerializeField] private Event onPopupHide;
 
         private IPopupController popupController;
@@ -42,21 +36,18 @@ namespace Celeste.UI
 
         private void OnDestroy()
         {
-            if (showPopup != null)
-            {
-                showPopup.RemoveListener(OnEventRaised);
-            }
+            showPopup.RemoveListener(OnEventRaised);
         }
 
         #endregion
 
         #region Show/Hide
 
-        public void Show()
+        public void Show(ShowPopupArgs args)
         {
             if (popupController != null)
             {
-                popupController.OnShow();
+                popupController.OnShow(args);
             }
 
             popupRoot.SetActive(true);
@@ -97,9 +88,9 @@ namespace Celeste.UI
 
         #region Callbacks
 
-        public void OnEventRaised()
+        public void OnEventRaised(ShowPopupArgs args)
         {
-            Show();
+            Show(args);
         }
 
         public void OnConfirmButtonPressed()

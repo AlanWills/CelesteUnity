@@ -186,6 +186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3014676550613481676, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3156716916739228101, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

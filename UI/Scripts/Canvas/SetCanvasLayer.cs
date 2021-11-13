@@ -23,11 +23,16 @@ namespace Celeste.UI
 
         private void Awake()
         {
+            Apply();
+        }
+
+        #endregion
+
+        public void Apply()
+        {
             Debug.Assert(canvasLayer != null, $"Canvas Layer is not set on {nameof(SetCanvasLayer)} script on {gameObject.name}.");
             Debug.Assert(canvas != null, $"Canvas is not set on {nameof(SetCanvasLayer)} script on {gameObject.name}.");
             canvas.sortingOrder = canvasLayer.SortOrder;
         }
-
-        #endregion
     }
 }

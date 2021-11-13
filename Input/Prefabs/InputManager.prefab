@@ -59,9 +59,9 @@ MonoBehaviour:
   rightMouseButtonFirstUp: {fileID: 11400000, guid: 04bfa20a4434ecf4abe87c91a6532fd6, type: 2}
   mouseScrolled: {fileID: 11400000, guid: f8e41487b26e73a4a8c520f166a1d589, type: 2}
   mouseMoved: {fileID: 11400000, guid: c60d66d1ecc34d948b70d115706bee63, type: 2}
-  singleTouchEvent: {fileID: 0}
-  doubleTouchEvent: {fileID: 0}
-  tripleTouchEvent: {fileID: 0}
+  singleTouchEvent: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
+  doubleTouchEvent: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
+  tripleTouchEvent: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
   gameObjectLeftClicked: {fileID: 11400000, guid: 3d2bbbcfeec825142a3344fe962761b5, type: 2}
   gameObjectMiddleClicked: {fileID: 11400000, guid: 74f2db1510282b341a73c9fd67e77aa9, type: 2}
   gameObjectRightClicked: {fileID: 11400000, guid: bc1369bb8eb49fb46838fcde447aed29, type: 2}

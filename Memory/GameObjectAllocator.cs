@@ -82,6 +82,16 @@ namespace Celeste.Memory
             }
         }
 
+        public GameObject AllocateWithResizeIfNecessary()
+        {
+            if (!CanAllocate(1))
+            {
+                AddChunk();
+            }
+
+            return Allocate();
+        }
+
         public GameObject Allocate()
         {
             GameObject gameObject = FindInactiveGameObject();

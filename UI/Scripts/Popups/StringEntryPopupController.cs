@@ -1,9 +1,5 @@
-﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
+using Celeste.Parameters;
 using TMPro;
 using UnityEngine;
 
@@ -20,7 +16,7 @@ namespace Celeste.UI.Popups
 
         #region IPopupController
 
-        public void OnShow() 
+        public void OnShow(ShowPopupArgs args) 
         {
             inputField.text = nameValue.Value;
         }
