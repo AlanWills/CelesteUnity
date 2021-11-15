@@ -15,12 +15,7 @@ namespace CelesteEditor.Twine.ParserSteps
                 return false;
             }
 
-            if (parseContext.TwineNode.links == null)
-            {
-                return false;
-            }
-
-            return parseContext.TwineNode.links.Length == 1;
+            return parseContext.TwineNode.links.Count == 1;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

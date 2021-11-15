@@ -1,5 +1,6 @@
 ﻿using Celeste.Narrative;
 using Celeste.Narrative.Nodes;
+using Celeste.Twine;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

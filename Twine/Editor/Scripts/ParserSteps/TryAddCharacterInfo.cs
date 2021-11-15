@@ -1,6 +1,7 @@
 ﻿using Celeste.Narrative;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.UI;
+using Celeste.Twine;
 using CelesteEditor.Narrative.Nodes;
 using UnityEngine;
 

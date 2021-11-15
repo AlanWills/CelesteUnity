@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Twine.AnalysisSteps;
+﻿using Celeste.Twine;
+using CelesteEditor.Twine.AnalysisSteps;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
@@ -9,7 +10,7 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             TwineNode twineNode = parseContext.TwineNode;
-            return twineNode.links != null && twineNode.links.Length > 0;
+            return twineNode.links.Count > 0;
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)

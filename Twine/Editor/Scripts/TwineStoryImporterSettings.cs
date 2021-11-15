@@ -11,6 +11,7 @@ using Celeste.Narrative;
 using Celeste.Logic;
 using System.IO;
 using CelesteEditor.Twine.AnalysisSteps;
+using Celeste.Twine;
 
 namespace CelesteEditor.Twine
 {
@@ -273,9 +274,9 @@ namespace CelesteEditor.Twine
 
         #region Tag Utility
 
-        public Character FindCharacterFromTag(string[] tags)
+        public Character FindCharacterFromTag(IList<string> tags)
         {
-            for (int i = 0, n = tags != null ? tags.Length : 0; i < n; ++i)
+            for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
             {
                 var characterTagIndex = characterTags.FindIndex(x => string.CompareOrdinal(x.tag, tags[i]) == 0);
                 if (characterTagIndex != -1)
@@ -287,9 +288,9 @@ namespace CelesteEditor.Twine
             return null;
         }
 
-        public UIPosition FindUIPositionFromTag(string[] tags, UIPosition fallbackValue)
+        public UIPosition FindUIPositionFromTag(IList<string> tags, UIPosition fallbackValue)
         {
-            for (int i = 0, n = tags != null ? tags.Length : 0; i < n; ++i)
+            for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
             {
                 var positionTagIndex = uiPositionTags.FindIndex(x => string.CompareOrdinal(x.tag, tags[i]) == 0);
                 if (positionTagIndex != -1)
@@ -301,9 +302,9 @@ namespace CelesteEditor.Twine
             return fallbackValue;
         }
 
-        public DialogueType FindDialogueTypeFromTag(string[] tags, DialogueType fallbackValue)
+        public DialogueType FindDialogueTypeFromTag(IList<string> tags, DialogueType fallbackValue)
         {
-            for (int i = 0, n = tags != null ? tags.Length : 0; i < n; ++i)
+            for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
             {
                 var dialogueTypeTagIndex = dialogueTypeTags.FindIndex(x => string.CompareOrdinal(x.tag, tags[i]) == 0);
                 if (dialogueTypeTagIndex != -1)
@@ -315,19 +316,19 @@ namespace CelesteEditor.Twine
             return fallbackValue;
         }
 
-        public bool ContainsIgnoreTag(string[] tags)
+        public bool ContainsIgnoreTag(IList<string> tags)
         {
             return ContainsTag(tags, ignoreTag);
         }
 
-        public bool ContainsFinishTag(string[] tags)
+        public bool ContainsFinishTag(IList<string> tags)
         {
             return ContainsTag(tags, finishTag);
         }
 
-        private bool ContainsTag(string[] tags, string desiredTag)
+        private bool ContainsTag(IList<string> tags, string desiredTag)
         {
-            return Array.Exists(tags, (string s) => string.CompareOrdinal(s, desiredTag) == 0);
+            return tags.Exists((string s) => string.CompareOrdinal(s, desiredTag) == 0);
         }
 
         public bool IsRecognizedTag(string tag)

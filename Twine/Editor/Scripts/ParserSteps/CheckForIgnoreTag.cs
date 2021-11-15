@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Celeste.Twine;
+using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {

@@ -1,6 +1,5 @@
 ﻿using Celeste.Events;
 using Celeste.UI;
-using CelesteEditor.Twine;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -22,7 +21,10 @@ namespace Celeste.Twine.UI
         #region Properties and Fields
 
         [SerializeField] private TMP_InputField titleInputField;
+        [SerializeField] private TMP_InputField tagsInputField;
         [SerializeField] private TMP_InputField textInputField;
+
+        private const string TAGS_DELIMITER = ",";
 
         private TwineNode twineNode;
 
@@ -33,10 +35,11 @@ namespace Celeste.Twine.UI
         public void OnShow(ShowPopupArgs args)
         {
             EditTwineNodePopupArgs editTwineNodeArgs = args as EditTwineNodePopupArgs;
-            Debug.Assert(editTwineNodeArgs != null, $"Invalid args inputted into {nameof(EditTwineNodePopupController.OnShow)}.");
+            UnityEngine.Debug.Assert(editTwineNodeArgs != null, $"Invalid args inputted into {nameof(EditTwineNodePopupController.OnShow)}.");
 
             twineNode = editTwineNodeArgs.twineNode;
             titleInputField.text = twineNode.name;
+            tagsInputField.text = twineNode.tags.Count > 0 ? string.Join(TAGS_DELIMITER, twineNode.tags) : "";
             textInputField.text = twineNode.text;
         }
 
@@ -48,6 +51,8 @@ namespace Celeste.Twine.UI
         public void OnConfirmPressed()
         {
             twineNode.name = titleInputField.text;
+            twineNode.tags.Clear();
+            twineNode.tags.AddRange(tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries));
             twineNode.text = textInputField.text;
             twineNode.OnChanged.Invoke();
         }

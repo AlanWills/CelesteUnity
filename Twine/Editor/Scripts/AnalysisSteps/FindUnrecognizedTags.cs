@@ -1,4 +1,5 @@
 ﻿using CelesteEditor.Twine.AnalysisSteps;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
@@ -9,12 +10,12 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             var tags = parseContext.TwineNode.tags;
-            return tags != null && tags.Length > 0;
+            return tags.Count > 0;
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)
         {
-            string[] tags = parseContext.TwineNode.tags;
+            List<string> tags = parseContext.TwineNode.tags;
             TwineStoryImporterSettings settings = parseContext.ImporterSettings;
             TwineStoryAnalysis analysis = parseContext.Analysis;
 

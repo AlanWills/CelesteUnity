@@ -33,7 +33,7 @@ namespace Celeste.Persistence
 
         #endregion
 
-        #region Load Methods
+        #region Load/Save Methods
 
         public void Load()
         {
@@ -89,7 +89,7 @@ namespace Celeste.Persistence
 #if UNITY_EDITOR
             // Save debug human readable file
             {
-                string debugPersistentFilePath = persistentFilePath + ".debug";
+                string debugPersistentFilePath = $"{persistentFilePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
                 File.WriteAllText(debugPersistentFilePath, JsonUtility.ToJson(serializedInstance));
             }
 #endif

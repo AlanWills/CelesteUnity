@@ -8,7 +8,9 @@
         "Celeste.DataStructures",
         "Celeste.Memory",
         "Celeste.Events",
-        "Celeste.UI"
+        "Celeste.UI",
+        "Celeste.Debug",
+        "Celeste.Log"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

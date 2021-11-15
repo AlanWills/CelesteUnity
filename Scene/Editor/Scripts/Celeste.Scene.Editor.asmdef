@@ -2,7 +2,8 @@
     "name": "Celeste.Scene.Editor",
     "rootNamespace": "CelesteEditor.Scene",
     "references": [
-        "Celeste.Scene"
+        "Celeste.Scene",
+        "Celeste.Persistence"
     ],
     "includePlatforms": [
         "Editor"

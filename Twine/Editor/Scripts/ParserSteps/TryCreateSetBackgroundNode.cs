@@ -3,6 +3,7 @@ using Celeste.Narrative;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Nodes.Events;
 using Celeste.Parameters;
+using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps

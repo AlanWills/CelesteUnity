@@ -11,6 +11,7 @@ using static UnityEditor.EditorGUILayout;
 using static CelesteEditor.Twine.TwineStoryImporterSettings;
 using Celeste.Logic;
 using CelesteEditor.Tools;
+using Celeste.Twine;
 
 namespace CelesteEditor.Twine
 {
@@ -83,7 +84,7 @@ namespace CelesteEditor.Twine
             narrativeGraph.RemoveAllNodes();
 
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
-            Vector2 startNodePosition = twineStory.passages.Find(x => x.pid == twineStory.startnode).position;
+            Vector2 startNodePosition = twineStory.passages.Find(x => x.pid == twineStory.startnode).Position;
 
             foreach (TwineNode twineNode in twineStory.passages)
             {
@@ -101,7 +102,7 @@ namespace CelesteEditor.Twine
             // Now resolve transitions
             foreach (TwineNode node in twineStory.passages)
             {
-                if (node.links != null && node.links.Length > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
+                if (node.links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                 {
                     if (graphNode is ChoiceNode)
                     {

@@ -1,7 +1,5 @@
 ﻿using Celeste.DataStructures;
 using Celeste.Memory;
-using CelesteEditor.Twine;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Twine.UI
@@ -11,22 +9,37 @@ namespace Celeste.Twine.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private TwineStory twineStory;
         [SerializeField] private GameObjectAllocator twineNodeUIAllocator;
 
         #endregion
 
-        #region Unity Methods
+        #region Callbacks
 
-        private void Start()
+        public void OnTwineStoryLoaded(TwineStory twineStory)
         {
-            foreach (TwineNode twineNode in twineStory.passages)
-            {
-                TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
-            }
+            twineNodeUIAllocator.DeallocateAll();
 
-            // Centre the starting node in the middle of the screen, but adjusting the offset of the parent
-            twineNodeUIAllocator.transform.position = -twineStory.passages.Find(x => x.pid == twineStory.startnode).position;
+            if (twineStory.passages != null)
+            {
+                foreach (TwineNode twineNode in twineStory.passages)
+                {
+                    TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
+                }
+
+                // Centre the starting node in the middle of the screen, but adjusting the offset of the parent
+                TwineNode startNode = twineStory.passages.Find(x => x.pid == twineStory.startnode);
+                UnityEngine.Debug.Assert(startNode != null, $"Could not find start node for pid {twineStory.startnode}.");
+
+                if (startNode != null)
+                {
+                    twineNodeUIAllocator.transform.position = -startNode.Position;
+                }
+            }
+        }
+
+        public void OnTwineNodeCreated(TwineNode twineNode)
+        {
+            TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
         }
 
         #endregion

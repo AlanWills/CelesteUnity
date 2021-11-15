@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Twine.AnalysisSteps;
+﻿using Celeste.Twine;
+using CelesteEditor.Twine.AnalysisSteps;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
@@ -10,7 +11,7 @@ namespace CelesteEditor.Twine.ParserSteps
         {
             TwineNode twineNode = parseContext.TwineNode;
             bool hasText = !string.IsNullOrWhiteSpace(twineNode.text);
-            bool hasLinks = twineNode.links != null && twineNode.links.Length > 0;
+            bool hasLinks = twineNode.links.Count > 0;
 
             return hasText || hasLinks;
         }

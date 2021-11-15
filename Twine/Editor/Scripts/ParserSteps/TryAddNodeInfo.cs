@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM;
+using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
@@ -18,7 +19,7 @@ namespace CelesteEditor.Twine.ParserSteps
             FSMNode fsmNode = parseContext.FSMNode;
 
             fsmNode.name = node.name;
-            fsmNode.position = (node.position - parseContext.StartingNodePosition) * importerSettings.nodeSpread;
+            fsmNode.position = (node.Position - parseContext.StartingNodePosition) * importerSettings.nodeSpread;
         }
     }
 }

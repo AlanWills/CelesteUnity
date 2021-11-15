@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM.Nodes.Events;
+using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps

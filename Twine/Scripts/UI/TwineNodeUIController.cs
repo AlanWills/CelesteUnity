@@ -1,7 +1,5 @@
 ﻿using Celeste.Events;
 using Celeste.Memory;
-using CelesteEditor.Twine;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,7 +28,7 @@ namespace Celeste.Twine.UI
             GameObject twineNodeUIGameObject = allocator.AllocateWithResizeIfNecessary();
             if (twineNodeUIGameObject == null)
             {
-                Debug.LogAssertion($"Could not allocate {nameof(TwineNodeUIController)}.");
+                UnityEngine.Debug.LogAssertion($"Could not allocate {nameof(TwineNodeUIController)}.");
                 return null;
             }
 
@@ -38,7 +36,7 @@ namespace Celeste.Twine.UI
             if (twineNodeUIController == null)
             {
                 allocator.Deallocate(twineNodeUIGameObject);
-                Debug.LogAssertion($"Could not find {nameof(TwineNodeUIController)} on allocated GameObject.");
+                UnityEngine.Debug.LogAssertion($"Could not find {nameof(TwineNodeUIController)} on allocated GameObject.");
                 return null;
             }
 
@@ -53,7 +51,7 @@ namespace Celeste.Twine.UI
             this.twineNode = twineNode;
             this.twineNode.OnChanged.AddListener(OnTwineNodeChanged);
 
-            transform.position = twineNode.position;
+            transform.position = twineNode.Position;
             
             RefreshUI();
         }

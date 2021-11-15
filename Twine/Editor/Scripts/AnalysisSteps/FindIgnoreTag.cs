@@ -9,7 +9,7 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             var tags = parseContext.TwineNode.tags;
-            return tags != null && parseContext.ImporterSettings.ContainsIgnoreTag(tags);
+            return parseContext.ImporterSettings.ContainsIgnoreTag(tags);
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)

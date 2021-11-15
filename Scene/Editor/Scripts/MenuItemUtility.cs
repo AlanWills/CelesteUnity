@@ -1,4 +1,6 @@
-﻿using Celeste.Scene;
+﻿using Celeste.Persistence;
+using Celeste.Scene;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,6 +29,19 @@ namespace CelesteEditor.Scene
         public static void OpenExplorerAtPersistentData()
         {
             OpenExplorerAt(Application.persistentDataPath);
+        }
+
+        public static void DeletePersistentDataFile(string fileNameAndExtension)
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, fileNameAndExtension);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+#if UNITY_EDITOR
+                File.Delete($"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}");
+#endif
+                Debug.Log($"Deleted Twine save file at {filePath}.");
+            }
         }
     }
 }

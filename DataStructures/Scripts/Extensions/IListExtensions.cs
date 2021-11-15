@@ -61,5 +61,18 @@ namespace Celeste.DataStructures
                 list[randomIndex] = temp;
             }
         }
+
+        public static bool Exists<T>(this IList<T> list, System.Predicate<T> predicate)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (predicate(list[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
