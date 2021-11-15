@@ -2,6 +2,7 @@
 using Celeste.Tools;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace Celeste.UI.Input
@@ -12,6 +13,7 @@ namespace Celeste.UI.Input
         #region Properties and Fields
 
         [SerializeField] private Canvas parentCanvas;
+        [SerializeField] private UnityEvent<Vector3> onEndDrag;
 
         private bool isDragging = false;
 
@@ -61,6 +63,11 @@ namespace Celeste.UI.Input
         public void OnEndDrag(PointerEventData eventData)
         {
             isDragging = false;
+
+            if (onEndDrag != null)
+            {
+                onEndDrag.Invoke(transform.localPosition);
+            }
         }
 
         #endregion

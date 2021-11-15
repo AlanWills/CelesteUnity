@@ -32,7 +32,7 @@ namespace Celeste.Twine.UI
 
                 if (startNode != null)
                 {
-                    twineNodeUIAllocator.transform.position = -startNode.Position;
+                    twineNodeUIAllocator.transform.localPosition = -startNode.Position;
                 }
             }
         }

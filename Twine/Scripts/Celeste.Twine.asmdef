@@ -10,7 +10,8 @@
         "Celeste.Events",
         "Celeste.UI",
         "Celeste.Debug",
-        "Celeste.Log"
+        "Celeste.Log",
+        "Celeste.Maths"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

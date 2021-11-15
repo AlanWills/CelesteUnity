@@ -1,4 +1,5 @@
 ﻿using Celeste.Events;
+using Celeste.Maths;
 using Celeste.Memory;
 using TMPro;
 using UnityEngine;
@@ -51,7 +52,7 @@ namespace Celeste.Twine.UI
             this.twineNode = twineNode;
             this.twineNode.OnChanged.AddListener(OnTwineNodeChanged);
 
-            transform.position = twineNode.Position;
+            transform.localPosition = twineNode.Position;
             
             RefreshUI();
         }
@@ -95,6 +96,11 @@ namespace Celeste.Twine.UI
         #endregion
 
         #region Callbacks
+
+        public void OnNodeEndDrag(Vector3 endDragPosition)
+        {
+            twineNode.Position = endDragPosition.ToVector2();
+        }
 
         private void OnTwineNodeChanged()
         {

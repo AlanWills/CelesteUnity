@@ -1,6 +1,7 @@
 ﻿using Celeste.Log;
 using Celeste.Objects;
 using Celeste.Tools;
+using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Celeste.Persistence
         protected abstract string FileName { get; }
 
         [SerializeField] private bool loadOnAwake = true;
+
+        private bool saveRequested = false;
 
         #endregion
 
@@ -74,6 +77,21 @@ namespace Celeste.Persistence
 
         public void Save()
         {
+            if (!saveRequested)
+            {
+                StartCoroutine(DoSave());
+            }
+        }
+
+        private IEnumerator DoSave()
+        {
+            yield return new WaitForEndOfFrame();
+
+            SaveImpl();
+        }
+
+        private void SaveImpl()
+        {
             TDTO serializedInstance = Instance.Serialize();
             string persistentFilePath = Path.Combine(Application.persistentDataPath, FileName);
 
@@ -97,6 +115,8 @@ namespace Celeste.Persistence
             // Needed to deal with browser async saving
             WebGLUtils.SyncFiles();
             HudLog.LogInfo($"{Instance.name} saved");
+
+            saveRequested = false;
         }
 
         protected virtual void OnSaveStart() { }

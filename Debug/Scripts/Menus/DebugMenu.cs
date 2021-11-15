@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -8,7 +7,7 @@ namespace Celeste.Debug.Menus
     {
         #region Properties and Fields
 
-        private bool visible;
+        [NonSerialized] private bool visible;
         public bool Visible
         {
             get { return visible; }
