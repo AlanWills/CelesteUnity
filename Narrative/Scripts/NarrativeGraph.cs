@@ -1,5 +1,4 @@
 ﻿using Celeste.FSM;
-using UnityEditor;
 using UnityEngine;
 using XNode.Attributes;
 
@@ -11,8 +10,9 @@ namespace Celeste.Narrative
         [NodeGraphShortcut(KeyCode.T, EventModifiers.Shift)]
         public void ConnectSelectedNodes()
         {
+#if UNITY_EDITOR
             XNode.Node fromNode, toNode;
-            var objects = Selection.objects;
+            var objects = UnityEditor.Selection.objects;
 
             if (objects != null && objects.Length > 1)
             {
@@ -29,6 +29,7 @@ namespace Celeste.Narrative
                     fromNode = toNode;
                 }
             }
+#endif
         }
     }
 }
