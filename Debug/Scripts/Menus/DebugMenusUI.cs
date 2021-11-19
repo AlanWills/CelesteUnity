@@ -45,12 +45,18 @@ namespace Celeste.Debug.Menus
             var oldSkin = GUI.skin;
             GUI.skin = guiSkin;
 
-            using (GUILayout.ScrollViewScope scrollView = new GUILayout.ScrollViewScope(scrollPosition))
+            Rect screenRect = new Rect(0, 0, Screen.width, Screen.height - 40);
+            Rect viewRect = new Rect(10, 10, screenRect.width - 20, screenRect.height * 4);
+
+            using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
+            using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
             {
+                GUILayout.Space(10);
                 GUILayout.Label("Debug Menu");
+                GUILayout.Space(10);
 
                 DebugMenu visibleDebugMenu = debugMenus.Find(x => x.Visible);
-                
+
                 if (visibleDebugMenu != null)
                 {
                     visibleDebugMenu.DrawMenu();

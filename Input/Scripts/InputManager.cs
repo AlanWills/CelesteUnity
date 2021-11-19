@@ -78,43 +78,43 @@ namespace Celeste.Input
             }
 
 #if UNITY_ANDROID || UNITY_IOS
-            if (UnityEngine.Input.touchCount != 1)
-            {
-                firstHitGameObject = null;
-            }
+            //if (UnityEngine.Input.touchCount != 1)
+            //{
+            //    firstHitGameObject = null;
+            //}
 
             if (UnityEngine.Input.touchCount == 1)
             {
                 Touch touch = UnityEngine.Input.GetTouch(0);
-                singleTouchEvent.RaiseSilently(touch);
+                singleTouchEvent.InvokeSilently(touch);
 
-                Vector3 touchWorldPosition = raycastCamera.ScreenToWorldPoint(touch.position);
-                GameObject hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
+                //Vector3 touchWorldPosition = raycastCamera.ScreenToWorldPoint(touch.position);
+                //GameObject hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
 
-                if (touch.phase == TouchPhase.Began)
-                {
-                    firstHitGameObject = hitGameObject;
-                    firstHitGameObjectPosition = touchWorldPosition;
-                }
-                else if (touch.phase == TouchPhase.Ended)
-                {
-                    if (firstHitGameObject != null && 
-                        firstHitGameObject == hitGameObject && 
-                        (touchWorldPosition - firstHitGameObjectPosition).sqrMagnitude < 0.05f)
-                    {
-                        gameObjectLeftClicked.Raise(new GameObjectClickEventArgs()
-                        {
-                            gameObject = hitGameObject,
-                            clickWorldPosition = touchWorldPosition
-                        });
-                    }
+                //if (touch.phase == TouchPhase.Began)
+                //{
+                //    firstHitGameObject = hitGameObject;
+                //    firstHitGameObjectPosition = touchWorldPosition;
+                //}
+                //else if (touch.phase == TouchPhase.Ended)
+                //{
+                //    if (firstHitGameObject != null && 
+                //        firstHitGameObject == hitGameObject && 
+                //        (touchWorldPosition - firstHitGameObjectPosition).sqrMagnitude < 0.05f)
+                //    {
+                //        gameObjectLeftClicked.Raise(new GameObjectClickEventArgs()
+                //        {
+                //            gameObject = hitGameObject,
+                //            clickWorldPosition = touchWorldPosition
+                //        });
+                //    }
 
-                    firstHitGameObject = null;
-                }
+                //    firstHitGameObject = null;
+                //}
             }
             else if (UnityEngine.Input.touchCount == 2)
             {
-                doubleTouchEvent.RaiseSilently(new MultiTouchEventArgs()
+                doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
                 {
                     touchCount = 2,
                     touches = UnityEngine.Input.touches,
@@ -122,7 +122,7 @@ namespace Celeste.Input
             }
             else if (UnityEngine.Input.touchCount == 3)
             {
-                tripleTouchEvent.RaiseSilently(new MultiTouchEventArgs()
+                tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
                 {
                     touchCount = 3,
                     touches = UnityEngine.Input.touches,

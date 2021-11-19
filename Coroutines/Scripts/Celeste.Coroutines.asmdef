@@ -1,13 +1,8 @@
 {
-    "name": "Celeste.Scene",
-    "rootNamespace": "Celeste.Scene",
+    "name": "Celeste.Coroutines",
+    "rootNamespace": "Celeste.Coroutines",
     "references": [
-        "Celeste.Parameters",
-        "Celeste.Events",
-        "Celeste.DataStructures",
-        "Celeste.Debug",
-        "Celeste.Coroutines",
-        "Celeste.Objects"
+        "GUID:c95af7bc4649e4b4da85b957be8cc138"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

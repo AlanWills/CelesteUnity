@@ -32,7 +32,7 @@ namespace Celeste.Scene
         {
             if (Application.isPlaying)
             {
-                Debug.LogAssertion($"Unable to synchronously load {name} whilst the application is playing.  This function is for setting up editor scenes only; use LoadAsync instead.");
+                UnityEngine.Debug.LogAssertion($"Unable to synchronously load {name} whilst the application is playing.  This function is for setting up editor scenes only; use LoadAsync instead.");
                 return;
             }
 
@@ -64,7 +64,7 @@ namespace Celeste.Scene
             {
                 if (!loadedScenes.Contains(scenes[i]))
                 {
-                    Debug.Assert(scenePathLookup.ContainsKey(scenes[i]), $"Could not find scene {scenes[i]} in lookup.");
+                    UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(scenes[i]), $"Could not find scene {scenes[i]} in lookup.");
                     UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scenePathLookup[scenes[i]], UnityEditor.SceneManagement.OpenSceneMode.Additive);
                 }
             }
@@ -158,7 +158,7 @@ namespace Celeste.Scene
                 unityScenes.Add(SceneManager.GetSceneAt(i));
             }
 
-            Debug.Assert(scenes.Count == unityScenes.Count, "Number of loaded scenes did not match the number of scenes in the scene set");
+            UnityEngine.Debug.Assert(scenes.Count == unityScenes.Count, "Number of loaded scenes did not match the number of scenes in the scene set");
             for (int i = 0, n = scenes.Count; i < (n - 1); ++i)
             {
                 UnityScene first = unityScenes.Find(x => x.name == scenes[i]);

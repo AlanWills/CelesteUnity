@@ -80,8 +80,8 @@ namespace Celeste.Utils
                 toggle.onValueChanged.Invoke(!toggle.isOn);
                 return true;
             }
-            
-            Debug.LogFormat("No clickable component found on GameObject {0}", gameObject.name);
+
+            UnityEngine.Debug.LogFormat("No clickable component found on GameObject {0}", gameObject.name);
             return false;
         }
 
@@ -99,7 +99,7 @@ namespace Celeste.Utils
                     return true;
 
                 default:
-                    Debug.LogErrorFormat("Unhandled FindConstraint: {0}", findConstraint);
+                    UnityEngine.Debug.LogErrorFormat("Unhandled FindConstraint: {0}", findConstraint);
                     return false;
             }
         }

@@ -55,6 +55,8 @@ namespace Celeste.Viewport
                 return;
             }
 
+            scrollAmount *= zoomSpeed.Value;
+
             if (cameraToZoom.orthographic)
             {
                 cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize - scrollAmount, minZoom.Value, maxZoom.Value);

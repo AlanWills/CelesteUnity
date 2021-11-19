@@ -19,6 +19,7 @@ namespace Celeste.Twine.UI
         [SerializeField] private ShowPopupEvent showEditTwineNodePopup;
 
         private TwineNode twineNode;
+        private float lastClickTime = 0;
 
         #endregion
 
@@ -82,7 +83,9 @@ namespace Celeste.Twine.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.clickCount == 2)
+            float currentClickTime = eventData.clickTime;
+
+            if (eventData.clickCount == 2 || Mathf.Abs(currentClickTime - lastClickTime) < 0.75f)
             {
                 // We've been double clicked, so we show the full popup for our node for editing
                 EditTwineNodePopupController.EditTwineNodePopupArgs args = new EditTwineNodePopupController.EditTwineNodePopupArgs()
@@ -91,6 +94,8 @@ namespace Celeste.Twine.UI
                 };
                 showEditTwineNodePopup.Invoke(args);
             }
+
+            lastClickTime = currentClickTime;
         }
 
         #endregion

@@ -42,7 +42,9 @@ namespace Celeste.Debug.Menus
                 Visible = false;
             }
 
+            GUILayout.Space(10);
             GUILayout.Label(displayName);
+            GUILayout.Space(10);
 
             OnDrawMenu();
         }

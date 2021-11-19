@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1185063488355416628}
   - component: {fileID: 2814967683919728978}
   - component: {fileID: 3570087743746332946}
-  - component: {fileID: 1709862896119089713}
   m_Layer: 0
   m_Name: HudLog
   m_TagString: Untagged
@@ -111,18 +110,3 @@ MonoBehaviour:
   prefab: {fileID: 2323012877272773708, guid: 4bbbeee5eb7962f469508500014d28d1, type: 3}
   defaultChunkSize: 1
   allocateOnStart: 20
---- !u!114 &1709862896119089713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8540866142405327290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 312a0344128f0fc44971db349cbe7676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMenu: {fileID: 11400000, guid: 4a5bff42381e5f64d977d85a4d6ec74d, type: 2}
-  registerDebugMenu: {fileID: 11400000, guid: 2f2474eb881194b4197d8defc9a123bb, type: 2}
-  deregisterDebugMenu: {fileID: 11400000, guid: 6e290b34eef0f91418a4df22daca22b0, type: 2}

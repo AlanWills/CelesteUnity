@@ -19,7 +19,7 @@ namespace Celeste.Twine
         private Vector2 CalculateBestPosition()
         {
             var passages = currentStory.passages;
-            return passages.Count != 0 ? passages[passages.Count - 1].Position = new Vector2(120, 120) : Vector2.zero;
+            return passages.Count != 0 ? passages[passages.Count - 1].Position + new Vector2(0, 120) : Vector2.zero;
         }
 
         #region Callbacks
