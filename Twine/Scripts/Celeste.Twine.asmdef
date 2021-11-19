@@ -11,7 +11,9 @@
         "Celeste.UI",
         "Celeste.Debug",
         "Celeste.Log",
-        "Celeste.Maths"
+        "Celeste.Maths",
+        "NativeShare.Runtime",
+        "NativeFilePicker.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

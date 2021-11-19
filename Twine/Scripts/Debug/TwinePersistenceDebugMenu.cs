@@ -1,6 +1,8 @@
 ﻿using Celeste.Debug.Menus;
 using Celeste.Events;
+using Celeste.Log;
 using Celeste.Twine.Persistence;
+using System.IO;
 using UnityEngine;
 using static UnityEngine.GUILayout;
 
@@ -23,9 +25,31 @@ namespace Celeste.Twine.Debug
 
         protected override void OnDrawMenu()
         {
-            if (Button($"Save Current", ExpandWidth(false)))
+            using (var horizontal = new HorizontalScope())
             {
-                saveCurrentTwineStory.Invoke();
+                if (Button($"Import", ExpandWidth(false)))
+                {
+                    string fileType = NativeFilePicker.ConvertExtensionToFileType(TwineStory.FILE_EXTENSION);
+                    NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+                    {
+                        if (string.IsNullOrWhiteSpace(path))
+                        {
+                            HudLog.LogInfo("Operation cancelled");
+                        }
+                        else
+                        {
+                            HudLog.LogInfo($"Picked file: {path}");
+                            TwinePersistence.Instance.ImportTwineStory(path);
+                        }
+                    }, new string[] { fileType });
+
+                    HudLog.LogInfo($"Permission result: {permission}");
+                }
+
+                if (Button($"Save Current", ExpandWidth(false)))
+                {
+                    saveCurrentTwineStory.Invoke();
+                }
             }
 
             for (int i = 0, n = TwinePersistence.Instance.NumTwineStories; i < n; ++i)
@@ -43,6 +67,15 @@ namespace Celeste.Twine.Debug
                         {
                             loadTwineStoryFromPersistence.Invoke(twineStory);
                         }
+                    }
+
+                    if (Button($"Share", ExpandWidth(false)))
+                    {
+                        new NativeShare()
+                            .AddFile(Path.Combine(Application.persistentDataPath, TwinePersistence.FILE_NAME))
+                            .SetSubject($"Share {twineStoryName}")
+                            .SetCallback((result, shareTarget) => HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}"))
+                            .Share();
                     }
                 }
             }

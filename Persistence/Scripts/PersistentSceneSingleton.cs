@@ -14,6 +14,11 @@ namespace Celeste.Persistence
     {
         #region Properties and Fields
 
+        protected string FilePath
+        {
+            get { return Path.Combine(Application.persistentDataPath, FileName); }
+        }
+
         protected abstract string FileName { get; }
 
         [SerializeField] private bool loadOnAwake = true;
@@ -40,7 +45,7 @@ namespace Celeste.Persistence
 
         public void Load()
         {
-            string persistentFilePath = Path.Combine(Application.persistentDataPath, FileName);
+            string persistentFilePath = FilePath;
 
             if (File.Exists(persistentFilePath))
             {
@@ -93,7 +98,7 @@ namespace Celeste.Persistence
         private void SaveImpl()
         {
             TDTO serializedInstance = Instance.Serialize();
-            string persistentFilePath = Path.Combine(Application.persistentDataPath, FileName);
+            string persistentFilePath = FilePath;
 
             // Save binary file
             {

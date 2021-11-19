@@ -45,29 +45,41 @@ namespace Celeste.Debug.Menus
             var oldSkin = GUI.skin;
             GUI.skin = guiSkin;
 
-            Rect screenRect = new Rect(0, 0, Screen.width, Screen.height - 40);
-            Rect viewRect = new Rect(10, 10, screenRect.width - 20, screenRect.height * 4);
+            float xAspectRatio = Screen.width / 400;
+            float yAspectRatio = Screen.height / 400;
+            float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
+
+            Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
+            GUI.matrix = Matrix4x4.Scale(scale);
+
+            Rect screenRect = new Rect(0, 0, Screen.width / maxAspectRatio, (Screen.height - 40) / maxAspectRatio);
+            Rect viewRect = new Rect(0, 10, screenRect.width, screenRect.height * 4);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
-            using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
             {
-                GUILayout.Space(10);
-                GUILayout.Label("Debug Menu");
-                GUILayout.Space(10);
+                viewRect.position += new Vector2(10, 10);
+                viewRect.size -= new Vector2(30, 0);
 
-                DebugMenu visibleDebugMenu = debugMenus.Find(x => x.Visible);
+                using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
+                {
+                    GUILayout.Space(10);
+                    GUILayout.Label("Debug Menu");
+                    GUILayout.Space(10);
 
-                if (visibleDebugMenu != null)
-                {
-                    visibleDebugMenu.DrawMenu();
-                }
-                else
-                {
-                    foreach (DebugMenu debugMenu in debugMenus)
+                    DebugMenu visibleDebugMenu = debugMenus.Find(x => x.Visible);
+
+                    if (visibleDebugMenu != null)
                     {
-                        if (GUILayout.Button(debugMenu.DisplayName))
+                        visibleDebugMenu.DrawMenu();
+                    }
+                    else
+                    {
+                        foreach (DebugMenu debugMenu in debugMenus)
                         {
-                            debugMenu.Visible = true;
+                            if (GUILayout.Button(debugMenu.DisplayName))
+                            {
+                                debugMenu.Visible = true;
+                            }
                         }
                     }
                 }

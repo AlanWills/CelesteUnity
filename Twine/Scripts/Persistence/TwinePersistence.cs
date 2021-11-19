@@ -90,6 +90,20 @@ namespace Celeste.Twine.Persistence
             return twineStory;
         }
 
+        public void ImportTwineStory(string storyPath)
+        {
+            string allTextAtPath = File.ReadAllText(storyPath);
+            
+            if (!string.IsNullOrWhiteSpace(allTextAtPath))
+            {
+                UnityEngine.Debug.LogError($"No text found at path {storyPath}");
+                return;
+            }
+
+            string fileName = Path.GetFileNameWithoutExtension(storyPath);
+            SaveTwineStory(fileName, allTextAtPath);
+        }
+
         private TwineStory CreateTwineStory(string storyName)
         {
             TwineStory twineStory = ScriptableObject.CreateInstance<TwineStory>();
@@ -122,16 +136,20 @@ namespace Celeste.Twine.Persistence
 
         private void SaveTwineStory(TwineStory twineStory)
         {
-            TwineStoryDTO existingDTO = FindTwineStory(twineStory.name);
+            SaveTwineStory(twineStory.name, JsonUtility.ToJson(twineStory));
+        }
+
+        private void SaveTwineStory(string storyName, string serializedStory)
+        {
+            TwineStoryDTO existingDTO = FindTwineStory(storyName);
             if (existingDTO == null)
             {
-                existingDTO = new TwineStoryDTO(twineStory.name, $"{twineStory.name}.{TwineStory.FILE_EXTENSION}");
+                existingDTO = new TwineStoryDTO(storyName, $"{storyName}.{TwineStory.FILE_EXTENSION}");
                 twineDTO.stories.Add(existingDTO);
             }
 
-            string twineStoryJson = JsonUtility.ToJson(twineStory);
-            File.WriteAllText(Path.Combine(Application.persistentDataPath, existingDTO.storyPath), twineStoryJson);
-            HudLog.LogInfo($"Saved Twine Story {twineStory.name} to {existingDTO.storyPath}");
+            File.WriteAllText(Path.Combine(Application.persistentDataPath, existingDTO.storyPath), serializedStory);
+            HudLog.LogInfo($"Saved Twine Story {storyName} to {existingDTO.storyPath}");
 
             Save();
         }
