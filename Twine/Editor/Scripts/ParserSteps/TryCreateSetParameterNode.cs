@@ -1,11 +1,12 @@
 ﻿using Celeste.FSM.Nodes.Parameters;
 using Celeste.Narrative;
 using Celeste.Parameters;
+using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryCreateSetParameterNode", menuName = "Celeste/Narrative/Twine/Parser Steps/Try Create Set Parameter Node")]
+    [CreateAssetMenu(fileName = "TryCreateSetParameterNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
     public class TryCreateSetParameterNode : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
@@ -15,32 +16,37 @@ namespace CelesteEditor.Twine.ParserSteps
                 return false;
             }
 
-            string text = parseContext.TwineNode.text;
+            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
+            string nonLinkText = importerSettings.StripLinksFromText(parseContext.TwineNode.text);
 
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(nonLinkText))
             {
                 return false;
             }
 
-            string[] splitText = text.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
 
             if (splitText == null || splitText.Length < 3)
             {
                 return false;
             }
 
-            if (!parseContext.ImporterSettings.IsSetParameterInstruction(splitText[0]))
+            if (!importerSettings.IsSetParameterInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return parseContext.ImporterSettings.IsRegisteredParameterKey(splitText[1]);
+            return importerSettings.IsRegisteredParameterKey(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            string[] splitText = parseContext.TwineNode.text.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            ScriptableObject parameter = parseContext.ImporterSettings.FindParameter(splitText[1]);
+            TwineNode twineNode = parseContext.TwineNode;
+            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
+
+            string nonLinkText = importerSettings.StripLinksFromText(twineNode.text);
+            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            ScriptableObject parameter = importerSettings.FindParameter(splitText[1]);
 
             if (CreateNode<bool, BoolValue, BoolReference, SetBoolValueNode>(parseContext, parameter))
             {

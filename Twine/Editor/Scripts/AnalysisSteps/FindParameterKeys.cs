@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(FindParameterKeys), menuName = "Celeste/Narrative/Twine/Analysis Steps/Find Parameter Keys")]
+    [CreateAssetMenu(fileName = nameof(FindParameterKeys), menuName = "Celeste/Twine/Analysis Steps/Find Parameter Keys")]
     public class FindParameterKeys : TwineNodeAnalysisStep
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)

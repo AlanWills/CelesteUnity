@@ -38,6 +38,17 @@ namespace Celeste.Twine.Persistence
             return twineStoryDTO != null ? twineStoryDTO.storyName : "Unknown";
         }
 
+        public string GetTwineStoryPath(int index)
+        {
+            if (twineDTO == null)
+            {
+                return string.Empty;
+            }
+
+            var twineStoryDTO = twineDTO.stories.Get(index);
+            return twineStoryDTO != null ? twineStoryDTO.storyPath : string.Empty;
+        }
+
         public TwineStory LoadTwineStory(int index)
         {
             if (twineDTO == null)

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryAddDialogue", menuName = "Celeste/Narrative/Twine/Parser Steps/Try Add Dialogue")]
+    [CreateAssetMenu(fileName = "TryAddDialogue", menuName = "Celeste/Twine/Parser Steps/Try Add Dialogue")]
     public class TryAddDialogue : TwineNodeParserStep
     {
         #region Properties and Fields

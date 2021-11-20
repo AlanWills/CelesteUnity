@@ -1,9 +1,5 @@
 ﻿using Celeste.Objects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using XNode;
 using XNode.Attributes;
@@ -17,6 +13,11 @@ namespace Celeste.FSM
 
         public const string DEFAULT_INPUT_PORT_NAME = " ";
         public const string DEFAULT_OUTPUT_PORT_NAME = "";
+
+        public FSMGraph FSMGraph
+        {
+            get { return graph as FSMGraph; }
+        }
 
         public string Guid
         {

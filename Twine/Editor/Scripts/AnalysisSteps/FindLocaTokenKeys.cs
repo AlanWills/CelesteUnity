@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(FindLocaTokenKeys), menuName = "Celeste/Narrative/Twine/Analysis Steps/Find Loca Token Keys")]
+    [CreateAssetMenu(fileName = nameof(FindLocaTokenKeys), menuName = "Celeste/Twine/Analysis Steps/Find Loca Token Keys")]
     public class FindLocaTokenKeys : TwineNodeAnalysisStep
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)

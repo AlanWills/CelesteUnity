@@ -1,15 +1,11 @@
-﻿using Celeste.FSM.Nodes.Parameters;
-using Celeste.Narrative;
-using Celeste.Narrative.Characters;
-using Celeste.Narrative.Nodes.Events;
-using Celeste.Parameters;
+﻿using Celeste.FSM.Nodes;
 using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Background Node")]
-    public class TryCreateSetBackgroundNode : TwineNodeParserStep
+    [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
+    public class TryCreateSubNarrativeNode : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -33,27 +29,29 @@ namespace CelesteEditor.Twine.ParserSteps
                 return false;
             }
 
-            if (!importerSettings.IsSetBackgroundInstruction(splitText[0]))
+            if (!importerSettings.IsSubNarrativeInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredBackgroundKey(splitText[1]);
+            return importerSettings.IsRegisteredSubNarrativeKey(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
             TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-
+            
             string nonLinkText = importerSettings.StripLinksFromText(twineNode.text);
             string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            Background background = importerSettings.FindBackground(splitText[1]);
-            BackgroundEventRaiserNode backgroundEventRaiserNode = parseContext.Graph.AddNode<BackgroundEventRaiserNode>();
-            backgroundEventRaiserNode.argument.Value = background;
-            backgroundEventRaiserNode.toRaise = importerSettings.setBackgroundEvent;
+            string subNarrativeKey = splitText[1];
 
-            parseContext.FSMNode = backgroundEventRaiserNode;
+            SubFSMNode subFSMNode = parseContext.Graph.AddNode<SubFSMNode>();
+            subFSMNode.subFSM = importerSettings.FindSubNarrative(subNarrativeKey);
+            Debug.Assert(subFSMNode.subFSM != null, $"Could not find sub narrative {subNarrativeKey}");
+
+            parseContext.FSMNode = subFSMNode;
+            UnityEditor.EditorUtility.SetDirty(subFSMNode);
         }
     }
 }

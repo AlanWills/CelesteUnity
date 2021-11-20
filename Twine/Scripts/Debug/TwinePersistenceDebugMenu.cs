@@ -71,8 +71,9 @@ namespace Celeste.Twine.Debug
 
                     if (Button($"Share", ExpandWidth(false)))
                     {
+                        string twineStoryPath = TwinePersistence.Instance.GetTwineStoryPath(i);
                         new NativeShare()
-                            .AddFile(Path.Combine(Application.persistentDataPath, TwinePersistence.FILE_NAME))
+                            .AddFile(twineStoryPath)
                             .SetSubject($"Share {twineStoryName}")
                             .SetCallback((result, shareTarget) => HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}"))
                             .Share();

@@ -67,7 +67,7 @@ namespace Celeste.Narrative.Persistence
                 {
                     Chapter chapter = story.FindChapter(chapterDTO.guid);
                     UnityEngine.Debug.Assert(chapter != null, $"Could not find Chapter with guid {chapterDTO.guid} in story {story.name}.");
-                    ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodeGuid);
+                    ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodeGuid, chapterDTO.currentSubGraphNodeGuid);
 
                     chapterRecord.CurrentBackgroundGuid = chapterDTO.currentBackgroundGuid;
 

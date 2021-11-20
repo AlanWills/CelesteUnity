@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "CheckForIgnoreTag", menuName = "Celeste/Narrative/Twine/Parser Steps/Check For Ignore Tag")]
+    [CreateAssetMenu(fileName = "CheckForIgnoreTag", menuName = "Celeste/Twine/Parser Steps/Check For Ignore Tag")]
     public class CheckForIgnoreTag : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)

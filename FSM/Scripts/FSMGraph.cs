@@ -59,6 +59,11 @@ namespace Celeste.FSM
             return nodes.Find(x => x is FSMNode && predicate(x as FSMNode)) as FSMNode;
         }
 
+        public FSMNode FindNode(string nodeGuid)
+        {
+            return nodes.Find(x => x is FSMNode && string.CompareOrdinal((x as FSMNode).Guid, nodeGuid) == 0) as FSMNode;
+        }
+
         public void RemoveAllNodes()
         {
             nodes.Clear();

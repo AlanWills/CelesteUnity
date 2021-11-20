@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(FindConditionKeys), menuName = "Celeste/Narrative/Twine/Analysis Steps/Find Condition Keys")]
+    [CreateAssetMenu(fileName = nameof(FindConditionKeys), menuName = "Celeste/Twine/Analysis Steps/Find Condition Keys")]
     public class FindConditionKeys : TwineNodeAnalysisStep
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)

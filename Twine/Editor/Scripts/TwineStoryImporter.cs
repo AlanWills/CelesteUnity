@@ -67,6 +67,7 @@ namespace CelesteEditor.Twine
                 DrawConditionsGUI();
                 DrawParametersGUI();
                 DrawBackgroundsGUI();
+                DrawSubNarrativesGUI();
                 DrawUnresolvedTagsGUI();
                 DrawUnresolvedKeysGUI();
             }
@@ -81,6 +82,10 @@ namespace CelesteEditor.Twine
 
         private void OnWizardOtherButton()
         {
+            // Clear the log before we start
+            LogUtility.Clear();
+
+            // Remove any existing nodes to make a blank slate
             narrativeGraph.RemoveAllNodes();
 
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
@@ -97,6 +102,10 @@ namespace CelesteEditor.Twine
                     nodeLookup.Add(twineNode.pid, fsmNode);
                     AssetDatabase.AddObjectToAsset(fsmNode, narrativeGraph);
                 }
+                else
+                {
+                    Debug.LogError($"Failed to parse node {twineNode.name}.  Transitions will not be created properly...");
+                }
             }
 
             // Now resolve transitions
@@ -108,39 +117,50 @@ namespace CelesteEditor.Twine
                     {
                         foreach (TwineNodeLink link in node.links)
                         {
-                            Debug.Assert(nodeLookup.ContainsKey(link.pid), $"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
-                            FSMNode target = nodeLookup[link.pid];
+                            if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                            {
+                                NodePort outputPort = graphNode.GetOutputPort(link.link);
+                                Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
 
-                            NodePort outputPort = graphNode.GetOutputPort(link.link);
-                            Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
+                                NodePort inputPort = target.GetDefaultInputPort();
+                                Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
 
-                            NodePort inputPort = target.GetDefaultInputPort();
-                            Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
-
-                            outputPort.Connect(inputPort);
+                                outputPort.Connect(inputPort);
+                            }
+                            else
+                            {
+                                Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                            }
                         }
                     }
                     else
                     {
                         foreach (TwineNodeLink link in node.links)
                         {
-                            Debug.Assert(nodeLookup.ContainsKey(link.pid), $"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
-                            FSMNode target = nodeLookup[link.pid];
+                            if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                            {
+                                NodePort outputPort = graphNode.GetDefaultOutputPort();
+                                Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
 
-                            NodePort outputPort = graphNode.GetDefaultOutputPort();
-                            Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
+                                NodePort inputPort = target.GetDefaultInputPort();
+                                Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
 
-                            NodePort inputPort = target.GetDefaultInputPort();
-                            Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
-
-                            outputPort.Connect(inputPort);
+                                outputPort.Connect(inputPort);
+                            }
+                            else
+                            {
+                                Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                            }
                         }
                     }
                 }
             }
 
             // Set the start node using the pid from the twine story
-            narrativeGraph.startNode = nodeLookup[twineStory.startnode];
+            if (!nodeLookup.TryGetValue(twineStory.startnode, out narrativeGraph.startNode))
+            {
+                Debug.LogError($"Failed to find start node with pid {twineStory.startnode}.");
+            }
 
             EditorUtility.SetDirty(narrativeGraph);
             AssetDatabase.SaveAssets();
@@ -208,6 +228,18 @@ namespace CelesteEditor.Twine
             foreach (string foundBackground in twineStoryAnalysis.foundBackgrounds)
             {
                 LabelField(foundBackground);
+            }
+        }
+
+        private void DrawSubNarrativesGUI()
+        {
+            Space();
+            LabelField("Sub Narratives", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundSubNarrative in twineStoryAnalysis.foundSubNarratives)
+            {
+                LabelField(foundSubNarrative);
             }
         }
 
@@ -293,6 +325,15 @@ namespace CelesteEditor.Twine
                                 twineStoryAnalysis.foundBackgrounds.Add(unresolvedKey);
                             }
                         }
+
+                        if (GUILayout.Button("Find Sub Narrative", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindSubNarrative(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundSubNarratives.Add(unresolvedKey);
+                            }
+                        }
                     }
                 }
             }
@@ -373,6 +414,17 @@ namespace CelesteEditor.Twine
             return false;
         }
 
+        private bool FindSubNarrative(string subNarrativeName)
+        {
+            if (TryFind(subNarrativeName, importerSettings.SubNarrativesDirectory, out NarrativeGraph subNarrative))
+            {
+                AddSubNarrativeToSettings(subNarrative);
+                return true;
+            }
+
+            return false;
+        }
+
         private bool TryFind<T>(string name, string directory, out T asset) where T : UnityEngine.Object
         {
             string[] guids = AssetUtility.FindAssets<T>(name, directory);
@@ -418,6 +470,12 @@ namespace CelesteEditor.Twine
         {
             importerSettings.backgroundKeys.Add(new BackgroundKey(background.name, background));
             RemoveUnresolvedKey(background.name);
+        }
+
+        private void AddSubNarrativeToSettings(NarrativeGraph subNarrative)
+        {
+            importerSettings.subNarrativeKeys.Add(new SubNarrativeKey(subNarrative.name, subNarrative));
+            RemoveUnresolvedKey(subNarrative.name);
         }
 
         private void RemoveUnresolvedTag(string tag)

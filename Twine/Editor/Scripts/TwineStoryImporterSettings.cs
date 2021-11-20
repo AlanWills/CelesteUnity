@@ -15,7 +15,7 @@ using Celeste.Twine;
 
 namespace CelesteEditor.Twine
 {
-    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettings), menuName = "Celeste/Narrative/Twine/Twine Story Importer Settings")]
+    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettings), menuName = "Celeste/Twine/Twine Story Importer Settings")]
     public class TwineStoryImporterSettings : ScriptableObject
     {
         #region UIPosition Tag Struct
@@ -125,6 +125,23 @@ namespace CelesteEditor.Twine
 
         #endregion
 
+        #region Sub Story Key Struct
+
+        [Serializable]
+        public struct SubNarrativeKey
+        {
+            public string key;
+            public NarrativeGraph subNarrative;
+
+            public SubNarrativeKey(string key, NarrativeGraph subNarrative)
+            {
+                this.key = key;
+                this.subNarrative = subNarrative;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public string CharactersDirectory
@@ -152,6 +169,11 @@ namespace CelesteEditor.Twine
             get { return Path.Combine(rootDirectory, backgroundsDirectory); }
         }
 
+        public string SubNarrativesDirectory
+        {
+            get { return Path.Combine(rootDirectory, subNarrativesDirectory); }
+        }
+
         [SerializeField] private TwineNodeParserStep[] parserSteps;
         [SerializeField] private TwineNodeAnalysisStep[] analysisSteps;
 
@@ -177,10 +199,12 @@ namespace CelesteEditor.Twine
         public List<ConditionKey> conditionKeys = new List<ConditionKey>();
         public List<ParameterKey> parameterKeys = new List<ParameterKey>();
         public List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
+        public List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
 
         [Header("Script Instructions")]
         [SerializeField] private string setParameterInstruction = "SetParameter";
         [SerializeField] private string setBackgroundInstruction = "SetBackground";
+        [SerializeField] private string subNarrativeInstruction = "SubNarrative";
 
         [Header("Events")]
         public Celeste.Events.Event finishEvent;
@@ -196,6 +220,7 @@ namespace CelesteEditor.Twine
         [SerializeField] private string conditionsDirectory = "Conditions";
         [SerializeField] private string parametersDirectory = "Parameters";
         [SerializeField] private string backgroundsDirectory = "Backgrounds";
+        [SerializeField] private string subNarrativesDirectory = "SubNarratives";
 
         #endregion
 
@@ -406,6 +431,11 @@ namespace CelesteEditor.Twine
                 return true;
             }
 
+            if (IsSubNarrativeInstruction(text))
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -417,6 +447,11 @@ namespace CelesteEditor.Twine
         public bool IsSetBackgroundInstruction(string text)
         {
             return string.CompareOrdinal(text, setBackgroundInstruction) == 0;
+        }
+
+        public bool IsSubNarrativeInstruction(string text)
+        {
+            return string.CompareOrdinal(text, subNarrativeInstruction) == 0;
         }
 
         #endregion
@@ -604,6 +639,44 @@ namespace CelesteEditor.Twine
                     else
                     {
                         analysis.unrecognizedKeys.Add(backgroundName);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Sub Narrative Utility
+
+        public bool IsRegisteredSubNarrativeKey(string key)
+        {
+            return subNarrativeKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        public NarrativeGraph FindSubNarrative(string key)
+        {
+            return subNarrativeKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).subNarrative;
+        }
+
+        public void FindSubNarratives(string nodeText, TwineStoryAnalysis analysis)
+        {
+            if (!string.IsNullOrWhiteSpace(nodeText))
+            {
+                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (splitText != null &&
+                    splitText.Length >= 2 &&
+                    IsSubNarrativeInstruction(splitText[0]))
+                {
+                    string subNarrativeName = splitText[1];
+
+                    if (IsRegisteredSubNarrativeKey(subNarrativeName))
+                    {
+                        analysis.foundSubNarratives.Add(subNarrativeName);
+                    }
+                    else
+                    {
+                        analysis.unrecognizedKeys.Add(subNarrativeName);
                     }
                 }
             }

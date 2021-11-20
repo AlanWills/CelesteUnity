@@ -1,8 +1,7 @@
 ﻿using Celeste.FSM;
-using Celeste.Narrative.Parameters;
+using Celeste.FSM.Nodes;
 using Celeste.Narrative.Persistence;
 using System;
-using System.Collections;
 using UnityEngine;
 using XNode;
 
@@ -19,20 +18,44 @@ namespace Celeste.Narrative
 
         public ChapterRecord Record { get; set; }
 
-        [NonSerialized] private FSMNode doNotAssignDirectly_currentNode;
+        [NonSerialized] private FSMNode currentNode;
         public FSMNode CurrentNode 
         {
-            get { return doNotAssignDirectly_currentNode; }
-            private set
+            get { return currentNode; }
+            set
             {
-                doNotAssignDirectly_currentNode = value;
-
-                if (Record != null)
+                if (currentNode != value)
                 {
-                    Record.CurrentNodeGuid = value != null ? value.Guid.ToString() : "";
+                    currentNode = value;
+
+                    if (Record != null)
+                    {
+                        Record.CurrentNodeGuid = currentNode != null ? currentNode.Guid.ToString() : string.Empty;
+
+                        if (currentNode is SubFSMNode)
+                        {
+                            SubFSMNode subFSMNode = currentNode as SubFSMNode;
+                            FSMNode currentSubFSMNode = subFSMNode.CurrentNode;
+
+                            Record.CurrentSubGraphNodeGuid = currentSubFSMNode != null ? currentSubFSMNode.Guid.ToString() : string.Empty;
+                        }
+                        else
+                        {
+                            Record.CurrentSubGraphNodeGuid = string.Empty;
+                        }
+                    }
                 }
             }
         }
+
+        [NonSerialized] private FSMNode startNode;
+        public FSMNode StartNode
+        {
+            get { return startNode != null ? startNode : graph.startNode; }
+            set { startNode = value; }
+        }
+
+        private FSMRuntimeEngine runtimeEngine;
 
         #endregion
 
@@ -48,7 +71,13 @@ namespace Celeste.Narrative
             NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
             runtime.graph = narrativeGraph;
             runtime.Record = chapterRecord;
-            runtime.CurrentNode = narrativeGraph.nodes.Find(x => string.CompareOrdinal((x as FSMNode).Guid, chapterRecord.CurrentNodeGuid) == 0) as FSMNode;
+            runtime.StartNode = narrativeGraph.FindNode(chapterRecord.CurrentNodeGuid);
+
+            if (runtime.StartNode is SubFSMNode && !string.IsNullOrEmpty(chapterRecord.CurrentSubGraphNodeGuid))
+            {
+                SubFSMNode subFSMNode = runtime.StartNode as SubFSMNode;
+                subFSMNode.StartNode = subFSMNode.subFSM.FindNode(chapterRecord.CurrentSubGraphNodeGuid);
+            }
 
             narrativeGraph.Runtime = runtime;
             
@@ -66,15 +95,14 @@ namespace Celeste.Narrative
                 return;
             }
 
-            if (CurrentNode == null)
-            {
-                CurrentNode = graph.startNode;
-            }
+            graph.Runtime = this;
+
+            runtimeEngine = new FSMRuntimeEngine(this);
+            runtimeEngine.Start(StartNode);
 
             if (CurrentNode != null)
             {
                 UnityEngine.Debug.LogFormat("Spooling up FSM with starting node {0}", CurrentNode.name);
-                EnterCurrentNode();
             }
             else
             {
@@ -84,48 +112,7 @@ namespace Celeste.Narrative
 
         private void Update()
         {
-            if (CurrentNode == null)
-            {
-                return;
-            }
-
-            FSMNode newNode = UpdateCurrentNode();
-
-            while (newNode != CurrentNode)
-            {
-                ExitCurrentNode();
-                CurrentNode = newNode;
-
-                if (CurrentNode != null)
-                {
-                    EnterCurrentNode();
-                    newNode = UpdateCurrentNode();
-                }
-            }
-        }
-
-        #endregion
-
-        #region Node Methods
-
-        private void EnterCurrentNode()
-        {
-            CurrentNode.Enter();
-            OnNodeEnter.Invoke(CurrentNode);
-        }
-
-        private FSMNode UpdateCurrentNode()
-        {
-            FSMNode newNode = CurrentNode.Update();
-            OnNodeUpdate.Invoke(CurrentNode);
-
-            return newNode;
-        }
-
-        private void ExitCurrentNode()
-        {
-            CurrentNode.Exit();
-            OnNodeExit.Invoke(CurrentNode);
+            runtimeEngine.Update();
         }
 
         #endregion

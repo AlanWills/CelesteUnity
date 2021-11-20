@@ -5,6 +5,11 @@ namespace Celeste.FSM
 {
     public interface ILinearRuntime<TNode>
     {
-        TNode CurrentNode { get; }
+        public FSMNodeUnityEvent OnNodeEnter { get; }
+        public FSMNodeUnityEvent OnNodeUpdate { get; }
+        public FSMNodeUnityEvent OnNodeExit { get; }
+
+        TNode StartNode { get; }
+        TNode CurrentNode { get; set; }
     }
 }

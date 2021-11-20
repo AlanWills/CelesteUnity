@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(FindCharacterTags), menuName = "Celeste/Narrative/Twine/Analysis Steps/Find Character Tags")]
+    [CreateAssetMenu(fileName = nameof(FindCharacterTags), menuName = "Celeste/Twine/Analysis Steps/Find Character Tags")]
     public class FindCharacterTags : TwineNodeAnalysisStep
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)

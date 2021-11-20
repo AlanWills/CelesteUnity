@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "CheckForFinishTag", menuName = "Celeste/Narrative/Twine/Parser Steps/Check For Finish Tag")]
+    [CreateAssetMenu(fileName = "CheckForFinishTag", menuName = "Celeste/Twine/Parser Steps/Check For Finish Tag")]
     public class CheckForFinishTag : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)

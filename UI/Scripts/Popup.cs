@@ -30,6 +30,7 @@ namespace Celeste.UI
 
         private void Awake()
         {
+            Debug.Assert(showPopup != null, $"No 'showPopup' event found on Popup {gameObject.name}.");
             showPopup.AddListener(OnEventRaised);
             popupController = GetComponent<IPopupController>();
         }

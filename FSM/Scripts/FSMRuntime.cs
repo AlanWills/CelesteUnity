@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using XNode;
 
@@ -13,25 +9,11 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
-        [NonSerialized] private FSMNode currentNode;
-        public FSMNode CurrentNode 
-        {
-            get { return currentNode; }
-            set
-            {
-                if (currentNode != null)
-                {
-                    currentNode.Exit();
-                }
+        public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
+        public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
+        public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
 
-                currentNode = value;
-
-                if (currentNode != null)
-                {
-                    currentNode.Enter();
-                }
-            }
-        }
+        public FSMNode CurrentNode { get; set; }
 
         // Runtime only override of the start node - useful for loading an FSM at a particular state
         [NonSerialized] private FSMNode startNode;
@@ -43,6 +25,8 @@ namespace Celeste.FSM
 
         [SerializeField]
         private bool lateUpdate = false;
+
+        private FSMRuntimeEngine runtimeEngine;
 
         #endregion
 
@@ -57,20 +41,12 @@ namespace Celeste.FSM
 
             graph.Runtime = this;
 
-            if (currentNode != null && currentNode != StartNode)
-            {
-                // Allows us to handle the FSM being restarting with one function and
-                // help avoid people being caught out
-                currentNode.Exit();
-            }
+            runtimeEngine = new FSMRuntimeEngine(this);
+            runtimeEngine.Start(StartNode);
 
-            Debug.Assert(graph.nodes.Count == 0 || StartNode != null, "FSMRuntime graph contains nodes, but no start node is set so it will be disabled.");
-            currentNode = StartNode;
-
-            if (currentNode != null)
+            if (CurrentNode != null)
             {
                 Debug.LogFormat("Spooling up FSM with starting node {0}", CurrentNode.name);
-                currentNode.Enter();
             }
             else 
             {
@@ -80,46 +56,20 @@ namespace Celeste.FSM
 
         private void Update()
         {
-            if (lateUpdate)
+            if (!lateUpdate)
             {
-                return;
+                runtimeEngine.Update();
             }
-
-            UpdateImpl();
         }
 
         private void LateUpdate()
         {
-            if (!lateUpdate)
+            if (lateUpdate)
             {
-                return;
+                runtimeEngine.Update();
             }
-
-            UpdateImpl();
         }
 
         #endregion
-
-        private void UpdateImpl()
-        {
-            if (currentNode == null)
-            {
-                return;
-            }
-
-            FSMNode newNode = currentNode.Update();
-
-            while (newNode != currentNode)
-            {
-                currentNode.Exit();
-                currentNode = newNode;
-                
-                if (currentNode != null)
-                {
-                    currentNode.Enter();
-                    newNode = currentNode.Update();
-                }
-            }
-        }
     }
 }

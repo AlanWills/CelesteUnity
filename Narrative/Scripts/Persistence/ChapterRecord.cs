@@ -16,6 +16,7 @@ namespace Celeste.Narrative.Persistence
         public StoryRecord StoryRecord { get; }
         public Chapter Chapter { get; }
         public string CurrentNodeGuid { get; set; }
+        public string CurrentSubGraphNodeGuid { get; set; }
         public int CurrentBackgroundGuid { get; set; }
         public float Progress { get; private set; }
 
@@ -49,7 +50,11 @@ namespace Celeste.Narrative.Persistence
 
         #endregion
 
-        public ChapterRecord(StoryRecord storyRecord, Chapter chapter, string currentNodeGuid)
+        public ChapterRecord(
+            StoryRecord storyRecord, 
+            Chapter chapter, 
+            string currentNodeGuid,
+            string currentSubGraphNodeGuid)
         {
             UnityEngine.Debug.Assert(storyRecord != null, $"Story Record null in ChapterRecord.");
             UnityEngine.Debug.Assert(chapter != null, $"Chapter null in ChapterRecord.");
@@ -57,6 +62,7 @@ namespace Celeste.Narrative.Persistence
             StoryRecord = storyRecord;
             Chapter = chapter;
             CurrentNodeGuid = currentNodeGuid;
+            CurrentSubGraphNodeGuid = currentSubGraphNodeGuid;
 
             characterRecords.Capacity = chapter.NumCharacters;
             for (int i = 0, n = chapter.NumCharacters; i < n; ++i)
@@ -117,6 +123,7 @@ namespace Celeste.Narrative.Persistence
         public void ResetProgress()
         {
             CurrentNodeGuid = "";
+            CurrentSubGraphNodeGuid = "";
             Progress = 0;
         }
 

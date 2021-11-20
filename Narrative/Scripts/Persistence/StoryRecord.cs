@@ -68,9 +68,12 @@ namespace Celeste.Narrative.Persistence
             return chapterRecords.Get(index);
         }
 
-        public ChapterRecord AddChapterRecord(Chapter chapter, string currentNodeGuid)
+        public ChapterRecord AddChapterRecord(
+            Chapter chapter, 
+            string currentNodeGuid,
+            string currentSubGraphNodeGuid)
         {
-            ChapterRecord chapterRecord = new ChapterRecord(this, chapter, currentNodeGuid);
+            ChapterRecord chapterRecord = new ChapterRecord(this, chapter, currentNodeGuid, currentSubGraphNodeGuid);
             chapterRecords.Add(chapterRecord);
 
             return chapterRecord;
@@ -81,7 +84,7 @@ namespace Celeste.Narrative.Persistence
             ChapterRecord chapterRecord = chapterRecords.Find(x => x.Chapter == chapter);
             if (chapterRecord == null)
             {
-                chapterRecord = AddChapterRecord(chapter, "");
+                chapterRecord = AddChapterRecord(chapter, string.Empty, string.Empty);
             }
 
             return chapterRecord;

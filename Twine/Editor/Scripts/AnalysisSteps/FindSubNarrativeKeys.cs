@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(FindBackgroundKeys), menuName = "Celeste/Twine/Analysis Steps/Find Background Keys")]
-    public class FindBackgroundKeys : TwineNodeAnalysisStep
+    [CreateAssetMenu(fileName = nameof(FindSubNarrativeKeys), menuName = "Celeste/Twine/Analysis Steps/Find Sub Narrative Keys")]
+    public class FindSubNarrativeKeys : TwineNodeAnalysisStep
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
@@ -21,7 +21,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineStoryAnalysis analysis = parseContext.Analysis;
 
             string nonLinkText = parseContext.ImporterSettings.StripLinksFromText(twineNode.text);
-            settings.FindBackgrounds(nonLinkText, analysis);
+            settings.FindSubNarratives(nonLinkText, analysis);
         }
     }
 }

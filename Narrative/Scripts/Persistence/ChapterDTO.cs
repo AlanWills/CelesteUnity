@@ -10,6 +10,7 @@ namespace Celeste.Narrative.Persistence
     {
         public int guid;
         public string currentNodeGuid;
+        public string currentSubGraphNodeGuid;
         public int currentBackgroundGuid;
         public List<CharacterDTO> characters;
         public List<ValueDTO> parameters;
@@ -18,6 +19,7 @@ namespace Celeste.Narrative.Persistence
         {
             guid = chapterRecord.Chapter.Guid;
             currentNodeGuid = chapterRecord.CurrentNodeGuid;
+            currentSubGraphNodeGuid = chapterRecord.CurrentSubGraphNodeGuid;
             currentBackgroundGuid = chapterRecord.CurrentBackgroundGuid;
 
             characters = new List<CharacterDTO>(chapterRecord.NumCharacterRecords);

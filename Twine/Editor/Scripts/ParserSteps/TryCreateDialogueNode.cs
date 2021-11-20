@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryCreateDialogueNode", menuName = "Celeste/Narrative/Twine/Parser Steps/Try Create Dialogue Node")]
+    [CreateAssetMenu(fileName = "TryCreateDialogueNode", menuName = "Celeste/Twine/Parser Steps/Try Create Dialogue Node")]
     public class TryCreateDialogueNode : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
