@@ -40,7 +40,7 @@ namespace CelesteEditor.Scene
 #if UNITY_EDITOR
                 File.Delete($"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}");
 #endif
-                Debug.Log($"Deleted Twine save file at {filePath}.");
+                Debug.Log($"Deleted save file at {filePath}.");
             }
         }
     }

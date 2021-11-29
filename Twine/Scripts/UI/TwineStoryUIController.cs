@@ -1,4 +1,5 @@
 ﻿using Celeste.DataStructures;
+using Celeste.Events;
 using Celeste.Memory;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ namespace Celeste.Twine.UI
         #region Properties and Fields
 
         [SerializeField] private GameObjectAllocator twineNodeUIAllocator;
+        [SerializeField] private ShowPopupEvent showEditTwineNodePopup;
+
+        private TwineStory twineStory;
 
         #endregion
 
@@ -17,6 +21,8 @@ namespace Celeste.Twine.UI
 
         public void OnTwineStoryLoaded(TwineStory twineStory)
         {
+            this.twineStory = twineStory;
+
             twineNodeUIAllocator.DeallocateAll();
 
             if (twineStory.passages != null)
@@ -40,6 +46,20 @@ namespace Celeste.Twine.UI
         public void OnTwineNodeCreated(TwineNode twineNode)
         {
             TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
+        }
+
+        public void OnFollowTwineNodeLink(int pid)
+        {
+            TwineNode followLinkNode = twineStory.passages.Find(x => x.pid == pid);
+            UnityEngine.Debug.Assert(followLinkNode != null, $"Could not find follow link node with pid: {pid}.");
+
+            if (followLinkNode != null)
+            {
+                showEditTwineNodePopup.Invoke(new EditTwineNodePopupController.EditTwineNodePopupArgs()
+                {
+                    twineNode = followLinkNode
+                });
+            }
         }
 
         #endregion

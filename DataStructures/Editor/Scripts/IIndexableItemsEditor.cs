@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.DataStructures
 {
-    public class IIndexableItemsEditor<T> : Editor where T : ScriptableObject
+    public class IIndexableItemsEditor<TIndexableItem> : Editor where TIndexableItem : ScriptableObject
     {
         #region Properties and Fields
 
@@ -23,12 +23,12 @@ namespace CelesteEditor.DataStructures
 
             if (GUILayout.Button("Find All"))
             {
-                ItemsProperty.FindAssets<T>();
+                ItemsProperty.FindAssets<TIndexableItem>();
             }
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
-                ItemsProperty.FindAssets<T>(AssetUtility.GetAssetFolderPath(target));
+                ItemsProperty.FindAssets<TIndexableItem>(AssetUtility.GetAssetFolderPath(target));
             }
 
             DrawPropertiesExcluding(serializedObject, "m_Script");

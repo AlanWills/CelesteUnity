@@ -91,6 +91,7 @@ namespace PolyAndCode.UI
             {
                 string title = _direction.enumValueIndex == (int)RecyclableScrollRect.DirectionType.Vertical ? "Coloumns" : "Rows";
                _script.Segments =  EditorGUILayout.IntField(title, _script.Segments);
+                EditorUtility.SetDirty(_script);
             }
 
             EditorGUILayout.PropertyField(_selfInitialize);

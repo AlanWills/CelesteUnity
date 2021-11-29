@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popupRoot: {fileID: 3198866441172855296}
   animator: {fileID: 0}
-  showPopup: {fileID: 11400000, guid: 71f2d8f7b33ef744bb57c42c81edda9a, type: 2}
+  showPopup: {fileID: 0}
   onPopupHide: {fileID: 0}
 --- !u!1 &4631722049241556946
 GameObject:
@@ -389,9 +389,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: 20}
-  m_SizeDelta: {x: 80, y: 80}
-  m_Pivot: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -10, y: -10}
+  m_SizeDelta: {x: 50, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4631722049443598184
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -610,7 +610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6191592729197578152, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 60
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6191592729197578152, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -46,12 +46,12 @@ namespace Celeste.UI
 
         public void Show(ShowPopupArgs args)
         {
+            popupRoot.SetActive(true);
+            
             if (popupController != null)
             {
                 popupController.OnShow(args);
             }
-
-            popupRoot.SetActive(true);
         }
 
         public void Hide()

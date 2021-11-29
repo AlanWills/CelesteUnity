@@ -31,9 +31,13 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 4631722048699673501, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
+      propertyPath: showPopup
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e3813ab95b606a4fb4a0dd2cdb478ff, type: 2}
     - target: {fileID: 4631722048699673502, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_Name
-      value: OptionsPopup
+      value: SettingsPopup
       objectReference: {fileID: 0}
     - target: {fileID: 4631722048699673503, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_RootOrder

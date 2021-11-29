@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 320920836588472247}
   - component: {fileID: 320920836588472244}
   - component: {fileID: 320920836588472245}
-  - component: {fileID: 320920836588472242}
+  - component: {fileID: 1540304870426530233}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -333,9 +333,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 320920836588472242}
-        m_TargetAssemblyTypeName: Celeste.Events.EventRaiser, Celeste.Events
-        m_MethodName: Raise
+      - m_Target: {fileID: 1540304870426530233}
+        m_TargetAssemblyTypeName: Celeste.Events.ShowPopupEventRaiser, Celeste.UI
+        m_MethodName: RaiseDefaultArgs
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -345,7 +345,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &320920836588472242
+--- !u!114 &1540304870426530233
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,10 +354,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 320920836588472240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89a0d147401428146b5daed6a3cee729, type: 3}
+  m_Script: {fileID: 11500000, guid: f3e4456e6851bc746949c541e869dbb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 4a2acb5ce9dcd514d9bc46815f985054, type: 2}
+  gameEvent: {fileID: 11400000, guid: 1e3813ab95b606a4fb4a0dd2cdb478ff, type: 2}
 --- !u!1 &6173631382580954756
 GameObject:
   m_ObjectHideFlags: 0

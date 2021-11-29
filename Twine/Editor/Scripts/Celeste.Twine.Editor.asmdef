@@ -11,7 +11,8 @@
         "GUID:659c1f5808f88f1458f6d8d74a0abafc",
         "GUID:891da734736f95846afa70d43384392f",
         "GUID:199ca8e340b41e54499a729dca53137b",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a"
+        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
+        "Celeste.Scene.Editor"
     ],
     "includePlatforms": [
         "Editor"

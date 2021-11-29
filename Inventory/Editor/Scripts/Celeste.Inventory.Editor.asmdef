@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Inventory.Editor",
+    "rootNamespace": "CelesteEditor.Inventory",
+    "references": [
+        "GUID:b331a3ea0ab9d78449f53859c445427d",
+        "GUID:c95af7bc4649e4b4da85b957be8cc138",
+        "GUID:1e83f379d37edf04999a41dc4553067d",
+        "GUID:832d49e3e7e4924438f3d1a629c9ce79"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

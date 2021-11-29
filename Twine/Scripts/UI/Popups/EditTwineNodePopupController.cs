@@ -23,6 +23,7 @@ namespace Celeste.Twine.UI
         [SerializeField] private TMP_InputField titleInputField;
         [SerializeField] private TMP_InputField tagsInputField;
         [SerializeField] private TMP_InputField textInputField;
+        [SerializeField] private FollowLinkUIManager followLinkUIManager;
 
         private const string TAGS_DELIMITER = ",";
 
@@ -41,6 +42,7 @@ namespace Celeste.Twine.UI
             titleInputField.text = twineNode.name;
             tagsInputField.text = twineNode.tags.Count > 0 ? string.Join(TAGS_DELIMITER, twineNode.tags) : "";
             textInputField.text = twineNode.text;
+            followLinkUIManager.Hookup(twineNode);
         }
 
         public void OnHide()

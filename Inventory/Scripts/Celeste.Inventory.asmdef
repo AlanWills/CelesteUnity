@@ -1,20 +1,14 @@
 {
-    "name": "Celeste.Twine",
-    "rootNamespace": "Celeste.Twine",
+    "name": "Celeste.Inventory",
+    "rootNamespace": "Celeste.Inventory",
     "references": [
-        "Unity.TextMeshPro",
         "Celeste.Persistence",
         "Celeste.Objects",
         "Celeste.DataStructures",
-        "Celeste.Memory",
         "Celeste.Events",
         "Celeste.UI",
-        "Celeste.Debug",
-        "Celeste.Log",
-        "Celeste.Maths",
-        "NativeShare.Runtime",
-        "NativeFilePicker.Runtime",
-        "RecyclableScrollRect"
+        "RecyclableScrollRect",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
