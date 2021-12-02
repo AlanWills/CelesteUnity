@@ -107,7 +107,7 @@ namespace Celeste.Twine.UI
             twineNode.Position = endDragPosition.ToVector2();
         }
 
-        private void OnTwineNodeChanged()
+        private void OnTwineNodeChanged(TwineNode twineNode)
         {
             RefreshUI();
         }

@@ -14,7 +14,7 @@ namespace Celeste.Narrative.Persistence
 
         public ProductionDTO() { }
 
-        public ProductionDTO(ProductionRecord productionRecord)
+        public ProductionDTO(NarrativeRecord productionRecord)
         {
             lastPlayedStoryGuid = productionRecord.LastPlayedStoryGuid;
             lastPlayedChapterGuid = productionRecord.LastPlayedChapterGuid;

@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using Celeste.UI;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -52,11 +53,22 @@ namespace Celeste.Twine.UI
 
         public void OnConfirmPressed()
         {
-            twineNode.name = titleInputField.text;
-            twineNode.tags.Clear();
-            twineNode.tags.AddRange(tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries));
-            twineNode.text = textInputField.text;
-            twineNode.OnChanged.Invoke();
+            string newName = titleInputField.text;
+            string newText = textInputField.text;
+            string[] newTags = tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries);
+            TwineNodeLink[] newLinks = CreateLinks(newText);
+
+            twineNode.UpdateData(
+                newName,
+                newText,
+                newTags,
+                newLinks);
+
+            if (string.CompareOrdinal(twineNode.text, textInputField.text) != 0)
+            {
+                // Make this return the links from the text, not modify the node
+                followLinkUIManager.Hookup(twineNode);
+            }
         }
 
         public void OnClosePressed()
@@ -64,5 +76,39 @@ namespace Celeste.Twine.UI
         }
 
         #endregion
+
+        private TwineNodeLink[] CreateLinks(string text)
+        {
+            List<TwineNodeLink> createdLinks = new List<TwineNodeLink>();
+            int delimiterStart = text.IndexOf("[[");
+
+            while (delimiterStart != -1)
+            {
+                int delimiterEnd = text.IndexOf("]]", delimiterStart + 2);
+                int startIndex = delimiterStart + 2;
+                string linkText = text.Substring(startIndex, delimiterEnd - startIndex);
+                int linkDelimiter = linkText.IndexOf("->");
+
+                TwineNodeLink twineNodeLink = new TwineNodeLink();
+                createdLinks.Add(twineNodeLink);
+
+                if (linkDelimiter >= 0)
+                {
+                    // Need to split out display and internal text
+                    twineNodeLink.name = linkText.Substring(0, linkDelimiter);
+                    twineNodeLink.link = linkText.Substring(linkDelimiter + 2);
+                }
+                else
+                {
+                    // Just use the linkText for both name and link
+                    twineNodeLink.name = linkText;
+                    twineNodeLink.link = linkText;
+                }
+
+                delimiterStart = text.IndexOf("[[", delimiterEnd + 2);
+            }
+
+            return createdLinks.ToArray();
+        }
     }
 }

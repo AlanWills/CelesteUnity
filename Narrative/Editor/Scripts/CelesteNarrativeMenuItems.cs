@@ -1,7 +1,5 @@
-using Celeste.Narrative.Persistence;
-using System.IO;
+using Celeste.Narrative;
 using UnityEditor;
-using UnityEngine;
 using static CelesteEditor.Scene.MenuItemUtility;
 
 namespace CelesteEditor.Narrative
@@ -17,7 +15,7 @@ namespace CelesteEditor.Narrative
         [MenuItem("Celeste/Save/Delete Narrative Save", priority = 100)]
         public static void DeleteNarrativeSaveMenuItem()
         {
-            DeletePersistentDataFile(NarrativePersistence.FILE_NAME);
+            DeletePersistentDataFile(NarrativeManager.FILE_NAME);
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Celeste.Narrative.Parameters;
+using Celeste.Narrative.Persistence;
 using Celeste.Persistence;
 using System;
 using UnityEngine;
 
-namespace Celeste.Narrative.Persistence
+namespace Celeste.Narrative
 {
-    [AddComponentMenu("Celeste/Narrative/Persistence/Narrative Persistence")]
-    public class NarrativePersistence : PersistentSceneSingleton<NarrativePersistence, ProductionDTO>
+    [AddComponentMenu("Celeste/Narrative/Narrative Manager")]
+    public class NarrativeManager : PersistentSceneManager<NarrativeManager, ProductionDTO>
     {
         #region Properties and Fields
 
@@ -17,51 +18,22 @@ namespace Celeste.Narrative.Persistence
         }
 
         [SerializeField] private StoryCatalogue storyCatalogue;
-
-        [NonSerialized] private ProductionRecord productionRecord = new ProductionRecord();
+        [SerializeField] private NarrativeRecord narrativeRecord;
 
         #endregion
-
-        public StoryRecord FindOrAddStoryRecord(Story story)
-        {
-            return productionRecord.FindOrAddStoryRecord(story);
-        }
-
-        public ChapterRecord FindOrAddChapterRecord(Story story, Chapter chapter)
-        {
-            StoryRecord storyRecord = productionRecord.FindOrAddStoryRecord(story);
-            return storyRecord.FindOrAddChapterRecord(chapter);
-        }
-
-        public ChapterRecord FindLastPlayedChapterRecord()
-        {
-            Story story = storyCatalogue.FindByGuid(productionRecord.LastPlayedStoryGuid);
-            if (story == null)
-            {
-                return null;
-            }
-
-            Chapter chapter = story.FindChapter(productionRecord.LastPlayedChapterGuid);
-            if (chapter == null)
-            {
-                return null;
-            }
-
-            return FindOrAddChapterRecord(story, chapter);
-        }
 
         #region Save/Load Methods
 
         protected override void Deserialize(ProductionDTO dto)
         {
-            productionRecord.LastPlayedStoryGuid = dto.lastPlayedStoryGuid;
-            productionRecord.LastPlayedChapterGuid = dto.lastPlayedChapterGuid;
+            narrativeRecord.LastPlayedStoryGuid = dto.lastPlayedStoryGuid;
+            narrativeRecord.LastPlayedChapterGuid = dto.lastPlayedChapterGuid;
 
             foreach (StoryDTO storyDTO in dto.stories)
             {
                 Story story = storyCatalogue.FindByGuid(storyDTO.guid);
                 UnityEngine.Debug.Assert(story != null, $"Could not find story with guid {storyDTO.guid}.");
-                StoryRecord storyRecord = productionRecord.AddStoryRecord(story);
+                StoryRecord storyRecord = narrativeRecord.AddStoryRecord(story);
 
                 foreach (ChapterDTO chapterDTO in storyDTO.chapters)
                 {
@@ -90,7 +62,7 @@ namespace Celeste.Narrative.Persistence
 
         protected override ProductionDTO Serialize()
         {
-            return new ProductionDTO(productionRecord);
+            return new ProductionDTO(narrativeRecord);
         }
 
         protected override void SetDefaultValues()
@@ -103,8 +75,8 @@ namespace Celeste.Narrative.Persistence
 
         public void OnNarrativeBegun(NarrativeRuntime narrativeRuntime)
         {
-            productionRecord.LastPlayedStoryGuid = narrativeRuntime.Record.StoryRecord.Story.Guid;
-            productionRecord.LastPlayedChapterGuid = narrativeRuntime.Record.Chapter.Guid;
+            narrativeRecord.LastPlayedStoryGuid = narrativeRuntime.Record.StoryRecord.Story.Guid;
+            narrativeRecord.LastPlayedChapterGuid = narrativeRuntime.Record.Chapter.Guid;
         }
 
         #endregion

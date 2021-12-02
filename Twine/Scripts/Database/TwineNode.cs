@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,7 +9,9 @@ namespace Celeste.Twine
     [Serializable]
     public class TwineNode
     {
-        public UnityEvent OnChanged { get; } = new UnityEvent();
+        #region Properties and Fields
+
+        public TwineNodeUnityEvent OnChanged { get; } = new TwineNodeUnityEvent();
 
         public Vector2 Position
         {
@@ -18,7 +21,7 @@ namespace Celeste.Twine
                 if (position != value)
                 {
                     position = value;
-                    OnChanged.Invoke();
+                    OnChanged.Invoke(this);
                 }
             }
         }
@@ -29,5 +32,23 @@ namespace Celeste.Twine
         public List<string> tags = new List<string>();
         [SerializeField] private Vector2 position;
         public List<TwineNodeLink> links = new List<TwineNodeLink>();
+
+        #endregion
+
+        public void UpdateData(
+            string newName, 
+            string newText, 
+            string[] newTags, 
+            TwineNodeLink[] newLinks)
+        {
+            name = newName;
+            text = newText;
+            tags.Clear();
+            tags.AddRange(newTags);
+            links.Clear();
+            links.AddRange(newLinks);
+
+            OnChanged.Invoke(this);
+        }
     }
 }

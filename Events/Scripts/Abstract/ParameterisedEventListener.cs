@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace Celeste.Events
@@ -23,13 +18,13 @@ namespace Celeste.Events
 
         private void OnEnable()
         {
-            Debug.Assert(gameEvent != null, string.Format("{0} has a null game event on listener {1}", name, GetType().Name));
+            Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
             gameEvent.AddListener(this);
         }
 
         private void OnDisable()
         {
-            Debug.Assert(gameEvent != null, string.Format("{0} has a null game event on listener {1}", name, GetType().Name));
+            Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
             gameEvent.RemoveListener(this);
         }
 

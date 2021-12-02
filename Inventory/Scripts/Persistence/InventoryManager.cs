@@ -1,11 +1,12 @@
-﻿using Celeste.Persistence;
+﻿using Celeste.Inventory.Persistence;
+using Celeste.Persistence;
 using System;
 using UnityEngine;
 
-namespace Celeste.Inventory.Persistence
+namespace Celeste.Inventory
 {
-    [AddComponentMenu("Celeste/Inventory/Inventory Persistence")]
-    public class InventoryPersistence : PersistentSceneSingleton<InventoryPersistence, InventoryDTO>
+    [AddComponentMenu("Celeste/Inventory/Inventory Manager")]
+    public class InventoryManager : PersistentSceneManager<InventoryManager, InventoryDTO>
     {
         #region Properties and Fields
 
@@ -16,7 +17,7 @@ namespace Celeste.Inventory.Persistence
         }
 
         [SerializeField] private InventoryItemCatalogue inventoryItemCatalogue;
-        [SerializeField] private Inventory inventory;
+        [SerializeField] private InventoryRecord inventory;
 
         #endregion
 

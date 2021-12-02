@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace Celeste.Persistence
 {
-    public abstract class PersistentSceneSingleton<T, TDTO> : SceneSingleton<T> 
-        where T : PersistentSceneSingleton<T, TDTO>
+    public abstract class PersistentSceneManager<T, TDTO> : MonoBehaviour
+        where T : PersistentSceneManager<T, TDTO>
         where TDTO : class
     {
         #region Properties and Fields
@@ -29,10 +29,8 @@ namespace Celeste.Persistence
 
         #region Unity Methods
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             if (loadOnAwake)
             {
                 Load();
@@ -58,25 +56,25 @@ namespace Celeste.Persistence
 
                         if (tDTO != null)
                         {
-                            Instance.Deserialize(tDTO);
+                            Deserialize(tDTO);
                         }
                         else
                         {
                             Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
-                            Instance.SetDefaultValues();
+                            SetDefaultValues();
                         }
                     }
                     else
                     {
                         Debug.Log($"No data saved to persistent file for {persistentFilePath}.  Using default values.");
-                        Instance.SetDefaultValues();
+                        SetDefaultValues();
                     }
                 }
             }
             else
             {
-                Debug.LogFormat($"{persistentFilePath} not found for {nameof(PersistentSceneSingleton<T, TDTO>)} {Instance.name}.  Using default values.");
-                Instance.SetDefaultValues();
+                Debug.LogFormat($"{persistentFilePath} not found for {nameof(PersistentSceneManager<T, TDTO>)} {name}.  Using default values.");
+                SetDefaultValues();
             }
         }
 
@@ -97,7 +95,7 @@ namespace Celeste.Persistence
 
         private void SaveImpl()
         {
-            TDTO serializedInstance = Instance.Serialize();
+            TDTO serializedInstance = Serialize();
             string persistentFilePath = FilePath;
 
             // Save binary file
@@ -119,7 +117,7 @@ namespace Celeste.Persistence
 
             // Needed to deal with browser async saving
             WebGLUtils.SyncFiles();
-            HudLog.LogInfo($"{Instance.name} saved");
+            HudLog.LogInfo($"{name} saved");
 
             saveRequested = false;
         }

@@ -4,14 +4,15 @@ using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Extensions;
 using Celeste.DeckBuilding.Match;
+using Celeste.DeckBuilding.Persistence;
 using Celeste.FSM;
 using Celeste.Persistence;
 using UnityEngine;
 
-namespace Celeste.DeckBuilding.Persistence
+namespace Celeste.DeckBuilding
 {
-    [AddComponentMenu("Celeste/Deck Building/Persistence/Deck Match Persistence")]
-    public class DeckMatchPersistence : PersistentSceneSingleton<DeckMatchPersistence, DeckMatchDTO>
+    [AddComponentMenu("Celeste/Deck Building/Deck Match Manager")]
+    public class DeckMatchManager : PersistentSceneManager<DeckMatchManager, DeckMatchDTO>
     {
         #region Deck Match Persistence Context
 

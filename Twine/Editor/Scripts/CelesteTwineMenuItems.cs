@@ -1,7 +1,5 @@
-using Celeste.Twine.Persistence;
-using System.IO;
+using Celeste.Twine;
 using UnityEditor;
-using UnityEngine;
 using static CelesteEditor.Scene.MenuItemUtility;
 
 namespace DnDEditor.Twine
@@ -17,7 +15,7 @@ namespace DnDEditor.Twine
         [MenuItem("Celeste/Save/Delete Twine Save", priority = 100)]
         public static void DeleteTwineSaveMenuItem()
         {
-            DeletePersistentDataFile(TwinePersistence.FILE_NAME);
+            DeletePersistentDataFile(TwineManager.FILE_NAME);
         }
     }
 }

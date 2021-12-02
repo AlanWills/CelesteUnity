@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Celeste.Narrative.Persistence
+namespace Celeste.Narrative
 {
     public class StoryRecord
     {

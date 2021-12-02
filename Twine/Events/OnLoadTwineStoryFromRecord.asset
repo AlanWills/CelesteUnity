@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb7af010e96625643a98e52d789cd8f4, type: 3}
-  m_Name: CreatedTwineNode
+  m_Script: {fileID: 11500000, guid: 56dca6c947df99e499e9547fc95d5bbe, type: 3}
+  m_Name: OnLoadTwineStoryFromRecord
   m_EditorClassIdentifier: 

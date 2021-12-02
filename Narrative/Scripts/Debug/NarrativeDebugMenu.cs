@@ -12,6 +12,8 @@ namespace Celeste.Narrative.Debug
     {
         #region Properties and Fields
 
+        [SerializeField] private StoryCatalogue storyCatalogue;
+        [SerializeField] private NarrativeRecord narrativeRecord;
         [SerializeField] private OnContextLoadedEvent onContextLoadedEvent;
 
         #endregion
@@ -22,7 +24,7 @@ namespace Celeste.Narrative.Debug
         {
             if (GUILayout.Button("Load Last Played"))
             {
-                ChapterRecord lastPlayedChapter = NarrativePersistence.Instance.FindLastPlayedChapterRecord();
+                ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue);
                 UnityEngine.Debug.Assert(lastPlayedChapter != null, $"Could not find last played chapter.");
 
                 if (lastPlayedChapter != null)

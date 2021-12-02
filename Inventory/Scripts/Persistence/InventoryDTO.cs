@@ -15,7 +15,7 @@ namespace Celeste.Inventory.Persistence
             itemGuids = new List<int>();
         }
 
-        public InventoryDTO(Inventory inventory)
+        public InventoryDTO(InventoryRecord inventory)
         {
             itemGuids = new List<int>(inventory.NumItems);
 

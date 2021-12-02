@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
-    public class DeckBuildingRecord
+    [CreateAssetMenu(fileName = nameof(DeckBuildingRecord), menuName = "Celeste/Deck Building/Deck Building Record")]
+    public class DeckBuildingRecord : ScriptableObject
     {
         #region Properties and Fields
 

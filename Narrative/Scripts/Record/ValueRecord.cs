@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Celeste.Narrative.Persistence
+namespace Celeste.Narrative
 {
     public enum ValueType
     {

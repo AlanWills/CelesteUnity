@@ -13,7 +13,7 @@ namespace Celeste.Inventory.UI
         #region Properties and Fields
 
         [Header("Data")]
-        [SerializeField] private Inventory inventory;
+        [SerializeField] private InventoryRecord inventory;
 
         [Header("Items")]
         [SerializeField] private RecyclableScrollRect scrollRect;

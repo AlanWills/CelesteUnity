@@ -1,4 +1,4 @@
-using Celeste.Inventory.Persistence;
+using Celeste.Inventory;
 using CelesteEditor.Scene;
 using UnityEditor;
 
@@ -15,7 +15,7 @@ namespace CelesteEditor.Inventory
         [MenuItem("Celeste/Save/Delete Inventory Save", priority = 100)]
         public static void DeleteInventorySaveMenuItem()
         {
-            MenuItemUtility.DeletePersistentDataFile(InventoryPersistence.FILE_NAME);
+            MenuItemUtility.DeletePersistentDataFile(InventoryManager.FILE_NAME);
         }
     }
 }

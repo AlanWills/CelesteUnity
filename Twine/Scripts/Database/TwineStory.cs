@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +12,8 @@ namespace Celeste.Twine
         #region Properties and Fields
 
         public const string FILE_EXTENSION = "twine";
+
+        public TwineNodeUnityEvent OnNodeAdded { get; } = new TwineNodeUnityEvent();
         public UnityEvent OnChanged { get; } = new UnityEvent();
 
         public int startnode;
@@ -32,7 +35,7 @@ namespace Celeste.Twine
             foreach (TwineNode twineNode in passages)
             {
                 highestPID = Mathf.Max(twineNode.pid, highestPID);
-                twineNode.OnChanged.AddListener(OnChanged.Invoke);
+                twineNode.OnChanged.AddListener(OnTwineNodeChanged);
             }
 
             isInitialized = true;
@@ -46,6 +49,7 @@ namespace Celeste.Twine
                 return;
             }
 
+            OnNodeAdded.RemoveAllListeners();
             OnChanged.RemoveAllListeners();
 
             foreach (TwineNode twineNode in passages)
@@ -61,11 +65,43 @@ namespace Celeste.Twine
             TwineNode twineNode = new TwineNode();
             twineNode.name = name;
             twineNode.pid = ++highestPID;
+            twineNode.Position = CalculateBestPosition();
 
-            twineNode.OnChanged.AddListener(OnChanged.Invoke);
+            twineNode.OnChanged.AddListener(OnTwineNodeChanged);
             passages.Add(twineNode);
+            
+            OnNodeAdded.Invoke(twineNode);
+            OnChanged.Invoke();
 
             return twineNode;
         }
+
+        private Vector2 CalculateBestPosition()
+        {
+            return passages.Count != 0 ? passages[passages.Count - 1].Position + new Vector2(0, 120) : Vector2.zero;
+        }
+
+        #region Callbacks
+
+        private void OnTwineNodeChanged(TwineNode twineNode)
+        {
+            // Resolve link pids
+            foreach (TwineNodeLink twineNodeLink in twineNode.links)
+            {
+                TwineNode linkedNode = passages.Find(x => string.CompareOrdinal(x.name, twineNodeLink.link) == 0);
+                if (linkedNode == null)
+                {
+                    // Calculate best position before adding node to ensure it calculates the best position
+                    // based on the old nodes
+                    linkedNode = AddNode(twineNodeLink.link);
+                }
+
+                twineNodeLink.pid = linkedNode.pid;
+            }
+
+            OnChanged.Invoke();
+        }
+
+        #endregion
     }
 }

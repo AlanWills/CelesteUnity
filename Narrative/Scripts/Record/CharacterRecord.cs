@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Celeste.Narrative.Persistence
+namespace Celeste.Narrative
 {
     [Serializable]
     public class CharacterRecord

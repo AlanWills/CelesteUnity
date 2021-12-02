@@ -12,6 +12,9 @@ namespace Celeste.DeckBuilding.Match
     {
         #region Properties and Fields
 
+        [Header("Data")]
+        [SerializeField] private DeckBuildingRecord deckBuildingRecord;
+
         [Header("Player")]
         [SerializeField] private LoseCondition playerLoseCondition;
 
@@ -23,7 +26,7 @@ namespace Celeste.DeckBuilding.Match
 
         public DeckMatchContext CreateContext()
         {
-            Deck playerDeck = DeckBuildingPersistence.Instance.GetFirstDeck();
+            Deck playerDeck = deckBuildingRecord.GetDeck(0);
             playerDeck.LoseCondition = ScriptableObject.Instantiate(playerLoseCondition);
 
             Deck enemyDeck = this.enemyDeck.ToDeck();
@@ -34,7 +37,7 @@ namespace Celeste.DeckBuilding.Match
 
         public Deck CreatePlayerDeck()
         {
-            Deck playerDeck = DeckBuildingPersistence.Instance.GetFirstDeck();
+            Deck playerDeck = deckBuildingRecord.GetDeck(0);
             playerDeck.LoseCondition = ScriptableObject.Instantiate(playerLoseCondition);
 
             return playerDeck;

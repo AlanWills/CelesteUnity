@@ -10,17 +10,11 @@ namespace Celeste.Twine
         #region Properties and Fields
 
         [SerializeField] private TwineStoryEvent saveTwineStory;
-        [SerializeField] private TwineNodeEvent createdTwineNode;
+        [SerializeField] private TwineNodeEvent ontwineNodeAddedToStory;
 
         [NonSerialized] private TwineStory currentStory;
 
         #endregion
-
-        private Vector2 CalculateBestPosition()
-        {
-            var passages = currentStory.passages;
-            return passages.Count != 0 ? passages[passages.Count - 1].Position + new Vector2(0, 120) : Vector2.zero;
-        }
 
         #region Callbacks
 
@@ -34,6 +28,7 @@ namespace Celeste.Twine
 
             UnityEngine.Debug.Assert(twineStory != null, $"Null twine story loaded.");
             currentStory = twineStory;
+            currentStory.OnNodeAdded.AddListener(OnCurrentStoryNodeAdded);
             currentStory.OnChanged.AddListener(OnCurrentStoryChanged);
         }
 
@@ -51,13 +46,13 @@ namespace Celeste.Twine
             UnityEngine.Debug.Assert(currentStory != null, "No current story.  Ignoring SaveCurrentStory...");
             if (currentStory != null)
             {
-                // Calculate this before we add the node, otherwise it'll use the new node
-                Vector2 bestPosition = CalculateBestPosition();
-                TwineNode twineNode = currentStory.AddNode("Untitled");
-                twineNode.Position = bestPosition;
-
-                createdTwineNode.Invoke(twineNode);
+                currentStory.AddNode("Untitled");
             }
+        }
+
+        private void OnCurrentStoryNodeAdded(TwineNode newNode)
+        {
+            ontwineNodeAddedToStory.Invoke(newNode);
         }
 
         private void OnCurrentStoryChanged()

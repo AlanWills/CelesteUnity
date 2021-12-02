@@ -1,15 +1,12 @@
 ﻿using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Decks;
 using Celeste.Persistence;
-using System;
-using System.Collections;
-using System.IO;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
-    [AddComponentMenu("Celeste/Deck Building/Persistence/Deck Building Persistence")]
-    public class DeckBuildingPersistence : PersistentSceneSingleton<DeckBuildingPersistence, DeckBuildingDTO>
+    [AddComponentMenu("Celeste/Deck Building/Deck Building")]
+    public class DeckBuildingManager : PersistentSceneManager<DeckBuildingManager, DeckBuildingDTO>
     {
         #region Properties and Fields
 
@@ -21,8 +18,7 @@ namespace Celeste.DeckBuilding.Persistence
 
         [SerializeField] private CardCatalogue cardCatalogue;
         [SerializeField] private PrebuiltDeck[] startingDecks;
-
-        [NonSerialized] private DeckBuildingRecord deckBuildingRecord = new DeckBuildingRecord();
+        [SerializeField] private DeckBuildingRecord deckBuildingRecord;
 
         #endregion
 
@@ -57,10 +53,5 @@ namespace Celeste.DeckBuilding.Persistence
         }
 
         #endregion
-
-        public Deck GetFirstDeck()
-        {
-            return deckBuildingRecord.GetDeck(0);
-        }
     }
 }

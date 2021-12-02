@@ -13,8 +13,7 @@ namespace Celeste.Twine.Debug
     {
         #region Properties and Fields
 
-        [SerializeField] private TwineStoryEvent loadTwineStoryFromPersistence;
-        [SerializeField] private TwineStoryEvent createTwineStory;
+        [SerializeField] private TwineRecord twineRecord;
         [SerializeField] private Events.Event saveCurrentTwineStory;
 
         private string newStoryName = "NewStory";
@@ -39,7 +38,7 @@ namespace Celeste.Twine.Debug
                         else
                         {
                             HudLog.LogInfo($"Picked file: {path}");
-                            TwinePersistence.Instance.ImportTwineStory(path);
+                            twineRecord.ImportTwineStory(path);
                         }
                     }, new string[] { fileType });
 
@@ -52,26 +51,22 @@ namespace Celeste.Twine.Debug
                 }
             }
 
-            for (int i = 0, n = TwinePersistence.Instance.NumTwineStories; i < n; ++i)
+            for (int i = 0, n = twineRecord.NumTwineStoryRecords; i < n; ++i)
             {
                 using (var horizontal = new HorizontalScope())
                 {
-                    string twineStoryName = TwinePersistence.Instance.GetTwineStoryName(i);
+                    string twineStoryName = twineRecord.GetTwineStoryName(i);
 
                     Label(twineStoryName);
 
                     if (Button($"Load", ExpandWidth(false)))
                     {
-                        TwineStory twineStory = TwinePersistence.Instance.LoadTwineStory(i);
-                        if (twineStory != null)
-                        {
-                            loadTwineStoryFromPersistence.Invoke(twineStory);
-                        }
+                        twineRecord.LoadTwineStory(i);
                     }
 
                     if (Button($"Share", ExpandWidth(false)))
                     {
-                        string twineStoryPath = TwinePersistence.Instance.GetTwineStoryPath(i);
+                        string twineStoryPath = twineRecord.GetTwineStoryPath(i);
                         new NativeShare()
                             .AddFile(twineStoryPath)
                             .SetSubject($"Share {twineStoryName}")
@@ -87,11 +82,7 @@ namespace Celeste.Twine.Debug
 
                 if (Button("Create", ExpandWidth(false)))
                 {
-                    TwineStory newTwineStory = TwinePersistence.Instance.AddTwineStory(newStoryName);
-                    if (newTwineStory != null)
-                    {
-                        createTwineStory.Invoke(newTwineStory);
-                    }
+                    twineRecord.CreateTwineStory(newStoryName);
                 }
             }
         }
