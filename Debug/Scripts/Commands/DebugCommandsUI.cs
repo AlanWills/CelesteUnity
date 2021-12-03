@@ -1,12 +1,6 @@
 ﻿using Celeste.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Celeste.Debug.Commands
 {
@@ -15,7 +9,7 @@ namespace Celeste.Debug.Commands
     {
         #region Properties and Fields
 
-        public Text commandText;
+        public TMP_InputField commandInput;
         public TextMeshProUGUI outputText;
         public StringEvent onExecute;
 
@@ -23,7 +17,7 @@ namespace Celeste.Debug.Commands
 
         public void Execute()
         {
-            onExecute.Invoke(commandText.text);
+            onExecute.Invoke(commandInput.text);
         }
 
         #region Unity Methods
