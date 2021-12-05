@@ -3,13 +3,13 @@
 namespace Celeste.Events
 {
     [AddComponentMenu("Celeste/Events/UI/Show Popup Event Raiser")]
-    public class ShowPopupEventRaiser : ParameterisedEventRaiser<ShowPopupArgs, ShowPopupEvent>
+    public class ShowPopupEventRaiser : ParameterisedEventRaiser<IPopupArgs, ShowPopupEvent>
     {
-        private static readonly ShowPopupArgs DEFAULT_ARGS = new ShowPopupArgs();
+        private static readonly NoPopupArgs NO_ARGS = new NoPopupArgs();
 
-        public void RaiseDefaultArgs()
+        public void RaiseNoArgs()
         {
-            Raise(DEFAULT_ARGS);
+            Raise(NO_ARGS);
         }
     }
 }

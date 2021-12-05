@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Wallet",
+    "rootNamespace": "Celeste.Wallet",
+    "references": [
+        "GUID:0e2cf0bdf0b4fc54db141044a6b4c2fe",
+        "GUID:c95af7bc4649e4b4da85b957be8cc138",
+        "GUID:53010ec1db6f54b478952285443e341b",
+        "GUID:199ca8e340b41e54499a729dca53137b",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "Celeste.Debug"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

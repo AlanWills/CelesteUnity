@@ -7,6 +7,7 @@
         "Celeste.DataStructures",
         "Celeste.Events",
         "Celeste.UI",
+        "Celeste.Debug",
         "RecyclableScrollRect",
         "Unity.TextMeshPro"
     ],

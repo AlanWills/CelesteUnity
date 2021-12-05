@@ -7,7 +7,7 @@ using Event = Celeste.Events.Event;
 namespace Celeste.UI
 {
     [AddComponentMenu("Celeste/UI/Popup")]
-    public class Popup : MonoBehaviour, IEventListener<ShowPopupArgs>
+    public class Popup : MonoBehaviour
     {
         #region Properties and Fields
 
@@ -33,6 +33,7 @@ namespace Celeste.UI
             Debug.Assert(showPopup != null, $"No 'showPopup' event found on Popup {gameObject.name}.");
             showPopup.AddListener(OnEventRaised);
             popupController = GetComponent<IPopupController>();
+            Debug.Assert(popupController != null, $"No popup controller found on popup {gameObject.name}.");
         }
 
         private void OnDestroy()
@@ -44,7 +45,7 @@ namespace Celeste.UI
 
         #region Show/Hide
 
-        public void Show(ShowPopupArgs args)
+        public void Show(IPopupArgs args)
         {
             popupRoot.SetActive(true);
             
@@ -89,7 +90,7 @@ namespace Celeste.UI
 
         #region Callbacks
 
-        public void OnEventRaised(ShowPopupArgs args)
+        private void OnEventRaised(IPopupArgs args)
         {
             Show(args);
         }

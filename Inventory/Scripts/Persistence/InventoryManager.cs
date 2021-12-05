@@ -25,10 +25,12 @@ namespace Celeste.Inventory
 
         protected override void Deserialize(InventoryDTO dto)
         {
+            inventory.MaxSize = dto.maxSize;
+
             foreach (int itemGuid in dto.itemGuids)
             {
                 InventoryItem item = inventoryItemCatalogue.FindByGuid(itemGuid);
-                Debug.Assert(item != null, $"Could not find inventory item with guid {itemGuid} in catalogue.");
+                UnityEngine.Debug.Assert(item != null, $"Could not find inventory item with guid {itemGuid} in catalogue.");
 
                 if (item != null)
                 {

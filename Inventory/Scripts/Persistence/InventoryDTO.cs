@@ -8,6 +8,7 @@ namespace Celeste.Inventory.Persistence
     [Serializable]
     public class InventoryDTO
     {
+        public int maxSize;
         public List<int> itemGuids;
 
         public InventoryDTO() 
@@ -17,9 +18,10 @@ namespace Celeste.Inventory.Persistence
 
         public InventoryDTO(InventoryRecord inventory)
         {
+            maxSize = inventory.MaxSize;
             itemGuids = new List<int>(inventory.NumItems);
 
-            for (int i = 0; i < itemGuids.Count; ++i)
+            for (int i = 0; i < inventory.NumItems; ++i)
             {
                 itemGuids.Add(inventory.GetItem(i).Guid);
             }

@@ -13,7 +13,6 @@ namespace Celeste.Twine.UI
         [SerializeField] private RecyclableScrollRect scrollRect;
 
         private TwineNode twineNode;
-        private bool initialized;
 
         #endregion
 
@@ -21,15 +20,8 @@ namespace Celeste.Twine.UI
         {
             this.twineNode = twineNode;
 
-            if (!initialized)
-            {
-                scrollRect.Initialize(this);
-                initialized = true;
-            }
-            else
-            {
-                scrollRect.ReloadData(this);
-            }
+            scrollRect.DataSource = this;
+            scrollRect.ReloadData();
         }
 
         #region Data Source Methods

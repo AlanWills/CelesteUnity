@@ -90,15 +90,13 @@ namespace Celeste.Narrative
 
         private void Start()
         {
-            if (graph == null)
+            if (graph != null)
             {
-                return;
+                graph.Runtime = this;
+
+                runtimeEngine = new FSMRuntimeEngine(this);
+                runtimeEngine.Start(StartNode);
             }
-
-            graph.Runtime = this;
-
-            runtimeEngine = new FSMRuntimeEngine(this);
-            runtimeEngine.Start(StartNode);
 
             if (CurrentNode != null)
             {

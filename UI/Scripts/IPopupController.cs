@@ -4,7 +4,7 @@ namespace Celeste.UI
 {
     public interface IPopupController
     {
-        void OnShow(ShowPopupArgs args);
+        void OnShow(IPopupArgs args);
         void OnHide();
 
         void OnConfirmPressed();

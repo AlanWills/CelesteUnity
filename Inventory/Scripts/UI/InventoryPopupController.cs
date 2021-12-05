@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using Celeste.UI;
 using PolyAndCode.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +19,13 @@ namespace Celeste.Inventory.UI
         [Header("Items")]
         [SerializeField] private RecyclableScrollRect scrollRect;
 
-        private List<InventoryItemUIData> inventoryItemUIData = new List<InventoryItemUIData>();
+        [NonSerialized] private List<InventoryItemUIData> inventoryItemUIData = new List<InventoryItemUIData>();
 
         #endregion
 
         #region IPopupController
 
-        public void OnShow(ShowPopupArgs args)
+        public void OnShow(IPopupArgs args)
         {
             for (int i = 0, n = inventory.NumItems; i < n; ++i)
             {
@@ -32,13 +33,13 @@ namespace Celeste.Inventory.UI
                 inventoryItemUIData.Add(new InventoryItemUIData(inventoryItem));
             }
 
-            gameObject.SetActive(true);
             scrollRect.DataSource = this;
-            scrollRect.Initialize(this);
+            scrollRect.ReloadData();
         }
 
         public void OnHide()
         {
+            inventoryItemUIData.Clear();
         }
 
         public void OnConfirmPressed()

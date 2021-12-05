@@ -4,13 +4,15 @@ using UnityEngine.Events;
 
 namespace Celeste.Events
 {
-    [Serializable]
-    public class ShowPopupArgs { }
+    public interface IPopupArgs { }
 
     [Serializable]
-    public class ShowPopupUnityEvent : UnityEvent<ShowPopupArgs> { }
+    public struct NoPopupArgs : IPopupArgs { }
+
+    [Serializable]
+    public class ShowPopupUnityEvent : UnityEvent<IPopupArgs> { }
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(ShowPopupEvent), menuName = "Celeste/Events/UI/Show Popup Event")]
-    public class ShowPopupEvent : ParameterisedEvent<ShowPopupArgs> { }
+    public class ShowPopupEvent : ParameterisedEvent<IPopupArgs> { }
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Celeste.Twine.UI.EditTwineNodePopupController;
 
 namespace Celeste.Twine.UI
 {
@@ -12,7 +13,7 @@ namespace Celeste.Twine.UI
     {
         #region Args Class
 
-        public class EditTwineNodePopupArgs : ShowPopupArgs
+        public struct EditTwineNodePopupArgs : IPopupArgs
         {
             public TwineNode twineNode;
         }
@@ -34,12 +35,10 @@ namespace Celeste.Twine.UI
 
         #region IPopupController
 
-        public void OnShow(ShowPopupArgs args)
+        public void OnShow(IPopupArgs args)
         {
-            EditTwineNodePopupArgs editTwineNodeArgs = args as EditTwineNodePopupArgs;
-            UnityEngine.Debug.Assert(editTwineNodeArgs != null, $"Invalid args inputted into {nameof(EditTwineNodePopupController.OnShow)}.");
-
-            twineNode = editTwineNodeArgs.twineNode;
+            EditTwineNodePopupArgs editTwineNodePopupArgs = (EditTwineNodePopupArgs)args;
+            twineNode = editTwineNodePopupArgs.twineNode;
             titleInputField.text = twineNode.name;
             tagsInputField.text = twineNode.tags.Count > 0 ? string.Join(TAGS_DELIMITER, twineNode.tags) : "";
             textInputField.text = twineNode.text;

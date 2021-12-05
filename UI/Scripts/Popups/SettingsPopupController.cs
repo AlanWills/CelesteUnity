@@ -8,7 +8,7 @@ namespace Celeste.UI
     {
         #region IPopupController
 
-        public void OnShow(ShowPopupArgs args)
+        public void OnShow(IPopupArgs args)
         {
         }
 

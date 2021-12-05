@@ -17,7 +17,15 @@ namespace Celeste.Inventory
             get { return items.Count; }
         }
 
+        public int MaxSize { get; set; }
+
+        public bool IsFull
+        {
+            get { return NumItems >= MaxSize; }
+        }
+
         [SerializeField] private List<InventoryItem> startingItems = new List<InventoryItem>();
+        [SerializeField] private int startingMaxSize = 5;
 
         [Header("Events")]
         [SerializeField] private InventoryItemEvent onItemAdded;
@@ -34,6 +42,8 @@ namespace Celeste.Inventory
         {
             items.Clear();
             items.AddRange(startingItems);
+
+            MaxSize = startingMaxSize;
         }
 
         public InventoryItem GetItem(int index)
@@ -48,9 +58,13 @@ namespace Celeste.Inventory
 
         public void AddItem(InventoryItem inventoryItem)
         {
-            items.Add(inventoryItem);
-            onItemAdded.Invoke(inventoryItem);
-            save.Invoke();
+            UnityEngine.Debug.Assert(!IsFull, $"Failed to add item to full inventory.");
+            if (!IsFull)
+            {
+                items.Add(inventoryItem);
+                onItemAdded.Invoke(inventoryItem);
+                save.Invoke();
+            }
         }
 
         public void RemoveItem(int index)
@@ -59,15 +73,11 @@ namespace Celeste.Inventory
             if (0 <= index && index < NumItems)
 #endif
             {
-                RemoveItem(items[index]);
+                InventoryItem inventoryItem = items[index];
+                items.RemoveAt(index);
+                onItemRemoved.Invoke(inventoryItem);
+                save.Invoke();
             }
-        }
-
-        public void RemoveItem(InventoryItem inventoryItem)
-        {
-            items.Remove(inventoryItem);
-            onItemRemoved.Invoke(inventoryItem);
-            save.Invoke();
         }
 
         #endregion

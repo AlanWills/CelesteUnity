@@ -3,7 +3,7 @@
 namespace Celeste.Events
 {
     [AddComponentMenu("Celeste/Events/UI/Show Popup Event Listener")]
-    public class ShowPopupEventListener : ParameterisedEventListener<ShowPopupArgs, ShowPopupEvent, ShowPopupUnityEvent>
+    public class ShowPopupEventListener : ParameterisedEventListener<IPopupArgs, ShowPopupEvent, ShowPopupUnityEvent>
     {
     }
 }

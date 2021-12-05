@@ -16,7 +16,7 @@ namespace Celeste.UI.Popups
 
         #region IPopupController
 
-        public void OnShow(ShowPopupArgs args) 
+        public void OnShow(IPopupArgs args) 
         {
             inputField.text = nameValue.Value;
         }
