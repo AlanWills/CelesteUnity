@@ -5,7 +5,7 @@ using UnityEditor;
 namespace CelesteEditor.Logic
 {
     [CustomEditor(typeof(Vector3IntValueCondition))]
-    public class Vector3IntValueConditionEditor : ConditionEditor
+    public class Vector3IntValueConditionEditor : ParameterizedValueConditionEditor
     {
         protected override void OnInspectorGUIImpl(SerializedObject valueCondition)
         {

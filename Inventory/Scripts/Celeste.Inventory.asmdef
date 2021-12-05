@@ -8,6 +8,8 @@
         "Celeste.Events",
         "Celeste.UI",
         "Celeste.Debug",
+        "Celeste.Logic",
+        "Celeste.Parameters",
         "RecyclableScrollRect",
         "Unity.TextMeshPro"
     ],

@@ -5,46 +5,27 @@ using static UnityEditor.EditorGUILayout;
 
 namespace CelesteEditor.Logic
 {
-    public abstract class ConditionEditor : Editor
+    [CustomEditor(typeof(Condition), true, isFallback = true)]
+    public class ConditionEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             SerializedObject serializedObject = new SerializedObject(target);
             serializedObject.Update();
 
+            if (GUILayout.Button("Init"))
+            {
+                (target as Condition).Init();
+            }
+
             OnInspectorGUIImpl(serializedObject);
 
             serializedObject.ApplyModifiedProperties();
         }
 
-        protected abstract void OnInspectorGUIImpl(SerializedObject eventConditionObject);
-
-        protected void DrawDefaultInspectorGUI(SerializedObject valueCondition, string[] operatorDisplayNames, int[] operators)
+        protected virtual void OnInspectorGUIImpl(SerializedObject eventConditionObject)
         {
-            using (VerticalScope vertical = new VerticalScope())
-            {
-                SerializedProperty valueProperty = valueCondition.FindProperty("value");
-                SerializedProperty conditionProperty = valueCondition.FindProperty("condition");
-                SerializedProperty targetProperty = valueCondition.FindProperty("target");
-
-                if (targetProperty.objectReferenceValue == null)
-                {
-                    if (GUILayout.Button("Init"))
-                    {
-                        (valueCondition.targetObject as Condition).Init();
-                    }
-
-                    return;
-                }
-
-                EditorGUILayout.PropertyField(valueProperty);
-
-                int chosenOperator = conditionProperty.enumValueIndex;
-                chosenOperator = EditorGUILayout.IntPopup(chosenOperator, operatorDisplayNames, operators);
-                conditionProperty.enumValueIndex = chosenOperator;
-
-                EditorGUILayout.PropertyField(targetProperty);
-            }
+            DrawPropertiesExcluding(eventConditionObject, "m_Script");
         }
     }
 }
