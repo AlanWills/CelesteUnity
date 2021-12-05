@@ -604,6 +604,27 @@ namespace CelesteEditor.Twine
                     analysis.unrecognizedKeys.Add(key);
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                string[] splitText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (splitText != null &&
+                    splitText.Length >= 2 &&
+                    IsSetParameterInstruction(splitText[0]))
+                {
+                    string parameterName = splitText[1];
+
+                    if (IsRegisteredParameterKey(parameterName))
+                    {
+                        analysis.foundParameters.Add(parameterName);
+                    }
+                    else
+                    {
+                        analysis.unrecognizedKeys.Add(parameterName);
+                    }
+                }
+            }
         }
 
         #endregion

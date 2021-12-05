@@ -1,5 +1,7 @@
 using Celeste.Twine;
+using System.IO;
 using UnityEditor;
+using UnityEngine;
 using static CelesteEditor.Scene.MenuItemUtility;
 
 namespace DnDEditor.Twine
@@ -32,10 +34,18 @@ namespace DnDEditor.Twine
                     {
                         twineNode.links.Clear();
                         twineNode.links.AddRange(TwineNodeLink.CreateFromText(twineNode.text));
+
+                        foreach (TwineNodeLink twineNodeLink in twineNode.links)
+                        {
+                            TwineNode linkedNode = twineStory.passages.Find(x => string.CompareOrdinal(x.name, twineNodeLink.link) == 0);
+                            twineNodeLink.pid = linkedNode != null ? linkedNode.pid : 0;
+                            twineNodeLink.broken = linkedNode == null;
+                        }
                     }
 
-                    EditorUtility.SetDirty(twineStory);
-                    AssetDatabase.SaveAssets();
+                    string storyPath = AssetDatabase.GetAssetPath(twineStory);
+                    File.WriteAllText(storyPath, JsonUtility.ToJson(twineStory));
+                    
                     AssetDatabase.Refresh();
                 }
                 else
