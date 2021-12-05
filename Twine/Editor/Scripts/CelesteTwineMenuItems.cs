@@ -17,5 +17,32 @@ namespace DnDEditor.Twine
         {
             DeletePersistentDataFile(TwineManager.FILE_NAME);
         }
+
+        [MenuItem("Celeste/Narrative/Create Links For Twine Story")]
+        public static void CreateLinksFromText()
+        {
+            foreach (var obj in Selection.objects)
+            {
+                if (obj is TwineStory)
+                {
+                    UnityEngine.Debug.Log($"Creating links for story {obj.name}.");
+                    TwineStory twineStory = obj as TwineStory;
+
+                    foreach (TwineNode twineNode in twineStory.passages)
+                    {
+                        twineNode.links.Clear();
+                        twineNode.links.AddRange(TwineNodeLink.CreateFromText(twineNode.text));
+                    }
+
+                    EditorUtility.SetDirty(twineStory);
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning($"Skipping creating links for {obj.name}.  It is not a {nameof(TwineStory)}.");
+                }
+            }
+        }
     }
 }

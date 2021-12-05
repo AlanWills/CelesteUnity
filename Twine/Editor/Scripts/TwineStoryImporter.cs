@@ -430,7 +430,7 @@ namespace CelesteEditor.Twine
             string[] guids = AssetUtility.FindAssets<T>(name, directory);
             if (guids != null && guids.Length != 1)
             {
-                Debug.LogAssertion($"Could not find single asset matching {name}.  Skipping find...");
+                Debug.LogAssertion($"Could not find single asset of type {typeof(T).Name} matching {name}.  Skipping find...");
                 asset = default;
                 return false;
             }

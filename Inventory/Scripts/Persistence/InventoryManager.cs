@@ -50,5 +50,17 @@ namespace Celeste.Inventory
         }
 
         #endregion
+
+        #region Callbacks
+
+        public void OnAddItemToInventory(InventoryItem item)
+        {
+            if (!inventory.IsFull)
+            {
+                inventory.AddItem(item);
+            }
+        }
+
+        #endregion
     }
 }
