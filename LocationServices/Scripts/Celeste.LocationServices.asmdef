@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.LocationServices",
+    "rootNamespace": "Celeste.LocationServices",
+    "references": [
+        "GUID:f7b5d0e02af6ff2488cac962aeb93c2c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
