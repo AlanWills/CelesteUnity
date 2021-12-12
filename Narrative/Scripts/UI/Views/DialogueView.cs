@@ -16,7 +16,6 @@ namespace Celeste.Narrative.UI
         [SerializeField] private TextMeshProUGUI dialogueText;
         [SerializeField] private Animator dialogueAnimator;
         [SerializeField] private DialogueTypeStyle[] dialogueTypeStyles;
-        [SerializeField] private UIPositionAnchor[] uiPositionAnchors;
 
         #endregion
 
@@ -52,7 +51,6 @@ namespace Celeste.Narrative.UI
             dialogueText.text = dialogueNode.Dialogue;
 
             SetDialogueTypeStyle(dialogueNode.DialogueType);
-            SetUIPosition(dialogueNode.UIPosition);
 
             dialogueAnimator.SetTrigger("Show");
         }
@@ -74,15 +72,6 @@ namespace Celeste.Narrative.UI
                     dialogueText.text = string.Format(style.format, dialogueText.text);
                 }
             }
-        }
-
-        public void SetUIPosition(UIPosition uiPosition)
-        {
-            UIPositionAnchor positionAnchor = Array.Find(uiPositionAnchors, x => x.uiPosition == uiPosition);
-            RectTransform anchor = positionAnchor.anchor;
-            UnityEngine.Debug.Assert(anchor != null, $"Could not find anchor for UI Position {uiPosition}.  Perhaps it has not been set in the Inspector?");
-
-            dialogueTransform.CopyLayoutFrom(anchor);
         }
     }
 }
