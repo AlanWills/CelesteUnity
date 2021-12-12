@@ -3,7 +3,9 @@
     "rootNamespace": "CelesteEditor.Platform",
     "references": [
         "GUID:69448af7b92c7f342b298e06a37122aa",
-        "GUID:c72a5f4da32243f4c8f942fc155455e5"
+        "GUID:c72a5f4da32243f4c8f942fc155455e5",
+        "Celeste.Tools",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

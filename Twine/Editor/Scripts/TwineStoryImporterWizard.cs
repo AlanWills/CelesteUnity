@@ -13,7 +13,7 @@ using Celeste.Twine;
 
 namespace CelesteEditor.Twine
 {
-    public class TwineStoryImporter : ScriptableWizard
+    public class TwineStoryImporterWizard : ScriptableWizard
     {
         #region Properties and Fields
 
@@ -31,9 +31,9 @@ namespace CelesteEditor.Twine
         #region Menu Item
 
         [MenuItem("Celeste/Narrative/Twine Story Importer")]
-        public static void CreateTwineStoryImporterWizard()
+        public static void ShowTwineStoryImporterWizard()
         {
-            DisplayWizard<TwineStoryImporter>("Twine Story Importer", "Close", "Import");
+            DisplayWizard<TwineStoryImporterWizard>("Twine Story Importer", "Close", "Import");
         }
 
         #endregion

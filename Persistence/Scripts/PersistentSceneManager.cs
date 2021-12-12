@@ -111,7 +111,7 @@ namespace Celeste.Persistence
             // Save debug human readable file
             {
                 string debugPersistentFilePath = $"{persistentFilePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
-                File.WriteAllText(debugPersistentFilePath, JsonUtility.ToJson(serializedInstance));
+                File.WriteAllText(debugPersistentFilePath, JsonUtility.ToJson(serializedInstance, true));
             }
 #endif
 
