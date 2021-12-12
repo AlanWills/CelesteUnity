@@ -189,7 +189,11 @@ namespace CelesteEditor.Twine
 
         [Header("Tags")]
         [SerializeField] private string ignoreTag = "Ignore";
+        [SerializeField] private string startTag = "Start";
         [SerializeField] private string finishTag = "Finish";
+        [SerializeField] private string dialogueTag = "Dialogue";
+        [SerializeField] private string choiceTag = "Choice";
+        [SerializeField] private string scriptTag = "Script";
         [SerializeField] private UIPositionTag[] uiPositionTags;
         [SerializeField] private DialogueTypeTag[] dialogueTypeTags;
         public List<CharacterTag> characterTags = new List<CharacterTag>();
@@ -299,7 +303,7 @@ namespace CelesteEditor.Twine
 
         #region Tag Utility
 
-        public Character FindCharacterFromTag(IList<string> tags)
+        public Character FindCharacterInTags(IList<string> tags)
         {
             for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
             {
@@ -346,9 +350,29 @@ namespace CelesteEditor.Twine
             return ContainsTag(tags, ignoreTag);
         }
 
+        public bool ContainsStartTag(IList<string> tags)
+        {
+            return ContainsTag(tags, startTag);
+        }
+
         public bool ContainsFinishTag(IList<string> tags)
         {
             return ContainsTag(tags, finishTag);
+        }
+
+        public bool ContainsDialogueTag(IList<string> tags)
+        {
+            return ContainsTag(tags, dialogueTag);
+        }
+
+        public bool ContainsChoiceTag(IList<string> tags)
+        {
+            return ContainsTag(tags, choiceTag);
+        }
+
+        public bool ContainsScriptTag(IList<string> tags)
+        {
+            return ContainsTag(tags, scriptTag);
         }
 
         private bool ContainsTag(IList<string> tags, string desiredTag)
@@ -363,7 +387,27 @@ namespace CelesteEditor.Twine
                 return true;
             }
 
+            if (string.CompareOrdinal(tag, startTag) == 0)
+            {
+                return true;
+            }
+
             if (string.CompareOrdinal(tag, finishTag) == 0)
+            {
+                return true;
+            }
+
+            if (string.CompareOrdinal(tag, dialogueTag) == 0)
+            {
+                return true;
+            }
+
+            if (string.CompareOrdinal(tag, choiceTag) == 0)
+            {
+                return true;
+            }
+
+            if (string.CompareOrdinal(tag, scriptTag) == 0)
             {
                 return true;
             }

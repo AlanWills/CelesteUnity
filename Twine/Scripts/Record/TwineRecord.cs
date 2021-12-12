@@ -81,9 +81,7 @@ namespace Celeste.Twine
 
             TwineStory twineStory = CreateTwineStoryAsset(newName);
             twineStory.Initialize();    // Initialize before adding nodes
-
-            TwineNode startNode = twineStory.AddNode("Untitled 1");
-            twineStory.startnode = startNode.pid;
+            twineStory.AddNode("Untitled 1");
 
             saveTwineStory.Invoke(twineStory);
 

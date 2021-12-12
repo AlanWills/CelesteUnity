@@ -21,7 +21,7 @@ namespace CelesteEditor.Twine.ParserSteps
             ICharacterNode characterNode = parseContext.FSMNode as ICharacterNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
 
-            Character character = importerSettings.FindCharacterFromTag(node.tags);
+            Character character = importerSettings.FindCharacterInTags(node.tags);
             Debug.Assert(character != null, $"Could not find character for node {node.name} ({node.pid}).");
             UIPosition characterDefaultPosition = character != null ? character.DefaultUIPosition : UIPosition.Centre;
 

@@ -1,11 +1,9 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using XNode;
-using Celeste.DataStructures;
 using Celeste.Narrative.Characters;
 using static UnityEditor.EditorGUILayout;
 using static CelesteEditor.Twine.TwineStoryImporterSettings;
@@ -22,6 +20,7 @@ namespace CelesteEditor.Twine
         [SerializeField] private TwineStory twineStory;
         [SerializeField] private TwineStoryImporterSettings importerSettings;
         [SerializeField] private NarrativeGraph narrativeGraph;
+        [SerializeField] private bool stopOnParserError;
 
         private TwineStoryAnalysis twineStoryAnalysis;
         private List<string> removedUnresolvedTags = new List<string>();
@@ -90,8 +89,11 @@ namespace CelesteEditor.Twine
 
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
 
-            Debug.Assert(twineStory.startnode > 0, $"Twine Story {twineStory.name} has no start node set.");
-            Vector2 startNodePosition = twineStory.passages.Find(x => x.pid == twineStory.startnode).Position;
+            TwineNode startNode = twineStory.passages.Find(x => importerSettings.ContainsStartTag(x.tags));
+            Debug.Assert(startNode != null, $"Twine Story {twineStory.name} has no start node set.");
+
+            Vector2 startNodePosition = startNode != null ? startNode.Position : Vector2.zero;
+            bool parserErrorOccurred = false;
 
             foreach (TwineNode twineNode in twineStory.passages)
             {
@@ -107,61 +109,70 @@ namespace CelesteEditor.Twine
                 else
                 {
                     Debug.LogError($"Failed to parse node {twineNode.name}.  Transitions will not be created properly...");
+                    parserErrorOccurred = true;
                 }
-            }
 
-            // Now resolve transitions
-            foreach (TwineNode node in twineStory.passages)
-            {
-                if (node.links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
+                if (stopOnParserError && parserErrorOccurred)
                 {
-                    if (graphNode is ChoiceNode)
+                    break;
+                }
+            }
+
+            if (!parserErrorOccurred)
+            {
+                // Now resolve transitions
+                foreach (TwineNode node in twineStory.passages)
+                {
+                    if (node.links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                     {
-                        foreach (TwineNodeLink link in node.links)
+                        if (graphNode is ChoiceNode)
                         {
-                            if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                            foreach (TwineNodeLink link in node.links)
                             {
-                                NodePort outputPort = graphNode.GetOutputPort(link.link);
-                                Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
+                                if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                                {
+                                    NodePort outputPort = graphNode.GetOutputPort(link.link);
+                                    Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
 
-                                NodePort inputPort = target.GetDefaultInputPort();
-                                Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
+                                    NodePort inputPort = target.GetDefaultInputPort();
+                                    Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
 
-                                outputPort.Connect(inputPort);
-                            }
-                            else
-                            {
-                                Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                                    outputPort.Connect(inputPort);
+                                }
+                                else
+                                {
+                                    Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        foreach (TwineNodeLink link in node.links)
+                        else
                         {
-                            if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                            foreach (TwineNodeLink link in node.links)
                             {
-                                NodePort outputPort = graphNode.GetDefaultOutputPort();
-                                Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
+                                if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                                {
+                                    NodePort outputPort = graphNode.GetDefaultOutputPort();
+                                    Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
 
-                                NodePort inputPort = target.GetDefaultInputPort();
-                                Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
+                                    NodePort inputPort = target.GetDefaultInputPort();
+                                    Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
 
-                                outputPort.Connect(inputPort);
-                            }
-                            else
-                            {
-                                Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                                    outputPort.Connect(inputPort);
+                                }
+                                else
+                                {
+                                    Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Set the start node using the pid from the twine story
-            if (!nodeLookup.TryGetValue(twineStory.startnode, out narrativeGraph.startNode))
-            {
-                Debug.LogError($"Failed to find start node with pid {twineStory.startnode}.");
+                // Set the start node using the pid from the twine story
+                if (startNode == null || !nodeLookup.TryGetValue(startNode.pid, out narrativeGraph.startNode))
+                {
+                    Debug.LogError($"Failed to set start node on narrative graph.");
+                }
             }
 
             EditorUtility.SetDirty(narrativeGraph);

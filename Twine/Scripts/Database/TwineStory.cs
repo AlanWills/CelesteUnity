@@ -16,7 +16,6 @@ namespace Celeste.Twine
         public TwineNodeUnityEvent OnNodeAdded { get; } = new TwineNodeUnityEvent();
         public UnityEvent OnChanged { get; } = new UnityEvent();
 
-        public int startnode;
         public List<TwineNode> passages = new List<TwineNode>();
 
         [NonSerialized] private bool isInitialized = false;

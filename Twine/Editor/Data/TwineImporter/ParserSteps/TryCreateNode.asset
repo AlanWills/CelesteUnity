@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3caffaae65aed44b0fd9df0a8c4602, type: 3}
+  m_Name: TryCreateNode
+  m_EditorClassIdentifier: 
+  createNodeSteps:
+  - {fileID: 11400000, guid: 76278f838e780e54486bb6a041afef64, type: 2}
+  - {fileID: 11400000, guid: e3fb61adade35e54ba9c19affb000556, type: 2}
+  - {fileID: 11400000, guid: 2a92a7b72fbe63a44ba11cc81dccf4d5, type: 2}
+  - {fileID: 11400000, guid: effc3f1896fa4024b8c566b888b2c243, type: 2}

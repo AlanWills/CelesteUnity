@@ -32,13 +32,11 @@ namespace Celeste.Twine.UI
                     TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
                 }
 
-                // Centre the starting node in the middle of the screen, but adjusting the offset of the parent
-                TwineNode startNode = twineStory.passages.Find(x => x.pid == twineStory.startnode);
-                UnityEngine.Debug.Assert(startNode != null, $"Could not find start node for pid {twineStory.startnode}.");
-
-                if (startNode != null)
+                // Centre the last created node in the middle of the screen by adjusting the offset of the parent
+                int passagesCount = twineStory.passages.Count;
+                if (passagesCount > 0)
                 {
-                    twineNodeUIAllocator.transform.localPosition = -startNode.Position;
+                    twineNodeUIAllocator.transform.localPosition = -twineStory.passages[passagesCount - 1].Position;
                 }
             }
         }

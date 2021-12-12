@@ -1,11 +1,12 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative;
+using Celeste.Twine;
 using System.Collections;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryCreateChoiceNode", menuName = "Celeste/Twine/Parser Steps/Try Create Choice Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateChoiceNode), menuName = "Celeste/Twine/Parser Steps/Try Create Choice Node")]
     public class TryCreateChoiceNode : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
@@ -15,7 +16,18 @@ namespace CelesteEditor.Twine.ParserSteps
                 return false;
             }
 
-            return parseContext.TwineNode.links.Count > 1;
+            TwineNode twineNode = parseContext.TwineNode;
+            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
+
+            if (importerSettings.ContainsDialogueTag(twineNode.tags))
+            {
+                // If we have the dialogue tag, we parse this as dialogue no matter what
+                return true;
+            }
+
+            // We must have more than one link and also a valid character set
+            return twineNode.links.Count > 1 &&
+                   importerSettings.FindCharacterInTags(twineNode.tags) != null;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
