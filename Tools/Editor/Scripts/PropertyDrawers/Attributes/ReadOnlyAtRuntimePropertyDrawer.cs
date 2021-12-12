@@ -18,9 +18,10 @@ namespace CelesteEditor.PropertyDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
+            bool oldEnabled = GUI.enabled;
             GUI.enabled = !Application.isPlaying;
             EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = true;
+            GUI.enabled = oldEnabled;
 
             EditorGUI.EndProperty();
         }

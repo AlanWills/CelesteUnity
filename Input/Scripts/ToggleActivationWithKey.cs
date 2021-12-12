@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Input
 {
@@ -13,20 +8,12 @@ namespace Celeste.Input
         #region Properties and Fields
 
         [SerializeField] private GameObject toToggle;
-        [SerializeField] private KeyCode toggleKey;
 
         #endregion
 
-        #region Unity Methods
-
-        private void Update()
+        public void Toggle()
         {
-            if (UnityEngine.Input.GetKeyDown(toggleKey))
-            {
-                toToggle.SetActive(!toToggle.activeSelf);
-            }
+            toToggle.SetActive(!toToggle.activeSelf);
         }
-
-        #endregion
     }
 }

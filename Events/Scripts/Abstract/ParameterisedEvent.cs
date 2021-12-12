@@ -40,24 +40,32 @@ namespace Celeste.Events
 
         public void Invoke(T argument)
         {
-            Debug.Log(string.Format("Event {0} was raised with argument {1}", name, argument != null ? argument.ToString() : "<null>"));
+            Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}");
             InvokeSilently(argument);
         }
 
         public void InvokeSilently(T argument)
         {
-            cachedListeners.Clear();
-            cachedListeners.AddRange(gameEventListeners);
-
-            // Cache the gameEventListeners to ensure that if events are unsubscribed from a callback
-            // we can handle that and don't fall over
-            for (int i = 0; i < cachedListeners.Count; ++i)
+            int gameEventListenersCount = gameEventListeners.Count;
+            if (gameEventListenersCount > 0)
             {
-                Debug.Assert(cachedListeners[i] != null, $"Event {name} has a cached listener which is null");
-                cachedListeners[i](argument);
-            }
+                cachedListeners.Clear();
+                cachedListeners.AddRange(gameEventListeners);
 
-            cachedListeners.Clear();
+                // Cache the gameEventListeners to ensure that if events are unsubscribed from a callback
+                // we can handle that and don't fall over
+                for (int i = 0; i < gameEventListenersCount; ++i)
+                {
+                    Debug.Assert(cachedListeners[i] != null, $"Event {name} has a cached listener which is null.");
+                    cachedListeners[i](argument);
+                }
+
+                cachedListeners.Clear();
+            }
+            else
+            {
+                Debug.LogWarning($"Event {name} fired with argument {(argument != null ? argument.ToString() : "<null>")}, but no-one was listening.");
+            }
         }
 
         #endregion

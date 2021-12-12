@@ -12,16 +12,18 @@ namespace CelesteEditor.UI
         {
             EditorGUI.BeginChangeCheck();
 
+            CanvasLayers canvasLayers = target as CanvasLayers;
+
             if (GUILayout.Button("Synchronize"))
             {
-                (target as CanvasLayers).Synchronize();
+                canvasLayers.Synchronize();
             }
 
             base.OnInspectorGUI();
 
             if (EditorGUI.EndChangeCheck())
             {
-                (target as CanvasLayers).Synchronize();
+                canvasLayers.Synchronize();
             }
         }
     }

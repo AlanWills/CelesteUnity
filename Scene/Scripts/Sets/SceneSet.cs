@@ -111,8 +111,6 @@ namespace Celeste.Scene
                         yield return null;
                     }
 
-                    yield return new WaitForSeconds(4);
-
                     progress += progressChunkPerScene;
                     onProgressChanged.Invoke(progress);
                 }

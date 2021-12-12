@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Celeste.Tools.Attributes.GUI;
+using UnityEngine;
 
 namespace Celeste.UI
 {
@@ -20,6 +21,6 @@ namespace Celeste.UI
             }
         }
 
-        [SerializeField] private int sortOrder = 0;
+        [SerializeField, ReadOnly] private int sortOrder = 0;
     }
 }

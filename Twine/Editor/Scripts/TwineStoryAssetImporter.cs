@@ -15,6 +15,8 @@ namespace CelesteEditor.Twine
             TwineStory twineStory = ScriptableObject.CreateInstance<TwineStory>();
             JsonUtility.FromJsonOverwrite(assetText, twineStory);
 
+            Debug.Assert(twineStory.startnode > 0, $"Twine Story {ctx.assetPath} has no start node set.");
+
             foreach (var node in twineStory.passages)
             {
                 Debug.Assert(node != null, $"Null node found in twine story passages.");

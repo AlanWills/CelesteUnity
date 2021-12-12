@@ -250,6 +250,14 @@ PrefabInstance:
       propertyPath: m_ChildForceExpandWidth
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4469120737523952217, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4708798523260792029, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6175683919976353797, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25

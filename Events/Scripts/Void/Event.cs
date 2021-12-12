@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Events
@@ -14,6 +11,7 @@ namespace Celeste.Events
         #region Properties and Fields
 
         private List<Action> gameEventListeners = new List<Action>();
+        private List<Action> cachedListeners = new List<Action>();
 
         #endregion
 
@@ -46,7 +44,7 @@ namespace Celeste.Events
 
         public void Invoke()
         {
-            Debug.Log(string.Format("Event {0} was raised", name));
+            Debug.Log($"Event {name} was raised");
             InvokeSilently();
         }
 
@@ -54,9 +52,25 @@ namespace Celeste.Events
         {
             // Do the check for gameEventListeners to ensure that if events are unsubscribed from a callback
             // we can handle that and don't fall over
-            for (int i = gameEventListeners.Count - 1; i >= 0 && gameEventListeners.Count > 0; --i)
+            int gameEventListenersCount = gameEventListeners.Count;
+            if (gameEventListenersCount > 0)
             {
-                gameEventListeners[i]();
+                cachedListeners.Clear();
+                cachedListeners.AddRange(gameEventListeners);
+
+                // Cache the gameEventListeners to ensure that if events are unsubscribed from a callback
+                // we can handle that and don't fall over
+                for (int i = 0; i < gameEventListenersCount; ++i)
+                {
+                    Debug.Assert(cachedListeners[i] != null, $"Event {name} has a cached listener which is null.");
+                    cachedListeners[i]();
+                }
+
+                cachedListeners.Clear();
+            }
+            else
+            {
+                Debug.LogWarning($"Event {name} fired, but no-one was listening.");
             }
         }
 

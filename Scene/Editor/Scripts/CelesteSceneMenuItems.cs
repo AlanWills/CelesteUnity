@@ -47,6 +47,7 @@ namespace CelesteEditor.Scene
             }
 
             EditorBuildSettings.scenes = newScenes.Values.ToArray();
+            AssetDatabase.SaveAssets();
         }
     }
 }

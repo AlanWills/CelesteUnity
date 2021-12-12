@@ -1,9 +1,4 @@
 ﻿using Celeste.FSM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -43,7 +38,9 @@ namespace Celeste.Narrative.UI
 
         public void OnPointerClick(PointerEventData pointerEventData)
         {
-            if (pointerEventData.pointerClick == gameObject && clickHandlerNode != null)
+            // For some reason, after upgrading to the new input system I have to use pointerPress
+            // instead of pointerClick.  It seems to work, but I don't know what's going on
+            if (pointerEventData.pointerPress == gameObject && clickHandlerNode != null)
             {
                 clickHandlerNode.OnPointerClick(pointerEventData);
             }

@@ -89,6 +89,8 @@ namespace CelesteEditor.Twine
             narrativeGraph.RemoveAllNodes();
 
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
+
+            Debug.Assert(twineStory.startnode > 0, $"Twine Story {twineStory.name} has no start node set.");
             Vector2 startNodePosition = twineStory.passages.Find(x => x.pid == twineStory.startnode).Position;
 
             foreach (TwineNode twineNode in twineStory.passages)

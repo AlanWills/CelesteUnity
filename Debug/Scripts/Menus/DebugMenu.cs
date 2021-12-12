@@ -35,6 +35,18 @@ namespace Celeste.Debug.Menus
 
         #endregion
 
+        #region Unity Methods
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrWhiteSpace(displayName))
+            {
+                displayName = name;
+            }
+        }
+
+        #endregion
+
         public void DrawMenu()
         {
             if (GUILayout.Button("Back"))

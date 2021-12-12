@@ -15,50 +15,15 @@ namespace Celeste.Debug.Commands
 
         #endregion
 
-        public void Execute()
-        {
-            onExecute.Invoke(commandInput.text);
-        }
-
-        #region Unity Methods
-
-        private void Awake()
-        {
-            gameObject.SetActive(false);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyUp(KeyCode.Return))
-            {
-                Execute();
-            }
-        }
-
-        #endregion
-
-        #region Activation
-
-        public void TryToggle(MultiTouchEventArgs multiTouchEventArgs)
-        {
-#if UNITY_ANDROID || UNITY_IOS
-            for (int i = 0; i < multiTouchEventArgs.touchCount; ++i)
-            {
-                if (multiTouchEventArgs.touches[i].phase == TouchPhase.Ended)
-                {
-                    Toggle();
-                    return;
-                }
-            }
-#endif
-        }
-
         public void Toggle()
         {
             gameObject.SetActive(!gameObject.activeSelf);
         }
 
-        #endregion
+        public void Execute()
+        {
+            onExecute.Invoke(commandInput.text);
+        }
 
         #region Callbacks
 
