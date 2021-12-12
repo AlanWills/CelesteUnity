@@ -17,6 +17,11 @@ namespace Celeste.Twine.UI
 
         #endregion
 
+        private void CentreOn(TwineNode twineNode)
+        {
+            twineNodeUIAllocator.transform.localPosition = -twineNode.Position;
+        }
+
         #region Callbacks
 
         public void OnTwineStoryLoaded(TwineStory twineStory)
@@ -36,7 +41,7 @@ namespace Celeste.Twine.UI
                 int passagesCount = twineStory.passages.Count;
                 if (passagesCount > 0)
                 {
-                    twineNodeUIAllocator.transform.localPosition = -twineStory.passages[passagesCount - 1].Position;
+                    CentreOn(twineStory.passages[passagesCount - 1]);
                 }
             }
         }
@@ -44,6 +49,7 @@ namespace Celeste.Twine.UI
         public void OnTwineNodeCreated(TwineNode twineNode)
         {
             TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
+            CentreOn(twineNode);
         }
 
         public void OnFollowTwineNodeLink(int pid)

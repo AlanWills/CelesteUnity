@@ -1,7 +1,4 @@
 using Celeste.Debug.Menus;
-using PedometerU;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,33 +9,21 @@ namespace Celeste.LocationServices
     {
         #region Properties and Fields
 
-        private Pedometer pedometer;
-        private int pedometerSteps = 0;
-        private double pedometerDistance = 0;
+        [SerializeField] private LocationServicesRecord locationServicesRecord;
 
         #endregion
 
-        protected override void OnShowMenu()
-        {
-            base.OnShowMenu();
-
-            if (pedometer == null)
-            {
-                pedometer = new Pedometer(OnStep);
-            }
-        }
-
         protected override void OnDrawMenu()
         {
-            if (pedometer.updateCount > 0)
+            if (locationServicesRecord.UpdateCount == 0)
             {
                 GUILayout.Label($"Pedometer Still Initializing");
             }
             else
             {
-                GUILayout.Label($"Pedometer Steps: {pedometerSteps}");
-                GUILayout.Label($"Pedometer Distance: {pedometerDistance}");
-                GUILayout.Label($"Pedometer Update: {pedometer.updateCount}");
+                GUILayout.Label($"Pedometer Steps: {locationServicesRecord.PedometerSteps}");
+                GUILayout.Label($"Pedometer Distance: {locationServicesRecord.PedometerDistance}");
+                GUILayout.Label($"Pedometer Update: {locationServicesRecord.UpdateCount}");
             }
             
             if (StepCounter.current != null)
@@ -52,12 +37,6 @@ namespace Celeste.LocationServices
             {
                 GUILayout.Label("Current Step Counter null");
             }
-        }
-
-        private void OnStep(int steps, double distance)
-        {
-            pedometerSteps = steps;
-            pedometerDistance = distance;
         }
     }
 }

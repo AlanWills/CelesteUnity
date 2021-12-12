@@ -8,7 +8,8 @@ namespace PedometerU {
     using UnityEngine;
     using System;
     using Platforms;
-    
+    using Celeste.LocationServices.Platforms;
+
     public sealed class Pedometer : IDisposable {
 
         #region --Properties--
@@ -82,7 +83,7 @@ namespace PedometerU {
             #elif UNITY_ANDROID && !UNITY_EDITOR
             new PedometerAndroid();
             #else
-            null;
+            new PedometerDisabled();
             #endif
             PedometerUtility.Initialize();
         }

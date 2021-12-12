@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95702c7b94a4bd849a8537c5001f2110, type: 3}
-  m_Name: LocationServicesDebugMenu
+  m_Script: {fileID: 11500000, guid: 3483fb5da18812e4aa5645d454030bca, type: 3}
+  m_Name: LocationServicesRecord
   m_EditorClassIdentifier: 
-  displayName: Location Services
-  locationServicesRecord: {fileID: 11400000, guid: 762e5dc2efd905443a76fc22bf11c2b0, type: 2}
