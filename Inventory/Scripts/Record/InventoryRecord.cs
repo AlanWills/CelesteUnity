@@ -24,7 +24,6 @@ namespace Celeste.Inventory
             get { return NumItems >= MaxSize; }
         }
 
-        [SerializeField] private List<InventoryItem> startingItems = new List<InventoryItem>();
         [SerializeField] private int startingMaxSize = 5;
 
         [Header("Events")]
@@ -38,7 +37,7 @@ namespace Celeste.Inventory
 
         #region Item Management
 
-        public void CreateStartingInventory()
+        public void CreateStartingInventory(InventoryItem[] startingItems)
         {
             items.Clear();
             items.AddRange(startingItems);

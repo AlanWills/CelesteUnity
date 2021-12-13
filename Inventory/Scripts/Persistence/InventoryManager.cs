@@ -46,7 +46,7 @@ namespace Celeste.Inventory
 
         protected override void SetDefaultValues()
         {
-            inventory.CreateStartingInventory();
+            inventory.CreateStartingInventory(inventoryItemCatalogue.startingItems);
         }
 
         #endregion

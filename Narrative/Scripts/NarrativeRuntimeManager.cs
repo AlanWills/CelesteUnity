@@ -21,12 +21,7 @@ namespace Celeste.Narrative
 
         private void BeginNarrativeRuntime(ChapterRecord chapterRecord)
         {
-            if (chapterRecord == null)
-            {
-                UnityEngine.Debug.LogAssertion("Failed to begin narrative runtime due to null chapter record.");
-                return;
-            }
-
+            chapterRecord.LoadChapterValueRecords();
             currentChapterRecord.Value = chapterRecord;
 
             GameObject gameObject = new GameObject();
@@ -41,6 +36,14 @@ namespace Celeste.Narrative
         public void OnNarrativeContextLoaded(OnContextLoadedArgs onContextLoadedArgs)
         {
             NarrativeContext narrativeContext = onContextLoadedArgs.context as NarrativeContext;
+            ChapterRecord chapterRecord = narrativeContext.chapterRecord;
+
+            if (chapterRecord == null)
+            {
+                UnityEngine.Debug.LogAssertion("Encountered error beginning narrative runtime due to null chapter record.");
+                return;
+            }
+
             BeginNarrativeRuntime(narrativeContext.chapterRecord);
         }
 

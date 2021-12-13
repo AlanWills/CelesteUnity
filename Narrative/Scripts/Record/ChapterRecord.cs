@@ -185,6 +185,29 @@ namespace Celeste.Narrative
             return valueRecords.Find(x => string.CompareOrdinal(x.Name, name) == 0);
         }
 
+        public void LoadChapterValueRecords()
+        {
+            for (int i = 0, n = valueRecords.Count; i < n; ++i)
+            {
+                ValueRecord valueRecord = valueRecords[i];
+
+                switch (valueRecord.Type)
+                {
+                    case ValueType.String:
+                        valueRecord.ApplyTo(Chapter.FindStringValue(valueRecord.Name));
+                        break;
+
+                    case ValueType.Bool:
+                        valueRecord.ApplyTo(Chapter.FindBoolValue(valueRecord.Name));
+                        break;
+
+                    default:
+                        UnityEngine.Debug.LogAssertion($"Unhandled value type '{valueRecord.Type}' for value '{valueRecord.Name}'.");
+                        break;
+                }
+            }
+        }
+
         #endregion
     }
 }

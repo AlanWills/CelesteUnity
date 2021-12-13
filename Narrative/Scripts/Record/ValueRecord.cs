@@ -10,63 +10,50 @@ namespace Celeste.Narrative
         Bool
     }
 
-    [Serializable]
     public class ValueRecord
     {
         #region Properties and Fields
 
-        public string Name { get { return value.name; } }
+        public string Name { get; }
         public ValueType Type { get; }
-        public object Value
-        { 
-            get 
-            {
-                switch (Type)
-                {
-                    case ValueType.String:
-                        return (value as ParameterValue<string>).Value;
-                    
-                    case ValueType.Bool:
-                        return (value as ParameterValue<bool>).Value;
-
-                    default:
-                        UnityEngine.Debug.LogAssertion($"Unhandled {nameof(ValueType)} {Type} in {nameof(ValueRecord)} {Name}.");
-                        return null;
-                }
-            }
-            set
-            {
-                switch (Type)
-                {
-                    case ValueType.String:
-                        (this.value as ParameterValue<string>).Value = value as string;
-                        break;
-
-                    case ValueType.Bool:
-                        (this.value as ParameterValue<bool>).Value = (bool)value;
-                        break;
-
-                    default:
-                        UnityEngine.Debug.LogAssertion($"Unhandled {nameof(ValueType)} {Type} in {nameof(ValueRecord)} {Name}.");
-                        break;
-                }
-            }
-        }
-
-        private ScriptableObject value;
+        public object Value { get; set; }
 
         #endregion
 
         public ValueRecord(StringValue value)
         {
-            this.value = value;
+            Name = value.name;
+            Value = value.Value;
             Type = ValueType.String;
         }
 
         public ValueRecord(BoolValue value)
         {
-            this.value = value;
+            Name = value.name;
+            Value = value.Value;
             Type = ValueType.Bool;
+        }
+
+        public void ApplyTo(StringValue value)
+        {
+            if (CheckType(ValueType.String))
+            {
+                value.Value = Value as string;
+            }
+        }
+
+        public void ApplyTo(BoolValue value)
+        {
+            if (CheckType(ValueType.Bool))
+            {
+                value.Value = (bool)Value;
+            }
+        }
+
+        private bool CheckType(ValueType valueType)
+        {
+            UnityEngine.Debug.Assert(Type == valueType, $"Value Record '{Name}' is '{Type}' not '{valueType}'.");
+            return Type == valueType;
         }
     }
 }

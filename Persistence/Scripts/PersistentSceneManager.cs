@@ -1,5 +1,4 @@
 ﻿using Celeste.Log;
-using Celeste.Objects;
 using Celeste.Tools;
 using System.Collections;
 using System.IO;
@@ -8,8 +7,8 @@ using UnityEngine;
 
 namespace Celeste.Persistence
 {
-    public abstract class PersistentSceneManager<T, TDTO> : MonoBehaviour
-        where T : PersistentSceneManager<T, TDTO>
+    public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour
+        where TManager : PersistentSceneManager<TManager, TDTO>
         where TDTO : class
     {
         #region Properties and Fields
@@ -29,7 +28,7 @@ namespace Celeste.Persistence
 
         #region Unity Methods
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if (loadOnAwake)
             {
@@ -73,7 +72,7 @@ namespace Celeste.Persistence
             }
             else
             {
-                Debug.LogFormat($"{persistentFilePath} not found for {nameof(PersistentSceneManager<T, TDTO>)} {name}.  Using default values.");
+                Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
                 SetDefaultValues();
             }
         }

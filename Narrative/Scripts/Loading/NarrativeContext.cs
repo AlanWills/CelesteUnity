@@ -1,8 +1,5 @@
-﻿using Celeste.Narrative.Persistence;
-using Celeste.Scene.Events;
+﻿using Celeste.Scene.Events;
 using System;
-using System.Collections;
-using UnityEngine;
 
 namespace Celeste.Narrative.Loading
 {
