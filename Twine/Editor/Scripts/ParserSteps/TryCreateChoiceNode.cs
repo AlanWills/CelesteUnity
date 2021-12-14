@@ -19,15 +19,15 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
 
-            if (importerSettings.ContainsDialogueTag(twineNode.tags))
+            if (importerSettings.ContainsDialogueTag(twineNode.Tags))
             {
                 // If we have the dialogue tag, we parse this as dialogue no matter what
                 return true;
             }
 
             // We must have more than one link and also a valid character set
-            return twineNode.links.Count > 1 &&
-                   importerSettings.FindCharacterInTags(twineNode.tags) != null;
+            return twineNode.Links.Count > 1 &&
+                   importerSettings.FindCharacterInTags(twineNode.Tags) != null;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

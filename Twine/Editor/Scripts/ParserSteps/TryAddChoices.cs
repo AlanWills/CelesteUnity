@@ -30,7 +30,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             ChoiceNodeBuilder choiceNodeBuilder = ChoiceNodeBuilder.WithNode(choiceNode);
 
-            foreach (TwineNodeLink link in node.links)
+            foreach (TwineNodeLink link in node.Links)
             {
                 string choiceDisplayText = importerSettings.ReplaceConditions(link.name, conditions);
                 choiceDisplayText = importerSettings.ReplaceLocaTokens(choiceDisplayText, locaTokens);

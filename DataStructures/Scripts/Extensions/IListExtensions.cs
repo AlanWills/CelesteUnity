@@ -74,5 +74,11 @@ namespace Celeste.DataStructures
 
             return false;
         }
+
+        public static void AssignFrom<T>(this List<T> list, IEnumerable<T> source)
+        {
+            list.Clear();
+            list.AddRange(source);
+        }
     }
 }

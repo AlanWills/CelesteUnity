@@ -27,15 +27,15 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode node = parseContext.TwineNode;
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
-            string dialogueText = node.text;
+            string dialogueText = node.Text;
             dialogueText = importerSettings.StripLinksFromText(dialogueText);
             dialogueText = importerSettings.ReplaceLocaTokens(dialogueText, locaTokens);
 
             DialogueNodeBuilder.
                         WithNode(dialogueNode).
                         WithRawDialogue(dialogueText).
-                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.tags, dialogueNode.UIPosition)).
-                        WithDialogueType(importerSettings.FindDialogueTypeFromTag(node.tags, DialogueType.Speech)).
+                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.Tags, dialogueNode.UIPosition)).
+                        WithDialogueType(importerSettings.FindDialogueTypeFromTag(node.Tags, DialogueType.Speech)).
                         WithDialogueTokens(locaTokens.ToArray());
         }
     }

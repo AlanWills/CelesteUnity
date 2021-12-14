@@ -1,4 +1,5 @@
-﻿using Celeste.Events;
+﻿using Celeste.DataStructures;
+using Celeste.Events;
 using Celeste.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +31,10 @@ namespace Celeste.Twine.UI
         private const string TAGS_DELIMITER = ",";
 
         private TwineNode twineNode;
+        private string originalNodeName;
+        private string originalNodeText;
+        private List<string> originalNodeTags = new List<string>();
+        private List<TwineNodeLink> originalNodeLinks = new List<TwineNodeLink>();
 
         #endregion
 
@@ -39,39 +44,58 @@ namespace Celeste.Twine.UI
         {
             EditTwineNodePopupArgs editTwineNodePopupArgs = (EditTwineNodePopupArgs)args;
             twineNode = editTwineNodePopupArgs.twineNode;
-            titleInputField.text = twineNode.name;
-            tagsInputField.text = twineNode.tags.Count > 0 ? string.Join(TAGS_DELIMITER, twineNode.tags) : "";
-            textInputField.text = twineNode.text;
-            followLinkUIManager.Hookup(twineNode);
+            originalNodeName = twineNode.Name;
+            originalNodeText = twineNode.Text;
+            originalNodeTags.AssignFrom(twineNode.Tags);
+            originalNodeLinks.AssignFrom(twineNode.Links);
+
+            titleInputField.text = twineNode.Name;
+            tagsInputField.text = twineNode.Tags.Count > 0 ? string.Join(TAGS_DELIMITER, twineNode.Tags) : "";
+            textInputField.text = twineNode.Text;
+            followLinkUIManager.Hookup(twineNode.Links);
         }
 
         public void OnHide()
         {
             twineNode = null;
+            originalNodeName = "";
+            originalNodeText = "";
+            originalNodeTags.Clear();
+            originalNodeLinks.Clear();
         }
 
         public void OnConfirmPressed()
         {
-            string newName = titleInputField.text;
-            string newText = textInputField.text;
-            string[] newTags = tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries);
-            TwineNodeLink[] newLinks = TwineNodeLink.CreateFromText(newText);
-
-            twineNode.UpdateData(
-                newName,
-                newText,
-                newTags,
-                newLinks);
-
-            if (string.CompareOrdinal(twineNode.text, textInputField.text) != 0)
-            {
-                // Make this return the links from the text, not modify the node
-                followLinkUIManager.Hookup(twineNode);
-            }
         }
 
         public void OnClosePressed()
         {
+            // Revert the changes to the node
+            twineNode.Name = originalNodeName;
+            twineNode.Text = originalNodeText;
+            twineNode.Tags.AssignFrom(originalNodeTags);
+            twineNode.Links.AssignFrom(originalNodeLinks);
+        }
+
+        public void OnEndEditTwineNodeTitleText()
+        {
+            twineNode.Name = titleInputField.text;
+        }
+
+        public void OnEndEditTwineNodeTagsText()
+        {
+            twineNode.Tags.AssignFrom(tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        public void OnEndEditTwineNodeText()
+        {
+            string newText = textInputField.text;
+            TwineNodeLink[] newLinks = TwineNodeLink.CreateFromText(newText);
+
+            twineNode.Links.AssignFrom(newLinks);
+            twineNode.Text = newText;
+
+            followLinkUIManager.Hookup(newLinks);
         }
 
         #endregion

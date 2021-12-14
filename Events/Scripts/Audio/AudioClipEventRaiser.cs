@@ -1,19 +1,9 @@
-﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Events
 {
     [AddComponentMenu("Celeste/Events/Audio/Audio Clip Event Raiser")]
-    public class AudioClipEventRaiser : ParameterisedEventRaiser<AudioClip, AudioClipEvent>, ISupportsValueArgument<AudioClip, AudioClipValue>
+    public class AudioClipEventRaiser : ParameterisedEventRaiser<AudioClip, AudioClipEvent>
     {
-        public void Raise(AudioClipValue argument)
-        {
-            Raise(argument.Value);
-        }
     }
 }

@@ -89,7 +89,7 @@ namespace CelesteEditor.Twine
 
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
 
-            TwineNode startNode = twineStory.passages.Find(x => importerSettings.ContainsStartTag(x.tags));
+            TwineNode startNode = twineStory.passages.Find(x => importerSettings.ContainsStartTag(x.Tags));
             Debug.Assert(startNode != null, $"Twine Story {twineStory.name} has no start node set.");
 
             Vector2 startNodePosition = startNode != null ? startNode.Position : Vector2.zero;
@@ -108,7 +108,7 @@ namespace CelesteEditor.Twine
                 }
                 else
                 {
-                    Debug.LogError($"Failed to parse node {twineNode.name}.  Transitions will not be created properly...");
+                    Debug.LogError($"Failed to parse node {twineNode.Name}.  Transitions will not be created properly...");
                     parserErrorOccurred = true;
                 }
 
@@ -123,11 +123,11 @@ namespace CelesteEditor.Twine
                 // Now resolve transitions
                 foreach (TwineNode node in twineStory.passages)
                 {
-                    if (node.links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
+                    if (node.Links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                     {
                         if (graphNode is ChoiceNode)
                         {
-                            foreach (TwineNodeLink link in node.links)
+                            foreach (TwineNodeLink link in node.Links)
                             {
                                 if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
                                 {
@@ -147,7 +147,7 @@ namespace CelesteEditor.Twine
                         }
                         else
                         {
-                            foreach (TwineNodeLink link in node.links)
+                            foreach (TwineNodeLink link in node.Links)
                             {
                                 if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
                                 {

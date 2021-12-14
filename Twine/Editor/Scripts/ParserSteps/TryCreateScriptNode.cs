@@ -23,7 +23,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
 
-            if (importerSettings.ContainsScriptTag(twineNode.tags))
+            if (importerSettings.ContainsScriptTag(twineNode.Tags))
             {
                 // If we have the script tag, we parse this as a script no matter what
                 return true;
@@ -53,7 +53,7 @@ namespace CelesteEditor.Twine.ParserSteps
                 }
             }
 
-            Debug.LogError($"Failed to create a script node for Twine Node {parseContext.TwineNode.name}.");
+            Debug.LogError($"Failed to create a script node for Twine Node {parseContext.TwineNode.Name}.");
         }
     }
 }

@@ -1,17 +1,39 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [Serializable]
-    public class ParameterValue<T> : ScriptableObject, IValue<T>
+    public abstract class ParameterValue<T> : ScriptableObject, IValue<T>
     {
         #region Properties and Fields
 
-        public T Value { get; set; }
+        protected abstract ParameterisedEvent<T> OnValueChanged { get; }
 
-        [SerializeField]
-        private T defaultValue;
+        private T value;
+        public T Value 
+        {
+            get { return value; }
+            set
+            {
+                if (this.value == null && value == null)
+                {
+                    return;
+                }
+
+                if ((this.value == null && value != null) ||
+                    !this.value.Equals(value))
+                {
+                    this.value = value;
+
+                    if (OnValueChanged != null)
+                    {
+                        OnValueChanged.InvokeSilently(this.value);
+                    }
+                }
+            }
+        }
+
         public T DefaultValue
         {
             get { return defaultValue; }
@@ -31,6 +53,8 @@ namespace Celeste.Parameters
             }
         }
 
+        [SerializeField] private T defaultValue;
+
         #endregion
 
         #region Unity Methods
@@ -41,6 +65,22 @@ namespace Celeste.Parameters
         }
 
         #endregion
+
+        public void AddOnValueChangedCallback(Action<T> callback)
+        {
+            if (OnValueChanged != null)
+            {
+                OnValueChanged.AddListener(callback);
+            }
+        }
+
+        public void RemoveOnValueChangedCallback(Action<T> callback)
+        {
+            if (OnValueChanged != null)
+            {
+                OnValueChanged.RemoveListener(callback);
+            }
+        }
 
         public override string ToString()
         {

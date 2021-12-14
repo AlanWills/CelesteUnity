@@ -46,7 +46,7 @@ namespace CelesteEditor.Twine.ParserSteps
                 }
             }
 
-            Debug.LogError($"Failed to create a node for Twine Node {parseContext.TwineNode.name}.");
+            Debug.LogError($"Failed to create a node for Twine Node {parseContext.TwineNode.Name}.");
         }
     }
 }

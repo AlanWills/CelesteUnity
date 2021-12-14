@@ -9,13 +9,13 @@ namespace CelesteEditor.Twine.ParserSteps
     {
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
-            var tags = parseContext.TwineNode.tags;
+            var tags = parseContext.TwineNode.Tags;
             return tags.Count > 0;
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)
         {
-            List<string> tags = parseContext.TwineNode.tags;
+            List<string> tags = parseContext.TwineNode.Tags;
             TwineStoryImporterSettings settings = parseContext.ImporterSettings;
             TwineStoryAnalysis analysis = parseContext.Analysis;
 

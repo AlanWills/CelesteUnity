@@ -1,9 +1,7 @@
 {
     "name": "Celeste.Events",
     "rootNamespace": "Celeste.Events",
-    "references": [
-        "Celeste.Parameters"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

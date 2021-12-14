@@ -182,5 +182,17 @@ namespace CelesteEditor.Tools
                        Build();
             return AssetDatabase.FindAssets(assetSearchString);
         }
+
+        public static T FindAsset<T>(string name) where T : Object
+        {
+            string[] assetGuids = FindAssets<T>(name);
+            if (assetGuids != null && assetGuids.Length == 1)
+            {
+                return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(assetGuids[0]));
+            }
+
+            Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.");
+            return default;
+        }
     }
 }

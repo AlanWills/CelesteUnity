@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -10,6 +6,13 @@ namespace Celeste.Parameters
     [CreateAssetMenu(fileName = "UIntValue", menuName = "Celeste/Parameters/Numeric/UInt Value")]
     public class UIntValue : ParameterValue<uint>
     {
+        #region Properties and Fields
+
+        [SerializeField] private UIntEvent onValueChanged;
+        protected override ParameterisedEvent<uint> OnValueChanged => onValueChanged;
+
+        #endregion
+
         #region Operators
 
         public static bool operator ==(UIntValue value, uint ui)

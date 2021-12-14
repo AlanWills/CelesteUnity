@@ -10,7 +10,7 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             TwineNode twineNode = parseContext.TwineNode;
-            return twineNode.links.Count > 0;
+            return twineNode.Links.Count > 0;
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)
@@ -19,7 +19,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineStoryImporterSettings settings = parseContext.ImporterSettings;
             TwineStoryAnalysis analysis = parseContext.Analysis;
 
-            foreach (TwineNodeLink link in twineNode.links)
+            foreach (TwineNodeLink link in twineNode.Links)
             {
                 settings.FindConditions(link.name, analysis);
             }

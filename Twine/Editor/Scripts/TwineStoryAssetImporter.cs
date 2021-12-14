@@ -19,10 +19,10 @@ namespace CelesteEditor.Twine
             {
                 Debug.Assert(node != null, $"Null node found in twine story passages.");
 
-                for (int i = 0, n = node.links.Count; i < n; ++i)
+                for (int i = 0, n = node.Links.Count; i < n; ++i)
                 {
-                    TwineNodeLink link = node.links[i];
-                    Debug.Assert(!link.broken, $"Link {link.name} to node {link.link} on node {node.name} is broken.");
+                    TwineNodeLink link = node.Links[i];
+                    Debug.Assert(!link.broken, $"Link {link.name} to node {link.link} on node {node.Name} is broken.");
                 }
             }
 

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +11,7 @@ namespace Celeste.Events
 
         public override string ToString()
         {
-            return string.Format("{0}, {1}", gameObject != null ? gameObject.name : "<null>", clickWorldPosition);
+            return $"{(gameObject != null ? gameObject.name : "<null>")}, {clickWorldPosition}";
         }
     }
 
@@ -23,7 +19,7 @@ namespace Celeste.Events
     public class GameObjectClickUnityEvent : UnityEvent<GameObjectClickEventArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "GameObjectClickEvent", menuName = "Celeste/Events/GameObject Click Event")]
+    [CreateAssetMenu(fileName = "GameObjectClickEvent", menuName = "Celeste/Events/Input/GameObject Click Event")]
     public class GameObjectClickEvent : ParameterisedEvent<GameObjectClickEventArgs>
     {
     }

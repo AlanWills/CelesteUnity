@@ -18,7 +18,7 @@ namespace CelesteEditor.Twine.ParserSteps
 
         private bool HasIgnoreTag(TwineStoryImporterSettings importerSettings, TwineNode twineNode)
         {
-            return importerSettings.ContainsIgnoreTag(twineNode.tags);
+            return importerSettings.ContainsIgnoreTag(twineNode.Tags);
         }
     }
 }

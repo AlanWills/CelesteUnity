@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,7 +15,7 @@ namespace Celeste.Events
     public class MultiTouchUnityEvent : UnityEvent<MultiTouchEventArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "MultiTouchEvent", menuName = "Celeste/Events/Multi Touch Event")]
+    [CreateAssetMenu(fileName = nameof(MultiTouchEvent), menuName = "Celeste/Events/Input/Multi Touch Event")]
     public class MultiTouchEvent : ParameterisedEvent<MultiTouchEventArgs>
     {
     }

@@ -12,29 +12,51 @@ namespace Celeste.Twine.UI
         [Header("UI")]
         [SerializeField] private RecyclableScrollRect scrollRect;
 
-        private TwineNode twineNode;
+        private List<TwineNodeLink> twineNodeLinks = new List<TwineNodeLink>();
 
         #endregion
-
-        public void Hookup(TwineNode twineNode)
+        public void Hookup(TwineNodeLink[] twineNodeLinks)
         {
-            this.twineNode = twineNode;
+            this.twineNodeLinks.Clear();
+            this.twineNodeLinks.AddRange(twineNodeLinks);
 
+            HookupCommon();
+        }
+
+        public void Hookup(List<TwineNodeLink> twineNodeLinks)
+        {
+            this.twineNodeLinks.Clear();
+            this.twineNodeLinks.AddRange(twineNodeLinks);
+
+            HookupCommon();
+        }
+
+        private void HookupCommon()
+        {
             scrollRect.DataSource = this;
             scrollRect.ReloadData();
         }
+
+        #region Unity Methods
+
+        private void OnDisable()
+        {
+            twineNodeLinks.Clear();
+        }
+
+        #endregion
 
         #region Data Source Methods
 
         public int GetItemCount()
         {
-            return twineNode.links.Count;
+            return twineNodeLinks.Count;
         }
 
         public void SetCell(ICell cell, int index)
         {
             FollowLinkUI followLinkUI = cell as FollowLinkUI;
-            followLinkUI.ConfigureCell(twineNode.links[index], index);
+            followLinkUI.ConfigureCell(twineNodeLinks[index], index);
         }
 
         #endregion

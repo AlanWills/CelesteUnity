@@ -2,7 +2,8 @@
     "name": "Celeste.Parameters",
     "rootNamespace": "Celeste.Parameters",
     "references": [
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

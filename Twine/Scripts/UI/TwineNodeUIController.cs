@@ -60,8 +60,8 @@ namespace Celeste.Twine.UI
 
         private void RefreshUI()
         {
-            titleText.text = twineNode.name;
-            bodyText.text = twineNode.text;
+            titleText.text = twineNode.Name;
+            bodyText.text = twineNode.Text;
         }
 
         #endregion

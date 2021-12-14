@@ -18,7 +18,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode node = parseContext.TwineNode;
             FSMNode fsmNode = parseContext.FSMNode;
 
-            fsmNode.name = node.name;
+            fsmNode.name = node.Name;
             fsmNode.position = (node.Position - parseContext.StartingNodePosition) * importerSettings.nodeSpread;
         }
     }

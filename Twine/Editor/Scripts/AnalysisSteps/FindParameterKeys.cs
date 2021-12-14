@@ -10,7 +10,7 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             TwineNode twineNode = parseContext.TwineNode;
-            return !string.IsNullOrWhiteSpace(twineNode.text);
+            return !string.IsNullOrWhiteSpace(twineNode.Text);
         }
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)
@@ -19,7 +19,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineStoryImporterSettings settings = parseContext.ImporterSettings;
             TwineStoryAnalysis analysis = parseContext.Analysis;
 
-            settings.FindParameters(twineNode.text, analysis);
+            settings.FindParameters(twineNode.Text, analysis);
         }
     }
 }

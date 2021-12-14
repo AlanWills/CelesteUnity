@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -10,6 +6,13 @@ namespace Celeste.Parameters
     [CreateAssetMenu(fileName = "Vector3IntValue", menuName = "Celeste/Parameters/Vector/Vector3Int Value")]
     public class Vector3IntValue : ParameterValue<Vector3Int>
     {
+        #region Properties and Fields
+
+        [SerializeField] private Vector3IntEvent onValueChanged;
+        protected override ParameterisedEvent<Vector3Int> OnValueChanged => onValueChanged;
+
+        #endregion
+
         #region Operators
 
         public static bool operator ==(Vector3IntValue value, Vector3Int v)

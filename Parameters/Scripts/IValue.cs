@@ -1,4 +1,6 @@
-﻿namespace Celeste.Parameters
+﻿using Celeste.Events;
+
+namespace Celeste.Parameters
 {
     public interface IValue<T>
     {

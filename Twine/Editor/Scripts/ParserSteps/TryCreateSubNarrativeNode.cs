@@ -15,7 +15,7 @@ namespace CelesteEditor.Twine.ParserSteps
             }
 
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            string nonLinkText = importerSettings.StripLinksFromText(parseContext.TwineNode.text);
+            string nonLinkText = importerSettings.StripLinksFromText(parseContext.TwineNode.Text);
 
             if (string.IsNullOrWhiteSpace(nonLinkText))
             {
@@ -42,7 +42,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             
-            string nonLinkText = importerSettings.StripLinksFromText(twineNode.text);
+            string nonLinkText = importerSettings.StripLinksFromText(twineNode.Text);
             string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             string subNarrativeKey = splitText[1];
 

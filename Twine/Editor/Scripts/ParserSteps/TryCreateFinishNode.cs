@@ -22,7 +22,7 @@ namespace CelesteEditor.Twine.ParserSteps
 
         private bool HasFinishTag(TwineStoryImporterSettings importerSettings, TwineNode twineNode)
         {
-            return importerSettings.ContainsFinishTag(twineNode.tags);
+            return importerSettings.ContainsFinishTag(twineNode.Tags);
         }
     }
 }

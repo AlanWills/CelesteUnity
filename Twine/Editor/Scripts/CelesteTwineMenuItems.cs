@@ -32,12 +32,12 @@ namespace DnDEditor.Twine
 
                     foreach (TwineNode twineNode in twineStory.passages)
                     {
-                        twineNode.links.Clear();
-                        twineNode.links.AddRange(TwineNodeLink.CreateFromText(twineNode.text));
+                        twineNode.Links.Clear();
+                        twineNode.Links.AddRange(TwineNodeLink.CreateFromText(twineNode.Text));
 
-                        foreach (TwineNodeLink twineNodeLink in twineNode.links)
+                        foreach (TwineNodeLink twineNodeLink in twineNode.Links)
                         {
-                            TwineNode linkedNode = twineStory.passages.Find(x => string.CompareOrdinal(x.name, twineNodeLink.link) == 0);
+                            TwineNode linkedNode = twineStory.passages.Find(x => string.CompareOrdinal(x.Name, twineNodeLink.link) == 0);
                             twineNodeLink.pid = linkedNode != null ? linkedNode.pid : 0;
                             twineNodeLink.broken = linkedNode == null;
                         }

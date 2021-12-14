@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "New CameraValue", menuName = "Celeste/Parameters/Viewport/Camera Value")]
+    [CreateAssetMenu(fileName = nameof(CameraValue), menuName = "Celeste/Parameters/Viewport/Camera Value")]
     public class CameraValue : ParameterValue<Camera>
     {
+        protected override ParameterisedEvent<Camera> OnValueChanged => null;
     }
 }

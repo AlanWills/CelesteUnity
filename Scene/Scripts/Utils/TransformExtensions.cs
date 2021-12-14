@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Celeste.Utils
 {
-    public static class TransformUtils
+    public static class TransformExtensions
     {
         public static void DestroyAllChildren(this Transform transform)
         {
@@ -34,6 +34,5 @@ namespace Celeste.Utils
             targetRectTransform.anchoredPosition = sourceRectTransform.anchoredPosition;
             targetRectTransform.sizeDelta = sourceRectTransform.sizeDelta;
         }
-            
     }
 }

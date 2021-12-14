@@ -62,7 +62,7 @@ namespace Celeste.Twine
         public TwineNode AddNode(string name)
         {
             TwineNode twineNode = new TwineNode();
-            twineNode.name = name;
+            twineNode.Name = name;
             twineNode.pid = ++highestPID;
             twineNode.Position = CalculateBestPosition();
 
@@ -85,9 +85,9 @@ namespace Celeste.Twine
         private void OnTwineNodeChanged(TwineNode twineNode)
         {
             // Resolve link pids
-            foreach (TwineNodeLink twineNodeLink in twineNode.links)
+            foreach (TwineNodeLink twineNodeLink in twineNode.Links)
             {
-                TwineNode linkedNode = passages.Find(x => string.CompareOrdinal(x.name, twineNodeLink.link) == 0);
+                TwineNode linkedNode = passages.Find(x => string.CompareOrdinal(x.Name, twineNodeLink.link) == 0);
                 if (linkedNode == null)
                 {
                     // Calculate best position before adding node to ensure it calculates the best position

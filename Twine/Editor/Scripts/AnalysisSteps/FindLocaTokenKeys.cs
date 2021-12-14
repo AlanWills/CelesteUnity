@@ -10,8 +10,8 @@ namespace CelesteEditor.Twine.ParserSteps
         public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
         {
             TwineNode twineNode = parseContext.TwineNode;
-            bool hasText = !string.IsNullOrWhiteSpace(twineNode.text);
-            bool hasLinks = twineNode.links.Count > 0;
+            bool hasText = !string.IsNullOrWhiteSpace(twineNode.Text);
+            bool hasLinks = twineNode.Links.Count > 0;
 
             return hasText || hasLinks;
         }
@@ -24,12 +24,12 @@ namespace CelesteEditor.Twine.ParserSteps
 
             // Find Loca Tokens in node text
             {
-                settings.FindLocaTokens(twineNode.text, analysis);
+                settings.FindLocaTokens(twineNode.Text, analysis);
             }
 
             // Find Loca Tokens in link display text
             {
-                var links = twineNode.links;
+                var links = twineNode.Links;
 
                 foreach (TwineNodeLink link in links)
                 {
