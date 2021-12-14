@@ -1,4 +1,5 @@
 using Celeste.Scene.Events;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,24 +20,25 @@ namespace DnD.Core.Loading
 
         #endregion
 
+        private IEnumerator LoadContext(LoadContextArgs loadContextArgs)
+        {
+            disableInput.Invoke();
+            loadingScreenUI.SetActive(true);
+
+            yield return loadContextArgs.sceneSet.LoadAsync(
+                (progress) => progressBar.value = progress,
+                () => { });
+
+            loadContextArgs.onContextLoaded.Invoke(new OnContextLoadedArgs(loadContextArgs.context));
+            loadingScreenUI.SetActive(false);
+            enableInput.Invoke();
+        }
+
         #region Callbacks
 
         public void OnLoadContext(LoadContextArgs loadContextArgs)
         {
-            OnContextLoadedEvent onContextLoadedEvent = loadContextArgs.onContextLoaded;
-            Context context = loadContextArgs.context;
-
-            disableInput.Invoke();
-            loadingScreenUI.SetActive(true);
-
-            StartCoroutine(loadContextArgs.sceneSet.LoadAsync(
-                (progress) => progressBar.value = progress,
-                () =>
-                {
-                    onContextLoadedEvent.Invoke(new OnContextLoadedArgs(context));
-                    loadingScreenUI.SetActive(false);
-                    enableInput.Invoke();
-                }));
+            StartCoroutine(LoadContext(loadContextArgs));
         }
 
         #endregion

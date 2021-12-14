@@ -24,7 +24,10 @@ namespace Celeste.LocationServices
 
         private void OnDestroy()
         {
-            pedometer.Dispose();
+            if (pedometer != null)
+            {
+                pedometer.Dispose();
+            }
         }
 
         #endregion

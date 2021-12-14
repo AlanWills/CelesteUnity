@@ -245,13 +245,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 470799040090177287, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 470799041084101822, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 470799041102978848, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_SortingOrder
-      value: 5
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 470799041102978848, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
