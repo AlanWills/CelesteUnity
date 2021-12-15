@@ -21,7 +21,6 @@ namespace CelesteEditor.LocationServices.iOSPostProcess
                 var rootDict = plist.root;
 
                 // Add export compliance for TestFlight builds
-                var buildKeyExportCompliance = "ITSAppUsesNonExemptEncryption";
                 rootDict.SetString("NSMotionUsageDescription", "Use location to determine step count.");
 
                 // Write to file
