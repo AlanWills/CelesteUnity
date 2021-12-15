@@ -6,7 +6,6 @@
         "Celeste.Objects",
         "Celeste.DataStructures",
         "Celeste.Events",
-        "Celeste.UI",
         "Celeste.Debug",
         "Celeste.Logic",
         "Celeste.Parameters",

@@ -1,15 +1,12 @@
-﻿using Celeste.Events;
-using Celeste.UI;
-using PolyAndCode.UI;
+﻿using PolyAndCode.UI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Inventory.UI
 {
-    [AddComponentMenu("Celeste/Inventory/UI/Inventory Popup Controller")]
-    public class InventoryPopupController : MonoBehaviour, IPopupController, IRecyclableScrollRectDataSource
+    [AddComponentMenu("Celeste/Inventory/UI/Inventory Tab Content")]
+    public class InventoryTabContent : MonoBehaviour, IRecyclableScrollRectDataSource
     {
         #region Properties and Fields
 
@@ -23,9 +20,9 @@ namespace Celeste.Inventory.UI
 
         #endregion
 
-        #region IPopupController
+        #region Unity Methods
 
-        public void OnShow(IPopupArgs args)
+        private void OnEnable()
         {
             for (int i = 0, n = inventory.NumItems; i < n; ++i)
             {
@@ -37,17 +34,9 @@ namespace Celeste.Inventory.UI
             scrollRect.ReloadData();
         }
 
-        public void OnHide()
+        private void OnDisable()
         {
             inventoryItemUIData.Clear();
-        }
-
-        public void OnConfirmPressed()
-        {
-        }
-
-        public void OnClosePressed()
-        {
         }
 
         #endregion
