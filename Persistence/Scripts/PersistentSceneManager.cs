@@ -1,4 +1,5 @@
 ﻿using Celeste.Log;
+using Celeste.Persistence.Utility;
 using Celeste.Tools;
 using System.Collections;
 using System.IO;
@@ -23,6 +24,7 @@ namespace Celeste.Persistence
         [SerializeField] private bool loadOnAwake = true;
 
         private bool saveRequested = false;
+        private Semaphore loadingLock = new Semaphore();
 
         #endregion
 
@@ -42,44 +44,47 @@ namespace Celeste.Persistence
 
         public void Load()
         {
-            string persistentFilePath = FilePath;
-
-            if (File.Exists(persistentFilePath))
+            using (SemaphoreScope loadingInProgress = loadingLock.Lock())
             {
-                using (FileStream fileStream = new FileStream(persistentFilePath, FileMode.Open))
-                {
-                    if (fileStream.Length > 0)
-                    {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        TDTO tDTO = bf.Deserialize(fileStream) as TDTO;
+                string persistentFilePath = FilePath;
 
-                        if (tDTO != null)
+                if (File.Exists(persistentFilePath))
+                {
+                    using (FileStream fileStream = new FileStream(persistentFilePath, FileMode.Open))
+                    {
+                        if (fileStream.Length > 0)
                         {
-                            Deserialize(tDTO);
+                            BinaryFormatter bf = new BinaryFormatter();
+                            TDTO tDTO = bf.Deserialize(fileStream) as TDTO;
+
+                            if (tDTO != null)
+                            {
+                                Deserialize(tDTO);
+                            }
+                            else
+                            {
+                                Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                                SetDefaultValues();
+                            }
                         }
                         else
                         {
-                            Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                            Debug.Log($"No data saved to persistent file for {persistentFilePath}.  Using default values.");
                             SetDefaultValues();
                         }
                     }
-                    else
-                    {
-                        Debug.Log($"No data saved to persistent file for {persistentFilePath}.  Using default values.");
-                        SetDefaultValues();
-                    }
                 }
-            }
-            else
-            {
-                Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
-                SetDefaultValues();
+                else
+                {
+                    Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
+                    SetDefaultValues();
+                }
             }
         }
 
         public void Save()
         {
-            if (!saveRequested)
+            if (!loadingLock.Locked && !saveRequested)
             {
                 StartCoroutine(DoSave());
             }
