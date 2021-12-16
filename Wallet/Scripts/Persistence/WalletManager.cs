@@ -20,6 +20,22 @@ namespace Celeste.Wallet
 
         #endregion
 
+        #region Unity Methods
+
+        protected override void Awake()
+        {
+            walletRecord.Initialize(currencyCatalogue);
+
+            base.Awake();
+        }
+
+        private void OnDestroy()
+        {
+            walletRecord.Shutdown();
+        }
+
+        #endregion
+
         #region Save/Load Methods
 
         protected override void Deserialize(WalletDTO dto)
@@ -31,7 +47,7 @@ namespace Celeste.Wallet
 
                 if (currency != null)
                 {
-                    walletRecord.SetCurrency(currency, currencyDto.quantity);
+                    currency.Quantity = currencyDto.quantity;
                 }
             }
         }
@@ -43,7 +59,7 @@ namespace Celeste.Wallet
 
         protected override void SetDefaultValues()
         {
-            walletRecord.CreateStartingWallet(currencyCatalogue);
+            walletRecord.CreateStartingWallet();
         }
 
         #endregion

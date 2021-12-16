@@ -10,7 +10,6 @@ namespace Celeste.Wallet.UI
         #region Properties and Fields
 
         [Header("Data")]
-        [SerializeField] private WalletRecord walletRecord;
         [SerializeField] private Currency currency;
 
         [Header("UI Elements")]
@@ -22,21 +21,21 @@ namespace Celeste.Wallet.UI
 
         private void OnEnable()
         {
-            currency.OnQuantityChanged.AddListener(OnCurrencyChanged);
+            currency.AddOnQuantityChangedCallback(OnCurrencyChanged);
             
             UpdateUI();
         }
 
         private void OnDisable()
         {
-            currency.OnQuantityChanged.RemoveListener(OnCurrencyChanged);
+            currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
         }
 
         #endregion
 
         public void UpdateUI()
         {
-            quantityText.text = walletRecord.GetQuantity(currency).ToString();
+            quantityText.text = currency.Quantity.ToString();
         }
 
         #region Callbacks

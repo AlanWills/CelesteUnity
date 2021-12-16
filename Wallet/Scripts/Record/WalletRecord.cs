@@ -1,5 +1,4 @@
 ﻿using Celeste.DataStructures;
-using Celeste.Wallet.Record;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,75 +10,58 @@ namespace Celeste.Wallet
     {
         #region Properties and Fields
 
-        public int NumCurrencyRecords
+        public int NumCurrencies
         {
-            get { return currencyRecords.Count; }
+            get { return currencies.Count; }
         }
 
         [Header("Events")]
         [SerializeField] private Events.Event save;
 
-        [NonSerialized] private List<CurrencyRecord> currencyRecords = new List<CurrencyRecord>();
+        [NonSerialized] private List<Currency> currencies = new List<Currency>();
 
         #endregion
 
-        public void CreateStartingWallet(CurrencyCatalogue currencyCatalogue)
+        public void Initialize(CurrencyCatalogue currencyCatalogue)
         {
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
-                currencyRecords.Add(new CurrencyRecord(currencyCatalogue.GetItem(i)));
+                Currency currency = currencyCatalogue.GetItem(i);
+                currency.AddOnQuantityChangedCallback(OnCurrencyQuantityChangedCallback);
+                currencies.Add(currency);
             }
         }
 
-        public void SetCurrency(Currency currency, int quantity)
+        public void Shutdown()
         {
-            CurrencyRecord currencyRecord = FindOrAddCurrencyRecord(currency);
-            currencyRecord.Quantity = quantity;
-            save.Invoke();
+            for (int i = 0, n = currencies.Count; i < n; ++i)
+            {
+                currencies[i].RemoveOnQuantityChangedCallback(OnCurrencyQuantityChangedCallback);
+            }
+
+            currencies.Clear();
         }
 
-        public void AddCurrency(Currency currency, int quantity)
+        public void CreateStartingWallet()
         {
-            CurrencyRecord currencyRecord = FindOrAddCurrencyRecord(currency);
-            currencyRecord.Quantity += quantity;
-            save.Invoke();
-        }
-
-        public void RemoveCurrency(Currency currency, int quantity)
-        {
-            CurrencyRecord currencyRecord = FindOrAddCurrencyRecord(currency);
-            currencyRecord.Quantity -= quantity;
-            save.Invoke();
+            foreach (Currency currency in currencies)
+            {
+                currency.Quantity = currency.StartingQuantity;
+            }
         }
 
         public Currency GetCurrency(int recordIndex)
         {
-            CurrencyRecord currencyRecord = currencyRecords.Get(recordIndex);
-            return currencyRecord != null ? currencyRecord.Currency : null;
+            return currencies.Get(recordIndex);
         }
 
-        public int GetQuantity(int recordIndex)
+        #region Callbacks
+
+        private void OnCurrencyQuantityChangedCallback(int newQuantity)
         {
-            CurrencyRecord currencyRecord = currencyRecords.Get(recordIndex);
-            return currencyRecord != null ? currencyRecord.Quantity : 0;
+            save.Invoke();
         }
 
-        public int GetQuantity(Currency currency)
-        {
-            return FindOrAddCurrencyRecord(currency).Quantity;
-        }
-
-        private CurrencyRecord FindOrAddCurrencyRecord(Currency currency)
-        {
-            CurrencyRecord currencyRecord = currencyRecords.Find(x => x.Currency == currency);
-            if (currencyRecord == null)
-            {
-                currencyRecord = new CurrencyRecord(currency, 0);
-                currencyRecords.Add(currencyRecord);
-                save.Invoke();
-            }
-
-            return currencyRecord;
-        }
+        #endregion
     }
 }

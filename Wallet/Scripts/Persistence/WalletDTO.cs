@@ -10,11 +10,12 @@ namespace Celeste.Wallet.Persistence
 
         public WalletDTO(WalletRecord walletRecord)
         {
-            currencies = new List<CurrencyDTO>(walletRecord.NumCurrencyRecords);
+            currencies = new List<CurrencyDTO>(walletRecord.NumCurrencies);
 
-            for (int i = 0, n = walletRecord.NumCurrencyRecords; i < n; ++i)
+            for (int i = 0, n = walletRecord.NumCurrencies; i < n; ++i)
             {
-                currencies.Add(new CurrencyDTO(walletRecord.GetCurrency(i).Guid, walletRecord.GetQuantity(i)));
+                Currency currency = walletRecord.GetCurrency(i);
+                currencies.Add(new CurrencyDTO(currency.Guid, currency.Quantity));
             }
         }
     }

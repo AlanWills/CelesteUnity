@@ -1,7 +1,10 @@
 ﻿using Celeste.Events;
 using Celeste.Objects;
+using Celeste.Parameters;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Wallet
 {
@@ -20,17 +23,28 @@ namespace Celeste.Wallet
             get { return startingQuantity; }
         }
 
-        public IntEvent OnQuantityChanged
+        public int Quantity
         {
-            get { return onQuantityChanged; }
+            get { return quantity.Value; }
+            set { quantity.Value = value; }
         }
 
         [SerializeField] private int guid;
         [SerializeField] private int startingQuantity;
 
-        [Header("Events")]
-        [SerializeField] private IntEvent onQuantityChanged;
+        [Header("Runtime")]
+        [SerializeField] private IntValue quantity;
 
         #endregion
+
+        public void AddOnQuantityChangedCallback(Action<int> callback)
+        {
+            quantity.AddOnValueChangedCallback(callback);
+        }
+
+        public void RemoveOnQuantityChangedCallback(Action<int> callback)
+        {
+            quantity.RemoveOnValueChangedCallback(callback);
+        }
     }
 }

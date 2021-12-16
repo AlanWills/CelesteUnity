@@ -1,5 +1,4 @@
-﻿using Celeste.Wallet.Record;
-using System;
+﻿using System;
 
 namespace Celeste.Wallet.Persistence
 {

@@ -26,23 +26,22 @@ namespace Celeste.Wallet.Debug
                 int.TryParse(quantityChangeText, out quantityChange);
             }
 
-            for (int i = 0, n = walletRecord.NumCurrencyRecords; i < n; ++i)
+            for (int i = 0, n = walletRecord.NumCurrencies; i < n; ++i)
             {
                 Currency currency = walletRecord.GetCurrency(i);
-                int quantity = walletRecord.GetQuantity(i);
 
                 using (var horizontal = new HorizontalScope())
                 {
-                    Label($"{currency.name}: {quantity}");
+                    Label($"{currency.name}: {currency.Quantity}");
 
                     if (Button("Add", ExpandWidth(false)))
                     {
-                        walletRecord.AddCurrency(currency, quantityChange);
+                        currency.Quantity += quantityChange;
                     }
 
                     if (Button("Remove", ExpandWidth(false)))
                     {
-                        walletRecord.RemoveCurrency(currency, quantityChange);
+                        currency.Quantity -= quantityChange;
                     }
                 }
             }
