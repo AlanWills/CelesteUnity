@@ -17,13 +17,7 @@ namespace CelesteEditor.Twine.ParserSteps
             }
 
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            string nonLinkText = importerSettings.StripLinksFromText(parseContext.TwineNode.Text);
-
-            if (string.IsNullOrWhiteSpace(nonLinkText))
-            {
-                return false;
-            }
-
+            string nonLinkText = parseContext.StrippedLinksText;
             string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
 
             if (splitText == null || splitText.Length < 3)
@@ -41,10 +35,9 @@ namespace CelesteEditor.Twine.ParserSteps
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
 
-            string nonLinkText = importerSettings.StripLinksFromText(twineNode.Text);
+            string nonLinkText = parseContext.StrippedLinksText;
             string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             ScriptableObject parameter = importerSettings.FindParameter(splitText[1]);
 

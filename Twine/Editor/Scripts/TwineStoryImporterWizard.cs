@@ -10,6 +10,7 @@ using static CelesteEditor.Twine.TwineStoryImporterSettings;
 using Celeste.Logic;
 using CelesteEditor.Tools;
 using Celeste.Twine;
+using Celeste.Inventory;
 
 namespace CelesteEditor.Twine
 {
@@ -67,6 +68,7 @@ namespace CelesteEditor.Twine
                 DrawParametersGUI();
                 DrawBackgroundsGUI();
                 DrawSubNarrativesGUI();
+                DrawInventoryItemsGUI();
                 DrawUnresolvedTagsGUI();
                 DrawUnresolvedKeysGUI();
             }
@@ -256,6 +258,18 @@ namespace CelesteEditor.Twine
             }
         }
 
+        private void DrawInventoryItemsGUI()
+        {
+            Space();
+            LabelField("Inventory Items", CelesteEditorStyles.BoldLabel);
+            Space();
+
+            foreach (string foundInventoryItem in twineStoryAnalysis.foundInventoryItems)
+            {
+                LabelField(foundInventoryItem);
+            }
+        }
+
         private void DrawUnresolvedTagsGUI()
         {
             if (twineStoryAnalysis.unrecognizedTags.Count > 0)
@@ -303,7 +317,7 @@ namespace CelesteEditor.Twine
                     {
                         LabelField(unresolvedKey);
 
-                        if (GUILayout.Button("Find Loca Token", GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button("Loca Token", GUILayout.ExpandWidth(false)))
                         {
                             if (FindLocaToken(unresolvedKey))
                             {
@@ -312,7 +326,7 @@ namespace CelesteEditor.Twine
                             }
                         }
 
-                        if (GUILayout.Button("Find Condition", GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button("Condition", GUILayout.ExpandWidth(false)))
                         {
                             if (FindCondition(unresolvedKey))
                             {
@@ -321,7 +335,7 @@ namespace CelesteEditor.Twine
                             }
                         }
 
-                        if (GUILayout.Button("Find Parameter", GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button("Parameter", GUILayout.ExpandWidth(false)))
                         {
                             if (FindParameter(unresolvedKey))
                             {
@@ -330,7 +344,7 @@ namespace CelesteEditor.Twine
                             }
                         }
 
-                        if (GUILayout.Button("Find Background", GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button("Background", GUILayout.ExpandWidth(false)))
                         {
                             if (FindBackground(unresolvedKey))
                             {
@@ -339,12 +353,21 @@ namespace CelesteEditor.Twine
                             }
                         }
 
-                        if (GUILayout.Button("Find Sub Narrative", GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button("Sub Narrative", GUILayout.ExpandWidth(false)))
                         {
                             if (FindSubNarrative(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
                                 twineStoryAnalysis.foundSubNarratives.Add(unresolvedKey);
+                            }
+                        }
+
+                        if (GUILayout.Button("InventoryItem", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindInventoryItem(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundInventoryItems.Add(unresolvedKey);
                             }
                         }
                     }
@@ -438,20 +461,20 @@ namespace CelesteEditor.Twine
             return false;
         }
 
-        private bool TryFind<T>(string name, string directory, out T asset) where T : UnityEngine.Object
+        private bool FindInventoryItem(string inventoryItemName)
         {
-            string[] guids = AssetUtility.FindAssets<T>(name, directory);
-            if (guids != null && guids.Length != 1)
+            if (TryFind(inventoryItemName, importerSettings.InventoryItemsDirectory, out InventoryItem inventoryItem))
             {
-                Debug.LogAssertion($"Could not find single asset of type {typeof(T).Name} matching {name}.  Skipping find...");
-                asset = default;
-                return false;
+                AddInventoryItemToSettings(inventoryItem);
+                return true;
             }
 
-            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-            asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-            Debug.Assert(asset != null, $"Unable to load asset {name} from path {assetPath}.");
+            return false;
+        }
 
+        private bool TryFind<T>(string name, string directory, out T asset) where T : Object
+        {
+            asset = AssetUtility.FindAsset<T>(name, directory);
             return asset != null;
         }
 
@@ -489,6 +512,12 @@ namespace CelesteEditor.Twine
         {
             importerSettings.subNarrativeKeys.Add(new SubNarrativeKey(subNarrative.name, subNarrative));
             RemoveUnresolvedKey(subNarrative.name);
+        }
+
+        private void AddInventoryItemToSettings(InventoryItem inventoryItem)
+        {
+            importerSettings.inventoryItemKeys.Add(new InventoryItemKey(inventoryItem.name, inventoryItem));
+            RemoveUnresolvedKey(inventoryItem.name);
         }
 
         private void RemoveUnresolvedTag(string tag)

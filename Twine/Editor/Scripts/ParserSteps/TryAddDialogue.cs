@@ -27,8 +27,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode node = parseContext.TwineNode;
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
-            string dialogueText = node.Text;
-            dialogueText = importerSettings.StripLinksFromText(dialogueText);
+            string dialogueText = parseContext.StrippedLinksText;
             dialogueText = importerSettings.ReplaceLocaTokens(dialogueText, locaTokens);
 
             DialogueNodeBuilder.

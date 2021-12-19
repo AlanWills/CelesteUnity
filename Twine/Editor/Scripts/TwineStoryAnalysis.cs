@@ -11,6 +11,7 @@ namespace CelesteEditor.Twine
         public HashSet<string> foundParameters = new HashSet<string>();
         public HashSet<string> foundBackgrounds = new HashSet<string>();
         public HashSet<string> foundSubNarratives = new HashSet<string>();
+        public HashSet<string> foundInventoryItems = new HashSet<string>();
         public HashSet<string> unrecognizedTags = new HashSet<string>();
         public HashSet<string> unrecognizedKeys = new HashSet<string>();
 
@@ -22,6 +23,7 @@ namespace CelesteEditor.Twine
             foundParameters.Clear();
             foundBackgrounds.Clear();
             foundSubNarratives.Clear();
+            foundInventoryItems.Clear();
             unrecognizedTags.Clear();
             unrecognizedKeys.Clear();
         }

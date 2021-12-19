@@ -12,6 +12,7 @@ using Celeste.Logic;
 using System.IO;
 using CelesteEditor.Twine.AnalysisSteps;
 using Celeste.Twine;
+using Celeste.Inventory;
 
 namespace CelesteEditor.Twine
 {
@@ -125,7 +126,7 @@ namespace CelesteEditor.Twine
 
         #endregion
 
-        #region Sub Story Key Struct
+        #region Sub Narrative Struct
 
         [Serializable]
         public struct SubNarrativeKey
@@ -137,6 +138,23 @@ namespace CelesteEditor.Twine
             {
                 this.key = key;
                 this.subNarrative = subNarrative;
+            }
+        }
+
+        #endregion
+
+        #region Inventory Item Key Struct
+
+        [Serializable]
+        public struct InventoryItemKey
+        {
+            public string key;
+            public InventoryItem inventoryItem;
+
+            public InventoryItemKey(string key, InventoryItem inventoryItem)
+            {
+                this.key = key;
+                this.inventoryItem = inventoryItem;
             }
         }
 
@@ -174,6 +192,11 @@ namespace CelesteEditor.Twine
             get { return Path.Combine(rootDirectory, subNarrativesDirectory); }
         }
 
+        public string InventoryItemsDirectory
+        {
+            get { return Path.Combine(rootDirectory, inventoryItemsDirectory); }
+        }
+
         [SerializeField] private TwineNodeParserStep[] parserSteps;
         [SerializeField] private TwineNodeAnalysisStep[] analysisSteps;
 
@@ -204,15 +227,18 @@ namespace CelesteEditor.Twine
         public List<ParameterKey> parameterKeys = new List<ParameterKey>();
         public List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
         public List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
+        public List<InventoryItemKey> inventoryItemKeys = new List<InventoryItemKey>();
 
         [Header("Script Instructions")]
         [SerializeField] private string setParameterInstruction = "SetParameter";
         [SerializeField] private string setBackgroundInstruction = "SetBackground";
         [SerializeField] private string subNarrativeInstruction = "SubNarrative";
+        [SerializeField] private string addInventoryItemInstruction = "AddInventoryItem";
 
         [Header("Events")]
         public Celeste.Events.Event finishEvent;
         public Celeste.Events.BackgroundEvent setBackgroundEvent;
+        public Celeste.Events.InventoryItemEvent addInventoryItemEvent;
 
         [Header("Graph Settings")]
         public Vector2 nodeSpread = new Vector2(2, 2);
@@ -225,6 +251,7 @@ namespace CelesteEditor.Twine
         [SerializeField] private string parametersDirectory = "Parameters";
         [SerializeField] private string backgroundsDirectory = "Backgrounds";
         [SerializeField] private string subNarrativesDirectory = "SubNarratives";
+        [SerializeField] private string inventoryItemsDirectory = "InventoryItems";
 
         #endregion
 
@@ -287,6 +314,11 @@ namespace CelesteEditor.Twine
 
         public string StripLinksFromText(string text)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+
             int delimiterStart = text.IndexOf(linkStartDelimiter);
 
             while (delimiterStart != -1)
@@ -437,51 +469,7 @@ namespace CelesteEditor.Twine
 
         #endregion
 
-        #region Key Utility
-
-        public bool IsRecognizedKey(string key)
-        {
-            if (IsRegisteredLocaKey(key))
-            {
-                return true;
-            }
-
-            if (IsRegisteredConditionKey(key))
-            {
-                return true;
-            }
-
-            if (IsRegisteredParameterKey(key))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
         #region Script Instruction Utility
-
-        public bool IsRecognizedScriptInstruction(string text)
-        {
-            if (IsSetParameterInstruction(text))
-            {
-                return true;
-            }
-
-            if (IsSetBackgroundInstruction(text))
-            {
-                return true;
-            }
-
-            if (IsSubNarrativeInstruction(text))
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         public bool IsSetParameterInstruction(string text)
         {
@@ -496,6 +484,11 @@ namespace CelesteEditor.Twine
         public bool IsSubNarrativeInstruction(string text)
         {
             return string.CompareOrdinal(text, subNarrativeInstruction) == 0;
+        }
+
+        public bool IsAddInventoryItemInstruction(string text)
+        {
+            return string.CompareOrdinal(text, addInventoryItemInstruction) == 0;
         }
 
         #endregion
@@ -742,6 +735,44 @@ namespace CelesteEditor.Twine
                     else
                     {
                         analysis.unrecognizedKeys.Add(subNarrativeName);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Inventory Item Utility
+
+        public bool IsRegisteredInventoryItemKey(string key)
+        {
+            return inventoryItemKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        public InventoryItem FindInventoryItem(string key)
+        {
+            return inventoryItemKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).inventoryItem;
+        }
+
+        public void FindInventoryItems(string nodeText, TwineStoryAnalysis analysis)
+        {
+            if (!string.IsNullOrWhiteSpace(nodeText))
+            {
+                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (splitText != null &&
+                    splitText.Length >= 2 &&
+                    IsAddInventoryItemInstruction(splitText[0]))
+                {
+                    string inventoryItemName = splitText[1];
+
+                    if (IsRegisteredInventoryItemKey(inventoryItemName))
+                    {
+                        analysis.foundInventoryItems.Add(inventoryItemName);
+                    }
+                    else
+                    {
+                        analysis.unrecognizedKeys.Add(inventoryItemName);
                     }
                 }
             }

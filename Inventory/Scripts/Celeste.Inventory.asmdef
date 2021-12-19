@@ -9,8 +9,11 @@
         "Celeste.Debug",
         "Celeste.Logic",
         "Celeste.Parameters",
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
         "RecyclableScrollRect",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "XNode"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,11 +1,14 @@
-﻿using Celeste.FSM.Nodes;
+﻿using Celeste.Inventory;
+using Celeste.Inventory.Nodes.Events;
+using Celeste.Narrative.Characters;
+using Celeste.Narrative.Nodes.Events;
 using Celeste.Twine;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
-    public class TryCreateSubNarrativeNode : TwineNodeParserStep
+    [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), menuName = "Celeste/Twine/Parser Steps/Try Create Add Inventory Item Node")]
+    public class TryCreateAddInventoryItemNode : TwineNodeParserStep
     {
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -23,28 +26,26 @@ namespace CelesteEditor.Twine.ParserSteps
                 return false;
             }
 
-            if (!importerSettings.IsSubNarrativeInstruction(splitText[0]))
+            if (!importerSettings.IsAddInventoryItemInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredSubNarrativeKey(splitText[1]);
+            return importerSettings.IsRegisteredInventoryItemKey(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            
+
             string nonLinkText = parseContext.StrippedLinksText;
             string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            string subNarrativeKey = splitText[1];
+            InventoryItem inventoryItem = importerSettings.FindInventoryItem(splitText[1]);
+            InventoryItemEventRaiserNode inventoryItemEventRaiserNode = parseContext.Graph.AddNode<InventoryItemEventRaiserNode>();
+            inventoryItemEventRaiserNode.argument.Value = inventoryItem;
+            inventoryItemEventRaiserNode.toRaise = importerSettings.addInventoryItemEvent;
 
-            SubFSMNode subFSMNode = parseContext.Graph.AddNode<SubFSMNode>();
-            subFSMNode.subFSM = importerSettings.FindSubNarrative(subNarrativeKey);
-            Debug.Assert(subFSMNode.subFSM != null, $"Could not find sub narrative {subNarrativeKey}");
-
-            parseContext.FSMNode = subFSMNode;
-            UnityEditor.EditorUtility.SetDirty(subFSMNode);
+            parseContext.FSMNode = inventoryItemEventRaiserNode;
         }
     }
 }

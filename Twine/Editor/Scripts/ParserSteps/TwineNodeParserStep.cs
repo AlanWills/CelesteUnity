@@ -6,7 +6,18 @@ namespace CelesteEditor.Twine.ParserSteps
 {
     public class TwineNodeParseContext
     {
-        public TwineNode TwineNode { get; set; }
+        private TwineNode twineNode = default;
+        public TwineNode TwineNode
+        {
+            get { return twineNode; }
+            set
+            {
+                twineNode = value;
+                StrippedLinksText = twineNode != null ? ImporterSettings.StripLinksFromText(twineNode.Text) : string.Empty;
+            }
+        }
+
+        public string StrippedLinksText { get; private set; }
         public FSMGraph Graph { get; set; }
         public TwineStoryImporterSettings ImporterSettings { get; set; }
         public Vector2 StartingNodePosition { get; set; }
