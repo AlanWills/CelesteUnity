@@ -13,7 +13,6 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
-using Celeste.Tools.Attributes.GUI;
 
 namespace CelesteEditor.Platform
 {
