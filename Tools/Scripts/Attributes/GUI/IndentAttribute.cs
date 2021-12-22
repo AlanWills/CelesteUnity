@@ -15,6 +15,7 @@ namespace Celeste.Tools.Attributes.GUI
         {
             EditorGUI.indentLevel++;
         }
+
         public override void OnPostGUI(Rect position, SerializedProperty property)
         {
             EditorGUI.indentLevel--;

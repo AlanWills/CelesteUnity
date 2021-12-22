@@ -1,4 +1,5 @@
 ﻿using Celeste.Tools.Attributes.GUI;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +16,17 @@ namespace CelesteEditor.Tools.PropertyDrawers.Attributes
             // Get the attribute list, sorted by "order".
             if (multiPropertyAttribute.stored == null)
             {
-                multiPropertyAttribute.stored = fieldInfo.GetCustomAttributes(typeof(MultiPropertyAttribute), false).OrderBy(s => ((PropertyAttribute)s).order);
+                List<MultiPropertyAttribute> newStored = new List<MultiPropertyAttribute>();
+                foreach (var attr in fieldInfo.GetCustomAttributes(false))
+                {
+                    if (attr is MultiPropertyAttribute)
+                    {
+                        newStored.Add(attr as MultiPropertyAttribute);
+                    }
+                }
+
+                newStored.Sort((a, b) => b.order - a.order);
+                multiPropertyAttribute.stored = newStored;
             }
 
             return multiPropertyAttribute;
@@ -23,50 +34,58 @@ namespace CelesteEditor.Tools.PropertyDrawers.Attributes
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            MultiPropertyAttribute mAttribute = RetrieveAttributes();
+            MultiPropertyAttribute multiPropertyAttribute = RetrieveAttributes();
+            var storedAttributes = multiPropertyAttribute.stored;
 
             // If the attribute is invisible, regain the standard vertical spacing.
-            foreach (MultiPropertyAttribute attr in mAttribute.stored)
-                if (!attr.IsVisible(property))
+            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+            {
+                if (!storedAttributes[i].IsVisible(property))
                     return -EditorGUIUtility.standardVerticalSpacing;
+            }
 
             // In case no attribute returns a modified height, return the property's default one:
             float height = base.GetPropertyHeight(property, label);
 
             // Check if any of the attributes wants to modify height:
-            foreach (object atr in mAttribute.stored)
+            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
             {
-                if (atr is MultiPropertyAttribute)
+                var tempheight = storedAttributes[i].GetPropertyHeight(property, label);
+                if (tempheight.HasValue)
                 {
-                    var tempheight = ((MultiPropertyAttribute)atr).GetPropertyHeight(property, label);
-                    if (tempheight.HasValue)
-                    {
-                        height = tempheight.Value;
-                        break;
-                    }
+                    height = tempheight.Value;
+                    break;
                 }
             }
+
             return height;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            MultiPropertyAttribute mAttribute = RetrieveAttributes();
+            MultiPropertyAttribute multiPropertyAttribute = RetrieveAttributes();
+            var storedAttributes = multiPropertyAttribute.stored;
 
             // Calls to IsVisible. If it returns false for any attribute, the property will not be rendered.
-            foreach (MultiPropertyAttribute attr in mAttribute.stored)
-                if (!attr.IsVisible(property)) return;
+            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+            {
+                if (!storedAttributes[i].IsVisible(property)) return;
+            }
 
             // Calls to OnPreRender before the last attribute draws the UI.
-            foreach (MultiPropertyAttribute attr in mAttribute.stored)
-                attr.OnPreGUI(position, property);
+            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+            {
+                storedAttributes[i].OnPreGUI(position, property);
+            }
 
             // The last attribute is in charge of actually drawing something:
-            ((MultiPropertyAttribute)mAttribute.stored.Last()).OnGUI(position, property, label);
+            multiPropertyAttribute.stored[multiPropertyAttribute.stored.Count - 1].OnGUI(position, property, label);
 
             // Calls to OnPostRender after the last attribute draws the UI. These are called in reverse order.
-            foreach (MultiPropertyAttribute attr in mAttribute.stored.Reverse())
-                attr.OnPostGUI(position, property);
+            for (int i = storedAttributes.Count - 1; i >= 0; --i)
+            {
+                storedAttributes[i].OnPostGUI(position, property);
+            }
         }
     }
 }

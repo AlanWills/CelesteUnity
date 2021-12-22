@@ -38,6 +38,7 @@ namespace Celeste.Tools.Attributes.GUI
             oldGuiColour = UnityEngine.GUI.color;
             UnityEngine.GUI.color = Color.blue;
         }
+
         public override void OnPostGUI(Rect position, SerializedProperty property)
         {
             UnityEngine.GUI.color = oldGuiColour;

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +12,7 @@ namespace Celeste.Tools.Attributes.GUI
     public abstract class MultiPropertyAttribute : PropertyAttribute
     {
 #if UNITY_EDITOR
-        public IOrderedEnumerable<object> stored = null;
+        public List<MultiPropertyAttribute> stored = null;
 
         public virtual void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
