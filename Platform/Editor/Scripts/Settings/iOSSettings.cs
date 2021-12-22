@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Platform
@@ -15,35 +8,14 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
-        private const string DEBUG_PATH = "Assets/Platform/iOS/Debug.asset";
-        private const string RELEASE_PATH = "Assets/Platform/iOS/Release.asset";
-
-        private static iOSSettings debug;
         public static iOSSettings Debug
         {
-            get
-            {
-                if (debug == null)
-                {
-                    debug = AssetDatabase.LoadAssetAtPath<iOSSettings>(DEBUG_PATH);
-                }
-
-                return debug;
-            }
+            get { return AllPlatformSettings.instance.iOSDebug; }
         }
 
-        private static iOSSettings release;
         public static iOSSettings Release
         {
-            get
-            {
-                if (release == null)
-                {
-                    release = AssetDatabase.LoadAssetAtPath<iOSSettings>(RELEASE_PATH);
-                }
-
-                return release;
-            }
+            get { return AllPlatformSettings.instance.iOSRelease; }
         }
 
         [SerializeField]

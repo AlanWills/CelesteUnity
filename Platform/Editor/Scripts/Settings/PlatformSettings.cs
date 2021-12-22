@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-using static UnityEngine.Application;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
+using CelesteEditor.Tools;
+using Celeste.Tools.Attributes.GUI;
 
 namespace CelesteEditor.Platform
 {
@@ -22,6 +22,7 @@ namespace CelesteEditor.Platform
         #region Properties and Fields
 
         [SerializeField]
+        [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
         private string version;
         public string Version
         {
@@ -34,6 +35,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'.")]
         private string playerOverrideVersion;
         public string PlayerOverrideVersion
         {
@@ -46,6 +48,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The directory relative to the project directory that the build will be created in.")]
         private string buildDirectory;
         public string BuildDirectory
         {
@@ -53,9 +56,11 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("When integrating build upload to google drive through a pipeline like Jenkins, the variable 'BUILD_GDRIVE_UPLOAD_DIRECTORY' will be added to an environment variables file set to this value.")]
         private string gDriveBuildUploadDirectory;
 
         [SerializeField]
+        [Tooltip("The name of the outputted build.")]
         private string outputName;
         public string OutputName
         {
@@ -63,6 +68,8 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The directory that build addressables will be outputted to, relative to the project directory.  " +
+            "When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_SOURCE' to allow uploading from a specific location.")]
         private string addressablesBuildDirectory;
         public string AddressablesBuildDirectory
         {
@@ -70,6 +77,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The remote load path for the addressables e.g. an S3 bucket.")]
         private string addressablesLoadDirectory;
         public string AddressablesLoadDirectory
         {
@@ -77,6 +85,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location.")]
         private string addressablesS3UploadBucket;
         public string AddressablesS3UploadBucket
         {
@@ -98,9 +107,11 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("An internal unity development flag.")]
         private bool development = true;
 
         [SerializeField]
+        [Tooltip("Controls the value of the Celeste 'IsDebugBuild' runtime flag.")]
         private bool isDebugBuild = false;
 
         [SerializeField]
@@ -111,12 +122,15 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
         private string[] scriptingDefineSymbols = new string[0];
 
         [SerializeField]
+        [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
         private List<string> addressableGroupsInBuild = new List<string>();
 
         [SerializeField]
+        [Tooltip("Any custom scripting steps that should be run before building assets.  Useful for automated asset tooling.")]
         private List<AssetPreparationStep> assetPreparationSteps = new List<AssetPreparationStep>();
 
         #endregion
@@ -127,7 +141,7 @@ namespace CelesteEditor.Platform
         {
             Version version = ParseVersion(Version);
             Version = new Version(version.Major, version.Minor, version.Build + 1).ToString();
-            Debug.LogFormat("New Version is {0} for platform {1}", Version, BuildTarget);
+            Debug.Log($"New Version is {Version} for platform {BuildTarget}");
 
             Apply();
         }
@@ -135,7 +149,9 @@ namespace CelesteEditor.Platform
         public void Apply()
         {
             SetAddressableAssetSettings();
-            File.WriteAllText(string.Format("Assets/Resources/{0}.txt", DebugConstants.IS_DEBUG_BUILD_FILE), isDebugBuild ? "1" : "0");
+            
+            AssetUtility.CreateFolder("Assets/Resources");
+            File.WriteAllText($"Assets/Resources/{DebugConstants.IS_DEBUG_BUILD_FILE}.txt", isDebugBuild ? "1" : "0");
 
             ApplyImpl();
 
@@ -146,7 +162,11 @@ namespace CelesteEditor.Platform
             settings.OverridePlayerVersion = PlayerOverrideVersion;
             settings.profileSettings.SetValue(settings.activeProfileId, "RemoteBuildPath", AddressablesBuildDirectory);
             settings.profileSettings.SetValue(settings.activeProfileId, "RemoteLoadPath", AddressablesLoadDirectory);
-            settings.DefaultGroup = addressableGroupsInBuild.Count > 0 ? settings.FindGroup(addressableGroupsInBuild[0]) : null;
+
+            if (addressableGroupsInBuild.Count > 0)
+            {
+                settings.DefaultGroup = settings.FindGroup(addressableGroupsInBuild[0]);
+            }
 
             foreach (AddressableAssetGroup group in settings.groups)
             {
@@ -182,8 +202,8 @@ namespace CelesteEditor.Platform
             string buildDirectory = BuildDirectory;
             string outputName = OutputName;
 
-            Debug.LogFormat("Build Directory: {0}", buildDirectory);
-            Debug.LogFormat("Output Name: {0}", outputName);
+            Debug.Log($"Build Directory: {buildDirectory}");
+            Debug.Log($"Output Name: {outputName}");
 
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = BuildOptions;
@@ -198,11 +218,11 @@ namespace CelesteEditor.Platform
             if (success)
             {
                 StringBuilder buildInfo = new StringBuilder();
-                buildInfo.AppendFormat("BUILD_LOCATION={0}", buildPlayerOptions.locationPathName);
+                buildInfo.Append($"BUILD_LOCATION={buildPlayerOptions.locationPathName}");
                 buildInfo.AppendLine();
-                buildInfo.AppendFormat("BUILD_VERSION={0}", version); 
+                buildInfo.Append($"BUILD_VERSION={version}"); 
                 buildInfo.AppendLine();
-                buildInfo.AppendFormat("BUILD_GDRIVE_UPLOAD_DIRECTORY={0}", gDriveBuildUploadDirectory);
+                buildInfo.Append($"BUILD_GDRIVE_UPLOAD_DIRECTORY={gDriveBuildUploadDirectory}");
                 InjectBuildEnvVars(buildInfo);
                 File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
 
@@ -233,9 +253,9 @@ namespace CelesteEditor.Platform
             AddressableAssetSettings.BuildPlayerContent();
 
             StringBuilder locationInfo = new StringBuilder();
-            locationInfo.AppendFormat("ASSETS_SOURCE={0}/*", AddressablesBuildDirectory);
+            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}/*");
             locationInfo.AppendLine();
-            locationInfo.AppendFormat("ASSETS_DESTINATION={0}", AddressablesS3UploadBucket);
+            locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
             File.WriteAllText(Path.Combine(new DirectoryInfo(AddressablesBuildDirectory).Parent.FullName, "ASSETS_ENV_VARS.txt"), locationInfo.ToString());
 
             Debug.Log("Finished building content");
@@ -249,16 +269,16 @@ namespace CelesteEditor.Platform
             Debug.Log("Beginning to update content");
 
             string contentStatePath = ContentUpdateScript.GetContentStateDataPath(false);
-            Debug.LogFormat("Using content state path {0}", contentStatePath);
+            Debug.Log($"Using content state path {contentStatePath}");
             AddressableAssetBuildResult buildResult = ContentUpdateScript.BuildContentUpdate(AddressableAssetSettingsDefaultObject.Settings, contentStatePath);
 
             if (buildResult != null)
             {
-                Debug.LogFormat("Finished updating content{0}", string.IsNullOrEmpty(buildResult.Error) ? "" : " with error: " + buildResult.Error);
+                Debug.Log($"Finished updating content{(string.IsNullOrEmpty(buildResult.Error) ? "" : $" with error: {buildResult.Error}")}");
             }
             else
             {
-                Debug.LogFormat("Finished updating content with no build result");
+                Debug.Log("Finished updating content with no build result");
             }
 
             return buildResult != null && string.IsNullOrEmpty(buildResult.Error);

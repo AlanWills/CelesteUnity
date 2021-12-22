@@ -1,3 +1,4 @@
+using Celeste.Loading;
 using Celeste.Scene.Events;
 using System.Collections;
 using UnityEngine;
@@ -34,11 +35,29 @@ namespace DnD.Core.Loading
             enableInput.Invoke();
         }
 
+        private IEnumerator ExecuteLoadJob(LoadJob loadJob)
+        {
+            disableInput.Invoke();
+            loadingScreenUI.SetActive(true);
+
+            yield return loadJob.Execute(
+                (progress) => progressBar.value = progress, 
+                (s) => { });
+
+            loadingScreenUI.SetActive(false);
+            enableInput.Invoke();
+        }
+
         #region Callbacks
 
         public void OnLoadContext(LoadContextArgs loadContextArgs)
         {
             StartCoroutine(LoadContext(loadContextArgs));
+        }
+
+        public void OnExecuteLoadJob(LoadJob loadJob)
+        {
+            StartCoroutine(ExecuteLoadJob(loadJob));
         }
 
         #endregion

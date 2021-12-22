@@ -68,10 +68,6 @@ namespace Celeste.Events
 
                 cachedListeners.Clear();
             }
-            else
-            {
-                Debug.LogWarning($"Event {name} fired, but no-one was listening.");
-            }
         }
 
         #endregion

@@ -62,10 +62,6 @@ namespace Celeste.Events
 
                 cachedListeners.Clear();
             }
-            else
-            {
-                Debug.LogWarning($"Event {name} fired with argument {(argument != null ? argument.ToString() : "<null>")}, but no-one was listening.");
-            }
         }
 
         #endregion

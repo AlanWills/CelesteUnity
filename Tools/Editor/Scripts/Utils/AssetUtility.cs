@@ -1,9 +1,5 @@
 ﻿using CelesteEditor.Tools.Utils;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,14 +13,14 @@ namespace CelesteEditor.Tools
             EditorUtility.SetDirty(assetObject);
         }
 
-		public static void CreateAsset<T>(T asset, string path) where T : ScriptableObject
+		public static void CreateAsset<T>(T asset, string parentFolder) where T : ScriptableObject
 		{
             if (string.IsNullOrEmpty(asset.name))
             {
                 asset.name = typeof(T).Name;
             }
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{path}/{asset.name}.asset");
+			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{parentFolder}/{asset.name}.asset");
 
 			AssetDatabase.CreateAsset(asset, assetPathAndName);
 			AssetDatabase.SaveAssets();
@@ -39,11 +35,26 @@ namespace CelesteEditor.Tools
             EditorUtility.FocusProjectWindow();
         }
 
-		public static void CreateFolder(string parent, string folderName)
+        /// <summary>
+        /// Creates a folder relative to the project directory.  
+        /// As such, to create an object in Assets/ the path must start with Assets/.
+        /// </summary>
+        /// <param name="newFolder"></param>
+        public static void CreateFolder(string newFolder)
+        {
+            int indexOfLastDelimiter = newFolder.LastIndexOf('/');
+            CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
+        }
+
+        public static void CreateFolder(string parent, string folderName)
         {
 			parent = parent.EndsWith("/") ? parent.Substring(0, parent.Length - 1) : parent;
 			folderName = folderName.EndsWith("/") ? folderName.Substring(0, folderName.Length - 1) : folderName;
-			AssetDatabase.CreateFolder(parent, folderName);
+
+            if (!AssetDatabase.IsValidFolder(Path.Combine(parent, folderName)))
+            {
+                AssetDatabase.CreateFolder(parent, folderName);
+            }
         }
 
 		public static void ApplyHideFlags(Object obj, HideFlags hideFlags)

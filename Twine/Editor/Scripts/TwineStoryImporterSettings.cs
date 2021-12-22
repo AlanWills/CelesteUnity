@@ -263,8 +263,8 @@ namespace CelesteEditor.Twine
 
             TwineNodeAnalyseContext analyseContext = new TwineNodeAnalyseContext()
             {
+                ImporterSettings = this,
                 Analysis = twineStoryAnalysis,
-                ImporterSettings = this
             };
 
             foreach (TwineNode twineNode in twineStory.passages)
@@ -294,9 +294,9 @@ namespace CelesteEditor.Twine
         {
             TwineNodeParseContext parseContext = new TwineNodeParseContext()
             {
+                ImporterSettings = this,
                 TwineNode = twineNode,
                 Graph = graph,
-                ImporterSettings = this,
                 StartingNodePosition = startingNodePosition
             };
 

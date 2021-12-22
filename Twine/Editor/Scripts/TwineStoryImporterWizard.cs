@@ -92,7 +92,11 @@ namespace CelesteEditor.Twine
             Dictionary<int, FSMNode> nodeLookup = new Dictionary<int, FSMNode>();
 
             TwineNode startNode = twineStory.passages.Find(x => importerSettings.ContainsStartTag(x.Tags));
-            Debug.Assert(startNode != null, $"Twine Story {twineStory.name} has no start node set.");
+            if (startNode == null)
+            {
+                Debug.LogAssertion($"Twine Story {twineStory.name} has no start node set.");
+                return;
+            }
 
             Vector2 startNodePosition = startNode != null ? startNode.Position : Vector2.zero;
             bool parserErrorOccurred = false;
@@ -108,7 +112,7 @@ namespace CelesteEditor.Twine
                     nodeLookup.Add(twineNode.pid, fsmNode);
                     AssetDatabase.AddObjectToAsset(fsmNode, narrativeGraph);
                 }
-                else
+                else if (!importerSettings.ContainsIgnoreTag(twineNode.Tags))
                 {
                     Debug.LogError($"Failed to parse node {twineNode.Name}.  Transitions will not be created properly...");
                     parserErrorOccurred = true;

@@ -42,7 +42,7 @@ namespace Celeste.Twine
 
         private void SaveTwineStory(TwineStory twineStory)
         {
-            SaveTwineStory(twineStory.name, JsonUtility.ToJson(twineStory));
+            SaveTwineStory(twineStory.name, twineStory.ToJson());
         }
 
         private void SaveTwineStory(string storyName, string serializedStory)

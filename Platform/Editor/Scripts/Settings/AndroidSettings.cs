@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
 namespace CelesteEditor.Platform
@@ -15,52 +9,22 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
-        private const string DEBUG_PATH = "Assets/Platform/Android/Debug.asset";
-        private const string RELEASE_APK_PATH = "Assets/Platform/Android/ReleaseApk.asset";
-        private const string RELEASE_BUNDLE_PATH = "Assets/Platform/Android/ReleaseBundle.asset";
-
-        private static AndroidSettings debug;
         public static AndroidSettings Debug
         {
-            get
-            {
-                if (debug == null)
-                {
-                    debug = AssetDatabase.LoadAssetAtPath<AndroidSettings>(DEBUG_PATH);
-                }
-
-                return debug;
-            }
+            get { return AllPlatformSettings.instance.AndroidDebug; }
         }
 
-        private static AndroidSettings releaseApk;
         public static AndroidSettings ReleaseApk
         {
-            get
-            {
-                if (releaseApk == null)
-                {
-                    releaseApk = AssetDatabase.LoadAssetAtPath<AndroidSettings>(RELEASE_APK_PATH);
-                }
-
-                return releaseApk;
-            }
+            get { return AllPlatformSettings.instance.AndroidReleaseApk; }
         }
 
-        private static AndroidSettings releaseBundle;
         public static AndroidSettings ReleaseBundle
         {
-            get
-            {
-                if (releaseBundle == null)
-                {
-                    releaseBundle = AssetDatabase.LoadAssetAtPath<AndroidSettings>(RELEASE_BUNDLE_PATH);
-                }
-
-                return releaseBundle;
-            }
+            get { return AllPlatformSettings.instance.AndroidReleaseBundle; }
         }
 
+        // HideInInspector cos enum not editable via default UI
         [SerializeField, HideInInspector]
         private ScriptingImplementation scriptingBackend;
         public ScriptingImplementation ScriptingBackend
@@ -68,6 +32,7 @@ namespace CelesteEditor.Platform
             get { return scriptingBackend; }
         }
 
+        // HideInInspector cos enum not editable via default UI
         [SerializeField, HideInInspector]
         private AndroidArchitecture architecture;
         public AndroidArchitecture Architecture
@@ -81,6 +46,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("Whether the build pipeline should create an apk or aab.  Set this to true if building for store release, as only an aab can be uploading to Google Play.")]
         private bool buildAppBundle;
         private bool BuildAppBundle
         {
@@ -88,6 +54,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("A flag to instruct the build pipeline to create debug symbols to help symbolicate crashes?")]
         private bool buildSymbols;
         private bool BuildSymbols
         {
@@ -95,6 +62,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("A flag to indicate if the build pipeline strip out unused code to reduce app size.")]
         private bool minifyRelease;
         public bool MinifyRelease
         {
@@ -102,6 +70,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The password for the local keystore used to sign the build.")]
         private string keystorePassword;
         public string KeystorePassword
         {
@@ -109,6 +78,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The key used to sign the build.")]
         private string keyAliasName;
         public string KeyAliasName
         {
@@ -116,6 +86,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
+        [Tooltip("The password for the key used to sign the build.")]
         private string keyAliasPassword;
         public string KeyAliasPassword
         {
@@ -128,7 +99,7 @@ namespace CelesteEditor.Platform
         {
             Version version = ParseVersion(Version);
             PlayerSettings.Android.bundleVersionCode = version.Major * 10000 + version.Minor * 100 + version.Build;
-            UnityEngine.Debug.LogFormat("Android version is now: {0}", version.ToString());
+            UnityEngine.Debug.Log($"Android version is now: {version}");
 
             PlayerSettings.Android.keystorePass = KeystorePassword;
             PlayerSettings.Android.keyaliasName = KeyAliasName;

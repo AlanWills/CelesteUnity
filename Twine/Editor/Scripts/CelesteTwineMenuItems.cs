@@ -44,7 +44,7 @@ namespace DnDEditor.Twine
                     }
 
                     string storyPath = AssetDatabase.GetAssetPath(twineStory);
-                    File.WriteAllText(storyPath, JsonUtility.ToJson(twineStory));
+                    twineStory.Save(storyPath);
                     
                     AssetDatabase.Refresh();
                 }

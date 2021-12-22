@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -79,6 +80,20 @@ namespace Celeste.Twine
         {
             return passages.Count != 0 ? passages[passages.Count - 1].Position + new Vector2(0, 120) : Vector2.zero;
         }
+
+        #region Save/Load
+
+        public string ToJson()
+        {
+            return JsonUtility.ToJson(this, true);
+        }
+
+        public void Save(string filePath)
+        {
+            File.WriteAllText(filePath, ToJson());
+        }
+
+        #endregion
 
         #region Callbacks
 
