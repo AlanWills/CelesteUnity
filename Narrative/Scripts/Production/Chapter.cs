@@ -1,5 +1,6 @@
 ﻿using Celeste.DataStructures;
 using Celeste.FSM;
+using Celeste.FSM.Nodes;
 using Celeste.Narrative.Characters;
 using Celeste.Parameters;
 using System;
@@ -113,6 +114,20 @@ namespace Celeste.Narrative
         {
             HashSet<Character> charactersLookup = new HashSet<Character>();
 
+            FindCharacters(narrativeGraph, charactersLookup);
+
+            Array.Resize(ref characters, charactersLookup.Count);
+            
+            int characterIndex = 0;
+            foreach (Character character in charactersLookup)
+            {
+                characters[characterIndex] = character;
+                ++characterIndex;
+            }
+        }
+
+        private void FindCharacters(FSMGraph narrativeGraph, HashSet<Character> charactersLookup)
+        {
             foreach (FSMNode node in narrativeGraph.nodes)
             {
                 if (node is ICharacterNode)
@@ -124,15 +139,12 @@ namespace Celeste.Narrative
                         charactersLookup.Add(characterNode.Character);
                     }
                 }
-            }
+                else if (node is SubFSMNode)
+                {
+                    SubFSMNode subFSMNode = node as SubFSMNode;
 
-            Array.Resize(ref characters, charactersLookup.Count);
-            
-            int characterIndex = 0;
-            foreach (Character character in charactersLookup)
-            {
-                characters[characterIndex] = character;
-                ++characterIndex;
+                    FindCharacters(subFSMNode.subFSM, charactersLookup);
+                }
             }
         }
 

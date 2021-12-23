@@ -1,18 +1,9 @@
-﻿using Celeste.Assets;
-using Celeste.FSM;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.FSM;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.AddressableAssets.ResourceLocators;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Celeste.FSMNodes.Assets
 {
-    [CreateNodeMenu("Celeste/Assets/Delete Old Addressables Node")]
+    [CreateNodeMenu("Celeste/Assets/Delete Old Addressables")]
     public class DeleteOldAddressablesNode : FSMNode
     {
         #region FSM Runtime

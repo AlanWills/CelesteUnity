@@ -36,6 +36,9 @@ namespace Celeste.Narrative.Choices
             character.CharacterAvatarIcon = Sprite;
 
             CharacterRecord characterRecord = currentChapterRecord.Value.FindCharacterRecord(character);
+            UnityEngine.Debug.Assert(characterRecord != null, $"Could not find character record for character: {character}.");
+            UnityEngine.Debug.Assert(spriteCharacterCustomisation != null, $"No sprite character customisation set for choice: {name}.");
+
             characterRecord.AvatarCustomisationGuid = spriteCharacterCustomisation.Guid;
         }
     }

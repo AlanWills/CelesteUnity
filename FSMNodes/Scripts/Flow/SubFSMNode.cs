@@ -12,8 +12,17 @@ namespace Celeste.FSM.Nodes
         public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
-        
-        public FSMNode CurrentNode { get; set; }
+
+        [NonSerialized] private FSMNode currentNode;
+        public FSMNode CurrentNode 
+        {
+            get { return currentNode; }
+            set
+            {
+                currentNode = value;
+                Debug.Log($"Setting Current Node: {(currentNode != null ? currentNode.name : "null")}.");
+            }
+        }
 
         [NonSerialized] private FSMNode startNode;
         public FSMNode StartNode

@@ -79,7 +79,7 @@ namespace Celeste.Narrative
         [SerializeField] private DialogueType dialogueType = DialogueType.Speech;
         [SerializeField, NodeEnum] private UIPosition uiPosition;
         [SerializeField, HideInNodeEditor] private ScriptableObject[] dialogueTokens;
-        [SerializeField, HideIfEnum("dialoguePosition", (int)UIPosition.Narrator)] private Character character;
+        [SerializeField] private Character character;
 
         private string tokenizedDialogue;
         private bool isRead = false;

@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM;
+using Celeste.FSM.Nodes;
 using Celeste.FSM.Nodes.Parameters;
 using Celeste.Narrative;
 using Celeste.Narrative.Characters;
@@ -57,7 +58,14 @@ namespace CelesteEditor.Narrative.Production
             NarrativeGraph narrativeGraph = chapter.NarrativeGraph;
             HashSet<TValue> values = new HashSet<TValue>();
 
-            foreach (FSMNode node in narrativeGraph.nodes)
+            FindValues<T, TValue, TReference>(valuesProperty, narrativeGraph, values);
+        }
+
+        private void FindValues<T, TValue, TReference>(SerializedProperty valuesProperty, FSMGraph fsmGraph, HashSet<TValue> values)
+            where TValue : ParameterValue<T>
+            where TReference : ParameterReference<T, TValue, TReference>
+        {
+            foreach (FSMNode node in fsmGraph.nodes)
             {
                 if (node is SetValueNode<T, TValue, TReference>)
                 {
@@ -66,6 +74,12 @@ namespace CelesteEditor.Narrative.Production
                     {
                         values.Add(setValueNode.value);
                     }
+                }
+                else if (node is SubFSMNode)
+                {
+                    SubFSMNode subFSMNode = node as SubFSMNode;
+
+                    FindValues<T, TValue, TReference>(valuesProperty, subFSMNode.subFSM, values);
                 }
             }
 

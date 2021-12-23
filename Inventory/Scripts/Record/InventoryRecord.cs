@@ -37,9 +37,13 @@ namespace Celeste.Inventory
 
         #region Item Management
 
-        public void CreateStartingInventory(InventoryItem[] startingItems)
+        public void Clear()
         {
             items.Clear();
+        }
+
+        public void CreateStartingInventory(InventoryItem[] startingItems)
+        {
             items.AddRange(startingItems);
 
             MaxSize = startingMaxSize;

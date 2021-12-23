@@ -34,7 +34,7 @@ namespace Celeste.Tools.Attributes.GUI
             string conditionPath = propertyPath.Replace(property.name, PropertyName);
             SerializedProperty dependentProperty = property.serializedObject.FindProperty(conditionPath);
 
-            return dependentProperty != null && dependentProperty.propertyType == SerializedPropertyType.Enum ? dependentProperty.intValue == Value : false;
+            return dependentProperty != null && dependentProperty.propertyType == SerializedPropertyType.Enum ? dependentProperty.intValue != Value : false;
         }
 #endif
     }

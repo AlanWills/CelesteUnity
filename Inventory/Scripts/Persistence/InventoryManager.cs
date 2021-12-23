@@ -25,6 +25,7 @@ namespace Celeste.Inventory
 
         protected override void Deserialize(InventoryDTO dto)
         {
+            inventory.Clear();
             inventory.MaxSize = dto.maxSize;
 
             foreach (int itemGuid in dto.itemGuids)
