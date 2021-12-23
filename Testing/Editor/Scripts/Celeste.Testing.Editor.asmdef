@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Testing.Editor",
+    "rootNamespace": "CelesteEditor.Testing",
+    "references": [
+        "Celeste.Testing",
+        "Celeste.Objects",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Tools.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

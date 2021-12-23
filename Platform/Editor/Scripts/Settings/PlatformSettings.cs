@@ -20,10 +20,12 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
+        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.";
+
         [SerializeField]
         [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
-        private string version;
-        public string Version
+        private AppVersion version;
+        public AppVersion Version
         {
             get { return version; }
             protected set
@@ -34,7 +36,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
-        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'.")]
+        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'." + STRING_SUBSTITUTION_HELP)]
         private string playerOverrideVersion;
         public string PlayerOverrideVersion
         {
@@ -47,7 +49,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
-        [Tooltip("The directory relative to the project directory that the build will be created in.")]
+        [Tooltip("The directory relative to the project directory that the build will be created in." + STRING_SUBSTITUTION_HELP)]
         private string buildDirectory;
         public string BuildDirectory
         {
@@ -59,7 +61,7 @@ namespace CelesteEditor.Platform
         private string gDriveBuildUploadDirectory;
 
         [SerializeField]
-        [Tooltip("The name of the outputted build.")]
+        [Tooltip("The name of the outputted build." + STRING_SUBSTITUTION_HELP)]
         private string outputName;
         public string OutputName
         {
@@ -68,7 +70,7 @@ namespace CelesteEditor.Platform
 
         [SerializeField]
         [Tooltip("The directory that build addressables will be outputted to, relative to the project directory.  " +
-            "When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_SOURCE' to allow uploading from a specific location.")]
+            "When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_SOURCE' to allow uploading from a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesBuildDirectory;
         public string AddressablesBuildDirectory
         {
@@ -76,7 +78,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
-        [Tooltip("The remote load path for the addressables e.g. an S3 bucket.")]
+        [Tooltip("The remote load path for the addressables e.g. an S3 bucket." + STRING_SUBSTITUTION_HELP)]
         private string addressablesLoadDirectory;
         public string AddressablesLoadDirectory
         {
@@ -84,7 +86,7 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
-        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location.")]
+        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesS3UploadBucket;
         public string AddressablesS3UploadBucket
         {
@@ -136,10 +138,9 @@ namespace CelesteEditor.Platform
 
         #region Platform Setup Methods
 
-        public void BumpVersion()
+        public void IncrementBuild()
         {
-            Version version = ParseVersion(Version);
-            Version = new Version(version.Major, version.Minor, version.Build + 1).ToString();
+            Version.IncrementBuild();
             Debug.Log($"New Version is {Version} for platform {BuildTarget}");
 
             Apply();
@@ -155,7 +156,7 @@ namespace CelesteEditor.Platform
             ApplyImpl();
 
             EditorUserBuildSettings.development = development;
-            PlayerSettings.bundleVersion = version;
+            PlayerSettings.bundleVersion = Version.ToString();
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols);
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             settings.OverridePlayerVersion = PlayerOverrideVersion;
@@ -225,7 +226,7 @@ namespace CelesteEditor.Platform
                 InjectBuildEnvVars(buildInfo);
                 File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
 
-                BumpVersion();
+                IncrementBuild();
             }
             else if (Application.isBatchMode)
             {
@@ -314,12 +315,11 @@ namespace CelesteEditor.Platform
 
         private string Resolve(string stringWithPossibleVersionCodes)
         {
-            Version _version = ParseVersion(version);
-
             return stringWithPossibleVersionCodes.
-                    Replace("{version}", version).
-                    Replace("{major}", _version.Major.ToString()).
-                    Replace("{minor}", _version.Minor.ToString());
+                    Replace("{version}", Version.ToString()).
+                    Replace("{major}", Version.Major.ToString()).
+                    Replace("{minor}", Version.Minor.ToString()).
+                    Replace("{build}", Version.Build.ToString());
         }
 
         #endregion

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CelesteEditor.Scene
 {
@@ -20,7 +21,7 @@ namespace CelesteEditor.Scene
 
             if (GUILayout.Button("Load", GUILayout.ExpandWidth(false)))
             {
-                (target as SceneSet).EditorOnly_Load();
+                (target as SceneSet).EditorOnly_Load(LoadSceneMode.Single);
             }
 
             if (GUILayout.Button("Add To Build", GUILayout.ExpandWidth(false)))

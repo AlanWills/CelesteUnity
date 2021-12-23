@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 #if UNITY_EDITOR
@@ -16,7 +15,7 @@ namespace Celeste.Tools.Attributes.GUI
 
         public virtual void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.PropertyField(position, property, label);
+            EditorGUI.PropertyField(position, property, label, true);
         }
 
         public virtual void OnPreGUI(Rect position, SerializedProperty property) { }
@@ -24,6 +23,11 @@ namespace Celeste.Tools.Attributes.GUI
 
         public virtual bool IsVisible(SerializedProperty property) { return true; }
         public virtual float? GetPropertyHeight(SerializedProperty property, GUIContent label) { return null; }
+
+        protected float GetDefaultPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
 #endif
     }
 }

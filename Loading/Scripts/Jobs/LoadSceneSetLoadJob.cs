@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Celeste.Loading
 {
@@ -9,10 +10,11 @@ namespace Celeste.Loading
     public class LoadSceneSetLoadJob : LoadJob
     {
         [SerializeField] private SceneSet sceneSet;
+        [SerializeField] private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            yield return sceneSet.LoadAsync(setProgress, () => { });
+            yield return sceneSet.LoadAsync(loadSceneMode, setProgress, () => { });
         }
     }
 }

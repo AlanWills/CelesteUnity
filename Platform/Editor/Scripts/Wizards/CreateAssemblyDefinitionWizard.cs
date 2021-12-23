@@ -10,23 +10,6 @@ namespace CelesteEditor.Platform.Wizards
 {
     public class CreateAssemblyDefinitionWizard : ScriptableWizard
     {
-        /*
-         * {
-    "name": "Celeste.Physics",
-    "rootNamespace": "Celeste.Physics",
-    "references": [],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
-}
-         */
-
         [Serializable]
         private struct AsmDef
         {
@@ -46,6 +29,7 @@ namespace CelesteEditor.Platform.Wizards
 
         #region Properties and Fields
 
+        [Tooltip("The path relative to the Assets/ folder of the project.")]
         [SerializeField] private string parentDirectory;
         [SerializeField] private string directoryName;
         [SerializeField] private string assemblyName;

@@ -2,6 +2,7 @@ using Celeste.Loading;
 using Celeste.Scene.Events;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace DnD.Core.Loading
@@ -27,6 +28,7 @@ namespace DnD.Core.Loading
             loadingScreenUI.SetActive(true);
 
             yield return loadContextArgs.sceneSet.LoadAsync(
+                LoadSceneMode.Single,
                 (progress) => progressBar.value = progress,
                 () => { });
 

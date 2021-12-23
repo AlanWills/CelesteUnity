@@ -3,6 +3,7 @@ using Celeste.Scene;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CelesteEditor.Scene
 {
@@ -15,7 +16,7 @@ namespace CelesteEditor.Scene
 
             if (sceneSet != null)
             {
-                sceneSet.EditorOnly_Load();
+                sceneSet.EditorOnly_Load(LoadSceneMode.Single);
             }
         }
 

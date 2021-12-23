@@ -3,6 +3,7 @@ using Celeste.Debug.Menus;
 using Celeste.Scene;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.GUILayout;
 
 namespace Celeste.Twine.Debug
@@ -28,9 +29,14 @@ namespace Celeste.Twine.Debug
 
                     Label(sceneSet.name);
 
-                    if (Button($"Load", ExpandWidth(false)))
+                    if (Button($"Load Single", ExpandWidth(false)))
                     {
-                        CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync((f) => { }, () => { }));
+                        CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, () => { }));
+                    }
+
+                    if (Button($"Load Additive", ExpandWidth(false)))
+                    {
+                        CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Additive, (f) => { }, () => { }));
                     }
                 }
             }

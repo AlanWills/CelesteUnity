@@ -97,9 +97,8 @@ namespace CelesteEditor.Platform
 
         protected override void ApplyImpl()
         {
-            Version version = ParseVersion(Version);
-            PlayerSettings.Android.bundleVersionCode = version.Major * 10000 + version.Minor * 100 + version.Build;
-            UnityEngine.Debug.Log($"Android version is now: {version}");
+            PlayerSettings.Android.bundleVersionCode = Version.Major * 10000 + Version.Minor * 100 + Version.Build;
+            UnityEngine.Debug.Log($"Android version is now: {Version}");
 
             PlayerSettings.Android.keystorePass = KeystorePassword;
             PlayerSettings.Android.keyaliasName = KeyAliasName;

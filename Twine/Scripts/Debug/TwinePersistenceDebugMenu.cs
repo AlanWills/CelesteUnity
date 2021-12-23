@@ -1,7 +1,5 @@
 ﻿using Celeste.Debug.Menus;
-using Celeste.Events;
 using Celeste.Log;
-using Celeste.Twine.Persistence;
 using System.IO;
 using UnityEngine;
 using static UnityEngine.GUILayout;

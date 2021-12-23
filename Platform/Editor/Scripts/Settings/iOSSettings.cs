@@ -28,7 +28,7 @@ namespace CelesteEditor.Platform
             EditorUserBuildSettings.iOSBuildConfigType = runInXCodeAs;
 
             PlayerSettings.stripEngineCode = false;
-            PlayerSettings.iOS.buildNumber = Version;
+            PlayerSettings.iOS.buildNumber = Version.ToString();
             UnityEngine.Debug.LogFormat("iOS version is now: {0}", PlayerSettings.iOS.buildNumber);
         }
     }

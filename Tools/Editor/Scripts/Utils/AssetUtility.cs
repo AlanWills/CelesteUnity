@@ -194,6 +194,11 @@ namespace CelesteEditor.Tools
             return AssetDatabase.FindAssets(assetSearchString);
         }
 
+        public static T FindAsset<T>() where T : Object
+        {
+            return FindAsset<T>(string.Empty, string.Empty);
+        }
+
         public static T FindAsset<T>(string name) where T : Object
         {
             return FindAsset<T>(name, string.Empty);

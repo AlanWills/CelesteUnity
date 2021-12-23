@@ -43,9 +43,9 @@ namespace CelesteEditor.Platform
                 platformSettings.BuildPlayer();
             }
 
-            if (GUILayout.Button("Bump Version", GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("Increment Build", GUILayout.ExpandWidth(false)))
             {
-                platformSettings.BumpVersion();
+                platformSettings.IncrementBuild();
             }
 
             EditorGUILayout.EndHorizontal();

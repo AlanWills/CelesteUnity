@@ -8,7 +8,7 @@ using UnityScene = UnityEngine.SceneManagement.Scene;
 
 namespace Celeste.Scene
 {
-    [CreateAssetMenu(fileName = "SceneSet", menuName = "Celeste/Scene/Scene Set")]
+    [CreateAssetMenu(fileName = nameof(SceneSet), menuName = "Celeste/Scene/Scene Set")]
     public class SceneSet : ScriptableObject
     {
         #region Properties and Fields
@@ -28,7 +28,7 @@ namespace Celeste.Scene
         }
 
 #if UNITY_EDITOR
-        public void EditorOnly_Load()
+        public void EditorOnly_Load(LoadSceneMode loadSceneMode)
         {
             if (Application.isPlaying)
             {
@@ -50,7 +50,7 @@ namespace Celeste.Scene
             for (int i = SceneManager.sceneCount; i > 0; --i)
             {
                 UnityScene scene = SceneManager.GetSceneAt(i - 1);
-                if (!IsRequired(scene))
+                if (loadSceneMode == LoadSceneMode.Single && !IsRequired(scene))
                 {
                     scenesToUnload.Add(scene);
                 }
@@ -78,7 +78,7 @@ namespace Celeste.Scene
         }
 #endif
 
-        public IEnumerator LoadAsync(Action<float> onProgressChanged, Action onLoadComplete)
+        public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action onLoadComplete)
         {
             List<UnityScene> scenesToUnload = new List<UnityScene>();
             HashSet<string> loadedScenes = new HashSet<string>();
@@ -86,7 +86,7 @@ namespace Celeste.Scene
             for (int i = 0, n = SceneManager.sceneCount; i < n; ++i)
             {
                 UnityScene scene = SceneManager.GetSceneAt(i);
-                if (!IsRequired(scene))
+                if (loadSceneMode == LoadSceneMode.Single && !IsRequired(scene))
                 {
                     scenesToUnload.Add(scene);
                 }
@@ -158,7 +158,6 @@ namespace Celeste.Scene
                 unityScenes.Add(SceneManager.GetSceneAt(i));
             }
 
-            UnityEngine.Debug.Assert(scenes.Count == unityScenes.Count, "Number of loaded scenes did not match the number of scenes in the scene set");
             for (int i = 0, n = scenes.Count; i < (n - 1); ++i)
             {
                 UnityScene first = unityScenes.Find(x => x.name == scenes[i]);

@@ -1,0 +1,19 @@
+{
+    "name": "Celeste.Testing",
+    "rootNamespace": "Celeste.Testing",
+    "references": [
+        "Unity.TextMeshPro",
+        "Celeste.Tools",
+        "Celeste.Scene",
+        "Celeste.Objects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

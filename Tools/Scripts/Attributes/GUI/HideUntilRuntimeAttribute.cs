@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class HideUntilRuntimeAttribute : PropertyAttribute
+    public class HideUntilRuntimeAttribute : MultiPropertyAttribute
     {
+#if UNITY_EDITOR
+        public override bool IsVisible(SerializedProperty property)
+        {
+            return Application.isPlaying;
+        }
+#endif
     }
 }
