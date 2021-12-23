@@ -19,7 +19,7 @@ namespace Celeste.Narrative.Choices
         ShowDisabled
     }
 
-    public class Choice : ScriptableObject, IChoice, ICopyable<Choice>
+    public abstract class Choice : ScriptableObject, IChoice, ICopyable<Choice>
     {
         #region Properties and Fields
 

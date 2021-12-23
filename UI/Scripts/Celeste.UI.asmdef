@@ -3,12 +3,14 @@
     "rootNamespace": "Celeste.UI",
     "references": [
         "Unity.TextMeshPro",
+        "XNode",
         "Celeste.Events",
         "Celeste.Parameters",
         "Celeste.Objects",
         "Celeste.Tools",
         "Celeste.Maths",
-        "Celeste.Scene"
+        "Celeste.Scene",
+        "Celeste.FSM"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

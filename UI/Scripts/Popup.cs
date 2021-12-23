@@ -20,7 +20,8 @@ namespace Celeste.UI
         [SerializeField] private ShowPopupEvent showPopup;
 
         [Header("Optional Events")]
-        [SerializeField] private Event onPopupHide;
+        [SerializeField] private Event onConfirmPressed;
+        [SerializeField] private Event onClosePressed;
 
         private IPopupController popupController;
 
@@ -78,11 +79,6 @@ namespace Celeste.UI
                 popupController.OnHide();
             }
 
-            if (onPopupHide != null)
-            {
-                onPopupHide.Invoke();
-            }
-
             popupRoot.SetActive(false);
         }
 
@@ -102,6 +98,11 @@ namespace Celeste.UI
                 popupController.OnConfirmPressed();
             }
 
+            if (onConfirmPressed != null)
+            {
+                onConfirmPressed.Invoke();
+            }
+
             Hide();
         }
 
@@ -110,6 +111,11 @@ namespace Celeste.UI
             if (popupController != null)
             {
                 popupController.OnClosePressed();
+            }
+
+            if (onClosePressed != null)
+            {
+                onClosePressed.Invoke();
             }
 
             Hide();

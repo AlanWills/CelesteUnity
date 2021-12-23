@@ -20,7 +20,7 @@ namespace Celeste.Parameters
 
         public static bool operator ==(StringValue value, string s)
         {
-            return value == null ? s == null : string.CompareOrdinal(value.Value, s) == 0;
+            return value is null ? s == null : string.CompareOrdinal(value.Value, s) == 0;
         }
 
         public static StringValue operator +(StringValue value, string s)

@@ -4,15 +4,11 @@ using Celeste.Narrative.Choices;
 using CelesteEditor.FSM.Nodes;
 using CelesteEditor.Narrative.Choices;
 using CelesteEditor.Popups;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
-using static UnityEditor.EditorGUI;
 using static UnityEditor.EditorGUILayout;
-using static XNodeEditor.NodeEditor;
 
 namespace CelesteEditor.Narrative
 {
@@ -48,7 +44,7 @@ namespace CelesteEditor.Narrative
 
                 if (GUILayout.Button("Add", GUILayout.ExpandWidth(false)))
                 {
-                    TextInputPopup.Display("New Choice...", (string choiceName) =>
+                    TextInputPopup.Display("Internal Choice ID...", (string choiceName) =>
                     {
                         choiceNode.AddChoice(choiceName, ChoicesConstants.ChoiceOptions[selectedEventType]);
                     });

@@ -9,8 +9,9 @@ namespace Celeste.UI.Popups
     {
         #region Properties and Fields
 
-        [SerializeField] private StringValue nameValue;
         [SerializeField] private TMP_InputField inputField;
+        
+        private StringValue nameValue;
 
         #endregion
 
@@ -18,7 +19,14 @@ namespace Celeste.UI.Popups
 
         public void OnShow(IPopupArgs args) 
         {
-            inputField.text = nameValue.Value;
+            StringEntryPopupArgs stringEntryPopupArgs = args as StringEntryPopupArgs;
+            Debug.Assert(stringEntryPopupArgs != null, $"No {nameof(StringEntryPopupArgs)} passed to popup {name}.");
+
+            if (stringEntryPopupArgs != null)
+            {
+                nameValue = stringEntryPopupArgs.stringValue;
+                inputField.text = nameValue.Value;
+            }
         }
 
         public void OnHide()
@@ -29,7 +37,10 @@ namespace Celeste.UI.Popups
 
         public void OnConfirmPressed() 
         {
-            nameValue.Value = inputField.text;
+            if (nameValue != null)
+            {
+                nameValue.Value = inputField.text;
+            }
         }
 
         #endregion
