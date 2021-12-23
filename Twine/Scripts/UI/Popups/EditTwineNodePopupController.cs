@@ -27,6 +27,7 @@ namespace Celeste.Twine.UI
         [SerializeField] private TMP_InputField tagsInputField;
         [SerializeField] private TMP_InputField textInputField;
         [SerializeField] private FollowLinkUIManager followLinkUIManager;
+        [SerializeField] private TwineNodeEvent removeTwineNode;
 
         private const string TAGS_DELIMITER = ",";
 
@@ -75,6 +76,11 @@ namespace Celeste.Twine.UI
             twineNode.Text = originalNodeText;
             twineNode.Tags.AssignFrom(originalNodeTags);
             twineNode.Links.AssignFrom(originalNodeLinks);
+        }
+
+        public void OnRemovePressed()
+        {
+            removeTwineNode.Invoke(twineNode);
         }
 
         public void OnEndEditTwineNodeTitleText()

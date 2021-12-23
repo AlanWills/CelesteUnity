@@ -15,6 +15,7 @@ namespace Celeste.Twine
         public const string FILE_EXTENSION = "twine";
 
         public TwineNodeUnityEvent OnNodeAdded { get; } = new TwineNodeUnityEvent();
+        public TwineNodeUnityEvent OnNodeRemoved { get; } = new TwineNodeUnityEvent();
         public UnityEvent OnChanged { get; } = new UnityEvent();
 
         public List<TwineNode> passages = new List<TwineNode>();
@@ -50,6 +51,7 @@ namespace Celeste.Twine
             }
 
             OnNodeAdded.RemoveAllListeners();
+            OnNodeRemoved.RemoveAllListeners();
             OnChanged.RemoveAllListeners();
 
             foreach (TwineNode twineNode in passages)
@@ -74,6 +76,15 @@ namespace Celeste.Twine
             OnChanged.Invoke();
 
             return twineNode;
+        }
+
+        public void RemoveNode(TwineNode twineNode)
+        {
+            if (passages.Remove(twineNode))
+            {
+                OnNodeRemoved.Invoke(twineNode);
+                OnChanged.Invoke();
+            }
         }
 
         private Vector2 CalculateBestPosition()

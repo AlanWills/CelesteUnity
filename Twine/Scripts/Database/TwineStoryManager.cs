@@ -11,6 +11,7 @@ namespace Celeste.Twine
 
         [SerializeField] private TwineStoryEvent saveTwineStory;
         [SerializeField] private TwineNodeEvent ontwineNodeAddedToStory;
+        [SerializeField] private TwineNodeEvent ontwineNodeRemovedFromStory;
 
         [NonSerialized] private TwineStory currentStory;
 
@@ -29,6 +30,7 @@ namespace Celeste.Twine
             UnityEngine.Debug.Assert(twineStory != null, $"Null twine story loaded.");
             currentStory = twineStory;
             currentStory.OnNodeAdded.AddListener(OnCurrentStoryNodeAdded);
+            currentStory.OnNodeRemoved.AddListener(OnCurrentStoryNodeRemoved);
             currentStory.OnChanged.AddListener(OnCurrentStoryChanged);
         }
 
@@ -43,16 +45,30 @@ namespace Celeste.Twine
 
         public void OnAddTwineNode()
         {
-            UnityEngine.Debug.Assert(currentStory != null, "No current story.  Ignoring SaveCurrentStory...");
+            UnityEngine.Debug.Assert(currentStory != null, "No current story.  Ignoring...");
             if (currentStory != null)
             {
                 currentStory.AddNode("Untitled");
             }
         }
 
+        public void OnRemoveTwineNode(TwineNode twineNode)
+        {
+            UnityEngine.Debug.Assert(currentStory != null, "No current story.  Ignoring...");
+            if (currentStory != null)
+            {
+                currentStory.RemoveNode(twineNode);
+            }
+        }
+
         private void OnCurrentStoryNodeAdded(TwineNode newNode)
         {
             ontwineNodeAddedToStory.Invoke(newNode);
+        }
+
+        private void OnCurrentStoryNodeRemoved(TwineNode newNode)
+        {
+            ontwineNodeRemovedFromStory.Invoke(newNode);
         }
 
         private void OnCurrentStoryChanged()

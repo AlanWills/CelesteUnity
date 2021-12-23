@@ -66,6 +66,11 @@ namespace Celeste.Twine.UI
 
         #endregion
 
+        public bool IsFor(TwineNode twineNode)
+        {
+            return this.twineNode == twineNode;
+        }
+
         #region Unity Methods
 
         private void OnDisable()

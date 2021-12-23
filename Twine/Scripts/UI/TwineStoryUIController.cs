@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using Celeste.Events;
 using Celeste.Memory;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Twine.UI
@@ -14,6 +15,7 @@ namespace Celeste.Twine.UI
         [SerializeField] private ShowPopupEvent showEditTwineNodePopup;
 
         private TwineStory twineStory;
+        private List<TwineNodeUIController> twineNodeUIControllers = new List<TwineNodeUIController>();
 
         #endregion
 
@@ -28,13 +30,14 @@ namespace Celeste.Twine.UI
         {
             this.twineStory = twineStory;
 
+            twineNodeUIControllers.Clear();
             twineNodeUIAllocator.DeallocateAll();
 
             if (twineStory.passages != null)
             {
                 foreach (TwineNode twineNode in twineStory.passages)
                 {
-                    TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
+                    twineNodeUIControllers.Add(TwineNodeUIController.From(twineNode, twineNodeUIAllocator));
                 }
 
                 // Centre the last created node in the middle of the screen by adjusting the offset of the parent
@@ -46,10 +49,20 @@ namespace Celeste.Twine.UI
             }
         }
 
-        public void OnTwineNodeCreated(TwineNode twineNode)
+        public void OnTwineNodeAdded(TwineNode twineNode)
         {
-            TwineNodeUIController.From(twineNode, twineNodeUIAllocator);
+            twineNodeUIControllers.Add(TwineNodeUIController.From(twineNode, twineNodeUIAllocator));
             CentreOn(twineNode);
+        }
+        
+        public void OnTwineNodeRemoved(TwineNode twineNode)
+        {
+            TwineNodeUIController twineNodeUIController = twineNodeUIControllers.Find(x => x.IsFor(twineNode));
+            if (twineNodeUIController != null)
+            {
+                twineNodeUIControllers.Remove(twineNodeUIController);
+                twineNodeUIAllocator.Deallocate(twineNodeUIController.gameObject);
+            }
         }
 
         public void OnFollowTwineNodeLink(int pid)
