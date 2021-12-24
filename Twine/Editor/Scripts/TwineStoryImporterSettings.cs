@@ -217,6 +217,7 @@ namespace CelesteEditor.Twine
         [SerializeField] private string dialogueTag = "Dialogue";
         [SerializeField] private string choiceTag = "Choice";
         [SerializeField] private string scriptTag = "Script";
+        [SerializeField] private string branchTag = "Branch";
         [SerializeField] private UIPositionTag[] uiPositionTags;
         [SerializeField] private DialogueTypeTag[] dialogueTypeTags;
         public List<CharacterTag> characterTags = new List<CharacterTag>();
@@ -234,6 +235,9 @@ namespace CelesteEditor.Twine
         [SerializeField] private string setBackgroundInstruction = "SetBackground";
         [SerializeField] private string subNarrativeInstruction = "SubNarrative";
         [SerializeField] private string addInventoryItemInstruction = "AddInventoryItem";
+
+        [Header("Branch Instructions")]
+        [SerializeField] private string randomBranch = "Random";
 
         [Header("Events")]
         public Celeste.Events.Event finishEvent;
@@ -407,6 +411,11 @@ namespace CelesteEditor.Twine
             return ContainsTag(tags, scriptTag);
         }
 
+        public bool ContainsBranchTag(IList<string> tags)
+        {
+            return ContainsTag(tags, branchTag);
+        }
+
         private bool ContainsTag(IList<string> tags, string desiredTag)
         {
             return tags.Exists((string s) => string.CompareOrdinal(s, desiredTag) == 0);
@@ -440,6 +449,11 @@ namespace CelesteEditor.Twine
             }
 
             if (string.CompareOrdinal(tag, scriptTag) == 0)
+            {
+                return true;
+            }
+
+            if (string.CompareOrdinal(tag, branchTag) == 0)
             {
                 return true;
             }
@@ -489,6 +503,15 @@ namespace CelesteEditor.Twine
         public bool IsAddInventoryItemInstruction(string text)
         {
             return string.CompareOrdinal(text, addInventoryItemInstruction) == 0;
+        }
+
+        #endregion
+
+        #region Branch Utility
+
+        public bool IsRandomBranch(string text)
+        {
+            return string.CompareOrdinal(text, randomBranch) == 0;
         }
 
         #endregion

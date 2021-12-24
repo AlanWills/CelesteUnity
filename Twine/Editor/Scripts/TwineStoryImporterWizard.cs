@@ -131,7 +131,7 @@ namespace CelesteEditor.Twine
                 {
                     if (node.Links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                     {
-                        if (graphNode is ChoiceNode)
+                        if (node.Links.Count > 1)
                         {
                             foreach (TwineNodeLink link in node.Links)
                             {
@@ -153,22 +153,20 @@ namespace CelesteEditor.Twine
                         }
                         else
                         {
-                            foreach (TwineNodeLink link in node.Links)
+                            TwineNodeLink link = node.Links[0];
+                            if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
                             {
-                                if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
-                                {
-                                    NodePort outputPort = graphNode.GetDefaultOutputPort();
-                                    Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
+                                NodePort outputPort = graphNode.GetDefaultOutputPort();
+                                Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
 
-                                    NodePort inputPort = target.GetDefaultInputPort();
-                                    Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
+                                NodePort inputPort = target.GetDefaultInputPort();
+                                Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
 
-                                    outputPort.Connect(inputPort);
-                                }
-                                else
-                                {
-                                    Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
-                                }
+                                outputPort.Connect(inputPort);
+                            }
+                            else
+                            {
+                                Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
                             }
                         }
                     }
