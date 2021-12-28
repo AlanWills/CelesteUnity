@@ -1,4 +1,5 @@
 ﻿using Celeste.DataStructures;
+using Celeste.FSM;
 using Celeste.FSM.Utils;
 using Celeste.Narrative.Characters;
 using Celeste.Parameters;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    public class ChapterRecord
+    public class ChapterRecord : ILinearRuntimeRecord
     {
         #region Properties and Fields
 

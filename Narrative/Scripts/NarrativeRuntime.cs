@@ -12,6 +12,8 @@ namespace Celeste.Narrative
     {
         #region Properties and Fields
 
+        ILinearRuntimeRecord ILinearRuntime<FSMNode>.Record => Record;
+
         public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
@@ -28,21 +30,9 @@ namespace Celeste.Narrative
                 {
                     currentNode = value;
 
-                    if (Record != null)
+                    if (Record != null && currentNode != null)
                     {
-                        Record.CurrentNodeGuid = currentNode != null ? currentNode.Guid.ToString() : string.Empty;
-
-                        if (currentNode is SubFSMNode)
-                        {
-                            SubFSMNode subFSMNode = currentNode as SubFSMNode;
-                            FSMNode currentSubFSMNode = subFSMNode.CurrentNode;
-
-                            Record.CurrentSubGraphNodeGuid = currentSubFSMNode != null ? currentSubFSMNode.Guid.ToString() : string.Empty;
-                        }
-                        else
-                        {
-                            Record.CurrentSubGraphNodeGuid = string.Empty;
-                        }
+                        Record.CurrentNodeGuid = currentNode.Guid.ToString();
                     }
                 }
             }

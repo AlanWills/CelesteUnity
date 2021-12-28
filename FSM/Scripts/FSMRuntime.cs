@@ -13,6 +13,8 @@ namespace Celeste.FSM
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
 
+        public ILinearRuntimeRecord Record { get; } = new FSMRecord();
+
         public FSMNode CurrentNode { get; set; }
 
         // Runtime only override of the start node - useful for loading an FSM at a particular state

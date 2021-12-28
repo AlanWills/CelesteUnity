@@ -13,14 +13,19 @@ namespace Celeste.FSM.Nodes
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
 
+        public ILinearRuntimeRecord Record => FSMGraph.Runtime.Record;
+
         [NonSerialized] private FSMNode currentNode;
         public FSMNode CurrentNode 
         {
             get { return currentNode; }
             set
             {
-                currentNode = value;
-                Debug.Log($"Setting Current Node: {(currentNode != null ? currentNode.name : "null")}.");
+                if (currentNode != value)
+                {
+                    currentNode = value;
+                    Record.CurrentSubGraphNodeGuid = currentNode != null ? currentNode.Guid.ToString() : string.Empty;
+                }
             }
         }
 
