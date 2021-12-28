@@ -1,15 +1,8 @@
 ﻿using Celeste.FSM;
-using Celeste.FSM.Utils;
 using CelesteEditor.Tools;
 using CelesteEditor.Validation.GUIs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using XNode;
 using XNodeEditor;
 
 namespace CelesteEditor.FSM
@@ -35,9 +28,17 @@ namespace CelesteEditor.FSM
 
             base.OnInspectorGUI();
 
-            if (GUILayout.Button("Apply Hide Flags"))
+            using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())
             {
-                AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
+                if (graph.startNode != null && GUILayout.Button("Focus On Start"))
+                {
+                    NodeEditorWindow.current.panOffset = graph.startNode.position;
+                }
+
+                if (GUILayout.Button("Apply Hide Flags"))
+                {
+                    AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
+                }
             }
 
             using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())

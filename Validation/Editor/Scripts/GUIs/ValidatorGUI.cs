@@ -29,44 +29,44 @@ namespace CelesteEditor.Validation.GUIs
 
         public void GUI(T asset)
         {
-            EditorGUILayout.BeginHorizontal();
-
             EditorGUILayout.LabelField("Validation", CelesteEditorStyles.BoldLabel);
 
-            if (GUILayout.Button("Check All", GUILayout.ExpandWidth(false)))
+            using (var horizontal = new GUILayout.HorizontalScope())
             {
-                LogUtility.Clear();
-
-                foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
+                if (GUILayout.Button("Check All", GUILayout.ExpandWidth(false)))
                 {
-                    gui.Check(asset);
+                    LogUtility.Clear();
+
+                    foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
+                    {
+                        gui.Check(asset);
+                    }
+                }
+
+                if (GUILayout.Button("Fix All", GUILayout.ExpandWidth(false)))
+                {
+                    LogUtility.Clear();
+
+                    foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
+                    {
+                        gui.Fix(asset);
+                    }
+                }
+
+                if (GUILayout.Button("Reset All", GUILayout.ExpandWidth(false)))
+                {
+                    foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
+                    {
+                        gui.Reset();
+                    }
+                }
+
+                if (GUILayout.Button("Clear Log", GUILayout.ExpandWidth(false)))
+                {
+                    LogUtility.Clear();
                 }
             }
 
-            if (GUILayout.Button("Fix All", GUILayout.ExpandWidth(false)))
-            {
-                LogUtility.Clear();
-
-                foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
-                {
-                    gui.Fix(asset);
-                }
-            }
-
-            if (GUILayout.Button("Reset All", GUILayout.ExpandWidth(false)))
-            {
-                foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
-                {
-                    gui.Reset();
-                }
-            }
-
-            if (GUILayout.Button("Clear Log", GUILayout.ExpandWidth(false)))
-            {
-                LogUtility.Clear();
-            }
-
-            EditorGUILayout.EndHorizontal();
             EditorGUILayout.Separator();
 
             foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
