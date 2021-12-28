@@ -26,7 +26,7 @@ namespace Celeste.UI.Skin
 
         private void OnEnable()
         {
-            Apply(currentSkin.Value);
+            Apply();
 
             currentSkin.AddOnValueChangedCallback(OnUISkinChanged);
         }
@@ -36,11 +36,29 @@ namespace Celeste.UI.Skin
             currentSkin.RemoveOnValueChangedCallback(OnUISkinChanged);
         }
 
+#if UNITY_EDITOR
+        private void Update()
+        {
+            Apply();
+        }
+#endif
+
         #endregion
+
+        public void Apply()
+        {
+            if (currentSkin != null && currentSkin.Value != null)
+            {
+                Apply(currentSkin.Value);
+            }
+        }
 
         private void Apply(UISkin uiSkin)
         {
-            text.font = uiSkin.font;
+            if (text.font != uiSkin.font)
+            {
+                text.font = uiSkin.font;
+            }
         }
 
         #region Callbacks
