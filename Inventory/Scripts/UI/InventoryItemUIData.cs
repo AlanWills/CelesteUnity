@@ -14,7 +14,7 @@ namespace Celeste.Inventory.UI
 
         public Sprite Sprite
         {
-            get { return InventoryItem.Sprite; }
+            get { return InventoryItem.SpriteWithBackground; }
         }
 
         private InventoryItem InventoryItem { get; }

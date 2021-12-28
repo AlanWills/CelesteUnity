@@ -13,9 +13,11 @@ namespace CelesteEditor.UI.Skin
             {
                 base.OnInspectorGUI();
 
-                if (changeScope.changed)
+                UISkinText uiSkinText = target as UISkinText;
+
+                if (changeScope.changed | GUILayout.Button("Apply"))
                 {
-                    (target as UISkinText).Apply();
+                    uiSkinText.Apply();
                 }
             }
         }

@@ -1,8 +1,6 @@
 ﻿using Celeste.Debug.Menus;
 using Celeste.Narrative.Loading;
-using Celeste.Narrative.Persistence;
 using Celeste.Scene.Events;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Narrative.Debug
@@ -31,6 +29,29 @@ namespace Celeste.Narrative.Debug
                 {
                     NarrativeContext narrativeContext = new NarrativeContext(lastPlayedChapter);
                     onContextLoadedEvent.Invoke(new OnContextLoadedArgs(narrativeContext));
+                }
+            }
+
+            GUILayout.Space(10);
+
+            for (int storyRecordIndex = 0, numStoryRecords = narrativeRecord.NumStoryRecords; storyRecordIndex < numStoryRecords; ++storyRecordIndex)
+            {
+                StoryRecord storyRecord = narrativeRecord.GetStoryRecord(storyRecordIndex);
+                GUILayout.Label(storyRecord.StoryName);
+
+                for (int chapterRecordIndex = 0, numChapterRecords = storyRecord.NumChapterRecords; chapterRecordIndex < numChapterRecords; ++chapterRecordIndex)
+                {
+                    ChapterRecord chapterRecord = storyRecord.GetChapterRecord(chapterRecordIndex);
+
+                    using (var horizontal = new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.Label(chapterRecord.ChapterName);
+
+                        if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
+                        {
+                            chapterRecord.ResetProgress();
+                        }
+                    }
                 }
             }
         }

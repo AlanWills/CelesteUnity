@@ -1,13 +1,8 @@
 ﻿using Celeste.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Celeste.FSM.Nodes.Events
 {
-    [Serializable]
     [CreateNodeMenu("Celeste/Events/Raisers/Event Raiser")]
     public class EventRaiserNode : FSMNode
     {

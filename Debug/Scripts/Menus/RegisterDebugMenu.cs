@@ -13,12 +13,12 @@ namespace Celeste.Debug.Menus
 
         private void Start()
         {
-            registerDebugMenu.Invoke(debugMenu);
+            registerDebugMenu.InvokeSilently(debugMenu);
         }
 
         private void OnDestroy()
         {
-            deregisterDebugMenu.Invoke(debugMenu);
+            deregisterDebugMenu.InvokeSilently(debugMenu);
         }
     }
 }

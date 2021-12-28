@@ -28,12 +28,18 @@ namespace Celeste.UI.Skin
         {
             Apply();
 
-            currentSkin.AddOnValueChangedCallback(OnUISkinChanged);
+            if (currentSkin != null)
+            {
+                currentSkin.AddOnValueChangedCallback(OnUISkinChanged);
+            }
         }
 
         private void OnDisable()
         {
-            currentSkin.RemoveOnValueChangedCallback(OnUISkinChanged);
+            if (currentSkin != null)
+            {
+                currentSkin.RemoveOnValueChangedCallback(OnUISkinChanged);
+            }
         }
 
 #if UNITY_EDITOR

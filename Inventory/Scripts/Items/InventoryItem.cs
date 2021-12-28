@@ -18,14 +18,20 @@ namespace Celeste.Inventory
             get { return displayName; }
         }
 
-        public Sprite Sprite
+        public Sprite SpriteNoBackground
         {
-            get { return sprite; }
+            get { return spriteNoBackground; }
+        }
+
+        public Sprite SpriteWithBackground
+        {
+            get { return spriteWithBackground; }
         }
 
         [SerializeField] private int guid;
         [SerializeField] private string displayName;
-        [SerializeField] private Sprite sprite;
+        [SerializeField] private Sprite spriteNoBackground;
+        [SerializeField] private Sprite spriteWithBackground;
 
         #endregion
     }
