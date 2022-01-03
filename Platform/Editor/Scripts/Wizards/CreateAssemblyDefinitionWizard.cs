@@ -1,10 +1,13 @@
 ﻿using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.Tools;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using static CelesteEditor.Platform.Wizards.CreateAssemblyDefinitionConstants;
 
 namespace CelesteEditor.Platform.Wizards
 {
@@ -34,6 +37,7 @@ namespace CelesteEditor.Platform.Wizards
         [SerializeField] private string directoryName;
         [SerializeField] private string assemblyName;
         [SerializeField] private bool hasEditorAssembly = true;
+        [SerializeField] private bool hasSceneMenuItem = false;
 
         #endregion
 
@@ -47,13 +51,13 @@ namespace CelesteEditor.Platform.Wizards
 
         #endregion
 
-        private static void CreateAssembly(
+        private static string CreateAssembly(
             string parentDirectoryPath,
             string directoryName,
             string assemblyName,
             string assemblyNamespace,
-            string[] references = null,
-            string[] includePlatforms = null)
+            IList<string> references = null,
+            IList<string> includePlatforms = null)
         {
             string directoryPath = Path.Combine(parentDirectoryPath, directoryName);
             Directory.CreateDirectory(directoryPath);
@@ -63,12 +67,14 @@ namespace CelesteEditor.Platform.Wizards
             assemblyDef.autoReferenced = true;
             assemblyDef.rootNamespace = assemblyNamespace;
             assemblyDef.name = assemblyName;
-            assemblyDef.references = references;
-            assemblyDef.includePlatforms = includePlatforms;
+            assemblyDef.references = references.ToArray();
+            assemblyDef.includePlatforms = includePlatforms.ToArray();
 
             string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
             File.WriteAllText(Path.Combine(scriptsDirectory, $"PlaceholderScript.cs"), "");
+
+            return scriptsDirectory;
         }
 
         #region Wizard Methods
@@ -85,19 +91,39 @@ namespace CelesteEditor.Platform.Wizards
             Directory.CreateDirectory(parentDirectoryPath);
 
             CreateAssembly(parentDirectoryPath, directoryName, assemblyName, assemblyName);
-            
+
             if (hasEditorAssembly)
             {
                 int indexOfFirstDelimiter = assemblyName.IndexOf('.');
                 string editorAssemblyNamespace = $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}";
 
-                CreateAssembly(
+                List<string> referencedAssemblies = new List<string>() { assemblyName };
+                if (hasSceneMenuItem)
+                {
+                    referencedAssemblies.Add("Celeste.Scene.Editor");
+                }
+
+                string editorScriptsAssembly = CreateAssembly(
                     Path.Combine(parentDirectoryPath, directoryName),
                     "Editor",
                     $"{assemblyName}.Editor",
                     editorAssemblyNamespace,
-                    new string[] { assemblyName },
+                    referencedAssemblies,
                     new string[] { "Editor" });
+
+                string collapsedAssemblyName = assemblyName.Replace(".", "");
+                
+                {
+                    string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems");
+                    string menuItemsScript = string.Format(MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
+                    File.WriteAllText(menuItemsScriptPath, menuItemsScript);
+                }
+
+                {
+                    string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants");
+                    string editorConstantsScript = string.Format(EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
+                    File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
+                }
             }
 
             AssetDatabase.SaveAssets();
