@@ -2,10 +2,12 @@
     "name": "Celeste.Localisation",
     "rootNamespace": "Celeste.Localisation",
     "references": [
+        "Unity.TextMeshPro",
         "Celeste.Parameters",
         "Celeste.Events",
         "Celeste.Objects",
-        "Celeste.Debug"
+        "Celeste.Debug",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -232,6 +232,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2234190916019948561, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 2563435245317721460, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -273,6 +277,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3597857019816835192, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3636795208333158658, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -332,6 +340,10 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5000296660275048900, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6175683919976353797, guid: be6594c24954cda4a9ca8c4977566ae3, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -642,6 +654,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2395557708038116296, guid: 96b40ca414a3e184eae4e58951622cbe, type: 3}
+      propertyPath: languageCatalogue
+      value: 
+      objectReference: {fileID: 11400000, guid: dcc6c472182cc884087f2b085e0c02e4, type: 2}
     - target: {fileID: 2395557708038116298, guid: 96b40ca414a3e184eae4e58951622cbe, type: 3}
       propertyPath: m_Name
       value: LocalisationManager
