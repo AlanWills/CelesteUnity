@@ -2,18 +2,29 @@
 using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using XNode;
 
 namespace Celeste.FSM
 {
     [CreateAssetMenu(fileName = "FSMGraph", menuName = "Celeste/FSM/FSM Graph")]
-    public class FSMGraph : NodeGraph, IParameterContainer
+    public class FSMGraph : NodeGraph, IParameterContainer, IFSMGraph
     {
         #region Properties and Fields
+
+        IFSMGraph IFSMGraph.ParentFSMGraph => null;
+        FSMNode IFSMGraph.StartNode => startNode;
+        FSMNode IFSMGraph.FinishNode => finishNode;
+        IEnumerable<FSMNode> IFSMGraph.Nodes
+        {
+            get
+            {
+                foreach (var node in nodes)
+                {
+                    yield return node as FSMNode;
+                }
+            }
+        }
 
         public ILinearRuntime<FSMNode> Runtime { get; set; }
 
@@ -129,6 +140,6 @@ namespace Celeste.FSM
             }
         }
 
-#endregion
+        #endregion
     }
 }

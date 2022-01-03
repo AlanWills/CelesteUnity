@@ -32,7 +32,7 @@ namespace Celeste.Narrative
 
                     if (Record != null && currentNode != null)
                     {
-                        Record.CurrentNodeGuid = currentNode.Guid.ToString();
+                        Record.CurrentNodePath = new FSMGraphNodePath(currentNode);
                     }
                 }
             }
@@ -61,13 +61,7 @@ namespace Celeste.Narrative
             NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
             runtime.graph = narrativeGraph;
             runtime.Record = chapterRecord;
-            runtime.StartNode = narrativeGraph.FindNode(chapterRecord.CurrentNodeGuid);
-
-            if (runtime.StartNode is SubFSMNode && !string.IsNullOrEmpty(chapterRecord.CurrentSubGraphNodeGuid))
-            {
-                SubFSMNode subFSMNode = runtime.StartNode as SubFSMNode;
-                subFSMNode.StartNode = subFSMNode.subFSM.FindNode(chapterRecord.CurrentSubGraphNodeGuid);
-            }
+            runtime.StartNode = chapterRecord.CurrentNodePath.Node;
 
             narrativeGraph.Runtime = runtime;
             

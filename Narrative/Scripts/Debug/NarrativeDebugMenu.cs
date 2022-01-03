@@ -13,6 +13,7 @@ namespace Celeste.Narrative.Debug
         [SerializeField] private StoryCatalogue storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
         [SerializeField] private OnContextLoadedEvent onContextLoadedEvent;
+        [SerializeField] private Celeste.Events.Event saveNarrativeRecord;
 
         #endregion
 
@@ -20,15 +21,26 @@ namespace Celeste.Narrative.Debug
 
         protected override void OnDrawMenu()
         {
-            if (GUILayout.Button("Load Last Played"))
+            using (var horizontal = new GUILayout.HorizontalScope())
             {
-                ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue);
-                UnityEngine.Debug.Assert(lastPlayedChapter != null, $"Could not find last played chapter.");
-
-                if (lastPlayedChapter != null)
+                if (GUILayout.Button("Load Last"))
                 {
-                    NarrativeContext narrativeContext = new NarrativeContext(lastPlayedChapter);
-                    onContextLoadedEvent.Invoke(new OnContextLoadedArgs(narrativeContext));
+                    ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue);
+                    UnityEngine.Debug.Assert(lastPlayedChapter != null, $"Could not find last played chapter.");
+
+                    if (lastPlayedChapter != null)
+                    {
+                        NarrativeContext narrativeContext = new NarrativeContext(lastPlayedChapter);
+                        onContextLoadedEvent.Invoke(new OnContextLoadedArgs(narrativeContext));
+                    }
+                }
+
+                RuntimePlatform platform = Application.platform;
+                bool isWindows = platform == RuntimePlatform.WindowsPlayer || platform == RuntimePlatform.WindowsEditor;
+
+                if (isWindows && GUILayout.Button("Open Save"))
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", Application.persistentDataPath.Replace('/', '\\'));
                 }
             }
 
@@ -47,9 +59,16 @@ namespace Celeste.Narrative.Debug
                     {
                         GUILayout.Label(chapterRecord.ChapterName);
 
-                        if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
+                        if (chapterRecord.Progress < 1 && GUILayout.Button("Complete", GUILayout.ExpandWidth(false)))
+                        {
+                            chapterRecord.Complete();
+                            saveNarrativeRecord.Invoke();
+                        }
+
+                        if (chapterRecord.Progress > 0 && GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
                         {
                             chapterRecord.ResetProgress();
+                            saveNarrativeRecord.Invoke();
                         }
                     }
                 }

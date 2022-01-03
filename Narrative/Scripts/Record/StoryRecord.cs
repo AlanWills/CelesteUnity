@@ -70,10 +70,9 @@ namespace Celeste.Narrative
 
         public ChapterRecord AddChapterRecord(
             Chapter chapter, 
-            string currentNodeGuid,
-            string currentSubGraphNodeGuid)
+            string currentNodePath)
         {
-            ChapterRecord chapterRecord = new ChapterRecord(this, chapter, currentNodeGuid, currentSubGraphNodeGuid);
+            ChapterRecord chapterRecord = new ChapterRecord(this, chapter, currentNodePath);
             chapterRecords.Add(chapterRecord);
 
             return chapterRecord;
@@ -84,7 +83,7 @@ namespace Celeste.Narrative
             ChapterRecord chapterRecord = chapterRecords.Find(x => x.Chapter == chapter);
             if (chapterRecord == null)
             {
-                chapterRecord = AddChapterRecord(chapter, string.Empty, string.Empty);
+                chapterRecord = AddChapterRecord(chapter, string.Empty);
             }
 
             return chapterRecord;

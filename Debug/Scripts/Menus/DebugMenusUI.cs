@@ -52,7 +52,7 @@ namespace Celeste.Debug.Menus
             Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
             GUI.matrix = Matrix4x4.Scale(scale);
 
-            Rect screenRect = new Rect(0, 0, Screen.width / maxAspectRatio, (Screen.height - 40) / maxAspectRatio);
+            Rect screenRect = new Rect(0, 0, Screen.width / maxAspectRatio, Screen.height / maxAspectRatio);
             Rect viewRect = new Rect(0, 10, screenRect.width, screenRect.height * 4);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))

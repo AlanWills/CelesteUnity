@@ -17,6 +17,9 @@ namespace CelesteEditor.Platform
             public static GUIContent AndroidDebug = new GUIContent("Android Debug");
             public static GUIContent AndroidReleaseApk = new GUIContent("Android Release Apk");
             public static GUIContent AndroidReleaseBundle = new GUIContent("Android Release Bundle");
+            public static GUIContent WindowsDebugBundle = new GUIContent("Windows Debug Bundle");
+            public static GUIContent WindowsReleaseBundle = new GUIContent("Windows Release Bundle");
+
         }
 
         #endregion
@@ -29,6 +32,8 @@ namespace CelesteEditor.Platform
         private SerializedProperty androidDebugProperty;
         private SerializedProperty androidReleaseApkProperty;
         private SerializedProperty androidReleaseBundleProperty;
+        private SerializedProperty windowsDebugProperty;
+        private SerializedProperty windowsReleaseProperty;
 
         #endregion
 
@@ -44,6 +49,8 @@ namespace CelesteEditor.Platform
             androidDebugProperty = allPlatformSettings.FindProperty("m_androidDebug");
             androidReleaseApkProperty = allPlatformSettings.FindProperty("m_androidReleaseApk");
             androidReleaseBundleProperty = allPlatformSettings.FindProperty("m_androidReleaseBundle");
+            windowsDebugProperty = allPlatformSettings.FindProperty("m_windowsDebug");
+            windowsReleaseProperty = allPlatformSettings.FindProperty("m_windowsRelease");
         }
 
         public override void OnGUI(string searchContext)
@@ -52,6 +59,7 @@ namespace CelesteEditor.Platform
 
             DrawiOSSettings();
             DrawAndroidSettings();
+            DrawWindowsSettings();
 
             allPlatformSettings.ApplyModifiedProperties();
         }
@@ -108,6 +116,30 @@ namespace CelesteEditor.Platform
                     new GUIContent("Create Android Release Bundle Settings"),
                     AllPlatformSettings.AndroidPlatformSettingsPath,
                     "AndroidReleaseBundle");
+            }
+        }
+
+        private void DrawWindowsSettings()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Windows", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.Space();
+
+            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            {
+                SettingsGUI<WindowsSettings>(
+                    windowsDebugProperty,
+                    PlatformSettingStyles.WindowsDebugBundle,
+                    new GUIContent("Create Windows Debug Settings"),
+                    AllPlatformSettings.WindowsPlatformSettingsPath,
+                    "WindowsDebug");
+
+                SettingsGUI<WindowsSettings>(
+                    windowsReleaseProperty,
+                    PlatformSettingStyles.WindowsReleaseBundle,
+                    new GUIContent("Create Windows Release Settings"),
+                    AllPlatformSettings.WindowsPlatformSettingsPath,
+                    "WindowsRelease");
             }
         }
 

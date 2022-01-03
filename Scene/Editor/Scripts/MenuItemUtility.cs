@@ -12,7 +12,7 @@ namespace CelesteEditor.Scene
         public static void LoadSceneSetMenuItem(string sceneSetPath)
         {
             SceneSet sceneSet = AssetDatabase.LoadAssetAtPath<SceneSet>(sceneSetPath);
-            Debug.Assert(sceneSet != null, $"Could not find Scene Set at path {sceneSetPath}.");
+            UnityEngine.Debug.Assert(sceneSet != null, $"Could not find Scene Set at path {sceneSetPath}.");
 
             if (sceneSet != null)
             {
@@ -22,9 +22,7 @@ namespace CelesteEditor.Scene
 
         public static void OpenExplorerAt(string filePath)
         {
-            System.Diagnostics.Process p = new System.Diagnostics.Process();
-            p.StartInfo = new System.Diagnostics.ProcessStartInfo("explorer.exe", filePath.Replace('/', '\\'));
-            p.Start();
+            System.Diagnostics.Process.Start("explorer.exe", Application.persistentDataPath.Replace('/', '\\'));
         }
 
         public static void OpenExplorerAtPersistentData()
@@ -41,7 +39,7 @@ namespace CelesteEditor.Scene
 #if UNITY_EDITOR
                 File.Delete($"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}");
 #endif
-                Debug.Log($"Deleted save file at {filePath}.");
+                UnityEngine.Debug.Log($"Deleted save file at {filePath}.");
             }
         }
     }

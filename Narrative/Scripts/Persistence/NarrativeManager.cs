@@ -39,7 +39,7 @@ namespace Celeste.Narrative
                 {
                     Chapter chapter = story.FindChapter(chapterDTO.guid);
                     UnityEngine.Debug.Assert(chapter != null, $"Could not find Chapter with guid {chapterDTO.guid} in story {story.name}.");
-                    ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodeGuid, chapterDTO.currentSubGraphNodeGuid);
+                    ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodePath);
 
                     chapterRecord.CurrentBackgroundGuid = chapterDTO.currentBackgroundGuid;
 

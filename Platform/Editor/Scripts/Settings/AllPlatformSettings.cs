@@ -13,12 +13,12 @@ namespace CelesteEditor.Platform
 
         public iOSSettings iOSDebug
         {
-            get { return iOSDebug; }
+            get { return m_iOSDebug; }
         }
 
         public iOSSettings iOSRelease
         {
-            get { return iOSRelease; }
+            get { return m_iOSRelease; }
         }
 
         public AndroidSettings AndroidDebug
@@ -36,6 +36,16 @@ namespace CelesteEditor.Platform
             get { return m_androidReleaseBundle; }
         }
 
+        public WindowsSettings WindowsDebug
+        {
+            get { return m_windowsDebug; }
+        }
+
+        public WindowsSettings WindowsRelease
+        {
+            get { return m_windowsRelease; }
+        }
+
         [SerializeField] private iOSSettings m_iOSDebug;
         [SerializeField] private iOSSettings m_iOSRelease;
 
@@ -43,10 +53,14 @@ namespace CelesteEditor.Platform
         [SerializeField] private AndroidSettings m_androidReleaseApk;
         [SerializeField] private AndroidSettings m_androidReleaseBundle;
 
+        [SerializeField] private WindowsSettings m_windowsDebug;
+        [SerializeField] private WindowsSettings m_windowsRelease;
+
         public const string AllPlatformSettingsDirectory = "Assets/Platform/Editor/";
         public const string AllPlatformSettingsPath = AllPlatformSettingsDirectory + "AllPlatformSettings.asset";
         public const string iOSPlatformSettingsPath = AllPlatformSettingsDirectory + "iOS";
         public const string AndroidPlatformSettingsPath = AllPlatformSettingsDirectory + "Android";
+        public const string WindowsPlatformSettingsPath = AllPlatformSettingsDirectory + "Windows";
 
         #endregion
     }

@@ -16,8 +16,7 @@ namespace Celeste.Narrative
 
         public StoryRecord StoryRecord { get; }
         public Chapter Chapter { get; }
-        public string CurrentNodeGuid { get; set; }
-        public string CurrentSubGraphNodeGuid { get; set; }
+        public FSMGraphNodePath CurrentNodePath { get; set; } = new FSMGraphNodePath();
         public int CurrentBackgroundGuid { get; set; }
         public float Progress { get; private set; }
 
@@ -54,16 +53,14 @@ namespace Celeste.Narrative
         public ChapterRecord(
             StoryRecord storyRecord, 
             Chapter chapter, 
-            string currentNodeGuid,
-            string currentSubGraphNodeGuid)
+            string currentNodePath)
         {
             UnityEngine.Debug.Assert(storyRecord != null, $"Story Record null in ChapterRecord.");
             UnityEngine.Debug.Assert(chapter != null, $"Chapter null in ChapterRecord.");
 
             StoryRecord = storyRecord;
             Chapter = chapter;
-            CurrentNodeGuid = currentNodeGuid;
-            CurrentSubGraphNodeGuid = currentSubGraphNodeGuid;
+            CurrentNodePath = new FSMGraphNodePath(chapter.NarrativeGraph, currentNodePath);
 
             characterRecords.Capacity = chapter.NumCharacters;
             for (int i = 0, n = chapter.NumCharacters; i < n; ++i)
@@ -94,24 +91,18 @@ namespace Celeste.Narrative
                 return;
             }
 
-            if (string.IsNullOrEmpty(CurrentNodeGuid))
+            if (CurrentNodePath.Node == null)
             {
                 Progress = 0;
                 return;
             }
-            else if (string.CompareOrdinal(narrativeGraph.finishNode.Guid, CurrentNodeGuid) == 0)
+            else if (narrativeGraph.finishNode == CurrentNodePath.Node)
             {
                 Progress = 1;
                 return;
             }
 
-            var currentNode = narrativeGraph.FindNode(x => string.CompareOrdinal(x.Guid, CurrentNodeGuid) == 0);
-            if (currentNode == null)
-            {
-                UnityEngine.Debug.LogAssertion($"Could not find node with guid {CurrentNodeGuid}.");
-                Progress = 0;
-                return;
-            }
+            var currentNode = CurrentNodePath.Node;
 
             // As distance to end gets smaller, the top part -> 0 and 'progress' -> 1
             float progress = 1 - ((float)narrativeGraph.CalculateShortestDistance(currentNode, narrativeGraph.finishNode)
@@ -123,9 +114,14 @@ namespace Celeste.Narrative
 
         public void ResetProgress()
         {
-            CurrentNodeGuid = "";
-            CurrentSubGraphNodeGuid = "";
+            CurrentNodePath = new FSMGraphNodePath();
             Progress = 0;
+        }
+
+        public void Complete()
+        {
+            CurrentNodePath = new FSMGraphNodePath(Chapter.NarrativeGraph.finishNode);
+            Progress = 1;
         }
 
         #region Character Records

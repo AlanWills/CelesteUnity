@@ -1,0 +1,17 @@
+{
+    "name": "Celeste.Bootstrap",
+    "rootNamespace": "Celeste.Bootstrap",
+    "references": [
+        "GUID:21b17374c63711a45bc56344a8ccc8ae",
+        "GUID:53010ec1db6f54b478952285443e341b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

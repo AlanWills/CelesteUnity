@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.FSM.Nodes
 {
     [CreateNodeMenu("Celeste/Flow/Sub FSM")]
-    public class SubFSMNode : FSMNode, ILinearRuntime<FSMNode>
+    public class SubFSMNode : FSMNode, ILinearRuntime<FSMNode>, IFSMGraph
     {
         #region Properties and Fields
 
@@ -13,7 +14,20 @@ namespace Celeste.FSM.Nodes
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
 
-        public ILinearRuntimeRecord Record => FSMGraph.Runtime.Record;
+        IFSMGraph IFSMGraph.ParentFSMGraph => FSMGraph;
+        FSMNode IFSMGraph.StartNode => StartNode;
+        FSMNode IFSMGraph.FinishNode => null;
+        IEnumerable<FSMNode> IFSMGraph.Nodes
+        {
+            get
+            {
+                foreach (var node in subFSM.nodes)
+                {
+                    yield return node as FSMNode;
+                }
+            }
+        }
+        ILinearRuntimeRecord ILinearRuntime<FSMNode>.Record => FSMGraph.Runtime.Record;
 
         [NonSerialized] private FSMNode currentNode;
         public FSMNode CurrentNode 
@@ -24,7 +38,7 @@ namespace Celeste.FSM.Nodes
                 if (currentNode != value)
                 {
                     currentNode = value;
-                    Record.CurrentSubGraphNodeGuid = currentNode != null ? currentNode.Guid.ToString() : string.Empty;
+                    FSMGraph.Runtime.Record.CurrentNodePath = new FSMGraphNodePath(currentNode);
                 }
             }
         }
@@ -76,10 +90,15 @@ namespace Celeste.FSM.Nodes
 
             fsmRuntime = null;
             runtimeEngine = null;
-            CurrentNode = null;
-            StartNode = null;
+            currentNode = null;
+            startNode = null;
         }
 
         #endregion
+
+        public FSMNode FindNode(string nodeGuid)
+        {
+            return subFSM.FindNode(nodeGuid);
+        }
     }
 }

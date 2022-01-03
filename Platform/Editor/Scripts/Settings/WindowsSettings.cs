@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
 namespace CelesteEditor.Platform
@@ -16,42 +10,16 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
-        private const string DEBUG_PATH = "Assets/Platform/Windows/Debug.asset";
-        private const string RELEASE_PATH = "Assets/Platform/Windows/Release.asset";
-
-        private static WindowsSettings debug;
-        public static WindowsSettings Debug
-        {
-            get
-            {
-                if (debug == null)
-                {
-                    debug = AssetDatabase.LoadAssetAtPath<WindowsSettings>(DEBUG_PATH);
-                }
-
-                return debug;
-            }
-        }
-
-        private static WindowsSettings release;
-        public static WindowsSettings Release
-        {
-            get
-            {
-                if (release == null)
-                {
-                    release = AssetDatabase.LoadAssetAtPath<WindowsSettings>(RELEASE_PATH);
-                }
-
-                return release;
-            }
-        }
+        [SerializeField] private FullScreenMode fullScreenMode = FullScreenMode.FullScreenWindow;
+        [SerializeField] private bool resizeableWindow = false;
 
         #endregion
 
         protected override void ApplyImpl()
         {
             EditorUserBuildSettings.selectedStandaloneTarget = BuildTarget;
+            PlayerSettings.fullScreenMode = fullScreenMode;
+            PlayerSettings.resizableWindow = resizeableWindow;
         }
 
         protected override void InjectBuildEnvVars(StringBuilder stringBuilder)

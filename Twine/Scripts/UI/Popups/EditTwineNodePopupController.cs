@@ -90,7 +90,12 @@ namespace Celeste.Twine.UI
 
         public void OnEndEditTwineNodeTagsText()
         {
-            twineNode.Tags.AssignFrom(tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries));
+            twineNode.Tags.Clear();
+
+            foreach (string tag in tagsInputField.text.Split(new string[] { TAGS_DELIMITER }, System.StringSplitOptions.RemoveEmptyEntries))
+            {
+                twineNode.Tags.Add(tag.Trim());
+            }
         }
 
         public void OnEndEditTwineNodeText()

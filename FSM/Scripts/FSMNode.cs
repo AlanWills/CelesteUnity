@@ -108,7 +108,7 @@ namespace Celeste.FSM
             return connection != null ? connection.node as FSMNode : null;
         }
 
-        protected FSMNode GetConnectedNodeFromDefaultOutput()
+        public FSMNode GetConnectedNodeFromDefaultOutput()
         {
             return GetConnectedNode(DEFAULT_OUTPUT_PORT_NAME);
         }

@@ -1,7 +1,5 @@
-﻿using Celeste.FSM;
-using Celeste.Narrative;
+﻿using Celeste.Narrative;
 using Celeste.Twine;
-using System.Collections;
 using UnityEngine;
 
 namespace CelesteEditor.Twine.ParserSteps
@@ -19,7 +17,7 @@ namespace CelesteEditor.Twine.ParserSteps
             TwineNode twineNode = parseContext.TwineNode;
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
 
-            if (importerSettings.ContainsDialogueTag(twineNode.Tags))
+            if (importerSettings.ContainsChoiceTag(twineNode.Tags))
             {
                 // If we have the dialogue tag, we parse this as dialogue no matter what
                 return true;

@@ -18,13 +18,6 @@ namespace CelesteEditor.Platform
 
         #endregion
 
-        public AppVersion(int major, int minor, int build)
-        {
-            this.major = major;
-            this.minor = minor;
-            this.build = build;
-        }
-
         public override string ToString()
         {
             return $"{major}.{minor}.{build}";
@@ -35,17 +28,23 @@ namespace CelesteEditor.Platform
             ++major;
             minor = 0;
             build = 0;
+            
+            EditorUtility.SetDirty(this);
         }
 
         public void IncrementMinor()
         {
             ++minor;
             build = 0;
+            
+            EditorUtility.SetDirty(this);
         }
 
         public void IncrementBuild()
         {
             ++build;
+            
+            EditorUtility.SetDirty(this);
         }
     }
 }

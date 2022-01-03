@@ -24,6 +24,12 @@ namespace CelesteEditor.Twine
                     TwineNodeLink link = node.Links[i];
                     Debug.Assert(!link.broken, $"Link {link.name} to node {link.link} on node {node.Name} is broken.");
                 }
+
+                var tags = node.Tags;
+                for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
+                {
+                    tags[i] = tags[i].Trim();
+                }
             }
 
             ctx.AddObjectToAsset("main", twineStory);

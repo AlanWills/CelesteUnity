@@ -5,7 +5,6 @@ namespace Celeste.FSM
 {
     public interface ILinearRuntimeRecord
     {
-        string CurrentNodeGuid { get; set; }
-        string CurrentSubGraphNodeGuid { get; set; }
+        FSMGraphNodePath CurrentNodePath { get; set; }
     }
 }

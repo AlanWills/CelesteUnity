@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.GUILayout;
 
-namespace Celeste.Twine.Debug
+namespace Celeste.Scene.Debug
 {
     [CreateAssetMenu(fileName = nameof(SceneSetDebugMenu), menuName = "Celeste/Scene/Debug/Scene Set Debug Menu")]
     public class SceneSetDebugMenu : DebugMenu
@@ -29,12 +29,12 @@ namespace Celeste.Twine.Debug
 
                     Label(sceneSet.name);
 
-                    if (Button($"Load Single", ExpandWidth(false)))
+                    if (Button($"Single", ExpandWidth(false)))
                     {
                         CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, () => { }));
                     }
 
-                    if (Button($"Load Additive", ExpandWidth(false)))
+                    if (Button($"Additive", ExpandWidth(false)))
                     {
                         CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Additive, (f) => { }, () => { }));
                     }
