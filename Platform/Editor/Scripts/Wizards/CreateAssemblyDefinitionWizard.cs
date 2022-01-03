@@ -67,8 +67,8 @@ namespace CelesteEditor.Platform.Wizards
             assemblyDef.autoReferenced = true;
             assemblyDef.rootNamespace = assemblyNamespace;
             assemblyDef.name = assemblyName;
-            assemblyDef.references = references.ToArray();
-            assemblyDef.includePlatforms = includePlatforms.ToArray();
+            assemblyDef.references = references != null ? references.ToArray() : null;
+            assemblyDef.includePlatforms = includePlatforms != null ? includePlatforms.ToArray() : null;
 
             string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
@@ -114,13 +114,13 @@ namespace CelesteEditor.Platform.Wizards
                 string collapsedAssemblyName = assemblyName.Replace(".", "");
                 
                 {
-                    string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems");
+                    string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems.cs");
                     string menuItemsScript = string.Format(MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
                     File.WriteAllText(menuItemsScriptPath, menuItemsScript);
                 }
 
                 {
-                    string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants");
+                    string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants.cs");
                     string editorConstantsScript = string.Format(EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
                     File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
                 }

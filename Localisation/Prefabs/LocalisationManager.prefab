@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2395557708038116299}
   - component: {fileID: 2395557708038116296}
+  - component: {fileID: 996853184511708455}
   m_Layer: 0
   m_Name: LocalisationManager
   m_TagString: Untagged
@@ -43,4 +44,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f915a00c7ae8e34429d06fdeba52f3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localisationData: {fileID: 11400000, guid: 2918df8dfcf1340498b75077a98f50d3, type: 2}
+  currentLanguage: {fileID: 11400000, guid: ac7c838877b9a1743bf5058873818358, type: 2}
+--- !u!114 &996853184511708455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2395557708038116298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca58a28f70e42b74b9021339ce3f1dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: cab89c98fa2228d47a2bc41c87c03e6d, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2395557708038116296}
+        m_TargetAssemblyTypeName: Celeste.Localisation.LocalisationManager, Celeste.Localisation
+        m_MethodName: OnSetCurrentLanguage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

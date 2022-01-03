@@ -3,7 +3,8 @@
     "rootNamespace": "CelesteEditor.Localisation",
     "references": [
         "GUID:41961d5607789574c8b628bf2c38c31b",
-        "Celeste.Tools.Editor"
+        "Celeste.Tools.Editor",
+        "Celeste.DataStructures.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,7 +1,12 @@
 {
     "name": "Celeste.Localisation",
     "rootNamespace": "Celeste.Localisation",
-    "references": [],
+    "references": [
+        "Celeste.Parameters",
+        "Celeste.Events",
+        "Celeste.Objects",
+        "Celeste.Debug"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
