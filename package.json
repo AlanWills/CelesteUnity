@@ -1,4 +1,7 @@
 {
+  "name": "com.[celestegames].[celesteengine]",
+  "version": "1.0.0",
+  "displayName": "Celeste",
   "dependencies": {
     "com.unity.2d.animation": "5.0.5",
     "com.unity.2d.pixel-perfect": "4.0.1",
