@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce3cb92e283216f4c9771858cd74bb73, type: 3}
-  m_Name: FallbackLanguage
+  m_Script: {fileID: 11500000, guid: 64293f3cc12453d44a5bb82bf66a7aee, type: 3}
+  m_Name: LocalisationSettings
   m_EditorClassIdentifier: 
-  countryCode: Fallback
-  assertOnFallback: 0
-  localisationEntries: []
+  currentLanguageValue: {fileID: 11400000, guid: ac7c838877b9a1743bf5058873818358, type: 2}

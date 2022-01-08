@@ -95,7 +95,7 @@ namespace CelesteEditor.Platform.Wizards
             if (hasEditorAssembly)
             {
                 int indexOfFirstDelimiter = assemblyName.IndexOf('.');
-                string editorAssemblyNamespace = $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}";
+                string editorAssemblyNamespace = indexOfFirstDelimiter >= 0 ? $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}" : $"{assemblyName}Editor";
 
                 List<string> referencedAssemblies = new List<string>() { assemblyName };
                 if (hasSceneMenuItem)

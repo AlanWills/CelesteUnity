@@ -54,6 +54,19 @@ namespace Celeste.Parameters
             }
         }
 
+        public TValue ReferenceValue
+        {
+            get { return referenceValue; }
+            set
+            {
+                Debug.Assert(!isConstant, $"Could not set reference value on constant reference {name}.  Ignoring...");
+                if (!isConstant)
+                {
+                    referenceValue = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Copy Methods

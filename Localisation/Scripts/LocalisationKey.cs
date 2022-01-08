@@ -14,5 +14,10 @@ namespace Celeste.Localisation
         [SerializeField, TextArea] private string fallback;
 
         #endregion
+
+        public override string ToString()
+        {
+            return key;
+        }
     }
 }

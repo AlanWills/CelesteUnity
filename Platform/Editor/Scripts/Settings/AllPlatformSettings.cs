@@ -9,7 +9,7 @@ namespace CelesteEditor.Platform
     [CreateAssetMenu(fileName = nameof(AllPlatformSettings), menuName = "Celeste/Platform/All Platform Settings")]
     public class AllPlatformSettings : ScriptableSingleton<AllPlatformSettings>
     {
-        #region Proeprties and Fields
+        #region Properties and Fields
 
         public iOSSettings iOSDebug
         {

@@ -1,4 +1,5 @@
 ﻿using CelesteEditor.Tools.Utils;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -119,7 +120,7 @@ namespace CelesteEditor.Tools
         public static bool FindAssets<T>(this SerializedProperty itemsProperty, string targetFolder) where T : ScriptableObject
         {
             bool dirty = false;
-            string[] objectGuids = new string[0];
+            string[] objectGuids;
 
             if (!string.IsNullOrEmpty(targetFolder))
             {
@@ -169,7 +170,7 @@ namespace CelesteEditor.Tools
             FindAssetsImpl<T>(target, propertyName, targetFolder);
         }
 
-        public static string[] FindAssets<T>(string name, string directory) where T : Object
+        public static List<T> FindAssets<T>(string name, string directory) where T : Object
         {
             if (!string.IsNullOrEmpty(directory))
             {
@@ -177,7 +178,15 @@ namespace CelesteEditor.Tools
                     WithAssetName(name).
                     WithType<T>().
                     Build();
-                return AssetDatabase.FindAssets(assetSearchString, new string[] { directory });
+                
+                List<T> assets = new List<T>();
+                foreach (string guid in AssetDatabase.FindAssets(assetSearchString, new string[] { directory }))
+                {
+                    T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                    assets.Add(asset);
+                }
+
+                return assets;
             }
             else
             {
@@ -185,13 +194,37 @@ namespace CelesteEditor.Tools
             }
         }
 
-        public static string[] FindAssets<T>(string name) where T : Object
+        public static List<T> FindAssets<T>() where T : Object
+        {
+            string assetSearchString = new AssetDatabaseSearchBuilder().
+                       WithType<T>().
+                       Build();
+
+            List<T> assets = new List<T>();
+            foreach (string guid in AssetDatabase.FindAssets(assetSearchString))
+            {
+                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                assets.Add(asset);
+            }
+
+            return assets;
+        }
+
+        public static List<T> FindAssets<T>(string name) where T : Object
         {
             string assetSearchString = new AssetDatabaseSearchBuilder().
                        WithAssetName(name).
                        WithType<T>().
                        Build();
-            return AssetDatabase.FindAssets(assetSearchString);
+
+            List<T> assets = new List<T>();
+            foreach (string guid in AssetDatabase.FindAssets(assetSearchString))
+            {
+                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                assets.Add(asset);
+            }
+
+            return assets;
         }
 
         public static T FindAsset<T>() where T : Object
@@ -206,16 +239,10 @@ namespace CelesteEditor.Tools
 
         public static T FindAsset<T>(string name, string directory) where T : Object
         {
-            string[] assetGuids = FindAssets<T>(name, directory);
-            if (assetGuids == null || assetGuids.Length == 0)
+            List<T> assets = FindAssets<T>(name, directory);
+            for (int i = 0, n = assets.Count; i < n; ++i)
             {
-                Debug.LogAssertion($"Could not find an asset of type '{typeof(T).Name}' and name '{name}'.");
-                return default;
-            }
-
-            for (int i = 0, n = assetGuids.Length; i < n; ++i)
-            {
-                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(assetGuids[i]));
+                T asset = assets[i];
                 if (string.CompareOrdinal(asset.name, name) == 0)
                 {
                     return asset;

@@ -32,7 +32,11 @@ namespace DnD.Core.Loading
                 (progress) => progressBar.value = progress,
                 () => { });
 
-            loadContextArgs.onContextLoaded.Invoke(new OnContextLoadedArgs(loadContextArgs.context));
+            if (loadContextArgs.onContextLoaded != null)
+            {
+                loadContextArgs.onContextLoaded.Invoke(new OnContextLoadedArgs(loadContextArgs.context));
+            }
+
             loadingScreenUI.SetActive(false);
             enableInput.Invoke();
         }

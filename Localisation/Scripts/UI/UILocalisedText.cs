@@ -1,5 +1,6 @@
 ﻿using Celeste.Localisation.Parameters;
 using Celeste.Tools;
+using Celeste.Tools.Attributes.GUI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -11,8 +12,9 @@ namespace Celeste.Localisation.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private LanguageValue currentLanguage;
-        [SerializeField] private LocalisationKey key;
+        [SerializeField] private bool dynamic = false;
+        [SerializeField, HideIf(nameof(dynamic))] private LanguageValue currentLanguage;
+        [SerializeField, HideIf(nameof(dynamic))] private LocalisationKey key;
         [SerializeField] private TextMeshProUGUI text;
 
         #endregion
@@ -21,12 +23,19 @@ namespace Celeste.Localisation.UI
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
+            if (currentLanguage == null)
+            {
+                currentLanguage = Settings.LocalisationSettings.instance.currentLanguageValue;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+#endif
             this.TryGet(ref text);
         }
 
         private void OnEnable()
         {
-            UpdateText();
+            Localise();
 
             if (currentLanguage != null)
             {
@@ -47,18 +56,23 @@ namespace Celeste.Localisation.UI
         {
             if (!Application.isPlaying)
             {
-                UpdateText();
+                Localise();
             }
         }
 #endif
 
 #endregion
 
-        private void UpdateText()
+        public void Localise(LocalisationKey key, Language language)
         {
-            if (currentLanguage != null && key != null)
+            text.text = language.Localise(key);
+        }
+
+        private void Localise()
+        {
+            if (!dynamic && key != null && currentLanguage != null)
             {
-                text.text = currentLanguage.Value.Localise(key);
+                Localise(key, currentLanguage.Value);
             }
         }
 
@@ -66,7 +80,7 @@ namespace Celeste.Localisation.UI
 
         private void OnCurrentLanguageChanged(Language language)
         {
-            UpdateText();
+            Localise();
         }
 
         #endregion

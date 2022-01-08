@@ -1,3 +1,4 @@
+using Celeste.DataStructures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Celeste.Localisation
         #region Properties and Fields
 
         public string CountryCode => countryCode;
+        public int NumEntries => localisationEntries.Count;
 
         [SerializeField] private string countryCode;
         [SerializeField] private bool assertOnFallback = true;
@@ -48,6 +50,32 @@ namespace Celeste.Localisation
             return localisedValue;
         }
 
+        public void RemoveNullEntries()
+        {
+            localisationEntries.RemoveAll(x => x.key == null);
+        }
+
+        public void AddEntries(List<LocalisationKey> keys)
+        {
+            for (int i = 0, n = keys.Count; i < n; ++i)
+            {
+                LocalisationKey key = keys[i];
+                if (!localisationLookup.ContainsKey(keys[i]))
+                {
+                    localisationEntries.Add(new LocalisationEntry() { key = key, localisedText = string.Empty });
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError($"Attempting to add key {key} which already exists.  Ignoring...");
+                }
+            }
+        }
+
+        public LocalisationKey GetKey(int index)
+        {
+            return localisationEntries.Get(index).key;
+        }
+
         #region ISerializationCallbackReceiver
 
         public void OnBeforeSerialize() { }
@@ -58,7 +86,11 @@ namespace Celeste.Localisation
             
             for (int i = 0, n = localisationEntries.Count; i < n; ++i)
             {
-                localisationLookup.Add(localisationEntries[i].key, localisationEntries[i].localisedText);
+                var localisationEntry = localisationEntries[i];
+                if (localisationEntry.key != null && !localisationLookup.ContainsKey(localisationEntry.key))
+                {
+                    localisationLookup.Add(localisationEntry.key, localisationEntry.localisedText);
+                }
             }
         }
         

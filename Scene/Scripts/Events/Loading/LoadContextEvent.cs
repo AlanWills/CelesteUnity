@@ -21,7 +21,7 @@ namespace Celeste.Scene.Events
 
         public override string ToString()
         {
-            return $"{sceneSet.name} - {context} - {onContextLoaded.name}";
+            return $"{sceneSet.name} - {context} - {(onContextLoaded != null ? onContextLoaded.name : "null")}";
         }
     }
 

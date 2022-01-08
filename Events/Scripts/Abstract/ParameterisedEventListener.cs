@@ -4,8 +4,8 @@ using UnityEngine.Events;
 namespace Celeste.Events
 {
     public class ParameterisedEventListener<T, TEvent, TUnityEvent> : MonoBehaviour, IEventListener<T> 
-                                                                                       where TEvent : ParameterisedEvent<T>
-                                                                                       where TUnityEvent : UnityEvent<T>
+                                                                      where TEvent : ParameterisedEvent<T>
+                                                                      where TUnityEvent : UnityEvent<T>
     {
         #region Properties and Fields
 
