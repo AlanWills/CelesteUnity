@@ -16,6 +16,7 @@ namespace CelesteEditor.Localisation
 
         private SerializedProperty localisationEntriesProperty;
 
+        private bool useFallbackWhenAddingMissing = false;
         private int currentPage = 0;
         private int ENTRIES_PER_PAGE = 40;
 
@@ -31,6 +32,8 @@ namespace CelesteEditor.Localisation
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            useFallbackWhenAddingMissing = EditorGUILayout.Toggle("Use Fallback Text", useFallbackWhenAddingMissing);
 
             if (Button("Add Missing"))
             {
@@ -109,7 +112,7 @@ namespace CelesteEditor.Localisation
             if (missingKeys.Count > 0)
             {
                 language.RemoveNullEntries();
-                language.AddEntries(missingKeys);
+                language.AddEntries(missingKeys, useFallbackWhenAddingMissing);
 
                 EditorUtility.SetDirty(target);
                 AssetDatabase.SaveAssets();

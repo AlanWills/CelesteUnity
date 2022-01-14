@@ -12,6 +12,9 @@ namespace Celeste.Localisation.UI
     {
         #region Properties and Fields
 
+        public LocalisationKey Key { get; private set; }
+        public string Text { get; private set; }
+
         [SerializeField] private bool dynamic = false;
         [SerializeField, HideIf(nameof(dynamic))] private LanguageValue currentLanguage;
         [SerializeField, HideIf(nameof(dynamic))] private LocalisationKey key;
@@ -24,9 +27,14 @@ namespace Celeste.Localisation.UI
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if (currentLanguage == null)
+            if (!dynamic && currentLanguage == null)
             {
                 currentLanguage = Settings.LocalisationSettings.instance.currentLanguageValue;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+            else if (dynamic && currentLanguage != null)
+            {
+                currentLanguage = null;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
 #endif
@@ -65,7 +73,10 @@ namespace Celeste.Localisation.UI
 
         public void Localise(LocalisationKey key, Language language)
         {
-            text.text = language.Localise(key);
+            Key = key;
+            Text = language.Localise(key);
+
+            text.text = Text;
         }
 
         private void Localise()

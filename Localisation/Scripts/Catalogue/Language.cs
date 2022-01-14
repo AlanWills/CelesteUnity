@@ -55,14 +55,15 @@ namespace Celeste.Localisation
             localisationEntries.RemoveAll(x => x.key == null);
         }
 
-        public void AddEntries(List<LocalisationKey> keys)
+        public void AddEntries(List<LocalisationKey> keys, bool useFallbackForText)
         {
             for (int i = 0, n = keys.Count; i < n; ++i)
             {
                 LocalisationKey key = keys[i];
                 if (!localisationLookup.ContainsKey(keys[i]))
                 {
-                    localisationEntries.Add(new LocalisationEntry() { key = key, localisedText = string.Empty });
+                    string localisedText = useFallbackForText ? key.Fallback : string.Empty;
+                    localisationEntries.Add(new LocalisationEntry() { key = key, localisedText = localisedText });
                 }
                 else
                 {
