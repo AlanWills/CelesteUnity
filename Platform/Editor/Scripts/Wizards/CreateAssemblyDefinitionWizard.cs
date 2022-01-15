@@ -43,7 +43,7 @@ namespace CelesteEditor.Platform.Wizards
 
         #region Menu Item
 
-        [MenuItem("Celeste/Platform/Create Assembly Definition")]
+        [MenuItem("Celeste/Tools/Create Assembly Definition")]
         public static void ShowCreateAssemblyDefinitionWizard()
         {
             DisplayWizard<CreateAssemblyDefinitionWizard>("Create Assembly Definition", "Close", "Create");
