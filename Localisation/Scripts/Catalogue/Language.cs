@@ -50,25 +50,32 @@ namespace Celeste.Localisation
             return localisedValue;
         }
 
-        public void RemoveNullEntries()
-        {
-            localisationEntries.RemoveAll(x => x.key == null);
-        }
-
         public void AddEntries(List<LocalisationKey> keys, bool useFallbackForText)
         {
             for (int i = 0, n = keys.Count; i < n; ++i)
             {
                 LocalisationKey key = keys[i];
-                if (!localisationLookup.ContainsKey(keys[i]))
+                if (!localisationLookup.ContainsKey(key))
                 {
                     string localisedText = useFallbackForText ? key.Fallback : string.Empty;
-                    localisationEntries.Add(new LocalisationEntry() { key = key, localisedText = localisedText });
+                    localisationLookup.Add(key, localisedText);
                 }
                 else
                 {
                     UnityEngine.Debug.LogError($"Attempting to add key {key} which already exists.  Ignoring...");
                 }
+            }
+        }
+
+        public void AddOrUpdateEntry(LocalisationKey key, string localisedText)
+        {
+            if (!localisationLookup.ContainsKey(key))
+            {
+                localisationLookup.Add(key, localisedText);
+            }
+            else
+            {
+                localisationLookup[key] = localisedText;
             }
         }
 
@@ -79,7 +86,15 @@ namespace Celeste.Localisation
 
         #region ISerializationCallbackReceiver
 
-        public void OnBeforeSerialize() { }
+        public void OnBeforeSerialize() 
+        {
+            localisationEntries.Clear();
+
+            foreach (var localisationEntry in localisationLookup)
+            {
+                localisationEntries.Add(new LocalisationEntry() { key = localisationEntry.Key, localisedText = localisationEntry.Value });
+            }
+        }
 
         public void OnAfterDeserialize()
         {

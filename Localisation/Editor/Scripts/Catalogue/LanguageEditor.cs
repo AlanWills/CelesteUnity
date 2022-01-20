@@ -111,7 +111,6 @@ namespace CelesteEditor.Localisation
 
             if (missingKeys.Count > 0)
             {
-                language.RemoveNullEntries();
                 language.AddEntries(missingKeys, useFallbackWhenAddingMissing);
 
                 EditorUtility.SetDirty(target);

@@ -13,7 +13,8 @@ namespace Celeste.Localisation
         [Header("Present")]
         [SerializeField] private LocalisationKey presentILocalisationKey;
         [SerializeField] private LocalisationKey presentYouLocalisationKey;
-        [SerializeField] private LocalisationKey presentHeSheItLocalisationKey;
+        [SerializeField] private LocalisationKey presentHeLocalisationKey;
+        [SerializeField] private LocalisationKey presentSheLocalisationKey;
         [SerializeField] private LocalisationKey presentWeLocalisationKey;
         [SerializeField] private LocalisationKey presentTheyLocalisationKey;
 

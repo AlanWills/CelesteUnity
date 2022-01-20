@@ -8,22 +8,61 @@ namespace CelesteEditor.Tools
 {
     public static class AssetUtility
     {
+        #region Utils
+
+        private static void EnsureNamed(Object asset)
+        {
+            if (string.IsNullOrEmpty(asset.name))
+            {
+                asset.name = asset.GetType().Name;
+            }
+        }
+
+        private static string StripTrailingSlash(string path)
+        {
+            return path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
+        }
+
+        #endregion
+
         public static void AddObjectToAsset(Object objectToAdd, Object assetObject)
         {
             AssetDatabase.AddObjectToAsset(objectToAdd, assetObject);
             EditorUtility.SetDirty(assetObject);
         }
 
-		public static void CreateAsset<T>(T asset, string parentFolder) where T : ScriptableObject
+        public static bool AssetExists(string name, string parentFolder)
+        {
+            return AssetExists(Path.Combine(parentFolder, $"{name}.asset"));
+        }
+
+        public static bool AssetExists(string assetPath)
+        {
+            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath));
+        }
+
+        public static void CreateAsset(Object asset, string assetPath)
+        {
+            int indexOfLastDelimiter = assetPath.LastIndexOf('/');
+            string parentFolder = assetPath.Substring(0, indexOfLastDelimiter);
+            
+            CreateFolder(parentFolder);
+            EnsureNamed(asset);
+
+            string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(assetPath);
+            AssetDatabase.CreateAsset(asset, assetPathAndName);
+        }
+
+        public static void CreateAssetInFolder(Object asset, string parentFolder)
+        {
+            EnsureNamed(asset);
+            CreateAsset(asset, $"{parentFolder}/{asset.name}.asset");
+        }
+
+        public static void CreateAssetInFolderAndSave(Object asset, string parentFolder)
 		{
-            if (string.IsNullOrEmpty(asset.name))
-            {
-                asset.name = typeof(T).Name;
-            }
+            CreateAssetInFolder(asset, parentFolder);
 
-			string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{parentFolder}/{asset.name}.asset");
-
-			AssetDatabase.CreateAsset(asset, assetPathAndName);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 
@@ -43,18 +82,38 @@ namespace CelesteEditor.Tools
         /// <param name="newFolder"></param>
         public static void CreateFolder(string newFolder)
         {
-            int indexOfLastDelimiter = newFolder.LastIndexOf('/');
+            if (string.IsNullOrEmpty(newFolder))
+            {
+                Debug.LogAssertion($"Cannot enter empty string into {nameof(CreateFolder)}.");
+                return;
+            }
+
+            // Remove trailing '/'
+            newFolder = StripTrailingSlash(newFolder);
+
+            int indexOfLastDelimiter =  newFolder.LastIndexOf('/');
             CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
         }
 
         public static void CreateFolder(string parent, string folderName)
         {
-			parent = parent.EndsWith("/") ? parent.Substring(0, parent.Length - 1) : parent;
-			folderName = folderName.EndsWith("/") ? folderName.Substring(0, folderName.Length - 1) : folderName;
+            parent = StripTrailingSlash(parent);
+
+            // Ensure all folders are created in our hierarchy
+            if (!AssetDatabase.IsValidFolder(parent))
+            {
+                CreateFolder(parent);
+            }
+
+            folderName = StripTrailingSlash(folderName);
 
             if (!AssetDatabase.IsValidFolder(Path.Combine(parent, folderName)))
             {
-                AssetDatabase.CreateFolder(parent, folderName);
+                string folderGuid = AssetDatabase.CreateFolder(parent, folderName);
+                Debug.Assert(!string.IsNullOrEmpty(folderGuid), $"Failed to create folder {folderName} in parent folder {parent}.");
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
         }
 
@@ -163,8 +222,8 @@ namespace CelesteEditor.Tools
             string targetFolder = GetAssetFolderPath(target);
             if (!string.IsNullOrEmpty(subDirectoryName))
             {
-                targetFolder = string.Format("{0}/{1}", targetFolder, subDirectoryName);
-                targetFolder = targetFolder.EndsWith("/") ? targetFolder.Substring(0, targetFolder.Length - 1) : targetFolder;
+                targetFolder = $"{targetFolder}/{subDirectoryName}";
+                targetFolder = StripTrailingSlash(targetFolder);
             }
 
             FindAssetsImpl<T>(target, propertyName, targetFolder);

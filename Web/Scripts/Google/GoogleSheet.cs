@@ -21,6 +21,7 @@ namespace Celeste.Web
         #region Properties and Fields
 
         public int NumColumns => columns.Count;
+        public int NumRows { get; private set; }
 
         private List<Column> columns = new List<Column>();
 
@@ -51,6 +52,7 @@ namespace Celeste.Web
                     {
                         // End column is in the format '\r\n' so we add an extra increment to move past \n
                         currentColumn = 0;
+                        ++googleSheet.NumRows;
                         i += 2;
                     }
                     else if (csv[i] == ',')
@@ -87,6 +89,11 @@ namespace Celeste.Web
         public Column GetColumn(int index)
         {
             return columns.Get(index);
+        }
+
+        public bool HasColumn(string columnName)
+        {
+            return columns.Exists(x => string.CompareOrdinal(columnName, x.Name) == 0);
         }
     }
 }

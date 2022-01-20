@@ -173,7 +173,7 @@ namespace CelesteEditor.Platform
             T settings = ScriptableObject.CreateInstance<T>();
             settings.name = settingsName;
 
-            AssetUtility.CreateAsset(settings, folder);
+            AssetUtility.CreateAssetInFolderAndSave(settings, folder);
 
             settingsProperty.objectReferenceValue = settings;
         }

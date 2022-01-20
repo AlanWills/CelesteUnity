@@ -7,8 +7,17 @@ namespace Celeste.Localisation
     {
         #region Properties and Fields
 
-        public string Key => key;
-        public string Fallback => fallback;
+        public string Key
+        {
+            get { return key; }
+            set { key = value; }
+        }
+
+        public string Fallback
+        {
+            get { return fallback; }
+            set { fallback = value; }
+        }
 
         [SerializeField] private string key;
         [SerializeField, TextArea] private string fallback;

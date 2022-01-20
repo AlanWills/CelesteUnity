@@ -3,6 +3,12 @@ using UnityEngine;
 using Unity.EditorCoroutines.Editor;
 using Celeste.Web;
 using System;
+using System.Collections.Generic;
+using Celeste.Localisation;
+using CelesteEditor.Tools;
+using System.IO;
+using System.Globalization;
+using CelesteEditor.Localisation.Utility;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -11,7 +17,9 @@ namespace CelesteEditor.Localisation.Tools
         #region Properties and Fields
 
         [SerializeField] private string sheetId;
+        [SerializeField] private string localisationKeysDirectory = "Assets/Localisation/Data/Keys";
 
+        private const int LANGUAGES_OFFSET = 2;
         private const string LOCALISATION_SHEET_ID = "LocalisationSheetId";
 
         #endregion
@@ -44,6 +52,8 @@ namespace CelesteEditor.Localisation.Tools
                     EditorPrefs.SetString(LOCALISATION_SHEET_ID, sheetId);
                 }
 
+                localisationKeysDirectory = EditorGUILayout.TextField("Localisation Keys Directory", localisationKeysDirectory);
+
                 return changeCheck.changed;
             }
         }
@@ -65,7 +75,61 @@ namespace CelesteEditor.Localisation.Tools
         private void OnDownloadData(string data)
         {
             GoogleSheet googleSheet = GoogleSheet.FromCSV(data);
-            Debug.Log(googleSheet.NumColumns);
+            List<Language> languagesToLocalise = AssetUtility.FindAssets<Language>();
+            Dictionary<string, LocalisationKey> localisationKeys = new Dictionary<string, LocalisationKey>();
+
+            for (int i = languagesToLocalise.Count - 1; i >= 0; --i)
+            {
+                if (!googleSheet.HasColumn(languagesToLocalise[i].CountryCode))
+                {
+                    languagesToLocalise.RemoveAt(i);
+                }
+            }
+
+            foreach (LocalisationKey localisationKey in AssetUtility.FindAssets<LocalisationKey>())
+            {
+                localisationKeys.Add(localisationKey.Key, localisationKey);
+            }
+
+            GoogleSheet.Column keyStrings = googleSheet.GetColumn(0);
+            GoogleSheet.Column categoryStrings = googleSheet.GetColumn(1);
+
+            for (int column = LANGUAGES_OFFSET; column < googleSheet.NumColumns; ++column)
+            {
+                GoogleSheet.Column columnData = googleSheet.GetColumn(column);
+                Language language = languagesToLocalise.Find(x => string.CompareOrdinal(x.CountryCode, columnData.Name) == 0);
+
+                for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
+                {
+                    string keyString = keyStrings.Values[row];
+                    string localisedString = columnData.Values[row];
+
+                    if (!localisationKeys.TryGetValue(keyString, out LocalisationKey key))
+                    {
+                        string category = categoryStrings.Values[row];
+                        key = CreateInstance<LocalisationKey>();
+                        key.name = keyString.ToAssetName();
+                        key.Key = keyString;
+                        key.Fallback = localisedString;
+
+                        localisationKeys.Add(keyString, key);
+
+                        string directory = $"{localisationKeysDirectory}/{categoryStrings.Values[row]}";
+                        AssetUtility.CreateAssetInFolder(key, directory);
+                    }
+
+                    // Don't add or update entries which are missing an actual localised text value
+                    if (!string.IsNullOrWhiteSpace(localisedString))
+                    {
+                        language.AddOrUpdateEntry(key, localisedString);
+                    }
+                }
+
+                EditorUtility.SetDirty(language);
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         #endregion
