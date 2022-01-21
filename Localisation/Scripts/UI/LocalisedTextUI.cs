@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Celeste.Localisation.UI
 {
-    [ExecuteInEditMode, AddComponentMenu("Celeste/Localisation/UI Localised Text")]
-    public class UILocalisedText : MonoBehaviour
+    [ExecuteInEditMode, AddComponentMenu("Celeste/Localisation/Localised Text UI")]
+    public class LocalisedTextUI : MonoBehaviour
     {
         #region Properties and Fields
 
