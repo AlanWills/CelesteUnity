@@ -1,5 +1,7 @@
 ﻿using Celeste.DataStructures;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Objects
@@ -8,10 +10,8 @@ namespace Celeste.Objects
     {
         #region Properties and Fields
 
-        public int NumItems 
-        { 
-            get { return items.Length; } 
-        }
+        public int NumItems => items.Length;
+        public IEnumerable<T> Items => items;
 
         [SerializeField] private T[] items;
 

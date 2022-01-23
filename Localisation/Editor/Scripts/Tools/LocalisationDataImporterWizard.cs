@@ -76,6 +76,7 @@ namespace CelesteEditor.Localisation.Tools
         {
             GoogleSheet googleSheet = GoogleSheet.FromCSV(data);
             List<Language> languagesToLocalise = AssetUtility.FindAssets<Language>();
+            Dictionary<string, LocalisationKeyCategory> localisationKeyCategories = new Dictionary<string, LocalisationKeyCategory>();
             Dictionary<string, LocalisationKey> localisationKeys = new Dictionary<string, LocalisationKey>();
 
             for (int i = languagesToLocalise.Count - 1; i >= 0; --i)
@@ -84,6 +85,11 @@ namespace CelesteEditor.Localisation.Tools
                 {
                     languagesToLocalise.RemoveAt(i);
                 }
+            }
+
+            foreach (LocalisationKeyCategory localisationKeyCategory in AssetUtility.FindAssets<LocalisationKeyCategory>())
+            {
+                localisationKeyCategories.Add(localisationKeyCategory.CategoryName, localisationKeyCategory);
             }
 
             foreach (LocalisationKey localisationKey in AssetUtility.FindAssets<LocalisationKey>())
@@ -103,10 +109,10 @@ namespace CelesteEditor.Localisation.Tools
                 {
                     string keyString = keyStrings.Values[row];
                     string localisedString = columnData.Values[row];
+                    string categoryString = categoryStrings.Values[row];
 
                     if (!localisationKeys.TryGetValue(keyString, out LocalisationKey key))
                     {
-                        string category = categoryStrings.Values[row];
                         key = CreateInstance<LocalisationKey>();
                         key.name = keyString.ToAssetName();
                         key.Key = keyString;
@@ -114,8 +120,17 @@ namespace CelesteEditor.Localisation.Tools
 
                         localisationKeys.Add(keyString, key);
 
-                        string directory = $"{localisationKeysDirectory}/{categoryStrings.Values[row]}";
+                        string directory = $"{localisationKeysDirectory}/{categoryString}";
                         AssetUtility.CreateAssetInFolder(key, directory);
+                    }
+                    
+                    if (localisationKeyCategories.TryGetValue(categoryString, out LocalisationKeyCategory category))
+                    {
+                        key.Category = category;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Could not find {nameof(LocalisationKeyCategory)} '{categoryString}' for {keyString}.");
                     }
 
                     // Don't add or update entries which are missing an actual localised text value
@@ -130,6 +145,8 @@ namespace CelesteEditor.Localisation.Tools
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            Debug.Log("Localisation Data Importing Done!");
         }
 
         #endregion

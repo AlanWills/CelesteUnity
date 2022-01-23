@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Platform
@@ -45,6 +40,10 @@ namespace CelesteEditor.Platform
         }
 
         #endregion
+
+        public override void SetDefaultValues()
+        {
+        }
 
         protected override void ApplyImpl()
         {

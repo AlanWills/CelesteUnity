@@ -21,5 +21,11 @@ namespace Celeste.Scene.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = "OnContextLoadedEvent", menuName = "Celeste/Events/Loading/On Context Loaded Event")]
-    public class OnContextLoadedEvent : ParameterisedEvent<OnContextLoadedArgs> { }
+    public class OnContextLoadedEvent : ParameterisedEvent<OnContextLoadedArgs> 
+    { 
+        public void Invoke(Context context)
+        {
+            Invoke(new OnContextLoadedArgs(context));
+        }
+    }
 }

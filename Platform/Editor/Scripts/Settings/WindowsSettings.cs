@@ -15,6 +15,14 @@ namespace CelesteEditor.Platform
 
         #endregion
 
+        public override void SetDefaultValues()
+        {
+            BuildDirectory = "Builds/Windows/{version}";
+            OutputName = "Build-{version}.exe";
+            BuildTarget = BuildTarget.StandaloneWindows64;
+            BuildTargetGroup = BuildTargetGroup.Standalone;
+        }
+
         protected override void ApplyImpl()
         {
             EditorUserBuildSettings.selectedStandaloneTarget = BuildTarget;

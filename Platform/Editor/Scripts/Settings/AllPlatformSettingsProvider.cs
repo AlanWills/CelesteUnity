@@ -172,6 +172,7 @@ namespace CelesteEditor.Platform
 
             T settings = ScriptableObject.CreateInstance<T>();
             settings.name = settingsName;
+            settings.SetDefaultValues();
 
             AssetUtility.CreateAssetInFolderAndSave(settings, folder);
 

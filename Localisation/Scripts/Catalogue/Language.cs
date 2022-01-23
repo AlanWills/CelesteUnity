@@ -24,12 +24,15 @@ namespace Celeste.Localisation
 
         public string CountryCode => countryCode;
         public int NumEntries => localisationEntries.Count;
+        public LocalisationKey LanguageNameKey => languageNameKey;
 
         [SerializeField] private string countryCode;
+        [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
         [SerializeField] private List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
         [NonSerialized] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>();
+        [NonSerialized] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
 
         #endregion
 
@@ -84,6 +87,26 @@ namespace Celeste.Localisation
             return localisationEntries.Get(index).key;
         }
 
+        public int NumEntriesInCategory(LocalisationKeyCategory category)
+        {
+            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
+            {
+                return value.Count;
+            }
+
+            return 0;
+        }
+
+        public LocalisationKey GetRandomKey(LocalisationKeyCategory category)
+        {
+            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
+            {
+                return value[UnityEngine.Random.Range(0, value.Count)];
+            }
+
+            return null;
+        }
+
         #region ISerializationCallbackReceiver
 
         public void OnBeforeSerialize() 
@@ -99,17 +122,34 @@ namespace Celeste.Localisation
         public void OnAfterDeserialize()
         {
             localisationLookup.Clear();
-            
+            categoryLookup.Clear();
+
             for (int i = 0, n = localisationEntries.Count; i < n; ++i)
             {
                 var localisationEntry = localisationEntries[i];
-                if (localisationEntry.key != null && !localisationLookup.ContainsKey(localisationEntry.key))
+                var localisationKey = localisationEntry.key;
+
+                if (localisationKey != null)
                 {
-                    localisationLookup.Add(localisationEntry.key, localisationEntry.localisedText);
+                    if (!localisationLookup.ContainsKey(localisationKey))
+                    {
+                        localisationLookup.Add(localisationKey, localisationEntry.localisedText);
+                    }
+
+                    if (localisationKey.Category != null)
+                    {
+                        if (!categoryLookup.TryGetValue(localisationKey.Category, out List<LocalisationKey> list))
+                        {
+                            list = new List<LocalisationKey>();
+                            categoryLookup.Add(localisationKey.Category, list);
+                        }
+
+                        list.Add(localisationKey);
+                    }
                 }
             }
         }
-        
+
         #endregion
     }
 }

@@ -108,11 +108,10 @@ namespace Celeste.Tools
             }
 
             int removeIndex = -1;
+            int startingIndex = currentPage * entriesPerPage;
 
-            for (int i = 0; i < Mathf.Min(entriesPerPage, numItems); ++i)
+            for (int i = startingIndex; i < Mathf.Min(startingIndex + entriesPerPage, numItems); ++i)
             {
-                int startingIndex = currentPage * entriesPerPage;
-
                 using (var horizontal = new HorizontalScope())
                 {
                     if (drawRemoveItem())
@@ -120,7 +119,7 @@ namespace Celeste.Tools
                         removeIndex = i;
                     }
 
-                    drawItem(startingIndex + i);
+                    drawItem(i);
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using Celeste.Events;
+using Celeste.Scene.Settings;
 using UnityEngine;
 
 namespace Celeste.Scene.Events
@@ -13,6 +14,19 @@ namespace Celeste.Scene.Events
         [SerializeField] private OnContextLoadedEvent onContextLoaded;
 
         #endregion
+
+        private void OnValidate()
+        {
+            if (gameEvent == null)
+            {
+                gameEvent = SceneSettings.instance.defaultLoadContextEvent;
+            }
+
+            if (contextProvider == null)
+            {
+                contextProvider = SceneSettings.instance.defaultContextProvider;
+            }
+        }
 
         public void Raise()
         {

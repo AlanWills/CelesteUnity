@@ -8,20 +8,28 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
-        public static iOSSettings Debug
-        {
-            get { return AllPlatformSettings.instance.iOSDebug; }
-        }
-
-        public static iOSSettings Release
-        {
-            get { return AllPlatformSettings.instance.iOSRelease; }
-        }
-
         [SerializeField]
         private iOSBuildType runInXCodeAs = iOSBuildType.Debug;
+        public iOSBuildType RunInXCodeAs
+        {
+            get { return runInXCodeAs; }
+            set
+            {
+                runInXCodeAs = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
 
         #endregion
+
+        public override void SetDefaultValues()
+        {
+            BuildDirectory = "Builds/iOS";
+            OutputName = "Build-{version}";
+            BuildTarget = BuildTarget.iOS;
+            BuildTargetGroup = BuildTargetGroup.iOS;
+            RunInXCodeAs = iOSBuildType.Release;
+        }
 
         protected override void ApplyImpl()
         {

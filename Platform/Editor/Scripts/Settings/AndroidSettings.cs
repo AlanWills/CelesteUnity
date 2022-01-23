@@ -9,27 +9,17 @@ namespace CelesteEditor.Platform
     {
         #region Properties and Fields
 
-        public static AndroidSettings Debug
-        {
-            get { return AllPlatformSettings.instance.AndroidDebug; }
-        }
-
-        public static AndroidSettings ReleaseApk
-        {
-            get { return AllPlatformSettings.instance.AndroidReleaseApk; }
-        }
-
-        public static AndroidSettings ReleaseBundle
-        {
-            get { return AllPlatformSettings.instance.AndroidReleaseBundle; }
-        }
-
         // HideInInspector cos enum not editable via default UI
         [SerializeField, HideInInspector]
         private ScriptingImplementation scriptingBackend;
         public ScriptingImplementation ScriptingBackend
         {
             get { return scriptingBackend; }
+            set
+            {
+                scriptingBackend = value;
+                EditorUtility.SetDirty(this);
+            }
         }
 
         // HideInInspector cos enum not editable via default UI
@@ -94,6 +84,16 @@ namespace CelesteEditor.Platform
         }
 
         #endregion
+
+        public override void SetDefaultValues()
+        {
+            BuildDirectory = "Builds/Android";
+            OutputName = "Build-{version}.apk";
+            BuildTarget = BuildTarget.Android;
+            BuildTargetGroup = BuildTargetGroup.Android;
+            ScriptingBackend = ScriptingImplementation.IL2CPP;
+            Architecture = AndroidArchitecture.All;
+        }
 
         protected override void ApplyImpl()
         {

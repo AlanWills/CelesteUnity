@@ -60,7 +60,7 @@ namespace Celeste.Web
                         ++currentColumn;
                         ++i;
                     }
-                    else if (csv[i] == 'n')
+                    else if (csv[i] == '\n')
                     {
                         ++i;
                     }

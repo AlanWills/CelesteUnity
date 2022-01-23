@@ -13,6 +13,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
+using Celeste.Tools.Attributes.GUI;
 
 namespace CelesteEditor.Platform
 {
@@ -54,6 +55,11 @@ namespace CelesteEditor.Platform
         public string BuildDirectory
         {
             get { return Resolve(buildDirectory); }
+            protected set
+            {
+                buildDirectory = value;
+                EditorUtility.SetDirty(this);
+            }
         }
 
         [SerializeField]
@@ -66,9 +72,18 @@ namespace CelesteEditor.Platform
         public string OutputName
         {
             get { return Resolve(outputName); }
+            protected set
+            {
+                outputName = value;
+                EditorUtility.SetDirty(this);
+            }
         }
 
         [SerializeField]
+        [Tooltip("If enabled, addressable specific pipelines will run in the build pipeline.")]
+        private bool addressablesEnabled = false;
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The directory that build addressables will be outputted to, relative to the project directory.  " +
             "When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_SOURCE' to allow uploading from a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesBuildDirectory;
@@ -77,7 +92,7 @@ namespace CelesteEditor.Platform
             get { return Resolve(addressablesBuildDirectory); }
         }
 
-        [SerializeField]
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The remote load path for the addressables e.g. an S3 bucket." + STRING_SUBSTITUTION_HELP)]
         private string addressablesLoadDirectory;
         public string AddressablesLoadDirectory
@@ -85,7 +100,7 @@ namespace CelesteEditor.Platform
             get { return Resolve(addressablesLoadDirectory); }
         }
 
-        [SerializeField]
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesS3UploadBucket;
         public string AddressablesS3UploadBucket
@@ -98,6 +113,11 @@ namespace CelesteEditor.Platform
         public BuildTarget BuildTarget
         {
             get { return buildTarget; }
+            protected set
+            {
+                buildTarget = value;
+                EditorUtility.SetDirty(this);
+            }
         }
 
         [SerializeField]
@@ -105,6 +125,11 @@ namespace CelesteEditor.Platform
         public BuildTargetGroup BuildTargetGroup
         {
             get { return buildTargetGroup; }
+            protected set
+            {
+                buildTargetGroup = value;
+                EditorUtility.SetDirty(this);
+            }
         }
 
         [SerializeField]
@@ -136,6 +161,8 @@ namespace CelesteEditor.Platform
 
         #endregion
 
+        public abstract void SetDefaultValues();
+
         #region Platform Setup Methods
 
         public void IncrementBuild()
@@ -148,8 +175,11 @@ namespace CelesteEditor.Platform
 
         public void Apply()
         {
-            SetAddressableAssetSettings();
-            
+            if (addressablesEnabled)
+            {
+                SetAddressableAssetSettings();
+            }
+
             AssetUtility.CreateFolder("Assets/Resources");
             File.WriteAllText($"Assets/Resources/{DebugConstants.IS_DEBUG_BUILD_FILE}.txt", isDebugBuild ? "1" : "0");
 
@@ -158,25 +188,29 @@ namespace CelesteEditor.Platform
             EditorUserBuildSettings.development = development;
             PlayerSettings.bundleVersion = Version.ToString();
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols);
-            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-            settings.OverridePlayerVersion = PlayerOverrideVersion;
-            settings.profileSettings.SetValue(settings.activeProfileId, "RemoteBuildPath", AddressablesBuildDirectory);
-            settings.profileSettings.SetValue(settings.activeProfileId, "RemoteLoadPath", AddressablesLoadDirectory);
 
-            if (addressableGroupsInBuild.Count > 0)
+            if (addressablesEnabled)
             {
-                settings.DefaultGroup = settings.FindGroup(addressableGroupsInBuild[0]);
-            }
+                AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+                settings.OverridePlayerVersion = PlayerOverrideVersion;
+                settings.profileSettings.SetValue(settings.activeProfileId, "RemoteBuildPath", AddressablesBuildDirectory);
+                settings.profileSettings.SetValue(settings.activeProfileId, "RemoteLoadPath", AddressablesLoadDirectory);
 
-            foreach (AddressableAssetGroup group in settings.groups)
-            {
-                BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
-                bool included = addressableGroupsInBuild.Contains(group.Name);
-
-                if (bundledAssetGroupSchema != null && bundledAssetGroupSchema.IncludeInBuild != included)
+                if (addressableGroupsInBuild.Count > 0)
                 {
-                    bundledAssetGroupSchema.IncludeInBuild = included;
-                    EditorUtility.SetDirty(group);
+                    settings.DefaultGroup = settings.FindGroup(addressableGroupsInBuild[0]);
+                }
+
+                foreach (AddressableAssetGroup group in settings.groups)
+                {
+                    BundledAssetGroupSchema bundledAssetGroupSchema = group.GetSchema<BundledAssetGroupSchema>();
+                    bool included = addressableGroupsInBuild.Contains(group.Name);
+
+                    if (bundledAssetGroupSchema != null && bundledAssetGroupSchema.IncludeInBuild != included)
+                    {
+                        bundledAssetGroupSchema.IncludeInBuild = included;
+                        EditorUtility.SetDirty(group);
+                    }
                 }
             }
 
