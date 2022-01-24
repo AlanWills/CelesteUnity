@@ -65,8 +65,8 @@ namespace Celeste.Tools
             using (HorizontalScope horizontal = new HorizontalScope())
             {
                 // Fast Back
+                using (var guiEnabled = new GUIEnabledScope(currentPage > 0))
                 {
-                    GUI.enabled = currentPage > 0;
                     if (Button("<<", ExpandWidth(false)))
                     {
                         currentPage = Mathf.Max(0, currentPage - 5);
@@ -74,8 +74,8 @@ namespace Celeste.Tools
                 }
 
                 // Back
+                using (var guiEnabled = new GUIEnabledScope(currentPage > 0))
                 {
-                    GUI.enabled = currentPage > 0;
                     if (Button("<", ExpandWidth(false)))
                     {
                         currentPage = Mathf.Max(0, currentPage - 1);
@@ -87,24 +87,22 @@ namespace Celeste.Tools
                 FlexibleSpace();
 
                 // Forward
+                using (var guiEnabled = new GUIEnabledScope(currentPage < numPages - 1))
                 {
-                    GUI.enabled = currentPage < numPages - 1;
                     if (Button(">", ExpandWidth(false)))
                     {
-                        currentPage = Mathf.Min(numPages, currentPage + 1);
+                        currentPage = Mathf.Min(numPages - 1, currentPage + 1);
                     }
                 }
 
                 // Fast Forward
+                using (var guiEnabled = new GUIEnabledScope(currentPage < numPages - 1))
                 {
-                    GUI.enabled = currentPage < numPages - 1;
                     if (Button(">>", ExpandWidth(false)))
                     {
-                        currentPage = Mathf.Min(numPages, currentPage + 5);
+                        currentPage = Mathf.Min(numPages - 1, currentPage + 5);
                     }
                 }
-
-                GUI.enabled = true;
             }
 
             int removeIndex = -1;

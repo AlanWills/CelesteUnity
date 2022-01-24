@@ -18,6 +18,14 @@ namespace Celeste.Localisation
         [SerializeField] private LocalisationKey presentWeLocalisationKey;
         [SerializeField] private LocalisationKey presentTheyLocalisationKey;
 
+        [Header("Perfect")]
+        [SerializeField] private LocalisationKey perfectILocalisationKey;
+        [SerializeField] private LocalisationKey perfectYouLocalisationKey;
+        [SerializeField] private LocalisationKey perfectHeLocalisationKey;
+        [SerializeField] private LocalisationKey perfectSheLocalisationKey;
+        [SerializeField] private LocalisationKey perfectWeLocalisationKey;
+        [SerializeField] private LocalisationKey perfectTheyLocalisationKey;
+
         #endregion
     }
 }
