@@ -1,0 +1,6 @@
+[submodule "NativeFileShare"]
+	path = NativeFileShare
+	url = https://github.com/AlanWills/UnityNativeShare.git
+[submodule "NativeFilePicker"]
+	path = NativeFilePicker
+	url = https://github.com/AlanWills/UnityNativeFilePicker.git
