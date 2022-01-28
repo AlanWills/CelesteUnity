@@ -2,12 +2,12 @@
     "name": "Celeste.Localisation.Editor",
     "rootNamespace": "CelesteEditor.Localisation",
     "references": [
-        "GUID:478a2357cc57436488a56e564b08d223",
-        "GUID:41961d5607789574c8b628bf2c38c31b",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
-        "GUID:1e83f379d37edf04999a41dc4553067d",
-        "GUID:bc28c6dc120e98e408c12c7c01932dc4",
-        "GUID:8b4692d7023da8e4dabf6ab44569b020"
+        "Unity.EditorCoroutines.Editor",
+        "Celeste.Localisation",
+        "Celeste.Tools.Editor",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Tools",
+        "Celeste.Web"
     ],
     "includePlatforms": [
         "Editor"

@@ -2,10 +2,10 @@
     "name": "Celeste.Platform.Editor",
     "rootNamespace": "CelesteEditor.Platform",
     "references": [
-        "GUID:69448af7b92c7f342b298e06a37122aa",
-        "GUID:c72a5f4da32243f4c8f942fc155455e5",
+        "Celeste.Constants",
         "Celeste.Tools",
-        "Celeste.Tools.Editor"
+        "Celeste.Tools.Editor",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [
         "Editor"

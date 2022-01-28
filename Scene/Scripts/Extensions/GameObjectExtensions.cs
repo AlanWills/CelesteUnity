@@ -15,7 +15,7 @@ namespace Celeste.Utils
         NoConstraint
     }
 
-    public static class GameObjectUtils
+    public static class GameObjectExtensions
     {
         public static void DestroyAllChildren(this GameObject gameObject)
         {

@@ -21,7 +21,7 @@ namespace Celeste.UI.Layout
             this.TryGet(ref rectTransform);
         }
 
-        private void Update()
+        private void Awake()
         {
             referenceLayout.rectTransform = rectTransform;
         }

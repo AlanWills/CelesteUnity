@@ -2,8 +2,8 @@
     "name": "Celeste.LocationServices",
     "rootNamespace": "Celeste.LocationServices",
     "references": [
-        "GUID:f7b5d0e02af6ff2488cac962aeb93c2c",
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "Celeste.Debug",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

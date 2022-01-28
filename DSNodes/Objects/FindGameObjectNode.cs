@@ -38,7 +38,7 @@ namespace Celeste.DS.Nodes.Objects
             {
                 string _childName = GetInputValue(nameof(childName), childName);
                 string[] splitChildName = _childName.Split('.');
-                foundChild = GameObjectUtils.FindGameObject(splitChildName, findConstraint);
+                foundChild = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
             }
 
             Debug.AssertFormat(foundChild != null, "Could not find child '{0}'", childName);
