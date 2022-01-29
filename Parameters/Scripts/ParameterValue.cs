@@ -13,7 +13,7 @@ namespace Celeste.Parameters
         private T value;
         public T Value 
         {
-            get { return value; }
+            get { return Application.isPlaying ? value : DefaultValue; }
             set
             {
                 if (this.value == null && value == null)
