@@ -48,6 +48,10 @@ namespace CelesteEditor.PropertyDrawers.Parameters
 
                 serializedReference.ApplyModifiedProperties();
             }
+            else
+            {
+                EditorGUI.PropertyField(position, property);
+            }
 
             EditorGUI.EndProperty();
         }
