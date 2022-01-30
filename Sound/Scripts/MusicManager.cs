@@ -79,7 +79,7 @@ namespace Robbi.Sound
 
         public void Play(AudioClip audioClip)
         {
-            if (musicEnabled.Value && !audioSource.isPlaying)
+            if (musicEnabled.Value && audioSource.clip != audioClip)
             {
                 audioSource.clip = audioClip;
                 audioSource.Play();
@@ -93,6 +93,11 @@ namespace Robbi.Sound
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
+        }
+
+        public void Stop()
+        {
+            audioSource.Stop();
         }
 
         #endregion
