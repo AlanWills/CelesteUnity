@@ -1,5 +1,4 @@
 ﻿using Celeste.Events;
-using Celeste.Scene.Settings;
 using UnityEngine;
 
 namespace Celeste.Scene.Events
@@ -15,18 +14,20 @@ namespace Celeste.Scene.Events
 
         #endregion
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (gameEvent == null)
             {
-                gameEvent = SceneSettings.instance.defaultLoadContextEvent;
+                gameEvent = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultLoadContextEvent;
             }
 
             if (contextProvider == null)
             {
-                contextProvider = SceneSettings.instance.defaultContextProvider;
+                contextProvider = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultContextProvider;
             }
         }
+#endif
 
         public void Raise()
         {

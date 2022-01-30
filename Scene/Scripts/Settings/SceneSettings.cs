@@ -1,9 +1,10 @@
 ﻿#if UNITY_EDITOR
+using Celeste.Scene;
 using Celeste.Scene.Events;
 using UnityEditor;
 using UnityEngine;
 
-namespace Celeste.Scene.Settings
+namespace CelesteEditor.Scene.Settings
 {
     [FilePath(SCENE_SETTINGS_FILE_PATH, FilePathAttribute.Location.ProjectFolder)]
     [CreateAssetMenu(fileName = nameof(SceneSettings), menuName = "Celeste/Scene/Scene Settings")]
