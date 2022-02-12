@@ -1,4 +1,5 @@
 ﻿using Celeste.Objects;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Celeste.Localisation.Catalogue
     {
         public Language FindLanguageForTwoLetterCountryCode(string countryCode)
         {
-            return FindItem(x => string.CompareOrdinal(x.CountryCode, countryCode) == 0);
+            return FindItem(x => StringComparer.OrdinalIgnoreCase.Compare(x.CountryCode, countryCode) == 0);
         }
     }
 }

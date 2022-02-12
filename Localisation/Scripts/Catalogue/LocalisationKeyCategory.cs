@@ -12,6 +12,6 @@ namespace Celeste.Localisation
 
         [SerializeField] private string categoryName;
 
-#endregion
+        #endregion
     }
 }
