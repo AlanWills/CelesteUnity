@@ -11,7 +11,8 @@
         "Celeste.Debug",
         "Celeste.Tools",
         "Celeste.DataStructures",
-        "Celeste.Assets"
+        "Celeste.Assets",
+        "Celeste.Coroutines"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
