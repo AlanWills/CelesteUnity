@@ -1,11 +1,7 @@
 ﻿using Celeste.Localisation;
 using Celeste.Tools;
-using CelesteEditor.Tools;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.GUILayout;
 
 namespace CelesteEditor.Localisation
 {
@@ -16,7 +12,6 @@ namespace CelesteEditor.Localisation
 
         private SerializedProperty localisationEntriesProperty;
 
-        private bool useFallbackWhenAddingMissing = false;
         private int currentPage = 0;
         private int ENTRIES_PER_PAGE = 40;
 
@@ -32,18 +27,6 @@ namespace CelesteEditor.Localisation
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-
-            useFallbackWhenAddingMissing = EditorGUILayout.Toggle("Use Fallback Text", useFallbackWhenAddingMissing);
-
-            if (Button("Add Missing"))
-            {
-                AddMissingKeysFrom(AssetUtility.FindAssets<LocalisationKey>());
-            }
-
-            if (Button("Add Missing From Folder Recursive"))
-            {
-                AddMissingKeysFrom(AssetUtility.FindAssets<LocalisationKey>(AssetUtility.GetAssetFolderPath(target)));
-            }
 
             DrawPropertiesExcluding(serializedObject, "m_Script", "localisationEntries");
 
@@ -89,33 +72,5 @@ namespace CelesteEditor.Localisation
         }
 
         #endregion
-
-        private void AddMissingKeysFrom(List<LocalisationKey> foundKeys)
-        {
-            Language language = target as Language;
-
-            HashSet<LocalisationKey> keys = new HashSet<LocalisationKey>();
-            for (int i = 0, n = language.NumEntries; i < n; ++i)
-            {
-                keys.Add(language.GetKey(i));
-            }
-
-            List<LocalisationKey> missingKeys = new List<LocalisationKey>();
-            foreach (LocalisationKey key in foundKeys)
-            {
-                if (!keys.Contains(key))
-                {
-                    missingKeys.Add(key);
-                }
-            }
-
-            if (missingKeys.Count > 0)
-            {
-                language.AddEntries(missingKeys, useFallbackWhenAddingMissing);
-
-                EditorUtility.SetDirty(target);
-                AssetDatabase.SaveAssets();
-            }
-        }
     }
 }

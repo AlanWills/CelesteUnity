@@ -9,6 +9,7 @@ using CelesteEditor.Tools;
 using System.IO;
 using System.Globalization;
 using CelesteEditor.Localisation.Utility;
+using static Celeste.Localisation.Language;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -104,6 +105,7 @@ namespace CelesteEditor.Localisation.Tools
             {
                 GoogleSheet.Column columnData = googleSheet.GetColumn(column);
                 Language language = languagesToLocalise.Find(x => string.CompareOrdinal(x.CountryCode, columnData.Name) == 0);
+                List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
                 for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
                 {
@@ -111,6 +113,13 @@ namespace CelesteEditor.Localisation.Tools
                     string localisedString = columnData.Values[row];
                     string categoryString = categoryStrings.Values[row];
 
+                    if (string.IsNullOrEmpty(localisedString))
+                    {
+                        Debug.LogAssertion($"Key {keyString} has no localised string set for language {language.name}.");
+                        continue;
+                    }
+
+                    // Need to create a new localisation key asset
                     if (!localisationKeys.TryGetValue(keyString, out LocalisationKey key))
                     {
                         key = CreateInstance<LocalisationKey>();
@@ -118,6 +127,8 @@ namespace CelesteEditor.Localisation.Tools
                         key.Key = keyString;
                         key.Fallback = localisedString;
 
+                        Debug.Assert(!string.IsNullOrEmpty(keyString), $"No key found for row {row}.");
+                        Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for row {row}.");
                         localisationKeys.Add(keyString, key);
 
                         string directory = $"{localisationKeysDirectory}/{categoryString}";
@@ -133,13 +144,10 @@ namespace CelesteEditor.Localisation.Tools
                         Debug.LogError($"Could not find {nameof(LocalisationKeyCategory)} '{categoryString}' for {keyString}.");
                     }
 
-                    // Don't add or update entries which are missing an actual localised text value
-                    if (!string.IsNullOrWhiteSpace(localisedString))
-                    {
-                        language.AddOrUpdateEntry(key, localisedString);
-                    }
+                    localisationEntries.Add(new LocalisationEntry(key, localisedString));
                 }
 
+                language.SetEntries(localisationEntries);
                 EditorUtility.SetDirty(language);
             }
 

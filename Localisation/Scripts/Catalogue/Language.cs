@@ -7,15 +7,21 @@ using UnityEngine;
 namespace Celeste.Localisation
 {
     [CreateAssetMenu(fileName = nameof(Language), menuName = "Celeste/Localisation/Language")]
-    public class Language : ScriptableObject, ISerializationCallbackReceiver
+    public class Language : ScriptableObject
     {
         #region LocalisationEntry
 
         [Serializable]
-        private struct LocalisationEntry
+        public struct LocalisationEntry
         {
             public LocalisationKey key;
             public string localisedText;
+
+            public LocalisationEntry(LocalisationKey key, string localisedText)
+            {
+                this.key = key;
+                this.localisedText = localisedText;
+            }
         }
 
         #endregion
@@ -36,9 +42,7 @@ namespace Celeste.Localisation
 
             public int GetHashCode(LocalisationKey obj)
             {
-                UnityEngine.Debug.Assert(obj != null, $"Null localisation key");
-                UnityEngine.Debug.Assert(!string.IsNullOrEmpty(obj.Key), $"Null key for {obj.name}.");
-                return obj.Key.GetHashCode();
+                return !string.IsNullOrEmpty(obj.Key) ? obj.Key.GetHashCode() : 0;
             }
         }
 
@@ -60,90 +64,7 @@ namespace Celeste.Localisation
 
         #endregion
 
-        public string Localise(LocalisationKey key)
-        {
-            if (key == null)
-            {
-                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.");
-                return string.Empty;
-            }
-
-            if (!localisationLookup.TryGetValue(key, out string localisedValue))
-            {
-                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key.Key}' due to missing entry.  Using fallback...");
-                return key.Fallback;
-            }
-
-            return localisedValue;
-        }
-
-        public void AddEntries(List<LocalisationKey> keys, bool useFallbackForText)
-        {
-            for (int i = 0, n = keys.Count; i < n; ++i)
-            {
-                LocalisationKey key = keys[i];
-                if (!localisationLookup.ContainsKey(key))
-                {
-                    string localisedText = useFallbackForText ? key.Fallback : string.Empty;
-                    localisationLookup.Add(key, localisedText);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogError($"Attempting to add key {key} which already exists.  Ignoring...");
-                }
-            }
-        }
-
-        public void AddOrUpdateEntry(LocalisationKey key, string localisedText)
-        {
-            if (!localisationLookup.ContainsKey(key))
-            {
-                localisationLookup.Add(key, localisedText);
-            }
-            else
-            {
-                localisationLookup[key] = localisedText;
-            }
-        }
-
-        public LocalisationKey GetKey(int index)
-        {
-            return localisationEntries.Get(index).key;
-        }
-
-        public int NumEntriesInCategory(LocalisationKeyCategory category)
-        {
-            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
-            {
-                return value.Count;
-            }
-
-            return 0;
-        }
-
-        public LocalisationKey GetRandomKey(LocalisationKeyCategory category)
-        {
-            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
-            {
-                return value[UnityEngine.Random.Range(0, value.Count)];
-            }
-
-            return null;
-        }
-
-        #region ISerializationCallbackReceiver
-
-        public void OnBeforeSerialize() 
-        {
-            localisationEntries.Clear();
-
-            foreach (var localisationEntry in localisationLookup)
-            {
-                localisationEntries.Add(new LocalisationEntry() { key = localisationEntry.Key, localisedText = localisationEntry.Value });
-            }
-        }
-
-        public void OnAfterDeserialize()
+        public void Initialize()
         {
             localisationLookup.Clear();
             categoryLookup.Clear();
@@ -170,10 +91,62 @@ namespace Celeste.Localisation
 
                         list.Add(localisationKey);
                     }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion($"No category set for localisation key {localisationKey}.");
+                    }
                 }
             }
         }
 
-        #endregion
+        public string Localise(LocalisationKey key)
+        {
+            if (key == null)
+            {
+                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.");
+                return string.Empty;
+            }
+
+            if (!localisationLookup.TryGetValue(key, out string localisedText))
+            {
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key.Key}' due to missing entry.  Using fallback...");
+                return key.Fallback;
+            }
+
+            return localisedText;
+        }
+
+        public void SetEntries(List<LocalisationEntry> entries)
+        {
+            localisationEntries.Clear();
+            localisationEntries.AddRange(entries);
+
+            Initialize();
+        }
+
+        public LocalisationKey GetKey(int index)
+        {
+            return localisationEntries.Get(index).key;
+        }
+
+        public int NumEntriesInCategory(LocalisationKeyCategory category)
+        {
+            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
+            {
+                return value.Count;
+            }
+
+            return 0;
+        }
+
+        public LocalisationKey GetRandomKey(LocalisationKeyCategory category)
+        {
+            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
+            {
+                return value[UnityEngine.Random.Range(0, value.Count)];
+            }
+
+            return null;
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Celeste.Localisation
 
             string currentTwoLetterISOCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             Language language = languageCatalogue.Asset.FindLanguageForTwoLetterCountryCode(currentTwoLetterISOCode);
+            language.Initialize();
 
             if (language != null)
             {
