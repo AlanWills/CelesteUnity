@@ -20,6 +20,30 @@ namespace Celeste.Localisation
 
         #endregion
 
+        #region Localisation Key Comparer
+
+        private struct LocalisationKeyComparer : IEqualityComparer<LocalisationKey>
+        {
+            public bool Equals(LocalisationKey x, LocalisationKey y)
+            {
+                if (x == null || y == null)
+                {
+                    return x == null && y == null;
+                }
+
+                return string.CompareOrdinal(x.Key, y.Key) == 0;
+            }
+
+            public int GetHashCode(LocalisationKey obj)
+            {
+                UnityEngine.Debug.Assert(obj != null, $"Null localisation key");
+                UnityEngine.Debug.Assert(!string.IsNullOrEmpty(obj.Key), $"Null key for {obj.name}.");
+                return obj.Key.GetHashCode();
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public string CountryCode => countryCode;
@@ -31,7 +55,7 @@ namespace Celeste.Localisation
         [SerializeField] private bool assertOnFallback = true;
         [SerializeField] private List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
-        [NonSerialized] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>();
+        [NonSerialized] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
         [NonSerialized] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
 
         #endregion

@@ -12,9 +12,9 @@
         "Celeste.Debug",
         "Celeste.Log",
         "Celeste.Maths",
-        "NativeShare.Runtime",
+        "RecyclableScrollRect",
         "NativeFilePicker.Runtime",
-        "RecyclableScrollRect"
+        "NativeShare.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
