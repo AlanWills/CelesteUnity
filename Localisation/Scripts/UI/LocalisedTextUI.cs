@@ -74,7 +74,7 @@ namespace Celeste.Localisation.UI
         public void Localise(LocalisationKey key, Language language)
         {
             Key = key;
-            Text = language.Localise(key);
+            Text = language != null ? language.Localise(key) : key.Fallback;
 
             text.text = Text;
         }
