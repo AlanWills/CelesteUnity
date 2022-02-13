@@ -2,7 +2,8 @@
     "name": "Celeste.Assets.Editor",
     "rootNamespace": "CelesteEditor.Assets",
     "references": [
-        "Celeste.Assets"
+        "Celeste.Assets",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

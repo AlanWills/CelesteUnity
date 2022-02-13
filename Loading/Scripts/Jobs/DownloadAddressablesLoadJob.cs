@@ -1,4 +1,5 @@
-﻿using Celeste.Log;
+﻿using Celeste.Assets;
+using Celeste.Log;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -19,75 +20,87 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            Debug.Assert(!string.IsNullOrEmpty(addressablesLabel), $"No addressables key set for download job.", this);
-            AsyncOperationHandle<long> getSizeOperation = Addressables.GetDownloadSizeAsync(addressablesLabel);
-
-            if (getSizeOperation.IsValid())
+            // Check the download size
             {
-                while (!getSizeOperation.IsDone)
+                Debug.Assert(!string.IsNullOrEmpty(addressablesLabel), $"No addressables key set for download job.", this);
+                AsyncOperationHandle<long> getSizeOperation = Addressables.GetDownloadSizeAsync(addressablesLabel);
+
+                using (var operationWrapper = new AddressableOperationHandleWrapper<long>(getSizeOperation))
                 {
-                    setOutput($"Obtaining size of {addressablesLabel}");
-                    setProgress(getSizeOperation.GetDownloadStatus().Percent * 0.5f);    // Make in the range 0 -> 0.5
+                    if (getSizeOperation.IsValid())
+                    {
+                        while (!getSizeOperation.IsDone)
+                        {
+                            setOutput($"Obtaining size of {addressablesLabel}");
+                            setProgress(getSizeOperation.GetDownloadStatus().Percent * 0.5f);    // Make in the range 0 -> 0.5
 
-                    yield return null;
-                }
+                            yield return null;
+                        }
 
-                if (getSizeOperation.Status != AsyncOperationStatus.Succeeded)
-                {
-                    HudLog.LogError(getSizeOperation.OperationException.Message);
-                    setOutput($"Failed: Could not get size of {addressablesLabel}");
-                    setProgress(1);
+                        if (getSizeOperation.Status != AsyncOperationStatus.Succeeded)
+                        {
+                            HudLog.LogError(getSizeOperation.OperationException.Message);
+                            setOutput($"Failed: Could not get size of {addressablesLabel}");
+                            setProgress(1);
 
-                    yield break;
-                }
+                            yield break;
+                        }
 
-                HudLog.LogInfo($"Size of {addressablesLabel} is {getSizeOperation.Result}");
+                        HudLog.LogInfo($"Size of {addressablesLabel} is {getSizeOperation.Result}");
 
-                if (getSizeOperation.Result == 0)
-                {
-                    setOutput($"{addressablesLabel} up to date");
-                    setProgress(1);
+                        if (getSizeOperation.Result == 0)
+                        {
+                            setOutput($"{addressablesLabel} up to date");
+                            setProgress(1);
 
-                    yield break;
+                            yield break;
+                        }
+                    }
+                    else
+                    {
+                        setOutput($"Invalid: Could not get size of {addressablesLabel}");
+                        setProgress(1);
+
+                        yield break;
+                    }
                 }
             }
-            else
+
+            // Download if necessary
             {
-                setOutput($"Invalid: Could not get size of {addressablesLabel}");
-                setProgress(1);
+                AsyncOperationHandle downloadOperation = Addressables.DownloadDependenciesAsync(addressablesLabel);
 
-                yield break;
-            }
-
-            AsyncOperationHandle downloadOperation = Addressables.DownloadDependenciesAsync(addressablesLabel);
-
-            if (downloadOperation.IsValid())
-            {
-                while (!downloadOperation.IsDone)
+                using (var operationWrapper = new AddressableOperationHandleWrapper(downloadOperation))
                 {
-                    setOutput($"Downloading {addressablesLabel}");
-                    setProgress(0.5f + downloadOperation.GetDownloadStatus().Percent * 0.5f);    // Make in the range 0.5 -> 1.0
+                    if (downloadOperation.IsValid())
+                    {
+                        while (!downloadOperation.IsDone)
+                        {
+                            setOutput($"Downloading {addressablesLabel}");
+                            setProgress(0.5f + downloadOperation.GetDownloadStatus().Percent * 0.5f);    // Make in the range 0.5 -> 1.0
 
-                    yield return null;
+                            yield return null;
+                        }
+
+                        if (downloadOperation.Status != AsyncOperationStatus.Succeeded)
+                        {
+                            HudLog.LogError(downloadOperation.OperationException.Message);
+                            setOutput($"Failed: Could not download {addressablesLabel}");
+                            setProgress(1);
+
+                            yield break;
+                        }
+
+                        HudLog.LogInfo($"Downloaded {addressablesLabel} successfully");
+                    }
+                    else
+                    {
+                        setOutput($"Invalid: Could not download {addressablesLabel}");
+                        setProgress(1);
+
+                        yield break;
+                    }
                 }
-
-                if (downloadOperation.Status != AsyncOperationStatus.Succeeded)
-                {
-                    HudLog.LogError(downloadOperation.OperationException.Message);
-                    setOutput($"Failed: Could not download {addressablesLabel}");
-                    setProgress(1);
-
-                    yield break;
-                }
-
-                HudLog.LogInfo($"Downloaded {addressablesLabel} successfully");
-            }
-            else
-            {
-                setOutput($"Invalid: Could not download {addressablesLabel}");
-                setProgress(1);
-
-                yield break;
             }
         }
     }

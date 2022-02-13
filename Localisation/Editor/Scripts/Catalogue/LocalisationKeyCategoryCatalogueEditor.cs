@@ -1,4 +1,5 @@
 ﻿using Celeste.Localisation;
+using Celeste.Localisation.Catalogue;
 using CelesteEditor.DataStructures;
 using UnityEditor;
 

@@ -3,12 +3,15 @@
     "rootNamespace": "Celeste.Localisation",
     "references": [
         "Unity.TextMeshPro",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
         "Celeste.Parameters",
         "Celeste.Events",
         "Celeste.Objects",
         "Celeste.Debug",
         "Celeste.Tools",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Assets"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -7,7 +7,10 @@
         "GUID:7cfedb47a7dec8d4e8681b760be55faf",
         "GUID:53010ec1db6f54b478952285443e341b",
         "GUID:a46634193a4721d4d87925d12c2c4bcf",
-        "GUID:c95af7bc4649e4b4da85b957be8cc138"
+        "GUID:c95af7bc4649e4b4da85b957be8cc138",
+        "Celeste.Assets",
+        "Celeste.Coroutines",
+        "Celeste.Parameters"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
