@@ -290,6 +290,11 @@ namespace CelesteEditor.Platform
             locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}/*");
             locationInfo.AppendLine();
             locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
+
+            if (!Directory.Exists(AddressablesBuildDirectory))
+            {
+                Directory.CreateDirectory(AddressablesBuildDirectory);
+            }
             File.WriteAllText(Path.Combine(new DirectoryInfo(AddressablesBuildDirectory).Parent.FullName, "ASSETS_ENV_VARS.txt"), locationInfo.ToString());
 
             Debug.Log("Finished building content");
