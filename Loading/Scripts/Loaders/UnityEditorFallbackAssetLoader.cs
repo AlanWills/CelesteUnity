@@ -15,7 +15,6 @@ namespace Celeste.Loading
         [SerializeField] private BoolValue shouldFallbackLoadAssets;
 
         private Coroutine fallbackLoadAssetsCoroutine;
-        private List<Coroutine> loadAssetsCoroutine = new List<Coroutine>();
 
         #endregion
 
@@ -36,54 +35,22 @@ namespace Celeste.Loading
                 StopCoroutine(fallbackLoadAssetsCoroutine);
                 fallbackLoadAssetsCoroutine = null;
             }
-
-            if (loadAssetsCoroutine.Count > 0)
-            {
-                foreach (var loadAssetCoroutine in loadAssetsCoroutine)
-                {
-                    StopCoroutine(loadAssetCoroutine);
-                }
-
-                loadAssetsCoroutine.Clear();
-            }
         }
 
         #endregion
 
         private IEnumerator FallbackLoadAssets()
         {
-            LoadAssetsHandle handle = new LoadAssetsHandle();
             for (int i = 0, n = SceneManager.sceneCount; i < n; ++i)
             {
-                yield return LoadAssets(SceneManager.GetSceneAt(i), handle);
+                yield return LoadAssets(SceneManager.GetSceneAt(i));
             }
         }
 
-        private IEnumerator LoadAssets(UnityEngine.SceneManagement.Scene scene, LoadAssetsHandle handle)
+        private IEnumerator LoadAssets(UnityEngine.SceneManagement.Scene scene)
         {
-            foreach (GameObject rootGameObject in scene.GetRootGameObjects())
-            {
-                foreach (IHasAssets hasAssets in rootGameObject.GetComponentsInChildren<IHasAssets>())
-                {
-                    if (hasAssets.ShouldLoadAssets())
-                    {
-                        loadAssetsCoroutine.Add(StartCoroutine(LoadAssets(hasAssets, handle)));
-                    }
-                }
-            }
-
+            AssetLoadingHandle handle = AssetLoader.LoadAllInScene(scene);
             yield return new WaitUntil(() => handle.LoadAssetsCount <= 0);
-
-            loadAssetsCoroutine.Clear();
-        }
-
-        private IEnumerator LoadAssets(IHasAssets hasAssets, LoadAssetsHandle handle)
-        {
-            ++handle.LoadAssetsCount;
-
-            yield return hasAssets.LoadAssets();
-
-            --handle.LoadAssetsCount;
         }
     }
 }

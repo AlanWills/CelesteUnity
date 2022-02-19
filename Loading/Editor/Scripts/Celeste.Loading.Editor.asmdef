@@ -1,16 +1,13 @@
 {
-    "name": "Celeste.Scene",
-    "rootNamespace": "Celeste.Scene",
+    "name": "Celeste.Loading.Editor",
+    "rootNamespace": "CelesteEditor.Loading",
     "references": [
-        "Celeste.Parameters",
-        "Celeste.Events",
-        "Celeste.DataStructures",
-        "Celeste.Debug",
-        "Celeste.Coroutines",
-        "Celeste.Objects",
+        "Celeste.Loading",
         "Celeste.Assets"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

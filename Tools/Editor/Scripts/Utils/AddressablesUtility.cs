@@ -38,6 +38,14 @@ namespace CelesteEditor.Tools
             }
         }
 
+        public static void SetAddressableLabel(this Object o, string group, string label, bool enabled)
+        {
+            AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long _);
+            AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, aaSettings.FindGroup(group));
+            entry.SetLabel(label, enabled);
+        }
+
         public static bool AddressableResourceExists<T>(string key)
         {
             foreach (AddressableAssetGroup group in AddressableAssetSettingsDefaultObject.Settings.groups)

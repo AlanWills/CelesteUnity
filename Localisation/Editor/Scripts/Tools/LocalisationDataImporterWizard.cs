@@ -10,6 +10,8 @@ using System.IO;
 using System.Globalization;
 using CelesteEditor.Localisation.Utility;
 using static Celeste.Localisation.Language;
+using Celeste.Localisation.Settings;
+using Celeste.Localisation.Tools;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -149,6 +151,16 @@ namespace CelesteEditor.Localisation.Tools
 
                 language.SetEntries(localisationEntries);
                 EditorUtility.SetDirty(language);
+            }
+
+            LocalisationPostImportContext context = new LocalisationPostImportContext()
+            {
+                localisationKeyLookup = localisationKeys
+            };
+
+            for (int i = 0, n = LocalisationSettings.instance.postImportSteps.Count; i < n; ++i)
+            {
+                LocalisationSettings.instance.postImportSteps[i].Execute(context);
             }
 
             AssetDatabase.SaveAssets();

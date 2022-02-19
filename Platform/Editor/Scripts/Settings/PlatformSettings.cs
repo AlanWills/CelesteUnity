@@ -149,7 +149,14 @@ namespace CelesteEditor.Platform
 
         [SerializeField]
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
-        private string[] scriptingDefineSymbols = new string[0];
+        private string[] scriptingDefineSymbols = new string[]
+        {
+            "KEY_CHECKS",
+            "INDEX_CHECKS",
+            "NULL_CHECKS",
+            "COMPONENT_CHECKS",
+            "ALLOCATOR_CHECKS"
+        };
 
         [SerializeField]
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]

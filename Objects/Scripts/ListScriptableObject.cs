@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Celeste.Objects
@@ -10,6 +11,7 @@ namespace Celeste.Objects
         #region Properties and Fields
 
         public int NumItems { get { return items.Count; } }
+        public ReadOnlyCollection<T> Items => new ReadOnlyCollection<T>(items);
 
         [SerializeField] private List<T> items = new List<T>();
 
@@ -29,6 +31,11 @@ namespace Celeste.Objects
         public T FindItem(Predicate<T> predicate)
         {
             return items.Find(predicate);
+        }
+
+        public void AddItem(T item)
+        {
+            items.Add(item);
         }
     }
 }

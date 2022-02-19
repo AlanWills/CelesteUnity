@@ -92,7 +92,7 @@ namespace CelesteEditor.Platform
             BuildTarget = BuildTarget.Android;
             BuildTargetGroup = BuildTargetGroup.Android;
             ScriptingBackend = ScriptingImplementation.IL2CPP;
-            Architecture = AndroidArchitecture.All;
+            Architecture = AndroidArchitecture.ARMv7;
         }
 
         protected override void ApplyImpl()

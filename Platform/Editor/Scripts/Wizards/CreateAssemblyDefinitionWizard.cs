@@ -111,18 +111,21 @@ namespace CelesteEditor.Platform.Wizards
                     referencedAssemblies,
                     new string[] { "Editor" });
 
-                string collapsedAssemblyName = assemblyName.Replace(".", "");
-                
+                if (hasSceneMenuItem)
                 {
-                    string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems.cs");
-                    string menuItemsScript = string.Format(MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
-                    File.WriteAllText(menuItemsScriptPath, menuItemsScript);
-                }
+                    string collapsedAssemblyName = assemblyName.Replace(".", "");
+                    
+                    {
+                        string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems.cs");
+                        string menuItemsScript = string.Format(MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
+                        File.WriteAllText(menuItemsScriptPath, menuItemsScript);
+                    }
 
-                {
-                    string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants.cs");
-                    string editorConstantsScript = string.Format(EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
-                    File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
+                    {
+                        string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants.cs");
+                        string editorConstantsScript = string.Format(EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
+                        File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
+                    }
                 }
             }
 

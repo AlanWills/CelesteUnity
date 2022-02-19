@@ -1,4 +1,6 @@
-﻿using Celeste.DataStructures;
+﻿using Celeste.Assets;
+using Celeste.Coroutines;
+using Celeste.DataStructures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -111,6 +113,8 @@ namespace Celeste.Scene
                         yield return null;
                     }
 
+                    yield return LoadAssets(SceneManager.GetSceneByName(scenes[i]));
+
                     progress += progressChunkPerScene;
                     onProgressChanged.Invoke(progress);
                 }
@@ -147,6 +151,12 @@ namespace Celeste.Scene
             }
 
             return false;
+        }
+
+        private IEnumerator LoadAssets(UnityScene scene)
+        {
+            AssetLoadingHandle handle = AssetLoader.LoadAllInScene(scene);
+            yield return new WaitUntil(() => handle.LoadAssetsCount <= 0);
         }
 
 #if UNITY_EDITOR
