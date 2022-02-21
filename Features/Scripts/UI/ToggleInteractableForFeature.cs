@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using Celeste.Tools;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Celeste.Features.UI
 {
-    [AddComponentMenu("Celeste/Features/UI/Toggle Active For Feature")]
-    public class ToggleActiveForFeature : MonoBehaviour
+    [AddComponentMenu("Celeste/Features/UI/Toggle Interactable For Feature")]
+    public class ToggleInteractableForFeature : MonoBehaviour
     {
         #region Properties and Fields
 
         [SerializeField] private Feature feature;
-        [SerializeField] private GameObject gameObjectToToggle;
+        [SerializeField] private Selectable selectableToToggle;
 
         #endregion
 
@@ -16,15 +18,12 @@ namespace Celeste.Features.UI
 
         private void OnValidate()
         {
-            if (gameObjectToToggle == null)
-            {
-                gameObjectToToggle = gameObject;
-            }
+            this.TryGet(ref selectableToToggle);
         }
 
         private void Awake()
         {
-            SetActive(feature.IsEnabled);
+            SetInteractable(feature.IsEnabled);
 
             feature.AddOnEnabledChangedCallback(OnEnabledChanged);
         }
@@ -36,16 +35,16 @@ namespace Celeste.Features.UI
 
         #endregion
 
-        private void SetActive(bool isActive)
+        private void SetInteractable(bool interactable)
         {
-            gameObjectToToggle.SetActive(isActive);
+            selectableToToggle.interactable = interactable;
         }
 
         #region Callbacks
 
         private void OnEnabledChanged(bool newEnabled)
         {
-            SetActive(newEnabled);
+            SetInteractable(newEnabled);
         }
 
         #endregion
