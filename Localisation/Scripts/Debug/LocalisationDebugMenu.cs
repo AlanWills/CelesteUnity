@@ -2,8 +2,6 @@
 using Celeste.Debug.Menus;
 using Celeste.Events;
 using Celeste.Localisation.AssetReferences;
-using Celeste.Localisation.Catalogue;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Localisation.Debug

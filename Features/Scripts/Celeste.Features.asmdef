@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.Features",
+    "rootNamespace": "Celeste.Features",
+    "references": [
+        "Celeste.Objects",
+        "Celeste.Persistence",
+        "Celeste.Events",
+        "Celeste.DataStructures",
+        "Celeste.Debug"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

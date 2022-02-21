@@ -1,0 +1,19 @@
+{
+    "name": "Celeste.Features.Editor",
+    "rootNamespace": "CelesteEditor.Features",
+    "references": [
+        "Celeste.Features",
+        "Celeste.DataStructures.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
