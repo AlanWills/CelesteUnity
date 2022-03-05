@@ -299,6 +299,12 @@ namespace CelesteEditor.Tools
         public static T FindAsset<T>(string name, string directory) where T : Object
         {
             List<T> assets = FindAssets<T>(name, directory);
+            
+            if (string.IsNullOrEmpty(name) && assets.Count == 1)
+            {
+                return assets[0];
+            }
+
             for (int i = 0, n = assets.Count; i < n; ++i)
             {
                 T asset = assets[i];
