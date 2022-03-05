@@ -158,9 +158,11 @@ namespace CelesteEditor.Localisation.Tools
                 localisationKeyLookup = localisationKeys
             };
 
-            for (int i = 0, n = LocalisationSettings.instance.postImportSteps.Count; i < n; ++i)
+            var postImportSteps = LocalisationSettings.GetOrCreateSettings().postImportSteps;
+            for (int i = 0, n = postImportSteps != null ? postImportSteps.Count : 0; i < n; ++i)
             {
-                LocalisationSettings.instance.postImportSteps[i].Execute(context);
+                Debug.Log($"Executing post import step '{postImportSteps[i].name}'.");
+                postImportSteps[i].Execute(context);
             }
 
             AssetDatabase.SaveAssets();

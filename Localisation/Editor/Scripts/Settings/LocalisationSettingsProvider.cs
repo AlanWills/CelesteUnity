@@ -32,9 +32,9 @@ namespace CelesteEditor.Localisation.Settings
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             // This function is called when the user clicks on the MyCustom element in the Settings window.
-            localisationSettings = new SerializedObject(LocalisationSettings.instance);
-            currentLanguageValueProperty = localisationSettings.FindProperty("currentLanguageValue");
-            postImportStepsProperty = localisationSettings.FindProperty("postImportSteps");
+            localisationSettings = LocalisationSettings.GetSerializedSettings();
+            currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.currentLanguageValue));
+            postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.postImportSteps));
         }
 
         public override void OnGUI(string searchContext)
@@ -51,7 +51,7 @@ namespace CelesteEditor.Localisation.Settings
 
         public static bool IsSettingsAvailable()
         {
-            return LocalisationSettings.instance != null;
+            return true;
         }
 
         // Register the SettingsProvider
