@@ -2,6 +2,7 @@ using Celeste.DataStructures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Celeste.Localisation
@@ -124,6 +125,11 @@ namespace Celeste.Localisation
             Initialize();
         }
 
+        public bool HasKey(LocalisationKey localisationKey)
+        {
+            return localisationLookup.ContainsKey(localisationKey);
+        }
+
         public LocalisationKey GetKey(int index)
         {
             return localisationEntries.Get(index).key;
@@ -147,6 +153,21 @@ namespace Celeste.Localisation
             }
 
             return null;
+        }
+
+        public LocalisationKey GetKeyForCategory(LocalisationKeyCategory category, int index)
+        {
+            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
+            {
+                return value.Get(index);
+            }
+
+            return null;
+        }
+
+        public ReadOnlyCollection<LocalisationKey> GetKeysForCategory(LocalisationKeyCategory category)
+        {
+            return new ReadOnlyCollection<LocalisationKey>(categoryLookup.TryGetValue(category, out List<LocalisationKey> value) ? value : new List<LocalisationKey>());
         }
     }
 }
