@@ -9,7 +9,8 @@
         "Celeste.Tools",
         "Celeste.Web",
         "Celeste.Parameters",
-        "Celeste.Parameters.Editor"
+        "Celeste.Parameters.Editor",
+        "Celeste.Platform.Editor"
     ],
     "includePlatforms": [
         "Editor"

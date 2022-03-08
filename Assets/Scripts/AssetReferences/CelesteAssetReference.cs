@@ -22,7 +22,7 @@ namespace Celeste.Assets.AssetReferences
         {
             if (!ShouldLoad)
             {
-                Debug.Assert(OperationHandle.IsValid() && OperationHandle.IsDone, $"An asset was marked as not needing loading, but its operation handle is not valid.");
+                UnityEngine.Debug.Assert(OperationHandle.IsValid() && OperationHandle.IsDone, $"An asset was marked as not needing loading, but its operation handle is not valid.");
                 return OperationHandle.Convert<T>();
             }
 

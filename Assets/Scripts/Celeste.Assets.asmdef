@@ -3,7 +3,9 @@
     "rootNamespace": "Celeste.Assets",
     "references": [
         "Unity.ResourceManager",
-        "Unity.Addressables"
+        "Unity.Addressables",
+        "Celeste.Debug",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

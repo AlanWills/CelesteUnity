@@ -25,7 +25,7 @@ namespace Celeste.Assets
             using (assetLoadingHandle.Use())
             {
                 IHasAssets hasAssetsToLoad = assetsToLoad.GetComponent<IHasAssets>();
-                Debug.Assert(hasAssetsToLoad != null, $"No {nameof(IHasAssets)} component found on {assetsToLoad.name} in {name}.", assetsToLoad);
+                UnityEngine.Debug.Assert(hasAssetsToLoad != null, $"No {nameof(IHasAssets)} component found on {assetsToLoad.name} in {name}.", assetsToLoad);
 
                 if (hasAssetsToLoad != null)
                 {

@@ -4,10 +4,7 @@
     "references": [
         "Celeste.Log",
         "Celeste.Objects",
-        "Celeste.Tools",
-        "Celeste.Assets",
-        "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

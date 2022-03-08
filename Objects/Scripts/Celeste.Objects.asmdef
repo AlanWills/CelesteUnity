@@ -2,10 +2,7 @@
     "name": "Celeste.Objects",
     "rootNamespace": "Celeste.Objects",
     "references": [
-        "Celeste.DataStructures",
-        "Celeste.Assets",
-        "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -81,6 +81,10 @@ namespace Celeste.Localisation
                     {
                         localisationLookup.Add(localisationKey, localisationEntry.localisedText);
                     }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion($"Localisation lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
+                    }
 
                     if (localisationKey.Category != null)
                     {
@@ -98,6 +102,8 @@ namespace Celeste.Localisation
                     }
                 }
             }
+
+            UnityEngine.Debug.Assert(localisationEntries.Count == localisationLookup.Count, $"Mismatch between localisation entries and lookup - duplicate keys detected!");
         }
 
         public string Localise(LocalisationKey key)

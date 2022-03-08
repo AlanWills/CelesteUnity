@@ -1,5 +1,5 @@
-﻿using Celeste.Events;
-using Celeste.Objects;
+﻿using Celeste.Objects;
+using Celeste.Parameters;
 using System;
 using UnityEngine;
 
@@ -14,32 +14,23 @@ namespace Celeste.Features
 
         public bool IsEnabled
         {
-            get { return isEnabled; }
-            set
-            {
-                if (isEnabled != value)
-                {
-                    isEnabled = value;
-                    enabledChanged.Invoke(isEnabled);
-                }
-            }
+            get { return isEnabled.Value; }
+            set { isEnabled.Value = value; }
         }
         
         [SerializeField] private int guid;
-        [SerializeField] private BoolEvent enabledChanged;
-
-        [NonSerialized] private bool isEnabled;
+        [SerializeField] private BoolValue isEnabled;
 
         #endregion
 
         public void AddOnEnabledChangedCallback(Action<bool> callback)
         {
-            enabledChanged.AddListener(callback);
+            isEnabled.AddOnValueChangedCallback(callback);
         }
 
         public void RemoveOnEnabledChangedCallback(Action<bool> callback)
         {
-            enabledChanged.RemoveListener(callback);
+            isEnabled.RemoveOnValueChangedCallback(callback);
         }
     }
 }

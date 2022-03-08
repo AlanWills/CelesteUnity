@@ -21,6 +21,7 @@ namespace CelesteEditor.Localisation.Tools
 
         [SerializeField] private string sheetId;
         [SerializeField] private string localisationKeysDirectory = "Assets/Localisation/Data/Keys";
+        [SerializeField] private bool clearLog = true;
 
         private const int LANGUAGES_OFFSET = 2;
         private const string LOCALISATION_SHEET_ID = "LocalisationSheetId";
@@ -63,6 +64,11 @@ namespace CelesteEditor.Localisation.Tools
 
         private void OnWizardOtherButton()
         {
+            if (clearLog)
+            {
+                LogUtility.Clear();
+            }
+
             EditorCoroutineUtility.StartCoroutine(GoogleSheetsCSVDownloader.DownloadData(sheetId, OnDownloadData), this);
         }
 

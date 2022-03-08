@@ -5,6 +5,7 @@
         "Celeste.Objects",
         "Celeste.Persistence",
         "Celeste.Events",
+        "Celeste.Parameters",
         "Celeste.DataStructures",
         "Celeste.Debug",
         "Celeste.Tools"

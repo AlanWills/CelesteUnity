@@ -1,24 +1,22 @@
-﻿using Celeste.Assets;
-using Celeste.DataStructures;
+﻿using Celeste.DataStructures;
 using Celeste.Parameters.Input;
 using Celeste.Persistence;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace Celeste.Input
 {
     [CreateAssetMenu(fileName = "New KeybindingsManager", menuName = "Celeste/Input/Keybindings Manager")]
-    public class KeybindingsManager : PersistentAddressableSingleton<KeybindingsManager, KeybindingsManagerDTO>
+    public class KeybindingsManager : PersistentSceneManager<KeybindingsManager, KeybindingsManagerDTO>
     {
         #region Properties and Fields
 
-        private const string ADDRESS = "Assets/Core/Data/Input/KeybindingsManager.asset";
+        private const string FILE_NAME = "Keybindings.dat";
 
-        protected override string FilePath
+        protected override string FileName
         {
-            get { return Path.Combine(Application.persistentDataPath, "KeybindingsManager.dat"); }
+            get { return FILE_NAME; }
         }
 
         public int NumKeyCodes
@@ -34,11 +32,6 @@ namespace Celeste.Input
         private KeybindingsManager() { }
 
         #region Save/Load Methods
-
-        public static AsyncOperationHandleWrapper LoadAsync()
-        {
-            return LoadAsync(ADDRESS);
-        }
 
         protected override KeybindingsManagerDTO Serialize()
         {

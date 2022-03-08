@@ -1,29 +1,23 @@
 using Celeste.Assets;
 using Celeste.DataStructures;
-using Celeste.Log;
 using Celeste.Options.Internals;
 using Celeste.Parameters;
 using Celeste.Persistence;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using static Celeste.Options.Internals.OptionStructs;
 
 namespace Celeste.Options
 {
     [CreateAssetMenu(fileName = "New OptionsManager", menuName = "Celeste/Options/Options Manager")]
-    public class OptionsManager : PersistentAddressableSingleton<OptionsManager, OptionsManagerDTO>
+    public class OptionsManager : PersistentSceneManager<OptionsManager, OptionsManagerDTO>
     {
         #region Properties and Fields
 
-        private const string ADDRESS = "OptionsManager.asset";
+        private const string FILE_NAME = "Options.dat";
 
-        protected override string FilePath
-        {
-            get { return Path.Combine(Application.persistentDataPath, "OptionsManager.dat"); }
-        }
+        protected override string FileName => FILE_NAME;
 
         public int NumBoolOptions
         {
@@ -62,11 +56,6 @@ namespace Celeste.Options
         private OptionsManager() { }
 
         #region Save/Load Methods
-
-        public static AsyncOperationHandleWrapper LoadAsync()
-        {
-            return LoadAsync(ADDRESS);
-        }
 
         protected override OptionsManagerDTO Serialize()
         {
