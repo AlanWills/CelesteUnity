@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Input
 {
-    [CreateAssetMenu(fileName = "New KeybindingsManager", menuName = "Celeste/Input/Keybindings Manager")]
+    [AddComponentMenu("Celeste/Input/Keybindings Manager")]
     public class KeybindingsManager : PersistentSceneManager<KeybindingsManager, KeybindingsManagerDTO>
     {
         #region Properties and Fields

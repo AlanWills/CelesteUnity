@@ -3,7 +3,8 @@
     "rootNamespace": "CelesteEditor.Features",
     "references": [
         "Celeste.Features",
-        "Celeste.DataStructures.Editor"
+        "Celeste.DataStructures.Editor",
+        "Celeste.Scene.Editor"
     ],
     "includePlatforms": [
         "Editor"

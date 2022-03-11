@@ -1,10 +1,8 @@
 using Celeste.Twine;
-using System.IO;
 using UnityEditor;
-using UnityEngine;
 using static CelesteEditor.Scene.MenuItemUtility;
 
-namespace DnDEditor.Twine
+namespace CelesteEditor.Twine
 {
     public static class MenuItems
     {

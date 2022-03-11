@@ -10,7 +10,7 @@ using static Celeste.Options.Internals.OptionStructs;
 
 namespace Celeste.Options
 {
-    [CreateAssetMenu(fileName = "New OptionsManager", menuName = "Celeste/Options/Options Manager")]
+    [AddComponentMenu("Celeste/Options/Options Manager")]
     public class OptionsManager : PersistentSceneManager<OptionsManager, OptionsManagerDTO>
     {
         #region Properties and Fields

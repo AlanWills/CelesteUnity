@@ -1,7 +1,10 @@
 {
     "name": "Celeste.Constants",
     "rootNamespace": "Celeste.Constants",
-    "references": [],
+    "references": 
+    [
+        "Celeste.Events"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
