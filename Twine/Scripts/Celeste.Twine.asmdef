@@ -3,6 +3,7 @@
     "rootNamespace": "Celeste.Twine",
     "references": [
         "Unity.TextMeshPro",
+        "XNode",
         "Celeste.Persistence",
         "Celeste.Objects",
         "Celeste.DataStructures",
@@ -12,6 +13,12 @@
         "Celeste.Debug",
         "Celeste.Log",
         "Celeste.Maths",
+        "Celeste.Narrative",
+        "Celeste.Logic",
+        "Celeste.Inventory",
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
+        "Celeste.Parameters",
         "RecyclableScrollRect",
         "NativeFilePicker.Runtime",
         "NativeShare.Runtime"

@@ -6,11 +6,11 @@ using UnityEngine;
 using XNode;
 using Celeste.Narrative.Characters;
 using static UnityEditor.EditorGUILayout;
-using static CelesteEditor.Twine.TwineStoryImporterSettings;
 using Celeste.Logic;
 using CelesteEditor.Tools;
 using Celeste.Twine;
 using Celeste.Inventory;
+using static Celeste.Twine.TwineStoryImporterSettings;
 
 namespace CelesteEditor.Twine
 {

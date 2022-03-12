@@ -1,7 +1,4 @@
-﻿using Celeste.Assets;
-using Celeste.Coroutines;
-using Celeste.Scene;
-using Celeste.Scene.Events;
+﻿using Celeste.Scene;
 using System;
 using System.Collections;
 using UnityEngine;
