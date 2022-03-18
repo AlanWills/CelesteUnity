@@ -11,10 +11,8 @@ namespace Celeste.Narrative
         #region Properties and Fields
 
         [SerializeField] private StoryCatalogue storyCatalogue;
-        [SerializeField] private TwineStoryCatalogue twineStoryCatalogue;
         [SerializeField] private TwineRecord twineRecord;
 
-        private const int STORY_GUID_FOR_TWINE_CATALOGUE = 999999;
         private const int STORY_GUID_FOR_TWINE_RECORD = 9999999;
 
         #endregion
@@ -46,40 +44,6 @@ namespace Celeste.Narrative
 
         private void SynchronizeStoryCatalogue()
         {
-            // Add twine catalogue stories
-            if (twineStoryCatalogue.NumItems > 0)
-            {
-                Story twineCatalogueStory = storyCatalogue.FindByGuid(STORY_GUID_FOR_TWINE_CATALOGUE);
-
-                if (twineCatalogueStory == null)
-                {
-                    twineCatalogueStory = ScriptableObject.CreateInstance<Story>();
-                    twineCatalogueStory.name = "TwineCatalogueStories";
-                    twineCatalogueStory.StoryName = "Twine Catalogue Stories";
-                    twineCatalogueStory.Guid = STORY_GUID_FOR_TWINE_CATALOGUE;
-                    twineCatalogueStory.StoryDescription = "Stories automatically generated from the twine catalogue.";
-
-                    storyCatalogue.AddItem(twineCatalogueStory);
-                }
-
-                for (int i = 0, n = twineStoryCatalogue.NumItems; i < n; ++i)
-                {
-                    TwineStory twineStory = twineStoryCatalogue.GetItem(i);
-
-                    // Need to add this chapter because it's missing from our story
-                    if (twineCatalogueStory.FindChapter(i + 1) == null)
-                    {
-                        Chapter chapter = ScriptableObject.CreateInstance<Chapter>();
-                        chapter.name = twineStory.name;
-                        chapter.ChapterName = twineStory.name;
-                        chapter.ChapterDescription = "Chapter automatically generated from twine catalogue story.";
-                        chapter.Guid = i + 1;
-                        chapter.TwineStory = twineStory;
-                        twineCatalogueStory.AddChapter(chapter);
-                    }
-                }
-            }
-
             // Add twine record stories
             if (twineRecord.NumTwineStoryRecords > 0)
             {

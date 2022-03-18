@@ -103,9 +103,14 @@ namespace Celeste.Twine
             JsonUtility.FromJsonOverwrite(allTextAtPath, twineStory);
             UnityEngine.Debug.Assert(twineStory != null, $"Failed to load twine story {storyName}.");
 
+            ImportTwineStory(twineStory);
+        }
+
+        public void ImportTwineStory(TwineStory twineStory)
+        {
             if (twineStory != null)
             {
-                FindOrAddTwineStoryRecord(storyName, storyPath);
+                FindOrAddTwineStoryRecord(twineStory.name);
                 saveTwineStory.Invoke(twineStory);
             }
         }

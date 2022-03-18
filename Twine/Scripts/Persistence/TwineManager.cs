@@ -72,14 +72,6 @@ namespace Celeste.Twine
 
         #region Callbacks
 
-        public void OnTwineStoryLoadedFromDatabase(TwineStory twineStory)
-        {
-            // We must synchronize our persistence data with the story we've just loaded from the database
-            SaveTwineStory(twineStory);
-
-            twineStory.Initialize();
-        }
-
         public void OnSaveTwineStory(TwineStory twineStory)
         {
             SaveTwineStory(twineStory);
