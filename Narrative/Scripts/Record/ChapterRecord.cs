@@ -60,7 +60,7 @@ namespace Celeste.Narrative
 
             StoryRecord = storyRecord;
             Chapter = chapter;
-            CurrentNodePath = new FSMGraphNodePath(chapter.NarrativeGraph, currentNodePath);
+            CurrentNodePath = chapter.HasBakedNarrativeGraph ? new FSMGraphNodePath(chapter.NarrativeGraph, currentNodePath) : FSMGraphNodePath.EMPTY;
 
             characterRecords.Capacity = chapter.NumCharacters;
             for (int i = 0, n = chapter.NumCharacters; i < n; ++i)

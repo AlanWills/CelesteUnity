@@ -1,13 +1,15 @@
-﻿using Celeste.Log;
+﻿using Celeste.Assets;
+using Celeste.Log;
 using Celeste.Persistence;
 using Celeste.Twine.Persistence;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
 namespace Celeste.Twine
 {
     [AddComponentMenu("Celeste/Twine/Twine Manager")]
-    public class TwineManager : PersistentSceneManager<TwineManager, TwineDTO>
+    public class TwineManager : PersistentSceneManager<TwineManager, TwineDTO>, IHasAssets
     {
         #region Properties and Fields
 
@@ -18,6 +20,22 @@ namespace Celeste.Twine
         }
 
         [SerializeField] private TwineRecord twineRecord;
+
+        #endregion
+
+        #region IHasAssets
+
+        public bool ShouldLoadAssets()
+        {
+            return true;
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            Load();
+
+            yield break;
+        }
 
         #endregion
 

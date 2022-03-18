@@ -2,19 +2,10 @@
     "name": "Celeste.Twine.Editor",
     "rootNamespace": "CelesteEditor.Twine",
     "references": [
-        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
-        "GUID:949deeba9cbc58d428afa3d6acdd0279",
-        "GUID:53010ec1db6f54b478952285443e341b",
-        "GUID:ae2e7ad57e5e6e54a908990832d82fe2",
-        "GUID:64e1797b2e2f2194581475e207c0e421",
-        "GUID:fb92b9ba87101834883fcf38585e9964",
-        "GUID:659c1f5808f88f1458f6d8d74a0abafc",
-        "GUID:891da734736f95846afa70d43384392f",
-        "GUID:199ca8e340b41e54499a729dca53137b",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
+        "Celeste.Twine",
+        "Celeste.DataStructures.Editor",
         "Celeste.Scene.Editor",
-        "Celeste.Inventory",
-        "Celeste.DataStructures.Editor"
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

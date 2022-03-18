@@ -1,13 +1,13 @@
-﻿using Celeste.Narrative.Parameters;
+﻿using Celeste.Assets;
 using Celeste.Narrative.Persistence;
 using Celeste.Persistence;
-using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Narrative
 {
     [AddComponentMenu("Celeste/Narrative/Narrative Manager")]
-    public class NarrativeManager : PersistentSceneManager<NarrativeManager, ProductionDTO>
+    public class NarrativeManager : PersistentSceneManager<NarrativeManager, ProductionDTO>, IHasAssets
     {
         #region Properties and Fields
 
@@ -19,6 +19,22 @@ namespace Celeste.Narrative
 
         [SerializeField] private StoryCatalogue storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
+
+        #endregion
+
+        #region IHasAssets
+
+        public bool ShouldLoadAssets()
+        {
+            return true;
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            Load();
+
+            yield break;
+        }
 
         #endregion
 

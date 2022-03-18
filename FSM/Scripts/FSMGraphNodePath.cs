@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace Celeste.FSM
 {
@@ -13,6 +10,8 @@ namespace Celeste.FSM
 
         public FSMNode Node { get; private set; }
         public string Path { get; private set; }
+
+        public static readonly FSMGraphNodePath EMPTY = new FSMGraphNodePath(null);
 
         #endregion
 

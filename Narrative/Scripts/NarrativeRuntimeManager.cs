@@ -1,7 +1,6 @@
 ﻿using Celeste.Narrative.Events;
 using Celeste.Narrative.Loading;
 using Celeste.Narrative.Parameters;
-using Celeste.Narrative.Persistence;
 using Celeste.Scene.Events;
 using UnityEngine;
 

@@ -10,10 +10,14 @@ namespace Celeste.Objects
     {
         #region Properties and Fields
 
-        public int NumItems { get { return items.Count; } }
-        public ReadOnlyCollection<T> Items => new ReadOnlyCollection<T>(items);
+        public int NumItems { get { return ItemsImpl.Count; } }
+        public ReadOnlyCollection<T> Items => new ReadOnlyCollection<T>(ItemsImpl);
+
+        private List<T> ItemsImpl => runtimeModifiedItems != null ? runtimeModifiedItems : items;
 
         [SerializeField] private List<T> items = new List<T>();
+
+        [NonSerialized] private List<T> runtimeModifiedItems;
 
         #endregion
 
@@ -25,17 +29,24 @@ namespace Celeste.Objects
                 return default;
             }
 #endif
-            return items.Get(index);
+            return ItemsImpl.Get(index);
         }
 
         public T FindItem(Predicate<T> predicate)
         {
-            return items.Find(predicate);
+            return ItemsImpl.Find(predicate);
         }
 
         public void AddItem(T item)
         {
-            items.Add(item);
+            if (Application.isPlaying && runtimeModifiedItems == null)
+            {
+                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized list
+                // to prevent any runtime changes affecting what will be serialized and saved
+                runtimeModifiedItems = new List<T>(items);
+            }
+
+            ItemsImpl.Add(item);
         }
     }
 }

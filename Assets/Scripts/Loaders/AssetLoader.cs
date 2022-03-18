@@ -8,15 +8,36 @@ namespace Celeste.Assets
     {
         #region Properties and Fields
 
+        [SerializeField] private bool parallelLoad = true;
         [SerializeField] private GameObject[] assetsToLoad = default;
 
         #endregion
 
         public void LoadAssets(AssetLoadingHandle assetLoadingHandle)
         {
+            if (parallelLoad)
+            {
+                LoadAssetsParallel(assetLoadingHandle);
+            }
+            else
+            {
+                StartCoroutine(LoadAssetsSerial(assetLoadingHandle));
+            }
+        }
+
+        private void LoadAssetsParallel(AssetLoadingHandle assetLoadingHandle)
+        {
             foreach (var assetsToLoad in assetsToLoad)
             {
                 StartCoroutine(LoadAssets(assetsToLoad, assetLoadingHandle));
+            }
+        }
+
+        private IEnumerator LoadAssetsSerial(AssetLoadingHandle assetLoadingHandle)
+        {
+            foreach (var assetsToLoad in assetsToLoad)
+            {
+                yield return LoadAssets(assetsToLoad, assetLoadingHandle);
             }
         }
 

@@ -69,22 +69,20 @@ namespace Celeste.Loading
 
         #endregion
 
-        #endregion
-
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            yield return sceneSet.LoadAsync(loadSceneMode, setProgress, () => 
-{
-            if (unloadUnusedAssets)
-            {
-                yield return Resources.UnloadUnusedAssets();
-            }
-            
+            yield return sceneSet.LoadAsync(loadSceneMode, setProgress, () =>
+            { 
                 if (onContextLoadedEvent != null)
                 {
                     onContextLoadedEvent.Invoke(new OnContextLoadedArgs(context));
                 }
             });
+
+            if (unloadUnusedAssets)
+            {
+                yield return Resources.UnloadUnusedAssets();
+            }
         }
     }
 }

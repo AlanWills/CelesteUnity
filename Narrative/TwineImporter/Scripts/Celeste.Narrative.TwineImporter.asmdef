@@ -1,0 +1,26 @@
+{
+    "name": "Celeste.Narrative.TwineImporter",
+    "rootNamespace": "Celeste.Narrative.TwineImporter",
+    "references": [
+        "XNode",
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
+        "Celeste.Narrative",
+        "Celeste.Twine",
+        "Celeste.Logic",
+        "Celeste.Inventory",
+        "Celeste.Events",
+        "Celeste.DataStructures",
+        "Celeste.Loading",
+        "Celeste.Parameters"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

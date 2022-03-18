@@ -112,9 +112,12 @@ namespace Celeste.FSM
             parameter.hideFlags = HideFlags.HideInHierarchy;
 
 #if UNITY_EDITOR
-            parameters.Add(parameter);
-            UnityEditor.AssetDatabase.AddObjectToAsset(parameter, this);
-            UnityEditor.EditorUtility.SetDirty(this);
+            if (!Application.isPlaying)
+            {
+                parameters.Add(parameter);
+                UnityEditor.AssetDatabase.AddObjectToAsset(parameter, this);
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
 #endif
 
             return parameter;

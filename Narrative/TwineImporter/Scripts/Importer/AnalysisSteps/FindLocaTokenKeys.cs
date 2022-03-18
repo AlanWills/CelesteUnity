@@ -1,0 +1,41 @@
+﻿using Celeste.Twine;
+using Celeste.Narrative.TwineImporter.AnalysisSteps;
+using UnityEngine;
+
+namespace Celeste.Narrative.TwineImporter.ParserSteps
+{
+    [CreateAssetMenu(fileName = nameof(FindLocaTokenKeys), menuName = "Celeste/Twine/Analysis Steps/Find Loca Token Keys")]
+    public class FindLocaTokenKeys : TwineNodeAnalysisStep
+    {
+        public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
+        {
+            TwineNode twineNode = parseContext.TwineNode;
+            bool hasText = !string.IsNullOrWhiteSpace(twineNode.Text);
+            bool hasLinks = twineNode.Links.Count > 0;
+
+            return hasText || hasLinks;
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext parseContext)
+        {
+            TwineNode twineNode = parseContext.TwineNode;
+            TwineStoryImporterSettings settings = parseContext.ImporterSettings;
+            TwineStoryAnalysis analysis = parseContext.Analysis;
+
+            // Find Loca Tokens in node text
+            {
+                settings.FindLocaTokens(twineNode.Text, analysis);
+            }
+
+            // Find Loca Tokens in link display text
+            {
+                var links = twineNode.Links;
+
+                foreach (TwineNodeLink link in links)
+                {
+                    settings.FindLocaTokens(link.name, analysis);
+                }
+            }
+        }
+    }
+}

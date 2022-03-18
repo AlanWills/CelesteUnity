@@ -38,9 +38,9 @@ namespace Celeste.Twine
             return twineStoryDTO != null ? twineStoryDTO.StoryPath : string.Empty;
         }
 
-        public TwineStory LoadTwineStory(string storyName, string storyPath)
+        public TwineStory LoadTwineStory(string storyName)
         {
-            TwineStoryRecord twineStoryRecord = FindOrAddTwineStoryRecord(storyName, storyPath);
+            TwineStoryRecord twineStoryRecord = FindOrAddTwineStoryRecord(storyName);
             return LoadTwineStory(twineStoryRecord);
         }
 
@@ -121,6 +121,11 @@ namespace Celeste.Twine
         private TwineStoryRecord FindTwineStoryRecord(string storyName)
         {
             return twineStoryRecords.Find(x => string.CompareOrdinal(x.StoryName, storyName) == 0);
+        }
+
+        public bool HasTwineStoryRecord(string storyName)
+        {
+            return FindTwineStoryRecord(storyName) != null;
         }
 
         public TwineStoryRecord FindOrAddTwineStoryRecord(string storyName)

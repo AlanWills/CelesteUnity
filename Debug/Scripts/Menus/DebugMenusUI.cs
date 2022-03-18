@@ -22,6 +22,8 @@ namespace Celeste.Debug.Menus
 
         [SerializeField] private GUISkin guiSkin;
         [SerializeField] private GameObject inputBlocker;
+        [SerializeField] private float screenWidthDivisor = 600f;
+        [SerializeField] private float screenHeightDivisor = 600f;
 
         private List<DebugMenu> debugMenus = new List<DebugMenu>();
         private Vector2 scrollPosition;
@@ -45,8 +47,8 @@ namespace Celeste.Debug.Menus
             var oldSkin = GUI.skin;
             GUI.skin = guiSkin;
 
-            float xAspectRatio = Screen.width / 400;
-            float yAspectRatio = Screen.height / 400;
+            float xAspectRatio = Screen.width / screenWidthDivisor;
+            float yAspectRatio = Screen.height / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
 
             Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
