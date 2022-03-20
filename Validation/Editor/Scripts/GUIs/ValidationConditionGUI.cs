@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using UnityEditor;
 using UnityEngine;
+using Celeste;
 
 namespace CelesteEditor.Validation.GUIs
 {
-    public class ValidationConditionGUI<T> where T : UnityEngine.Object
+    public class ValidationConditionGUI<T> where T : Object
     {
         private enum ConditionStatus
         { 
@@ -88,11 +85,11 @@ namespace CelesteEditor.Validation.GUIs
             GUIStyle guiStyle = UnityEngine.GUI.skin.label;
             if (conditionStatus == ConditionStatus.Passed)
             {
-                guiStyle = CelesteEditorStyles.SuccessLabel;
+                guiStyle = CelesteGUIStyles.SuccessLabel;
             }
             else if (conditionStatus == ConditionStatus.Failed)
             {
-                guiStyle = CelesteEditorStyles.ErrorLabel;
+                guiStyle = CelesteGUIStyles.ErrorLabel;
             }
 
             EditorGUILayout.LabelField(validationCondition.DisplayName, guiStyle);

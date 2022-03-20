@@ -1,12 +1,12 @@
-﻿using Celeste.Tools;
+﻿using Celeste.Constants;
+using Celeste.Tools;
 using Celeste.UI.Parameters;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 namespace Celeste.UI.Skin
 {
-    [ExecuteInEditMode]
+    [ExecuteInEditMode, DisallowMultipleComponent]
     [AddComponentMenu("Celeste/UI/Skin/UI Skin Text")]
     public class UISkinText : MonoBehaviour
     {
@@ -14,6 +14,7 @@ namespace Celeste.UI.Skin
 
         [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private UISkinValue currentSkin;
+        [SerializeField] private ID textType;
 
         #endregion
 
@@ -61,10 +62,7 @@ namespace Celeste.UI.Skin
 
         private void Apply(UISkin uiSkin)
         {
-            if (text.font != uiSkin.font)
-            {
-                text.font = uiSkin.font;
-            }
+            uiSkin.ApplyTextSettings(text, textType);
         }
 
         #region Callbacks

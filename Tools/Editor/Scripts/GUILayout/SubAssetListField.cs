@@ -1,9 +1,6 @@
-﻿using CelesteEditor.Tools;
+﻿using Celeste;
+using CelesteEditor.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +17,7 @@ namespace CelesteEditor
             Action<Type> onAdd,
             Action<int> onRemove)
         {
-            EditorGUILayout.LabelField(title, CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField(title, CelesteGUIStyles.BoldLabel);
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
@@ -43,7 +40,7 @@ namespace CelesteEditor
                 using (EditorGUILayout.HorizontalScope horizontal = new EditorGUILayout.HorizontalScope())
                 {
                     string label = obj != null ? $"{obj.GetType().GetDisplayName()} ({obj.name})" : "NULL";
-                    EditorGUILayout.LabelField(label, CelesteEditorStyles.BoldLabel);
+                    EditorGUILayout.LabelField(label, CelesteGUIStyles.BoldLabel);
 
                     if (GUILayout.Button("-", GUILayout.ExpandWidth(false)))
                     {

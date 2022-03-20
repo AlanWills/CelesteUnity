@@ -10,6 +10,7 @@ using Celeste.Twine;
 using Celeste.Inventory;
 using static Celeste.Narrative.TwineImporter.TwineStoryImporterSettings;
 using Celeste.Narrative.TwineImporter;
+using Celeste;
 
 namespace CelesteEditor.Narrative.TwineImporter
 {
@@ -103,7 +104,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawCharactersGUI()
         {
             Space();
-            LabelField("Characters", CelesteEditorStyles.BoldLabel);
+            LabelField("Characters", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundCharacter in twineStoryAnalysis.foundCharacters)
@@ -115,7 +116,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawLocaTokensGUI()
         {
             Space();
-            LabelField("Loca Tokens", CelesteEditorStyles.BoldLabel);
+            LabelField("Loca Tokens", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundLocaToken in twineStoryAnalysis.foundLocaTokens)
@@ -127,7 +128,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawConditionsGUI()
         {
             Space();
-            LabelField("Conditions", CelesteEditorStyles.BoldLabel);
+            LabelField("Conditions", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundCondition in twineStoryAnalysis.foundConditions)
@@ -139,7 +140,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawParametersGUI()
         {
             Space();
-            LabelField("Parameters", CelesteEditorStyles.BoldLabel);
+            LabelField("Parameters", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundParameter in twineStoryAnalysis.foundParameters)
@@ -151,7 +152,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawBackgroundsGUI()
         {
             Space();
-            LabelField("Backgrounds", CelesteEditorStyles.BoldLabel);
+            LabelField("Backgrounds", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundBackground in twineStoryAnalysis.foundBackgrounds)
@@ -163,7 +164,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawSubNarrativesGUI()
         {
             Space();
-            LabelField("Sub Narratives", CelesteEditorStyles.BoldLabel);
+            LabelField("Sub Narratives", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundSubNarrative in twineStoryAnalysis.foundSubNarratives)
@@ -175,7 +176,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void DrawInventoryItemsGUI()
         {
             Space();
-            LabelField("Inventory Items", CelesteEditorStyles.BoldLabel);
+            LabelField("Inventory Items", CelesteGUIStyles.BoldLabel);
             Space();
 
             foreach (string foundInventoryItem in twineStoryAnalysis.foundInventoryItems)
@@ -189,7 +190,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             if (twineStoryAnalysis.unrecognizedTags.Count > 0)
             {
                 Space();
-                LabelField("Unresolved Tags", CelesteEditorStyles.BoldLabel);
+                LabelField("Unresolved Tags", CelesteGUIStyles.BoldLabel);
                 Space();
 
                 foreach (string unresolvedTag in twineStoryAnalysis.unrecognizedTags)
@@ -222,7 +223,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             if (twineStoryAnalysis.unrecognizedKeys.Count > 0)
             {
                 Space();
-                LabelField("Unresolved Keys", CelesteEditorStyles.BoldLabel);
+                LabelField("Unresolved Keys", CelesteGUIStyles.BoldLabel);
                 Space();
 
                 foreach (string unresolvedKey in twineStoryAnalysis.unrecognizedKeys)

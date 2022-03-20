@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace CelesteEditor
+namespace Celeste
 {
-    public static class CelesteEditorStyles
+    public static class CelesteGUIStyles
     {
         #region Properties and Fields
 

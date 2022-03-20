@@ -4,6 +4,7 @@
     "references": [
         "Celeste.Testing",
         "Celeste.Objects",
+        "Celeste.Tools",
         "Celeste.DataStructures.Editor",
         "Celeste.Tools.Editor"
     ],

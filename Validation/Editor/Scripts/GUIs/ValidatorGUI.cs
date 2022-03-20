@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Tools;
+﻿using Celeste;
+using CelesteEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace CelesteEditor.Validation.GUIs
 
         public void GUI(T asset)
         {
-            EditorGUILayout.LabelField("Validation", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("Validation", CelesteGUIStyles.BoldLabel);
 
             using (var horizontal = new GUILayout.HorizontalScope())
             {

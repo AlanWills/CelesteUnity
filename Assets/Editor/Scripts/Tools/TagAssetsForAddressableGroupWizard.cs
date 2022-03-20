@@ -1,3 +1,4 @@
+using Celeste;
 using CelesteEditor.Tools;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace CelesteEditor.Assets
             bool changed = base.DrawWizardGUI();
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Assets", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("Assets", CelesteGUIStyles.BoldLabel);
 
             var selection = Selection.objects;
 

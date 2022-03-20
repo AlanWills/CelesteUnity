@@ -10,7 +10,9 @@
         "Celeste.Tools",
         "Celeste.Maths",
         "Celeste.Scene",
-        "Celeste.FSM"
+        "Celeste.FSM",
+        "Celeste.Constants",
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -65,7 +65,7 @@ namespace Celeste.Debug.Menus
                 using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
                 {
                     GUILayout.Space(10);
-                    GUILayout.Label("Debug Menu");
+                    GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel);
                     GUILayout.Space(10);
 
                     DebugMenu visibleDebugMenu = debugMenus.Find(x => x.Visible);

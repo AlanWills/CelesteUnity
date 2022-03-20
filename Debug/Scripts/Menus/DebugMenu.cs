@@ -55,7 +55,7 @@ namespace Celeste.Debug.Menus
             }
 
             GUILayout.Space(10);
-            GUILayout.Label(displayName);
+            GUILayout.Label(displayName, CelesteGUIStyles.BoldLabel);
             GUILayout.Space(10);
 
             OnDrawMenu();

@@ -16,7 +16,8 @@
         "Celeste.DataStructures",
         "Celeste.DataStructures.Editor",
         "Celeste.Logic",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Tools"
     ],
     "includePlatforms": [
         "Editor"

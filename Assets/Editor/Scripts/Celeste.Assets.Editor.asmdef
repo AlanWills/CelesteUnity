@@ -3,6 +3,7 @@
     "rootNamespace": "CelesteEditor.Assets",
     "references": [
         "Celeste.Assets",
+        "Celeste.Tools",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [

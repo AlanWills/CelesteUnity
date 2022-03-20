@@ -14,7 +14,8 @@
         "Celeste.Tools.Editor",
         "Celeste.Scene.Editor",
         "Celeste.Inventory",
-        "Celeste.Twine"
+        "Celeste.Twine",
+        "Celeste.Tools"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Tools;
+﻿using Celeste;
+using CelesteEditor.Tools;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -67,7 +68,7 @@ namespace CelesteEditor.Platform
         private void DrawiOSSettings()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("iOS", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("iOS", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
@@ -91,7 +92,7 @@ namespace CelesteEditor.Platform
         private void DrawAndroidSettings()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Android", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("Android", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
@@ -122,7 +123,7 @@ namespace CelesteEditor.Platform
         private void DrawWindowsSettings()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Windows", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("Windows", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())

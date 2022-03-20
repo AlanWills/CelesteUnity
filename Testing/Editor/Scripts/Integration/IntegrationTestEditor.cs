@@ -1,3 +1,4 @@
+using Celeste;
 using Celeste.Testing;
 using UnityEditor;
 using UnityEngine;
@@ -47,7 +48,7 @@ namespace CelesteEditor.Testing
 
             using (var horizontal = new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("Args", CelesteEditorStyles.BoldLabel);
+                EditorGUILayout.LabelField("Args", CelesteGUIStyles.BoldLabel);
 
                 if (GUILayout.Button("Create", GUILayout.ExpandWidth(false)))
                 {

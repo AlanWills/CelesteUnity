@@ -1,4 +1,5 @@
-﻿using Celeste.Narrative;
+﻿using Celeste;
+using Celeste.Narrative;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUI;
@@ -22,14 +23,14 @@ namespace CelesteEditor.Narrative
             DrawPropertiesExcluding(serializedObject, "m_Script", "choices");
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Choices", CelesteEditorStyles.BoldLabel);
+            EditorGUILayout.LabelField("Choices", CelesteGUIStyles.BoldLabel);
 
             for (int i = 0, n = choicesProperty.arraySize; i < n; ++i)
             {
                 EditorGUILayout.Space();
 
                 var choice = choicesProperty.GetArrayElementAtIndex(i).objectReferenceValue;
-                EditorGUILayout.LabelField(choice.name, CelesteEditorStyles.BoldLabel);
+                EditorGUILayout.LabelField(choice.name, CelesteGUIStyles.BoldLabel);
 
                 using (IndentLevelScope indent = new IndentLevelScope())
                 {
