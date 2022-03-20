@@ -1,5 +1,5 @@
 ﻿using Celeste.FSM.Nodes;
-using Celeste.Narrative.TwineImporter;
+using Celeste.Parameters;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
@@ -7,6 +7,12 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
     public class TryCreateSubNarrativeNode : TwineNodeParserStep
     {
+        #region Properties and Fields
+
+        [SerializeField] private StringValue instruction;
+
+        #endregion
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
             if (parseContext.FSMNode != null)
@@ -15,15 +21,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             }
 
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            string nonLinkText = parseContext.StrippedLinksText;
-            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 2)
             {
                 return false;
             }
 
-            if (!importerSettings.IsSubNarrativeInstruction(splitText[0]))
+            if (string.CompareOrdinal(splitText[0], instruction.Value)  != 0)
             {
                 return false;
             }
@@ -34,11 +39,10 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         public override void Parse(TwineNodeParseContext parseContext)
         {
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
+            string[] splitText = parseContext.SplitStrippedLinksText;
             
-            string nonLinkText = parseContext.StrippedLinksText;
-            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            string subNarrativeKey = splitText[1];
 
+            string subNarrativeKey = splitText[1];
             SubFSMNode subFSMNode = parseContext.Graph.AddNode<SubFSMNode>();
             subFSMNode.subFSM = importerSettings.FindSubNarrative(subNarrativeKey);
             UnityEngine.Debug.Assert(subFSMNode.subFSM != null, $"Could not find sub narrative {subNarrativeKey}");

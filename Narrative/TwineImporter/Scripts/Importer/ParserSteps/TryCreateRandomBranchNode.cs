@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM.Nodes.Logic;
+using Celeste.Parameters;
 using Celeste.Twine;
 using UnityEngine;
 
@@ -7,6 +8,12 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     [CreateAssetMenu(fileName = nameof(TryCreateRandomBranchNode), menuName = "Celeste/Twine/Parser Steps/Try Create Random Branch Node")]
     public class TryCreateRandomBranchNode : TwineNodeParserStep
     {
+        #region Properties and Fields
+
+        [SerializeField] private StringValue instruction;
+
+        #endregion
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
             if (parseContext.FSMNode != null)
@@ -14,16 +21,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            string nonLinkText = parseContext.StrippedLinksText;
-            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length != 1)
             {
                 return false;
             }
 
-            return importerSettings.IsRandomBranch(splitText[0]);
+            return string.CompareOrdinal(splitText[0], instruction.Value) == 0;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

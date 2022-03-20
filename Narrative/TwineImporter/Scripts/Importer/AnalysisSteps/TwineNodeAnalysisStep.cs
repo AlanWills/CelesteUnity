@@ -13,6 +13,7 @@ namespace Celeste.Narrative.TwineImporter.AnalysisSteps
             {
                 twineNode = value;
                 StrippedLinksText = twineNode != null ? ImporterSettings.StripLinksFromText(twineNode.Text) : string.Empty;
+                SplitStrippedLinksText = StrippedLinksText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
@@ -20,6 +21,7 @@ namespace Celeste.Narrative.TwineImporter.AnalysisSteps
         public TwineStoryAnalysis Analysis { get; set; }
         public TwineStoryImporterSettings ImporterSettings { get; set; }
         public string StrippedLinksText { get; private set; }
+        public string[] SplitStrippedLinksText { get; private set; }
     }
 
     public abstract class TwineNodeAnalysisStep : ScriptableObject

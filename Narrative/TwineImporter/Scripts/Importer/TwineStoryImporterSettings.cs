@@ -158,6 +158,23 @@ namespace Celeste.Narrative.TwineImporter
 
         #endregion
 
+        #region Audio Clip Key Struct
+
+        [Serializable]
+        public struct AudioClipKey
+        {
+            public string key;
+            public AudioClip audioClip;
+
+            public AudioClipKey(string key, AudioClip audioClip)
+            {
+                this.key = key;
+                this.audioClip = audioClip;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public string CharactersDirectory
@@ -195,6 +212,11 @@ namespace Celeste.Narrative.TwineImporter
             get { return Path.Combine(rootDirectory, inventoryItemsDirectory); }
         }
 
+        public string AudioClipsDirectory
+        {
+            get { return Path.Combine(rootDirectory, audioClipsDirectory); }
+        }
+
         [SerializeField] private TwineNodeParserStep[] parserSteps;
         [SerializeField] private TwineNodeAnalysisStep[] analysisSteps;
 
@@ -227,20 +249,7 @@ namespace Celeste.Narrative.TwineImporter
         public List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
         public List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
         public List<InventoryItemKey> inventoryItemKeys = new List<InventoryItemKey>();
-
-        [Header("Script Instructions")]
-        [SerializeField] private string setParameterInstruction = "SetParameter";
-        [SerializeField] private string setBackgroundInstruction = "SetBackground";
-        [SerializeField] private string subNarrativeInstruction = "SubNarrative";
-        [SerializeField] private string addInventoryItemInstruction = "AddInventoryItem";
-
-        [Header("Branch Instructions")]
-        [SerializeField] private string randomBranch = "Random";
-
-        [Header("Events")]
-        public Celeste.Events.Event finishEvent;
-        public Celeste.Events.BackgroundEvent setBackgroundEvent;
-        public Celeste.Events.InventoryItemEvent addInventoryItemEvent;
+        public List<AudioClipKey> audioClipKeys = new List<AudioClipKey>();
 
         [Header("Graph Settings")]
         public Vector2 nodeSpread = new Vector2(2, 2);
@@ -254,6 +263,7 @@ namespace Celeste.Narrative.TwineImporter
         [SerializeField] private string backgroundsDirectory = "Backgrounds";
         [SerializeField] private string subNarrativesDirectory = "SubNarratives";
         [SerializeField] private string inventoryItemsDirectory = "InventoryItems";
+        [SerializeField] private string audioClipsDirectory = "Audio";
 
         #endregion
 
@@ -481,39 +491,6 @@ namespace Celeste.Narrative.TwineImporter
 
         #endregion
 
-        #region Script Instruction Utility
-
-        public bool IsSetParameterInstruction(string text)
-        {
-            return string.CompareOrdinal(text, setParameterInstruction) == 0;
-        }
-
-        public bool IsSetBackgroundInstruction(string text)
-        {
-            return string.CompareOrdinal(text, setBackgroundInstruction) == 0;
-        }
-
-        public bool IsSubNarrativeInstruction(string text)
-        {
-            return string.CompareOrdinal(text, subNarrativeInstruction) == 0;
-        }
-
-        public bool IsAddInventoryItemInstruction(string text)
-        {
-            return string.CompareOrdinal(text, addInventoryItemInstruction) == 0;
-        }
-
-        #endregion
-
-        #region Branch Utility
-
-        public bool IsRandomBranch(string text)
-        {
-            return string.CompareOrdinal(text, randomBranch) == 0;
-        }
-
-        #endregion
-
         #region Loca Tokens Utility
 
         public bool IsRegisteredLocaKey(string key)
@@ -665,23 +642,23 @@ namespace Celeste.Narrative.TwineImporter
 
             if (!string.IsNullOrWhiteSpace(text))
             {
-                string[] splitText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                //string[] splitText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (splitText != null &&
-                    splitText.Length >= 2 &&
-                    IsSetParameterInstruction(splitText[0]))
-                {
-                    string parameterName = splitText[1];
+                //if (splitText != null &&
+                //    splitText.Length >= 2 &&
+                //    IsSetParameterInstruction(splitText[0]))
+                //{
+                //    string parameterName = splitText[1];
 
-                    if (IsRegisteredParameterKey(parameterName))
-                    {
-                        analysis.foundParameters.Add(parameterName);
-                    }
-                    else
-                    {
-                        analysis.unrecognizedKeys.Add(parameterName);
-                    }
-                }
+                //    if (IsRegisteredParameterKey(parameterName))
+                //    {
+                //        analysis.foundParameters.Add(parameterName);
+                //    }
+                //    else
+                //    {
+                //        analysis.unrecognizedKeys.Add(parameterName);
+                //    }
+                //}
             }
         }
 
@@ -701,26 +678,26 @@ namespace Celeste.Narrative.TwineImporter
 
         public void FindBackgrounds(string nodeText, TwineStoryAnalysis analysis)
         {
-            if (!string.IsNullOrWhiteSpace(nodeText))
-            {
-                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            //if (!string.IsNullOrWhiteSpace(nodeText))
+            //{
+            //    string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 
-                if (splitText != null && 
-                    splitText.Length >= 2 &&
-                    IsSetBackgroundInstruction(splitText[0]))
-                {
-                    string backgroundName = splitText[1];
+            //    if (splitText != null && 
+            //        splitText.Length >= 2 &&
+            //        IsSetBackgroundInstruction(splitText[0]))
+            //    {
+            //        string backgroundName = splitText[1];
 
-                    if (IsRegisteredBackgroundKey(backgroundName))
-                    {
-                        analysis.foundBackgrounds.Add(backgroundName);
-                    }
-                    else
-                    {
-                        analysis.unrecognizedKeys.Add(backgroundName);
-                    }
-                }
-            }
+            //        if (IsRegisteredBackgroundKey(backgroundName))
+            //        {
+            //            analysis.foundBackgrounds.Add(backgroundName);
+            //        }
+            //        else
+            //        {
+            //            analysis.unrecognizedKeys.Add(backgroundName);
+            //        }
+            //    }
+            //}
         }
 
         #endregion
@@ -739,26 +716,26 @@ namespace Celeste.Narrative.TwineImporter
 
         public void FindSubNarratives(string nodeText, TwineStoryAnalysis analysis)
         {
-            if (!string.IsNullOrWhiteSpace(nodeText))
-            {
-                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            //if (!string.IsNullOrWhiteSpace(nodeText))
+            //{
+            //    string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (splitText != null &&
-                    splitText.Length >= 2 &&
-                    IsSubNarrativeInstruction(splitText[0]))
-                {
-                    string subNarrativeName = splitText[1];
+            //    if (splitText != null &&
+            //        splitText.Length >= 2 &&
+            //        IsSubNarrativeInstruction(splitText[0]))
+            //    {
+            //        string subNarrativeName = splitText[1];
 
-                    if (IsRegisteredSubNarrativeKey(subNarrativeName))
-                    {
-                        analysis.foundSubNarratives.Add(subNarrativeName);
-                    }
-                    else
-                    {
-                        analysis.unrecognizedKeys.Add(subNarrativeName);
-                    }
-                }
-            }
+            //        if (IsRegisteredSubNarrativeKey(subNarrativeName))
+            //        {
+            //            analysis.foundSubNarratives.Add(subNarrativeName);
+            //        }
+            //        else
+            //        {
+            //            analysis.unrecognizedKeys.Add(subNarrativeName);
+            //        }
+            //    }
+            //}
         }
 
         #endregion
@@ -777,26 +754,40 @@ namespace Celeste.Narrative.TwineImporter
 
         public void FindInventoryItems(string nodeText, TwineStoryAnalysis analysis)
         {
-            if (!string.IsNullOrWhiteSpace(nodeText))
-            {
-                string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            //if (!string.IsNullOrWhiteSpace(nodeText))
+            //{
+            //    string[] splitText = nodeText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (splitText != null &&
-                    splitText.Length >= 2 &&
-                    IsAddInventoryItemInstruction(splitText[0]))
-                {
-                    string inventoryItemName = splitText[1];
+            //    if (splitText != null &&
+            //        splitText.Length >= 2 &&
+            //        IsAddInventoryItemInstruction(splitText[0]))
+            //    {
+            //        string inventoryItemName = splitText[1];
 
-                    if (IsRegisteredInventoryItemKey(inventoryItemName))
-                    {
-                        analysis.foundInventoryItems.Add(inventoryItemName);
-                    }
-                    else
-                    {
-                        analysis.unrecognizedKeys.Add(inventoryItemName);
-                    }
-                }
-            }
+            //        if (IsRegisteredInventoryItemKey(inventoryItemName))
+            //        {
+            //            analysis.foundInventoryItems.Add(inventoryItemName);
+            //        }
+            //        else
+            //        {
+            //            analysis.unrecognizedKeys.Add(inventoryItemName);
+            //        }
+            //    }
+            //}
+        }
+
+        #endregion
+
+        #region Audio Clip Utility
+
+        public bool IsRegisteredAudioClipKey(string key)
+        {
+            return audioClipKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        public AudioClip FindAudioClip(string key)
+        {
+            return audioClipKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).audioClip;
         }
 
         #endregion

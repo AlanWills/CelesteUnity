@@ -1,18 +1,17 @@
 ﻿using Celeste.Events;
-using Celeste.Inventory;
-using Celeste.Inventory.Nodes.Events;
+using Celeste.FSM.Nodes.Events;
 using Celeste.Parameters;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), menuName = "Celeste/Twine/Parser Steps/Try Create Add Inventory Item Node")]
-    public class TryCreateAddInventoryItemNode : TwineNodeParserStep
+    [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), menuName = "Celeste/Twine/Parser Steps/Try Create Play SFX Node")]
+    public class TryCreatePlaySFXNode : TwineNodeParserStep
     {
         #region Properties and Fields
 
         [SerializeField] private StringValue instruction;
-        [SerializeField] private InventoryItemEvent addInventoryItemEvent;
+        [SerializeField] private AudioClipEvent playSFXEvent;
 
         #endregion
 
@@ -31,12 +30,12 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(splitText[0], instruction.Value) != 0)
+            if (string.CompareOrdinal(instruction.Value, splitText[0]) != 0)
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredInventoryItemKey(splitText[1]);
+            return importerSettings.IsRegisteredAudioClipKey(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
@@ -44,12 +43,12 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
-            InventoryItem inventoryItem = importerSettings.FindInventoryItem(splitText[1]);
-            InventoryItemEventRaiserNode inventoryItemEventRaiserNode = parseContext.Graph.AddNode<InventoryItemEventRaiserNode>();
-            inventoryItemEventRaiserNode.argument.Value = inventoryItem;
-            inventoryItemEventRaiserNode.toRaise = addInventoryItemEvent;
+            AudioClip audioClip = importerSettings.FindAudioClip(splitText[1]);
+            AudioClipEventRaiserNode audioClipEventRaiserNode = parseContext.Graph.AddNode<AudioClipEventRaiserNode>();
+            audioClipEventRaiserNode.argument.Value = audioClip;
+            audioClipEventRaiserNode.toRaise = playSFXEvent;
 
-            parseContext.FSMNode = inventoryItemEventRaiserNode;
+            parseContext.FSMNode = audioClipEventRaiserNode;
         }
     }
 }

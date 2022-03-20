@@ -14,14 +14,16 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             {
                 twineNode = value;
                 StrippedLinksText = twineNode != null ? ImporterSettings.StripLinksFromText(twineNode.Text) : string.Empty;
+                SplitStrippedLinksText = StrippedLinksText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
-        public string StrippedLinksText { get; private set; }
-        public FSMGraph Graph { get; set; }
-        public TwineStoryImporterSettings ImporterSettings { get; set; }
-        public Vector2 StartingNodePosition { get; set; }
         public bool StopParsing { get; set; }
+        public TwineStoryImporterSettings ImporterSettings { get; set; }
+        public string StrippedLinksText { get; private set; }
+        public string[] SplitStrippedLinksText { get; private set; }
+        public FSMGraph Graph { get; set; }
+        public Vector2 StartingNodePosition { get; set; }
         public FSMNode FSMNode { get; set; }
     }
 

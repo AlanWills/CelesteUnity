@@ -1,14 +1,18 @@
 ﻿using Celeste.FSM.Nodes.Parameters;
-using Celeste.Narrative;
 using Celeste.Parameters;
-using Celeste.Narrative.TwineImporter;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = "TryCreateSetParameterNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
     public class TryCreateSetParameterNode : TwineNodeParserStep
     {
+        #region Properties and Fields
+
+        [SerializeField] private StringValue instruction;
+
+        #endregion
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
             if (parseContext.FSMNode != null)
@@ -17,15 +21,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             }
 
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-            string nonLinkText = parseContext.StrippedLinksText;
-            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 3)
             {
                 return false;
             }
 
-            if (!importerSettings.IsSetParameterInstruction(splitText[0]))
+            if (string.CompareOrdinal(splitText[0], instruction.Value) != 0)
             {
                 return false;
             }
@@ -36,9 +39,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         public override void Parse(TwineNodeParseContext parseContext)
         {
             TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
+            string[] splitText = parseContext.SplitStrippedLinksText;
 
-            string nonLinkText = parseContext.StrippedLinksText;
-            string[] splitText = nonLinkText.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             ScriptableObject parameter = importerSettings.FindParameter(splitText[1]);
 
             if (CreateNode<bool, BoolValue, BoolReference, SetBoolValueNode>(parseContext, parameter))
