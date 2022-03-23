@@ -23,8 +23,10 @@ namespace Celeste.Tools.Attributes.GUI
         public HelpBoxMessageType MessageType { get; }
         public string ValidationMethod { get; }
 
+#if UNITY_EDITOR
         private bool validationMethodInfoObtained = false;
         private MethodInfo validationMethodInfo;
+#endif
 
         public HelpBoxAttribute(string helpText, HelpBoxMessageType messageType) :
             this(helpText, messageType, string.Empty)
