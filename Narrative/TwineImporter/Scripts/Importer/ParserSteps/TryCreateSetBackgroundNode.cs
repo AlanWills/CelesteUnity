@@ -2,19 +2,65 @@
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Nodes.Events;
 using Celeste.Parameters;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Background Node")]
-    public class TryCreateSetBackgroundNode : TwineNodeParserStep
+    public class TryCreateSetBackgroundNode : TwineNodeParserStep, IUsesKeys<Background>
     {
+        #region Background Key Struct
+
+        [Serializable]
+        public struct BackgroundKey
+        {
+            public string key;
+            public Background background;
+
+            public BackgroundKey(string key, Background background)
+            {
+                this.key = key;
+                this.background = background;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         [SerializeField] private StringValue instruction;
         [SerializeField] private BackgroundEvent setBackgroundEvent;
+        [SerializeField] private List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
 
         #endregion
+
+        public void AddKey(string key, Background background)
+        {
+            backgroundKeys.Add(new BackgroundKey(key, background));
+        }
+
+        public bool UsesKey(string key)
+        {
+            return backgroundKeys.Exists((x) => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext analyseContext)
+        {
+            return !string.IsNullOrWhiteSpace(analyseContext.StrippedLinksText);
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext analyseContext)
+        {
+            FindBackgrounds(analyseContext.SplitStrippedLinksText, analyseContext.Analysis);
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -23,7 +69,6 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 2)
@@ -31,25 +76,60 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(splitText[0], instruction.Value) != 0)
+            if (!IsInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredBackgroundKey(splitText[1]);
+            return HasBackground(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
-            Background background = importerSettings.FindBackground(splitText[1]);
+            Background background = FindBackground(splitText[1]);
             BackgroundEventRaiserNode backgroundEventRaiserNode = parseContext.Graph.AddNode<BackgroundEventRaiserNode>();
             backgroundEventRaiserNode.argument.Value = background;
             backgroundEventRaiserNode.toRaise = setBackgroundEvent;
 
             parseContext.FSMNode = backgroundEventRaiserNode;
+        }
+
+        #endregion
+
+        private bool IsInstruction(string str)
+        {
+            return instruction == str;
+        }
+
+        private bool HasBackground(string key)
+        {
+            return backgroundKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        private Background FindBackground(string key)
+        {
+            return backgroundKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).background;
+        }
+
+        private void FindBackgrounds(string[] splitStrippedLinkText, TwineStoryAnalysis analysis)
+        {
+            if (splitStrippedLinkText != null &&
+                splitStrippedLinkText.Length >= 2 &&
+                IsInstruction(splitStrippedLinkText[0]))
+            {
+                string backgroundName = splitStrippedLinkText[1];
+
+                if (HasBackground(backgroundName))
+                {
+                    analysis.foundBackgrounds.Add(backgroundName);
+                }
+                else
+                {
+                    analysis.unrecognizedKeys.Add(backgroundName);
+                }
+            }
         }
     }
 }

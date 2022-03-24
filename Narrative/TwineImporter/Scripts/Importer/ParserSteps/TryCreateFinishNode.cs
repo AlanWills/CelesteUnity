@@ -5,17 +5,20 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateFinishNode), menuName = "Celeste/Twine/Parser Steps/Try Create Finish Node")]
-    public class TryCreateFinishNode : TwineNodeParserStep
+    public class TryCreateFinishNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields
 
+        [SerializeField] private string finishTag = "Finish";
         [SerializeField] private Celeste.Events.Event finishEvent;
 
         #endregion
 
+        #region Parse
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
-            return HasFinishTag(parseContext.ImporterSettings, parseContext.TwineNode);
+            return HasFinishTag(parseContext.TwineNode);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
@@ -26,9 +29,16 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             parseContext.Graph.finishNode = eventNode;
         }
 
-        private bool HasFinishTag(TwineStoryImporterSettings importerSettings, TwineNode twineNode)
+        #endregion
+
+        public bool UsesTag(string tag)
         {
-            return importerSettings.ContainsFinishTag(twineNode.Tags);
+            return string.CompareOrdinal(tag, finishTag) == 0;
+        }
+
+        private bool HasFinishTag(TwineNode twineNode)
+        {
+            return twineNode.Tags.Exists((string s) => string.CompareOrdinal(s, finishTag) == 0);
         }
     }
 }

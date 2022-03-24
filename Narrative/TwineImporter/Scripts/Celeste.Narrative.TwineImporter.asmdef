@@ -12,7 +12,8 @@
         "Celeste.Events",
         "Celeste.DataStructures",
         "Celeste.Loading",
-        "Celeste.Parameters"
+        "Celeste.Parameters",
+        "Celeste.Objects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

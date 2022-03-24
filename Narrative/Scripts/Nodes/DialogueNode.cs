@@ -3,8 +3,6 @@ using Celeste.FSM;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.UI;
-using Celeste.Tools.Attributes.GUI;
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using XNode.Attributes;
@@ -40,7 +38,7 @@ namespace Celeste.Narrative
             }
         }
 
-        public ScriptableObject[] DialogueTokens
+        public Object[] DialogueTokens
         {
             set { ArrayExtensions.ResizeAndCopyFrom(ref dialogueTokens, value); }
         }
@@ -78,7 +76,7 @@ namespace Celeste.Narrative
         [SerializeField, TextArea] private string dialogue;
         [SerializeField] private DialogueType dialogueType = DialogueType.Speech;
         [SerializeField, NodeEnum] private UIPosition uiPosition;
-        [SerializeField, HideInNodeEditor] private ScriptableObject[] dialogueTokens;
+        [SerializeField, HideInNodeEditor] private Object[] dialogueTokens;
         [SerializeField] private Character character;
 
         private string tokenizedDialogue;

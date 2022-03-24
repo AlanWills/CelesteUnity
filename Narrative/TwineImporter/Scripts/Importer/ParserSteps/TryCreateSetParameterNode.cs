@@ -1,17 +1,65 @@
 ﻿using Celeste.FSM.Nodes.Parameters;
 using Celeste.Parameters;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
-    public class TryCreateSetParameterNode : TwineNodeParserStep
+    public class TryCreateSetParameterNode : TwineNodeParserStep, IUsesKeys<ScriptableObject>
     {
-        #region Properties and Fields
+        #region Parameter Key Struct
 
-        [SerializeField] private StringValue instruction;
+        [Serializable]
+        public struct ParameterKey
+        {
+            public string key;
+            public ScriptableObject parameter;
+
+            public ParameterKey(string key, ScriptableObject parameter)
+            {
+                this.key = key;
+                this.parameter = parameter;
+            }
+        }
 
         #endregion
+
+        #region Properties and Fields
+
+        [SerializeField] private string instruction = "SetParameter";
+        [SerializeField] private char parameterStartDelimiter = '$';
+        [SerializeField] private char parameterEndDelimiter = '$';
+        [SerializeField] private List<ParameterKey> parameterKeys = new List<ParameterKey>();
+
+        #endregion
+
+        public void AddKey(string key, ScriptableObject parameter)
+        {
+            parameterKeys.Add(new ParameterKey(key, parameter));
+        }
+
+        public bool UsesKey(string key)
+        {
+            return parameterKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext analyseContext)
+        {
+            return !string.IsNullOrWhiteSpace(analyseContext.StrippedLinksText);
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext analyseContext)
+        {
+            FindParameters(analyseContext);
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -20,7 +68,6 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 3)
@@ -28,20 +75,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(splitText[0], instruction.Value) != 0)
+            if (!IsInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredParameterKey(splitText[1]);
+            return HasParameter(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
-            ScriptableObject parameter = importerSettings.FindParameter(splitText[1]);
+            ScriptableObject parameter = FindParameter(splitText[1]);
 
             if (CreateNode<bool, BoolValue, BoolReference, SetBoolValueNode>(parseContext, parameter))
             {
@@ -61,6 +107,77 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             else
             {
                 UnityEngine.Debug.LogAssertion($"Unhandled type for instruction.  Failed to create SetParameterNode for parameter {parameter.name} ({parameter.GetType().Name}).");
+            }
+        }
+
+        #endregion
+
+        private bool IsInstruction(string str)
+        {
+            return string.CompareOrdinal(instruction, str) == 0;
+        }
+
+        private string StripParameterDelimiters(string key)
+        {
+            if (!string.IsNullOrEmpty(key) &&
+                key[0] == parameterStartDelimiter &&
+                key[key.Length - 1] == parameterEndDelimiter)
+            {
+                key = key.Substring(1, key.Length - 2);
+            }
+
+            return key;
+        }
+
+        private bool HasParameter(string key)
+        {
+            key = StripParameterDelimiters(key);
+            return parameterKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        private ScriptableObject FindParameter(string key)
+        {
+            key = StripParameterDelimiters(key);
+            return parameterKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).parameter;
+        }
+
+        private void FindParameters(TwineNodeAnalyseContext analyseContext)
+        {
+            string text = analyseContext.TwineNode.Text;
+            TwineStoryAnalysis analysis = analyseContext.Analysis;
+
+            foreach (string key in Twine.Tokens.Get(text, parameterStartDelimiter, parameterEndDelimiter))
+            {
+                if (HasParameter(key))
+                {
+                    analysis.foundParameters.Add(key);
+                }
+                else
+                {
+                    analysis.unrecognizedKeys.Add(key);
+                }
+            }
+
+            // We need to check the links too, so don't use the stripped text in the analyze context
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                string[] splitText = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (splitText != null &&
+                    splitText.Length >= 2 &&
+                    IsInstruction(splitText[0]))
+                {
+                    string parameterName = splitText[1];
+
+                    if (HasParameter(parameterName))
+                    {
+                        analysis.foundParameters.Add(parameterName);
+                    }
+                    else
+                    {
+                        analysis.unrecognizedKeys.Add(parameterName);
+                    }
+                }
             }
         }
 

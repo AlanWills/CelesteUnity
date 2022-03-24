@@ -5,13 +5,21 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateBranchNode), menuName = "Celeste/Twine/Parser Steps/Try Create Branch Node")]
-    public class TryCreateBranchNode : TwineNodeParserStep
+    public class TryCreateBranchNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields
 
+        [SerializeField] private string branchTag = "Branch";
         [SerializeField] private List<TwineNodeParserStep> createBranchNodeSteps = new List<TwineNodeParserStep>();
 
         #endregion
+
+        public bool UsesTag(string tag)
+        {
+            return string.CompareOrdinal(tag, branchTag) == 0;
+        }
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -20,10 +28,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineNode twineNode = parseContext.TwineNode;
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
-
-            if (importerSettings.ContainsBranchTag(twineNode.Tags))
+            if (HasInstruction(parseContext.TwineNode.Tags))
             {
                 // If we have the branch tag, we parse this as a branch no matter what
                 return true;
@@ -54,6 +59,13 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             }
 
             UnityEngine.Debug.LogError($"Failed to create a branch node for Twine Node {parseContext.TwineNode.Name}.");
+        }
+
+        #endregion
+
+        private bool HasInstruction(List<string> tags)
+        {
+            return tags.Contains(branchTag);
         }
     }
 }

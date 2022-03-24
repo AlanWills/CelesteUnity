@@ -55,7 +55,7 @@ namespace Celeste.Narrative.Nodes
             return this;
         }
 
-        public DialogueNodeBuilder WithDialogueTokens(ScriptableObject[] locaTokens)
+        public DialogueNodeBuilder WithDialogueTokens(Object[] locaTokens)
         {
             dialogueNode.DialogueTokens = locaTokens;
             return this;

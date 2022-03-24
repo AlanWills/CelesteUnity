@@ -12,6 +12,7 @@ namespace Celeste.Narrative.TwineImporter
         public HashSet<string> foundBackgrounds = new HashSet<string>();
         public HashSet<string> foundSubNarratives = new HashSet<string>();
         public HashSet<string> foundInventoryItems = new HashSet<string>();
+        public HashSet<string> foundSFXs = new HashSet<string>();
         public HashSet<string> unrecognizedTags = new HashSet<string>();
         public HashSet<string> unrecognizedKeys = new HashSet<string>();
 
@@ -24,6 +25,7 @@ namespace Celeste.Narrative.TwineImporter
             foundBackgrounds.Clear();
             foundSubNarratives.Clear();
             foundInventoryItems.Clear();
+            foundSFXs.Clear();
             unrecognizedTags.Clear();
             unrecognizedKeys.Clear();
         }

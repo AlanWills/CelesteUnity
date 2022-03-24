@@ -1,6 +1,8 @@
 ﻿using Celeste.Events;
 using Celeste.FSM.Nodes.Events;
 using Celeste.Parameters;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
@@ -8,12 +10,46 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), menuName = "Celeste/Twine/Parser Steps/Try Create Play SFX Node")]
     public class TryCreatePlaySFXNode : TwineNodeParserStep
     {
+        #region SFX Key Struct
+
+        [Serializable]
+        public struct SFXKey
+        {
+            public string key;
+            public AudioClip audioClip;
+
+            public SFXKey(string key, AudioClip audioClip)
+            {
+                this.key = key;
+                this.audioClip = audioClip;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         [SerializeField] private StringValue instruction;
         [SerializeField] private AudioClipEvent playSFXEvent;
+        [SerializeField] private List<SFXKey> sfxKeys = new List<SFXKey>();
 
         #endregion
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
+        {
+            return !string.IsNullOrWhiteSpace(parseContext.StrippedLinksText);
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext parseContext)
+        {
+            FindSFXs(parseContext.SplitStrippedLinksText, parseContext.Analysis);
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -22,7 +58,6 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 2)
@@ -30,25 +65,60 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(instruction.Value, splitText[0]) != 0)
+            if (!IsInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredAudioClipKey(splitText[1]);
+            return HasSFX(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
-            AudioClip audioClip = importerSettings.FindAudioClip(splitText[1]);
+            AudioClip audioClip = FindSFX(splitText[1]);
             AudioClipEventRaiserNode audioClipEventRaiserNode = parseContext.Graph.AddNode<AudioClipEventRaiserNode>();
             audioClipEventRaiserNode.argument.Value = audioClip;
             audioClipEventRaiserNode.toRaise = playSFXEvent;
 
             parseContext.FSMNode = audioClipEventRaiserNode;
+        }
+
+        #endregion
+
+        private bool IsInstruction(string str)
+        {
+            return instruction == str;
+        }
+
+        private bool HasSFX(string key)
+        {
+            return sfxKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        private AudioClip FindSFX(string key)
+        {
+            return sfxKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).audioClip;
+        }
+
+        private void FindSFXs(string[] splitStrippedLinkText, TwineStoryAnalysis analysis)
+        {
+            if (splitStrippedLinkText != null &&
+                splitStrippedLinkText.Length >= 2 &&
+                IsInstruction(splitStrippedLinkText[0]))
+            {
+                string sfxName = splitStrippedLinkText[1];
+
+                if (HasSFX(sfxName))
+                {
+                    analysis.foundSFXs.Add(sfxName);
+                }
+                else
+                {
+                    analysis.unrecognizedKeys.Add(sfxName);
+                }
+            }
         }
     }
 }

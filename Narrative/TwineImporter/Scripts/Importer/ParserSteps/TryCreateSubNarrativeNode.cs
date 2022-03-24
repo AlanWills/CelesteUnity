@@ -1,17 +1,63 @@
 ﻿using Celeste.FSM.Nodes;
 using Celeste.Parameters;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
-    public class TryCreateSubNarrativeNode : TwineNodeParserStep
+    public class TryCreateSubNarrativeNode : TwineNodeParserStep, IUsesKeys<NarrativeGraph>
     {
+        #region Sub Narrative Struct
+
+        [Serializable]
+        public struct SubNarrativeKey
+        {
+            public string key;
+            public NarrativeGraph subNarrative;
+
+            public SubNarrativeKey(string key, NarrativeGraph subNarrative)
+            {
+                this.key = key;
+                this.subNarrative = subNarrative;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         [SerializeField] private StringValue instruction;
+        [SerializeField] private List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
 
         #endregion
+
+        public void AddKey(string key, NarrativeGraph narrativeGraph)
+        {
+            subNarrativeKeys.Add(new SubNarrativeKey(key, narrativeGraph));
+        }
+
+        public bool UsesKey(string key)
+        {
+            return subNarrativeKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
+        {
+            return !string.IsNullOrWhiteSpace(parseContext.StrippedLinksText);
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext parseContext)
+        {
+            FindSubNarratives(parseContext.SplitStrippedLinksText, parseContext.Analysis);
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -20,7 +66,6 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
 
             if (splitText == null || splitText.Length < 2)
@@ -28,23 +73,21 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(splitText[0], instruction.Value)  != 0)
+            if (!IsInstruction(splitText[0]))
             {
                 return false;
             }
 
-            return importerSettings.IsRegisteredSubNarrativeKey(splitText[1]);
+            return HasSubNarrative(splitText[1]);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             string[] splitText = parseContext.SplitStrippedLinksText;
-            
 
             string subNarrativeKey = splitText[1];
             SubFSMNode subFSMNode = parseContext.Graph.AddNode<SubFSMNode>();
-            subFSMNode.subFSM = importerSettings.FindSubNarrative(subNarrativeKey);
+            subFSMNode.subFSM = FindSubNarrative(subNarrativeKey);
             UnityEngine.Debug.Assert(subFSMNode.subFSM != null, $"Could not find sub narrative {subNarrativeKey}");
 
             parseContext.FSMNode = subFSMNode;
@@ -54,6 +97,42 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 UnityEditor.EditorUtility.SetDirty(subFSMNode);
             }
 #endif
+        }
+
+        #endregion
+
+        private bool IsInstruction(string str)
+        {
+            return instruction == str;
+        }
+
+        private bool HasSubNarrative(string key)
+        {
+            return subNarrativeKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+        }
+
+        private NarrativeGraph FindSubNarrative(string key)
+        {
+            return subNarrativeKeys.Find(x => string.CompareOrdinal(x.key, key) == 0).subNarrative;
+        }
+
+        private void FindSubNarratives(string[] splitStrippedLinkText, TwineStoryAnalysis analysis)
+        {
+            if (splitStrippedLinkText != null &&
+                splitStrippedLinkText.Length >= 2 &&
+                IsInstruction(splitStrippedLinkText[0]))
+            {
+                string subNarrativeName = splitStrippedLinkText[1];
+
+                if (HasSubNarrative(subNarrativeName))
+                {
+                    analysis.foundSubNarratives.Add(subNarrativeName);
+                }
+                else
+                {
+                    analysis.unrecognizedKeys.Add(subNarrativeName);
+                }
+            }
         }
     }
 }

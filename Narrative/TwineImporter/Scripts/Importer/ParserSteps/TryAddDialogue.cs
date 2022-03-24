@@ -1,4 +1,6 @@
 ﻿using Celeste.Narrative.Nodes;
+using Celeste.Narrative.Tokens;
+using Celeste.Narrative.UI;
 using Celeste.Twine;
 using System;
 using System.Collections.Generic;
@@ -7,13 +9,107 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryAddDialogue", menuName = "Celeste/Twine/Parser Steps/Try Add Dialogue")]
-    public class TryAddDialogue : TwineNodeParserStep
+    public class TryAddDialogue : TwineNodeParserStep, IUsesTags, IUsesKeys<UnityEngine.Object>
     {
-        #region Properties and Fields
+        #region UIPosition Tag Struct
 
-        [NonSerialized] private List<ScriptableObject> locaTokens = new List<ScriptableObject>();
+        [Serializable]
+        public struct UIPositionTag
+        {
+            public string tag;
+            public UIPosition position;
+        }
 
         #endregion
+
+        #region DialogueType Tag Struct
+
+        [Serializable]
+        public struct DialogueTypeTag
+        {
+            public string tag;
+            public DialogueType dialogueType;
+        }
+
+        #endregion
+
+        #region Properties and Fields
+
+        [SerializeField] private LocaTokens locaTokens;
+        [SerializeField] private List<UIPositionTag> uiPositionTags = new List<UIPositionTag>();
+        [SerializeField] private List<DialogueTypeTag> dialogueTypeTags = new List<DialogueTypeTag>();
+
+        #endregion
+
+        public bool UsesTag(string tag)
+        {
+            if (uiPositionTags.Exists(x => string.CompareOrdinal(x.tag, tag) == 0))
+            {
+                return true;
+            }
+
+            if (dialogueTypeTags.Exists(x => string.CompareOrdinal(x.tag, tag) == 0))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddKey(string key, UnityEngine.Object locaToken)
+        {
+            // To avoid template conflict with the adding parameter parser step, we use a different type
+            if (locaTokens != null)
+            {
+                locaTokens.AddItem(new LocaToken(key, locaToken));
+            }
+        }
+
+        public bool UsesKey(string key)
+        {
+            if (locaTokens != null && locaTokens.HasLocaToken(key))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
+        {
+            TwineNode twineNode = parseContext.TwineNode;
+            bool hasText = !string.IsNullOrWhiteSpace(twineNode.Text);
+            bool hasLinks = twineNode.Links.Count > 0;
+
+            return hasText || hasLinks;
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext parseContext)
+        {
+            TwineNode twineNode = parseContext.TwineNode;
+            TwineStoryAnalysis analysis = parseContext.Analysis;
+
+            // Find Loca Tokens in node text
+            {
+                FindLocaTokens(twineNode.Text, analysis);
+            }
+
+            // Find Loca Tokens in link display text
+            {
+                var links = twineNode.Links;
+
+                foreach (TwineNodeLink link in links)
+                {
+                    FindLocaTokens(link.name, analysis);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -22,19 +118,73 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         public override void Parse(TwineNodeParseContext parseContext)
         {
-            TwineStoryImporterSettings importerSettings = parseContext.ImporterSettings;
             TwineNode node = parseContext.TwineNode;
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
             string dialogueText = parseContext.StrippedLinksText;
-            dialogueText = importerSettings.ReplaceLocaTokens(dialogueText, locaTokens);
+            List<UnityEngine.Object> foundLocaTokens = new List<UnityEngine.Object>();
+
+            if (locaTokens != null)
+            {
+                dialogueText = locaTokens.ReplaceLocaTokens(dialogueText, foundLocaTokens);
+            }
 
             DialogueNodeBuilder.
                         WithNode(dialogueNode).
                         WithRawDialogue(dialogueText).
-                        WithUIPosition(importerSettings.FindUIPositionFromTag(node.Tags, dialogueNode.UIPosition)).
-                        WithDialogueType(importerSettings.FindDialogueTypeFromTag(node.Tags, DialogueType.Speech)).
-                        WithDialogueTokens(locaTokens.ToArray());
+                        WithUIPosition(FindUIPositionFromTag(node.Tags, dialogueNode.UIPosition)).
+                        WithDialogueType(FindDialogueTypeFromTag(node.Tags, DialogueType.Speech)).
+                        WithDialogueTokens(foundLocaTokens.ToArray());
+        }
+
+        #endregion
+
+        private UIPosition FindUIPositionFromTag(IList<string> tags, UIPosition fallbackValue)
+        {
+            for (int i = 0, n = tags.Count; i < n; ++i)
+            {
+                var positionTagIndex = uiPositionTags.FindIndex(x => string.CompareOrdinal(x.tag, tags[i]) == 0);
+                if (positionTagIndex != -1)
+                {
+                    return uiPositionTags[positionTagIndex].position;
+                }
+            }
+
+            return fallbackValue;
+        }
+
+        private DialogueType FindDialogueTypeFromTag(IList<string> tags, DialogueType fallbackValue)
+        {
+            for (int i = 0, n = tags.Count; i < n; ++i)
+            {
+                var dialogueTypeTagIndex = dialogueTypeTags.FindIndex(x => string.CompareOrdinal(x.tag, tags[i]) == 0);
+                if (dialogueTypeTagIndex != -1)
+                {
+                    return dialogueTypeTags[dialogueTypeTagIndex].dialogueType;
+                }
+            }
+
+            return fallbackValue;
+        }
+
+        public void FindLocaTokens(string text, TwineStoryAnalysis analysis)
+        {
+            if (locaTokens == null)
+            {
+                return;
+            }
+
+            foreach (string key in Twine.Tokens.Get(text, locaTokens.StartDelimiter, locaTokens.EndDelimiter))
+            {
+                if (locaTokens.HasLocaToken(key))
+                {
+                    analysis.foundLocaTokens.Add(key);
+                }
+                else
+                {
+                    analysis.unrecognizedKeys.Add(key);
+                }
+            }
         }
     }
 }

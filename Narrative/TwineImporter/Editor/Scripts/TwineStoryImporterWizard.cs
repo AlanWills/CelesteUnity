@@ -8,9 +8,9 @@ using Celeste.Logic;
 using CelesteEditor.Tools;
 using Celeste.Twine;
 using Celeste.Inventory;
-using static Celeste.Narrative.TwineImporter.TwineStoryImporterSettings;
 using Celeste.Narrative.TwineImporter;
 using Celeste;
+using Celeste.Narrative.Tokens;
 
 namespace CelesteEditor.Narrative.TwineImporter
 {
@@ -98,7 +98,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         }
 
         #endregion
-
+        
         #region GUI
 
         private void DrawCharactersGUI()
@@ -395,60 +395,54 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void AddCharacterToSettings(Character character)
         {
-            importerSettings.characterTags.Add(new CharacterTag(character.CharacterName, character));
+            importerSettings.AddKey(character.CharacterName, character);
             RemoveUnresolvedTag(character.CharacterName);
         }
 
         private void AddLocaTokenToSettings(ScriptableObject locaToken)
         {
-            importerSettings.locaTokenKeys.Add(new LocaTokenKey(locaToken.name, locaToken));
+            importerSettings.AddKey(locaToken.name, new LocaToken(locaToken.name, locaToken));
             RemoveUnresolvedKey(locaToken.name);
         }
 
         private void AddConditionToSettings(Condition condition)
         {
-            importerSettings.conditionKeys.Add(new ConditionKey(condition.name, condition));
+            importerSettings.AddKey(condition.name, condition);
             RemoveUnresolvedKey(condition.name);
         }
 
         private void AddParameterToSettings(ScriptableObject parameter)
         {
-            importerSettings.parameterKeys.Add(new ParameterKey(parameter.name, parameter));
+            importerSettings.AddKey(parameter.name, parameter);
             RemoveUnresolvedKey(parameter.name);
         }
 
         private void AddBackgroundToSettings(Background background)
         {
-            importerSettings.backgroundKeys.Add(new BackgroundKey(background.name, background));
+            importerSettings.AddKey(background.name, background);
             RemoveUnresolvedKey(background.name);
         }
 
         private void AddSubNarrativeToSettings(NarrativeGraph subNarrative)
         {
-            importerSettings.subNarrativeKeys.Add(new SubNarrativeKey(subNarrative.name, subNarrative));
+            importerSettings.AddKey(subNarrative.name, subNarrative);
             RemoveUnresolvedKey(subNarrative.name);
         }
 
         private void AddInventoryItemToSettings(InventoryItem inventoryItem)
         {
-            importerSettings.inventoryItemKeys.Add(new InventoryItemKey(inventoryItem.name, inventoryItem));
+            importerSettings.AddKey(inventoryItem.name, inventoryItem);
             RemoveUnresolvedKey(inventoryItem.name);
         }
 
         private void RemoveUnresolvedTag(string tag)
         {
             removedUnresolvedTags.Add(tag);
-
-            EditorUtility.SetDirty(importerSettings);
-            AssetDatabase.SaveAssets();
         }
 
         private void RemoveUnresolvedKey(string key)
         {
             removedUnresolvedKeys.Add(key);
-
-            EditorUtility.SetDirty(importerSettings);
-            AssetDatabase.SaveAssets();
         }
 
         #endregion

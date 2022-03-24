@@ -6,6 +6,23 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     [CreateAssetMenu(fileName = "CheckForIgnoreTag", menuName = "Celeste/Twine/Parser Steps/Check For Ignore Tag")]
     public class CheckForIgnoreTag : TwineNodeParserStep
     {
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext parseContext)
+        {
+            var tags = parseContext.TwineNode.Tags;
+            return parseContext.ImporterSettings.ContainsIgnoreTag(tags);
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext parseContext)
+        {
+            parseContext.StopAnalysing = true;
+        }
+
+        #endregion
+
+        #region Parse
+
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
             return HasIgnoreTag(parseContext.ImporterSettings, parseContext.TwineNode);
@@ -15,6 +32,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         {
             parseContext.StopParsing = true;
         }
+
+        #endregion
 
         private bool HasIgnoreTag(TwineStoryImporterSettings importerSettings, TwineNode twineNode)
         {
