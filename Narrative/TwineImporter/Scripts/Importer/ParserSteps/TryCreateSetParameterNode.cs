@@ -6,26 +6,22 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
-    public class TryCreateSetParameterNode : TwineNodeParserStep, IUsesKeys<ScriptableObject>
+    [Serializable]
+    public struct ParameterKey
     {
-        #region Parameter Key Struct
+        public string key;
+        public ScriptableObject parameter;
 
-        [Serializable]
-        public struct ParameterKey
+        public ParameterKey(string key, ScriptableObject parameter)
         {
-            public string key;
-            public ScriptableObject parameter;
-
-            public ParameterKey(string key, ScriptableObject parameter)
-            {
-                this.key = key;
-                this.parameter = parameter;
-            }
+            this.key = key;
+            this.parameter = parameter;
         }
+    }
 
-        #endregion
-
+    [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
+    public class TryCreateSetParameterNode : TwineNodeParserStep, IUsesKeys
+    {
         #region Properties and Fields
 
         [SerializeField] private string instruction = "SetParameter";
@@ -35,9 +31,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKey(string key, ScriptableObject parameter)
+        public void AddKeyForUse(string key, object parameter)
         {
-            parameterKeys.Add(new ParameterKey(key, parameter));
+            parameterKeys.Add((ParameterKey)parameter);
+        }
+
+        public bool CouldUseKey(string key, object parameter)
+        {
+            return parameter is ParameterKey;
         }
 
         public bool UsesKey(string key)
@@ -148,7 +149,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
             foreach (string key in Twine.Tokens.Get(text, parameterStartDelimiter, parameterEndDelimiter))
             {
-                if (HasParameter(key))
+                if (UsesKey(key))
                 {
                     analysis.foundParameters.Add(key);
                 }

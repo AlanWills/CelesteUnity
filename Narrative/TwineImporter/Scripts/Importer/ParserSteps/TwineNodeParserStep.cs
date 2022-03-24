@@ -50,8 +50,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
     public abstract class TwineNodeParserStep : ScriptableObject
     {
-        public virtual bool CanAnalyse(TwineNodeAnalyseContext analyseContext) { return true; }
-        public virtual void Analyse(TwineNodeAnalyseContext analyseContext) { }
+        public abstract bool CanAnalyse(TwineNodeAnalyseContext analyseContext);
+        public abstract void Analyse(TwineNodeAnalyseContext analyseContext);
 
         public abstract bool CanParse(TwineNodeParseContext parseContext);
         public abstract void Parse(TwineNodeParseContext parseContext);

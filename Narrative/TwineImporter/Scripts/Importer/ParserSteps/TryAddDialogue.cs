@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryAddDialogue", menuName = "Celeste/Twine/Parser Steps/Try Add Dialogue")]
-    public class TryAddDialogue : TwineNodeParserStep, IUsesTags, IUsesKeys<UnityEngine.Object>
+    public class TryAddDialogue : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
         #region UIPosition Tag Struct
 
@@ -56,13 +56,18 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return false;
         }
 
-        public void AddKey(string key, UnityEngine.Object locaToken)
+        public void AddKeyForUse(string key, object locaToken)
         {
             // To avoid template conflict with the adding parameter parser step, we use a different type
             if (locaTokens != null)
             {
-                locaTokens.AddItem(new LocaToken(key, locaToken));
+                locaTokens.AddItem((LocaToken)locaToken);
             }
+        }
+
+        public bool CouldUseKey(string key, object locaToken)
+        {
+            return locaToken is LocaToken;
         }
 
         public bool UsesKey(string key)

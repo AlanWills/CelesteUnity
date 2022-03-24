@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Background Node")]
-    public class TryCreateSetBackgroundNode : TwineNodeParserStep, IUsesKeys<Background>
+    public class TryCreateSetBackgroundNode : TwineNodeParserStep, IUsesKeys
     {
         #region Background Key Struct
 
@@ -30,15 +30,20 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #region Properties and Fields
 
-        [SerializeField] private StringValue instruction;
+        [SerializeField] private string instruction = "SetBackground";
         [SerializeField] private BackgroundEvent setBackgroundEvent;
         [SerializeField] private List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
 
         #endregion
 
-        public void AddKey(string key, Background background)
+        public void AddKeyForUse(string key, object background)
         {
-            backgroundKeys.Add(new BackgroundKey(key, background));
+            backgroundKeys.Add(new BackgroundKey(key, background as Background));
+        }
+
+        public bool CouldUseKey(string key, object background)
+        {
+            return background is Background;
         }
 
         public bool UsesKey(string key)
@@ -100,7 +105,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         private bool IsInstruction(string str)
         {
-            return instruction == str;
+            return string.CompareOrdinal(instruction, str) == 0;
         }
 
         private bool HasBackground(string key)

@@ -13,10 +13,81 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
+        public void AddKeyForUse(string key, object obj)
+        {
+            foreach (TwineNodeParserStep step in createScriptNodeSteps)
+            {
+                IUsesKeys usesKeys = step as IUsesKeys;
+                if (usesKeys != null && usesKeys.CouldUseKey(key, obj))
+                {
+                    usesKeys.AddKeyForUse(key, obj);
+                }
+            }
+        }
+
+        public bool CouldUseKey(string key, object obj)
+        {
+            foreach (TwineNodeParserStep step in createScriptNodeSteps)
+            {
+                if (step is IUsesKeys && (step as IUsesKeys).CouldUseKey(key, obj))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UsesKey(string key)
+        {
+            foreach (TwineNodeParserStep step in createScriptNodeSteps)
+            {
+                if (step is IUsesKeys && (step as IUsesKeys).UsesKey(key))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool UsesTag(string tag)
         {
-            return string.CompareOrdinal(tag, scriptTag) == 0;
+            if (string.CompareOrdinal(tag, scriptTag) == 0)
+            {
+                return true;
+            }
+
+            foreach (TwineNodeParserStep step in createScriptNodeSteps)
+            {
+                if (step is IUsesTags && (step as IUsesTags).UsesTag(tag))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext analyseContext)
+        {
+            return true;
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext analyseContext)
+        {
+            foreach (TwineNodeParserStep step in createScriptNodeSteps)
+            {
+                if (step.CanAnalyse(analyseContext))
+                {
+                    step.Analyse(analyseContext);
+                }
+            }
+        }
+
+        #endregion
 
         #region Parse
 

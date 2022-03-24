@@ -11,6 +11,7 @@ using Celeste.Inventory;
 using Celeste.Narrative.TwineImporter;
 using Celeste;
 using Celeste.Narrative.Tokens;
+using Celeste.Narrative.TwineImporter.ParserSteps;
 
 namespace CelesteEditor.Narrative.TwineImporter
 {
@@ -43,10 +44,13 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         protected override bool DrawWizardGUI()
         {
+            TwineStory oldTwineStory = twineStory;
             bool changed = base.DrawWizardGUI();
+            bool storyChanged = twineStory != null && twineStory != oldTwineStory;
 
-            if (twineStory != null && importerSettings != null && twineStoryAnalysis == null)
+            if ((storyChanged || twineStoryAnalysis == null) && importerSettings != null)
             {
+                // Twine story has changed, or we haven't performed analyseis and we have the importer settings to analyse it
                 AnalyseStory();
             }
 
@@ -395,8 +399,8 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void AddCharacterToSettings(Character character)
         {
-            importerSettings.AddKey(character.CharacterName, character);
-            RemoveUnresolvedTag(character.CharacterName);
+            importerSettings.AddKey(character.name, character);
+            RemoveUnresolvedTag(character.name);
         }
 
         private void AddLocaTokenToSettings(ScriptableObject locaToken)
@@ -413,7 +417,7 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void AddParameterToSettings(ScriptableObject parameter)
         {
-            importerSettings.AddKey(parameter.name, parameter);
+            importerSettings.AddKey(parameter.name, new ParameterKey(parameter.name, parameter));
             RemoveUnresolvedKey(parameter.name);
         }
 

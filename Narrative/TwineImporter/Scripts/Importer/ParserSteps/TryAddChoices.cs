@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryAddChoices", menuName = "Celeste/Twine/Parser Steps/Try Add Choices")]
-    public class TryAddChoices : TwineNodeParserStep, IUsesKeys<Condition>
+    public class TryAddChoices : TwineNodeParserStep, IUsesKeys
     {
         #region Condition Key Struct
 
@@ -37,9 +37,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKey(string key, Condition condition)
+        public void AddKeyForUse(string key, object condition)
         {
-            conditionKeys.Add(new ConditionKey(key, condition));
+            conditionKeys.Add(new ConditionKey(key, condition as Condition));
+        }
+
+        public bool CouldUseKey(string key, object condition)
+        {
+            return condition is Condition;
         }
 
         public bool UsesKey(string key)

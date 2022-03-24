@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = "TryAddCharacterInfo", menuName = "Celeste/Twine/Parser Steps/Try Add Character Info")]
-    public class TryAddCharacterInfo : TwineNodeParserStep, IUsesTags, IUsesKeys<Character>
+    public class TryAddCharacterInfo : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
         #region Character Tag Struct
 
@@ -44,9 +44,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return characters.Exists(x => string.CompareOrdinal(x.key, key) == 0);
         }
 
-        public void AddKey(string key, Character character)
+        public bool CouldUseKey(string key, object character)
         {
-            characters.Add(new CharacterKey(key, character));
+            return character is Character;
+        }
+
+        public void AddKeyForUse(string key, object character)
+        {
+            characters.Add(new CharacterKey(key, character as Character));
         }
 
         #region Analyse

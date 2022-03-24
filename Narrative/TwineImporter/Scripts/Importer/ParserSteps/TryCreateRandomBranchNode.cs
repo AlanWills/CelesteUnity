@@ -10,7 +10,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
-        [SerializeField] private StringValue instruction;
+        [SerializeField] private string instruction = "Random";
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            return string.CompareOrdinal(splitText[0], instruction.Value) == 0;
+            return string.CompareOrdinal(splitText[0], instruction) == 0;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

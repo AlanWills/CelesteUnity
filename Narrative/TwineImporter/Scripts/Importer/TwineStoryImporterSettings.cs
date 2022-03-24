@@ -213,17 +213,18 @@ namespace Celeste.Narrative.TwineImporter
 
         #region Key Utility
 
-        public void AddKey<T>(string key, T obj)
+        public void AddKey(string key, object obj)
         {
             bool keyAdded = false;
 
             for (int i = 0, n = parserSteps != null ? parserSteps.Length : 0; i < n; i++)
             {
-                var parserStep = parserSteps[i];
+                TwineNodeParserStep parserStep = parserSteps[i];
+                IUsesKeys usesKeys = parserStep as IUsesKeys;
 
-                if (parserStep is IUsesKeys<T>)
+                if (usesKeys != null && usesKeys.CouldUseKey(key, obj))
                 {
-                    (parserStep as IUsesKeys<T>).AddKey(key, obj);
+                    usesKeys.AddKeyForUse(key, obj);
                     keyAdded = true;
 #if UNITY_EDITOR
                     UnityEditor.EditorUtility.SetDirty(parserStep);

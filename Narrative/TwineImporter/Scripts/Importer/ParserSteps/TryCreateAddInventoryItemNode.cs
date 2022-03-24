@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), menuName = "Celeste/Twine/Parser Steps/Try Create Add Inventory Item Node")]
-    public class TryCreateAddInventoryItemNode : TwineNodeParserStep, IUsesKeys<InventoryItem>
+    public class TryCreateAddInventoryItemNode : TwineNodeParserStep, IUsesKeys
     {
         #region Inventory Item Key Struct
 
@@ -30,15 +30,20 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #region Properties and Fields
 
-        [SerializeField] private StringValue instruction;
+        [SerializeField] private string instruction = "AddInventoryItem";
         [SerializeField] private InventoryItemEvent addInventoryItemEvent;
         [SerializeField] private List<InventoryItemKey> inventoryItemKeys = new List<InventoryItemKey>();
 
         #endregion
 
-        public void AddKey(string key, InventoryItem inventoryItem)
+        public void AddKeyForUse(string key, object inventoryItem)
         {
-            inventoryItemKeys.Add(new InventoryItemKey(key, inventoryItem));
+            inventoryItemKeys.Add(new InventoryItemKey(key, inventoryItem as InventoryItem));
+        }
+
+        public bool CouldUseKey(string key, object inventoryItem)
+        {
+            return inventoryItem as InventoryItem;
         }
 
         public bool UsesKey(string key)
@@ -76,7 +81,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            if (string.CompareOrdinal(splitText[0], instruction.Value) != 0)
+            if (string.CompareOrdinal(splitText[0], instruction) != 0)
             {
                 return false;
             }
@@ -100,7 +105,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         private bool IsInstruction(string str)
         {
-            return instruction == str;
+            return string.CompareOrdinal(instruction, str) == 0;
         }
 
         private bool HasInventoryItem(string key)

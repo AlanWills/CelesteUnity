@@ -29,7 +29,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #region Properties and Fields
 
-        [SerializeField] private StringValue instruction;
+        [SerializeField] private string instruction = "PlaySFX";
         [SerializeField] private AudioClipEvent playSFXEvent;
         [SerializeField] private List<SFXKey> sfxKeys = new List<SFXKey>();
 
@@ -89,7 +89,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         private bool IsInstruction(string str)
         {
-            return instruction == str;
+            return string.CompareOrdinal(instruction, str) == 0;
         }
 
         private bool HasSFX(string key)

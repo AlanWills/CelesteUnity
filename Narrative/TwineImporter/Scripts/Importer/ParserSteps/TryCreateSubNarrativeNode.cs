@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
-    public class TryCreateSubNarrativeNode : TwineNodeParserStep, IUsesKeys<NarrativeGraph>
+    public class TryCreateSubNarrativeNode : TwineNodeParserStep, IUsesKeys
     {
         #region Sub Narrative Struct
 
@@ -28,14 +28,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #region Properties and Fields
 
-        [SerializeField] private StringValue instruction;
+        [SerializeField] private string instruction = "SubNarrative";
         [SerializeField] private List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
 
         #endregion
 
-        public void AddKey(string key, NarrativeGraph narrativeGraph)
+        public void AddKeyForUse(string key, object narrativeGraph)
         {
-            subNarrativeKeys.Add(new SubNarrativeKey(key, narrativeGraph));
+            subNarrativeKeys.Add(new SubNarrativeKey(key, narrativeGraph as NarrativeGraph));
+        }
+
+        public bool CouldUseKey(string key, object obj)
+        {
+            return obj is NarrativeGraph;
         }
 
         public bool UsesKey(string key)
@@ -103,7 +108,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         private bool IsInstruction(string str)
         {
-            return instruction == str;
+            return string.CompareOrdinal(instruction, str) == 0;
         }
 
         private bool HasSubNarrative(string key)
