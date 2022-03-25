@@ -7,26 +7,28 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), menuName = "Celeste/Twine/Parser Steps/Try Create Play SFX Node")]
-    public class TryCreatePlaySFXNode : TwineNodeParserStep
+    #region SFX Key Struct
+
+    [Serializable]
+    public struct SFXKey : IKey
     {
-        #region SFX Key Struct
+        string IKey.Key => key;
 
-        [Serializable]
-        public struct SFXKey
+        public string key;
+        public AudioClip audioClip;
+
+        public SFXKey(string key, AudioClip audioClip)
         {
-            public string key;
-            public AudioClip audioClip;
-
-            public SFXKey(string key, AudioClip audioClip)
-            {
-                this.key = key;
-                this.audioClip = audioClip;
-            }
+            this.key = key;
+            this.audioClip = audioClip;
         }
+    }
 
-        #endregion
+    #endregion
 
+    [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), menuName = "Celeste/Twine/Parser Steps/Try Create Play SFX Node")]
+    public class TryCreatePlaySFXNode : TwineNodeParserStep, IUsesKeys
+    {
         #region Properties and Fields
 
         [SerializeField] private string instruction = "PlaySFX";
@@ -34,6 +36,21 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         [SerializeField] private List<SFXKey> sfxKeys = new List<SFXKey>();
 
         #endregion
+
+        public void AddKeyForUse(IKey key)
+        {
+            sfxKeys.Add((SFXKey)key);
+        }
+
+        public bool CouldUseKey(IKey key)
+        {
+            return key is SFXKey;
+        }
+
+        public bool UsesKey(IKey key)
+        {
+            return sfxKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
+        }
 
         #region Analyse
 

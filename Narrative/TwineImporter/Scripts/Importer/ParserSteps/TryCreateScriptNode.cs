@@ -13,23 +13,23 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object obj)
+        public void AddKeyForUse(IKey key)
         {
             foreach (TwineNodeParserStep step in createScriptNodeSteps)
             {
                 IUsesKeys usesKeys = step as IUsesKeys;
-                if (usesKeys != null && usesKeys.CouldUseKey(key, obj))
+                if (usesKeys != null && usesKeys.CouldUseKey(key))
                 {
-                    usesKeys.AddKeyForUse(key, obj);
+                    usesKeys.AddKeyForUse(key);
                 }
             }
         }
 
-        public bool CouldUseKey(string key, object obj)
+        public bool CouldUseKey(IKey key)
         {
             foreach (TwineNodeParserStep step in createScriptNodeSteps)
             {
-                if (step is IUsesKeys && (step as IUsesKeys).CouldUseKey(key, obj))
+                if (step is IUsesKeys && (step as IUsesKeys).CouldUseKey(key))
                 {
                     return true;
                 }
@@ -38,7 +38,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return false;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
             foreach (TwineNodeParserStep step in createScriptNodeSteps)
             {

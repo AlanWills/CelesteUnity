@@ -14,6 +14,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext analyseContext)
+        {
+            return false;
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext analyseContext)
+        {
+        }
+
+        #endregion
+
         #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)

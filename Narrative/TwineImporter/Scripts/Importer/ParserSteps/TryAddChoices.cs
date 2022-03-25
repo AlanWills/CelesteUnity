@@ -8,26 +8,28 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
+    #region Condition Key Struct
+
+    [Serializable]
+    public struct ConditionKey : IKey
+    {
+        string IKey.Key => key;
+
+        public string key;
+        public Condition condition;
+
+        public ConditionKey(string key, Condition condition)
+        {
+            this.key = key;
+            this.condition = condition;
+        }
+    }
+
+    #endregion
+
     [CreateAssetMenu(fileName = "TryAddChoices", menuName = "Celeste/Twine/Parser Steps/Try Add Choices")]
     public class TryAddChoices : TwineNodeParserStep, IUsesKeys
     {
-        #region Condition Key Struct
-
-        [Serializable]
-        public struct ConditionKey
-        {
-            public string key;
-            public Condition condition;
-
-            public ConditionKey(string key, Condition condition)
-            {
-                this.key = key;
-                this.condition = condition;
-            }
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         [SerializeField] private LocaTokens locaTokens;
@@ -37,19 +39,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object condition)
+        public void AddKeyForUse(IKey key)
         {
-            conditionKeys.Add(new ConditionKey(key, condition as Condition));
+            conditionKeys.Add((ConditionKey)key);
         }
 
-        public bool CouldUseKey(string key, object condition)
+        public bool CouldUseKey(IKey key)
         {
-            return condition is Condition;
+            return key is ConditionKey;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return conditionKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+            return conditionKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
         }
         
         #region Analyse

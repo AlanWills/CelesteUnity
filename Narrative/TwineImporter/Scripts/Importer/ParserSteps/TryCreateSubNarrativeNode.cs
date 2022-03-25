@@ -6,26 +6,28 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
+    #region Sub Narrative Struct
+
+    [Serializable]
+    public struct SubNarrativeKey : IKey
+    {
+        string IKey.Key => key;
+
+        public string key;
+        public NarrativeGraph subNarrative;
+
+        public SubNarrativeKey(string key, NarrativeGraph subNarrative)
+        {
+            this.key = key;
+            this.subNarrative = subNarrative;
+        }
+    }
+
+    #endregion
+
     [CreateAssetMenu(fileName = nameof(TryCreateSubNarrativeNode), menuName = "Celeste/Twine/Parser Steps/Try Create Sub Narrative Node")]
     public class TryCreateSubNarrativeNode : TwineNodeParserStep, IUsesKeys
     {
-        #region Sub Narrative Struct
-
-        [Serializable]
-        public struct SubNarrativeKey
-        {
-            public string key;
-            public NarrativeGraph subNarrative;
-
-            public SubNarrativeKey(string key, NarrativeGraph subNarrative)
-            {
-                this.key = key;
-                this.subNarrative = subNarrative;
-            }
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         [SerializeField] private string instruction = "SubNarrative";
@@ -33,19 +35,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object narrativeGraph)
+        public void AddKeyForUse(IKey key)
         {
-            subNarrativeKeys.Add(new SubNarrativeKey(key, narrativeGraph as NarrativeGraph));
+            subNarrativeKeys.Add((SubNarrativeKey)key);
         }
 
-        public bool CouldUseKey(string key, object obj)
+        public bool CouldUseKey(IKey key)
         {
-            return obj is NarrativeGraph;
+            return key is SubNarrativeKey;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return subNarrativeKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+            return subNarrativeKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
         }
 
         #region Analyse

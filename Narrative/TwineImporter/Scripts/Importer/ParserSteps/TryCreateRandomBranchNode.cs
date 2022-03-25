@@ -1,5 +1,4 @@
 ﻿using Celeste.FSM.Nodes.Logic;
-using Celeste.Parameters;
 using Celeste.Twine;
 using UnityEngine;
 
@@ -13,6 +12,21 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         [SerializeField] private string instruction = "Random";
 
         #endregion
+
+        #region Analyse
+
+        public override bool CanAnalyse(TwineNodeAnalyseContext analyseContext)
+        {
+            return false;
+        }
+
+        public override void Analyse(TwineNodeAnalyseContext analyseContext)
+        {
+        }
+
+        #endregion
+
+        #region Parse
 
         public override bool CanParse(TwineNodeParseContext parseContext)
         {
@@ -41,5 +55,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 randomBranchNode.AddOutputPort(link.name);
             }
         }
+
+        #endregion
     }
 }

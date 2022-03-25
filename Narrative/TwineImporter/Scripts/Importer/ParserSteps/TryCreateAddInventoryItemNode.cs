@@ -1,33 +1,35 @@
 ﻿using Celeste.Events;
 using Celeste.Inventory;
 using Celeste.Inventory.Nodes.Events;
-using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
+    #region Inventory Item Key Struct
+
+    [Serializable]
+    public struct InventoryItemKey : IKey
+    {
+        string IKey.Key => key;
+
+        public string key;
+        public InventoryItem inventoryItem;
+
+        public InventoryItemKey(string key, InventoryItem inventoryItem)
+        {
+            this.key = key;
+            this.inventoryItem = inventoryItem;
+        }
+    }
+
+    #endregion
+
+
     [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), menuName = "Celeste/Twine/Parser Steps/Try Create Add Inventory Item Node")]
     public class TryCreateAddInventoryItemNode : TwineNodeParserStep, IUsesKeys
     {
-        #region Inventory Item Key Struct
-
-        [Serializable]
-        public struct InventoryItemKey
-        {
-            public string key;
-            public InventoryItem inventoryItem;
-
-            public InventoryItemKey(string key, InventoryItem inventoryItem)
-            {
-                this.key = key;
-                this.inventoryItem = inventoryItem;
-            }
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         [SerializeField] private string instruction = "AddInventoryItem";
@@ -36,19 +38,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object inventoryItem)
+        public void AddKeyForUse(IKey key)
         {
-            inventoryItemKeys.Add(new InventoryItemKey(key, inventoryItem as InventoryItem));
+            inventoryItemKeys.Add((InventoryItemKey)key);
         }
 
-        public bool CouldUseKey(string key, object inventoryItem)
+        public bool CouldUseKey(IKey key)
         {
-            return inventoryItem as InventoryItem;
+            return key as InventoryItem;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return inventoryItemKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+            return inventoryItemKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
         }
 
         #region Analyse

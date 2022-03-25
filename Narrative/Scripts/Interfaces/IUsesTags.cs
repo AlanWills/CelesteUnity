@@ -1,4 +1,4 @@
-﻿namespace Celeste.Narrative.TwineImporter.ParserSteps
+﻿namespace Celeste.Narrative
 {
     public interface IUsesTags
     {

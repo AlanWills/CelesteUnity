@@ -7,8 +7,10 @@ using UnityEngine;
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
     [Serializable]
-    public struct ParameterKey
+    public struct ParameterKey : IKey
     {
+        string IKey.Key => key;
+
         public string key;
         public ScriptableObject parameter;
 
@@ -31,19 +33,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object parameter)
+        public void AddKeyForUse(IKey key)
         {
-            parameterKeys.Add((ParameterKey)parameter);
+            parameterKeys.Add((ParameterKey)key);
         }
 
-        public bool CouldUseKey(string key, object parameter)
+        public bool CouldUseKey(IKey key)
         {
-            return parameter is ParameterKey;
+            return key is ParameterKey;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return parameterKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+            return parameterKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
         }
 
         #region Analyse
@@ -81,7 +83,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            return HasParameter(splitText[1]);
+            return HasParameter(splitText[1], true);
         }
 
         public override void Parse(TwineNodeParseContext parseContext)
@@ -130,9 +132,13 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return key;
         }
 
-        private bool HasParameter(string key)
+        private bool HasParameter(string key, bool stripDelimiters)
         {
-            key = StripParameterDelimiters(key);
+            if (stripDelimiters)
+            {
+                key = StripParameterDelimiters(key);
+            }
+
             return parameterKeys.Exists(x => string.CompareOrdinal(x.key, key) == 0);
         }
 
@@ -149,7 +155,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
             foreach (string key in Twine.Tokens.Get(text, parameterStartDelimiter, parameterEndDelimiter))
             {
-                if (UsesKey(key))
+                if (HasParameter(key, false))
                 {
                     analysis.foundParameters.Add(key);
                 }
@@ -170,7 +176,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 {
                     string parameterName = splitText[1];
 
-                    if (HasParameter(parameterName))
+                    if (HasParameter(parameterName, true))
                     {
                         analysis.foundParameters.Add(parameterName);
                     }

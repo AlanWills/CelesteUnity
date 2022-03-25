@@ -56,23 +56,22 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return false;
         }
 
-        public void AddKeyForUse(string key, object locaToken)
+        public void AddKeyForUse(IKey key)
         {
-            // To avoid template conflict with the adding parameter parser step, we use a different type
             if (locaTokens != null)
             {
-                locaTokens.AddItem((LocaToken)locaToken);
+                locaTokens.AddItem((LocaToken)key);
             }
         }
 
-        public bool CouldUseKey(string key, object locaToken)
+        public bool CouldUseKey(IKey key)
         {
-            return locaToken is LocaToken;
+            return key is LocaToken;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            if (locaTokens != null && locaTokens.HasLocaToken(key))
+            if (locaTokens != null && locaTokens.HasLocaToken(key.Key))
             {
                 return true;
             }

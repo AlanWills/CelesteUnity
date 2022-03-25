@@ -8,26 +8,28 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
+    #region Background Key Struct
+
+    [Serializable]
+    public struct BackgroundKey: IKey
+    {
+        string IKey.Key => key;
+
+        public string key;
+        public Background background;
+
+        public BackgroundKey(string key, Background background)
+        {
+            this.key = key;
+            this.background = background;
+        }
+    }
+
+    #endregion
+
     [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Background Node")]
     public class TryCreateSetBackgroundNode : TwineNodeParserStep, IUsesKeys
     {
-        #region Background Key Struct
-
-        [Serializable]
-        public struct BackgroundKey
-        {
-            public string key;
-            public Background background;
-
-            public BackgroundKey(string key, Background background)
-            {
-                this.key = key;
-                this.background = background;
-            }
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         [SerializeField] private string instruction = "SetBackground";
@@ -36,19 +38,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        public void AddKeyForUse(string key, object background)
+        public void AddKeyForUse(IKey key)
         {
-            backgroundKeys.Add(new BackgroundKey(key, background as Background));
+            backgroundKeys.Add((BackgroundKey)key);
         }
 
-        public bool CouldUseKey(string key, object background)
+        public bool CouldUseKey(IKey key)
         {
-            return background is Background;
+            return key is BackgroundKey;
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return backgroundKeys.Exists((x) => string.CompareOrdinal(x.key, key) == 0);
+            return backgroundKeys.Exists((x) => string.CompareOrdinal(x.key, key.Key) == 0);
         }
 
         #region Analyse

@@ -213,7 +213,7 @@ namespace Celeste.Narrative.TwineImporter
 
         #region Key Utility
 
-        public void AddKey(string key, object obj)
+        public void AddKey(IKey key)
         {
             bool keyAdded = false;
 
@@ -222,9 +222,9 @@ namespace Celeste.Narrative.TwineImporter
                 TwineNodeParserStep parserStep = parserSteps[i];
                 IUsesKeys usesKeys = parserStep as IUsesKeys;
 
-                if (usesKeys != null && usesKeys.CouldUseKey(key, obj))
+                if (usesKeys != null && usesKeys.CouldUseKey(key))
                 {
-                    usesKeys.AddKeyForUse(key, obj);
+                    usesKeys.AddKeyForUse(key);
                     keyAdded = true;
 #if UNITY_EDITOR
                     UnityEditor.EditorUtility.SetDirty(parserStep);
@@ -232,7 +232,7 @@ namespace Celeste.Narrative.TwineImporter
                 }
             }
 
-            UnityEngine.Debug.Assert(keyAdded, $"Could not find parser step which uses key {key} for object {obj}.");
+            UnityEngine.Debug.Assert(keyAdded, $"Could not find parser step which uses key {key.Key} {key.GetType().Name}.");
         }
 
         #endregion

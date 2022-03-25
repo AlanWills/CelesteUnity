@@ -8,26 +8,28 @@ using System.Collections.Generic;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
+    #region Character Tag Struct
+
+    [Serializable]
+    public struct CharacterKey : IKey
+    {
+        string IKey.Key => key;
+
+        public string key;
+        public Character character;
+
+        public CharacterKey(string key, Character character)
+        {
+            this.key = key;
+            this.character = character;
+        }
+    }
+
+    #endregion
+
     [CreateAssetMenu(fileName = "TryAddCharacterInfo", menuName = "Celeste/Twine/Parser Steps/Try Add Character Info")]
     public class TryAddCharacterInfo : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
-        #region Character Tag Struct
-
-        [Serializable]
-        public struct CharacterKey
-        {
-            public string key;
-            public Character character;
-
-            public CharacterKey(string tag, Character character)
-            {
-                this.key = tag;
-                this.character = character;
-            }
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         [SerializeField] private List<CharacterKey> characters = new List<CharacterKey>();
@@ -39,19 +41,19 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return characters.Exists(x => string.CompareOrdinal(x.key, tag) == 0);
         }
 
-        public bool UsesKey(string key)
+        public bool UsesKey(IKey key)
         {
-            return characters.Exists(x => string.CompareOrdinal(x.key, key) == 0);
+            return characters.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
         }
 
-        public bool CouldUseKey(string key, object character)
+        public bool CouldUseKey(IKey key)
         {
-            return character is Character;
+            return key is CharacterKey;
         }
 
-        public void AddKeyForUse(string key, object character)
+        public void AddKeyForUse(IKey key)
         {
-            characters.Add(new CharacterKey(key, character as Character));
+            characters.Add((CharacterKey)key);
         }
 
         #region Analyse

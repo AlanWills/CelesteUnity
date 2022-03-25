@@ -46,6 +46,16 @@ namespace CelesteEditor.Platform
             get { return m_windowsRelease; }
         }
 
+        public WebGLSettings WebGLDebug
+        {
+            get { return m_webGLDebug; }
+        }
+
+        public WebGLSettings WebGLRelease
+        {
+            get { return m_webGLRelease; }
+        }
+
         [SerializeField] private iOSSettings m_iOSDebug;
         [SerializeField] private iOSSettings m_iOSRelease;
 
@@ -56,11 +66,15 @@ namespace CelesteEditor.Platform
         [SerializeField] private WindowsSettings m_windowsDebug;
         [SerializeField] private WindowsSettings m_windowsRelease;
 
+        [SerializeField] private WebGLSettings m_webGLDebug;
+        [SerializeField] private WebGLSettings m_webGLRelease;
+
         public const string AllPlatformSettingsDirectory = "Assets/Platform/Editor/";
         public const string AllPlatformSettingsPath = AllPlatformSettingsDirectory + "AllPlatformSettings.asset";
         public const string iOSPlatformSettingsPath = AllPlatformSettingsDirectory + "iOS";
         public const string AndroidPlatformSettingsPath = AllPlatformSettingsDirectory + "Android";
         public const string WindowsPlatformSettingsPath = AllPlatformSettingsDirectory + "Windows";
+        public const string WebGLPlatformSettingsPath = AllPlatformSettingsDirectory + "WebGL";
 
         #endregion
     }

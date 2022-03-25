@@ -9,8 +9,10 @@ namespace Celeste.Narrative.Tokens
     #region Loca Token Struct
 
     [Serializable]
-    public struct LocaToken
+    public struct LocaToken : IKey
     {
+        string IKey.Key => key;
+
         public string key;
         public UnityEngine.Object token;
 

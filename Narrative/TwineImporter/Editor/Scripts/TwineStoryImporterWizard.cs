@@ -73,6 +73,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                 DrawBackgroundsGUI();
                 DrawSubNarrativesGUI();
                 DrawInventoryItemsGUI();
+                DrawSFXsGUI();
                 DrawUnresolvedTagsGUI();
                 DrawUnresolvedKeysGUI();
             }
@@ -189,6 +190,18 @@ namespace CelesteEditor.Narrative.TwineImporter
             }
         }
 
+        private void DrawSFXsGUI()
+        {
+            Space();
+            LabelField("SFXs", CelesteGUIStyles.BoldLabel);
+            Space();
+
+            foreach (string foundSFX in twineStoryAnalysis.foundSFXs)
+            {
+                LabelField(foundSFX);
+            }
+        }
+
         private void DrawUnresolvedTagsGUI()
         {
             if (twineStoryAnalysis.unrecognizedTags.Count > 0)
@@ -287,6 +300,15 @@ namespace CelesteEditor.Narrative.TwineImporter
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
                                 twineStoryAnalysis.foundInventoryItems.Add(unresolvedKey);
+                            }
+                        }
+
+                        if (GUILayout.Button("SFX", GUILayout.ExpandWidth(false)))
+                        {
+                            if (FindSFX(unresolvedKey))
+                            {
+                                removedUnresolvedTags.Add(unresolvedKey);
+                                twineStoryAnalysis.foundSFXs.Add(unresolvedKey);
                             }
                         }
                     }
@@ -391,6 +413,17 @@ namespace CelesteEditor.Narrative.TwineImporter
             return false;
         }
 
+        private bool FindSFX(string sfxName)
+        {
+            if (TryFind(sfxName, importerSettings.AudioClipsDirectory, out AudioClip sfx))
+            {
+                AddSFXToSettings(sfx);
+                return true;
+            }
+
+            return false;
+        }
+
         private bool TryFind<T>(string name, string directory, out T asset) where T : Object
         {
             asset = AssetUtility.FindAsset<T>(name, directory);
@@ -399,44 +432,50 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void AddCharacterToSettings(Character character)
         {
-            importerSettings.AddKey(character.name, character);
+            importerSettings.AddKey(new CharacterKey(character.name, character));
             RemoveUnresolvedTag(character.name);
         }
 
         private void AddLocaTokenToSettings(ScriptableObject locaToken)
         {
-            importerSettings.AddKey(locaToken.name, new LocaToken(locaToken.name, locaToken));
+            importerSettings.AddKey(new LocaToken(locaToken.name, locaToken));
             RemoveUnresolvedKey(locaToken.name);
         }
 
         private void AddConditionToSettings(Condition condition)
         {
-            importerSettings.AddKey(condition.name, condition);
+            importerSettings.AddKey(new ConditionKey(condition.name, condition));
             RemoveUnresolvedKey(condition.name);
         }
 
         private void AddParameterToSettings(ScriptableObject parameter)
         {
-            importerSettings.AddKey(parameter.name, new ParameterKey(parameter.name, parameter));
+            importerSettings.AddKey(new ParameterKey(parameter.name, parameter));
             RemoveUnresolvedKey(parameter.name);
         }
 
         private void AddBackgroundToSettings(Background background)
         {
-            importerSettings.AddKey(background.name, background);
+            importerSettings.AddKey(new BackgroundKey(background.name, background));
             RemoveUnresolvedKey(background.name);
         }
 
         private void AddSubNarrativeToSettings(NarrativeGraph subNarrative)
         {
-            importerSettings.AddKey(subNarrative.name, subNarrative);
+            importerSettings.AddKey(new SubNarrativeKey(subNarrative.name, subNarrative));
             RemoveUnresolvedKey(subNarrative.name);
         }
 
         private void AddInventoryItemToSettings(InventoryItem inventoryItem)
         {
-            importerSettings.AddKey(inventoryItem.name, inventoryItem);
+            importerSettings.AddKey(new InventoryItemKey(inventoryItem.name, inventoryItem));
             RemoveUnresolvedKey(inventoryItem.name);
+        }
+
+        private void AddSFXToSettings(AudioClip audioClip)
+        {
+            importerSettings.AddKey(new SFXKey(audioClip.name, audioClip));
+            RemoveUnresolvedKey(audioClip.name);
         }
 
         private void RemoveUnresolvedTag(string tag)

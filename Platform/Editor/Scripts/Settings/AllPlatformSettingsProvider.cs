@@ -20,7 +20,8 @@ namespace CelesteEditor.Platform
             public static GUIContent AndroidReleaseBundle = new GUIContent("Android Release Bundle");
             public static GUIContent WindowsDebugBundle = new GUIContent("Windows Debug Bundle");
             public static GUIContent WindowsReleaseBundle = new GUIContent("Windows Release Bundle");
-
+            public static GUIContent WebGLDebugBundle = new GUIContent("WebGL Debug Bundle");
+            public static GUIContent WebGLReleaseBundle = new GUIContent("WebGL Release Bundle");
         }
 
         #endregion
@@ -35,6 +36,8 @@ namespace CelesteEditor.Platform
         private SerializedProperty androidReleaseBundleProperty;
         private SerializedProperty windowsDebugProperty;
         private SerializedProperty windowsReleaseProperty;
+        private SerializedProperty webGLDebugProperty;
+        private SerializedProperty webGLReleaseProperty;
 
         #endregion
 
@@ -52,6 +55,8 @@ namespace CelesteEditor.Platform
             androidReleaseBundleProperty = allPlatformSettings.FindProperty("m_androidReleaseBundle");
             windowsDebugProperty = allPlatformSettings.FindProperty("m_windowsDebug");
             windowsReleaseProperty = allPlatformSettings.FindProperty("m_windowsRelease");
+            webGLDebugProperty = allPlatformSettings.FindProperty("m_webGLDebug");
+            webGLReleaseProperty = allPlatformSettings.FindProperty("m_webGLRelease");
         }
 
         public override void OnGUI(string searchContext)
@@ -61,6 +66,7 @@ namespace CelesteEditor.Platform
             DrawiOSSettings();
             DrawAndroidSettings();
             DrawWindowsSettings();
+            DrawWebGLSettings();
 
             allPlatformSettings.ApplyModifiedProperties();
         }
@@ -141,6 +147,30 @@ namespace CelesteEditor.Platform
                     new GUIContent("Create Windows Release Settings"),
                     AllPlatformSettings.WindowsPlatformSettingsPath,
                     "WindowsRelease");
+            }
+        }
+
+        private void DrawWebGLSettings()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("WebGL", CelesteGUIStyles.BoldLabel);
+            EditorGUILayout.Space();
+
+            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            {
+                SettingsGUI<WebGLSettings>(
+                    webGLDebugProperty,
+                    PlatformSettingStyles.WebGLDebugBundle,
+                    new GUIContent("Create WebGL Debug Settings"),
+                    AllPlatformSettings.WebGLPlatformSettingsPath,
+                    "WebGLDebug");
+
+                SettingsGUI<WebGLSettings>(
+                    webGLReleaseProperty,
+                    PlatformSettingStyles.WebGLReleaseBundle,
+                    new GUIContent("Create WebGL Release Settings"),
+                    AllPlatformSettings.WebGLPlatformSettingsPath,
+                    "WebGLRelease");
             }
         }
 
