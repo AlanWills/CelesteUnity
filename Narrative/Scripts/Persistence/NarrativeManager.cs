@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets;
+using Celeste.Narrative.Assets;
 using Celeste.Narrative.Persistence;
 using Celeste.Persistence;
 using System.Collections;
@@ -17,7 +18,7 @@ namespace Celeste.Narrative
             get { return FILE_NAME; }
         }
 
-        [SerializeField] private StoryCatalogue storyCatalogue;
+        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
 
         #endregion
@@ -33,7 +34,7 @@ namespace Celeste.Narrative
         {
             Load();
 
-            yield break;
+            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
         }
 
         #endregion
@@ -47,7 +48,7 @@ namespace Celeste.Narrative
 
             foreach (StoryDTO storyDTO in dto.stories)
             {
-                Story story = storyCatalogue.FindByGuid(storyDTO.guid);
+                Story story = storyCatalogue.Asset.FindByGuid(storyDTO.guid);
                 UnityEngine.Debug.Assert(story != null, $"Could not find story with guid {storyDTO.guid}.");
                 StoryRecord storyRecord = narrativeRecord.AddStoryRecord(story);
 

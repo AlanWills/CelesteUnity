@@ -20,7 +20,9 @@
         "Celeste.Debug",
         "Celeste.Twine",
         "Celeste.Assets",
-        "XNode.Extensions"
+        "XNode.Extensions",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

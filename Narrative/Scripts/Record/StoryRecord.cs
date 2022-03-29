@@ -1,7 +1,5 @@
 ﻿using Celeste.DataStructures;
-using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Celeste.Narrative

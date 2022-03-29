@@ -13,7 +13,10 @@
         "Celeste.DataStructures",
         "Celeste.Loading",
         "Celeste.Parameters",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.Assets",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

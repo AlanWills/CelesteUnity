@@ -49,7 +49,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         public bool UsesKey(IKey key)
         {
-            return sfxKeys.Exists(x => string.CompareOrdinal(x.key, key.Key) == 0);
+            return HasSFX(key.Key);
         }
 
         #region Analyse
@@ -87,7 +87,10 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return false;
             }
 
-            return HasSFX(splitText[1]);
+            bool hasSFX = HasSFX(splitText[1]);
+            UnityEngine.Debug.Assert(hasSFX, $"Want to play SFX, but could not find SFX with key {splitText[1]}.");
+
+            return hasSFX;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

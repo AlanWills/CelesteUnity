@@ -1,6 +1,8 @@
 ﻿using Celeste.Debug.Menus;
+using Celeste.Narrative.Assets;
 using Celeste.Narrative.Loading;
 using Celeste.Scene.Events;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Narrative.Debug
@@ -10,12 +12,22 @@ namespace Celeste.Narrative.Debug
     {
         #region Properties and Fields
 
-        [SerializeField] private StoryCatalogue storyCatalogue;
+        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
         [SerializeField] private OnContextLoadedEvent onContextLoadedEvent;
         [SerializeField] private Celeste.Events.Event saveNarrativeRecord;
 
         #endregion
+
+        public bool ShouldLoadAssets()
+        {
+            return storyCatalogue.ShouldLoad;
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
+        }
 
         #region GUI
 
@@ -25,7 +37,7 @@ namespace Celeste.Narrative.Debug
             {
                 if (GUILayout.Button("Load Last"))
                 {
-                    ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue);
+                    ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue.Asset);
                     UnityEngine.Debug.Assert(lastPlayedChapter != null, $"Could not find last played chapter.");
 
                     if (lastPlayedChapter != null)

@@ -3,14 +3,14 @@ using Celeste.Twine;
 using System.Collections;
 using UnityEngine;
 
-namespace Celeste.Narrative
+namespace Celeste.Narrative.Assets
 {
     [AddComponentMenu("Celeste/Narrative/Story Catalogue Manager")]
     public class StoryCatalogueManager : MonoBehaviour, IHasAssets
     {
         #region Properties and Fields
 
-        [SerializeField] private StoryCatalogue storyCatalogue;
+        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
         [SerializeField] private TwineRecord twineRecord;
 
         private const int STORY_GUID_FOR_TWINE_RECORD = 9999999;
@@ -26,28 +26,28 @@ namespace Celeste.Narrative
 
         public IEnumerator LoadAssets()
         {
-            SynchronizeStoryCatalogue();
+            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
 
-            yield break;
+            AddMissingTwineRecordStories();
         }
 
         #endregion
 
         #region Callbacks
 
-        public void OnSynchronizeStoryCatalogue()
+        public void OnAddMissingTwineRecordStories()
         {
-            SynchronizeStoryCatalogue();
+            AddMissingTwineRecordStories();
         }
 
         #endregion
 
-        private void SynchronizeStoryCatalogue()
+        private void AddMissingTwineRecordStories()
         {
             // Add twine record stories
             if (twineRecord.NumTwineStoryRecords > 0)
             {
-                Story twineRecordStory = storyCatalogue.FindByGuid(STORY_GUID_FOR_TWINE_RECORD);
+                Story twineRecordStory = storyCatalogue.Asset.FindByGuid(STORY_GUID_FOR_TWINE_RECORD);
 
                 if (twineRecordStory == null)
                 {
@@ -57,7 +57,7 @@ namespace Celeste.Narrative
                     twineRecordStory.Guid = STORY_GUID_FOR_TWINE_RECORD;
                     twineRecordStory.StoryDescription = "Stories automatically generated from the twine record.";
 
-                    storyCatalogue.AddItem(twineRecordStory);
+                    storyCatalogue.Asset.AddItem(twineRecordStory);
                 }
 
                 for (int i = 0, n = twineRecord.NumTwineStoryRecords; i < n; ++i)

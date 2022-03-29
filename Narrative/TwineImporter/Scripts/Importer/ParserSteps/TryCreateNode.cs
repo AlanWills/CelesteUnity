@@ -20,6 +20,9 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 if (usesKeys != null && usesKeys.CouldUseKey(key))
                 {
                     usesKeys.AddKeyForUse(key);
+#if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(step);
+#endif
                 }
             }
         }

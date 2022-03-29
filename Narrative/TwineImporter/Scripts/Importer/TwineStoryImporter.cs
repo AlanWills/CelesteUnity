@@ -58,40 +58,19 @@ namespace Celeste.Narrative.TwineImporter
                 }
             }
 
-            if (!parserErrorOccurred)
+            // Now resolve transitions
+            foreach (TwineNode node in twineStory.passages)
             {
-                // Now resolve transitions
-                foreach (TwineNode node in twineStory.passages)
+                if (node.Links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
                 {
-                    if (node.Links.Count > 0 && nodeLookup.TryGetValue(node.pid, out FSMNode graphNode))
+                    if (node.Links.Count > 1)
                     {
-                        if (node.Links.Count > 1)
+                        foreach (TwineNodeLink link in node.Links)
                         {
-                            foreach (TwineNodeLink link in node.Links)
-                            {
-                                if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
-                                {
-                                    NodePort outputPort = graphNode.GetOutputPort(link.link);
-                                    UnityEngine.Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
-
-                                    NodePort inputPort = target.GetDefaultInputPort();
-                                    UnityEngine.Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
-
-                                    outputPort.Connect(inputPort);
-                                }
-                                else
-                                {
-                                    UnityEngine.Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            TwineNodeLink link = node.Links[0];
                             if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
                             {
-                                NodePort outputPort = graphNode.GetDefaultOutputPort();
-                                UnityEngine.Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
+                                NodePort outputPort = graphNode.GetOutputPort(link.link);
+                                UnityEngine.Debug.Assert(outputPort != null, $"Could not find output port {link.link} in node {graphNode.name}.");
 
                                 NodePort inputPort = target.GetDefaultInputPort();
                                 UnityEngine.Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
@@ -104,16 +83,32 @@ namespace Celeste.Narrative.TwineImporter
                             }
                         }
                     }
-                }
+                    else
+                    {
+                        TwineNodeLink link = node.Links[0];
+                        if (nodeLookup.TryGetValue(link.pid, out FSMNode target))
+                        {
+                            NodePort outputPort = graphNode.GetDefaultOutputPort();
+                            UnityEngine.Debug.Assert(outputPort != null, $"Could not find default output port in node {graphNode.name}.");
 
-                // Set the start node using the pid from the twine story
-                if (startNode == null || !nodeLookup.TryGetValue(startNode.pid, out fsmGraph.startNode))
-                {
-                    UnityEngine.Debug.LogError($"Failed to set start node on narrative graph.");
+                            NodePort inputPort = target.GetDefaultInputPort();
+                            UnityEngine.Debug.Assert(inputPort != null, $"Could not find default input port in node {target.name}.");
+
+                            outputPort.Connect(inputPort);
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogAssertion($"Could not find node with pid {link.pid} for link on node {graphNode.name}.");
+                        }
+                    }
                 }
             }
 
-            return;
+            // Set the start node using the pid from the twine story
+            if (startNode == null || !nodeLookup.TryGetValue(startNode.pid, out fsmGraph.startNode))
+            {
+                UnityEngine.Debug.LogError($"Failed to set start node on narrative graph.");
+            }
         }
     }
 }
