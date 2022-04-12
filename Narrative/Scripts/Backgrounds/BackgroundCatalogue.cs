@@ -1,8 +1,7 @@
 ﻿using Celeste.Objects;
-using UnityEditor;
 using UnityEngine;
 
-namespace Celeste.Narrative.Characters
+namespace Celeste.Narrative.Backgrounds
 {
     [CreateAssetMenu(fileName = nameof(BackgroundCatalogue), menuName = "Celeste/Narrative/Backgrounds/Background Catalogue")]
     public class BackgroundCatalogue : ArrayScriptableObject<Background>

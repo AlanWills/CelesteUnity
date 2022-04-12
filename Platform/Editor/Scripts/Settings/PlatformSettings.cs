@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
 using Celeste.Tools.Attributes.GUI;
+using CelesteEditor.Platform.Data;
 
 namespace CelesteEditor.Platform
 {
@@ -149,22 +150,22 @@ namespace CelesteEditor.Platform
 
         [SerializeField]
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
-        private string[] scriptingDefineSymbols = new string[]
-        {
-            "KEY_CHECKS",
-            "INDEX_CHECKS",
-            "NULL_CHECKS",
-            "COMPONENT_CHECKS",
-            "ALLOCATOR_CHECKS"
-        };
+        private ScriptingDefineSymbols scriptingDefineSymbols;
+        //{
+        //    "KEY_CHECKS",
+        //    "INDEX_CHECKS",
+        //    "NULL_CHECKS",
+        //    "COMPONENT_CHECKS",
+        //    "ALLOCATOR_CHECKS"
+        //};
 
         [SerializeField]
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
-        private List<string> addressableGroupsInBuild = new List<string>();
+        private AddressableGroupNames addressableGroupsInBuild;
 
         [SerializeField]
         [Tooltip("Any custom scripting steps that should be run before building assets.  Useful for automated asset tooling.")]
-        private List<AssetPreparationStep> assetPreparationSteps = new List<AssetPreparationStep>();
+        private AssetPreparationSteps assetPreparationSteps;
 
         #endregion
 
@@ -194,7 +195,7 @@ namespace CelesteEditor.Platform
 
             EditorUserBuildSettings.development = development;
             PlayerSettings.bundleVersion = Version.ToString();
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols);
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols.ToArray());
 
             if (addressablesEnabled)
             {
@@ -203,9 +204,9 @@ namespace CelesteEditor.Platform
                 settings.profileSettings.SetValue(settings.activeProfileId, "RemoteBuildPath", AddressablesBuildDirectory);
                 settings.profileSettings.SetValue(settings.activeProfileId, "RemoteLoadPath", AddressablesLoadDirectory);
 
-                if (addressableGroupsInBuild.Count > 0)
+                if (addressableGroupsInBuild.NumItems > 0)
                 {
-                    settings.DefaultGroup = settings.FindGroup(addressableGroupsInBuild[0]);
+                    settings.DefaultGroup = settings.FindGroup(addressableGroupsInBuild.GetItem(0));
                 }
 
                 foreach (AddressableAssetGroup group in settings.groups)

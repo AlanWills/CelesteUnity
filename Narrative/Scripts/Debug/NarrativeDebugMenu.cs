@@ -1,4 +1,5 @@
-﻿using Celeste.Debug.Menus;
+﻿using Celeste.Assets;
+using Celeste.Debug.Menus;
 using Celeste.Narrative.Assets;
 using Celeste.Narrative.Loading;
 using Celeste.Scene.Events;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Narrative.Debug
 {
     [CreateAssetMenu(fileName = nameof(NarrativeDebugMenu), menuName = "Celeste/Narrative/Debug/Narrative Debug Menu")]
-    public class NarrativeDebugMenu : DebugMenu
+    public class NarrativeDebugMenu : DebugMenu, IHasAssets
     {
         #region Properties and Fields
 

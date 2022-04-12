@@ -3,6 +3,7 @@ using Celeste.FSM.Nodes;
 using Celeste.Narrative.Persistence;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using XNode;
 
 namespace Celeste.Narrative
@@ -17,6 +18,7 @@ namespace Celeste.Narrative
         public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
         public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
+        public UnityEvent OnNarrativeFinished { get; } = new UnityEvent();
 
         public ChapterRecord Record { get; set; }
 
@@ -94,7 +96,11 @@ namespace Celeste.Narrative
 
         private void Update()
         {
-            runtimeEngine.Update();
+            if (runtimeEngine.Update() == null)
+            {
+                OnNarrativeFinished.Invoke();
+                enabled = false;
+            }
         }
 
         #endregion

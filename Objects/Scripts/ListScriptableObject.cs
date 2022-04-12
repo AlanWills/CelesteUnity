@@ -1,12 +1,13 @@
 ﻿using Celeste.DataStructures;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Celeste.Objects
 {
-    public class ListScriptableObject<T> : ScriptableObject, IIndexableItems<T>
+    public class ListScriptableObject<T> : ScriptableObject, IIndexableItems<T>, IEnumerable<T>
     {
         #region Properties and Fields
 
@@ -47,6 +48,16 @@ namespace Celeste.Objects
             }
 
             ItemsImpl.Add(item);
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return ((IEnumerable<T>)items).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)items).GetEnumerator();
         }
     }
 }

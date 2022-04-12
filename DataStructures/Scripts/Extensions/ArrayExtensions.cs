@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Celeste.DataStructures
@@ -82,6 +83,11 @@ namespace Celeste.DataStructures
             }
 
             Array.Copy(sourceArray, destinationArray, sourceArray.Length);
+        }
+
+        public static ReadOnlyCollection<T> ToReadOnly<T>(this T[] array)
+        {
+            return new ReadOnlyCollection<T>(array);
         }
     }
 }

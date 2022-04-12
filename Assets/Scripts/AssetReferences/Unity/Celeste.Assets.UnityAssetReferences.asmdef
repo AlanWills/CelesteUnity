@@ -1,0 +1,17 @@
+{
+    "name": "Celeste.Assets.UnityAssetReferences",
+    "rootNamespace": "Celeste.Assets.UnityAssetReferences",
+    "references": [
+        "Unity.Addressables",
+        "Celeste.Assets"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,5 +1,4 @@
-﻿using Celeste.Narrative;
-using Celeste.Narrative.Characters;
+﻿using Celeste.Narrative.Backgrounds;
 using System;
 using UnityEngine;
 using UnityEngine.Events;

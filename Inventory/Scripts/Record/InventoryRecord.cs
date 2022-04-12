@@ -42,7 +42,7 @@ namespace Celeste.Inventory
             items.Clear();
         }
 
-        public void CreateStartingInventory(InventoryItem[] startingItems)
+        public void CreateStartingInventory(IList<InventoryItem> startingItems)
         {
             items.AddRange(startingItems);
 

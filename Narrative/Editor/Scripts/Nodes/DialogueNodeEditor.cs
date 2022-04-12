@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
+using static XNodeEditor.NodeEditor;
 
 namespace CelesteEditor.Narrative
 {

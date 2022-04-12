@@ -2,6 +2,7 @@
     "name": "Celeste.Assets.Editor",
     "rootNamespace": "CelesteEditor.Assets",
     "references": [
+        "Unity.Addressables.Editor",
         "Celeste.Assets",
         "Celeste.Tools",
         "Celeste.Tools.Editor"

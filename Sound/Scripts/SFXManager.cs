@@ -1,16 +1,19 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Assets;
+using Celeste.Sound.Settings;
+using Celeste.Tools;
+using System.Collections;
 using UnityEngine;
 
-namespace Robbi.Sound
+namespace Celeste.Sound
 {
     [AddComponentMenu("Celeste/Sound/SFX Manager")]
     [RequireComponent(typeof(AudioSource))]
-    public class SFXManager : MonoBehaviour
+    public class SFXManager : MonoBehaviour, IHasAssets
     {
         #region Properties and Fields
 
-        public AudioSource audioSource;
-        public BoolValue sfxEnabled;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private SFXSettings sfxSettings;
 
         #endregion
 
@@ -18,38 +21,44 @@ namespace Robbi.Sound
 
         private void OnValidate()
         {
-            if (audioSource == null)
-            {
-                audioSource = GetComponent<AudioSource>();
-            }
+            this.TryGet(ref audioSource);
         }
 
         #endregion
 
-        #region Audio Methods
+        #region IHasAssets
 
-        public void Play(AudioClip audioClip)
+        public bool ShouldLoadAssets()
         {
-            if (sfxEnabled.Value && !audioSource.isPlaying)
+            return sfxSettings.ShouldLoadAssets();
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            yield return sfxSettings.LoadAssets();
+
+            sfxSettings.AddOnPlaySFXCallback(Play);
+            sfxSettings.AddOnPlaySFXOneShotCallback(PlayOneShot);
+        }
+
+        #endregion
+
+        #region Callback
+
+        private void Play(AudioClip audioClip)
+        {
+            if (sfxSettings.Enabled && !audioSource.isPlaying)
             {
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
         }
 
-        public void PlayOneShot(AudioClip audioClip)
+        private void PlayOneShot(AudioClip audioClip)
         {
-            if (sfxEnabled.Value)
+            if (sfxSettings.Enabled)
             {
                 audioSource.PlayOneShot(audioClip);
-            }
-        }
-
-        public void OnSFXEnabledChanged(bool isEnabled)
-        {
-            for (int i = 0; i < transform.childCount; ++i)
-            {
-                transform.GetChild(i).gameObject.SetActive(isEnabled);
             }
         }
 

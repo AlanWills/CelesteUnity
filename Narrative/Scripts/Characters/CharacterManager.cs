@@ -1,5 +1,4 @@
-﻿using Celeste.Narrative.Persistence;
-using System.Collections;
+﻿using Celeste.Narrative.Characters.Settings;
 using UnityEngine;
 
 namespace Celeste.Narrative.Characters
@@ -9,7 +8,7 @@ namespace Celeste.Narrative.Characters
     {
         #region Properties and Fields
 
-        [SerializeField] private CharacterCustomisationCatalogue customisationCatalogue;
+        [SerializeField] private CharacterSettings characterSettings;
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace Celeste.Narrative.Characters
                 
                 if (characterRecord.AvatarCustomisationGuid != 0)
                 {
-                    var customisation = customisationCatalogue.FindByGuid<SpriteCharacterCustomisation>(characterRecord.AvatarCustomisationGuid);
+                    var customisation = characterSettings.FindCustomisationByGuid<SpriteCharacterCustomisation>(characterRecord.AvatarCustomisationGuid);
                     UnityEngine.Debug.Assert(customisation != null, $"Could not find customisation with guid {characterRecord.AvatarCustomisationGuid}.");
                     characterRecord.CharacterAvatarIcon = customisation.Sprite;
                 }

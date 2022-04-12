@@ -1,4 +1,4 @@
-﻿using Celeste.Narrative.Characters;
+﻿using Celeste.Narrative.Backgrounds;
 using CelesteEditor.DataStructures;
 using UnityEditor;
 

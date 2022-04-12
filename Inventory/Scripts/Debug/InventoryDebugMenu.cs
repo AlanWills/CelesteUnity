@@ -1,19 +1,20 @@
-﻿using Celeste.Debug.Menus;
+﻿using Celeste.Assets;
+using Celeste.Debug.Menus;
+using Celeste.Inventory.AssetReferences;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GUILayout;
 
 namespace Celeste.Inventory.Debug
 {
     [CreateAssetMenu(fileName = nameof(InventoryDebugMenu), menuName = "Celeste/Inventory/Debug/Inventory Debug Menu")]
-    public class InventoryDebugMenu : DebugMenu
+    public class InventoryDebugMenu : DebugMenu, IHasAssets
     {
         #region Properties and Fields
 
         private int NumEvents
         {
-            get { return inventoryItemCatalogue.NumItems; }
+            get { return inventoryItemCatalogue.Asset.NumItems; }
         }
 
         private int NumPages
@@ -25,10 +26,24 @@ namespace Celeste.Inventory.Debug
         private int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
 
         [SerializeField] private InventoryRecord inventoryRecord;
-        [SerializeField] private InventoryItemCatalogue inventoryItemCatalogue;
+        [SerializeField] private InventoryItemCatalogueAssetReference inventoryItemCatalogue;
 
         private const int DEFAULT_PAGE_SIZE = 10;
         private const int DEFAULT_CURRENT_PAGE = 0;
+
+        #endregion
+
+        #region IHasAssets
+
+        public bool ShouldLoadAssets()
+        {
+            return inventoryItemCatalogue.ShouldLoad;
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            yield return inventoryItemCatalogue.LoadAssetAsync();
+        }
 
         #endregion
 
@@ -107,7 +122,7 @@ namespace Celeste.Inventory.Debug
 
             for (int itemIndex = firstItemIndex; itemIndex < firstItemIndex + numEventsToShow; ++itemIndex)
             {
-                InventoryItem inventoryItem = inventoryItemCatalogue.GetItem(itemIndex);
+                InventoryItem inventoryItem = inventoryItemCatalogue.Asset.GetItem(itemIndex);
                 Label(inventoryItem.DisplayName);
 
                 if (!inventoryRecord.IsFull && Button("Add", ExpandWidth(false)))

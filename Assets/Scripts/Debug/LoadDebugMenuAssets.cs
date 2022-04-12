@@ -1,5 +1,4 @@
-﻿using Celeste.Assets;
-using Celeste.Debug.Menus;
+﻿using Celeste.Debug.Menus;
 using System.Collections;
 using UnityEngine;
 

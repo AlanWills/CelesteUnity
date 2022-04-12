@@ -1,19 +1,21 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Assets;
+using Celeste.Parameters;
+using Celeste.Sound.Settings;
+using Celeste.Tools;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Robbi.Sound
+namespace Celeste.Sound
 {
     [AddComponentMenu("Celeste/Sound/Music Manager")]
     [RequireComponent(typeof(AudioSource))]
-    public class MusicManager : MonoBehaviour
+    public class MusicManager : MonoBehaviour, IHasAssets
     {
         #region Properties and Fields
 
-        [SerializeField] private bool shuffle = true;
-        [SerializeField] private List<AudioClip> music = new List<AudioClip>();
         [SerializeField] private AudioSource audioSource;
-        [SerializeField] private BoolValue musicEnabled;
+        [SerializeField] private MusicSettings musicSettings;
 
         private int currentTrackIndex = -1;
 
@@ -31,10 +33,25 @@ namespace Robbi.Sound
 
         private void OnValidate()
         {
-            if (audioSource == null)
-            {
-                audioSource = GetComponent<AudioSource>();
-            }
+            this.TryGet(ref audioSource);
+        }
+
+        #endregion
+
+        #region IHasAssets
+
+        public bool ShouldLoadAssets()
+        {
+            return musicSettings.ShouldLoadAssets();
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            yield return musicSettings.LoadAssets();
+
+            musicSettings.AddOnMusicEnabledChangedCallback(OnMusicEnabledChanged);
+            musicSettings.AddOnPlayMusicCallback(Play);
+            musicSettings.AddOnPlayMusicOneShotCallback(PlayOneShot);
         }
 
         #endregion
@@ -43,21 +60,23 @@ namespace Robbi.Sound
 
         public void NextTrack()
         {
-            NextTrack(musicEnabled.Value);
+            NextTrack(musicSettings.Enabled);
         }
 
         private void NextTrack(bool isMusicEnabled)
         {
-            if (music.Count > 0 && isMusicEnabled)
+            var tracks = musicSettings.Tracks;
+
+            if (tracks.Count > 0 && isMusicEnabled)
             {
-                currentTrackIndex = shuffle ? Random.Range(0, music.Count) : (++currentTrackIndex % music.Count);
-                Debug.AssertFormat(0 <= currentTrackIndex & currentTrackIndex < music.Count, "Invalid track index {0}", currentTrackIndex);
-                audioSource.clip = music[currentTrackIndex];
+                currentTrackIndex = musicSettings.Shuffle ? Random.Range(0, tracks.Count) : (++currentTrackIndex % tracks.Count);
+                Debug.Assert(0 <= currentTrackIndex & currentTrackIndex < tracks.Count, $"Invalid track index {currentTrackIndex}");
+                audioSource.clip = tracks[currentTrackIndex];
                 audioSource.Play();
             }
         }
 
-        public void OnMusicEnabledChanged(bool isEnabled)
+        private void OnMusicEnabledChanged(bool isEnabled)
         {
             if (isEnabled)
             {
@@ -65,34 +84,29 @@ namespace Robbi.Sound
             }
             else
             {
-                audioSource.Stop();
-            }
-
-            for (int i = 0; i < transform.childCount; ++i)
-            {
-                transform.GetChild(i).gameObject.SetActive(isEnabled);
+                Stop();
             }
         }
 
-        public void Play(AudioClip audioClip)
+        private void Play(AudioClip audioClip)
         {
-            if (musicEnabled.Value && audioSource.clip != audioClip)
+            if (musicSettings.Enabled && audioSource.clip != audioClip)
             {
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
         }
 
-        public void PlayOneShot(AudioClip audioClip)
+        private void PlayOneShot(AudioClip audioClip)
         {
-            if (musicEnabled.Value)
+            if (musicSettings.Enabled)
             {
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
         }
 
-        public void Stop()
+        private void Stop()
         {
             audioSource.Stop();
         }

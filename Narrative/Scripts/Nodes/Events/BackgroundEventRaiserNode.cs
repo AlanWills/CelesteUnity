@@ -1,6 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.FSM.Nodes.Events;
-using Celeste.Narrative.Characters;
+using Celeste.Narrative.Backgrounds;
 using Celeste.Narrative.Parameters;
 
 namespace Celeste.Narrative.Nodes.Events

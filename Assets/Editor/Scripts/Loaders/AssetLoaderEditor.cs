@@ -32,7 +32,8 @@ namespace CelesteEditor.Assets
 
                 foreach (IHasAssets hasAssetsToLoad in assetLoader.GetComponentsInChildren<IHasAssets>())
                 {
-                    assetsToLoad.Add(hasAssetsToLoad.gameObject);
+                    // This cast is safe because we know we're dealing with a component right now
+                    assetsToLoad.Add((hasAssetsToLoad as Component).gameObject);
                 }
 
                 assetsToLoadProperty.arraySize = assetsToLoad.Count;

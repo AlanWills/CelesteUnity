@@ -6,6 +6,7 @@
         "Celeste.FSM",
         "Celeste.FSM.Nodes",
         "Celeste.Narrative",
+        "Celeste.Narrative.Nodes",
         "Celeste.Twine",
         "Celeste.Logic",
         "Celeste.Inventory",

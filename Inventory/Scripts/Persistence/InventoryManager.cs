@@ -1,12 +1,14 @@
-﻿using Celeste.Inventory.Persistence;
+﻿using Celeste.Assets;
+using Celeste.Inventory.Persistence;
+using Celeste.Inventory.Settings;
 using Celeste.Persistence;
-using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Inventory
 {
     [AddComponentMenu("Celeste/Inventory/Inventory Manager")]
-    public class InventoryManager : PersistentSceneManager<InventoryManager, InventoryDTO>
+    public class InventoryManager : PersistentSceneManager<InventoryManager, InventoryDTO>, IHasAssets
     {
         #region Properties and Fields
 
@@ -16,8 +18,26 @@ namespace Celeste.Inventory
             get { return FILE_NAME; }
         }
 
-        [SerializeField] private InventoryItemCatalogue inventoryItemCatalogue;
-        [SerializeField] private InventoryRecord inventory;
+        [SerializeField] private InventorySettings inventorySettings;
+        [SerializeField] private InventoryRecord inventoryRecord;
+
+        #endregion
+
+        #region IHasAssets
+        
+        public bool ShouldLoadAssets()
+        {
+            return inventorySettings.ShouldLoadAssets();
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            yield return inventorySettings.LoadAssets();
+
+            inventorySettings.AddInventoryItemAddedCallback(OnAddItemToInventory);
+
+            Load();
+        }
 
         #endregion
 
@@ -25,40 +45,39 @@ namespace Celeste.Inventory
 
         protected override void Deserialize(InventoryDTO dto)
         {
-            inventory.Clear();
-            inventory.MaxSize = dto.maxSize;
+            inventoryRecord.Clear();
+            inventoryRecord.MaxSize = dto.maxSize;
 
             foreach (int itemGuid in dto.itemGuids)
             {
-                InventoryItem item = inventoryItemCatalogue.FindByGuid(itemGuid);
-                UnityEngine.Debug.Assert(item != null, $"Could not find inventory item with guid {itemGuid} in catalogue.");
+                InventoryItem item = inventorySettings.MustFindInventoryItemByGuid(itemGuid);
 
                 if (item != null)
                 {
-                    inventory.AddItem(item);
+                    inventoryRecord.AddItem(item);
                 }
             }
         }
 
         protected override InventoryDTO Serialize()
         {
-            return new InventoryDTO(inventory);
+            return new InventoryDTO(inventoryRecord);
         }
 
         protected override void SetDefaultValues()
         {
-            inventory.CreateStartingInventory(inventoryItemCatalogue.startingItems);
+            inventoryRecord.CreateStartingInventory(inventorySettings.StartingItems);
         }
 
         #endregion
 
         #region Callbacks
 
-        public void OnAddItemToInventory(InventoryItem item)
+        private void OnAddItemToInventory(InventoryItem item)
         {
-            if (!inventory.IsFull)
+            if (!inventoryRecord.IsFull)
             {
-                inventory.AddItem(item);
+                inventoryRecord.AddItem(item);
             }
         }
 

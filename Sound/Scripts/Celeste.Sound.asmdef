@@ -2,7 +2,15 @@
     "name": "Celeste.Sound",
     "rootNamespace": "Celeste.Sound",
     "references": [
-        "Celeste.Parameters"
+        "Unity.ResourceManager",
+        "Unity.Addressables",
+        "Celeste.Parameters",
+        "Celeste.Parameters.AssetReferences",
+        "Celeste.Tools",
+        "Celeste.Assets",
+        "Celeste.Assets.UnityAssetReferences",
+        "Celeste.Events",
+        "Celeste.Events.AssetReferences"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

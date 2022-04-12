@@ -1,7 +1,6 @@
 ﻿using Celeste.Events;
-using Celeste.Narrative.Characters;
+using Celeste.Narrative.Backgrounds;
 using Celeste.Narrative.Nodes.Events;
-using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

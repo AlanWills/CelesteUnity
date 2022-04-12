@@ -5,6 +5,7 @@
         "Celeste.Constants",
         "Celeste.Tools",
         "Celeste.Tools.Editor",
+        "Celeste.Objects",
         "Unity.Addressables.Editor"
     ],
     "includePlatforms": [

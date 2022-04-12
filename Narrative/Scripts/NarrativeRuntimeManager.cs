@@ -13,6 +13,7 @@ namespace Celeste.Narrative
 
         [SerializeField] private ChapterRecordValue currentChapterRecord;
         [SerializeField] private NarrativeRuntimeEvent narrativeBegunEvent;
+        [SerializeField] private Celeste.Events.Event narrativeFinishedEvent;
 
         private NarrativeRuntime currentRuntime;
 
@@ -26,6 +27,7 @@ namespace Celeste.Narrative
             GameObject gameObject = new GameObject();
             gameObject.transform.SetParent(transform);
             currentRuntime = NarrativeRuntime.Create(gameObject, chapterRecord);
+            currentRuntime.OnNarrativeFinished.AddListener(OnNarrativeFinished);
 
             narrativeBegunEvent.Invoke(currentRuntime);
         }
@@ -52,6 +54,11 @@ namespace Celeste.Narrative
             {
                 currentChapterRecord.Value.CalculateProgress();
             }
+        }
+
+        private void OnNarrativeFinished()
+        {
+            narrativeFinishedEvent.Invoke();
         }
 
         #endregion

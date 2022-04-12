@@ -12,6 +12,7 @@ using Celeste.Narrative.TwineImporter;
 using Celeste;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.TwineImporter.ParserSteps;
+using Celeste.Narrative.Backgrounds;
 
 namespace CelesteEditor.Narrative.TwineImporter
 {

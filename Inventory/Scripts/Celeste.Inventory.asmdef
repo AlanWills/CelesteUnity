@@ -11,8 +11,11 @@
         "Celeste.Parameters",
         "Celeste.FSM",
         "Celeste.FSM.Nodes",
+        "Celeste.Assets",
         "RecyclableScrollRect",
         "Unity.TextMeshPro",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
         "XNode"
     ],
     "includePlatforms": [],
