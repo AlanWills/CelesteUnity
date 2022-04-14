@@ -1345,23 +1345,6 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
---- !u!114 &7942044067263933734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3099455309669523996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd361ef62c9e1946ba2612c0e415921, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleInputField: {fileID: 2420144545332987874}
-  tagsInputField: {fileID: 5079060881477744120}
-  textInputField: {fileID: 4208945535018442859}
-  followLinkUIManager: {fileID: 2040650906506564133}
-  removeTwineNode: {fileID: 11400000, guid: b4369a5c7727e2c428a02362e111d88e, type: 2}
 --- !u!1 &7931497764166833166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,12 +1650,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_fontSize
-      value: 17.55
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: 9bac14d20981f82429b780526a84446b, type: 2}
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_fontSizeMin
       value: 12
@@ -1680,7 +1663,7 @@ PrefabInstance:
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: -1796208995335688525, guid: 9bac14d20981f82429b780526a84446b, type: 2}
     - target: {fileID: 6191592729197578152, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2004,16 +1987,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_fontSize
-      value: 26.85
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: 9bac14d20981f82429b780526a84446b, type: 2}
     - target: {fileID: 6303679748892683062, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: -1796208995335688525, guid: 9bac14d20981f82429b780526a84446b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a14dc40cef9b2eb49a08d03eb5f0cdca, type: 3}
 --- !u!224 &505728947278929573 stripped
@@ -2047,6 +2030,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c16249abe615f4f8abba41a5423531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7942044067263933734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099455309669523996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd361ef62c9e1946ba2612c0e415921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleInputField: {fileID: 2420144545332987874}
+  tagsInputField: {fileID: 5079060881477744120}
+  textInputField: {fileID: 4208945535018442859}
+  followLinkUIManager: {fileID: 2040650906506564133}
+  removeTwineNode: {fileID: 11400000, guid: b4369a5c7727e2c428a02362e111d88e, type: 2}
 --- !u!1001 &8135021314259248439
 PrefabInstance:
   m_ObjectHideFlags: 0

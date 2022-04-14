@@ -113,7 +113,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Characters", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundCharacter in twineStoryAnalysis.foundCharacters)
+            foreach (string foundCharacter in twineStoryAnalysis.FoundCharacters)
             {
                 LabelField(foundCharacter);
             }
@@ -125,7 +125,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Loca Tokens", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundLocaToken in twineStoryAnalysis.foundLocaTokens)
+            foreach (string foundLocaToken in twineStoryAnalysis.FoundLocaTokens)
             {
                 LabelField(foundLocaToken);
             }
@@ -137,7 +137,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Conditions", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundCondition in twineStoryAnalysis.foundConditions)
+            foreach (string foundCondition in twineStoryAnalysis.FoundConditions)
             {
                 LabelField(foundCondition);
             }
@@ -149,7 +149,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Parameters", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundParameter in twineStoryAnalysis.foundParameters)
+            foreach (string foundParameter in twineStoryAnalysis.FoundParameters)
             {
                 LabelField(foundParameter);
             }
@@ -161,7 +161,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Backgrounds", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundBackground in twineStoryAnalysis.foundBackgrounds)
+            foreach (string foundBackground in twineStoryAnalysis.FoundBackgrounds)
             {
                 LabelField(foundBackground);
             }
@@ -173,7 +173,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Sub Narratives", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundSubNarrative in twineStoryAnalysis.foundSubNarratives)
+            foreach (string foundSubNarrative in twineStoryAnalysis.FoundSubNarratives)
             {
                 LabelField(foundSubNarrative);
             }
@@ -185,7 +185,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("Inventory Items", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundInventoryItem in twineStoryAnalysis.foundInventoryItems)
+            foreach (string foundInventoryItem in twineStoryAnalysis.FoundInventoryItems)
             {
                 LabelField(foundInventoryItem);
             }
@@ -197,7 +197,7 @@ namespace CelesteEditor.Narrative.TwineImporter
             LabelField("SFXs", CelesteGUIStyles.BoldLabel);
             Space();
 
-            foreach (string foundSFX in twineStoryAnalysis.foundSFXs)
+            foreach (string foundSFX in twineStoryAnalysis.FoundSFXs)
             {
                 LabelField(foundSFX);
             }
@@ -205,13 +205,13 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void DrawUnresolvedTagsGUI()
         {
-            if (twineStoryAnalysis.unrecognizedTags.Count > 0)
+            if (twineStoryAnalysis.UnrecognizedTags.Count > 0)
             {
                 Space();
                 LabelField("Unresolved Tags", CelesteGUIStyles.BoldLabel);
                 Space();
 
-                foreach (string unresolvedTag in twineStoryAnalysis.unrecognizedTags)
+                foreach (string unresolvedTag in twineStoryAnalysis.UnrecognizedTags)
                 {
                     using (HorizontalScope horizontal = new HorizontalScope())
                     {
@@ -222,7 +222,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindOrCreateCharacterName(unresolvedTag))
                             {
                                 removedUnresolvedTags.Add(unresolvedTag);
-                                twineStoryAnalysis.foundCharacters.Add(unresolvedTag);
+                                twineStoryAnalysis.AddFoundCharacter(unresolvedTag);
                             }
                         }
                     }
@@ -231,20 +231,20 @@ namespace CelesteEditor.Narrative.TwineImporter
 
             foreach (string unresolvedTag in removedUnresolvedTags)
             {
-                twineStoryAnalysis.unrecognizedTags.Remove(unresolvedTag);
+                twineStoryAnalysis.RemoveUnrecognizedTag(unresolvedTag);
             }
             removedUnresolvedTags.Clear();
         }
 
         private void DrawUnresolvedKeysGUI()
         {
-            if (twineStoryAnalysis.unrecognizedKeys.Count > 0)
+            if (twineStoryAnalysis.UnrecognizedKeys.Count > 0)
             {
                 Space();
                 LabelField("Unresolved Keys", CelesteGUIStyles.BoldLabel);
                 Space();
 
-                foreach (string unresolvedKey in twineStoryAnalysis.unrecognizedKeys)
+                foreach (string unresolvedKey in twineStoryAnalysis.UnrecognizedKeys)
                 {
                     using (HorizontalScope horizontal = new HorizontalScope())
                     {
@@ -255,7 +255,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindLocaToken(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundLocaTokens.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundLocaToken(unresolvedKey);
                             }
                         }
 
@@ -264,7 +264,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindCondition(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundConditions.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundConditions(unresolvedKey);
                             }
                         }
 
@@ -273,7 +273,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindParameter(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundParameters.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundParameter(unresolvedKey);
                             }
                         }
 
@@ -282,7 +282,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindBackground(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundBackgrounds.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundBackground(unresolvedKey);
                             }
                         }
 
@@ -291,7 +291,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindSubNarrative(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundSubNarratives.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundSubNarrative(unresolvedKey);
                             }
                         }
 
@@ -300,7 +300,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindInventoryItem(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundInventoryItems.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundInventoryItem(unresolvedKey);
                             }
                         }
 
@@ -309,7 +309,7 @@ namespace CelesteEditor.Narrative.TwineImporter
                             if (FindSFX(unresolvedKey))
                             {
                                 removedUnresolvedTags.Add(unresolvedKey);
-                                twineStoryAnalysis.foundSFXs.Add(unresolvedKey);
+                                twineStoryAnalysis.AddFoundSFXs(unresolvedKey);
                             }
                         }
                     }
@@ -318,7 +318,7 @@ namespace CelesteEditor.Narrative.TwineImporter
 
             foreach (string unresolvedKey in removedUnresolvedKeys)
             {
-                twineStoryAnalysis.unrecognizedKeys.Remove(unresolvedKey);
+                twineStoryAnalysis.RemoveUnrecognizedKey(unresolvedKey);
             }
             removedUnresolvedKeys.Clear();
         }
@@ -433,50 +433,66 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private void AddCharacterToSettings(Character character)
         {
-            importerSettings.AddKey(new CharacterKey(character.name, character));
-            RemoveUnresolvedTag(character.name);
+            if (importerSettings.AddKey(new CharacterKey(character.name, character)))
+            {
+                RemoveUnresolvedTag(character.name);
+            }
         }
 
         private void AddLocaTokenToSettings(ScriptableObject locaToken)
         {
-            importerSettings.AddKey(new LocaToken(locaToken.name, locaToken));
-            RemoveUnresolvedKey(locaToken.name);
+            if (importerSettings.AddKey(new LocaToken(locaToken.name, locaToken)))
+            {
+                RemoveUnresolvedKey(locaToken.name);
+            }
         }
 
         private void AddConditionToSettings(Condition condition)
         {
-            importerSettings.AddKey(new ConditionKey(condition.name, condition));
-            RemoveUnresolvedKey(condition.name);
+            if (importerSettings.AddKey(new ConditionKey(condition.name, condition)))
+            {
+                RemoveUnresolvedKey(condition.name);
+            }
         }
 
         private void AddParameterToSettings(ScriptableObject parameter)
         {
-            importerSettings.AddKey(new ParameterKey(parameter.name, parameter));
-            RemoveUnresolvedKey(parameter.name);
+            if (importerSettings.AddKey(new ParameterKey(parameter.name, parameter)))
+            {
+                RemoveUnresolvedKey(parameter.name);
+            }
         }
 
         private void AddBackgroundToSettings(Background background)
         {
-            importerSettings.AddKey(new BackgroundKey(background.name, background));
-            RemoveUnresolvedKey(background.name);
+            if (importerSettings.AddKey(new BackgroundKey(background.name, background)))
+            {
+                RemoveUnresolvedKey(background.name);
+            }
         }
 
         private void AddSubNarrativeToSettings(NarrativeGraph subNarrative)
         {
-            importerSettings.AddKey(new SubNarrativeKey(subNarrative.name, subNarrative));
-            RemoveUnresolvedKey(subNarrative.name);
+            if (importerSettings.AddKey(new SubNarrativeKey(subNarrative.name, subNarrative)))
+            {
+                RemoveUnresolvedKey(subNarrative.name);
+            }
         }
 
         private void AddInventoryItemToSettings(InventoryItem inventoryItem)
         {
-            importerSettings.AddKey(new InventoryItemKey(inventoryItem.name, inventoryItem));
-            RemoveUnresolvedKey(inventoryItem.name);
+            if (importerSettings.AddKey(new InventoryItemKey(inventoryItem.name, inventoryItem)))
+            {
+                RemoveUnresolvedKey(inventoryItem.name);
+            }
         }
 
         private void AddSFXToSettings(AudioClip audioClip)
         {
-            importerSettings.AddKey(new SFXKey(audioClip.name, audioClip));
-            RemoveUnresolvedKey(audioClip.name);
+            if (importerSettings.AddKey(new SFXKey(audioClip.name, audioClip)))
+            {
+                RemoveUnresolvedKey(audioClip.name);
+            }
         }
 
         private void RemoveUnresolvedTag(string tag)

@@ -133,11 +133,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
                 if (HasSubNarrative(subNarrativeName))
                 {
-                    analysis.foundSubNarratives.Add(subNarrativeName);
+                    analysis.AddFoundSubNarrative(subNarrativeName);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(subNarrativeName);
+                    analysis.AddUnrecognizedKey(subNarrativeName);
                 }
             }
         }

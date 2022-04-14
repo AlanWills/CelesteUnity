@@ -157,11 +157,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             {
                 if (HasParameter(key, false))
                 {
-                    analysis.foundParameters.Add(key);
+                    analysis.AddFoundParameter(key);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(key);
+                    analysis.AddUnrecognizedKey(key);
                 }
             }
 
@@ -174,15 +174,15 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                     splitText.Length >= 2 &&
                     IsInstruction(splitText[0]))
                 {
-                    string parameterName = splitText[1];
+                    string parameterName = StripParameterDelimiters(splitText[1]);
 
-                    if (HasParameter(parameterName, true))
+                    if (HasParameter(parameterName, false))
                     {
-                        analysis.foundParameters.Add(parameterName);
+                        analysis.AddFoundParameter(parameterName);
                     }
                     else
                     {
-                        analysis.unrecognizedKeys.Add(parameterName);
+                        analysis.AddUnrecognizedKey(parameterName);
                     }
                 }
             }

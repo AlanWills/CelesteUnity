@@ -10,6 +10,8 @@ namespace Celeste.Twine
     {
         #region Properties and Fields
 
+        public bool IsValid { get; private set; }
+
         /// <summary>
         /// Node to link to
         /// </summary>
@@ -60,6 +62,19 @@ namespace Celeste.Twine
             }
 
             return createdLinks.ToArray();
+        }
+
+        public bool Validate(TwineStory twineStory)
+        {
+            bool isValid = true;
+
+            isValid &= !string.IsNullOrEmpty(name);
+            isValid &= !string.IsNullOrEmpty(link);
+            isValid &= twineStory.passages.Exists(x => x.pid == pid);
+
+            IsValid = isValid;
+
+            return isValid;
         }
     }
 }

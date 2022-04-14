@@ -46,7 +46,7 @@ namespace Celeste.FSM
 
             if (CurrentNode != null)
             {
-                Debug.LogFormat("Spooling up FSM with starting node {0}", CurrentNode.name);
+                Debug.Log($"Spooling up FSM {graph.name} with starting node {CurrentNode.name}");
             }
             else 
             {

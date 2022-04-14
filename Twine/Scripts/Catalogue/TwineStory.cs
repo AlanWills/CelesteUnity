@@ -33,8 +33,12 @@ namespace Celeste.Twine
                 return;
             }
 
-            foreach (TwineNode twineNode in passages)
+            for (int i = 0, n = passages.Count; i < n; i++)
             {
+                TwineNode twineNode = passages[i];
+                UnityEngine.Debug.Assert(twineNode != null, $"Null node found in twine story {name} at index {i}.");
+                twineNode.Initialize(this);
+
                 highestPID = Mathf.Max(twineNode.pid, highestPID);
                 twineNode.OnChanged.AddListener(OnTwineNodeChanged);
             }
@@ -65,11 +69,12 @@ namespace Celeste.Twine
         public TwineNode AddNode(string name)
         {
             TwineNode twineNode = new TwineNode();
+            twineNode.Initialize(this);
             twineNode.Name = name;
             twineNode.pid = ++highestPID;
             twineNode.Position = CalculateBestPosition();
-
             twineNode.OnChanged.AddListener(OnTwineNodeChanged);
+
             passages.Add(twineNode);
             
             OnNodeAdded.Invoke(twineNode);

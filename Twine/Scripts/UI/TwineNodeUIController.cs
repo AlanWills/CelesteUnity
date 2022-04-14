@@ -4,6 +4,7 @@ using Celeste.Memory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Celeste.Twine.UI
 {
@@ -12,11 +13,12 @@ namespace Celeste.Twine.UI
     {
         #region Properties and Fields
 
+        [Header("UI")]
         [SerializeField] private TextMeshProUGUI titleText;
         [SerializeField] private TextMeshProUGUI bodyText;
+        [SerializeField] private Image backgroundImage;
 
-        [Header("Events")]
-        [SerializeField] private ShowPopupEvent showEditTwineNodePopup;
+        [SerializeField] private TwineNodeUIControllerSettings settings;
 
         private TwineNode twineNode;
         private float lastClickTime = 0;
@@ -62,6 +64,7 @@ namespace Celeste.Twine.UI
         {
             titleText.text = twineNode.Name;
             bodyText.text = twineNode.Text;
+            backgroundImage.color = twineNode.IsValid ? settings.validColour : settings.invalidColour;
         }
 
         #endregion
@@ -97,7 +100,7 @@ namespace Celeste.Twine.UI
                 {
                     twineNode = twineNode
                 };
-                showEditTwineNodePopup.Invoke(args);
+                settings.showEditTwineNodePopup.Invoke(args);
             }
 
             lastClickTime = currentClickTime;

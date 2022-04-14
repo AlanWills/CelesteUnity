@@ -182,11 +182,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             {
                 if (locaTokens.HasLocaToken(key))
                 {
-                    analysis.foundLocaTokens.Add(key);
+                    analysis.AddFoundLocaToken(key);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(key);
+                    analysis.AddUnrecognizedKey(key);
                 }
             }
         }

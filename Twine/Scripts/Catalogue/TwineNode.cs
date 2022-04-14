@@ -3,7 +3,6 @@ using Celeste.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Twine
 {
@@ -12,7 +11,10 @@ namespace Celeste.Twine
     {
         #region Properties and Fields
 
-        public TwineNodeUnityEvent OnChanged { get; } = new TwineNodeUnityEvent();
+        public TwineNodeUnityEvent OnChanged { get; private set; } = new TwineNodeUnityEvent();
+
+        public TwineStory TwineStory { get; private set; }
+        public bool IsValid { get; private set; }
 
         public string Name
         {
@@ -22,7 +24,7 @@ namespace Celeste.Twine
                 if (string.CompareOrdinal(name, value) != 0)
                 {
                     name = value;
-                    OnChanged.Invoke(this);
+                    NotifyChanged();
                 }
             }
         }
@@ -35,7 +37,7 @@ namespace Celeste.Twine
                 if (string.CompareOrdinal(text, value) != 0)
                 {
                     text = value;
-                    OnChanged.Invoke(this);
+                    NotifyChanged();
                 }
             }
         }
@@ -46,7 +48,7 @@ namespace Celeste.Twine
             set
             {
                 tags.AssignFrom(value);
-                OnChanged.Invoke(this);
+                NotifyChanged();
             }
         }
 
@@ -58,7 +60,7 @@ namespace Celeste.Twine
                 if (position != value)
                 {
                     position = value;
-                    OnChanged.Invoke(this);
+                    NotifyChanged();
                 }
             }
         }
@@ -69,18 +71,30 @@ namespace Celeste.Twine
             set
             {
                 links.AssignFrom(value);
-                OnChanged.Invoke(this);
+                NotifyChanged();
             }
         }
 
         public int pid;
         [SerializeField] private string name;
         [SerializeField] private string text;
-        [SerializeField] List<string> tags = new List<string>();
+        [SerializeField] private List<string> tags = new List<string>();
         [SerializeField] private Vector2 position;
         [SerializeField] private List<TwineNodeLink> links = new List<TwineNodeLink>();
 
         #endregion
+
+        public void Initialize(TwineStory twineStory)
+        {
+            TwineStory = twineStory;
+
+            if (OnChanged != null)
+            {
+                OnChanged = new TwineNodeUnityEvent();
+            }
+
+            Validate();
+        }
 
         public void UpdateData(
             string newName, 
@@ -92,6 +106,31 @@ namespace Celeste.Twine
             text = newText;
             tags.AssignFrom(newTags);
             links.AssignFrom(newLinks);
+
+            NotifyChanged();
+        }
+
+        public bool Validate()
+        {
+            bool isValid = true;
+
+            isValid &= !string.IsNullOrEmpty(name);
+            isValid &= !string.IsNullOrEmpty(text);
+            isValid &= tags.Count > 0;
+
+            for (int i = 0, n = links != null ? links.Count : 0; i < n; ++i)
+            {
+                isValid &= links[i].Validate(TwineStory);
+            }
+
+            IsValid = isValid;
+            
+            return isValid;
+        }
+
+        public void NotifyChanged()
+        {
+            Validate();
 
             OnChanged.Invoke(this);
         }

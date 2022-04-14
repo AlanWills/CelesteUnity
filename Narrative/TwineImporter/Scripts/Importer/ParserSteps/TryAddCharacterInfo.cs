@@ -72,7 +72,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             {
                 if (HasCharacter(tag))
                 {
-                    analysis.foundCharacters.Add(tag);
+                    analysis.AddFoundCharacter(tag);
                 }
             }
         }

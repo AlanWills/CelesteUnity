@@ -111,7 +111,7 @@ namespace Celeste.Narrative.TwineImporter
                     {
                         if (!IsRecognizedTag(tag))
                         {
-                            twineStoryAnalysis.unrecognizedTags.Add(tag);
+                            twineStoryAnalysis.AddUnrecognizedTag(tag);
                         }
                     }
                 }
@@ -213,7 +213,7 @@ namespace Celeste.Narrative.TwineImporter
 
         #region Key Utility
 
-        public void AddKey(IKey key)
+        public bool AddKey(IKey key)
         {
             bool keyAdded = false;
 
@@ -233,6 +233,7 @@ namespace Celeste.Narrative.TwineImporter
             }
 
             UnityEngine.Debug.Assert(keyAdded, $"Could not find parser step which uses key {key.Key} {key.GetType().Name}.");
+            return keyAdded;
         }
 
         #endregion

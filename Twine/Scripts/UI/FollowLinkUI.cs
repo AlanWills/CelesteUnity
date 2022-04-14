@@ -2,6 +2,7 @@
 using PolyAndCode.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Celeste.Twine.UI
 {
@@ -13,9 +14,10 @@ namespace Celeste.Twine.UI
 
         [Header("UI")]
         [SerializeField] private TextMeshProUGUI linkName;
+        [SerializeField] private Image backgroundImage;
 
-        [Header("Events")]
-        [SerializeField] private IntEvent followLink;
+        [Header("Data")]
+        [SerializeField] private FollowLinkUISettings settings;
 
         private TwineNodeLink link;
 
@@ -25,13 +27,14 @@ namespace Celeste.Twine.UI
         {
             link = twineNodeLink;
             linkName.text = twineNodeLink.name;
+            backgroundImage.color = twineNodeLink.IsValid ? settings.validColour : settings.invalidColour;
         }
 
         #region Callbacks
 
         public void OnButtonPressed()
         {
-            followLink.Invoke(link.pid);
+            settings.followLink.Invoke(link.pid);
         }
 
         #endregion

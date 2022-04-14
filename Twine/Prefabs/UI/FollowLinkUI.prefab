@@ -147,7 +147,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linkName: {fileID: 7257258104998014960}
-  followLink: {fileID: 11400000, guid: 482084dedd71bcf489628ba59de3baa8, type: 2}
+  backgroundImage: {fileID: 1040926511656235473}
+  settings: {fileID: 11400000, guid: 96829beb543e61440bc4fc0eef472618, type: 2}
 --- !u!1 &3073135346252570951
 GameObject:
   m_ObjectHideFlags: 0

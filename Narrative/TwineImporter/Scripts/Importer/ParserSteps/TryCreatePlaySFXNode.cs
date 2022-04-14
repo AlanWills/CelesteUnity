@@ -132,11 +132,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
                 if (HasSFX(sfxName))
                 {
-                    analysis.foundSFXs.Add(sfxName);
+                    analysis.AddFoundSFXs(sfxName);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(sfxName);
+                    analysis.AddUnrecognizedKey(sfxName);
                 }
             }
         }

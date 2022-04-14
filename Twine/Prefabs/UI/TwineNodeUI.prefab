@@ -121,7 +121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleText: {fileID: 1599250647706003142}
   bodyText: {fileID: 7846729865749969097}
-  showEditTwineNodePopup: {fileID: 11400000, guid: eaaf5c6ed9981f74db234bab0d7d507d, type: 2}
+  backgroundImage: {fileID: 1236993123949362564}
+  settings: {fileID: 11400000, guid: d8cd29d5ec90b5b4ab81a6ed8ff27682, type: 2}
 --- !u!1 &2913651094756074067
 GameObject:
   m_ObjectHideFlags: 0

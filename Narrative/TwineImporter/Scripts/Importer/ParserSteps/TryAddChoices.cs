@@ -126,11 +126,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 {
                     if (HasCondition(key))
                     {
-                        analysis.foundConditions.Add(key);
+                        analysis.AddFoundConditions(key);
                     }
                     else
                     {
-                        analysis.unrecognizedKeys.Add(key);
+                        analysis.AddUnrecognizedKey(key);
                     }
                 }
             }

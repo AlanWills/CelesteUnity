@@ -129,11 +129,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
                 if (HasBackground(backgroundName))
                 {
-                    analysis.foundBackgrounds.Add(backgroundName);
+                    analysis.AddFoundBackground(backgroundName);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(backgroundName);
+                    analysis.AddUnrecognizedKey(backgroundName);
                 }
             }
         }

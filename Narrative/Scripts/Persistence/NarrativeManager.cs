@@ -32,9 +32,9 @@ namespace Celeste.Narrative
 
         public IEnumerator LoadAssets()
         {
-            Load();
-
             yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
+
+            Load();
         }
 
         #endregion

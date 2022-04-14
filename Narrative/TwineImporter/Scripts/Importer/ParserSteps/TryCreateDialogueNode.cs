@@ -48,8 +48,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
                 return true;
             }
 
-            // We must have only one link - no branching allowed
-            return twineNode.Links.Count == 1;
+            // We must have at most one link - no branching allowed
+            return twineNode.Links.Count <= 1;
         }
 
         public override void Parse(TwineNodeParseContext parseContext)

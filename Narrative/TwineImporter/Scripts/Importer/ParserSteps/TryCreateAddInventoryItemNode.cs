@@ -45,7 +45,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         public bool CouldUseKey(IKey key)
         {
-            return key as InventoryItem;
+            return key is InventoryItemKey;
         }
 
         public bool UsesKey(IKey key)
@@ -130,11 +130,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
                 if (HasInventoryItem(inventoryItemName))
                 {
-                    analysis.foundInventoryItems.Add(inventoryItemName);
+                    analysis.AddFoundInventoryItem(inventoryItemName);
                 }
                 else
                 {
-                    analysis.unrecognizedKeys.Add(inventoryItemName);
+                    analysis.AddUnrecognizedKey(inventoryItemName);
                 }
             }
         }
