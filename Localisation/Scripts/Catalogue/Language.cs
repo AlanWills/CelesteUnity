@@ -53,14 +53,13 @@ namespace Celeste.Localisation
         #region Properties and Fields
 
         public string CountryCode => countryCode;
-        public int NumEntries => localisationLookup.Count;
         public LocalisationKey LanguageNameKey => languageNameKey;
 
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
-        [SerializeField] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
-        [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
+        [OdinSerialize] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
+        [OdinSerialize] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
 
         #endregion
 
