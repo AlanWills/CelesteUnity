@@ -1,4 +1,5 @@
 using Celeste.DataStructures;
+using Celeste.OdinSerializer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine;
 namespace Celeste.Localisation
 {
     [CreateAssetMenu(fileName = nameof(Language), menuName = "Celeste/Localisation/Language")]
-    public class Language : ScriptableObject
+    public class Language : SerializedScriptableObject
     {
         #region LocalisationEntry
 
@@ -52,20 +53,35 @@ namespace Celeste.Localisation
         #region Properties and Fields
 
         public string CountryCode => countryCode;
-        public int NumEntries => localisationEntries.Count;
+        public int NumEntries => localisationLookup.Count;
         public LocalisationKey LanguageNameKey => languageNameKey;
 
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
-        [SerializeField] private List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
-
-        [NonSerialized] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
-        [NonSerialized] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
+        [SerializeField] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
+        [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
 
         #endregion
 
-        public void Initialize()
+        public string Localise(LocalisationKey key)
+        {
+            if (key == null)
+            {
+                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.");
+                return string.Empty;
+            }
+
+            if (!localisationLookup.TryGetValue(key, out string localisedText))
+            {
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key.Key}' due to missing entry.  Using fallback...");
+                return key.Fallback;
+            }
+
+            return localisedText;
+        }
+
+        public void SetEntries(List<LocalisationEntry> localisationEntries)
         {
             localisationLookup.Clear();
             categoryLookup.Clear();
@@ -106,39 +122,9 @@ namespace Celeste.Localisation
             UnityEngine.Debug.Assert(localisationEntries.Count == localisationLookup.Count, $"Mismatch between localisation entries and lookup - duplicate keys detected!");
         }
 
-        public string Localise(LocalisationKey key)
-        {
-            if (key == null)
-            {
-                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.");
-                return string.Empty;
-            }
-
-            if (!localisationLookup.TryGetValue(key, out string localisedText))
-            {
-                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key.Key}' due to missing entry.  Using fallback...");
-                return key.Fallback;
-            }
-
-            return localisedText;
-        }
-
-        public void SetEntries(List<LocalisationEntry> entries)
-        {
-            localisationEntries.Clear();
-            localisationEntries.AddRange(entries);
-
-            Initialize();
-        }
-
         public bool HasKey(LocalisationKey localisationKey)
         {
             return localisationLookup.ContainsKey(localisationKey);
-        }
-
-        public LocalisationKey GetKey(int index)
-        {
-            return localisationEntries.Get(index).key;
         }
 
         public int NumEntriesInCategory(LocalisationKeyCategory category)

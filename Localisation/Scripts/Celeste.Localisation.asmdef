@@ -12,7 +12,8 @@
         "Celeste.Tools",
         "Celeste.DataStructures",
         "Celeste.Assets",
-        "Celeste.Coroutines"
+        "Celeste.Coroutines",
+        "Celeste.OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
