@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Celeste.DataStructures;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
@@ -7,6 +8,44 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     public class TryCreateScriptNode : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
         #region Properties and Fields
+
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var createScriptNodeStep in createScriptNodeSteps)
+                {
+                    IUsesKeys usesKeys = createScriptNodeStep as IUsesKeys;
+
+                    if (usesKeys != null)
+                    {
+                        foreach (string key in usesKeys.Keys)
+                        {
+                            yield return key;
+                        }
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                foreach (var createScriptNodeStep in createScriptNodeSteps)
+                {
+                    IUsesTags usesTags = createScriptNodeStep as IUsesTags;
+
+                    if (usesTags != null)
+                    {
+                        foreach (string tag in usesTags.Tags)
+                        {
+                            yield return tag;
+                        }
+                    }
+                }
+            }
+        }
 
         [SerializeField] private string scriptTag = "Script";
         [SerializeField] private List<TwineNodeParserStep> createScriptNodeSteps = new List<TwineNodeParserStep>();
@@ -136,7 +175,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        private bool HasInstruction(List<string> tags)
+        private bool HasInstruction(IReadOnlyList<string> tags)
         {
             return tags.Contains(scriptTag);
         }

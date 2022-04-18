@@ -31,6 +31,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var backgroundKey in backgroundKeys)
+                {
+                    yield return backgroundKey.key;
+                }
+            }
+        }
+
         [SerializeField] private string instruction = "SetBackground";
         [SerializeField] private BackgroundEvent setBackgroundEvent;
         [SerializeField] private List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();

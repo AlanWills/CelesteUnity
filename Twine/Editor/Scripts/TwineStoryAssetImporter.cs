@@ -1,4 +1,5 @@
 ﻿using Celeste.Twine;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -25,11 +26,13 @@ namespace CelesteEditor.Twine
                     Debug.Assert(!link.broken, $"Link {link.name} to node {link.link} on node {node.Name} is broken.");
                 }
 
-                var tags = node.Tags;
+                var tags = new List<string>(node.Tags);
                 for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
                 {
                     tags[i] = tags[i].Trim();
                 }
+
+                node.Tags = tags;
             }
 
             ctx.AddObjectToAsset("main", twineStory);

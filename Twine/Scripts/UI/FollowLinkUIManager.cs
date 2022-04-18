@@ -15,7 +15,7 @@ namespace Celeste.Twine.UI
         private List<TwineNodeLink> twineNodeLinks = new List<TwineNodeLink>();
 
         #endregion
-        public void Hookup(TwineNodeLink[] twineNodeLinks)
+        public void Hookup(IReadOnlyCollection<TwineNodeLink> twineNodeLinks)
         {
             this.twineNodeLinks.Clear();
             this.twineNodeLinks.AddRange(twineNodeLinks);

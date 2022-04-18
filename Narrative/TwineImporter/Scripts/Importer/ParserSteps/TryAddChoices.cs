@@ -32,6 +32,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var condition in conditionKeys)
+                {
+                    yield return condition.key;
+                }
+            }
+        }
+
         [SerializeField] private LocaTokens locaTokens;
         [SerializeField] private char conditionStartDelimiter = '#';
         [SerializeField] private char conditionEndDelimiter = '#';

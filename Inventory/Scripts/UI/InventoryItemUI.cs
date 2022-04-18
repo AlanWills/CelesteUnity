@@ -16,10 +16,10 @@ namespace Celeste.Inventory.UI
 
         #endregion
 
-        public void ConfigureCell(InventoryItemUIData storyUIData, int cellIndex)
+        public void ConfigureCell(InventoryItemUIData inventoryItemUIData, int cellIndex)
         {
-            itemName.text = storyUIData.Name;
-            itemImage.sprite = storyUIData.Sprite;
+            itemName.text = inventoryItemUIData.Name;
+            itemImage.sprite = inventoryItemUIData.Sprite;
         }
     }
 }

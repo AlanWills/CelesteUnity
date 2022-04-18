@@ -30,8 +30,7 @@ namespace CelesteEditor.Twine
 
                     foreach (TwineNode twineNode in twineStory.passages)
                     {
-                        twineNode.Links.Clear();
-                        twineNode.Links.AddRange(TwineNodeLink.CreateFromText(twineNode.Text));
+                        twineNode.Links = TwineNodeLink.CreateFromText(twineNode.Text);
 
                         foreach (TwineNodeLink twineNodeLink in twineNode.Links)
                         {

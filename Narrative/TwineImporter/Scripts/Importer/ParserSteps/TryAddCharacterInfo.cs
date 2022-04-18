@@ -5,6 +5,7 @@ using Celeste.Narrative.Nodes;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
@@ -31,6 +32,28 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     public class TryAddCharacterInfo : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
         #region Properties and Fields
+
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var character in characters)
+                {
+                    yield return character.key;
+                }
+            }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                foreach (var character in characters)
+                {
+                    yield return character.key;
+                }
+            }
+        }
 
         [SerializeField] private List<CharacterKey> characters = new List<CharacterKey>();
 
@@ -65,7 +88,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         public override void Analyse(TwineNodeAnalyseContext parseContext)
         {
-            List<string> tags = parseContext.TwineNode.Tags;
+            IReadOnlyList<string> tags = parseContext.TwineNode.Tags;
             TwineStoryAnalysis analysis = parseContext.Analysis;
 
             foreach (string tag in tags)
@@ -108,7 +131,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return characters.Exists(x => string.CompareOrdinal(x.key, tag) == 0);
         }
 
-        private Character FindCharacterInTags(IList<string> tags)
+        private Character FindCharacterInTags(IReadOnlyList<string> tags)
         {
             for (int i = 0, n = tags != null ? tags.Count : 0; i < n; ++i)
             {

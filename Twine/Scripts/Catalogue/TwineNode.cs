@@ -42,7 +42,7 @@ namespace Celeste.Twine
             }
         }
 
-        public List<string> Tags
+        public IReadOnlyList<string> Tags
         {
             get { return tags; }
             set
@@ -65,7 +65,7 @@ namespace Celeste.Twine
             }
         }
 
-        public List<TwineNodeLink> Links
+        public IReadOnlyList<TwineNodeLink> Links
         {
             get { return links; }
             set
@@ -99,8 +99,8 @@ namespace Celeste.Twine
         public void UpdateData(
             string newName, 
             string newText, 
-            string[] newTags, 
-            TwineNodeLink[] newLinks)
+            IList<string> newTags, 
+            IList<TwineNodeLink> newLinks)
         {
             name = newName;
             text = newText;

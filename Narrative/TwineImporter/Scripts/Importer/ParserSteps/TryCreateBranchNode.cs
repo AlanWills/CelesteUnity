@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Celeste.DataStructures;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
@@ -7,6 +8,25 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     public class TryCreateBranchNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                foreach (var createBranchNodeStep in createBranchNodeSteps)
+                {
+                    IUsesTags usesTags = createBranchNodeStep as IUsesTags;
+
+                    if (usesTags != null)
+                    {
+                        foreach (string tag in usesTags.Tags)
+                        {
+                            yield return tag;
+                        }
+                    }
+                }
+            }
+        }
 
         [SerializeField] private string branchTag = "Branch";
         [SerializeField] private List<TwineNodeParserStep> createBranchNodeSteps = new List<TwineNodeParserStep>();
@@ -136,7 +156,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        private bool HasInstruction(List<string> tags)
+        private bool HasInstruction(IReadOnlyList<string> tags)
         {
             return tags.Contains(branchTag);
         }

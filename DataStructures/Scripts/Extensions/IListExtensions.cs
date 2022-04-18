@@ -80,6 +80,32 @@ namespace Celeste.DataStructures
             return false;
         }
 
+        public static bool Exists<T>(this IReadOnlyList<T> list, System.Predicate<T> predicate)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (predicate(list[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool Contains<T>(this IReadOnlyList<T> list, T value)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (value.Equals(list[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void AssignFrom<T>(this List<T> list, IEnumerable<T> source)
         {
             list.Clear();

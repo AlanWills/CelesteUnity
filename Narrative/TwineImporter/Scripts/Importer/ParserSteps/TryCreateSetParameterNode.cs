@@ -26,6 +26,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var parameterKey in parameterKeys)
+                {
+                    yield return parameterKey.key;
+                }
+            }
+        }
+
         [SerializeField] private string instruction = "SetParameter";
         [SerializeField] private char parameterStartDelimiter = '$';
         [SerializeField] private char parameterEndDelimiter = '$';

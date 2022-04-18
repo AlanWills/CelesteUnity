@@ -13,45 +13,19 @@ namespace Celeste.Narrative.TwineImporter
     {
         #region Properties and Fields
 
-        public string CharactersDirectory
-        {
-            get { return Path.Combine(rootDirectory, charactersDirectory); }
-        }
+        public IReadOnlyList<TwineNodeParserStep> ParserSteps => parserSteps;
 
-        public string LocaTokensDirectory
-        {
-            get { return Path.Combine(rootDirectory, locaTokensDirectory); }
-        }
+        public string IgnoreTag => ignoreTag;
+        public string StartTag => startTag;
 
-        public string ConditionsDirectory
-        {
-            get { return Path.Combine(rootDirectory, conditionsDirectory); }
-        }
-
-        public string ParametersDirectory
-        {
-            get { return Path.Combine(rootDirectory, parametersDirectory); }
-        }
-
-        public string BackgroundsDirectory
-        {
-            get { return Path.Combine(rootDirectory, backgroundsDirectory); }
-        }
-
-        public string SubNarrativesDirectory
-        {
-            get { return Path.Combine(rootDirectory, subNarrativesDirectory); }
-        }
-
-        public string InventoryItemsDirectory
-        {
-            get { return Path.Combine(rootDirectory, inventoryItemsDirectory); }
-        }
-
-        public string AudioClipsDirectory
-        {
-            get { return Path.Combine(rootDirectory, audioClipsDirectory); }
-        }
+        public string CharactersDirectory => Path.Combine(rootDirectory, charactersDirectory);
+        public string LocaTokensDirectory => Path.Combine(rootDirectory, locaTokensDirectory);
+        public string ConditionsDirectory => Path.Combine(rootDirectory, conditionsDirectory);
+        public string ParametersDirectory => Path.Combine(rootDirectory, parametersDirectory);
+        public string BackgroundsDirectory => Path.Combine(rootDirectory, backgroundsDirectory);
+        public string SubNarrativesDirectory => Path.Combine(rootDirectory, subNarrativesDirectory);
+        public string InventoryItemsDirectory => Path.Combine(rootDirectory, inventoryItemsDirectory);
+        public string AudioClipsDirectory => Path.Combine(rootDirectory, audioClipsDirectory);
 
         [SerializeField] private TwineNodeParserStep[] parserSteps;
 
@@ -171,17 +145,17 @@ namespace Celeste.Narrative.TwineImporter
 
         #region Tag Utility
 
-        public bool ContainsIgnoreTag(IList<string> tags)
+        public bool ContainsIgnoreTag(IReadOnlyList<string> tags)
         {
             return ContainsTag(tags, ignoreTag);
         }
 
-        public bool ContainsStartTag(IList<string> tags)
+        public bool ContainsStartTag(IReadOnlyList<string> tags)
         {
             return ContainsTag(tags, startTag);
         }
 
-        private bool ContainsTag(IList<string> tags, string desiredTag)
+        private bool ContainsTag(IReadOnlyList<string> tags, string desiredTag)
         {
             return tags.Exists((string s) => string.CompareOrdinal(s, desiredTag) == 0);
         }

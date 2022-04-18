@@ -35,6 +35,33 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                for (int i = 0, n = locaTokens.NumItems; i < n; i++)
+                {
+                    yield return locaTokens.GetItem(i).key;
+                }
+            }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                foreach (var uiPosition in uiPositionTags)
+                {
+                    yield return uiPosition.tag;
+                }
+
+                foreach (var dialogueType in dialogueTypeTags)
+                {
+                    yield return dialogueType.tag;
+                }
+            }
+        }
+
         [SerializeField] private LocaTokens locaTokens;
         [SerializeField] private List<UIPositionTag> uiPositionTags = new List<UIPositionTag>();
         [SerializeField] private List<DialogueTypeTag> dialogueTypeTags = new List<DialogueTypeTag>();
@@ -143,7 +170,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        private UIPosition FindUIPositionFromTag(IList<string> tags, UIPosition fallbackValue)
+        private UIPosition FindUIPositionFromTag(IReadOnlyList<string> tags, UIPosition fallbackValue)
         {
             for (int i = 0, n = tags.Count; i < n; ++i)
             {
@@ -157,7 +184,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             return fallbackValue;
         }
 
-        private DialogueType FindDialogueTypeFromTag(IList<string> tags, DialogueType fallbackValue)
+        private DialogueType FindDialogueTypeFromTag(IReadOnlyList<string> tags, DialogueType fallbackValue)
         {
             for (int i = 0, n = tags.Count; i < n; ++i)
             {

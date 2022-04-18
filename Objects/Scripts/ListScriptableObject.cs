@@ -12,7 +12,7 @@ namespace Celeste.Objects
         #region Properties and Fields
 
         public int NumItems { get { return ItemsImpl.Count; } }
-        public ReadOnlyCollection<T> Items => new ReadOnlyCollection<T>(ItemsImpl);
+        public IReadOnlyList<T> Items => new ReadOnlyCollection<T>(ItemsImpl);
 
         private List<T> ItemsImpl => runtimeModifiedItems != null ? runtimeModifiedItems : items;
 

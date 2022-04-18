@@ -32,6 +32,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var inventoryItem in inventoryItemKeys)
+                {
+                    yield return inventoryItem.key;
+                }
+            }
+        }
+
         [SerializeField] private string instruction = "AddInventoryItem";
         [SerializeField] private InventoryItemEvent addInventoryItemEvent;
         [SerializeField] private List<InventoryItemKey> inventoryItemKeys = new List<InventoryItemKey>();

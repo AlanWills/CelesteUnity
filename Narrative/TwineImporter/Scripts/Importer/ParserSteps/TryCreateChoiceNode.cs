@@ -1,4 +1,5 @@
-﻿using Celeste.Twine;
+﻿using Celeste.DataStructures;
+using Celeste.Twine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,11 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     public class TryCreateChoiceNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields
+
+        public IEnumerable<string> Tags
+        {
+            get { yield return choiceTag; }
+        }
 
         [SerializeField] private string choiceTag = "Choice";
 
@@ -59,7 +65,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
         #endregion
 
-        private bool HasInstruction(List<string> tags)
+        private bool HasInstruction(IReadOnlyList<string> tags)
         {
             return tags.Contains(choiceTag);
         }

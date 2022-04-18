@@ -31,6 +31,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var sfxKey in sfxKeys)
+                {
+                    yield return sfxKey.key;
+                }
+            }
+        }
+
         [SerializeField] private string instruction = "PlaySFX";
         [SerializeField] private AudioClipEvent playSFXEvent;
         [SerializeField] private List<SFXKey> sfxKeys = new List<SFXKey>();

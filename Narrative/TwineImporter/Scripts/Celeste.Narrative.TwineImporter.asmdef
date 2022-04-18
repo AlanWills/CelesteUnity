@@ -16,6 +16,8 @@
         "Celeste.Parameters",
         "Celeste.Objects",
         "Celeste.Assets",
+        "Celeste.Debug",
+        "Celeste.Tools",
         "Unity.Addressables",
         "Unity.ResourceManager"
     ],

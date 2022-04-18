@@ -68,9 +68,10 @@ namespace Celeste.Twine
         {
             bool isValid = true;
 
+            // If no twine story is provided we don't bother with that validation
             isValid &= !string.IsNullOrEmpty(name);
             isValid &= !string.IsNullOrEmpty(link);
-            isValid &= twineStory.passages.Exists(x => x.pid == pid);
+            isValid &= twineStory != null ? twineStory.passages.Exists(x => x.pid == pid) : true;
 
             IsValid = isValid;
 

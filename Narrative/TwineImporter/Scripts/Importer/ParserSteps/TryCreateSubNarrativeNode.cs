@@ -30,6 +30,17 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var subNarrativeKey in subNarrativeKeys)
+                {
+                    yield return subNarrativeKey.key;
+                }
+            }
+        }
+
         [SerializeField] private string instruction = "SubNarrative";
         [SerializeField] private List<SubNarrativeKey> subNarrativeKeys = new List<SubNarrativeKey>();
 

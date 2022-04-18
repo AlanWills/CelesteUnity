@@ -8,6 +8,44 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     {
         #region Properties and Fields
 
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                foreach (var createNodeStep in createNodeSteps)
+                {
+                    IUsesKeys usesKeys = createNodeStep as IUsesKeys;
+                    
+                    if (usesKeys != null)
+                    {
+                        foreach (string key in usesKeys.Keys)
+                        {
+                            yield return key;
+                        }
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                foreach (var createNodeStep in createNodeSteps)
+                {
+                    IUsesTags usesTags = createNodeStep as IUsesTags;
+
+                    if (usesTags != null)
+                    {
+                        foreach (string tag in usesTags.Tags)
+                        {
+                            yield return tag;
+                        }
+                    }
+                }
+            }
+        }
+
         [SerializeField] private List<TwineNodeParserStep> createNodeSteps = new List<TwineNodeParserStep>();
 
         #endregion

@@ -72,10 +72,7 @@ namespace Celeste.Twine.UI
         public void OnClosePressed()
         {
             // Revert the changes to the node
-            twineNode.Name = originalNodeName;
-            twineNode.Text = originalNodeText;
-            twineNode.Tags.AssignFrom(originalNodeTags);
-            twineNode.Links.AssignFrom(originalNodeLinks);
+            twineNode.UpdateData(originalNodeName, originalNodeText, originalNodeTags, originalNodeLinks);
         }
 
         public void OnRemovePressed()
@@ -105,7 +102,7 @@ namespace Celeste.Twine.UI
             string newText = textInputField.text;
             TwineNodeLink[] newLinks = TwineNodeLink.CreateFromText(newText);
 
-            twineNode.Links.AssignFrom(newLinks);
+            twineNode.Links = newLinks;
             twineNode.Text = newText;
 
             followLinkUIManager.Hookup(newLinks);
