@@ -157,6 +157,7 @@ namespace CelesteEditor.Localisation.Tools
 
                 language.SetEntries(localisationEntries);
                 EditorUtility.SetDirty(language);
+                AssetDatabase.SaveAssets();
             }
 
             LocalisationPostImportContext context = new LocalisationPostImportContext()

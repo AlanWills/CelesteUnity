@@ -50,16 +50,40 @@ namespace Celeste.Localisation
 
         #endregion
 
+        #region Localisation Key Category Comparer
+
+        private struct LocalisationKeyCategoryComparer : IEqualityComparer<LocalisationKeyCategory>
+        {
+            public bool Equals(LocalisationKeyCategory x, LocalisationKeyCategory y)
+            {
+                if (x == null || y == null)
+                {
+                    return x == null && y == null;
+                }
+
+                return string.CompareOrdinal(x.CategoryName, y.CategoryName) == 0;
+            }
+
+            public int GetHashCode(LocalisationKeyCategory obj)
+            {
+                return !string.IsNullOrEmpty(obj.CategoryName) ? obj.CategoryName.GetHashCode() : 0;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public string CountryCode => countryCode;
         public LocalisationKey LanguageNameKey => languageNameKey;
+        public int NumLocalisationKeys => localisationLookup.Count;
+        public int NumLocalisationKeyCategories => categoryLookup.Count;
 
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
-        [OdinSerialize] private Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
-        [OdinSerialize] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>();
+        public Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
+        public Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
 
         #endregion
 
@@ -82,6 +106,11 @@ namespace Celeste.Localisation
 
         public void SetEntries(List<LocalisationEntry> localisationEntries)
         {
+            if (localisationLookup == null)
+            {
+                localisationLookup = new Dictionary<LocalisationKey, string>();
+            }
+
             localisationLookup.Clear();
             categoryLookup.Clear();
 

@@ -1,13 +1,11 @@
 using Celeste.Log;
-using System.Collections;
-using System.Collections.Generic;
+using Celeste.OdinSerializer;
+using Celeste.Tools;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
 
 namespace Celeste.Persistence
 {
-    public static class PersistenceUtility<T> where T : class, new()
+    public static class PersistenceUtility
     {
         #region Save/Load Methods
 
@@ -16,36 +14,38 @@ namespace Celeste.Persistence
             return File.Exists(persistentFilePath);
         }
 
-        public static T Load(string persistentFilePath)
+        public static T Load<T>(string filePath)
         {
-            if (!CanLoad(persistentFilePath))
+            if (!CanLoad(filePath))
             {
-                return null;
+                return default;
             }
 
-            using (FileStream fileStream = new FileStream(persistentFilePath, FileMode.Open))
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                string persistenceString = bf.Deserialize(fileStream) as string;
+            byte[] bytes = File.ReadAllBytes(filePath);
+            T persistenceDTO = SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
 
-                T persistenceDTO = new T();
-                JsonUtility.FromJsonOverwrite(persistenceString, persistenceDTO);
-                HudLog.LogInfo($"{nameof(T)} loaded");
-
-                return persistenceDTO;
-            }
+            return persistenceDTO;
         }
 
-        public static void Save(string filePath, T persistenceDTO)
+        public static void Save<T>(string filePath, T persistenceDTO)
         {
-            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+            // Save binary file
             {
-                string persistenceString = JsonUtility.ToJson(persistenceDTO);
-
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fileStream, persistenceString);
-                HudLog.LogInfo($"{nameof(T)} saved");
+                byte[] bytes = SerializationUtility.SerializeValue(persistenceDTO, DataFormat.Binary);
+                File.WriteAllBytes(filePath, bytes);
             }
+
+#if UNITY_EDITOR
+            // Save debug human readable file
+            {
+                string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
+                byte[] json = SerializationUtility.SerializeValue(persistenceDTO, DataFormat.JSON);
+                File.WriteAllBytes(debugPersistentFilePath, json);
+            }
+#endif
+
+            // Needed to deal with browser async saving
+            WebGLUtils.SyncFiles();
         }
 
         #endregion

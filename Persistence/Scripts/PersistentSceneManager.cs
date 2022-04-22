@@ -1,6 +1,5 @@
 ﻿using Celeste.Log;
 using Celeste.Persistence.Utility;
-//using Celeste.Persistence.Utility;
 using Celeste.Tools;
 using System.Collections;
 using System.IO;
@@ -11,7 +10,6 @@ namespace Celeste.Persistence
 {
     public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour
         where TManager : PersistentSceneManager<TManager, TDTO>
-        where TDTO : class
     {
         #region Properties and Fields
 
@@ -49,30 +47,19 @@ namespace Celeste.Persistence
             {
                 string persistentFilePath = FilePath;
 
-                if (File.Exists(persistentFilePath))
+                if (PersistenceUtility.CanLoad(persistentFilePath))
                 {
-                    using (FileStream fileStream = new FileStream(persistentFilePath, FileMode.Open))
-                    {
-                        if (fileStream.Length > 0)
-                        {
-                            BinaryFormatter bf = new BinaryFormatter();
-                            TDTO tDTO = bf.Deserialize(fileStream) as TDTO;
+                    TDTO tDTO = PersistenceUtility.Load<TDTO>(persistentFilePath);
 
-                            if (tDTO != null)
-                            {
-                                Deserialize(tDTO);
-                            }
-                            else
-                            {
-                                Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
-                                SetDefaultValues();
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log($"No data saved to persistent file for {persistentFilePath}.  Using default values.");
-                            SetDefaultValues();
-                        }
+                    if (tDTO != null)
+                    {
+                        Deserialize(tDTO);
+                        HudLog.LogInfo($"{name} loaded");
+                    }
+                    else
+                    {
+                        Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                        SetDefaultValues();
                     }
                 }
                 else
@@ -101,27 +88,7 @@ namespace Celeste.Persistence
         private void SaveImpl()
         {
             TDTO serializedInstance = Serialize();
-            string persistentFilePath = FilePath;
-
-            // Save binary file
-            {
-                using (FileStream fileStream = new FileStream(persistentFilePath, FileMode.Create))
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bf.Serialize(fileStream, serializedInstance);
-                }
-            }
-
-#if UNITY_EDITOR
-            // Save debug human readable file
-            {
-                string debugPersistentFilePath = $"{persistentFilePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
-                File.WriteAllText(debugPersistentFilePath, JsonUtility.ToJson(serializedInstance, true));
-            }
-#endif
-
-            // Needed to deal with browser async saving
-            WebGLUtils.SyncFiles();
+            PersistenceUtility.Save(FilePath, serializedInstance);
             HudLog.LogInfo($"{name} saved");
 
             saveRequested = false;
