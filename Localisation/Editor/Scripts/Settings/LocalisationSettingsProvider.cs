@@ -13,6 +13,7 @@ namespace CelesteEditor.Localisation.Settings
         private class PlatformSettingStyles
         {
             public static GUIContent currentLanguageValue = new GUIContent("Current Language Value");
+            public static GUIContent localisationSheetLanguagesOffset = new GUIContent("Sheet Languages Offset");
             public static GUIContent postImportSteps = new GUIContent("Post Import Steps");
         }
 
@@ -22,6 +23,7 @@ namespace CelesteEditor.Localisation.Settings
 
         private SerializedObject localisationSettings;
         private SerializedProperty currentLanguageValueProperty;
+        private SerializedProperty localisationSheetLanguagesOffsetProperty;
         private SerializedProperty postImportStepsProperty;
 
         #endregion
@@ -34,6 +36,7 @@ namespace CelesteEditor.Localisation.Settings
             // This function is called when the user clicks on the MyCustom element in the Settings window.
             localisationSettings = LocalisationSettings.GetSerializedSettings();
             currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.currentLanguageValue));
+            localisationSheetLanguagesOffsetProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.localisationSheetLanguagesOffset));
             postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.postImportSteps));
         }
 
@@ -42,6 +45,7 @@ namespace CelesteEditor.Localisation.Settings
             localisationSettings.Update();
 
             EditorGUILayout.PropertyField(currentLanguageValueProperty);
+            EditorGUILayout.PropertyField(localisationSheetLanguagesOffsetProperty);
             EditorGUILayout.PropertyField(postImportStepsProperty);
 
             localisationSettings.ApplyModifiedProperties();

@@ -13,6 +13,13 @@ namespace Celeste.Narrative.Characters
         public int Guid
         {
             get { return guid; }
+            set
+            {
+                guid = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
         }
 
         public string CharacterName

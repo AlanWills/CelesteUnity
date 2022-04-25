@@ -11,6 +11,13 @@ namespace Celeste.Narrative.Backgrounds
         public int Guid
         {
             get { return guid; }
+            set
+            {
+                guid = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
         }
 
         public Sprite Sprite
@@ -37,6 +44,6 @@ namespace Celeste.Narrative.Backgrounds
         [SerializeField] private int guid;
         [SerializeField] private Sprite sprite;
 
-        #endregion
+#endregion
     }
 }

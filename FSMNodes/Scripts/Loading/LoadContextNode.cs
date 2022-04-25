@@ -10,8 +10,28 @@ namespace Celeste.FSM.Nodes.Loading
         #region Properties and Fields
 
         public SceneSet sceneSet;
+        public ContextProvider contextProvider;
         public LoadContextEvent loadContextEvent;
         public OnContextLoadedEvent onContextLoadedEvent;
+
+        #endregion
+
+        #region Unity Methods
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (loadContextEvent == null)
+            {
+                loadContextEvent = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultLoadContextEvent;
+            }
+
+            if (contextProvider == null)
+            {
+                contextProvider = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultContextProvider;
+            }
+        }
+#endif
 
         #endregion
 
@@ -21,7 +41,7 @@ namespace Celeste.FSM.Nodes.Loading
         {
             base.OnEnter();
 
-            Context context = CreateContext();
+            Context context = contextProvider.Create();
             if (context != null)
             {
                 LoadContextArgs loadContextArgs = new LoadContextArgs(sceneSet, context, onContextLoadedEvent);
@@ -36,10 +56,5 @@ namespace Celeste.FSM.Nodes.Loading
         }
 
         #endregion
-
-        protected virtual Context CreateContext()
-        {
-            return new Context();
-        }
     }
 }

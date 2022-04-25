@@ -9,6 +9,26 @@ namespace Celeste.Objects
 {
     public class ListScriptableObject<T> : ScriptableObject, IIndexableItems<T>, IEnumerable<T>
     {
+        #region Change Block
+
+        private struct ChangeBlock : IDisposable
+        {
+            private ListScriptableObject<T> listSO;
+
+            public ChangeBlock(ListScriptableObject<T> listSO)
+            {
+                this.listSO = listSO;
+                listSO.OnPreModify();
+            }
+
+            public void Dispose()
+            {
+                listSO.OnPostModify();
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         public int NumItems { get { return ItemsImpl.Count; } }
@@ -40,14 +60,19 @@ namespace Celeste.Objects
 
         public void AddItem(T item)
         {
-            if (Application.isPlaying && runtimeModifiedItems == null)
+            using (ChangeBlock changeBlock = new ChangeBlock(this))
             {
-                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized list
-                // to prevent any runtime changes affecting what will be serialized and saved
-                runtimeModifiedItems = new List<T>(items);
+                ItemsImpl.Add(item);
             }
+        }
 
-            ItemsImpl.Add(item);
+        public void SetItems(IReadOnlyList<T> newItems)
+        {
+            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            {
+                ItemsImpl.Clear();
+                ItemsImpl.AddRange(newItems);
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -58,6 +83,26 @@ namespace Celeste.Objects
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)items).GetEnumerator();
+        }
+
+        private void OnPreModify()
+        {
+            if (Application.isPlaying && runtimeModifiedItems == null)
+            {
+                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized list
+                // to prevent any runtime changes affecting what will be serialized and saved
+                runtimeModifiedItems = new List<T>(items);
+            }
+        }
+
+        private void OnPostModify()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+#endif
         }
     }
 }

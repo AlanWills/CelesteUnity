@@ -18,6 +18,7 @@ namespace Celeste.Localisation.Settings
         public const string FILE_PATH = FOLDER_PATH + "LocalisationSettings.asset";
 
         public LanguageValue currentLanguageValue;
+        public int localisationSheetLanguagesOffset = 3;
         public List<LocalisationPostImportStep> postImportSteps = new List<LocalisationPostImportStep>();
 
         #endregion

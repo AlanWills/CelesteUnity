@@ -10,7 +10,17 @@ namespace Celeste.Features
     {
         #region Properties and Fields
 
-        public int Guid => guid;
+        public int Guid
+        {
+            get { return guid; }
+            set
+            {
+                guid = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
 
         public bool IsEnabled
         {

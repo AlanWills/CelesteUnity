@@ -23,7 +23,6 @@ namespace CelesteEditor.Localisation.Tools
         [SerializeField] private string localisationKeysDirectory = "Assets/Localisation/Data/Keys";
         [SerializeField] private bool clearLog = true;
 
-        private const int LANGUAGES_OFFSET = 2;
         private const string LOCALISATION_SHEET_ID = "LocalisationSheetId";
 
         #endregion
@@ -109,7 +108,7 @@ namespace CelesteEditor.Localisation.Tools
             GoogleSheet.Column keyStrings = googleSheet.GetColumn(0);
             GoogleSheet.Column categoryStrings = googleSheet.GetColumn(1);
 
-            for (int column = LANGUAGES_OFFSET; column < googleSheet.NumColumns; ++column)
+            for (int column = LocalisationSettings.GetOrCreateSettings().localisationSheetLanguagesOffset; column < googleSheet.NumColumns; ++column)
             {
                 GoogleSheet.Column columnData = googleSheet.GetColumn(column);
                 Language language = languagesToLocalise.Find(x => string.CompareOrdinal(x.CountryCode, columnData.Name) == 0);
@@ -162,6 +161,7 @@ namespace CelesteEditor.Localisation.Tools
 
             LocalisationPostImportContext context = new LocalisationPostImportContext()
             {
+                googleSheet = googleSheet,
                 localisationKeyLookup = localisationKeys
             };
 

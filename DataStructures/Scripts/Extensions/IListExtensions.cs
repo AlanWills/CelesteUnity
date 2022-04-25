@@ -6,7 +6,7 @@ namespace Celeste.DataStructures
 {
     public static class IListExtensions
     {
-        public static T Get<T>(this IList<T> list, int index)
+        public static T Get<T>(this IReadOnlyList<T> list, int index)
         {
 #if INDEX_CHECKS
             if (index < 0 || list.Count <= index)
@@ -18,7 +18,7 @@ namespace Celeste.DataStructures
             return list[index];
         }
 
-        public static T Get<T>(this IList<T> list, uint index)
+        public static T Get<T>(this IReadOnlyList<T> list, uint index)
         {
 #if INDEX_CHECKS
             if (list.Count <= index)
@@ -30,7 +30,7 @@ namespace Celeste.DataStructures
             return list[(int)index];
         }
 
-        public static int GetRandomIndex<T>(this IList<T> list)
+        public static int GetRandomIndex<T>(this IReadOnlyList<T> list)
         {
             return Random.Range(0, list.Count);
         }
@@ -65,19 +65,6 @@ namespace Celeste.DataStructures
                 list[i] = list[randomIndex];
                 list[randomIndex] = temp;
             }
-        }
-
-        public static bool Exists<T>(this IList<T> list, System.Predicate<T> predicate)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (predicate(list[i]))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public static bool Exists<T>(this IReadOnlyList<T> list, System.Predicate<T> predicate)
