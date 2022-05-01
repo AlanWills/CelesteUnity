@@ -69,11 +69,17 @@ namespace Celeste.Localisation.UI
         }
 #endif
 
-#endregion
+        #endregion
+
+        public void Localise(string key, Language language)
+        {
+            Text = language != null ? language.Localise(key) : string.Empty;
+
+            text.text = Text;
+        }
 
         public void Localise(LocalisationKey key, Language language)
         {
-            Key = key;
             Text = language != null ? language.Localise(key) : key.Fallback;
 
             text.text = Text;

@@ -1,12 +1,12 @@
 ﻿using Celeste.Tools;
 using Celeste.Utils;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.UI.Layout
 {
-    [AddComponentMenu("Celeste/UI/Layout/Adjusted Rect From Reference Layout")]
-    public class AdjustedRectFromReferenceLayout : MonoBehaviour
+    [ExecuteInEditMode]
+    [AddComponentMenu("Celeste/UI/Layout/Adjust Rect Using Reference Layout")]
+    public class AdjustRectUsingReferenceLayout : MonoBehaviour
     {
         #region Properties and Fields
 

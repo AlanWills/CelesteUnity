@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace Celeste.UI.Layout
 {
-    [AddComponentMenu("Celeste/UI/Layout/Update Reference Layout")]
-    public class UpdateReferenceLayout : MonoBehaviour
+    [ExecuteInEditMode]
+    [AddComponentMenu("Celeste/UI/Layout/Set Reference Layout Rect")]
+    public class SetReferenceLayoutRect : MonoBehaviour
     {
         #region Properties and Fields
 

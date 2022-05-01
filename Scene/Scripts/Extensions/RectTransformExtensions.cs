@@ -7,11 +7,14 @@ namespace Celeste.Utils
     {
         public static void CopyLayoutFrom(this RectTransform targetRectTransform, RectTransform sourceRectTransform)
         {
-            targetRectTransform.anchorMin = sourceRectTransform.anchorMin;
-            targetRectTransform.anchorMax = sourceRectTransform.anchorMax;
-            targetRectTransform.pivot = sourceRectTransform.pivot;
-            targetRectTransform.anchoredPosition = sourceRectTransform.anchoredPosition;
-            targetRectTransform.sizeDelta = sourceRectTransform.sizeDelta;
+            if (sourceRectTransform != null)
+            {
+                targetRectTransform.anchorMin = sourceRectTransform.anchorMin;
+                targetRectTransform.anchorMax = sourceRectTransform.anchorMax;
+                targetRectTransform.pivot = sourceRectTransform.pivot;
+                targetRectTransform.anchoredPosition = sourceRectTransform.anchoredPosition;
+                targetRectTransform.sizeDelta = sourceRectTransform.sizeDelta;
+            }
         }
 
         public static Rect GetWorldRect(this RectTransform rectTransform)

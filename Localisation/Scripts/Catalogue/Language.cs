@@ -82,8 +82,8 @@ namespace Celeste.Localisation
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
-        public Dictionary<LocalisationKey, string> localisationLookup = new Dictionary<LocalisationKey, string>(new LocalisationKeyComparer());
-        public Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
+        [SerializeField] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
+        [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
 
         #endregion
 
@@ -95,7 +95,7 @@ namespace Celeste.Localisation
                 return string.Empty;
             }
 
-            if (!localisationLookup.TryGetValue(key, out string localisedText))
+            if (!localisationLookup.TryGetValue(key.Key, out string localisedText))
             {
                 UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key.Key}' due to missing entry.  Using fallback...");
                 return key.Fallback;
@@ -104,13 +104,25 @@ namespace Celeste.Localisation
             return localisedText;
         }
 
-        public void SetEntries(List<LocalisationEntry> localisationEntries)
+        public string Localise(string key)
         {
-            if (localisationLookup == null)
+            if (string.IsNullOrEmpty(key))
             {
-                localisationLookup = new Dictionary<LocalisationKey, string>();
+                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null or empty inputted key.");
+                return string.Empty;
             }
 
+            if (!localisationLookup.TryGetValue(key, out string localisedText))
+            {
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry.  No fallback possible...");
+                return string.Empty;
+            }
+
+            return localisedText;
+        }
+
+        public void SetEntries(List<LocalisationEntry> localisationEntries)
+        {
             localisationLookup.Clear();
             categoryLookup.Clear();
 
@@ -121,9 +133,9 @@ namespace Celeste.Localisation
 
                 if (localisationKey != null)
                 {
-                    if (!localisationLookup.ContainsKey(localisationKey))
+                    if (!localisationLookup.ContainsKey(localisationKey.Key))
                     {
-                        localisationLookup.Add(localisationKey, localisationEntry.localisedText);
+                        localisationLookup.Add(localisationKey.Key, localisationEntry.localisedText);
                     }
                     else
                     {
@@ -152,7 +164,7 @@ namespace Celeste.Localisation
 
         public bool HasKey(LocalisationKey localisationKey)
         {
-            return localisationLookup.ContainsKey(localisationKey);
+            return localisationLookup.ContainsKey(localisationKey.Key);
         }
 
         public int NumEntriesInCategory(LocalisationKeyCategory category)
