@@ -2,7 +2,8 @@
     "name": "Celeste.Objects",
     "rootNamespace": "Celeste.Objects",
     "references": [
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

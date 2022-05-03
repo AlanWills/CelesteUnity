@@ -13,6 +13,7 @@ namespace CelesteEditor.Localisation.Settings
         private class PlatformSettingStyles
         {
             public static GUIContent currentLanguageValue = new GUIContent("Current Language Value");
+            public static GUIContent localisationKeyCatalogue = new GUIContent("Localisation Key Catalogue");
             public static GUIContent localisationSheetLanguagesOffset = new GUIContent("Sheet Languages Offset");
             public static GUIContent postImportSteps = new GUIContent("Post Import Steps");
         }
@@ -23,6 +24,7 @@ namespace CelesteEditor.Localisation.Settings
 
         private SerializedObject localisationSettings;
         private SerializedProperty currentLanguageValueProperty;
+        private SerializedProperty localisationKeyCatalogueProperty;
         private SerializedProperty localisationSheetLanguagesOffsetProperty;
         private SerializedProperty postImportStepsProperty;
 
@@ -36,6 +38,7 @@ namespace CelesteEditor.Localisation.Settings
             // This function is called when the user clicks on the MyCustom element in the Settings window.
             localisationSettings = LocalisationSettings.GetSerializedSettings();
             currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.currentLanguageValue));
+            localisationKeyCatalogueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.localisationKeyCatalogue));
             localisationSheetLanguagesOffsetProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.localisationSheetLanguagesOffset));
             postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.postImportSteps));
         }
@@ -45,6 +48,7 @@ namespace CelesteEditor.Localisation.Settings
             localisationSettings.Update();
 
             EditorGUILayout.PropertyField(currentLanguageValueProperty);
+            EditorGUILayout.PropertyField(localisationKeyCatalogueProperty);
             EditorGUILayout.PropertyField(localisationSheetLanguagesOffsetProperty);
             EditorGUILayout.PropertyField(postImportStepsProperty);
 

@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using Celeste.Localisation.Catalogue;
 using Celeste.Localisation.Parameters;
 using Celeste.Localisation.Tools;
 using System.Collections;
@@ -18,6 +19,7 @@ namespace Celeste.Localisation.Settings
         public const string FILE_PATH = FOLDER_PATH + "LocalisationSettings.asset";
 
         public LanguageValue currentLanguageValue;
+        public LocalisationKeyCatalogue localisationKeyCatalogue;
         public int localisationSheetLanguagesOffset = 3;
         public List<LocalisationPostImportStep> postImportSteps = new List<LocalisationPostImportStep>();
 

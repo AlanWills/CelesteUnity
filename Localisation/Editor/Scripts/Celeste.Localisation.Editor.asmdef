@@ -9,6 +9,7 @@
         "Celeste.Tools",
         "Celeste.Web",
         "Celeste.Parameters",
+        "Celeste.Objects",
         "Celeste.OdinSerializer",
         "Celeste.Parameters.Editor",
         "Celeste.Platform.Editor"

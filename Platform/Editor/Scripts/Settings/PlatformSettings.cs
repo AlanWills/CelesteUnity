@@ -38,19 +38,6 @@ namespace CelesteEditor.Platform
         }
 
         [SerializeField]
-        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'." + STRING_SUBSTITUTION_HELP)]
-        private string playerOverrideVersion;
-        public string PlayerOverrideVersion
-        {
-            get { return Resolve(playerOverrideVersion); }
-            protected set
-            {
-                playerOverrideVersion = value;
-                EditorUtility.SetDirty(this);
-            }
-        }
-
-        [SerializeField]
         [Tooltip("The directory relative to the project directory that the build will be created in." + STRING_SUBSTITUTION_HELP)]
         private string buildDirectory;
         public string BuildDirectory
@@ -83,6 +70,19 @@ namespace CelesteEditor.Platform
         [SerializeField]
         [Tooltip("If enabled, addressable specific pipelines will run in the build pipeline.")]
         private bool addressablesEnabled = false;
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'." + STRING_SUBSTITUTION_HELP)]
+        private string playerOverrideVersion;
+        public string PlayerOverrideVersion
+        {
+            get { return Resolve(playerOverrideVersion); }
+            protected set
+            {
+                playerOverrideVersion = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The directory that build addressables will be outputted to, relative to the project directory.  " +
@@ -151,13 +151,6 @@ namespace CelesteEditor.Platform
         [SerializeField]
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
         private ScriptingDefineSymbols scriptingDefineSymbols;
-        //{
-        //    "KEY_CHECKS",
-        //    "INDEX_CHECKS",
-        //    "NULL_CHECKS",
-        //    "COMPONENT_CHECKS",
-        //    "ALLOCATOR_CHECKS"
-        //};
 
         [SerializeField]
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
