@@ -1,0 +1,22 @@
+{
+    "name": "Celeste.DataImporters.Editor",
+    "rootNamespace": "CelesteEditor.DataImporters",
+    "references": [
+        "Celeste.Objects",
+        "Celeste.DataImporters",
+        "Celeste.Tools",
+        "Celeste.DataStructures.Editor",
+        "Unity.EditorCoroutines.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

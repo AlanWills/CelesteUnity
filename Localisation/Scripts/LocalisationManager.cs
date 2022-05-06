@@ -2,6 +2,7 @@
 using Celeste.Localisation.AssetReferences;
 using Celeste.Localisation.Catalogue;
 using Celeste.Localisation.Parameters;
+using Celeste.Localisation.Settings;
 using System.Collections;
 using System.Globalization;
 using UnityEngine;
@@ -13,8 +14,7 @@ namespace Celeste.Localisation
     {
         #region Properties and Fields
 
-        [SerializeField] private AssetReferenceLanguageCatalogue languageCatalogue;
-        [SerializeField] private LanguageValue currentLanguage;
+        [SerializeField] private LocalisationSettings localisationSettings;
 
         #endregion
 
@@ -22,24 +22,15 @@ namespace Celeste.Localisation
 
         public bool ShouldLoadAssets()
         {
-            return languageCatalogue.ShouldLoad();
+            return localisationSettings.ShouldLoadAssets();
         }
 
         public IEnumerator LoadAssets()
         {
-            yield return languageCatalogue.LoadAssetAsync();
+            yield return localisationSettings.LoadAssets();
 
             string currentTwoLetterISOCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            Language language = languageCatalogue.Asset.FindLanguageForTwoLetterCountryCode(currentTwoLetterISOCode);
-
-            if (language != null)
-            {
-                currentLanguage.Value = language;
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning($"Could not find language for iso code {currentTwoLetterISOCode}.  Reverting to fallback.");
-            }
+            localisationSettings.SetCurrentLanguage(currentTwoLetterISOCode);
         }
 
         #endregion
@@ -48,7 +39,7 @@ namespace Celeste.Localisation
 
         public void OnSetCurrentLanguage(Language newLanguage)
         {
-            currentLanguage.Value = newLanguage;
+            localisationSettings.SetCurrentLanguage(newLanguage);
         }
 
         #endregion

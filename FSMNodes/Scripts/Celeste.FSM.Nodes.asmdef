@@ -15,7 +15,8 @@
         "Celeste.Objects",
         "Celeste.UI",
         "Celeste.Logic",
-        "Celeste.Assets"
+        "Celeste.Assets",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

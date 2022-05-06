@@ -47,7 +47,7 @@ namespace CelesteEditor.Platform
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             // This function is called when the user clicks on the MyCustom element in the Settings window.
-            allPlatformSettings = new SerializedObject(AllPlatformSettings.instance);
+            allPlatformSettings = AllPlatformSettings.GetSerializedSettings();
             iOSDebugProperty = allPlatformSettings.FindProperty("m_iOSDebug");
             iOSReleaseProperty = allPlatformSettings.FindProperty("m_iOSRelease");
             androidDebugProperty = allPlatformSettings.FindProperty("m_androidDebug");

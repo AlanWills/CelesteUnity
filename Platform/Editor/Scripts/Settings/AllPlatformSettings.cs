@@ -1,13 +1,11 @@
-﻿using System.IO;
+﻿using Celeste.Tools.Settings;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace CelesteEditor.Platform
 {
-    [FilePath(AllPlatformSettingsPath, FilePathAttribute.Location.ProjectFolder)]
     [CreateAssetMenu(fileName = nameof(AllPlatformSettings), menuName = "Celeste/Platform/All Platform Settings")]
-    public class AllPlatformSettings : ScriptableSingleton<AllPlatformSettings>
+    public class AllPlatformSettings : EditorSettings<AllPlatformSettings>
     {
         #region Properties and Fields
 
@@ -77,5 +75,15 @@ namespace CelesteEditor.Platform
         public const string WebGLPlatformSettingsPath = AllPlatformSettingsDirectory + "WebGL";
 
         #endregion
+
+        public static AllPlatformSettings GetOrCreateSettings()
+        {
+            return GetOrCreateSettings(AllPlatformSettingsDirectory, AllPlatformSettingsPath);
+        }
+
+        public static SerializedObject GetSerializedSettings()
+        {
+            return GetSerializedSettings(AllPlatformSettingsDirectory, AllPlatformSettingsPath);
+        }
     }
 }

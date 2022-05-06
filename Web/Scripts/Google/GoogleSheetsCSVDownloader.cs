@@ -8,13 +8,18 @@ namespace Celeste.Web
     {
         #region Properties and Fields
 
-        private const string urlFormat = "https://docs.google.com/spreadsheets/d/{0}/export?format=csv";
+        private const string urlFormat = "https://docs.google.com/spreadsheets/d/{0}/export?format=csv&gid={1}";
 
         #endregion
 
         public static IEnumerator DownloadData(string sheetId, System.Action<string> onCompleted)
         {
-            string url = string.Format(urlFormat, sheetId);
+            return DownloadData(urlFormat, "0", onCompleted);
+        }
+
+        public static IEnumerator DownloadData(string sheetId, string tabId, System.Action<string> onCompleted)
+        {
+            string url = string.Format(urlFormat, sheetId, tabId);
             string downloadData = null;
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))

@@ -8,7 +8,17 @@ namespace Celeste.Localisation
     {
         #region Properties and Fields
 
-        public string CategoryName => categoryName;
+        public string CategoryName
+        {
+            get { return categoryName; }
+            set
+            {
+                categoryName = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
 
         [SerializeField] private string categoryName;
 

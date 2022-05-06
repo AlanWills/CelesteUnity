@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67cad93175aad734b9ece02b180f57c7, type: 3}
-  m_Name: SceneSettings
+  m_Script: {fileID: 11500000, guid: 9336e371004357b4aa6b40f23dac96ec, type: 3}
+  m_Name: HudLogMessages
   m_EditorClassIdentifier: 
-  defaultContextProvider: {fileID: 11400000, guid: ad3624de738022e498245c657cfaee38, type: 2}
-  defaultLoadContextEvent: {fileID: 11400000, guid: 4267ee0495522b748b2932da05a16789, type: 2}
+  items: []

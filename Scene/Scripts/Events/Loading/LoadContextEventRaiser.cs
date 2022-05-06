@@ -19,12 +19,12 @@ namespace Celeste.Scene.Events
         {
             if (gameEvent == null)
             {
-                gameEvent = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultLoadContextEvent;
+                gameEvent = CelesteEditor.Scene.Settings.SceneEditorSettings.GetOrCreateSettings().defaultLoadContextEvent;
             }
 
             if (contextProvider == null)
             {
-                contextProvider = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultContextProvider;
+                contextProvider = CelesteEditor.Scene.Settings.SceneEditorSettings.GetOrCreateSettings().defaultContextProvider;
             }
         }
 #endif

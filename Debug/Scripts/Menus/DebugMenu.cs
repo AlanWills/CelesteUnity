@@ -49,11 +49,6 @@ namespace Celeste.Debug.Menus
 
         public void DrawMenu()
         {
-            if (GUILayout.Button("Back"))
-            {
-                Visible = false;
-            }
-
             GUILayout.Space(10);
             GUILayout.Label(displayName, CelesteGUIStyles.BoldLabel);
             GUILayout.Space(10);

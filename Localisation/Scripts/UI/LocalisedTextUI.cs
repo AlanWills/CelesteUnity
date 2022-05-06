@@ -29,7 +29,7 @@ namespace Celeste.Localisation.UI
 #if UNITY_EDITOR
             if (!dynamic && currentLanguage == null)
             {
-                currentLanguage = Settings.LocalisationSettings.GetOrCreateSettings().currentLanguageValue;
+                currentLanguage = Settings.LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
             else if (dynamic && currentLanguage != null)

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace CelesteEditor.Localisation.Settings
 {
-    public class LocalisationSettingsProvider : SettingsProvider
+    public class LocalisationEditorSettingsProvider : SettingsProvider
     {
         #region Styles
 
@@ -30,17 +30,17 @@ namespace CelesteEditor.Localisation.Settings
 
         #endregion
 
-        public LocalisationSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
+        public LocalisationEditorSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
             : base(path, scope) { }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             // This function is called when the user clicks on the MyCustom element in the Settings window.
-            localisationSettings = LocalisationSettings.GetSerializedSettings();
-            currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.currentLanguageValue));
-            localisationKeyCatalogueProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.localisationKeyCatalogue));
-            localisationSheetLanguagesOffsetProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.localisationSheetLanguagesOffset));
-            postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationSettings.postImportSteps));
+            localisationSettings = LocalisationEditorSettings.GetSerializedSettings();
+            currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.currentLanguageValue));
+            localisationKeyCatalogueProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.localisationKeyCatalogue));
+            localisationSheetLanguagesOffsetProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.localisationSheetLanguagesOffset));
+            postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.postImportSteps));
         }
 
         public override void OnGUI(string searchContext)
@@ -68,7 +68,7 @@ namespace CelesteEditor.Localisation.Settings
         {
             if (IsSettingsAvailable())
             {
-                var provider = new LocalisationSettingsProvider("Project/Celeste/Localisation Settings", SettingsScope.Project);
+                var provider = new LocalisationEditorSettingsProvider("Project/Celeste/Localisation Settings", SettingsScope.Project);
 
                 // Automatically extract all keywords from the Styles.
                 provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();

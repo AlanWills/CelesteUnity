@@ -9,7 +9,7 @@ namespace Celeste.Localisation.Tools
     public struct LocalisationPostImportContext
     {
         public GoogleSheet googleSheet;
-        public Dictionary<string, LocalisationKey> localisationKeyLookup;
+        public IReadOnlyDictionary<string, LocalisationKey> localisationKeyLookup;
     }
 
     public abstract class LocalisationPostImportStep : ScriptableObject

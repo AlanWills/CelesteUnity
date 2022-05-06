@@ -75,6 +75,14 @@ namespace Celeste.Objects
             }
         }
 
+        public void ClearItems()
+        {
+            using (ChangeBlock changesBlock = new ChangeBlock(this))
+            {
+                ItemsImpl.Clear();
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return ((IEnumerable<T>)items).GetEnumerator();

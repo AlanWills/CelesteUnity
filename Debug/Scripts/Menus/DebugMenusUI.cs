@@ -72,6 +72,11 @@ namespace Celeste.Debug.Menus
 
                     if (visibleDebugMenu != null)
                     {
+                        if (GUILayout.Button("Back"))
+                        {
+                            visibleDebugMenu.Visible = false;
+                        }
+
                         visibleDebugMenu.DrawMenu();
                     }
                     else

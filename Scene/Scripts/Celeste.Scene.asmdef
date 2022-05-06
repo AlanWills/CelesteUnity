@@ -8,7 +8,8 @@
         "Celeste.Debug",
         "Celeste.Coroutines",
         "Celeste.Objects",
-        "Celeste.Assets"
+        "Celeste.Assets",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

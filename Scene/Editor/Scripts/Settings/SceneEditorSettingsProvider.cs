@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace CelesteEditor.Scene.Settings
 {
-    public class SceneSettingsProvider : SettingsProvider
+    public class SceneEditorSettingsProvider : SettingsProvider
     {
         #region Styles
 
@@ -20,37 +20,37 @@ namespace CelesteEditor.Scene.Settings
 
         #region Properties and Fields
 
-        private SerializedObject sceneSettings;
+        private SerializedObject sceneEditorSettings;
         private SerializedProperty defaultContextProviderProperty;
         private SerializedProperty defaultLoadContextEventProperty;
 
         #endregion
 
-        public SceneSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
+        public SceneEditorSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
             : base(path, scope) { }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
-            sceneSettings = new SerializedObject(SceneSettings.instance);
-            defaultContextProviderProperty = sceneSettings.FindProperty("defaultContextProvider");
-            defaultLoadContextEventProperty = sceneSettings.FindProperty("defaultLoadContextEvent");
+            sceneEditorSettings = SceneEditorSettings.GetSerializedSettings();
+            defaultContextProviderProperty = sceneEditorSettings.FindProperty("defaultContextProvider");
+            defaultLoadContextEventProperty = sceneEditorSettings.FindProperty("defaultLoadContextEvent");
         }
 
         public override void OnGUI(string searchContext)
         {
-            sceneSettings.Update();
+            sceneEditorSettings.Update();
 
             EditorGUILayout.PropertyField(defaultContextProviderProperty);
             EditorGUILayout.PropertyField(defaultLoadContextEventProperty);
 
-            sceneSettings.ApplyModifiedProperties();
+            sceneEditorSettings.ApplyModifiedProperties();
         }
 
         #region Settings Provider
 
         public static bool IsSettingsAvailable()
         {
-            return File.Exists(SceneSettings.SCENE_SETTINGS_FILE_PATH);
+            return true;
         }
 
         [SettingsProvider]
@@ -58,7 +58,7 @@ namespace CelesteEditor.Scene.Settings
         {
             if (IsSettingsAvailable())
             {
-                var provider = new SceneSettingsProvider("Project/Celeste/Scene Settings", SettingsScope.Project);
+                var provider = new SceneEditorSettingsProvider("Project/Celeste/Scene Settings", SettingsScope.Project);
                 provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();
 
                 return provider;

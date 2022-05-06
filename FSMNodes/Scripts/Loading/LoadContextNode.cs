@@ -23,12 +23,12 @@ namespace Celeste.FSM.Nodes.Loading
         {
             if (loadContextEvent == null)
             {
-                loadContextEvent = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultLoadContextEvent;
+                loadContextEvent = CelesteEditor.Scene.Settings.SceneEditorSettings.GetOrCreateSettings().defaultLoadContextEvent;
             }
 
             if (contextProvider == null)
             {
-                contextProvider = CelesteEditor.Scene.Settings.SceneSettings.instance.defaultContextProvider;
+                contextProvider = CelesteEditor.Scene.Settings.SceneEditorSettings.GetOrCreateSettings().defaultContextProvider;
             }
         }
 #endif

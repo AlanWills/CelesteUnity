@@ -33,6 +33,7 @@ namespace Celeste.Objects
         #region Properties and Fields
 
         public int NumItems { get { return ItemsImpl.Count; } }
+        public IReadOnlyDictionary<TKey, TValue> Items => ItemsImpl;
 
         private Dictionary<TKey, TValue> ItemsImpl => runtimeModifiedItems != null ? runtimeModifiedItems : items;
 

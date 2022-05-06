@@ -8,6 +8,7 @@
         "Celeste.DataStructures.Editor",
         "Celeste.Tools",
         "Celeste.Web",
+        "Celeste.DataImporters",
         "Celeste.Parameters",
         "Celeste.Objects",
         "Celeste.OdinSerializer",
