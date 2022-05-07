@@ -30,6 +30,8 @@ namespace Celeste.Log
             DrawHudLogLevel(HudLogLevel.Info);
             DrawHudLogLevel(HudLogLevel.Warning);
             DrawHudLogLevel(HudLogLevel.Error);
+            DrawHudLogLevel(HudLogLevel.Exception);
+            DrawHudLogLevel(HudLogLevel.Assert);
 
             if (logMessages != null)
             {

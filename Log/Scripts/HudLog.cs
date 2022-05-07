@@ -12,7 +12,9 @@ namespace Celeste.Log
         None = 0,
         Info = 1,
         Warning = 2,
-        Error = 4
+        Error = 4,
+        Exception = 8,
+        Assert = 16,
     }
 
     [AddComponentMenu("Celeste/Log/Hud Log")]
@@ -39,7 +41,7 @@ namespace Celeste.Log
             }
         }
 
-        [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Error | HudLogLevel.Warning | HudLogLevel.Info;
+        [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Assert | HudLogLevel.Exception | HudLogLevel.Error | HudLogLevel.Warning | HudLogLevel.Info;
         [SerializeField] private StringList logMessages;
         [SerializeField] private GameObjectAllocator hudMessages;
         [SerializeField] private Color infoColour = Color.white;
@@ -156,12 +158,18 @@ namespace Celeste.Log
 
         private void Application_logMessageReceived(string logString, string stackTrace, LogType type)
         {
-            if (type == LogType.Exception || type == LogType.Assert)
+            if (Instance == null)
             {
-                if (Instance != null)
-                {
-                    Instance.Log(logString, Instance.errorColour);
-                }
+                return;
+            }
+
+            if (type == LogType.Exception && IsLogLevelEnabled(HudLogLevel.Exception))
+            {
+                LogError(logString);
+            }
+            else if (type == LogType.Assert && IsLogLevelEnabled(HudLogLevel.Assert))
+            {
+                LogError(logString);
             }
         }
 
