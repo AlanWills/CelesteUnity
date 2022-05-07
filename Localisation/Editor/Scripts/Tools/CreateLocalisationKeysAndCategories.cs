@@ -6,18 +6,22 @@ using Celeste.Localisation;
 using CelesteEditor.Tools;
 using CelesteEditor.Localisation.Utility;
 using static Celeste.Localisation.Language;
-using Celeste.Localisation.Settings;
-using Celeste.Localisation.Tools;
-using Celeste.Web.DataImporters;
 using Celeste.Localisation.Catalogue;
+using Celeste.Web.ImportSteps;
 
 namespace CelesteEditor.Localisation.Tools
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationDataImporter), menuName = "Celeste/Data Importers/Localisation Data Importer")]
-    public class LocalisationDataImporter : GoogleSheetDataImporter
+    [CreateAssetMenu(fileName = nameof(CreateLocalisationKeysAndCategories), menuName = "Celeste/Data Importers/Create Localisation Keys And Categories")]
+    public class CreateLocalisationKeysAndCategories : GoogleSheetReceivedImportStep
     {
         #region Properties and Fields
 
+        [Header("Sheet Structure")]
+        [SerializeField] private int keyColumn = 0;
+        [SerializeField] private int categoryColumn = 1;
+        [SerializeField] private int languagesColumnOffset = 2;
+
+        [Header("Data")]
         [SerializeField] private LanguageCatalogue languageCatalogue;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
         [SerializeField] private LocalisationKeyCategoryCatalogue localisationKeyCategoryCatalogue;
@@ -26,15 +30,17 @@ namespace CelesteEditor.Localisation.Tools
 
         #endregion
 
-        protected override void OnDataReceived(GoogleSheet googleSheet)
+        public override void Execute(GoogleSheet googleSheet)
         {
             GoogleSheet.Column keyStrings = googleSheet.GetColumn(0);
             GoogleSheet.Column categoryStrings = googleSheet.GetColumn(1);
 
-            for (int column = LocalisationEditorSettings.GetOrCreateSettings().localisationSheetLanguagesOffset; column < googleSheet.NumColumns; ++column)
+            for (int column = languagesColumnOffset; column < googleSheet.NumColumns; ++column)
             {
                 GoogleSheet.Column columnData = googleSheet.GetColumn(column);
                 Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
+                Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
+
                 List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
                 for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
@@ -86,26 +92,10 @@ namespace CelesteEditor.Localisation.Tools
 
                 language.AddEntries(localisationEntries);
                 EditorUtility.SetDirty(language);
-                AssetDatabase.SaveAssets();
-            }
-
-            LocalisationPostImportContext context = new LocalisationPostImportContext()
-            {
-                googleSheet = googleSheet,
-                localisationKeyLookup = localisationKeyCatalogue.Items
-            };
-
-            var postImportSteps = LocalisationEditorSettings.GetOrCreateSettings().postImportSteps;
-            for (int i = 0, n = postImportSteps != null ? postImportSteps.Count : 0; i < n; ++i)
-            {
-                Debug.Log($"Executing post import step '{postImportSteps[i].name}'.");
-                postImportSteps[i].Execute(context);
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
-            Debug.Log("Localisation Data Importing Done!");
         }
     }
 }

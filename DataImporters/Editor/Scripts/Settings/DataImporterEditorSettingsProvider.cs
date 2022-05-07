@@ -51,7 +51,7 @@ namespace CelesteEditor.DataImporters.Settings
 
         // Register the SettingsProvider
         [SettingsProvider]
-        public static SettingsProvider CreateLocalisationSettingsProvider()
+        public static SettingsProvider CreateDataImporterSettingsProvider()
         {
             if (IsSettingsAvailable())
             {

@@ -143,6 +143,16 @@ namespace Celeste.Localisation
             }
         }
 
+        public void ClearEntries()
+        {
+            localisationLookup.Clear();
+            categoryLookup.Clear();
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
         public bool HasKey(LocalisationKey localisationKey)
         {
             return localisationLookup.ContainsKey(localisationKey.Key);

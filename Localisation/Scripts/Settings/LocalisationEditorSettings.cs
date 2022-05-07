@@ -1,10 +1,6 @@
 ﻿using Celeste.Localisation.Catalogue;
 using Celeste.Localisation.Parameters;
-using Celeste.Localisation.Tools;
 using Celeste.Tools.Settings;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace Celeste.Localisation.Settings
@@ -19,8 +15,6 @@ namespace Celeste.Localisation.Settings
 
         public LanguageValue currentLanguageValue;
         public LocalisationKeyCatalogue localisationKeyCatalogue;
-        public int localisationSheetLanguagesOffset = 3;
-        public List<LocalisationPostImportStep> postImportSteps = new List<LocalisationPostImportStep>();
 
         #endregion
 

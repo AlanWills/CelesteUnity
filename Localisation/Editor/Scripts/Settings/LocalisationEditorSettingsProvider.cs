@@ -14,8 +14,6 @@ namespace CelesteEditor.Localisation.Settings
         {
             public static GUIContent currentLanguageValue = new GUIContent("Current Language Value");
             public static GUIContent localisationKeyCatalogue = new GUIContent("Localisation Key Catalogue");
-            public static GUIContent localisationSheetLanguagesOffset = new GUIContent("Sheet Languages Offset");
-            public static GUIContent postImportSteps = new GUIContent("Post Import Steps");
         }
 
         #endregion
@@ -25,8 +23,6 @@ namespace CelesteEditor.Localisation.Settings
         private SerializedObject localisationSettings;
         private SerializedProperty currentLanguageValueProperty;
         private SerializedProperty localisationKeyCatalogueProperty;
-        private SerializedProperty localisationSheetLanguagesOffsetProperty;
-        private SerializedProperty postImportStepsProperty;
 
         #endregion
 
@@ -39,8 +35,6 @@ namespace CelesteEditor.Localisation.Settings
             localisationSettings = LocalisationEditorSettings.GetSerializedSettings();
             currentLanguageValueProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.currentLanguageValue));
             localisationKeyCatalogueProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.localisationKeyCatalogue));
-            localisationSheetLanguagesOffsetProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.localisationSheetLanguagesOffset));
-            postImportStepsProperty = localisationSettings.FindProperty(nameof(LocalisationEditorSettings.postImportSteps));
         }
 
         public override void OnGUI(string searchContext)
@@ -49,8 +43,6 @@ namespace CelesteEditor.Localisation.Settings
 
             EditorGUILayout.PropertyField(currentLanguageValueProperty);
             EditorGUILayout.PropertyField(localisationKeyCatalogueProperty);
-            EditorGUILayout.PropertyField(localisationSheetLanguagesOffsetProperty);
-            EditorGUILayout.PropertyField(postImportStepsProperty);
 
             localisationSettings.ApplyModifiedProperties();
         }

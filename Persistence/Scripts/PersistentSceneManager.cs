@@ -1,15 +1,14 @@
 ﻿using Celeste.Log;
 using Celeste.Persistence.Utility;
-using Celeste.Tools;
 using System.Collections;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace Celeste.Persistence
 {
     public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour
         where TManager : PersistentSceneManager<TManager, TDTO>
+        where TDTO : class  // Need for Odin to pick up AOT formatter for serialization
     {
         #region Properties and Fields
 

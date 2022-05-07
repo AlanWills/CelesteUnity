@@ -1,24 +1,26 @@
 ﻿using Celeste.DataImporters;
+using Celeste.Web.ImportSteps;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Web.DataImporters
 {
-    public abstract class GoogleSheetDataImporter : DataImporter
+    [CreateAssetMenu(fileName = nameof(GoogleSheetDataImporter), menuName = "Celeste/Data Importers/Google Sheet Data Importer")]
+    public class GoogleSheetDataImporter : DataImporter
     {
         #region Properties and Fields
 
         [SerializeField] private string sheetId;
         [SerializeField] private string tabId;
+        [SerializeField] private List<GoogleSheetReceivedImportStep> onGoogleSheetReceivedImportSteps = new List<GoogleSheetReceivedImportStep>();
 
         #endregion
 
-        public override IEnumerator Import()
+        protected override IEnumerator DoImport()
         {
             yield return GoogleSheetsCSVDownloader.DownloadData(sheetId, tabId, OnDownloadData);
         }
-
-        protected abstract void OnDataReceived(GoogleSheet googleSheet);
 
         private void OnDownloadData(string data)
         {
@@ -36,7 +38,11 @@ namespace Celeste.Web.DataImporters
                 return;
             }
 
-            OnDataReceived(googleSheet);
+            for (int i = 0; i < onGoogleSheetReceivedImportSteps.Count; i++)
+            {
+                onGoogleSheetReceivedImportSteps[i].Execute(googleSheet);
+            }
+
             Debug.Log($"{name}: Import done!", this);
         }
     }
