@@ -4,7 +4,9 @@
     "references": [
         "GUID:63423e2ab705d094891558ff032717e2",
         "Celeste.Objects",
-        "Celeste.DataStructures.Editor"
+        "Celeste.Events",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Events.Editor"
     ],
     "includePlatforms": [
         "Editor"

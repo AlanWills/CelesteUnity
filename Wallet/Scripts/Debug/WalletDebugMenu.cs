@@ -43,6 +43,11 @@ namespace Celeste.Wallet.Debug
                     {
                         currency.Quantity -= quantityChange;
                     }
+
+                    if (Button("Set To Zero", ExpandWidth(false)))
+                    {
+                        currency.Quantity = 0;
+                    }
                 }
             }
         }

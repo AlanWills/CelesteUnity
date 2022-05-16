@@ -1,9 +1,7 @@
 using Celeste.DataStructures;
 using Celeste.Localisation.Catalogue;
-using Celeste.Localisation.Settings;
 using Celeste.OdinSerializer;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
@@ -80,6 +78,8 @@ namespace Celeste.Localisation
         public LocalisationKey LanguageNameKey => languageNameKey;
         public int NumLocalisationKeys => localisationLookup.Count;
         public int NumLocalisationKeyCategories => categoryLookup.Count;
+        public IReadOnlyDictionary<string, string> LocalisationLookup => localisationLookup;
+        public IReadOnlyDictionary<LocalisationKeyCategory, List<LocalisationKey>> CategoryLookup => categoryLookup;
 
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;

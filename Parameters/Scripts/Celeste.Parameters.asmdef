@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.Parameters",
     "references": [
         "Celeste.Objects",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Constraints"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

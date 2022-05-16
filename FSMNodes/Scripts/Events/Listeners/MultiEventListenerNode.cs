@@ -1,15 +1,6 @@
-﻿using Celeste.Events;
-using Celeste.FSM.Nodes.Events.Conditions;
+﻿using Celeste.FSM.Nodes.Events.Conditions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using XNode;
-using static XNode.Node;
-
-using Event = Celeste.Events.Event;
 
 namespace Celeste.FSM.Nodes.Events
 {

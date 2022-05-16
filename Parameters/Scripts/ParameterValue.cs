@@ -1,5 +1,7 @@
 ﻿using Celeste.Events;
+using Celeste.Parameters.Constraints;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -20,6 +22,8 @@ namespace Celeste.Parameters
                 {
                     return;
                 }
+
+                value = ConstrainValue(value);
 
                 if ((this.value == null && value != null) ||
                     !this.value.Equals(value))
@@ -65,6 +69,8 @@ namespace Celeste.Parameters
         }
 
         #endregion
+
+        protected virtual T ConstrainValue(T input) { return input; }
 
         public void AddOnValueChangedCallback(Action<T> callback)
         {

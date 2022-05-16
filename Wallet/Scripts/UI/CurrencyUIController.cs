@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Celeste.Wallet.UI
 {
@@ -13,22 +14,33 @@ namespace Celeste.Wallet.UI
         [SerializeField] private Currency currency;
 
         [Header("UI Elements")]
+        [SerializeField] private Image currencyIcon;
         [SerializeField] private TextMeshProUGUI quantityText;
 
         #endregion
 
         #region Unity Methods
 
+        private void Awake()
+        {
+            currencyIcon.sprite = currency.Icon;
+        }
+
         private void OnEnable()
         {
             currency.AddOnQuantityChangedCallback(OnCurrencyChanged);
-            
+
             UpdateUI();
         }
 
         private void OnDisable()
         {
             currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
+        }
+
+        private void Start()
+        {
+            UpdateUI();
         }
 
         #endregion

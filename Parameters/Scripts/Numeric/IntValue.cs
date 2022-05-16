@@ -1,4 +1,6 @@
 ﻿using Celeste.Events;
+using Celeste.Parameters.Constraints;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -8,10 +10,17 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        [SerializeField] private IntEvent onValueChanged;
         protected override ParameterisedEvent<int> OnValueChanged => onValueChanged;
+        
+        [SerializeField] private IntEvent onValueChanged;
+        [SerializeField] private List<IntConstraint> valueConstraints = new List<IntConstraint>();
 
         #endregion
+
+        protected override int ConstrainValue(int input)
+        {
+            return valueConstraints.Constrain(input);
+        }
 
         #region Operators
 
@@ -39,7 +48,7 @@ namespace Celeste.Parameters
 
         #endregion
 
-        #region
+        #region Quality Overrides
 
         public override bool Equals(object obj)
         {

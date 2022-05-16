@@ -36,8 +36,13 @@ namespace Celeste.Wallet
             set { quantity.Value = value; }
         }
 
+        public Sprite Icon => icon;
+        public string GlyphName => glyphName;
+
         [SerializeField] private int guid;
         [SerializeField] private int startingQuantity;
+        [SerializeField] private Sprite icon;
+        [SerializeField] private string glyphName;
 
         [Header("Runtime")]
         [SerializeField] private IntValue quantity;

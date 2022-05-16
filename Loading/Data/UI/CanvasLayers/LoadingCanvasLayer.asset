@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f6cd10eaa4723b4cac309a85d0862c5, type: 3}
-  m_Name: CanvasLoadingLayers
+  m_Script: {fileID: 11500000, guid: 715b83fd318bf734ea6ea29bcaa2b5f6, type: 3}
+  m_Name: LoadingCanvasLayer
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: 8d3765d541679ce41a0c39e1f1aa9e14, type: 2}
-  sortOrder: 10000
+  sortOrder: 0

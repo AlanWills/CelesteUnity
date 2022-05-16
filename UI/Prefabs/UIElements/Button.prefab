@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 6191592728476165308}
-  currentSkin: {fileID: 11400000, guid: 71f169f82f4d15140b4dc67015170872, type: 2}
-  textType: {fileID: 11400000, guid: 5f0eb814f9005b241b0f6275381cbc19, type: 2}
+  currentSkin: {fileID: 0}
+  textType: {fileID: 0}
 --- !u!1 &6191592729197578155
 GameObject:
   m_ObjectHideFlags: 0

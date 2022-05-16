@@ -22,7 +22,10 @@ namespace Celeste.UI.Layout
 
         private void Update()
         {
-            rectTransform.CopyLayoutFrom(referenceLayout.rectTransform);
+            if (referenceLayout != null)
+            {
+                rectTransform.CopyLayoutFrom(referenceLayout.rectTransform);
+            }
         }
     }
 }

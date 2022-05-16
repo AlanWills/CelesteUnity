@@ -20,7 +20,6 @@ namespace CelesteEditor.ToolsUtils
         [MenuItem("Celeste/Tools/Repack Atlas to Sprite")]
         public static void RepackAtlasToSprite(MenuCommand command)
         {
-
             SpriteAtlas atlas = (SpriteAtlas)Selection.activeObject;
             var padding = atlas.GetPackingSettings().padding;
 
@@ -70,7 +69,6 @@ namespace CelesteEditor.ToolsUtils
                     name = rect.sprite.name.Replace("(Clone)", ""),
                     rect = new Rect(rect.x + padding, rect.y + padding, rect.sw, rect.sh)
                 });
-
             }
 
             //Save image

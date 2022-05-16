@@ -50,7 +50,7 @@ namespace Celeste.Tools
                 (i) => { });
         }
 
-        public static int PaginatedListImpl(
+        private static int PaginatedListImpl(
             int currentPage,
             int entriesPerPage,
             int numItems,
