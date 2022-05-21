@@ -2,9 +2,9 @@
     "name": "Celeste.Wallet.Editor",
     "rootNamespace": "CelesteEditor.Wallet",
     "references": [
-        "GUID:d55c844b9b9201140ab436f2f9a508c2",
-        "GUID:1e83f379d37edf04999a41dc4553067d",
-        "GUID:832d49e3e7e4924438f3d1a629c9ce79"
+        "Celeste.Wallet",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Scene.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,5 +1,4 @@
 ﻿using Celeste.Tools;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.UI.Layout
@@ -24,9 +23,14 @@ namespace Celeste.UI.Layout
 
         private void Awake()
         {
-            referenceLayout.rectTransform = rectTransform;
+            SetReferenceLayout();
         }
 
         #endregion
+
+        public void SetReferenceLayout()
+        {
+            referenceLayout.rectTransform = rectTransform;
+        }
     }
 }

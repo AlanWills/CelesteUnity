@@ -1,10 +1,7 @@
-﻿using Celeste.Events;
-using Celeste.Objects;
+﻿using Celeste.Objects;
 using Celeste.Parameters;
 using System;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Wallet
 {
@@ -57,6 +54,11 @@ namespace Celeste.Wallet
         public void RemoveOnQuantityChangedCallback(Action<int> callback)
         {
             quantity.RemoveOnValueChangedCallback(callback);
+        }
+
+        public void RemoveAllQuantityChangedCallbacks()
+        {
+            quantity.RemoveAllValueChangedCallbacks();
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using Celeste.DataStructures;
-using Celeste.OdinSerializer;
+﻿using Celeste.OdinSerializer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Celeste.Objects
@@ -53,6 +51,14 @@ namespace Celeste.Objects
             using (ChangeBlock changeBlock = new ChangeBlock(this))
             {
                 ItemsImpl.Add(key, value);
+            }
+        }
+
+        public bool RemoveItem(TKey key)
+        {
+            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            {
+                return ItemsImpl.Remove(key);
             }
         }
 

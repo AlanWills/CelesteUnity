@@ -1,4 +1,5 @@
 ﻿using Celeste.Persistence;
+using Celeste.Shop.Purchasing;
 using UnityEngine;
 
 namespace Celeste.Shop.Persistence
@@ -11,6 +12,8 @@ namespace Celeste.Shop.Persistence
         protected override string FileName => FILE_NAME;
 
         public const string FILE_NAME = "Shop.dat";
+
+        [SerializeField] private ShopPurchaser shopPurchaser;
 
         #endregion
 

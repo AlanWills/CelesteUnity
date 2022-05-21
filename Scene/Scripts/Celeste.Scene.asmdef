@@ -9,7 +9,8 @@
         "Celeste.Coroutines",
         "Celeste.Objects",
         "Celeste.Assets",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

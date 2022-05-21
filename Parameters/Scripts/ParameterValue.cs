@@ -1,7 +1,5 @@
 ﻿using Celeste.Events;
-using Celeste.Parameters.Constraints;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -85,6 +83,14 @@ namespace Celeste.Parameters
             if (OnValueChanged != null)
             {
                 OnValueChanged.RemoveListener(callback);
+            }
+        }
+
+        public void RemoveAllValueChangedCallbacks()
+        {
+            if (OnValueChanged != null)
+            {
+                OnValueChanged.RemoveAllListeners();
             }
         }
 

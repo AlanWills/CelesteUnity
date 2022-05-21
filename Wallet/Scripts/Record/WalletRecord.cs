@@ -1,7 +1,9 @@
 ﻿using Celeste.DataStructures;
+using Celeste.Wallet.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Celeste.Wallet.Currency;
 
 namespace Celeste.Wallet
 {
@@ -16,7 +18,8 @@ namespace Celeste.Wallet
         }
 
         [Header("Events")]
-        [SerializeField] private Events.Event save;
+        [SerializeField] private CurrencyChangedEvent currencyChanged;
+        [SerializeField] private Celeste.Events.Event save;
 
         [NonSerialized] private List<Currency> currencies = new List<Currency>();
 
@@ -27,7 +30,11 @@ namespace Celeste.Wallet
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
                 Currency currency = currencyCatalogue.GetItem(i);
-                currency.AddOnQuantityChangedCallback(OnCurrencyQuantityChangedCallback);
+                currency.AddOnQuantityChangedCallback((quantity) =>
+                {
+                    currencyChanged.Invoke(new CurrencyChangedArgs(currency, quantity));
+                    save.Invoke();
+                });
                 currencies.Add(currency);
             }
         }
@@ -36,7 +43,7 @@ namespace Celeste.Wallet
         {
             for (int i = 0, n = currencies.Count; i < n; ++i)
             {
-                currencies[i].RemoveOnQuantityChangedCallback(OnCurrencyQuantityChangedCallback);
+                currencies[i].RemoveAllQuantityChangedCallbacks();
             }
 
             currencies.Clear();
@@ -54,14 +61,5 @@ namespace Celeste.Wallet
         {
             return currencies.Get(recordIndex);
         }
-
-        #region Callbacks
-
-        private void OnCurrencyQuantityChangedCallback(int newQuantity)
-        {
-            save.Invoke();
-        }
-
-        #endregion
     }
 }

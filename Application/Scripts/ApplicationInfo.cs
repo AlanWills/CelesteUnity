@@ -1,10 +1,5 @@
 ﻿using Celeste.Objects;
 using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Application
@@ -42,8 +37,6 @@ namespace Celeste.Application
         protected override void Awake()
         {
             base.Awake();
-
-            DontDestroyOnLoad(gameObject);
 
             isEditor.GetIsEditor();
             isMobile.GetIsMobile();

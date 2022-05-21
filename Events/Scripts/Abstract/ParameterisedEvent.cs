@@ -38,6 +38,11 @@ namespace Celeste.Events
             gameEventListeners.Remove(callback);
         }
 
+        public void RemoveAllListeners()
+        {
+            gameEventListeners.Clear();
+        }
+
         public void Invoke(T argument)
         {
             Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}");
