@@ -81,7 +81,7 @@ namespace Celeste.Wallet.UI
 
         public void OnCurrencyChanged(CurrencyChangedArgs currencyChangedArgs)
         {
-            SpawnForChangeOfCurrency(currencyChangedArgs.currency, currencyChangedArgs.quantity);
+            SpawnForChangeOfCurrency(currencyChangedArgs.currency, currencyChangedArgs.delta);
         }
 
         #endregion

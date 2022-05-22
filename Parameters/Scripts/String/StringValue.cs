@@ -1,21 +1,13 @@
-﻿using Celeste.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "StringValue", menuName = "Celeste/Parameters/String/String Value")]
+    [CreateAssetMenu(fileName = nameof(StringValue), menuName = "Celeste/Parameters/String/String Value")]
     public class StringValue : ParameterValue<string>
     {
-        #region Properties and Fields
-
-        [SerializeField] private StringEvent onValueChanged;
-        protected override ParameterisedEvent<string> OnValueChanged => onValueChanged;
-
-        #endregion
-
         #region Operators
 
         public static bool operator ==(StringValue value, string s)

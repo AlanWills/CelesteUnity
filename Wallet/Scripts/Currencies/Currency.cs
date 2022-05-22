@@ -2,6 +2,7 @@
 using Celeste.Parameters;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Wallet
 {
@@ -46,12 +47,12 @@ namespace Celeste.Wallet
 
         #endregion
 
-        public void AddOnQuantityChangedCallback(Action<int> callback)
+        public void AddOnQuantityChangedCallback(UnityAction<ValueChangedArgs<int>> callback)
         {
-            quantity.AddOnValueChangedCallback(callback);
+            quantity.AddValueChangedCallback(callback);
         }
 
-        public void RemoveOnQuantityChangedCallback(Action<int> callback)
+        public void RemoveOnQuantityChangedCallback(UnityAction<ValueChangedArgs<int>> callback)
         {
             quantity.RemoveOnValueChangedCallback(callback);
         }

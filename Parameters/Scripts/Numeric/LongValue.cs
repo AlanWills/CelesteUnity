@@ -1,18 +1,10 @@
-﻿using Celeste.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(LongValue), menuName = "Celeste/Parameters/Numeric/Long Value")]
     public class LongValue : ParameterValue<long>
     {
-        #region Properties and Fields
-
-        [SerializeField] private LongEvent onValueChanged;
-        protected override ParameterisedEvent<long> OnValueChanged => onValueChanged;
-
-        #endregion
-
         #region Operators
 
         public static bool operator ==(LongValue value, long l)

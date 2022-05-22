@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Celeste.Parameters;
+using UnityEngine;
 
 namespace Celeste.Features.UI
 {
@@ -43,9 +44,9 @@ namespace Celeste.Features.UI
 
         #region Callbacks
 
-        private void OnEnabledChanged(bool newEnabled)
+        private void OnEnabledChanged(ValueChangedArgs<bool> args)
         {
-            SetActive(newEnabled);
+            SetActive(args.newValue);
         }
 
         #endregion

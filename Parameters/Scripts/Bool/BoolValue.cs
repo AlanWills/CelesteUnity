@@ -1,18 +1,10 @@
-﻿using Celeste.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "BoolValue", menuName = "Celeste/Parameters/Bool/Bool Value")]
+    [CreateAssetMenu(fileName = nameof(BoolValue), menuName = "Celeste/Parameters/Bool/Bool Value")]
     public class BoolValue : ParameterValue<bool>
     {
-        #region Properties and Fields
-
-        [SerializeField] private BoolEvent onValueChanged;
-        protected override ParameterisedEvent<bool> OnValueChanged => onValueChanged;
-
-        #endregion
-
         #region Operators
 
         public static bool operator==(BoolValue value, bool b)

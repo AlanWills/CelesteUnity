@@ -1,4 +1,5 @@
 ﻿using Celeste.DataStructures;
+using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace Celeste.Features
 
         #region Callbacks
 
-        private void OnEnabledChanged(bool newValue)
+        private void OnEnabledChanged(ValueChangedArgs<bool> args)
         {
             save.Invoke();
         }

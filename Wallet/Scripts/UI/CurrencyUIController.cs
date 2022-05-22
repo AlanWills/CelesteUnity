@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Celeste.Parameters;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,7 +53,7 @@ namespace Celeste.Wallet.UI
 
         #region Callbacks
 
-        private void OnCurrencyChanged(int newQuantity)
+        private void OnCurrencyChanged(ValueChangedArgs<int> args)
         {
             UpdateUI();
         }

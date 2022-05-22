@@ -1,11 +1,13 @@
 ﻿using Celeste.Assets.UnityAssetReferences;
 using Celeste.Events.AssetReferences;
+using Celeste.Parameters;
 using Celeste.Parameters.AssetReferences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
@@ -70,12 +72,12 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(Action<bool> callback)
+        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            musicEnabled.Asset.AddOnValueChangedCallback(callback);
+            musicEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(Action<bool> callback)
+        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.RemoveOnValueChangedCallback(callback);
         }
@@ -102,9 +104,9 @@ namespace Celeste.Sound.Settings
 
         #region Callbacks
 
-        private void OnMusicEnabledChanged(bool newValue)
+        private void OnMusicEnabledChanged(ValueChangedArgs<bool> args)
         {
-            enabled = newValue;
+            enabled = args.newValue;
         }
 
         #endregion

@@ -1,18 +1,10 @@
-﻿using Celeste.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "FloatValue", menuName = "Celeste/Parameters/Numeric/Float Value")]
+    [CreateAssetMenu(fileName = nameof(FloatValue), menuName = "Celeste/Parameters/Numeric/Float Value")]
     public class FloatValue : ParameterValue<float>
     {
-        #region Properties and Fields
-
-        [SerializeField] private FloatEvent onValueChanged;
-        protected override ParameterisedEvent<float> OnValueChanged => onValueChanged;
-
-        #endregion
-
         #region Operators
 
         public static bool operator ==(FloatValue value, float f)

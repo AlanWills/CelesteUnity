@@ -1,4 +1,5 @@
 ﻿using Celeste.Constants;
+using Celeste.Parameters;
 using Celeste.Tools;
 using Celeste.UI.Parameters;
 using TMPro;
@@ -31,7 +32,7 @@ namespace Celeste.UI.Skin
 
             if (currentSkin != null)
             {
-                currentSkin.AddOnValueChangedCallback(OnUISkinChanged);
+                currentSkin.AddValueChangedCallback(OnUISkinChanged);
             }
         }
 
@@ -67,9 +68,9 @@ namespace Celeste.UI.Skin
 
         #region Callbacks
 
-        private void OnUISkinChanged(UISkin newSkin)
+        private void OnUISkinChanged(ValueChangedArgs<UISkin> newSkin)
         {
-            Apply(newSkin);
+            Apply(newSkin.newValue);
         }
 
         #endregion

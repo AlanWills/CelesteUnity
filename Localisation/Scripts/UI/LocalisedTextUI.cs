@@ -1,4 +1,5 @@
 ﻿using Celeste.Localisation.Parameters;
+using Celeste.Parameters;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections;
@@ -47,7 +48,7 @@ namespace Celeste.Localisation.UI
 
             if (currentLanguage != null)
             {
-                currentLanguage.AddOnValueChangedCallback(OnCurrentLanguageChanged);
+                currentLanguage.AddValueChangedCallback(OnCurrentLanguageChanged);
             }
         }
 
@@ -89,7 +90,7 @@ namespace Celeste.Localisation.UI
 
         #region Callbacks
 
-        private void OnCurrentLanguageChanged(Language language)
+        private void OnCurrentLanguageChanged(ValueChangedArgs<Language> language)
         {
             Localise();
         }

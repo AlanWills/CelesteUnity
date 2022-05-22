@@ -5,14 +5,11 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "IntValue", menuName = "Celeste/Parameters/Numeric/Int Value")]
+    [CreateAssetMenu(fileName = nameof(IntValue), menuName = "Celeste/Parameters/Numeric/Int Value")]
     public class IntValue : ParameterValue<int>
     {
         #region Properties and Fields
 
-        protected override ParameterisedEvent<int> OnValueChanged => onValueChanged;
-        
-        [SerializeField] private IntEvent onValueChanged;
         [SerializeField] private List<IntConstraint> valueConstraints = new List<IntConstraint>();
 
         #endregion

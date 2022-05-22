@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
@@ -40,12 +41,12 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(Action<bool> callback)
+        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            musicEnabled.AddOnValueChangedCallback(callback);
+            musicEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(Action<bool> callback)
+        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.RemoveOnValueChangedCallback(callback);
         }

@@ -1,18 +1,10 @@
-﻿using Celeste.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "Vector3IntValue", menuName = "Celeste/Parameters/Vector/Vector3Int Value")]
+    [CreateAssetMenu(fileName = nameof(Vector3IntValue), menuName = "Celeste/Parameters/Vector/Vector3Int Value")]
     public class Vector3IntValue : ParameterValue<Vector3Int>
     {
-        #region Properties and Fields
-
-        [SerializeField] private Vector3IntEvent onValueChanged;
-        protected override ParameterisedEvent<Vector3Int> OnValueChanged => onValueChanged;
-
-        #endregion
-
         #region Operators
 
         public static bool operator ==(Vector3IntValue value, Vector3Int v)

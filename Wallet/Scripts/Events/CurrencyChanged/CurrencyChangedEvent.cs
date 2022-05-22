@@ -9,12 +9,17 @@ namespace Celeste.Wallet.Events
     public struct CurrencyChangedArgs
     {
         public Currency currency;
-        public int quantity;
+        public int oldQuantity;
+        public int newQuantity;
+        public int delta;
 
-        public CurrencyChangedArgs(Currency currency, int quantity)
+        public CurrencyChangedArgs(Currency currency, int oldQuantity, int newQuantity)
         {
             this.currency = currency;
-            this.quantity = quantity;
+            this.oldQuantity = oldQuantity;
+            this.newQuantity = newQuantity;
+
+            delta = newQuantity - oldQuantity;
         }
     }
 

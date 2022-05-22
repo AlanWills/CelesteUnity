@@ -76,11 +76,11 @@ namespace Celeste.Sound
             }
         }
 
-        private void OnMusicEnabledChanged(bool isEnabled)
+        private void OnMusicEnabledChanged(ValueChangedArgs<bool> args)
         {
-            if (isEnabled)
+            if (args.newValue)
             {
-                NextTrack(isEnabled);
+                NextTrack(args.newValue);
             }
             else
             {

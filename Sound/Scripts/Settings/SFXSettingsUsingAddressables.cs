@@ -1,9 +1,11 @@
 ﻿using Celeste.Events;
 using Celeste.Events.AssetReferences;
+using Celeste.Parameters;
 using Celeste.Parameters.AssetReferences;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
@@ -44,12 +46,12 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(Action<bool> callback)
+        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            sfxEnabled.Asset.AddOnValueChangedCallback(callback);
+            sfxEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(Action<bool> callback)
+        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.Asset.RemoveOnValueChangedCallback(callback);
         }
@@ -76,9 +78,9 @@ namespace Celeste.Sound.Settings
 
         #region Callbacks
 
-        private void OnSFXEnabledChanged(bool newValue)
+        private void OnSFXEnabledChanged(ValueChangedArgs<bool> args)
         {
-            enabled = newValue;
+            enabled = args.newValue;
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using Celeste.Parameters;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Features
 {
@@ -33,12 +34,12 @@ namespace Celeste.Features
 
         #endregion
 
-        public void AddOnEnabledChangedCallback(Action<bool> callback)
+        public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            isEnabled.AddOnValueChangedCallback(callback);
+            isEnabled.AddValueChangedCallback(callback);
         }
 
-        public void RemoveOnEnabledChangedCallback(Action<bool> callback)
+        public void RemoveOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             isEnabled.RemoveOnValueChangedCallback(callback);
         }

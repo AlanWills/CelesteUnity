@@ -1,14 +1,25 @@
-﻿using Celeste.Events;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Parameters
 {
-    public abstract class ParameterValue<T> : ScriptableObject, IValue<T>
+    public struct ValueChangedArgs<T>
+    {
+        public T oldValue;
+        public T newValue;
+
+        public ValueChangedArgs(T oldValue, T newValue)
+        {
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+        }
+    }
+
+    public class ParameterValue<T> : ScriptableObject, IValue<T>
     {
         #region Properties and Fields
 
-        protected abstract ParameterisedEvent<T> OnValueChanged { get; }
+        protected UnityEvent<ValueChangedArgs<T>> OnValueChanged { get; } = new UnityEvent<ValueChangedArgs<T>>();
 
         private T value;
         public T Value 
@@ -26,12 +37,10 @@ namespace Celeste.Parameters
                 if ((this.value == null && value != null) ||
                     !this.value.Equals(value))
                 {
+                    T oldValue = this.value;
                     this.value = value;
 
-                    if (OnValueChanged != null)
-                    {
-                        OnValueChanged.InvokeSilently(this.value);
-                    }
+                    OnValueChanged.Invoke(new ValueChangedArgs<T>(oldValue, value));
                 }
             }
         }
@@ -70,28 +79,19 @@ namespace Celeste.Parameters
 
         protected virtual T ConstrainValue(T input) { return input; }
 
-        public void AddOnValueChangedCallback(Action<T> callback)
+        public void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            if (OnValueChanged != null)
-            {
-                OnValueChanged.AddListener(callback);
-            }
+            OnValueChanged.AddListener(callback);
         }
 
-        public void RemoveOnValueChangedCallback(Action<T> callback)
+        public void RemoveOnValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            if (OnValueChanged != null)
-            {
-                OnValueChanged.RemoveListener(callback);
-            }
+            OnValueChanged.RemoveListener(callback);
         }
 
         public void RemoveAllValueChangedCallbacks()
         {
-            if (OnValueChanged != null)
-            {
-                OnValueChanged.RemoveAllListeners();
-            }
+            OnValueChanged.RemoveAllListeners();
         }
 
         public override string ToString()

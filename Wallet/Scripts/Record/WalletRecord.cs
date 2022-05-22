@@ -3,7 +3,6 @@ using Celeste.Wallet.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Celeste.Wallet.Currency;
 
 namespace Celeste.Wallet
 {
@@ -30,9 +29,9 @@ namespace Celeste.Wallet
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
                 Currency currency = currencyCatalogue.GetItem(i);
-                currency.AddOnQuantityChangedCallback((quantity) =>
+                currency.AddOnQuantityChangedCallback((args) =>
                 {
-                    currencyChanged.Invoke(new CurrencyChangedArgs(currency, quantity));
+                    currencyChanged.Invoke(new CurrencyChangedArgs(currency, args.oldValue, args.newValue));
                     save.Invoke();
                 });
                 currencies.Add(currency);

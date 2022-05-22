@@ -5,6 +5,7 @@ using Celeste.Parameters.AssetReferences;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
@@ -34,12 +35,12 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(Action<bool> callback)
+        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            sfxEnabled.AddOnValueChangedCallback(callback);
+            sfxEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(Action<bool> callback)
+        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.RemoveOnValueChangedCallback(callback);
         }
