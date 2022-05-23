@@ -10,7 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Celeste.FSMNodes.Assets
+namespace Celeste.FSM.Nodes.Assets
 {
     [CreateNodeMenu("Celeste/Assets/Initialize Addressables")]
     public class InitializeAddressablesNode : FSMNode

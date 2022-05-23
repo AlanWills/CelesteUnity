@@ -1,14 +1,15 @@
 {
-    "name": "Celeste.Loading.Editor",
-    "rootNamespace": "CelesteEditor.Loading",
+    "name": "Celeste.Loading.Nodes",
+    "rootNamespace": "Celeste.Loading.Nodes",
     "references": [
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
         "Celeste.Loading",
-        "Celeste.Assets",
-        "Celeste.Parameters.Editor"
+        "Celeste.Events",
+        "Celeste.Parameters",
+        "XNode"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

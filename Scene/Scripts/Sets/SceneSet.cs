@@ -122,7 +122,7 @@ namespace Celeste.Scene
 
             for (int i = 0, n = scenesToUnload.Count; i < n; ++i)
             {
-                UnityEngine.Debug.Log($"Beginning to unload scene {scenesToUnload[i]}.");
+                UnityEngine.Debug.Log($"Beginning to unload scene {scenesToUnload[i].name}.");
                 AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(scenesToUnload[i]);
                 while (!asyncOperation.isDone)
                 {

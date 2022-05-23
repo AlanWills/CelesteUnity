@@ -1,16 +1,8 @@
-﻿using Celeste.FSM;
-using Celeste.Hierarchy;
+﻿using Celeste.Hierarchy;
 using Celeste.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-namespace Celeste.FSMNodes.Input
+namespace Celeste.FSM.Nodes.Input
 {
     [CreateNodeMenu("Celeste/Input/Will Receive Input")]
     public class WillReceiveInputNode : FSMNode

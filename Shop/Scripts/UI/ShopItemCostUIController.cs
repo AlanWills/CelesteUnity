@@ -15,8 +15,8 @@ namespace Celeste.Shop.UI
 
         public void Hookup(ShopItem shopItem)
         {
-            costQuantityText.SetUp(
-                "GLYPH", $"\"{shopItem.Cost.currency.GlyphName}\"",
+            costQuantityText.Setup(
+                "GLYPH", shopItem.Cost.currency.GlyphName,
                 "COST", shopItem.Cost.quantity.ToString());
         }
     }

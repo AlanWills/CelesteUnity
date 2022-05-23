@@ -1,15 +1,9 @@
-﻿using Celeste.FSM;
-using Celeste.Hierarchy;
-using System;
+﻿using Celeste.Hierarchy;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-namespace Celeste.FSMNodes.Input
+namespace Celeste.FSM.Nodes.Input
 {
     [CreateNodeMenu("Celeste/Input/Will Be Clicked")]
     public class WillBeClickedNode : FSMNode

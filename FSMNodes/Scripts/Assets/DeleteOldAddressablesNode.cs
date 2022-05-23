@@ -1,7 +1,7 @@
 ﻿using Celeste.FSM;
 using UnityEngine;
 
-namespace Celeste.FSMNodes.Assets
+namespace Celeste.FSM.Nodes.Assets
 {
     [CreateNodeMenu("Celeste/Assets/Delete Old Addressables")]
     public class DeleteOldAddressablesNode : FSMNode

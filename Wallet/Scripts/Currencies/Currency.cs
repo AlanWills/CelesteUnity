@@ -35,7 +35,7 @@ namespace Celeste.Wallet
         }
 
         public Sprite Icon => icon;
-        public string GlyphName => glyphName;
+        public string GlyphName => $"\"{glyphName}\"";
 
         [SerializeField] private int guid;
         [SerializeField] private int startingQuantity;
