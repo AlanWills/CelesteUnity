@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Celeste.Wallet.UI
 {
+    [ExecuteInEditMode]
     [AddComponentMenu("Celeste/Wallet/UI/Currency UI Controller")]
     public class CurrencyUIController : MonoBehaviour
     {
@@ -13,10 +14,14 @@ namespace Celeste.Wallet.UI
 
         [Header("Data")]
         [SerializeField] private Currency currency;
+        [SerializeField] private AnimatedCurrencyTransformCache animatedCurrencyTransformCache;
 
         [Header("UI Elements")]
         [SerializeField] private Image currencyIcon;
         [SerializeField] private TextMeshProUGUI quantityText;
+
+        [Header("Settings")]
+        [SerializeField] private bool isCurrencyTarget = true;
 
         #endregion
 
@@ -31,11 +36,21 @@ namespace Celeste.Wallet.UI
         {
             currency.AddOnQuantityChangedCallback(OnCurrencyChanged);
 
+            if (isCurrencyTarget)
+            {
+                animatedCurrencyTransformCache.AddCurrencyTarget(currency, GetComponent<RectTransform>());
+            }
+
             UpdateUI();
         }
 
         private void OnDisable()
         {
+            if (isCurrencyTarget)
+            {
+                animatedCurrencyTransformCache.RemoveCurrencyTarget(currency);
+            }
+
             currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
         }
 

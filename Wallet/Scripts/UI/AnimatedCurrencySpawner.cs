@@ -40,7 +40,7 @@ namespace Celeste.Wallet.UI
             }
             else
             {
-                UnityEngine.Debug.LogAssertion($"Could not find animated currency target for currency {currency}.");
+                UnityEngine.Debug.Log($"Could not find animated currency target for currency {currency}.");
             }
         }
 

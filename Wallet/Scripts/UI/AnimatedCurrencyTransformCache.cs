@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Wallet.UI
@@ -8,8 +9,8 @@ namespace Celeste.Wallet.UI
     {
         #region Properties and Fields
 
-        private Dictionary<Currency, RectTransform> currencySourceCache = new Dictionary<Currency, RectTransform>();
-        private Dictionary<Currency, RectTransform> currencyTargetCache = new Dictionary<Currency, RectTransform>();
+        [NonSerialized] private Dictionary<Currency, RectTransform> currencySourceCache = new Dictionary<Currency, RectTransform>();
+        [NonSerialized] private Dictionary<Currency, RectTransform> currencyTargetCache = new Dictionary<Currency, RectTransform>();
 
         #endregion
 
