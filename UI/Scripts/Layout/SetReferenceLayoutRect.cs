@@ -26,6 +26,11 @@ namespace Celeste.UI.Layout
             SetReferenceLayout();
         }
 
+        private void OnEnable()
+        {
+            referenceLayout.rectTransform = rectTransform;
+        }
+
         #endregion
 
         public void SetReferenceLayout()

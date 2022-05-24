@@ -14,6 +14,7 @@ namespace Celeste.Utils
                 targetRectTransform.pivot = sourceRectTransform.pivot;
                 targetRectTransform.anchoredPosition = sourceRectTransform.anchoredPosition;
                 targetRectTransform.sizeDelta = sourceRectTransform.sizeDelta;
+                targetRectTransform.position = sourceRectTransform.position;
             }
         }
 
