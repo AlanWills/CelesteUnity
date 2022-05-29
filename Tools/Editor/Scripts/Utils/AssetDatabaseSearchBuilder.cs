@@ -17,13 +17,13 @@
 
         public AssetDatabaseSearchBuilder WithType<T>() where T : UnityEngine.Object
         {
-            typeName = typeof(T).Name;
+            typeName = typeof(T).FullName;
             return this;
         }
 
         public string Build()
         {
-            return $"{assetName} t:{typeName}";
+            return $"{assetName} t:{typeName}".Trim();
         }
     }
 }

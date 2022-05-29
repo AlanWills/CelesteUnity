@@ -1,8 +1,26 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Celeste.DeckBuilding.Cards
+namespace Celeste.Components
 {
+    [Serializable]
+    public struct InterfaceHandle<T> where T : class
+    {
+        public bool IsValid
+        {
+            get { return iFace != null; }
+        }
+
+        public T iFace;
+        public Instance instance;
+
+        public InterfaceHandle(T iFace, Instance instance)
+        {
+            this.iFace = iFace;
+            this.instance = instance;
+        }
+    }
+
     [Serializable]
     public struct ComponentHandle
     {
@@ -20,17 +38,17 @@ namespace Celeste.DeckBuilding.Cards
             instance = new Instance(data, events);
         }
 
-        public bool SupportsInterface<T>()
+        public bool Is<T>()
         {
             return component is T;
         }
 
-        public bool Is<T>() where T : Component
+        public InterfaceHandle<T> AsInterface<T>() where T : class
         {
-            return component is T;
+            return new InterfaceHandle<T>(component as T, instance);
         }
 
-        public ComponentHandle<T> As<T>() where T : Component
+        public ComponentHandle<T> AsComponent<T>() where T : Component
         {
             return new ComponentHandle<T>(component as T, instance);
         }
@@ -57,8 +75,6 @@ namespace Celeste.DeckBuilding.Cards
     [Serializable]
     public class ComponentData 
     {
-        [NonSerialized] public CardRuntime Card;
-
         public string ToJson() { return JsonUtility.ToJson(this); }
         public void FromJson(string json) { JsonUtility.FromJsonOverwrite(json, this); }
     }

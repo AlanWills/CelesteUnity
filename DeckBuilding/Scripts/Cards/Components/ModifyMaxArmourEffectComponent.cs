@@ -1,10 +1,8 @@
-﻿using Celeste.DeckBuilding.Commands;
-using Celeste.DeckBuilding.Events;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Commands;
 using System;
-using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.DeckBuilding.Cards
 {

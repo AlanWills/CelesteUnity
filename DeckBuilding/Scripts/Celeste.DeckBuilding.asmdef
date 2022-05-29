@@ -17,6 +17,7 @@
         "Celeste.FX",
         "Celeste.Logic",
         "Celeste.Constants",
+        "Celeste.Components",
         "Unity.TextMeshPro",
         "XNode"
     ],

@@ -2,7 +2,10 @@
     "name": "Celeste.Objects.Editor",
     "rootNamespace": "CelesteEditor.Objects",
     "references": [
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.Tools",
+        "Celeste.OdinSerializer",
+        "Celeste.Tools.Editor"
 	],
     "includePlatforms": [
         "Editor"

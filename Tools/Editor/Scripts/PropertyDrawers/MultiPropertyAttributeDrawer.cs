@@ -53,8 +53,7 @@ namespace CelesteEditor.Tools.PropertyDrawers.Attributes
                 var tempheight = storedAttributes[i].GetPropertyHeight(property, label);
                 if (tempheight.HasValue)
                 {
-                    height = tempheight.Value;
-                    break;
+                    height = Mathf.Max(height, tempheight.Value);
                 }
             }
 

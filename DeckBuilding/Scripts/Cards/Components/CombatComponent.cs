@@ -1,4 +1,5 @@
-﻿using Celeste.DeckBuilding.Events;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Events;
 using Celeste.Events;
 using System;
 using System.Collections;
@@ -9,7 +10,7 @@ using UnityEngine.Events;
 namespace Celeste.DeckBuilding.Cards
 {
     [DisplayName("Combat")]
-    public class CombatComponent : Component
+    public class CombatComponent : Components.Component
     {
         #region Save Data
 

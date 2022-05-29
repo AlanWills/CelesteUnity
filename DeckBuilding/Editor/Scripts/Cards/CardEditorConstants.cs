@@ -1,8 +1,5 @@
-﻿using Celeste.DeckBuilding.Cards;
-using CelesteEditor.Tools.Utils;
+﻿using CelesteEditor.Tools.Utils;
 using System;
-using UnityEditor;
-using UnityEngine;
 
 namespace CelesteEditor.DeckBuilding.Cards
 {
@@ -17,7 +14,7 @@ namespace CelesteEditor.DeckBuilding.Cards
 
         static CardEditorConstants()
         {
-            TypeUtils.LoadTypes<Celeste.DeckBuilding.Cards.Component>(ref AllCardComponentTypes, ref AllCardComponentDisplayNames);
+            TypeUtils.LoadTypes<Celeste.Components.Component>(ref AllCardComponentTypes, ref AllCardComponentDisplayNames);
         }
     }
 }

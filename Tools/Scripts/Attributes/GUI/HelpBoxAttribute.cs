@@ -24,8 +24,28 @@ namespace Celeste.Tools.Attributes.GUI
         public string ValidationMethod { get; }
 
 #if UNITY_EDITOR
+        public float HelpBoxHeight
+        {
+            get
+            {
+                var helpBoxStyle = (UnityEngine.GUI.skin != null) ? UnityEngine.GUI.skin.GetStyle("helpbox") : null;
+                if (helpBoxStyle != null)
+                {
+                    return 
+                        HELP_BOX_PRE_PADDING + 
+                        helpBoxStyle.CalcHeight(new GUIContent(HelpText), EditorGUIUtility.currentViewWidth) + 
+                        HELP_BOX_POST_PADDING;
+                }
+
+                return 0;
+            }
+        }
+
         private bool validationMethodInfoObtained = false;
         private MethodInfo validationMethodInfo;
+
+        private const float HELP_BOX_PRE_PADDING = 2;
+        private const float HELP_BOX_POST_PADDING = 4;
 #endif
 
         public HelpBoxAttribute(string helpText, HelpBoxMessageType messageType) :
@@ -43,14 +63,64 @@ namespace Celeste.Tools.Attributes.GUI
 #if UNITY_EDITOR
         public override bool IsVisible(SerializedProperty property)
         {
-            if (string.IsNullOrEmpty(ValidationMethod))
+            return true;
+        }
+
+        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            float helpBoxHeight = ShowHelpBox(property) ? HelpBoxHeight : 0;
+            return GetDefaultPropertyHeight(property, label) + helpBoxHeight;
+        }
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            if (ShowHelpBox(property))
             {
-                return true;
+                float helpBoxHeight = HelpBoxHeight;
+                
+                if (helpBoxHeight > 0)
+                {
+                    Rect helpBoxRect = new Rect(position);
+                    helpBoxRect.y += HELP_BOX_PRE_PADDING;
+                    helpBoxRect.height = helpBoxHeight - HELP_BOX_PRE_PADDING - HELP_BOX_POST_PADDING;
+                    
+                    EditorGUI.HelpBox(helpBoxRect, HelpText, GetMessageType());
+
+                    position.y += helpBoxHeight;
+                    position.height -= helpBoxHeight;
+                }
             }
+
+            base.OnGUI(position, property, label);
+        }
+
+        private MessageType GetMessageType()
+        {
+            switch (MessageType)
+            {
+                case HelpBoxMessageType.None: return UnityEditor.MessageType.None;
+                case HelpBoxMessageType.Info: return UnityEditor.MessageType.Info;
+                case HelpBoxMessageType.Warning: return UnityEditor.MessageType.Warning;
+                case HelpBoxMessageType.Error: return UnityEditor.MessageType.Error;
+                default:
+                    Debug.LogAssertion($"Unhandled message type '{MessageType}'.");
+                    return UnityEditor.MessageType.None;
+            }
+        }
+
+        private bool ShowHelpBox(SerializedProperty property)
+        {
+            MethodInfo validationMethod = TryObtainValidationMethodInfo(property);
+            return validationMethod == null || !(bool)validationMethod.Invoke(property.serializedObject.targetObject, null);
+        }
+
+        private MethodInfo TryObtainValidationMethodInfo(SerializedProperty serializedProperty)
+        {
+            validationMethodInfoObtained |= string.IsNullOrEmpty(ValidationMethod);
 
             if (!validationMethodInfoObtained)
             {
-                Type objectType = property.serializedObject.targetObject.GetType();
+                Type objectType = serializedProperty.serializedObject.targetObject.GetType();
                 validationMethodInfo = objectType.GetMethod(ValidationMethod);
                 validationMethodInfoObtained = true;
 
@@ -66,39 +136,7 @@ namespace Celeste.Tools.Attributes.GUI
                 }
             }
 
-            return validationMethodInfo != null && (bool)validationMethodInfo.Invoke(property.serializedObject.targetObject, null);
-        }
-
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            var helpBoxStyle = (UnityEngine.GUI.skin != null) ? UnityEngine.GUI.skin.GetStyle("helpbox") : null;
-            if (helpBoxStyle != null)
-            {
-                return GetDefaultPropertyHeight(property, label) + Mathf.Max(40f, helpBoxStyle.CalcHeight(new GUIContent(HelpText), EditorGUIUtility.currentViewWidth) + 4);
-            }
-
-            return null;
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            base.OnGUI(position, property, label);
-
-            EditorGUI.HelpBox(position, HelpText, GetMessageType());
-        }
-
-        private MessageType GetMessageType()
-        {
-            switch (MessageType)
-            {
-                case HelpBoxMessageType.None: return UnityEditor.MessageType.None;
-                case HelpBoxMessageType.Info: return UnityEditor.MessageType.Info;
-                case HelpBoxMessageType.Warning: return UnityEditor.MessageType.Warning;
-                case HelpBoxMessageType.Error: return UnityEditor.MessageType.Error;
-                default:
-                    Debug.LogAssertion($"Unhandled message type '{MessageType}'.");
-                    return UnityEditor.MessageType.None;
-            }
+            return validationMethodInfo;
         }
 #endif
     }

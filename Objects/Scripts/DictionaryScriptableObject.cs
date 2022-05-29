@@ -50,6 +50,13 @@ namespace Celeste.Objects
         {
             using (ChangeBlock changeBlock = new ChangeBlock(this))
             {
+#if KEY_CHECKS
+                if (ItemsImpl.ContainsKey(key))
+                {
+                    UnityEngine.Debug.LogAssertion($"{name} already contains key {key}.");
+                    return;
+                }
+#endif
                 ItemsImpl.Add(key, value);
             }
         }
@@ -72,6 +79,14 @@ namespace Celeste.Objects
                 {
                     ItemsImpl.Add(item.Key, item.Value);
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            {
+                ItemsImpl.Clear();
             }
         }
 

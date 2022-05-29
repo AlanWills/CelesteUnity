@@ -15,7 +15,7 @@ namespace Celeste.Localisation.AssetReferences
 
         public Language GetItem(int index)
         {
-            return ShouldLoad ? null : GetItem(index);
+            return ShouldLoad ? null : Asset.GetItem(index);
         }
     }
 }

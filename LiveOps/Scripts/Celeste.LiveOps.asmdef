@@ -1,0 +1,24 @@
+{
+    "name": "Celeste.LiveOps",
+    "rootNamespace": "Celeste.LiveOps",
+    "references": [
+        "Celeste.Components",
+        "Celeste.DataStructures",
+        "Celeste.Tools",
+        "Celeste.Persistence",
+        "Celeste.Events",
+        "Celeste.Objects",
+        "Celeste.OdinSerializer",
+        "Celeste.Debug",
+        "Celeste.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

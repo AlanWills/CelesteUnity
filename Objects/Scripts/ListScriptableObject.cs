@@ -109,6 +109,7 @@ namespace Celeste.Objects
             if (!Application.isPlaying)
             {
                 UnityEditor.EditorUtility.SetDirty(this);
+                UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
             }
 #endif
         }

@@ -2,7 +2,7 @@
 
 namespace CelesteEditor.DeckBuilding.Cards
 {
-    [CustomEditor(typeof(Celeste.DeckBuilding.Cards.Component), true, isFallback = true)]
+    [CustomEditor(typeof(Celeste.Components.Component), true, isFallback = true)]
     public class ComponentEditor : Editor
     {
         public override void OnInspectorGUI()

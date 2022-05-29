@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using Celeste.Components;
+using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards
 {
     [DisplayName("Info")]
-    public class InfoComponent : Component
+    public class InfoComponent : Components.Component
     {
         #region Properties and Fields
 

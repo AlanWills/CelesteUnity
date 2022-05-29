@@ -34,7 +34,7 @@ namespace Celeste.DeckBuilding.Extensions
                 return;
             }
 #endif
-            costComponent.component.SetCost(costComponent.instance, cost);
+            costComponent.component.SetCost(costComponent.instance, card, cost);
         }
 
         public static void ModifyCost(this CardRuntime card, int costModifier)

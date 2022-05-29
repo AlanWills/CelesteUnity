@@ -1,4 +1,5 @@
-﻿using Celeste.DeckBuilding.Commands;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Commands;
 using Celeste.DeckBuilding.Events;
 using System;
 using System.Collections;

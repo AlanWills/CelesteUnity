@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Celeste.Components;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards

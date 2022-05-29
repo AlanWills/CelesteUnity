@@ -1,4 +1,5 @@
-﻿using Celeste.DeckBuilding.Events;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Events;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using UnityEngine.Events;
 namespace Celeste.DeckBuilding.Cards
 {
     [DisplayName("Cost")]
-    public class CostComponent : Component
+    public class CostComponent : Components.Component
     {
         #region Save Data
 
@@ -54,7 +55,7 @@ namespace Celeste.DeckBuilding.Cards
             return costData.Cost;
         }
 
-        public void SetCost(Instance instance, int cost)
+        public void SetCost(Instance instance, CardRuntime card, int cost)
         {
             CostComponentData costData = instance.data as CostComponentData;
             if (costData.Cost != cost)
@@ -63,7 +64,7 @@ namespace Celeste.DeckBuilding.Cards
                 costData.Cost = Mathf.Max(0, cost);
 
                 CostComponentEvents events = instance.events as CostComponentEvents;
-                events.OnCostChanged.Invoke(new CostChangedArgs(costData.Card, oldCost, cost));
+                events.OnCostChanged.Invoke(new CostChangedArgs(card, oldCost, cost));
             }
         }
 

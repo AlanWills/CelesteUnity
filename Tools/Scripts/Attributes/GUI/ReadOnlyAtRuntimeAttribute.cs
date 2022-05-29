@@ -9,6 +9,11 @@ namespace Celeste.Tools.Attributes.GUI
     public class ReadOnlyAtRuntimeAttribute : MultiPropertyAttribute
     {
 #if UNITY_EDITOR
+        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return GetDefaultPropertyHeight(property, label);
+        }
+
         public override void OnPreGUI(Rect position, SerializedProperty property)
         {
             base.OnPreGUI(position, property);

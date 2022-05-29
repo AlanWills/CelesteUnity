@@ -15,7 +15,7 @@ namespace Celeste.Tools
             Action addItem,
             Action<int> removeItem)
         {
-            return PaginatedListImpl(
+            return PaginatedList(
                 currentPage,
                 entriesPerPage,
                 numItems,
@@ -39,7 +39,7 @@ namespace Celeste.Tools
             int numItems,
             Action<int> drawItem)
         {
-            return PaginatedListImpl(
+            return PaginatedList(
                 currentPage,
                 entriesPerPage,
                 numItems,
@@ -50,7 +50,7 @@ namespace Celeste.Tools
                 (i) => { });
         }
 
-        private static int PaginatedListImpl(
+        public static int PaginatedList(
             int currentPage,
             int entriesPerPage,
             int numItems,

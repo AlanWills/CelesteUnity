@@ -1,4 +1,5 @@
-﻿using Celeste.Constants;
+﻿using Celeste.Components;
+using Celeste.Constants;
 using Celeste.DataStructures;
 using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Events;
@@ -110,11 +111,9 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        private ComponentHandle AddComponent(Cards.Component component)
+        private ComponentHandle AddComponent(Components.Component component)
         {
             ComponentData data = component.CreateData();
-            data.Card = this;
-
             ComponentEvents events = component.CreateEvents();
             ComponentHandle handle = new ComponentHandle(component, data, events);
             components.Add(handle);
@@ -122,7 +121,7 @@ namespace Celeste.DeckBuilding
             return handle;
         }
 
-        public bool HasComponent<T>() where T : Cards.Component
+        public bool HasComponent<T>() where T : Components.Component
         {
             for (int i = 0, n = components.Count; i < n; ++i)
             {
@@ -135,13 +134,13 @@ namespace Celeste.DeckBuilding
             return false;
         }
 
-        public ComponentHandle<T> FindComponent<T>() where T : Cards.Component
+        public ComponentHandle<T> FindComponent<T>() where T : Components.Component
         {
             for (int i = 0, n = components.Count; i < n; ++i)
             {
                 if (components[i].Is<T>())
                 {
-                    return components[i].As<T>();
+                    return components[i].AsComponent<T>();
                 }
             }
 
