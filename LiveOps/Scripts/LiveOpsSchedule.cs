@@ -1,5 +1,4 @@
-﻿using Celeste.Components.Persistence;
-using Celeste.LiveOps.Persistence;
+﻿using Celeste.LiveOps.Persistence;
 using Celeste.Objects;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace Celeste.LiveOps
 
 #if UNITY_EDITOR
         // Have a list of templates just for the editor, so it makes baking out the json a lot easier
-        [SerializeField] private List<LiveOpTemplate> scheduledLiveOpTemplates = new List<LiveOpTemplate>();
+        [SerializeField] private List<LiveOpTemplate> itemTemplates = new List<LiveOpTemplate>();
 #endif
 
         #endregion
@@ -23,7 +22,7 @@ namespace Celeste.LiveOps
         {
             List<LiveOpDTO> dtos = new List<LiveOpDTO>();
 
-            foreach (var template in scheduledLiveOpTemplates)
+            foreach (var template in itemTemplates)
             {
                 dtos.Add(new LiveOpDTO(template));
             }

@@ -36,10 +36,7 @@ namespace Celeste.Assets
 
         public void Dispose()
         {
-            if (!HasError)
-            {
-                Addressables.Release(handle);
-            }
+            Addressables.Release(handle);
         }
     }
 
@@ -75,10 +72,7 @@ namespace Celeste.Assets
 
         public void Dispose()
         {
-            if (!HasError)
-            {
-                Addressables.Release(handle);
-            }
+            Addressables.Release(handle);
         }
     }
 }

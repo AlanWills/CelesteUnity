@@ -3,8 +3,10 @@ using Celeste.Components.Catalogue;
 using Celeste.Components.Persistence;
 using Celeste.Core;
 using Celeste.DataStructures;
+using Celeste.Events;
 using Celeste.LiveOps.Persistence;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,18 +24,50 @@ namespace Celeste.LiveOps
             public LiveOp LiveOp { get; }
             public InterfaceHandle<ILiveOpTimer> Timer { get; }
             public InterfaceHandle<ILiveOpProgress> Progress { get; }
+            public InterfaceHandle<ILiveOpAssets> Assets { get; }
 
             public long Type => LiveOp.Type;
+            public long SubType => LiveOp.SubType;
             public long StartTimestamp => LiveOp.StartTimestamp;
             public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance);
             public LiveOpState State { get => LiveOp.State; set => LiveOp.State = value; }
             public bool HasProgress => Progress.iFace.HasProgress(Progress.instance);
 
-            public LiveOpWrapper(LiveOp liveOp, InterfaceHandle<ILiveOpTimer> timer, InterfaceHandle<ILiveOpProgress> progress)
+            public LiveOpWrapper(
+                LiveOp liveOp, 
+                InterfaceHandle<ILiveOpTimer> timer, 
+                InterfaceHandle<ILiveOpProgress> progress,
+                InterfaceHandle<ILiveOpAssets> assets)
             {
                 LiveOp = liveOp;
                 Timer = timer;
                 Progress = progress;
+                Assets = assets;
+            }
+
+            public IEnumerator Load()
+            {
+                yield return Assets.iFace.Load(Assets.instance);
+
+                if (!Assets.iFace.IsLoaded)
+                {
+                    UnityEngine.Debug.LogError($"Live Op with type {Type} starting at timestamp {StartTimestamp} failed to load its assets, so will not be scheduled.");
+                    yield break;
+                }
+                
+                for (int i = 0, n = LiveOp.NumComponents; i < n; i++)
+                {
+                    var component = LiveOp.GetComponent(i);
+
+                    // Load all our other components that require assets now that our assets interface is loaded
+                    if (component.Is<IRequiresAssets>())
+                    {
+                        yield return component.AsInterface<IRequiresAssets>().iFace.Load(Assets);
+                    }
+                }
+
+                // Set our timer start timestamp now that we have loaded everything
+                Timer.iFace.SetStartTimestamp(Timer.instance, StartTimestamp);
             }
 
             public override bool Equals(object obj)
@@ -73,21 +107,35 @@ namespace Celeste.LiveOps
         [SerializeField] private ScheduledCallbacks scheduledCallbacks;
 
         [Header("Events")]
+        [SerializeField] private LiveOpEvent liveOpAdded;
+        [SerializeField] private LiveOpEvent liveOpStateChanged;
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private List<LiveOpWrapper> liveOps = new List<LiveOpWrapper>();
 
         #endregion
 
-        public void AddLiveOp(LiveOpDTO liveOpDTO)
+        public LiveOp GetLiveOp(int index)
         {
-            if (liveOps.Exists(x => x.Type == liveOpDTO.type && x.StartTimestamp == liveOpDTO.startTimestamp))
+            return liveOps.Get(index).LiveOp;
+        }
+
+        public IEnumerator AddLiveOp(LiveOpDTO liveOpDTO)
+        {
+            if (liveOps.Exists(x =>
+                x.Type == liveOpDTO.type && 
+                x.SubType == liveOpDTO.subType &&
+                x.StartTimestamp == liveOpDTO.startTimestamp))
             {
                 UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
-                return;
+                yield break;
             }
 
-            LiveOp liveOp = new LiveOp(liveOpDTO.type, liveOpDTO.startTimestamp, (LiveOpState)liveOpDTO.state);
+            LiveOp liveOp = new LiveOp(
+                liveOpDTO.type, 
+                liveOpDTO.subType, 
+                liveOpDTO.startTimestamp, 
+                (LiveOpState)liveOpDTO.state);
 
             foreach (ComponentDTO componentDTO in liveOpDTO.components)
             {
@@ -99,36 +147,47 @@ namespace Celeste.LiveOps
                 }
             }
 
+            if (liveOp.State == LiveOpState.Finished)
+            {
+                UnityEngine.Debug.Log($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has finished, so will not be added.");
+                yield break;
+            }
+
             if (!liveOp.TryFindComponent<ILiveOpTimer>(out var timer))
             {
                 UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpTimer)} component, so will not be scheduled.");
-                return;
+                yield break;
             }
 
             if (!liveOp.TryFindComponent<ILiveOpProgress>(out var progress))
             {
                 UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpProgress)} component, so will not be scheduled.");
-                return;
+                yield break;
             }
 
-            if (liveOp.State == LiveOpState.Finished)
+            if (!liveOp.TryFindComponent<ILiveOpAssets>(out var assets))
             {
-                UnityEngine.Debug.Log($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has finished, so will not be added.");
-                return;
+                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpAssets)} component, so will not be scheduled.");
+                yield break;
             }
 
-            LiveOpWrapper liveOpWrapper = new LiveOpWrapper(liveOp, timer, progress);
-            timer.iFace.SetStartTimestamp(timer.instance, liveOp.StartTimestamp);
-            liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
-            liveOps.Add(liveOpWrapper);
+            LiveOpWrapper liveOpWrapper = new LiveOpWrapper(liveOp, timer, progress, assets);
 
-            Schedule(liveOpWrapper);
+            yield return liveOpWrapper.Load();
+
+            if (liveOpWrapper.Assets.iFace.IsLoaded)
+            {
+                liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
+                liveOp.DataChanged.AddListener(OnLiveOpDataChanged);
+                liveOps.Add(liveOpWrapper);
+
+                Schedule(liveOpWrapper);
+
+                liveOpAdded.Invoke(liveOp);
+            }
         }
 
-        public LiveOp GetLiveOp(int index)
-        {
-            return liveOps.Get(index).LiveOp;
-        }
+        #region Scheduling
 
         private void Schedule(LiveOpWrapper liveOp)
         {
@@ -207,9 +266,17 @@ namespace Celeste.LiveOps
             // and if they've become finished during game time, we shouldn't reschedule them
         }
 
+        #endregion
+
         #region Callbacks
 
         private void OnLiveOpStateChanged(LiveOp liveOp)
+        {
+            save.Invoke();
+            liveOpStateChanged.Invoke(liveOp);
+        }
+
+        private void OnLiveOpDataChanged(LiveOp liveOp)
         {
             save.Invoke();
         }

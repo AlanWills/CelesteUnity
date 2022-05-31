@@ -14,10 +14,12 @@ namespace Celeste.LiveOps
         #region Properties and Fields
 
         public long Type => type;
+        public long SubType => subType;
         public long StartTimestamp => startTimestamp;
         public int NumComponents => components.Count;
 
         [SerializeField] private long type;
+        [SerializeField] private long subType;
         [Timestamp, SerializeField] private long startTimestamp;
         [SerializeField] private List<ComponentTemplate> components = new List<ComponentTemplate>();
 

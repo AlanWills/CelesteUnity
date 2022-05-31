@@ -76,6 +76,8 @@ namespace CelesteEditor.LiveOps
             EditorGUILayout.LabelField("Components", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
+            DrawValidationGUI();
+
             currentPage = GUIUtils.PaginatedList(
                 currentPage,
                 40,
@@ -93,6 +95,64 @@ namespace CelesteEditor.LiveOps
         }
 
         #endregion
+
+        private void DrawValidationGUI()
+        {
+            LiveOpTemplate template = target as LiveOpTemplate;
+
+            bool assetsFound = false;
+            bool timerFound = false;
+            bool progressFound = false;
+
+            for (int i = 0, n = template.NumComponents; i < n; ++i)
+            {
+                var component = template.GetComponent(i).component;
+                
+                if (!assetsFound)
+                {
+                    assetsFound = component is ILiveOpAssets;
+                }
+
+                if (!timerFound)
+                {
+                    timerFound = component is ILiveOpTimer;
+                }
+
+                if (!progressFound)
+                {
+                    progressFound = component is ILiveOpProgress;
+                }
+            }
+
+            if (assetsFound)
+            {
+                EditorGUILayout.LabelField($"{nameof(ILiveOpAssets)} component found!", CelesteGUIStyles.SuccessLabel);
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"No {nameof(ILiveOpAssets)} component found...", CelesteGUIStyles.ErrorLabel);
+            }
+
+            if (timerFound)
+            {
+                EditorGUILayout.LabelField($"{nameof(ILiveOpTimer)} component found!", CelesteGUIStyles.SuccessLabel);
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"No {nameof(ILiveOpTimer)} component found...", CelesteGUIStyles.ErrorLabel);
+            }
+
+            if (progressFound)
+            {
+                EditorGUILayout.LabelField($"{nameof(ILiveOpProgress)} component found!", CelesteGUIStyles.SuccessLabel);
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"No {nameof(ILiveOpProgress)} component found...", CelesteGUIStyles.ErrorLabel);
+            }
+
+            EditorGUILayout.Space();
+        }
 
         private void RefreshDataUsingComponentCatalogue()
         {

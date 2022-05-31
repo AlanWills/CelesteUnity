@@ -1,4 +1,5 @@
 ﻿using Celeste.Persistence;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.LiveOps.Persistence
@@ -26,28 +27,34 @@ namespace Celeste.LiveOps.Persistence
 
         protected override void Deserialize(LiveOpsDTO dto)
         {
-            // Add all our live ops from the save data
-            foreach (LiveOpDTO liveOpDTO in dto.liveOps)
-            {
-                liveOpsRecord.AddLiveOp(liveOpDTO);
-            }
-
-            // Add any missing liveops from our schedule too
-            foreach (LiveOpDTO liveOpDTO in liveOpsSchedule.Items)
-            {
-                liveOpsRecord.AddLiveOp(liveOpDTO);
-            }
+            StartCoroutine(AddAllLiveOps(dto));
         }
 
         protected override void SetDefaultValues()
         {
-            // Initialize our record with the live ops in the schedule
-            foreach (LiveOpDTO liveOpDTO in liveOpsSchedule.Items)
-            {
-                liveOpsRecord.AddLiveOp(liveOpDTO);
-            }
+            StartCoroutine(AddLiveOpsFromSchedule());
         }
 
         #endregion
+
+        private IEnumerator AddAllLiveOps(LiveOpsDTO liveOpsDTO)
+        {
+            // Add all our live ops from the save data
+            foreach (LiveOpDTO liveOpDTO in liveOpsDTO.liveOps)
+            {
+                yield return liveOpsRecord.AddLiveOp(liveOpDTO);
+            }
+
+            yield return AddLiveOpsFromSchedule();
+        }
+
+        private IEnumerator AddLiveOpsFromSchedule()
+        {
+            // Add any missing liveops from our schedule too
+            foreach (LiveOpDTO liveOpDTO in liveOpsSchedule.Items)
+            {
+                yield return liveOpsRecord.AddLiveOp(liveOpDTO);
+            }
+        }
     }
 }

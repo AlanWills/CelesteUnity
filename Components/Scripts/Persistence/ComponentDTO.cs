@@ -10,13 +10,13 @@ namespace Celeste.Components.Persistence
 
         public ComponentDTO(ComponentHandle componentHandle)
         {
-            typeName = componentHandle.component.GetType().Name;
+            typeName = componentHandle.component.name;
             data = componentHandle.instance.data.ToJson();
         }
 
         public ComponentDTO(ComponentTemplate componentTemplate)
         {
-            typeName = componentTemplate.component.GetType().Name;
+            typeName = componentTemplate.component.name;
             data = componentTemplate.componentData.ToJson();
         }
     }

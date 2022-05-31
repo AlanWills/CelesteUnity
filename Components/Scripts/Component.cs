@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Components
 {
@@ -79,7 +80,10 @@ namespace Celeste.Components
         public void FromJson(string json) { JsonUtility.FromJsonOverwrite(json, this); }
     }
 
-    public class ComponentEvents { }
+    public class ComponentEvents 
+    {
+        public UnityEvent ComponentDataChanged { get; } = new UnityEvent();
+    }
 
     public struct Instance
     {
@@ -93,7 +97,7 @@ namespace Celeste.Components
         }
     }
 
-    public abstract class Component : ScriptableObject
+    public class Component : ScriptableObject
     {
         public virtual ComponentData CreateData()
         {

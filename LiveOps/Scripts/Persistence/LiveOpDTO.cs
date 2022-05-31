@@ -10,6 +10,7 @@ namespace Celeste.LiveOps.Persistence
     public class LiveOpDTO
     {
         public long type;
+        public long subType;
         [Timestamp] public long startTimestamp;
         [HideInInspector] public int state;
         public List<ComponentDTO> components;
@@ -17,6 +18,7 @@ namespace Celeste.LiveOps.Persistence
         public LiveOpDTO(LiveOp liveOp)
         {
             type = liveOp.Type;
+            subType = liveOp.SubType;
             startTimestamp = liveOp.StartTimestamp;
             state = (int)liveOp.State;
 
@@ -32,6 +34,7 @@ namespace Celeste.LiveOps.Persistence
         public LiveOpDTO(LiveOpTemplate template)
         {
             type = template.Type;
+            subType = template.SubType;
             startTimestamp = template.StartTimestamp;
             state = (int)LiveOpState.ComingSoon;
             components = new List<ComponentDTO>(template.NumComponents);

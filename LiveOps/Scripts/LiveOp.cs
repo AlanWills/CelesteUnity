@@ -11,8 +11,10 @@ namespace Celeste.LiveOps
         #region Properties and Fields
 
         public UnityEvent<LiveOp> StateChanged { get; } = new UnityEvent<LiveOp>();
+        public UnityEvent<LiveOp> DataChanged { get; } = new UnityEvent<LiveOp>();
 
         public long Type { get; }
+        public long SubType { get; }
         public long StartTimestamp { get; }
         public LiveOpState State
         {
@@ -34,15 +36,17 @@ namespace Celeste.LiveOps
 
         #endregion
 
-        public LiveOp(long type, long startTimestamp, LiveOpState state)
+        public LiveOp(long type, long subType, long startTimestamp, LiveOpState state)
         {
             Type = type;
+            SubType = subType;
             StartTimestamp = startTimestamp;
             State = state;
         }
 
         public void AddComponent(ComponentHandle component)
         {
+            component.instance.events.ComponentDataChanged.AddListener(OnComponentDataChanged);
             components.Add(component);
         }
 
@@ -51,7 +55,7 @@ namespace Celeste.LiveOps
             return components.Get(index);
         }
 
-        public bool HasComponent<T>() where T : Component
+        public bool HasComponent<T>()
         {
             return components.Exists(x => x.component is T);
         }
@@ -62,6 +66,7 @@ namespace Celeste.LiveOps
             if (0 <= componentIndex && componentIndex < NumComponents)
 #endif
             {
+                components[componentIndex].instance.events.ComponentDataChanged.RemoveListener(OnComponentDataChanged);
                 components.RemoveAt(componentIndex);
             }
         }
@@ -80,5 +85,14 @@ namespace Celeste.LiveOps
             iFace = new InterfaceHandle<T>();
             return false;
         }
+
+        #region Callbacks
+
+        private void OnComponentDataChanged()
+        {
+            DataChanged.Invoke(this);
+        }
+
+        #endregion
     }
 }
