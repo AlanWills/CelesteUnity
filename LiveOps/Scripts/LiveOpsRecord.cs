@@ -29,7 +29,7 @@ namespace Celeste.LiveOps
             public long Type => LiveOp.Type;
             public long SubType => LiveOp.SubType;
             public long StartTimestamp => LiveOp.StartTimestamp;
-            public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance);
+            public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);
             public LiveOpState State { get => LiveOp.State; set => LiveOp.State = value; }
             public bool HasProgress => Progress.iFace.HasProgress(Progress.instance);
 
@@ -65,9 +65,6 @@ namespace Celeste.LiveOps
                         yield return component.AsInterface<IRequiresAssets>().iFace.Load(Assets);
                     }
                 }
-
-                // Set our timer start timestamp now that we have loaded everything
-                Timer.iFace.SetStartTimestamp(Timer.instance, StartTimestamp);
             }
 
             public override bool Equals(object obj)
@@ -131,11 +128,32 @@ namespace Celeste.LiveOps
                 yield break;
             }
 
+            long liveOpStartTimestamp = liveOpDTO.startTimestamp;
+            LiveOpState liveOpState = (LiveOpState)liveOpDTO.state;
+
+            if (liveOpState == LiveOpState.Unknown || liveOpState == LiveOpState.Finished)
+            {
+                UnityEngine.Debug.Log($"Live Op with type {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} has finished, so will not be added.");
+
+                if (!liveOpDTO.isRecurring)
+                {
+                    // This live op is not recurring so we will not add it
+                    yield break;
+                }
+
+                // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
+                long diffBetweenNowAndStart = GameTime.Now - liveOpStartTimestamp;
+                liveOpStartTimestamp = GameTime.Now - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
+
+                // Set the state to ComingSoon, so it'll be handled properly when we schedule - we can't do more without the timer
+                liveOpState = LiveOpState.ComingSoon;
+            }
+
             LiveOp liveOp = new LiveOp(
                 liveOpDTO.type, 
-                liveOpDTO.subType, 
-                liveOpDTO.startTimestamp, 
-                (LiveOpState)liveOpDTO.state);
+                liveOpDTO.subType,
+                liveOpStartTimestamp,
+                liveOpState);
 
             foreach (ComponentDTO componentDTO in liveOpDTO.components)
             {
@@ -145,12 +163,6 @@ namespace Celeste.LiveOps
                 {
                     liveOp.AddComponent(componentHandle);
                 }
-            }
-
-            if (liveOp.State == LiveOpState.Finished)
-            {
-                UnityEngine.Debug.Log($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has finished, so will not be added.");
-                yield break;
             }
 
             if (!liveOp.TryFindComponent<ILiveOpTimer>(out var timer))
@@ -172,6 +184,25 @@ namespace Celeste.LiveOps
             }
 
             LiveOpWrapper liveOpWrapper = new LiveOpWrapper(liveOp, timer, progress, assets);
+
+            // Now we've grabbed all the components and set up the data, we can calculate the initial state of the live op
+            if (liveOpWrapper.StartTimestamp > GameTime.Now)
+            {
+                // Start time is still in the future
+                liveOpWrapper.State = LiveOpState.ComingSoon;
+            }
+            else if (liveOpWrapper.EndTimestamp > GameTime.Now &&
+                (liveOpWrapper.State == LiveOpState.ComingSoon || liveOpWrapper.State == LiveOpState.Unknown))
+            {
+                // We had a live op that was not started previously, so we can start it now as we're in the running time
+                liveOpWrapper.State = LiveOpState.Running;
+            }
+            else if (liveOpWrapper.EndTimestamp <= GameTime.Now &&
+                !progress.iFace.HasProgress(progress.instance))
+            {
+                // The end time was in the past and we have no progress so we can just finish this live op
+                liveOpWrapper.State = LiveOpState.Finished;
+            }
 
             yield return liveOpWrapper.Load();
 
@@ -219,10 +250,18 @@ namespace Celeste.LiveOps
         {
             if (liveOp.StartTimestamp <= GameTime.Now)
             {
-                // We can actually start the live op now, so let's do it!
-                liveOp.State = LiveOpState.Running;
+                if (liveOp.EndTimestamp > GameTime.Now)
+                {
+                    // We can actually start the live op now, so let's do it!
+                    liveOp.State = LiveOpState.Running;
 
-                scheduledCallbacks.Schedule(liveOp.EndTimestamp, () => Schedule(liveOp));
+                    scheduledCallbacks.Schedule(liveOp.EndTimestamp, () => Schedule(liveOp));
+                }
+                else
+                {
+                    // This live op was over before it even began, so let's finish it
+                    liveOp.State = LiveOpState.Finished;
+                }
             }
             else
             {
@@ -235,7 +274,7 @@ namespace Celeste.LiveOps
         {
             long endTime = liveOp.EndTimestamp;
 
-            if (endTime < GameTime.Now)
+            if (endTime <= GameTime.Now)
             {
                 // Event has timed out - use the progress interface to see if we can just dismiss the event
                 if (!liveOp.HasProgress)

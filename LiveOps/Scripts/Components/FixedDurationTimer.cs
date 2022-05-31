@@ -12,7 +12,6 @@ namespace Celeste.LiveOps.Components
         [Serializable]
         public class FixedDurationTimerData : ComponentData
         {
-            [HideInInspector] public long StartTime;
             public long Duration;
         }
 
@@ -23,16 +22,10 @@ namespace Celeste.LiveOps.Components
             return new FixedDurationTimerData();
         }
         
-        public void SetStartTimestamp(Instance instance, long startTimestamp)
+        public long GetEndTimestamp(Instance instance, long startTimestamp)
         {
             FixedDurationTimerData saveData = instance.data as FixedDurationTimerData;
-            saveData.StartTime = startTimestamp;
-        }
-
-        public long GetEndTimestamp(Instance instance)
-        {
-            FixedDurationTimerData saveData = instance.data as FixedDurationTimerData;
-            return saveData.StartTime + saveData.Duration;
+            return startTimestamp + saveData.Duration;
         }
     }
 }

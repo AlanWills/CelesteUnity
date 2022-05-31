@@ -16,11 +16,15 @@ namespace Celeste.LiveOps
         public long Type => type;
         public long SubType => subType;
         public long StartTimestamp => startTimestamp;
+        public bool IsRecurring => isRecurring;
+        public long RepeatsAfter => repeatsAfter;
         public int NumComponents => components.Count;
 
         [SerializeField] private long type;
         [SerializeField] private long subType;
-        [Timestamp, SerializeField] private long startTimestamp;
+        [SerializeField, Timestamp] private long startTimestamp;
+        [SerializeField] private bool isRecurring;
+        [SerializeField, ShowIf(nameof(isRecurring))] private long repeatsAfter;
         [SerializeField] private List<ComponentTemplate> components = new List<ComponentTemplate>();
 
         #endregion

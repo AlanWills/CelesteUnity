@@ -17,6 +17,8 @@ namespace Celeste.Components.Catalogue
             }
 
             Component copy = Instantiate(original);
+            copy.name = original.name;
+
             ComponentData componentData = copy.CreateData();
             ComponentEvents componentEvents = copy.CreateEvents();
 

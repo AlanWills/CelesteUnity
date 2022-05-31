@@ -12,6 +12,8 @@ namespace Celeste.LiveOps.Persistence
         public long type;
         public long subType;
         [Timestamp] public long startTimestamp;
+        public bool isRecurring;
+        public long repeatsAfter;
         [HideInInspector] public int state;
         public List<ComponentDTO> components;
 
@@ -20,6 +22,8 @@ namespace Celeste.LiveOps.Persistence
             type = liveOp.Type;
             subType = liveOp.SubType;
             startTimestamp = liveOp.StartTimestamp;
+            isRecurring = false;
+            repeatsAfter = -1;
             state = (int)liveOp.State;
 
             components = new List<ComponentDTO>(liveOp.NumComponents);
@@ -36,7 +40,9 @@ namespace Celeste.LiveOps.Persistence
             type = template.Type;
             subType = template.SubType;
             startTimestamp = template.StartTimestamp;
-            state = (int)LiveOpState.ComingSoon;
+            isRecurring = template.IsRecurring;
+            repeatsAfter = template.RepeatsAfter;
+            state = (int)LiveOpState.Unknown;
             components = new List<ComponentDTO>(template.NumComponents);
 
             for (int i = 0, n = template.NumComponents; i < n; i++)

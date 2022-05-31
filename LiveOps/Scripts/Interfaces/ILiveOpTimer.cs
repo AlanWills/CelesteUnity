@@ -4,17 +4,14 @@ namespace Celeste.LiveOps
 {
     public interface ILiveOpTimer
     {
-        void SetStartTimestamp(Instance instance, long startTimestamp);
-        long GetEndTimestamp(Instance instance);
+        long GetEndTimestamp(Instance instance, long startTimestamp);
     }
 
     public class NoLiveOpTimer : Component, ILiveOpTimer
     {
-        public long GetEndTimestamp(Instance instance)
+        public long GetEndTimestamp(Instance instance, long startTimestamp)
         {
             return 0L;
         }
-
-        public void SetStartTimestamp(Instance instance, long startTimestamp) { }
     }
 }
