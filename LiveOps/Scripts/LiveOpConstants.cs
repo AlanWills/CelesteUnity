@@ -15,5 +15,11 @@ namespace Celeste.LiveOps
             iFace = new NoLiveOpProgress(),
             instance = new Instance(new ComponentData(), new ComponentEvents())
         };
+
+        public static InterfaceHandle<ILiveOpAssets> NO_ASSETS = new InterfaceHandle<ILiveOpAssets>()
+        {
+            iFace = new NoLiveOpAssets(),
+            instance = new Instance(new ComponentData(), new ComponentEvents())
+        };
     }
 }

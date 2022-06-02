@@ -9,7 +9,7 @@ namespace Celeste.LiveOps
         ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets, Transform parent);
     }
 
-    public class NoLiveOpWidget : Celeste.Components.Component, ILiveOpWidget
+    public class NoLiveOpWidget : ILiveOpWidget
     {
         public ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets, Transform parent)
         {

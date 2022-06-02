@@ -94,14 +94,14 @@ namespace Celeste.Localisation
         {
             if (key == null)
             {
-                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.");
+                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.  No fallback possible...");
                 return string.Empty;
             }
 
             if (!localisationLookup.TryGetValue(key.Key, out string localisedText))
             {
-                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry.  No fallback possible...");
-                return string.Empty;
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry.");
+                return key.Fallback;
             }
 
             return localisedText;

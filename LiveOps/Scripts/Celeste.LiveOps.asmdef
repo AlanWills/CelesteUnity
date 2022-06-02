@@ -12,8 +12,11 @@
         "Celeste.Debug",
         "Celeste.Core",
         "Celeste.Assets",
+        "Celeste.Localisation",
+        "Celeste.Parameters",
         "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

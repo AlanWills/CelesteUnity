@@ -7,7 +7,7 @@ namespace Celeste.LiveOps
         bool HasProgress(Instance instance);
     }
 
-    public class NoLiveOpProgress : Component, ILiveOpProgress
+    public class NoLiveOpProgress : ILiveOpProgress
     {
         public bool HasProgress(Instance instance) { return false; }
     }

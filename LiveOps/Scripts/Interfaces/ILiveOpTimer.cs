@@ -7,7 +7,7 @@ namespace Celeste.LiveOps
         long GetEndTimestamp(Instance instance, long startTimestamp);
     }
 
-    public class NoLiveOpTimer : Component, ILiveOpTimer
+    public class NoLiveOpTimer : ILiveOpTimer
     {
         public long GetEndTimestamp(Instance instance, long startTimestamp)
         {

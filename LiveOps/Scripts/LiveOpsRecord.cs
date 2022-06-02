@@ -17,9 +17,13 @@ namespace Celeste.LiveOps
     {
         #region LiveOpWrapper
 
-        private struct LiveOpWrapper : IEquatable<LiveOpWrapper>
+        private class LiveOpWrapper : IEquatable<LiveOpWrapper>
         {
-            public static readonly LiveOpWrapper NULL = new LiveOpWrapper();
+            public static readonly LiveOpWrapper NULL = new LiveOpWrapper(
+                new LiveOp(0, 0, 0, LiveOpState.Unknown),
+                LiveOpConstants.NO_TIMER,
+                LiveOpConstants.NO_PROGRESS,
+                LiveOpConstants.NO_ASSETS);
 
             public LiveOp LiveOp { get; }
             public InterfaceHandle<ILiveOpTimer> Timer { get; }
@@ -67,6 +71,18 @@ namespace Celeste.LiveOps
                 }
             }
 
+            public void Complete()
+            {
+                LiveOp.Complete();
+            }
+
+            public void Finish()
+            {
+                LiveOp.Finish();
+            }
+
+            #region Operators
+
             public override bool Equals(object obj)
             {
                 return obj is LiveOpWrapper wrapper && Equals(wrapper);
@@ -91,6 +107,8 @@ namespace Celeste.LiveOps
             {
                 return !(left == right);
             }
+
+            #endregion
         }
 
         #endregion
@@ -109,6 +127,7 @@ namespace Celeste.LiveOps
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private List<LiveOpWrapper> liveOps = new List<LiveOpWrapper>();
+        [NonSerialized] private List<ValueTuple<LiveOpWrapper, CallbackHandle>> scheduleCallbackHandles = new List<ValueTuple<LiveOpWrapper, CallbackHandle>>();
 
         #endregion
 
@@ -121,8 +140,7 @@ namespace Celeste.LiveOps
         {
             if (liveOps.Exists(x =>
                 x.Type == liveOpDTO.type && 
-                x.SubType == liveOpDTO.subType &&
-                x.StartTimestamp == liveOpDTO.startTimestamp))
+                x.SubType == liveOpDTO.subType))
             {
                 UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
                 yield break;
@@ -222,6 +240,14 @@ namespace Celeste.LiveOps
 
         private void Schedule(LiveOpWrapper liveOp)
         {
+            int callbackIndex = scheduleCallbackHandles.FindIndex(x => x.Item1.LiveOp == liveOp.LiveOp);
+            if (callbackIndex >= 0)
+            {
+                // Cancel our current schedule callback if we have one, ready for our new scheduling
+                scheduledCallbacks.Cancel(scheduleCallbackHandles[callbackIndex].Item2);
+                scheduleCallbackHandles.RemoveAt(callbackIndex);
+            }
+
             switch (liveOp.State)
             {
                 case LiveOpState.ComingSoon:
@@ -255,18 +281,20 @@ namespace Celeste.LiveOps
                     // We can actually start the live op now, so let's do it!
                     liveOp.State = LiveOpState.Running;
 
-                    scheduledCallbacks.Schedule(liveOp.EndTimestamp, () => Schedule(liveOp));
+                    CallbackHandle callbackHandle = scheduledCallbacks.Schedule(liveOp.EndTimestamp, () => Schedule(liveOp));
+                    scheduleCallbackHandles.Add((liveOp, callbackHandle));
                 }
                 else
                 {
                     // This live op was over before it even began, so let's finish it
-                    liveOp.State = LiveOpState.Finished;
+                    liveOp.Finish();
                 }
             }
             else
             {
                 // Schedule a callback to start the event at the appropriate timestamp
-                scheduledCallbacks.Schedule(liveOp.StartTimestamp, () => Schedule(liveOp));
+                CallbackHandle callbackHandle = scheduledCallbacks.Schedule(liveOp.StartTimestamp, () => Schedule(liveOp));
+                scheduleCallbackHandles.Add((liveOp, callbackHandle));
             }
         }
 
@@ -280,13 +308,14 @@ namespace Celeste.LiveOps
                 if (!liveOp.HasProgress)
                 {
                     // We can immediately end this event now as the player has no unresolved progress
-                    liveOp.State = LiveOpState.Finished;
+                    liveOp.Finish();
                 }
             }
             else
             {
                 // Schedule a callback to handle the timeout of the event
-                scheduledCallbacks.Schedule(endTime, () => Schedule(liveOp));
+                CallbackHandle callbackHandle = scheduledCallbacks.Schedule(endTime, () => Schedule(liveOp));
+                scheduleCallbackHandles.Add((liveOp, callbackHandle));
             }
         }
 
@@ -295,7 +324,7 @@ namespace Celeste.LiveOps
             if (!liveOp.HasProgress)
             {
                 // We can immediately end this event now, as the player has no unresolved progress
-                liveOp.State = LiveOpState.Finished;
+                liveOp.Finish();
             }
         }
 
@@ -311,12 +340,24 @@ namespace Celeste.LiveOps
 
         private void OnLiveOpStateChanged(LiveOp liveOp)
         {
+            LiveOpWrapper wrapper = liveOps.Find(x => x.LiveOp == liveOp);
+            if (wrapper != null)
+            {
+                Schedule(wrapper);
+            }
+
             save.Invoke();
             liveOpStateChanged.Invoke(liveOp);
         }
 
         private void OnLiveOpDataChanged(LiveOp liveOp)
         {
+            LiveOpWrapper wrapper = liveOps.Find(x => x.LiveOp == liveOp);
+            if (wrapper != null && wrapper.Progress.iFace.HasCompleted(wrapper.Progress.instance))
+            {
+                Schedule(wrapper);
+            }
+
             save.Invoke();
         }
 

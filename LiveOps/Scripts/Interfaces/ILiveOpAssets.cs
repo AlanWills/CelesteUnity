@@ -14,7 +14,7 @@ namespace Celeste.LiveOps
         ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent);
     }
 
-    public class NoLiveOpAssets : Celeste.Components.Component, ILiveOpAssets
+    public class NoLiveOpAssets : ILiveOpAssets
     {
         public bool IsLoaded => false;
 

@@ -86,6 +86,16 @@ namespace Celeste.LiveOps
             return false;
         }
 
+        public void Complete()
+        {
+            State = LiveOpState.Completed;
+        }
+
+        public void Finish()
+        {
+            State = LiveOpState.Finished;
+        }
+
         #region Callbacks
 
         private void OnComponentDataChanged()

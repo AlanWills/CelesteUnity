@@ -7,6 +7,8 @@ namespace Celeste.Components
     [Serializable]
     public struct InterfaceHandle<T> where T : class
     {
+        public static readonly InterfaceHandle<T> NULL = new InterfaceHandle<T>();
+
         public bool IsValid
         {
             get { return iFace != null; }
@@ -25,6 +27,8 @@ namespace Celeste.Components
     [Serializable]
     public struct ComponentHandle
     {
+        public static readonly ComponentHandle NULL = new ComponentHandle();
+
         public bool IsValid
         {
             get { return component != null; }
@@ -58,6 +62,8 @@ namespace Celeste.Components
     [Serializable]
     public struct ComponentHandle<TComponent> where TComponent : Component
     {
+        public static readonly ComponentHandle<TComponent> NULL = new ComponentHandle<TComponent>();
+        
         public bool IsValid
         {
             get { return component != null; }

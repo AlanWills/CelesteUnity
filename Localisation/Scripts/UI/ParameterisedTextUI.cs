@@ -26,6 +26,12 @@ namespace Celeste.Localisation.UI
         private void OnValidate()
         {
             this.TryGet(ref text);
+
+            if (currentLanguage == null)
+            {
+                currentLanguage = Settings.LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
         }
 
         private void OnEnable()
