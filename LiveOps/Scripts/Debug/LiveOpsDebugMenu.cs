@@ -25,6 +25,21 @@ namespace Celeste.LiveOps.Debug
                 DateTimeOffset startTime = GameTime.ToDateTimeOffset(liveOp.StartTimestamp);
                 GUILayout.Label($"UTC Start Time: {startTime}");
                 GUILayout.Label($"Local Start Time: {startTime.ToLocalTime()}");
+
+                using (var horizontal = new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label(liveOp.State.ToString());
+
+                    if (GUILayout.Button("Complete", GUILayout.ExpandWidth(false)))
+                    {
+                        liveOp.Complete();
+                    }
+
+                    if (GUILayout.Button("Finish", GUILayout.ExpandWidth(false)))
+                    {
+                        liveOp.Finish();
+                    }
+                }
             }
         }
     }

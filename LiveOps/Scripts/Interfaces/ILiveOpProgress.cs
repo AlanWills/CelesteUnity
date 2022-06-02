@@ -4,11 +4,11 @@ namespace Celeste.LiveOps
 {
     public interface ILiveOpProgress
     {
-        bool HasProgress(Instance instance);
+        float ProgressRatio(Instance instance);
     }
 
     public class NoLiveOpProgress : ILiveOpProgress
     {
-        public bool HasProgress(Instance instance) { return false; }
+        public float ProgressRatio(Instance instance) { return 0f; }
     }
 }

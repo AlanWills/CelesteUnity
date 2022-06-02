@@ -1,21 +1,39 @@
 ﻿using Celeste.Components;
-using Celeste.DataStructures;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace Celeste.LiveOps
 {
-    public class LiveOp
+    public class LiveOp : IEquatable<LiveOp>
     {
         #region Properties and Fields
 
+        public static readonly LiveOp NULL = new LiveOp(
+            0, 
+            0, 
+            0,
+            LiveOpState.Unknown,
+            new LiveOpComponents(),
+            LiveOpConstants.NO_TIMER,
+            LiveOpConstants.NO_PROGRESS,
+            LiveOpConstants.NO_ASSETS);
+
         public UnityEvent<LiveOp> StateChanged { get; } = new UnityEvent<LiveOp>();
-        public UnityEvent<LiveOp> DataChanged { get; } = new UnityEvent<LiveOp>();
+        public UnityEvent<LiveOp> ProgressChanged { get; } = new UnityEvent<LiveOp>();
+
+        public InterfaceHandle<ILiveOpTimer> Timer { get; }
+        public InterfaceHandle<ILiveOpProgress> Progress { get; }
+        public InterfaceHandle<ILiveOpAssets> Assets { get; }
 
         public long Type { get; }
         public long SubType { get; }
         public long StartTimestamp { get; }
+
+        public int NumComponents => Components.NumComponents;
+        public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);
+        public float ProgressRatio => Progress.iFace.ProgressRatio(Progress.instance);
         public LiveOpState State
         {
             get => liveOpState;
@@ -29,61 +47,54 @@ namespace Celeste.LiveOps
             }
         }
 
-        public int NumComponents => components.Count;
+        private LiveOpComponents Components { get; }
 
-        [NonSerialized] private LiveOpState liveOpState = LiveOpState.ComingSoon;
-        [NonSerialized] private List<ComponentHandle> components = new List<ComponentHandle>();
+        private LiveOpState liveOpState;
 
         #endregion
 
-        public LiveOp(long type, long subType, long startTimestamp, LiveOpState state)
+        public LiveOp(
+            long type, 
+            long subType, 
+            long startTimestamp,
+            LiveOpState liveOpState,
+            LiveOpComponents components,
+            InterfaceHandle<ILiveOpTimer> timer,
+            InterfaceHandle<ILiveOpProgress> progress,
+            InterfaceHandle<ILiveOpAssets> assets)
         {
             Type = type;
             SubType = subType;
             StartTimestamp = startTimestamp;
-            State = state;
+            State = liveOpState;
+            Components = components;
+            Timer = timer;
+            Progress = progress;
+            Assets = assets;
+
+            Progress.instance.events.ComponentDataChanged.AddListener(OnProgressComponentDataChanged);
         }
 
-        public void AddComponent(ComponentHandle component)
+        public IEnumerator Load()
         {
-            component.instance.events.ComponentDataChanged.AddListener(OnComponentDataChanged);
-            components.Add(component);
-        }
+            yield return Assets.iFace.Load(Assets.instance);
 
-        public ComponentHandle GetComponent(int index)
-        {
-            return components.Get(index);
-        }
-
-        public bool HasComponent<T>()
-        {
-            return components.Exists(x => x.component is T);
-        }
-
-        public void RemoveComponent(int componentIndex)
-        {
-#if INDEX_CHECKS
-            if (0 <= componentIndex && componentIndex < NumComponents)
-#endif
+            if (!Assets.iFace.IsLoaded)
             {
-                components[componentIndex].instance.events.ComponentDataChanged.RemoveListener(OnComponentDataChanged);
-                components.RemoveAt(componentIndex);
+                UnityEngine.Debug.LogError($"Live Op with type {Type} starting at timestamp {StartTimestamp} failed to load its assets, so will not be scheduled.");
+                yield break;
             }
-        }
 
-        public bool TryFindComponent<T>(out InterfaceHandle<T> iFace) where T : class
-        {
-            foreach (var c in components)
+            for (int i = 0, n = Components.NumComponents; i < n; i++)
             {
-                if (c.Is<T>())
+                var component = Components.GetComponent(i);
+
+                // Load all our other components that require assets now that our assets interface is loaded
+                if (component.Is<IRequiresAssets>())
                 {
-                    iFace = c.AsInterface<T>();
-                    return true;
+                    yield return component.AsInterface<IRequiresAssets>().iFace.Load(Assets);
                 }
             }
-
-            iFace = new InterfaceHandle<T>();
-            return false;
         }
 
         public void Complete()
@@ -96,11 +107,60 @@ namespace Celeste.LiveOps
             State = LiveOpState.Finished;
         }
 
+        public ComponentHandle GetComponent(int index)
+        {
+            return Components.GetComponent(index);
+        }
+
+        public bool HasComponent<T>() where T : class
+        {
+            return Components.HasComponent<T>();
+        }
+
+        public bool TryFindComponent<T>(out InterfaceHandle<T> iFace) where T : class
+        {
+            return Components.TryFindComponent(out iFace);
+        }
+
+        #region Operators
+
+        public override bool Equals(object obj)
+        {
+            return obj is LiveOp wrapper && Equals(wrapper);
+        }
+
+        public bool Equals(LiveOp other)
+        {
+            return EqualityComparer<LiveOpComponents>.Default.Equals(Components, other.Components);
+        }
+
+        public override int GetHashCode()
+        {
+            return 1596229712 + EqualityComparer<LiveOpComponents>.Default.GetHashCode(Components);
+        }
+
+        public static bool operator ==(LiveOp left, LiveOp right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(LiveOp left, LiveOp right)
+        {
+            return !(left == right);
+        }
+
+        #endregion
+
         #region Callbacks
 
-        private void OnComponentDataChanged()
+        private void OnProgressComponentDataChanged()
         {
-            DataChanged.Invoke(this);
+            if (State == LiveOpState.Running && ProgressRatio >= 1f)
+            {
+                Complete();
+            }
+
+            ProgressChanged.Invoke(this);
         }
 
         #endregion

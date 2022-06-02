@@ -15,104 +15,6 @@ namespace Celeste.LiveOps
     [CreateAssetMenu(fileName = nameof(LiveOpsRecord), menuName = "Celeste/Live Ops/Live Ops Record")]
     public class LiveOpsRecord : ScriptableObject
     {
-        #region LiveOpWrapper
-
-        private class LiveOpWrapper : IEquatable<LiveOpWrapper>
-        {
-            public static readonly LiveOpWrapper NULL = new LiveOpWrapper(
-                new LiveOp(0, 0, 0, LiveOpState.Unknown),
-                LiveOpConstants.NO_TIMER,
-                LiveOpConstants.NO_PROGRESS,
-                LiveOpConstants.NO_ASSETS);
-
-            public LiveOp LiveOp { get; }
-            public InterfaceHandle<ILiveOpTimer> Timer { get; }
-            public InterfaceHandle<ILiveOpProgress> Progress { get; }
-            public InterfaceHandle<ILiveOpAssets> Assets { get; }
-
-            public long Type => LiveOp.Type;
-            public long SubType => LiveOp.SubType;
-            public long StartTimestamp => LiveOp.StartTimestamp;
-            public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);
-            public LiveOpState State { get => LiveOp.State; set => LiveOp.State = value; }
-            public bool HasProgress => Progress.iFace.HasProgress(Progress.instance);
-
-            public LiveOpWrapper(
-                LiveOp liveOp, 
-                InterfaceHandle<ILiveOpTimer> timer, 
-                InterfaceHandle<ILiveOpProgress> progress,
-                InterfaceHandle<ILiveOpAssets> assets)
-            {
-                LiveOp = liveOp;
-                Timer = timer;
-                Progress = progress;
-                Assets = assets;
-            }
-
-            public IEnumerator Load()
-            {
-                yield return Assets.iFace.Load(Assets.instance);
-
-                if (!Assets.iFace.IsLoaded)
-                {
-                    UnityEngine.Debug.LogError($"Live Op with type {Type} starting at timestamp {StartTimestamp} failed to load its assets, so will not be scheduled.");
-                    yield break;
-                }
-                
-                for (int i = 0, n = LiveOp.NumComponents; i < n; i++)
-                {
-                    var component = LiveOp.GetComponent(i);
-
-                    // Load all our other components that require assets now that our assets interface is loaded
-                    if (component.Is<IRequiresAssets>())
-                    {
-                        yield return component.AsInterface<IRequiresAssets>().iFace.Load(Assets);
-                    }
-                }
-            }
-
-            public void Complete()
-            {
-                LiveOp.Complete();
-            }
-
-            public void Finish()
-            {
-                LiveOp.Finish();
-            }
-
-            #region Operators
-
-            public override bool Equals(object obj)
-            {
-                return obj is LiveOpWrapper wrapper && Equals(wrapper);
-            }
-
-            public bool Equals(LiveOpWrapper other)
-            {
-                return EqualityComparer<LiveOp>.Default.Equals(LiveOp, other.LiveOp);
-            }
-
-            public override int GetHashCode()
-            {
-                return 1596229712 + EqualityComparer<LiveOp>.Default.GetHashCode(LiveOp);
-            }
-
-            public static bool operator ==(LiveOpWrapper left, LiveOpWrapper right)
-            {
-                return left.Equals(right);
-            }
-
-            public static bool operator !=(LiveOpWrapper left, LiveOpWrapper right)
-            {
-                return !(left == right);
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         public int NumLiveOps => liveOps.Count;
@@ -126,14 +28,14 @@ namespace Celeste.LiveOps
         [SerializeField] private LiveOpEvent liveOpStateChanged;
         [SerializeField] private Events.Event save;
 
-        [NonSerialized] private List<LiveOpWrapper> liveOps = new List<LiveOpWrapper>();
-        [NonSerialized] private List<ValueTuple<LiveOpWrapper, CallbackHandle>> scheduleCallbackHandles = new List<ValueTuple<LiveOpWrapper, CallbackHandle>>();
+        [NonSerialized] private List<LiveOp> liveOps = new List<LiveOp>();
+        [NonSerialized] private List<ValueTuple<LiveOp, CallbackHandle>> scheduleCallbackHandles = new List<ValueTuple<LiveOp, CallbackHandle>>();
 
         #endregion
 
         public LiveOp GetLiveOp(int index)
         {
-            return liveOps.Get(index).LiveOp;
+            return liveOps.Get(index);
         }
 
         public IEnumerator AddLiveOp(LiveOpDTO liveOpDTO)
@@ -146,6 +48,8 @@ namespace Celeste.LiveOps
                 yield break;
             }
 
+            long liveOpType = liveOpDTO.type;
+            long liveOpSubType = liveOpDTO.subType;
             long liveOpStartTimestamp = liveOpDTO.startTimestamp;
             LiveOpState liveOpState = (LiveOpState)liveOpDTO.state;
 
@@ -167,11 +71,7 @@ namespace Celeste.LiveOps
                 liveOpState = LiveOpState.ComingSoon;
             }
 
-            LiveOp liveOp = new LiveOp(
-                liveOpDTO.type, 
-                liveOpDTO.subType,
-                liveOpStartTimestamp,
-                liveOpState);
+            LiveOpComponents liveOpComponents = new LiveOpComponents();
 
             foreach (ComponentDTO componentDTO in liveOpDTO.components)
             {
@@ -179,58 +79,72 @@ namespace Celeste.LiveOps
                 
                 if (componentHandle.IsValid)
                 {
-                    liveOp.AddComponent(componentHandle);
+                    liveOpComponents.AddComponent(componentHandle);
                 }
             }
 
-            if (!liveOp.TryFindComponent<ILiveOpTimer>(out var timer))
+            if (!liveOpComponents.TryFindComponent<ILiveOpTimer>(out var timer))
             {
-                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpTimer)} component, so will not be scheduled.");
+                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOpType} starting at timestamp {liveOpStartTimestamp} has no {nameof(ILiveOpTimer)} component, so will not be scheduled.");
                 yield break;
             }
 
-            if (!liveOp.TryFindComponent<ILiveOpProgress>(out var progress))
+            if (!liveOpComponents.TryFindComponent<ILiveOpProgress>(out var progress))
             {
-                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpProgress)} component, so will not be scheduled.");
+                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOpType} starting at timestamp {liveOpStartTimestamp} has no {nameof(ILiveOpProgress)} component, so will not be scheduled.");
                 yield break;
             }
 
-            if (!liveOp.TryFindComponent<ILiveOpAssets>(out var assets))
+            if (!liveOpComponents.TryFindComponent<ILiveOpAssets>(out var assets))
             {
-                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOp.Type} starting at timestamp {liveOp.StartTimestamp} has no {nameof(ILiveOpAssets)} component, so will not be scheduled.");
+                UnityEngine.Debug.LogAssertion($"Live Op with type {liveOpType} starting at timestamp {liveOpStartTimestamp} has no {nameof(ILiveOpAssets)} component, so will not be scheduled.");
                 yield break;
             }
 
-            LiveOpWrapper liveOpWrapper = new LiveOpWrapper(liveOp, timer, progress, assets);
+            LiveOp liveOp = new LiveOp(
+                liveOpType,
+                liveOpSubType,
+                liveOpStartTimestamp,
+                liveOpState,
+                liveOpComponents, 
+                timer, 
+                progress, 
+                assets);
 
             // Now we've grabbed all the components and set up the data, we can calculate the initial state of the live op
-            if (liveOpWrapper.StartTimestamp > GameTime.Now)
+            if (liveOp.StartTimestamp > GameTime.Now)
             {
                 // Start time is still in the future
-                liveOpWrapper.State = LiveOpState.ComingSoon;
+                liveOp.State = LiveOpState.ComingSoon;
             }
-            else if (liveOpWrapper.EndTimestamp > GameTime.Now &&
-                (liveOpWrapper.State == LiveOpState.ComingSoon || liveOpWrapper.State == LiveOpState.Unknown))
+            else if (liveOp.EndTimestamp > GameTime.Now)
             {
-                // We had a live op that was not started previously, so we can start it now as we're in the running time
-                liveOpWrapper.State = LiveOpState.Running;
+                if (liveOp.State == LiveOpState.ComingSoon || liveOp.State == LiveOpState.Unknown)
+                {
+                    // We had a live op that was not started previously, so we can start it now as we're in the running time
+                    liveOp.State = LiveOpState.Running;
+                }
+                else if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1f)
+                {
+                    // We had a running live op that is completed so we can complete it now
+                    liveOp.Complete();
+                }
             }
-            else if (liveOpWrapper.EndTimestamp <= GameTime.Now &&
-                !progress.iFace.HasProgress(progress.instance))
+            else if (liveOp.EndTimestamp <= GameTime.Now && liveOp.ProgressRatio == 0f)
             {
                 // The end time was in the past and we have no progress so we can just finish this live op
-                liveOpWrapper.State = LiveOpState.Finished;
+                liveOp.Finish();
             }
 
-            yield return liveOpWrapper.Load();
+            yield return liveOp.Load();
 
-            if (liveOpWrapper.Assets.iFace.IsLoaded)
+            if (liveOp.Assets.iFace.IsLoaded)
             {
                 liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
-                liveOp.DataChanged.AddListener(OnLiveOpDataChanged);
-                liveOps.Add(liveOpWrapper);
+                liveOp.ProgressChanged.AddListener(OnLiveOpProgressChanged);
+                liveOps.Add(liveOp);
 
-                Schedule(liveOpWrapper);
+                Schedule(liveOp);
 
                 liveOpAdded.Invoke(liveOp);
             }
@@ -238,9 +152,9 @@ namespace Celeste.LiveOps
 
         #region Scheduling
 
-        private void Schedule(LiveOpWrapper liveOp)
+        private void Schedule(LiveOp liveOp)
         {
-            int callbackIndex = scheduleCallbackHandles.FindIndex(x => x.Item1.LiveOp == liveOp.LiveOp);
+            int callbackIndex = scheduleCallbackHandles.FindIndex(x => x.Item1 == liveOp);
             if (callbackIndex >= 0)
             {
                 // Cancel our current schedule callback if we have one, ready for our new scheduling
@@ -272,7 +186,7 @@ namespace Celeste.LiveOps
             }
         }
 
-        private void HandleScheduleOfComingSoonLiveOp(LiveOpWrapper liveOp)
+        private void HandleScheduleOfComingSoonLiveOp(LiveOp liveOp)
         {
             if (liveOp.StartTimestamp <= GameTime.Now)
             {
@@ -298,14 +212,14 @@ namespace Celeste.LiveOps
             }
         }
 
-        private void HandleScheduleOfRunningLiveOp(LiveOpWrapper liveOp)
+        private void HandleScheduleOfRunningLiveOp(LiveOp liveOp)
         {
             long endTime = liveOp.EndTimestamp;
 
             if (endTime <= GameTime.Now)
             {
                 // Event has timed out - use the progress interface to see if we can just dismiss the event
-                if (!liveOp.HasProgress)
+                if (liveOp.ProgressRatio <= 0f)
                 {
                     // We can immediately end this event now as the player has no unresolved progress
                     liveOp.Finish();
@@ -319,16 +233,16 @@ namespace Celeste.LiveOps
             }
         }
 
-        private void HandleScheduleOfCompletedLiveOp(LiveOpWrapper liveOp)
+        private void HandleScheduleOfCompletedLiveOp(LiveOp liveOp)
         {
-            if (!liveOp.HasProgress)
+            if (liveOp.ProgressRatio <= 0f)
             {
                 // We can immediately end this event now, as the player has no unresolved progress
                 liveOp.Finish();
             }
         }
 
-        private void HandleScheduleOfFinishedLiveOp(LiveOpWrapper liveOp)
+        private void HandleScheduleOfFinishedLiveOp(LiveOp liveOp)
         {
             // Nothing we need to do right now - in fact, we shouldn't even get here because finished live ops are removed on start
             // and if they've become finished during game time, we shouldn't reschedule them
@@ -340,24 +254,21 @@ namespace Celeste.LiveOps
 
         private void OnLiveOpStateChanged(LiveOp liveOp)
         {
-            LiveOpWrapper wrapper = liveOps.Find(x => x.LiveOp == liveOp);
-            if (wrapper != null)
-            {
-                Schedule(wrapper);
-            }
+            Schedule(liveOp);
 
             save.Invoke();
             liveOpStateChanged.Invoke(liveOp);
         }
 
-        private void OnLiveOpDataChanged(LiveOp liveOp)
+        private void OnLiveOpProgressChanged(LiveOp liveOp)
         {
-            LiveOpWrapper wrapper = liveOps.Find(x => x.LiveOp == liveOp);
-            if (wrapper != null && wrapper.Progress.iFace.HasCompleted(wrapper.Progress.instance))
+            if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1)
             {
-                Schedule(wrapper);
+                // Our live op is running, but we have now completed it
+                liveOp.Complete();
             }
 
+            Schedule(liveOp);
             save.Invoke();
         }
 
