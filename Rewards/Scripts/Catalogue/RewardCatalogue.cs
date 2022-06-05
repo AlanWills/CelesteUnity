@@ -10,5 +10,13 @@ namespace Celeste.Rewards.Catalogue
         {
             return FindItem(x => x.Guid == guid);
         }
+
+        public Reward MustFindByGuid(int guid)
+        {
+            Reward reward = FindByGuid(guid);
+            UnityEngine.Debug.Assert(reward != null, $"Could not find reward with guid {guid} in catalogue.");
+
+            return reward;
+        }
     }
 }

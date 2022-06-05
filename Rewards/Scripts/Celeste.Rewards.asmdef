@@ -4,7 +4,8 @@
     "references": [
         "Celeste.Objects",
         "Celeste.Wallet",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,4 +1,7 @@
 ﻿using Celeste.Components;
+using Celeste.Rewards.Catalogue;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Celeste.LiveOps
 {
@@ -21,5 +24,7 @@ namespace Celeste.LiveOps
             iFace = new NoLiveOpAssets(),
             instance = new Instance(new ComponentData(), new ComponentEvents())
         };
+
+        public static readonly Reward[] EMPTY_REWARDS_LIST = new Reward[0];
     }
 }

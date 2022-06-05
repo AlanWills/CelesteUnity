@@ -19,8 +19,7 @@ namespace Celeste.LiveOps.UI
 
         private void TrySpawnWidget(LiveOp liveOp)
         {
-            if (liveOp.State == LiveOpState.Running &&
-                !spawningWidgets.Exists(x => x.Item1 == liveOp) &&
+            if (!spawningWidgets.Exists(x => x.Item1 == liveOp) &&
                 !spawnedWidgets.Exists(x => x.Item1 == liveOp) &&
                 liveOp.TryFindComponent<ILiveOpWidget>(out var widget) &&
                 liveOp.TryFindComponent<ILiveOpAssets>(out var assets))
@@ -73,12 +72,13 @@ namespace Celeste.LiveOps.UI
 
         public void OnLiveOpAdded(LiveOp liveOp)
         {
-            TrySpawnWidget(liveOp);
+            OnLiveOpStateChanged(liveOp);
         }
 
         public void OnLiveOpStateChanged(LiveOp liveOp)
         {
-            if (liveOp.State == LiveOpState.Running)
+            if (liveOp.State == LiveOpState.Running ||
+                liveOp.State == LiveOpState.Completed)
             {
                 TrySpawnWidget(liveOp);
             }

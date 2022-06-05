@@ -5,6 +5,7 @@ using Celeste.Core;
 using Celeste.DataStructures;
 using Celeste.Events;
 using Celeste.LiveOps.Persistence;
+using Celeste.Rewards.Catalogue;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Celeste.LiveOps
         [Header("Dependencies")]
         [SerializeField] private ComponentCatalogue liveOpsComponentCatalogue;
         [SerializeField] private ScheduledCallbacks scheduledCallbacks;
+        [SerializeField] private RewardCatalogue rewardCatalogue;
 
         [Header("Events")]
         [SerializeField] private LiveOpEvent liveOpAdded;
@@ -127,7 +129,7 @@ namespace Celeste.LiveOps
                 else if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1f)
                 {
                     // We had a running live op that is completed so we can complete it now
-                    liveOp.Complete();
+                    liveOp.Complete(rewardCatalogue);
                 }
             }
             else if (liveOp.EndTimestamp <= GameTime.Now && liveOp.ProgressRatio == 0f)
@@ -265,7 +267,7 @@ namespace Celeste.LiveOps
             if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1)
             {
                 // Our live op is running, but we have now completed it
-                liveOp.Complete();
+                liveOp.Complete(rewardCatalogue);
             }
 
             Schedule(liveOp);

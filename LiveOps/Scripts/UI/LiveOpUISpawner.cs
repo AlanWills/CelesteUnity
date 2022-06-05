@@ -19,8 +19,7 @@ namespace Celeste.LiveOps.UI
 
         private void TrySpawnUI(LiveOp liveOp)
         {
-            if (liveOp.State == LiveOpState.Running &&
-                !spawningUI.Exists(x => x.Item1 == liveOp) &&
+            if (!spawningUI.Exists(x => x.Item1 == liveOp) &&
                 !spawnedUI.Exists(x => x.Item1 == liveOp) &&
                 liveOp.TryFindComponent<ILiveOpUI>(out var ui) &&
                 liveOp.TryFindComponent<ILiveOpAssets>(out var assets))
@@ -73,12 +72,13 @@ namespace Celeste.LiveOps.UI
 
         public void OnLiveOpAdded(LiveOp liveOp)
         {
-            TrySpawnUI(liveOp);
+            OnLiveOpStateChanged(liveOp);
         }
 
         public void OnLiveOpStateChanged(LiveOp liveOp)
         {
-            if (liveOp.State == LiveOpState.Running)
+            if (liveOp.State == LiveOpState.Running ||
+                liveOp.State == LiveOpState.Completed)
             {
                 TrySpawnUI(liveOp);
             }

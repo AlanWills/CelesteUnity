@@ -1,5 +1,4 @@
 ﻿using Celeste.Objects;
-using Celeste.Tools.Attributes.GUI;
 using Celeste.Wallet;
 using UnityEngine;
 
@@ -15,6 +14,9 @@ namespace Celeste.Rewards.Catalogue
             get => guid;
             set => guid = value;
         }
+
+        public Sprite Icon => currency.Icon;
+        public int Quantity => quantity;
 
         [SerializeField] private int guid;
         [SerializeField] private Currency currency;

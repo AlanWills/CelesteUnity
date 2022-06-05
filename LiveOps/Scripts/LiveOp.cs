@@ -1,4 +1,5 @@
 ﻿using Celeste.Components;
+using Celeste.Rewards.Catalogue;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,9 +98,14 @@ namespace Celeste.LiveOps
             }
         }
 
-        public void Complete()
+        public void Complete(RewardCatalogue rewardCatalogue)
         {
             State = LiveOpState.Completed;
+
+            if (Components.TryFindComponent<ILiveOpCompletionRewards>(out var rewards))
+            {
+                rewards.iFace.AwardCompletionRewards(rewards.instance, rewardCatalogue);
+            }
         }
 
         public void Finish()
@@ -155,11 +161,6 @@ namespace Celeste.LiveOps
 
         private void OnProgressComponentDataChanged()
         {
-            if (State == LiveOpState.Running && ProgressRatio >= 1f)
-            {
-                Complete();
-            }
-
             ProgressChanged.Invoke(this);
         }
 

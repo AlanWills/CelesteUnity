@@ -1,5 +1,6 @@
 ﻿using Celeste.Core;
 using Celeste.Debug.Menus;
+using Celeste.Rewards.Catalogue;
 using System;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Celeste.LiveOps.Debug
         #region Properties and Fields
 
         [SerializeField] private LiveOpsRecord liveOpsRecord;
+        [SerializeField] private RewardCatalogue rewardCatalogue;
 
         #endregion
 
@@ -26,13 +28,17 @@ namespace Celeste.LiveOps.Debug
                 GUILayout.Label($"UTC Start Time: {startTime}");
                 GUILayout.Label($"Local Start Time: {startTime.ToLocalTime()}");
 
+                DateTimeOffset endTime = GameTime.ToDateTimeOffset(liveOp.EndTimestamp);
+                GUILayout.Label($"UTC End Time: {endTime}");
+                GUILayout.Label($"Locals End Time: {endTime.ToLocalTime()}");
+
                 using (var horizontal = new GUILayout.HorizontalScope())
                 {
                     GUILayout.Label(liveOp.State.ToString());
 
                     if (GUILayout.Button("Complete", GUILayout.ExpandWidth(false)))
                     {
-                        liveOp.Complete();
+                        liveOp.Complete(rewardCatalogue);
                     }
 
                     if (GUILayout.Button("Finish", GUILayout.ExpandWidth(false)))
