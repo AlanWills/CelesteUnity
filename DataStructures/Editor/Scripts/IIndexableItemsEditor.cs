@@ -34,24 +34,34 @@ namespace CelesteEditor.DataStructures
             if (GUILayout.Button("Find All"))
             {
                 ItemsProperty.FindAssets<TIndexableItem>();
+                TrySyncGuids();
             }
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
                 ItemsProperty.FindAssets<TIndexableItem>(AssetUtility.GetAssetFolderPath(target));
+                TrySyncGuids();
             }
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())
             {
                 DrawPropertiesExcluding(serializedObject, "m_Script");
 
-                if (supportsGuids && changeCheck.changed)
+                if (changeCheck.changed)
                 {
-                    SyncGuids();
+                    TrySyncGuids();
                 }
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void TrySyncGuids()
+        {
+            if (supportsGuids)
+            {
+                SyncGuids();
+            }
         }
 
         protected void SyncGuids()
