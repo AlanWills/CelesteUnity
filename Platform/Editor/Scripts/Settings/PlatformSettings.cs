@@ -233,6 +233,7 @@ namespace CelesteEditor.Platform
         public void BuildPlayer()
         {
             Switch();
+            BuildAssets();  // Always build assets, as the latest addressables data must be in the build
 
             string buildDirectory = BuildDirectory;
             string outputName = OutputName;

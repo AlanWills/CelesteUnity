@@ -27,11 +27,13 @@ namespace Celeste.Localisation.UI
         {
             this.TryGet(ref text);
 
+#if UNITY_EDITOR
             if (currentLanguage == null)
             {
                 currentLanguage = Settings.LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
+#endif
         }
 
         private void OnEnable()

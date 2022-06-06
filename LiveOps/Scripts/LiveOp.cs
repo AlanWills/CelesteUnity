@@ -15,6 +15,7 @@ namespace Celeste.LiveOps
             0, 
             0, 
             0,
+            false,
             LiveOpState.Unknown,
             new LiveOpComponents(),
             LiveOpConstants.NO_TIMER,
@@ -31,6 +32,7 @@ namespace Celeste.LiveOps
         public long Type { get; }
         public long SubType { get; }
         public long StartTimestamp { get; }
+        public bool IsRecurring { get; }
 
         public int NumComponents => Components.NumComponents;
         public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);
@@ -38,7 +40,7 @@ namespace Celeste.LiveOps
         public LiveOpState State
         {
             get => liveOpState;
-            set
+            private set
             {
                 if (liveOpState != value)
                 {
@@ -58,6 +60,7 @@ namespace Celeste.LiveOps
             long type, 
             long subType, 
             long startTimestamp,
+            bool isRecurring,
             LiveOpState liveOpState,
             LiveOpComponents components,
             InterfaceHandle<ILiveOpTimer> timer,
@@ -67,6 +70,7 @@ namespace Celeste.LiveOps
             Type = type;
             SubType = subType;
             StartTimestamp = startTimestamp;
+            IsRecurring = isRecurring;
             State = liveOpState;
             Components = components;
             Timer = timer;
@@ -96,6 +100,11 @@ namespace Celeste.LiveOps
                     yield return component.AsInterface<IRequiresAssets>().iFace.Load(Assets);
                 }
             }
+        }
+
+        public void Start()
+        {
+            State = LiveOpState.Running;
         }
 
         public void Complete(RewardCatalogue rewardCatalogue)

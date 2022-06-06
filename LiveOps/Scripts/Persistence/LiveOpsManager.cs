@@ -1,4 +1,5 @@
-﻿using Celeste.Persistence;
+﻿using Celeste.Core;
+using Celeste.Persistence;
 using System.Collections;
 using UnityEngine;
 
@@ -50,10 +51,10 @@ namespace Celeste.LiveOps.Persistence
 
         private IEnumerator AddLiveOpsFromSchedule()
         {
-            // Add any missing liveops from our schedule too
+            // Add any missing liveops from our schedule too, but make sure they're starting now if they will be added
             foreach (LiveOpDTO liveOpDTO in liveOpsSchedule.Items)
             {
-                yield return liveOpsRecord.AddLiveOp(liveOpDTO);
+                yield return liveOpsRecord.AddLiveOp(liveOpDTO, GameTime.Now);
             }
         }
     }

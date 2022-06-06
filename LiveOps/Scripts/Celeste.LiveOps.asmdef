@@ -15,6 +15,7 @@
         "Celeste.Localisation",
         "Celeste.Parameters",
         "Celeste.Rewards",
+        "Celeste.Features",
         "Unity.Addressables",
         "Unity.ResourceManager",
         "Unity.TextMeshPro"

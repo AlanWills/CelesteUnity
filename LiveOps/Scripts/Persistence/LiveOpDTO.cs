@@ -7,14 +7,14 @@ using UnityEngine;
 namespace Celeste.LiveOps.Persistence
 {
     [Serializable]
-    public class LiveOpDTO
+    public struct LiveOpDTO
     {
         public long type;
         public long subType;
         [Timestamp] public long startTimestamp;
         public bool isRecurring;
         public long repeatsAfter;
-        [HideInInspector] public int state;
+        [ReadOnly] public LiveOpState state;
         public List<ComponentDTO> components;
 
         public LiveOpDTO(LiveOp liveOp)
@@ -22,9 +22,9 @@ namespace Celeste.LiveOps.Persistence
             type = liveOp.Type;
             subType = liveOp.SubType;
             startTimestamp = liveOp.StartTimestamp;
-            isRecurring = false;
+            isRecurring = liveOp.IsRecurring;
             repeatsAfter = -1;
-            state = (int)liveOp.State;
+            state = liveOp.State;
 
             components = new List<ComponentDTO>(liveOp.NumComponents);
 
@@ -42,7 +42,7 @@ namespace Celeste.LiveOps.Persistence
             startTimestamp = template.StartTimestamp;
             isRecurring = template.IsRecurring;
             repeatsAfter = template.RepeatsAfter;
-            state = (int)LiveOpState.Unknown;
+            state = LiveOpState.ComingSoon;
             components = new List<ComponentDTO>(template.NumComponents);
 
             for (int i = 0, n = template.NumComponents; i < n; i++)

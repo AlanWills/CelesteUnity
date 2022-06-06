@@ -42,20 +42,29 @@ namespace Celeste.LiveOps
 
         public IEnumerator AddLiveOp(LiveOpDTO liveOpDTO)
         {
-            if (liveOps.Exists(x =>
-                x.Type == liveOpDTO.type && 
-                x.SubType == liveOpDTO.subType))
+            return AddLiveOp(liveOpDTO, liveOpDTO.startTimestamp);
+        }
+
+        public IEnumerator AddLiveOp(LiveOpDTO liveOpDTO, long startTimestamp)
+        {
+            long liveOpType = liveOpDTO.type;
+            long liveOpSubType = liveOpDTO.subType;
+            long liveOpStartTimestamp = startTimestamp;
+            LiveOpState liveOpState = liveOpDTO.state;
+            
+            if (liveOpState == LiveOpState.Unknown)
+            {
+                UnityEngine.Debug.LogAssertion($"Unknown liveop state found.  This is a serious error, so the liveop will probably not be scheduled...");
+                yield break;
+            }
+            else if (liveOps.Exists(x =>
+                x.Type == liveOpType && 
+                x.SubType == liveOpSubType))
             {
                 UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
                 yield break;
             }
-
-            long liveOpType = liveOpDTO.type;
-            long liveOpSubType = liveOpDTO.subType;
-            long liveOpStartTimestamp = liveOpDTO.startTimestamp;
-            LiveOpState liveOpState = (LiveOpState)liveOpDTO.state;
-
-            if (liveOpState == LiveOpState.Unknown || liveOpState == LiveOpState.Finished)
+            else if (liveOpState == LiveOpState.Finished)
             {
                 UnityEngine.Debug.Log($"Live Op with type {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} has finished, so will not be added.");
 
@@ -107,44 +116,22 @@ namespace Celeste.LiveOps
                 liveOpType,
                 liveOpSubType,
                 liveOpStartTimestamp,
+                liveOpDTO.isRecurring,
                 liveOpState,
                 liveOpComponents, 
                 timer, 
                 progress, 
                 assets);
 
-            // Now we've grabbed all the components and set up the data, we can calculate the initial state of the live op
-            if (liveOp.StartTimestamp > GameTime.Now)
-            {
-                // Start time is still in the future
-                liveOp.State = LiveOpState.ComingSoon;
-            }
-            else if (liveOp.EndTimestamp > GameTime.Now)
-            {
-                if (liveOp.State == LiveOpState.ComingSoon || liveOp.State == LiveOpState.Unknown)
-                {
-                    // We had a live op that was not started previously, so we can start it now as we're in the running time
-                    liveOp.State = LiveOpState.Running;
-                }
-                else if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1f)
-                {
-                    // We had a running live op that is completed so we can complete it now
-                    liveOp.Complete(rewardCatalogue);
-                }
-            }
-            else if (liveOp.EndTimestamp <= GameTime.Now && liveOp.ProgressRatio == 0f)
-            {
-                // The end time was in the past and we have no progress so we can just finish this live op
-                liveOp.Finish();
-            }
-
             yield return liveOp.Load();
 
-            if (liveOp.Assets.iFace.IsLoaded)
+            if (liveOp.Assets.iFace.IsLoaded &&
+                liveOp.TryFindComponent<ILiveOpScheduleCondition>(out var scheduleCondition) &&
+                scheduleCondition.iFace.CanSchedule(scheduleCondition.instance, assets))
             {
+                liveOps.Add(liveOp);
                 liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
                 liveOp.ProgressChanged.AddListener(OnLiveOpProgressChanged);
-                liveOps.Add(liveOp);
 
                 Schedule(liveOp);
 
@@ -195,10 +182,7 @@ namespace Celeste.LiveOps
                 if (liveOp.EndTimestamp > GameTime.Now)
                 {
                     // We can actually start the live op now, so let's do it!
-                    liveOp.State = LiveOpState.Running;
-
-                    CallbackHandle callbackHandle = scheduledCallbacks.Schedule(liveOp.EndTimestamp, () => Schedule(liveOp));
-                    scheduleCallbackHandles.Add((liveOp, callbackHandle));
+                    liveOp.Start();
                 }
                 else
                 {
@@ -229,18 +213,35 @@ namespace Celeste.LiveOps
             }
             else
             {
-                // Schedule a callback to handle the timeout of the event
-                CallbackHandle callbackHandle = scheduledCallbacks.Schedule(endTime, () => Schedule(liveOp));
-                scheduleCallbackHandles.Add((liveOp, callbackHandle));
+                // Event still running, but we could have completed it so we check here
+                if (liveOp.ProgressRatio >= 1f)
+                {
+                    // We actually have completed it!
+                    liveOp.Complete(rewardCatalogue);
+                }
+                else
+                {
+                    // Schedule a callback to handle the timeout of the event
+                    CallbackHandle callbackHandle = scheduledCallbacks.Schedule(endTime, () => Schedule(liveOp));
+                    scheduleCallbackHandles.Add((liveOp, callbackHandle));
+                }
             }
         }
 
         private void HandleScheduleOfCompletedLiveOp(LiveOp liveOp)
         {
-            if (liveOp.ProgressRatio <= 0f)
+            long endTime = liveOp.EndTimestamp;
+
+            if (endTime <= GameTime.Now)
             {
-                // We can immediately end this event now, as the player has no unresolved progress
+                // Event has timed out.  Since we've completed it already, we can just finish it here
                 liveOp.Finish();
+            }
+            else
+            {
+                // Schedule a callback to handle the timeout of the event
+                CallbackHandle callbackHandle = scheduledCallbacks.Schedule(endTime, () => Schedule(liveOp));
+                scheduleCallbackHandles.Add((liveOp, callbackHandle));
             }
         }
 

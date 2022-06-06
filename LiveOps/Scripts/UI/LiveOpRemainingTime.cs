@@ -50,10 +50,12 @@ namespace Celeste.LiveOps.UI
         {
             this.TryGet(ref remainingTimeText);
 
+#if UNITY_EDITOR
             if (currentLanguage == null)
             {
                 currentLanguage = LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
             }
+#endif
         }
 
         private void OnDisable()

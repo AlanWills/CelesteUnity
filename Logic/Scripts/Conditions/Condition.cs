@@ -1,12 +1,16 @@
 ﻿using Celeste.Objects;
+using Celeste.Parameters;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Logic
 {
     [Serializable]
     public abstract class Condition : ScriptableObject, ICopyable<Condition>
     {
+        public abstract UnityEvent<ValueChangedArgs<bool>> ValueChanged { get; }
+
         public abstract void Init();
         public abstract void SetTarget(object arg);
         public abstract bool Check();
