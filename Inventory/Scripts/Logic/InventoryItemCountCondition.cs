@@ -17,11 +17,24 @@ namespace Celeste.Inventory.Logic
 
         #endregion
 
-        public override void Init()
+        protected override void DoInit()
         {
             if (target == null)
             {
                 target = CreateDependentAsset<IntReference>($"{name}_target");
+            }
+
+            if (target.IsConstant)
+            {
+                target.ReferenceValue.AddValueChangedCallback(OnValueChangedCallback);
+            }
+        }
+
+        protected override void DoShutdown()
+        {
+            if (target.IsConstant)
+            {
+                target.ReferenceValue.RemoveOnValueChangedCallback(OnValueChangedCallback);
             }
         }
 
@@ -34,7 +47,7 @@ namespace Celeste.Inventory.Logic
             target.CopyFrom(itemCondition.target);
         }
 
-        public override bool Check()
+        protected override bool DoCheck()
         {
             int count = 0;
 
@@ -54,5 +67,14 @@ namespace Celeste.Inventory.Logic
             target.IsConstant = true;
             target.Value = arg != null ? (int)arg : default;
         }
+
+        #region Callbacks
+
+        private void OnValueChangedCallback(ValueChangedArgs<int> args)
+        {
+            Check();
+        }
+
+        #endregion
     }
 }

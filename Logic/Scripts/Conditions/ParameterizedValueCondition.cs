@@ -1,6 +1,6 @@
-﻿using Celeste.Logic;
-using Celeste.Parameters;
+﻿using Celeste.Parameters;
 using System;
+using UnityEngine.Events;
 
 namespace Celeste.Logic
 {
@@ -17,7 +17,7 @@ namespace Celeste.Logic
 
         #endregion
 
-        public override void Init()
+        protected override void DoInit()
         {
             if (value == null)
             {
@@ -27,6 +27,29 @@ namespace Celeste.Logic
             if (target == null)
             {
                 target = CreateDependentAsset<TReference>($"{name}_target");
+            }
+
+            if (!value.IsConstant)
+            {
+                value.ReferenceValue.AddValueChangedCallback(OnValueChangedCallback);
+            }
+
+            if (!target.IsConstant)
+            {
+                target.ReferenceValue.AddValueChangedCallback(OnTargetChangedCallback);
+            }
+        }
+
+        protected override void DoShutdown()
+        {
+            if (!value.IsConstant)
+            {
+                value.ReferenceValue.RemoveOnValueChangedCallback(OnValueChangedCallback);
+            }
+
+            if (!target.IsConstant)
+            {
+                target.ReferenceValue.RemoveOnValueChangedCallback(OnTargetChangedCallback);
             }
         }
 
@@ -48,6 +71,20 @@ namespace Celeste.Logic
             value.CopyFrom(valueCondition.value);
             condition = valueCondition.condition;
             target.CopyFrom(valueCondition.target);
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        private void OnValueChangedCallback(ValueChangedArgs<T> args)
+        {
+            Check();
+        }
+
+        private void OnTargetChangedCallback(ValueChangedArgs<T> args)
+        {
+            Check();
         }
 
         #endregion

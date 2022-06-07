@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("Bool")]
     public class BoolValueCondition : ParameterizedValueCondition<bool, BoolValue, BoolReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

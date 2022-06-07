@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("Int")]
     public class IntValueCondition : ParameterizedValueCondition<int, IntValue, IntReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

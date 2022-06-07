@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("Vector3 Int")]
     public class Vector3IntValueCondition : ParameterizedValueCondition<Vector3Int, Vector3IntValue, Vector3IntReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesEquality(condition, target.Value);
         }

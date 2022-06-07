@@ -9,11 +9,49 @@ namespace Celeste.Logic
     [Serializable]
     public abstract class Condition : ScriptableObject, ICopyable<Condition>
     {
-        public abstract UnityEvent<ValueChangedArgs<bool>> ValueChanged { get; }
+        #region Properties and Fields
 
-        public abstract void Init();
+        public UnityEvent<ValueChangedArgs<bool>> ValueChanged { get; } = new UnityEvent<ValueChangedArgs<bool>>();
+
+        public virtual bool Value
+        {
+            get => _value;
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    ValueChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
+                }
+            }
+        }
+
+        [NonSerialized] private bool _value = false;
+
+        #endregion
+
+        public void Init()
+        {
+            DoInit();
+            Check();
+        }
+
+        public void Shutdown()
+        {
+            ValueChanged.RemoveAllListeners();
+            DoShutdown();
+        }
+
+        protected bool Check()
+        {
+            Value = DoCheck();
+            return Value;
+        }
+
+        protected virtual void DoInit() { }
+        protected virtual void DoShutdown() { }
+        protected abstract bool DoCheck();
         public abstract void SetTarget(object arg);
-        public abstract bool Check();
 
         #region ICopyable
 

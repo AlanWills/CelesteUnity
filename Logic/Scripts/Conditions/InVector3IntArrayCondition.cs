@@ -18,11 +18,16 @@ namespace Celeste.Logic
 
         #region Init Methods
 
-        public override void Init()
+        protected override void DoInit()
         {
             if (target == null)
             {
                 target = CreateDependentAsset<Vector3IntReference>($"{name}_target");
+            }
+
+            if (target.IsConstant)
+            {
+                target.ReferenceValue.AddValueChangedCallback(OnTargetChangedCallback);
             }
         }
 
@@ -36,7 +41,7 @@ namespace Celeste.Logic
             target.Value = arg != null ? (Vector3Int)arg : default;
         }
 
-        public override bool Check()
+        protected override bool DoCheck()
         {
             switch (condition)
             {
@@ -62,6 +67,15 @@ namespace Celeste.Logic
             value = valueCondition.value;
             condition = valueCondition.condition;
             target = valueCondition.target;
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        private void OnTargetChangedCallback(ValueChangedArgs<Vector3Int> args)
+        {
+            Check();
         }
 
         #endregion

@@ -8,7 +8,8 @@
         "Celeste.Parameters",
         "Celeste.DataStructures",
         "Celeste.Debug",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.Logic"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

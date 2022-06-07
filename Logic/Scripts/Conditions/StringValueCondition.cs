@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("String")]
     public class StringValueCondition : ParameterizedValueCondition<string, StringValue, StringReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

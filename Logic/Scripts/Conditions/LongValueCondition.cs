@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("Long")]
     public class LongValueCondition : ParameterizedValueCondition<long, LongValue, LongReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

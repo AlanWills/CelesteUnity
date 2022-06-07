@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("UInt")]
     public class UIntValueCondition : ParameterizedValueCondition<uint, UIntValue, UIntReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

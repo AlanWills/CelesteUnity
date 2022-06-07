@@ -1,4 +1,5 @@
-﻿using Celeste.Objects;
+﻿using Celeste.Logic;
+using Celeste.Objects;
 using Celeste.Parameters;
 using System;
 using UnityEngine;
@@ -31,8 +32,32 @@ namespace Celeste.Features
         
         [SerializeField] private int guid;
         [SerializeField] private BoolValue isEnabled;
+        [SerializeField] private Condition canEnable;
 
         #endregion
+
+        public void Hookup()
+        {
+            if (canEnable != null)
+            {
+                canEnable.Init();
+                canEnable.ValueChanged.AddListener(OnCanEnableValueChanged);
+
+                if (canEnable.Value)
+                {
+                    IsEnabled = true;
+                }
+            }
+        }
+
+        public void Shutdown()
+        {
+            if (canEnable != null)
+            {
+                canEnable.ValueChanged.RemoveListener(OnCanEnableValueChanged);
+                canEnable.Shutdown();
+            }
+        }
 
         public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
@@ -43,5 +68,17 @@ namespace Celeste.Features
         {
             isEnabled.RemoveOnValueChangedCallback(callback);
         }
+
+        #region Callbacks
+
+        private void OnCanEnableValueChanged(ValueChangedArgs<bool> args)
+        {
+            if (!IsEnabled)
+            {
+                IsEnabled = args.newValue;
+            }
+        }
+
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace Celeste.Logic
     [DisplayName("Float")]
     public class FloatValueCondition : ParameterizedValueCondition<float, FloatValue, FloatReference>
     {
-        public override bool Check()
+        protected override bool DoCheck()
         {
             return value.Value.SatisfiesComparison(condition, target.Value);
         }

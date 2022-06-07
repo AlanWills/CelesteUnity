@@ -25,6 +25,7 @@ namespace Celeste.Features
             {
                 Feature feature = featureCatalogue.GetItem(i);
                 feature.AddOnEnabledChangedCallback(OnEnabledChanged);
+                feature.Hookup();
                 features.Add(feature);
             }
         }
@@ -35,7 +36,14 @@ namespace Celeste.Features
             {
                 Feature feature = featureCatalogue.GetItem(i);
                 feature.RemoveOnEnabledChangedCallback(OnEnabledChanged);
+                feature.Shutdown();
             }
+        }
+
+        public bool IsFeatureEnabled(int featureGuid)
+        {
+            Feature feature = MustFindFeature(featureGuid);
+            return feature != null ? feature.IsEnabled : false;
         }
 
         public void SetFeatureEnabled(int featureGuid, bool enabled)

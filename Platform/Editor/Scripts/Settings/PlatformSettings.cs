@@ -15,6 +15,7 @@ using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
 using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.Platform.Data;
+using CelesteEditor.Scene;
 
 namespace CelesteEditor.Platform
 {
@@ -263,6 +264,7 @@ namespace CelesteEditor.Platform
                 File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
 
                 IncrementBuild();
+                MenuItemUtility.OpenExplorerAt(buildDirectory);
             }
             else if (Application.isBatchMode)
             {
