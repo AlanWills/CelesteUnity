@@ -129,7 +129,7 @@ namespace PolyAndCode.UI
 
             //set new cell size according to its aspect ratio
             _cellWidth = Content.rect.width / _coloumns;
-            _cellHeight = PrototypeCell.sizeDelta.y / PrototypeCell.sizeDelta.x * _cellWidth;
+            _cellHeight = PrototypeCell.sizeDelta.x != 0 ? PrototypeCell.sizeDelta.y / PrototypeCell.sizeDelta.x * _cellWidth : PrototypeCell.sizeDelta.y;
 
             //Get the required pool coverage and mininum size for the Cell pool
             float requriedCoverage = MinPoolCoverage * Viewport.rect.height;

@@ -3,7 +3,7 @@
 namespace Celeste.Wallet.Persistence
 {
     [Serializable]
-    public struct CurrencyDTO
+    public class CurrencyDTO
     {
         public int currencyGuid;
         public int quantity;
