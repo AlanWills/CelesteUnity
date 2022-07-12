@@ -9,8 +9,8 @@ namespace CelesteEditor.Platform
         #region Properties and Fields
 
         [SerializeField]
-        private iOSBuildType runInXCodeAs = iOSBuildType.Debug;
-        public iOSBuildType RunInXCodeAs
+        private XcodeBuildConfig runInXCodeAs = XcodeBuildConfig.Debug;
+        public XcodeBuildConfig RunInXCodeAs
         {
             get { return runInXCodeAs; }
             set
@@ -28,12 +28,12 @@ namespace CelesteEditor.Platform
             OutputName = "Build-{version}";
             BuildTarget = BuildTarget.iOS;
             BuildTargetGroup = BuildTargetGroup.iOS;
-            RunInXCodeAs = iOSBuildType.Release;
+            RunInXCodeAs = XcodeBuildConfig.Release;
         }
 
         protected override void ApplyImpl()
         {
-            EditorUserBuildSettings.iOSBuildConfigType = runInXCodeAs;
+            EditorUserBuildSettings.iOSXcodeBuildConfig = runInXCodeAs;
 
             PlayerSettings.stripEngineCode = false;
             PlayerSettings.iOS.buildNumber = Version.ToString();

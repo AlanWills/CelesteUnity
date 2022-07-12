@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049331485432}
   m_RootOrder: 0
@@ -67,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Popup
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9bac14d20981f82429b780526a84446b, type: 2}
-  m_sharedMaterial: {fileID: -1796208995335688525, guid: 9bac14d20981f82429b780526a84446b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -144,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4631722048699673503}
   - component: {fileID: 4631722048699673501}
+  - component: {fileID: 2441167336821529113}
   m_Layer: 5
   m_Name: FullScreenPopup
   m_TagString: Untagged
@@ -161,6 +163,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4631722049241556947}
   m_Father: {fileID: 0}
@@ -188,6 +191,20 @@ MonoBehaviour:
   showPopup: {fileID: 0}
   onConfirmPressed: {fileID: 0}
   onClosePressed: {fileID: 0}
+--- !u!114 &2441167336821529113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631722048699673502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a345221f97b0ad145b6b2c7f2576b8ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceLayout: {fileID: 11400000, guid: 2f8b4476029e164439a096535a7837ba, type: 2}
+  rectTransform: {fileID: 4631722048699673503}
 --- !u!1 &4631722049241556946
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +234,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4631722049331485432}
   - {fileID: 4631722049443598181}
@@ -308,6 +326,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4631722048366472810}
   m_Father: {fileID: 4631722049241556947}
@@ -385,6 +404,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049241556947}
   m_RootOrder: 1
@@ -514,6 +534,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049241556947}
   m_RootOrder: 3
@@ -532,16 +553,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_fontSize
-      value: 28
+      value: 26.85
       objectReference: {fileID: 0}
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 9bac14d20981f82429b780526a84446b, type: 2}
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6191592728476165308, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -1796208995335688525, guid: 9bac14d20981f82429b780526a84446b, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6191592729197578152, guid: a7f4aba8559154c43af28e7c80252349, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
