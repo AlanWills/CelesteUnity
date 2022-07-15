@@ -73,7 +73,7 @@ namespace CelesteEditor.Platform
                     platformSettings.BuildPlayer();
                 }
 
-                if (GUILayout.Button("Increment Build"))
+                if (GUILayout.Button("Increment Build Version"))
                 {
                     platformSettings.IncrementBuild();
                 }
