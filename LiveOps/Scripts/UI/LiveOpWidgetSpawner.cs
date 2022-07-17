@@ -12,8 +12,22 @@ namespace Celeste.LiveOps.UI
     {
         #region Properties and Fields
 
+        [SerializeField] private LiveOpsRecord liveOps;
+
         private List<ValueTuple<LiveOp, ILoadRequest<GameObject>>> spawningWidgets = new List<(LiveOp, ILoadRequest<GameObject>)>();
         private List<ValueTuple<LiveOp, GameObject>> spawnedWidgets = new List<(LiveOp, GameObject)>();
+
+        #endregion
+
+        #region Unity Methods
+
+        private void Awake()
+        {
+            for (int i = 0, n = liveOps.NumLiveOps; i < n; ++i)
+            {
+                TrySpawnWidget(liveOps.GetLiveOp(i));
+            }
+        }
 
         #endregion
 
