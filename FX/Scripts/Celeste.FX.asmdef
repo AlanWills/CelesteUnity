@@ -2,8 +2,9 @@
     "name": "Celeste.FX",
     "rootNamespace": "Celeste.FX",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "Celeste.Tools"
+        "Unity.TextMeshPro",
+        "Celeste.Tools",
+        "Celeste.Parameters"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

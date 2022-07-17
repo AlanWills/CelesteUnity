@@ -34,7 +34,7 @@ namespace Celeste.Inventory.Logic
         {
             if (target.IsConstant)
             {
-                target.ReferenceValue.RemoveOnValueChangedCallback(OnValueChangedCallback);
+                target.ReferenceValue.RemoveValueChangedCallback(OnValueChangedCallback);
             }
         }
 

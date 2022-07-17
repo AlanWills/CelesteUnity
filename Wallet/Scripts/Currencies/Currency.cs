@@ -54,7 +54,7 @@ namespace Celeste.Wallet
 
         public void RemoveOnQuantityChangedCallback(UnityAction<ValueChangedArgs<int>> callback)
         {
-            quantity.RemoveOnValueChangedCallback(callback);
+            quantity.RemoveValueChangedCallback(callback);
         }
 
         public void RemoveAllQuantityChangedCallbacks()

@@ -79,7 +79,7 @@ namespace Celeste.Sound.Settings
 
         public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            musicEnabled.Asset.RemoveOnValueChangedCallback(callback);
+            musicEnabled.Asset.RemoveValueChangedCallback(callback);
         }
 
         public override void AddOnPlayMusicCallback(Action<AudioClip> callback)

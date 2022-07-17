@@ -58,8 +58,8 @@ namespace PolyAndCode.UI
         /// <returns></returns>>
         public override IEnumerator InitCoroutine(System.Action onInitialized)
         {
-            SetTopAnchor(Content);
-            Content.anchoredPosition = Vector3.zero;
+            //SetTopAnchor(Content);
+            //Content.anchoredPosition = Vector3.zero;
             yield return null;
             SetRecyclingBounds();
 
@@ -73,7 +73,7 @@ namespace PolyAndCode.UI
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
-            SetTopAnchor(Content);
+            //SetTopAnchor(Content);
 
             if (onInitialized != null) onInitialized();
         }
@@ -115,7 +115,7 @@ namespace PolyAndCode.UI
             }
             else
             {
-                SetTopAnchor(PrototypeCell);
+                //SetTopAnchor(PrototypeCell);
             }
 
             //Reset

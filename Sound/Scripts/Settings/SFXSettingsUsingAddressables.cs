@@ -53,7 +53,7 @@ namespace Celeste.Sound.Settings
 
         public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            sfxEnabled.Asset.RemoveOnValueChangedCallback(callback);
+            sfxEnabled.Asset.RemoveValueChangedCallback(callback);
         }
 
         public override void AddOnPlaySFXCallback(Action<AudioClip> callback)

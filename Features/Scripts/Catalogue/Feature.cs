@@ -66,7 +66,7 @@ namespace Celeste.Features
 
         public void RemoveOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
-            isEnabled.RemoveOnValueChangedCallback(callback);
+            isEnabled.RemoveValueChangedCallback(callback);
         }
 
         #region Callbacks

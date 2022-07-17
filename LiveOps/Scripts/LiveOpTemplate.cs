@@ -23,7 +23,7 @@ namespace Celeste.LiveOps
         [SerializeField] private long type;
         [SerializeField] private long subType;
         [SerializeField, Timestamp] private long startTimestamp;
-        [SerializeField] private bool isRecurring;
+        [SerializeField, Tooltip("The wait time between an event starting and the next recurring event starting in seconds.")] private bool isRecurring;
         [SerializeField, ShowIf(nameof(isRecurring))] private long repeatsAfter;
         [SerializeField] private List<ComponentTemplate> components = new List<ComponentTemplate>();
 

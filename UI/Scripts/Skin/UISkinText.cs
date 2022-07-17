@@ -40,7 +40,7 @@ namespace Celeste.UI.Skin
         {
             if (currentSkin != null)
             {
-                currentSkin.RemoveOnValueChangedCallback(OnUISkinChanged);
+                currentSkin.RemoveValueChangedCallback(OnUISkinChanged);
             }
         }
 

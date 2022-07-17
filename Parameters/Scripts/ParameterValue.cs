@@ -84,7 +84,7 @@ namespace Celeste.Parameters
             OnValueChanged.AddListener(callback);
         }
 
-        public void RemoveOnValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
+        public void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
             OnValueChanged.RemoveListener(callback);
         }

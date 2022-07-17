@@ -33,6 +33,10 @@ namespace Celeste.UI
             Debug.Assert(canvasLayer != null, $"Canvas Layer is not set on {nameof(SetCanvasLayer)} script on {gameObject.name}.");
             Debug.Assert(canvas != null, $"Canvas is not set on {nameof(SetCanvasLayer)} script on {gameObject.name}.");
             canvas.sortingOrder = canvasLayer.SortOrder;
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(canvas);
+#endif
         }
     }
 }

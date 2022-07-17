@@ -56,7 +56,7 @@ namespace Celeste.Localisation.UI
         {
             if (currentLanguage != null)
             {
-                currentLanguage.RemoveOnValueChangedCallback(OnCurrentLanguageChanged);
+                currentLanguage.RemoveValueChangedCallback(OnCurrentLanguageChanged);
             }
         }
 

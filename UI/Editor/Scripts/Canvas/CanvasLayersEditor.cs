@@ -10,8 +10,6 @@ namespace CelesteEditor.UI
     {
         public override void OnInspectorGUI()
         {
-            EditorGUI.BeginChangeCheck();
-
             CanvasLayers canvasLayers = target as CanvasLayers;
 
             if (GUILayout.Button("Synchronize"))
@@ -19,11 +17,14 @@ namespace CelesteEditor.UI
                 canvasLayers.Synchronize();
             }
 
-            base.OnInspectorGUI();
-
-            if (EditorGUI.EndChangeCheck())
+            using (var changeCheck = new EditorGUI.ChangeCheckScope())
             {
-                canvasLayers.Synchronize();
+                base.OnInspectorGUI();
+
+                if (changeCheck.changed)
+                {
+                    canvasLayers.Synchronize();
+                }
             }
         }
     }

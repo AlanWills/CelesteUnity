@@ -37,6 +37,7 @@ namespace Celeste.LiveOps.Components
         public ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent)
         {
             GameObject foundAsset = prefabs.Find(x => string.CompareOrdinal(key, x.key) == 0).prefab;
+            UnityEngine.Debug.Assert(foundAsset != null, $"Could not find baked asset with key {key}.");
             GameObject foundAssetDuplicate = Instantiate(foundAsset, parent);
 
             return LoadAssetRequest<GameObject>.FromAsset(foundAssetDuplicate);

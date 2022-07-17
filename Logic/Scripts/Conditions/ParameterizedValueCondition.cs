@@ -44,12 +44,12 @@ namespace Celeste.Logic
         {
             if (!value.IsConstant)
             {
-                value.ReferenceValue.RemoveOnValueChangedCallback(OnValueChangedCallback);
+                value.ReferenceValue.RemoveValueChangedCallback(OnValueChangedCallback);
             }
 
             if (!target.IsConstant)
             {
-                target.ReferenceValue.RemoveOnValueChangedCallback(OnTargetChangedCallback);
+                target.ReferenceValue.RemoveValueChangedCallback(OnTargetChangedCallback);
             }
         }
 
