@@ -40,7 +40,6 @@ namespace Celeste.Features
         {
             if (canEnable != null)
             {
-                canEnable.Init();
                 canEnable.ValueChanged.AddListener(OnCanEnableValueChanged);
 
                 if (canEnable.Value)
@@ -55,7 +54,6 @@ namespace Celeste.Features
             if (canEnable != null)
             {
                 canEnable.ValueChanged.RemoveListener(OnCanEnableValueChanged);
-                canEnable.Shutdown();
             }
         }
 
@@ -73,10 +71,7 @@ namespace Celeste.Features
 
         private void OnCanEnableValueChanged(ValueChangedArgs<bool> args)
         {
-            if (!IsEnabled)
-            {
-                IsEnabled = args.newValue;
-            }
+            IsEnabled = args.newValue;
         }
 
         #endregion

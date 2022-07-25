@@ -27,19 +27,28 @@ namespace Celeste.Logic
         }
 
         [NonSerialized] private bool _value = false;
+        [NonSerialized] private int initCount = 0;
 
         #endregion
 
         public void Init()
         {
-            DoInit();
-            Check();
+            if (initCount++ == 0)
+            {
+                DoInit();
+                Check();
+            }
         }
 
         public void Shutdown()
         {
-            ValueChanged.RemoveAllListeners();
-            DoShutdown();
+            Debug.Assert(initCount > 0, $"Condition {name} {nameof(Shutdown)} called more times than {nameof(Init)}.");
+
+            if (--initCount == 0)
+            {
+                ValueChanged.RemoveAllListeners();
+                DoShutdown();
+            }
         }
 
         protected bool Check()

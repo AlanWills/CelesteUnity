@@ -32,8 +32,8 @@ namespace CelesteEditor.Localisation.Tools
 
         public override void Execute(GoogleSheet googleSheet)
         {
-            GoogleSheet.Column keyStrings = googleSheet.GetColumn(0);
-            GoogleSheet.Column categoryStrings = googleSheet.GetColumn(1);
+            GoogleSheet.Column keyStrings = googleSheet.GetColumn(keyColumn);
+            GoogleSheet.Column categoryStrings = googleSheet.GetColumn(categoryColumn);
 
             for (int column = languagesColumnOffset; column < googleSheet.NumColumns; ++column)
             {

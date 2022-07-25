@@ -1,7 +1,12 @@
 {
     "name": "Celeste.Core",
     "rootNamespace": "Celeste.Core",
-    "references": [],
+    "references": [
+        "Unity.TextMeshPro",
+        "Celeste.Events",
+        "Celeste.Parameters",
+        "Celeste.Tools"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

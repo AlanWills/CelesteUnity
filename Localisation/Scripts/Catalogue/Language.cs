@@ -85,6 +85,7 @@ namespace Celeste.Localisation
         [SerializeField] private LocalisationKey languageNameKey;
         [SerializeField] private bool assertOnFallback = true;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
+        [SerializeField] private NumberToLocalisedTextConverter numberToTextConverter;
         [SerializeField] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
         [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
 
@@ -105,6 +106,17 @@ namespace Celeste.Localisation
             }
 
             return localisedText;
+        }
+
+        public string Localise(int number)
+        {
+            if (numberToTextConverter == null)
+            {
+                UnityEngine.Debug.LogAssertion($"Failed to localise {number} due to missing converter.  No fallback possible...");
+                return number.ToString();
+            }
+
+            return numberToTextConverter.Localise(number, this);
         }
 
         public void AddEntries(List<LocalisationEntry> localisationEntries)
@@ -173,24 +185,15 @@ namespace Celeste.Localisation
             return 0;
         }
 
-        public LocalisationKey GetRandomKey(LocalisationKeyCategory category)
+        public string GetRandomWord(LocalisationKeyCategory category)
         {
             if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
             {
-                return value[UnityEngine.Random.Range(0, value.Count)];
+                return Localise(value[UnityEngine.Random.Range(0, value.Count)]);
             }
 
-            return null;
-        }
-
-        public LocalisationKey GetKeyForCategory(LocalisationKeyCategory category, int index)
-        {
-            if (categoryLookup.TryGetValue(category, out List<LocalisationKey> value))
-            {
-                return value.Get(index);
-            }
-
-            return null;
+            UnityEngine.Debug.LogAssertion($"Could not find category {category.name} in Language {name}.");
+            return string.Empty;
         }
 
         public ReadOnlyCollection<LocalisationKey> GetKeysForCategory(LocalisationKeyCategory category)

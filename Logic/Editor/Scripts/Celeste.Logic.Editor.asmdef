@@ -2,10 +2,12 @@
     "name": "Celeste.Logic.Editor",
     "rootNamespace": "CelesteEditor.Logic",
     "references": [
-        "GUID:659c1f5808f88f1458f6d8d74a0abafc",
-        "GUID:891da734736f95846afa70d43384392f",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
-        "GUID:dabf5c9bf3a797148b1913686b1f1f74"
+        "Celeste.Logic",
+        "Celeste.Parameters",
+        "Celeste.Tools.Editor",
+        "Celeste.Parameters.Editor",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Objects"
     ],
     "includePlatforms": [
         "Editor"
