@@ -165,11 +165,11 @@ namespace Celeste.Log
 
             if (type == LogType.Exception && IsLogLevelEnabled(HudLogLevel.Exception))
             {
-                LogError(logString);
+                Log(logString, Instance.errorColour);
             }
             else if (type == LogType.Assert && IsLogLevelEnabled(HudLogLevel.Assert))
             {
-                LogError(logString);
+                Log(logString, Instance.errorColour);
             }
         }
 
