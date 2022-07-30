@@ -51,7 +51,7 @@ namespace Celeste.Core
 
         private void OnRemainingTimeChanged(ValueChangedArgs<float> valueChangedArgs)
         {
-            onTimerUpdate.Invoke(valueChangedArgs.newValue);
+            onTimerUpdate.InvokeSilently(valueChangedArgs.newValue);
         }
 
         public void AddTimerUpdateCallback(Action<float> onTimerUpdate)

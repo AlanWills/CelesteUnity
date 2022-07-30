@@ -1,4 +1,5 @@
-﻿using Celeste.Core;
+﻿using Celeste.Assets;
+using Celeste.Core;
 using Celeste.Persistence;
 using System.Collections;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Celeste.LiveOps.Persistence
 {
     [AddComponentMenu("Celeste/Live Ops/Live Ops Manager")]
-    public class LiveOpsManager : PersistentSceneManager<LiveOpsManager, LiveOpsDTO>
+    public class LiveOpsManager : PersistentSceneManager<LiveOpsManager, LiveOpsDTO>, IHasAssets
     {
         #region Properties and Fields
 
@@ -34,6 +35,22 @@ namespace Celeste.LiveOps.Persistence
         protected override void SetDefaultValues()
         {
             StartCoroutine(AddLiveOpsFromSchedule());
+        }
+
+        #endregion
+
+        #region IHasAssets
+
+        public bool ShouldLoadAssets()
+        {
+            return true;
+        }
+
+        public IEnumerator LoadAssets()
+        {
+            Load();
+
+            yield break;
         }
 
         #endregion

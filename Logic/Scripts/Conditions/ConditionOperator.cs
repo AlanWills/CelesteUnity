@@ -2,6 +2,7 @@
 
 namespace Celeste.Logic
 {
+    [Serializable]
     public enum ConditionOperator
     {
         Equals,

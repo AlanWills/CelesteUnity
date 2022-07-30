@@ -14,5 +14,11 @@ namespace Celeste.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(ShowPopupEvent), menuName = "Celeste/Events/UI/Show Popup Event")]
-    public class ShowPopupEvent : ParameterisedEvent<IPopupArgs> { }
+    public class ShowPopupEvent : ParameterisedEvent<IPopupArgs> 
+    {
+        public void InvokeNoArgs()
+        {
+            Invoke(new NoPopupArgs());
+        }
+    }
 }

@@ -125,9 +125,7 @@ namespace Celeste.LiveOps
 
             yield return liveOp.Load();
 
-            if (liveOp.Assets.iFace.IsLoaded &&
-                liveOp.TryFindComponent<ILiveOpScheduleCondition>(out var scheduleCondition) &&
-                scheduleCondition.iFace.CanSchedule(scheduleCondition.instance, assets))
+            if (liveOp.CanSchedule)
             {
                 liveOps.Add(liveOp);
                 liveOp.StateChanged.AddListener(OnLiveOpStateChanged);

@@ -33,6 +33,31 @@ namespace Celeste.LiveOps
         public long SubType { get; }
         public long StartTimestamp { get; }
         public bool IsRecurring { get; }
+        public bool CanSchedule
+        {
+            get
+            {
+                if (!Assets.iFace.IsLoaded)
+                {
+                    return false;
+                }
+
+                for (int i = 0, n = NumComponents; i < n; ++i)
+                {
+                    var component = GetComponent(i);
+
+                    if (component.Is<ILiveOpScheduleCondition>() &&
+                        !component.AsInterface<ILiveOpScheduleCondition>().iFace.CanSchedule(component.instance, Assets))
+                    {
+                        // Schedule condition found and it was not valid
+                        return false;
+                    }
+                }
+
+                // Assets loaded and all conditions true!
+                return true;
+            }
+        }
 
         public int NumComponents => Components.NumComponents;
         public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);

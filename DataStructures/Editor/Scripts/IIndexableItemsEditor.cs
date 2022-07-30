@@ -1,6 +1,7 @@
 using Celeste.DataStructures;
 using Celeste.Objects;
 using CelesteEditor.Tools;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,14 +34,12 @@ namespace CelesteEditor.DataStructures
 
             if (GUILayout.Button("Find All"))
             {
-                ItemsProperty.FindAssets<TIndexableItem>();
-                TrySyncGuids();
+                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>());
             }
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
-                ItemsProperty.FindAssets<TIndexableItem>(AssetUtility.GetAssetFolderPath(target));
-                TrySyncGuids();
+                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>(AssetUtility.GetAssetFolderPath(target)));
             }
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())
@@ -54,6 +53,44 @@ namespace CelesteEditor.DataStructures
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void AddMissingItemsWithoutReordering(List<TIndexableItem> allFoundItems)
+        {
+            // Add new items without disturbing the order of items we've already added
+            // This is especially important with items that have guids
+            HashSet<TIndexableItem> currentItems = new HashSet<TIndexableItem>();
+
+            for (int i = 0, n = ItemsProperty.arraySize; i < n; ++i)
+            {
+                currentItems.Add(ItemsProperty.GetArrayElementAtIndex(i).objectReferenceValue as TIndexableItem);
+            }
+
+            List<TIndexableItem> itemsToAdd = new List<TIndexableItem>();
+
+            foreach (TIndexableItem item in allFoundItems)
+            {
+                if (!currentItems.Contains(item))
+                {
+                    itemsToAdd.Add(item);
+                }
+            }
+
+            if (itemsToAdd.Count > 0)
+            {
+                ItemsProperty.arraySize += itemsToAdd.Count;
+
+                int offset = currentItems.Count;
+                for (int i = 0, n = itemsToAdd.Count; i < n; ++i)
+                {
+                    ItemsProperty.GetArrayElementAtIndex(offset + i).objectReferenceValue = itemsToAdd[i];
+                }
+
+                serializedObject.ApplyModifiedProperties();
+
+            }
+            
+            TrySyncGuids();
         }
 
         private void TrySyncGuids()
