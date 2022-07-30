@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CelesteEditor.Platform.Data
+namespace CelesteEditor.BuildSystem.Data
 {
-    [CreateAssetMenu(fileName = nameof(ScriptingDefineSymbols), menuName = "Celeste/Platform/Scripting Define Symbols")]
+    [CreateAssetMenu(fileName = nameof(ScriptingDefineSymbols), menuName = "Celeste/Build System/Scripting Define Symbols")]
     public class ScriptingDefineSymbols : ListScriptableObject<string>
     {
         public string[] ToArray()

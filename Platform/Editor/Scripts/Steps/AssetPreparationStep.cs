@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform.Steps
+namespace CelesteEditor.BuildSystem.Steps
 {
     public abstract class AssetPreparationStep : ScriptableObject
     {

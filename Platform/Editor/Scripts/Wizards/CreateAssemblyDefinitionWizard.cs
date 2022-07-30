@@ -1,15 +1,12 @@
-﻿using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using static CelesteEditor.Platform.Wizards.CreateAssemblyDefinitionConstants;
+using static CelesteEditor.BuildSystem.Wizards.CreateAssemblyDefinitionConstants;
 
-namespace CelesteEditor.Platform.Wizards
+namespace CelesteEditor.BuildSystem.Wizards
 {
     public class CreateAssemblyDefinitionWizard : ScriptableWizard
     {

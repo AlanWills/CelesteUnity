@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform.Data
+namespace CelesteEditor.BuildSystem.Data
 {
     [CustomEditor(typeof(ScriptingDefineSymbols))]
     public class ScriptingDefineSymbolsEditor : Editor

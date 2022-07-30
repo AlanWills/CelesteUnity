@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 
-namespace CelesteEditor.Platform.iOSPostProcess
+namespace CelesteEditor.BuildSystem.iOSPostProcess
 {
     public static class DisableAlwaysEmbedSwiftStandardLibraries
     {

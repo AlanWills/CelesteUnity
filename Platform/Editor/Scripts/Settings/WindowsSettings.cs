@@ -3,9 +3,9 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = "WindowsSettings", menuName = "Celeste/Platform/Windows Settings")]
+    [CreateAssetMenu(fileName = "WindowsSettings", menuName = "Celeste/Build System/Windows Settings")]
     public class WindowsSettings : PlatformSettings
     {
         #region Properties and Fields

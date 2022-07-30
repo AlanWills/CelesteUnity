@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
     public class AllPlatformSettingsProvider : SettingsProvider
     {

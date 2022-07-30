@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = "AndroidSettings", menuName = "Celeste/Platform/Android Settings")]
+    [CreateAssetMenu(fileName = "AndroidSettings", menuName = "Celeste/Build System/Android Settings")]
     public class AndroidSettings : PlatformSettings
     {
         #region Properties and Fields

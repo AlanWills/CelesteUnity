@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace CelesteEditor.Platform.PropertyDrawers
+namespace CelesteEditor.BuildSystem.PropertyDrawers
 {
     [CustomPropertyDrawer(typeof(AppVersion))]
     public class AppVersionPropertyDrawer : PropertyDrawer

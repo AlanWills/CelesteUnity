@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(AllPlatformSettings), menuName = "Celeste/Platform/All Platform Settings")]
+    [CreateAssetMenu(fileName = nameof(AllPlatformSettings), menuName = "Celeste/Build System/All Platform Settings")]
     public class AllPlatformSettings : EditorSettings<AllPlatformSettings>
     {
         #region Properties and Fields
@@ -67,7 +67,7 @@ namespace CelesteEditor.Platform
         [SerializeField] private WebGLSettings m_webGLDebug;
         [SerializeField] private WebGLSettings m_webGLRelease;
 
-        public const string AllPlatformSettingsDirectory = "Assets/Platform/Editor/";
+        public const string AllPlatformSettingsDirectory = "Assets/BuildSystem/Editor/";
         public const string AllPlatformSettingsPath = AllPlatformSettingsDirectory + "AllPlatformSettings.asset";
         public const string iOSPlatformSettingsPath = AllPlatformSettingsDirectory + "iOS";
         public const string AndroidPlatformSettingsPath = AllPlatformSettingsDirectory + "Android";

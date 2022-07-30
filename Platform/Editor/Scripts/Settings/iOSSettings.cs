@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = "iOSSettings", menuName = "Celeste/Platform/iOS Settings")]
+    [CreateAssetMenu(fileName = "iOSSettings", menuName = "Celeste/Build System/iOS Settings")]
     public class iOSSettings : PlatformSettings
     {
         #region Properties and Fields

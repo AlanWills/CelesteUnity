@@ -1,5 +1,5 @@
 ﻿using Celeste.Localisation;
-using CelesteEditor.Platform.Steps;
+using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.Tools;
 using UnityEngine;
 

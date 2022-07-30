@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(WebGLSettings), menuName = "Celeste/Platform/WebGL Settings")]
+    [CreateAssetMenu(fileName = nameof(WebGLSettings), menuName = "Celeste/Build System/WebGL Settings")]
     public class WebGLSettings : PlatformSettings
     {
         #region Properties and Fields

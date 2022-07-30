@@ -8,7 +8,7 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
     [CustomEditor(typeof(AndroidSettings))]
     [CanEditMultipleObjects]

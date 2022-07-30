@@ -1,12 +1,12 @@
-﻿using CelesteEditor.Platform.Steps;
+﻿using CelesteEditor.BuildSystem.Steps;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(SetAddressablesActiveProfileId), menuName = "Celeste/Platform/Asset Preparation/Set Addressables Active Profile Id")]
+    [CreateAssetMenu(fileName = nameof(SetAddressablesActiveProfileId), menuName = "Celeste/Build System/Asset Preparation/Set Addressables Active Profile Id")]
     public class SetAddressablesActiveProfileId : AssetPreparationStep
     {
         public string profileId;

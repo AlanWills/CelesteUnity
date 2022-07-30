@@ -1,9 +1,9 @@
 ﻿using Celeste.Objects;
 using UnityEngine;
 
-namespace CelesteEditor.Platform.Data
+namespace CelesteEditor.BuildSystem.Data
 {
-    [CreateAssetMenu(fileName = nameof(AddressableGroupNames), menuName = "Celeste/Platform/Addressable Group Names")]
+    [CreateAssetMenu(fileName = nameof(AddressableGroupNames), menuName = "Celeste/Build System/Addressable Group Names")]
     public class AddressableGroupNames : ListScriptableObject<string>
     {
         public bool Contains(string groupName)

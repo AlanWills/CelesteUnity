@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
     [CustomEditor(typeof(PlatformSettings), true)]
     [CanEditMultipleObjects]

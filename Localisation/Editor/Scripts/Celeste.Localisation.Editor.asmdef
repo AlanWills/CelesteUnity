@@ -13,7 +13,7 @@
         "Celeste.Objects",
         "Celeste.OdinSerializer",
         "Celeste.Parameters.Editor",
-        "Celeste.Platform.Editor"
+        "Celeste.BuildSystem.Editor"
     ],
     "includePlatforms": [
         "Editor"

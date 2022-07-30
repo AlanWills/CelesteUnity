@@ -1,5 +1,4 @@
-﻿using CelesteEditor.Platform.Steps;
-using Celeste.Constants;
+﻿using Celeste.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +13,11 @@ using UnityEngine;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
 using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Platform.Data;
 using CelesteEditor.Scene;
+using CelesteEditor.BuildSystem.Steps;
+using CelesteEditor.BuildSystem.Data;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
     public abstract class PlatformSettings : ScriptableObject
     {

@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform
+namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(AppVersion), menuName = "Celeste/Platform/App Version")]
+    [CreateAssetMenu(fileName = nameof(AppVersion), menuName = "Celeste/Build System/App Version")]
     public class AppVersion : ScriptableObject
     {
         #region Properties and Fields

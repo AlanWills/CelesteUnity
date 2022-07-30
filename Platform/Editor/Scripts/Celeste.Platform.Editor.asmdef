@@ -1,6 +1,6 @@
 {
-    "name": "Celeste.Platform.Editor",
-    "rootNamespace": "CelesteEditor.Platform",
+    "name": "Celeste.BuildSystem.Editor",
+    "rootNamespace": "CelesteEditor.BuildSystem",
     "references": [
         "Celeste.Constants",
         "Celeste.Tools",

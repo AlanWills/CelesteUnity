@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Platform.Wizards
+namespace CelesteEditor.BuildSystem.Wizards
 {
     public static class CreateAssemblyDefinitionConstants
     {
