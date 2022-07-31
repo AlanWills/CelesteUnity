@@ -6,49 +6,49 @@ namespace CelesteEditor.BuildSystem
 {
     public static class BuildAssets
     {
-        [MenuItem("Celeste/Assets/Debug/Android Assets")]
+        [MenuItem("Celeste/Assets/Debug/Build Android Assets")]
         public static void BuildDebugAndroidAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidDebug.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Android Assets")]
+        [MenuItem("Celeste/Assets/Release/Build Android Assets")]
         public static void BuildReleaseAndroidAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/Windows Assets")]
+        [MenuItem("Celeste/Assets/Debug/Build Windows Assets")]
         public static void BuildDebugWindowsAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WindowsDebug.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Windows Assets")]
+        [MenuItem("Celeste/Assets/Release/Build Windows Assets")]
         public static void BuildReleaseWindowsAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WindowsRelease.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/iOS Assets")]
+        [MenuItem("Celeste/Assets/Debug/Build iOS Assets")]
         public static void BuildDebugiOSAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().iOSDebug.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/iOS Assets")]
+        [MenuItem("Celeste/Assets/Release/Build iOS Assets")]
         public static void BuildReleaseiOSAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().iOSRelease.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/HTML5 Assets")]
+        [MenuItem("Celeste/Assets/Debug/Build WebGL Assets")]
         public static void BuildDebugWebGLAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WebGLDebug.BuildAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/HTML5 Assets")]
+        [MenuItem("Celeste/Assets/Release/Build WebGL Assets")]
         public static void BuildReleaseWebGLAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WebGLRelease.BuildAssetsAndExit();
