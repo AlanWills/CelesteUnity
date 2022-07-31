@@ -270,7 +270,6 @@ namespace CelesteEditor.BuildSystem
                 InjectBuildEnvVars(buildInfo);
                 File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
 
-                IncrementBuild();
                 MenuItemUtility.OpenExplorerAt(buildDirectory);
             }
             else if (Application.isBatchMode)
