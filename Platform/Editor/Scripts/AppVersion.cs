@@ -44,7 +44,10 @@ namespace CelesteEditor.BuildSystem
         {
             ++build;
 
-            EditorUtility.SetDirty(this);
+            if (this != null)
+            {
+                EditorUtility.SetDirty(this);
+            }
         }
     }
 }
