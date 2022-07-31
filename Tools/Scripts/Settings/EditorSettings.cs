@@ -11,6 +11,7 @@ namespace Celeste.Tools.Settings
             var settings = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(filePath);
             if (settings == null)
             {
+                Debug.Log($"Creating instance of {typeof(T).Name} because it could not be found at {filePath}.");
                 settings = CreateInstance<T>();
 
                 Directory.CreateDirectory(folderPath);

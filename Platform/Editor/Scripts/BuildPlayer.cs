@@ -49,7 +49,8 @@ namespace CelesteEditor.BuildSystem
         [MenuItem("Celeste/Builds/Debug/WebGL")]
         public static void BuildDebugWebGLPlayer()
         {
-            AllPlatformSettings.GetOrCreateSettings().WebGLDebug.BuildPlayer();
+            AllPlatformSettings instance = AllPlatformSettings.GetOrCreateSettings();
+            instance.WebGLDebug.BuildPlayer();
         }
 
         [MenuItem("Celeste/Builds/Release/WebGL")]
