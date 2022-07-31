@@ -43,7 +43,7 @@ namespace CelesteEditor.BuildSystem
         public void IncrementBuild()
         {
             ++build;
-            
+
             EditorUtility.SetDirty(this);
         }
     }
