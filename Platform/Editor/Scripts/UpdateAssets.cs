@@ -6,53 +6,117 @@ namespace CelesteEditor.BuildSystem
 {
     public static class UpdateAssets
     {
-        [MenuItem("Celeste/Assets/Debug/Update Android Assets")]
+        #region Android
+
+        [MenuItem("Celeste/Assets/Debug/Update Android Assets", validate = true)]
+        public static bool ValidateUpdateDebugAndroidAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().AndroidDebug != null;
+        }
+
+        [MenuItem("Celeste/Assets/Debug/Update Android Assets", validate = false)]
         public static void UpdateDebugAndroidAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidDebug.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Update Android Assets")]
+        [MenuItem("Celeste/Assets/Debug/Update Android Assets", validate = true)]
+        public static bool ValidateUpdateReleaseAndroidAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle != null;
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update Android Assets", validate = false)]
         public static void UpdateReleaseAndroidAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/Update Windows Assets")]
+        #endregion
+
+        #region Windows
+
+        [MenuItem("Celeste/Assets/Debug/Update Windows Assets", validate = true)]
+        public static bool ValidateUpdateDebugWindowsAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().WindowsDebug != null;
+        }
+
+        [MenuItem("Celeste/Assets/Debug/Update Windows Assets", validate = false)]
         public static void UpdateDebugWindowsAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WindowsDebug.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Update Windows Assets")]
+        [MenuItem("Celeste/Assets/Release/Update Windows Assets", validate = true)]
+        public static bool ValidateUpdateReleaseWindowsAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().WindowsRelease != null;
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update Windows Assets", validate = false)]
         public static void UpdateReleaseWindowsAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WindowsRelease.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/Update iOS Assets")]
+        #endregion
+
+        #region iOS
+
+        [MenuItem("Celeste/Assets/Debug/Update iOS Assets", validate = true)]
+        public static bool ValidateUpdateDebugiOSAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().iOSDebug != null;
+        }
+
+        [MenuItem("Celeste/Assets/Debug/Update iOS Assets", validate = false)]
         public static void UpdateDebugiOSAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().iOSDebug.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Update iOS Assets")]
+        [MenuItem("Celeste/Assets/Release/Update iOS Assets", validate = true)]
+        public static bool ValidateUpdateReleaseiOSAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().iOSRelease != null;
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update iOS Assets", validate = false)]
         public static void UpdateReleaseiOSAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().iOSRelease.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/Update WebGL Assets")]
+        #endregion
+
+        #region WebGL
+
+        [MenuItem("Celeste/Assets/Debug/Update WebGL Assets", validate = true)]
+        public static bool ValidateUpdateDebugWebGLAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().WebGLDebug != null;
+        }
+
+        [MenuItem("Celeste/Assets/Debug/Update WebGL Assets", validate = false)]
         public static void UpdateDebugWebGLAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WebGLDebug.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Release/Update HTML5 Assets")]
+        [MenuItem("Celeste/Assets/Release/Update WebGL Assets", validate = true)]
+        public static bool ValidateUpdateReleaseWebGLAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().WebGLRelease != null;
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update WebGL Assets", validate = false)]
         public static void UpdateReleaseWebGLAssets()
         {
             AllPlatformSettings.GetOrCreateSettings().WebGLRelease.UpdateAssetsAndExit();
         }
+
+        #endregion
 
         private static void UpdateAssetsAndExit(this PlatformSettings platformSettings)
         {
