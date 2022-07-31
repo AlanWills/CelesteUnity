@@ -169,6 +169,7 @@ namespace CelesteEditor.BuildSystem
 
         public void IncrementBuild()
         {
+            Debug.Assert(Version != null, $"Version was null for platform settings: {name}.");
             Version.IncrementBuild();
             Debug.Log($"New Version is {Version} for platform {BuildTarget}");
 

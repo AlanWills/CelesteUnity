@@ -22,7 +22,10 @@ namespace CelesteEditor.Scene
 
         public static void OpenExplorerAt(string filePath)
         {
-            System.Diagnostics.Process.Start("explorer.exe", filePath.Replace('/', '\\'));
+            if (!Application.isBatchMode)
+            {
+                System.Diagnostics.Process.Start("explorer.exe", filePath.Replace('/', '\\'));
+            }
         }
 
         public static void OpenExplorerAtPersistentData()
