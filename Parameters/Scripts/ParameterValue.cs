@@ -64,6 +64,9 @@ namespace Celeste.Parameters
             }
         }
 
+#if UNITY_EDITOR
+        [SerializeField, TextArea] private string helpText;
+#endif
         [SerializeField] private T defaultValue;
 
         #endregion

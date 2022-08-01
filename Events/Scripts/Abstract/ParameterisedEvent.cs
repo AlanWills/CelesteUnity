@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Events
@@ -10,6 +7,10 @@ namespace Celeste.Events
     public class ParameterisedEvent<T> : ScriptableObject, IEvent<T>
     {
         #region Properties and Fields
+
+#if UNITY_EDITOR
+        [SerializeField, TextArea] private string helpText;
+#endif
 
         private List<Action<T>> gameEventListeners = new List<Action<T>>();
         private List<Action<T>> cachedListeners = new List<Action<T>>();

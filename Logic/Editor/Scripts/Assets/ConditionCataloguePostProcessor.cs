@@ -11,10 +11,24 @@ namespace CelesteEditor.Logic.Assets
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
             List<Condition> conditions = AssetUtility.FindAssets<Condition>();
+            HashSet<Condition> existingItems = new HashSet<Condition>();
 
             foreach (ConditionCatalogue conditionCatalogue in AssetUtility.FindAssets<ConditionCatalogue>())
             {
-                conditionCatalogue.SetItems(conditions);
+                existingItems.Clear();
+
+                foreach (Condition item in conditionCatalogue.Items)
+                {
+                    existingItems.Add(item);
+                }
+
+                foreach (Condition condition in conditions)
+                {
+                    if (!existingItems.Contains(condition))
+                    {
+                        conditionCatalogue.AddItem(condition);
+                    }
+                }
             }
         }
     }

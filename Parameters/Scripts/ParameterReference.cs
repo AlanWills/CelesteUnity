@@ -1,9 +1,5 @@
 ﻿using Celeste.Objects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -15,8 +11,6 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        [SerializeField]
-        private bool isConstant = true;
         public bool IsConstant
         {
             get { return isConstant; }
@@ -30,13 +24,7 @@ namespace Celeste.Parameters
                 }
             }
         }
-
-        [SerializeField]
-        private T constantValue;
-
-        [SerializeField]
-        private TValue referenceValue;
-
+        
         public T Value
         {
             get { return isConstant ? constantValue : referenceValue != null ? referenceValue.Value : default; }
@@ -66,6 +54,13 @@ namespace Celeste.Parameters
                 }
             }
         }
+
+#if UNITY_EDITOR
+        [SerializeField, TextArea] private string helpText;
+#endif
+        [SerializeField] private bool isConstant = true;
+        [SerializeField] private T constantValue;
+        [SerializeField] private TValue referenceValue;
 
         #endregion
 

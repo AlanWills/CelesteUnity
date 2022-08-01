@@ -10,6 +10,10 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
+#if UNITY_EDITOR
+        [SerializeField, TextArea] private string helpText;
+#endif
+
         private List<Action> gameEventListeners = new List<Action>();
         private List<Action> cachedListeners = new List<Action>();
 
