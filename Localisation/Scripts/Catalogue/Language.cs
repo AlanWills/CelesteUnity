@@ -52,7 +52,7 @@ namespace Celeste.Localisation
 
         #region Localisation Key Category Comparer
 
-        private struct LocalisationKeyCategoryComparer : IEqualityComparer<LocalisationKeyCategory>
+        private class LocalisationKeyCategoryComparer : IEqualityComparer<LocalisationKeyCategory>
         {
             public bool Equals(LocalisationKeyCategory x, LocalisationKeyCategory y)
             {
