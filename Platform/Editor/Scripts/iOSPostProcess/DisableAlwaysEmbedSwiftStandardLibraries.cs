@@ -17,11 +17,10 @@ namespace CelesteEditor.BuildSystem.iOSPostProcess
                 project.ReadFromFile(projPath);
 
                 string mainTargetGuid = project.GetUnityMainTargetGuid();
+                string unityFrameworkTargetGuid = project.GetUnityFrameworkTargetGuid();
 
-                foreach (var targetGuid in new[] { mainTargetGuid, project.GetUnityFrameworkTargetGuid() })
-                {
-                    project.SetBuildProperty(targetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "NO");
-                }
+                project.SetBuildProperty(mainTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "YES");
+                project.SetBuildProperty(unityFrameworkTargetGuid, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "NO");
 
                 project.WriteToFile(projPath);
             }
