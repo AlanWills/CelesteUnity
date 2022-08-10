@@ -328,7 +328,7 @@ namespace CelesteEditor.BuildSystem
         private void WriteAssetsEnvironmentVariablesFile()
         {
             StringBuilder locationInfo = new StringBuilder();
-            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}/*");
+            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}");
             locationInfo.AppendLine();
             locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
 
