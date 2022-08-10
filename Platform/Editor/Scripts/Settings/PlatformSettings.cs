@@ -296,17 +296,7 @@ namespace CelesteEditor.BuildSystem
             Debug.Log("Beginning to build content");
             AddressableAssetSettings.BuildPlayerContent();
 
-            StringBuilder locationInfo = new StringBuilder();
-            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}/*");
-            locationInfo.AppendLine();
-            locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
-
-            if (!Directory.Exists(AddressablesBuildDirectory))
-            {
-                Directory.CreateDirectory(AddressablesBuildDirectory);
-            }
-            File.WriteAllText(Path.Combine(new DirectoryInfo(AddressablesBuildDirectory).Parent.FullName, "ASSETS_ENV_VARS.txt"), locationInfo.ToString());
-
+            WriteAssetsEnvironmentVariablesFile();
             Debug.Log("Finished building content");
         }
 
@@ -329,8 +319,24 @@ namespace CelesteEditor.BuildSystem
             {
                 Debug.Log("Finished updating content with no build result");
             }
+            
+            WriteAssetsEnvironmentVariablesFile();
 
             return buildResult != null && string.IsNullOrEmpty(buildResult.Error);
+        }
+
+        private void WriteAssetsEnvironmentVariablesFile()
+        {
+            StringBuilder locationInfo = new StringBuilder();
+            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}/*");
+            locationInfo.AppendLine();
+            locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
+
+            if (!Directory.Exists(AddressablesBuildDirectory))
+            {
+                Directory.CreateDirectory(AddressablesBuildDirectory);
+            }
+            File.WriteAllText(Path.Combine(new DirectoryInfo(AddressablesBuildDirectory).Parent.FullName, "ASSETS_ENV_VARS.txt"), locationInfo.ToString());
         }
 
         private static void SetAddressableAssetSettings()
