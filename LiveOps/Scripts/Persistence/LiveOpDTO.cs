@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.LiveOps.Persistence
 {
     [Serializable]
-    public struct LiveOpDTO
+    public class LiveOpDTO
     {
         public long type;
         public long subType;
