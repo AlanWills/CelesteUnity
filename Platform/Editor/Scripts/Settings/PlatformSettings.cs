@@ -13,7 +13,6 @@ using UnityEngine;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
 using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Scene;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
