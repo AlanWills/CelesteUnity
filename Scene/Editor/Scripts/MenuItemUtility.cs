@@ -19,31 +19,5 @@ namespace CelesteEditor.Scene
                 sceneSet.EditorOnly_Load(LoadSceneMode.Single);
             }
         }
-
-        public static void OpenExplorerAt(string filePath)
-        {
-            if (!Application.isBatchMode)
-            {
-                System.Diagnostics.Process.Start("explorer.exe", filePath.Replace('/', '\\'));
-            }
-        }
-
-        public static void OpenExplorerAtPersistentData()
-        {
-            OpenExplorerAt(Application.persistentDataPath);
-        }
-
-        public static void DeletePersistentDataFile(string fileNameAndExtension)
-        {
-            string filePath = Path.Combine(Application.persistentDataPath, fileNameAndExtension);
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-#if UNITY_EDITOR
-                File.Delete($"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}");
-#endif
-                UnityEngine.Debug.Log($"Deleted save file at {filePath}.");
-            }
-        }
     }
 }

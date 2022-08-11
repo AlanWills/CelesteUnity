@@ -7,8 +7,9 @@
         "Celeste.Objects",
         "Celeste.OdinSerializer",
         "Celeste.Tools",
+        "Celeste.Persistence",
         "Celeste.Tools.Editor",
-        "Celeste.Scene.Editor"
+        "Celeste.Persistence.Editor"
     ],
     "includePlatforms": [
         "Editor"

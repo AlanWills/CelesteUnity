@@ -1,5 +1,6 @@
+using Celeste.Persistence;
 using Celeste.Wallet;
-using CelesteEditor.Scene;
+using CelesteEditor.Persistence;
 using UnityEditor;
 
 namespace CelesteEditor.Wallet
@@ -9,13 +10,13 @@ namespace CelesteEditor.Wallet
         [MenuItem("Celeste/Save/Open Wallet Save", priority = 0)]
         public static void OpenWalletSaveMenuItem()
         {
-            MenuItemUtility.OpenExplorerAtPersistentData();
+            PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
         }
 
         [MenuItem("Celeste/Save/Delete Wallet Save", priority = 100)]
         public static void DeleteWalletSaveMenuItem()
         {
-            MenuItemUtility.DeletePersistentDataFile(WalletManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(WalletManager.FILE_NAME);
         }
     }
 }

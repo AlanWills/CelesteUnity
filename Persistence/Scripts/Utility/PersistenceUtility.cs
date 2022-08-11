@@ -2,6 +2,7 @@ using Celeste.Log;
 using Celeste.OdinSerializer;
 using Celeste.Tools;
 using System.IO;
+using UnityEngine;
 
 namespace Celeste.Persistence
 {
@@ -49,5 +50,18 @@ namespace Celeste.Persistence
         }
 
         #endregion
+
+        public static void DeletePersistentDataFile(string fileNameAndExtension)
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, fileNameAndExtension);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+#if UNITY_EDITOR
+                File.Delete($"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}");
+#endif
+                UnityEngine.Debug.Log($"Deleted save file at {filePath}.");
+            }
+        }
     }
 }

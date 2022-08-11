@@ -1,6 +1,7 @@
 using Celeste.Inventory;
-using CelesteEditor.Scene;
+using Celeste.Persistence;
 using UnityEditor;
+using static CelesteEditor.Persistence.PersistenceMenuItemUtility;
 
 namespace CelesteEditor.Inventory
 {
@@ -9,13 +10,13 @@ namespace CelesteEditor.Inventory
         [MenuItem("Celeste/Save/Open Inventory Save", priority = 0)]
         public static void OpenInventorySaveMenuItem()
         {
-            MenuItemUtility.OpenExplorerAtPersistentData();
+            OpenExplorerAtPersistentData();
         }
 
         [MenuItem("Celeste/Save/Delete Inventory Save", priority = 100)]
         public static void DeleteInventorySaveMenuItem()
         {
-            MenuItemUtility.DeletePersistentDataFile(InventoryManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(InventoryManager.FILE_NAME);
         }
     }
 }

@@ -3,8 +3,9 @@
     "rootNamespace": "CelesteEditor.Twine",
     "references": [
         "Celeste.Twine",
+        "Celeste.Persistence",
         "Celeste.DataStructures.Editor",
-        "Celeste.Scene.Editor",
+        "Celeste.Persistence.Editor",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [

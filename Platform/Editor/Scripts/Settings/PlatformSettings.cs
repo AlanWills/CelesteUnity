@@ -16,6 +16,7 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.Scene;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
+using CelesteEditor.Persistence;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -270,7 +271,7 @@ namespace CelesteEditor.BuildSystem
                 InjectBuildEnvVars(buildInfo);
                 File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
 
-                MenuItemUtility.OpenExplorerAt(buildDirectory);
+                PersistenceMenuItemUtility.OpenExplorerAt(buildDirectory);
             }
             else if (Application.isBatchMode)
             {

@@ -1,6 +1,7 @@
+using Celeste.Persistence;
 using Celeste.Twine;
 using UnityEditor;
-using static CelesteEditor.Scene.MenuItemUtility;
+using static CelesteEditor.Persistence.PersistenceMenuItemUtility;
 
 namespace CelesteEditor.Twine
 {
@@ -15,7 +16,7 @@ namespace CelesteEditor.Twine
         [MenuItem("Celeste/Save/Delete Twine Save", priority = 100)]
         public static void DeleteTwineSaveMenuItem()
         {
-            DeletePersistentDataFile(TwineManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(TwineManager.FILE_NAME);
         }
 
         [MenuItem("Celeste/Narrative/Create Links For Twine Story")]

@@ -1,6 +1,7 @@
 using Celeste.Features.Persistence;
+using Celeste.Persistence;
 using UnityEditor;
-using static CelesteEditor.Scene.MenuItemUtility;
+using static CelesteEditor.Persistence.PersistenceMenuItemUtility;
 
 namespace CelesteEditor.Twine
 {
@@ -15,7 +16,7 @@ namespace CelesteEditor.Twine
         [MenuItem("Celeste/Save/Delete Feature Save", priority = 100)]
         public static void DeleteFeatureSaveMenuItem()
         {
-            DeletePersistentDataFile(FeatureManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(FeatureManager.FILE_NAME);
         }
     }
 }

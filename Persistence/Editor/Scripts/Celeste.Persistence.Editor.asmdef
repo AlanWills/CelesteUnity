@@ -1,13 +1,8 @@
 {
-    "name": "Celeste.BuildSystem.Editor",
-    "rootNamespace": "CelesteEditor.BuildSystem",
+    "name": "Celeste.Persistence.Editor",
+    "rootNamespace": "CelesteEditor.Persistence",
     "references": [
-        "Celeste.Constants",
-        "Celeste.Tools",
-        "Celeste.Tools.Editor",
-        "Celeste.Objects",
-        "Celeste.Persistence.Editor",
-        "Unity.Addressables.Editor"
+        "Celeste.Persistence"
     ],
     "includePlatforms": [
         "Editor"

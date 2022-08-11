@@ -1,5 +1,6 @@
 using Celeste.LiveOps.Persistence;
-using CelesteEditor.Scene;
+using Celeste.Persistence;
+using CelesteEditor.Persistence;
 using UnityEditor;
 
 namespace CelesteEditor.LiveOps
@@ -9,13 +10,13 @@ namespace CelesteEditor.LiveOps
         [MenuItem("Celeste/Save/Open Live Ops Save", priority = 0)]
         public static void OpenLiveOpsSaveMenuItem()
         {
-            MenuItemUtility.OpenExplorerAtPersistentData();
+            PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
         }
 
         [MenuItem("Celeste/Save/Delete Live Ops Save", priority = 100)]
         public static void DeleteLiveOpsSaveMenuItem()
         {
-            MenuItemUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
         }
     }
 }

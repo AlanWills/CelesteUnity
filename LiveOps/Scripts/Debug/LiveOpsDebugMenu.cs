@@ -1,5 +1,7 @@
 ﻿using Celeste.Core;
 using Celeste.Debug.Menus;
+using Celeste.LiveOps.Persistence;
+using Celeste.Persistence;
 using Celeste.Rewards.Catalogue;
 using System;
 using UnityEngine;
@@ -45,6 +47,11 @@ namespace Celeste.LiveOps.Debug
                     {
                         liveOp.Finish();
                     }
+                }
+
+                if (GUILayout.Button("Delete Save File"))
+                {
+                    PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
                 }
             }
         }
