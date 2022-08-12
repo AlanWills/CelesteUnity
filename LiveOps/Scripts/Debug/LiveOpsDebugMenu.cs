@@ -20,6 +20,11 @@ namespace Celeste.LiveOps.Debug
 
         protected override void OnDrawMenu()
         {
+            if (GUILayout.Button("Delete Save File"))
+            {
+                PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
+            }
+
             for (int i = 0, n = liveOpsRecord.NumLiveOps; i < n; i++)
             {
                 LiveOp liveOp = liveOpsRecord.GetLiveOp(i);
@@ -47,11 +52,6 @@ namespace Celeste.LiveOps.Debug
                     {
                         liveOp.Finish();
                     }
-                }
-
-                if (GUILayout.Button("Delete Save File"))
-                {
-                    PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
                 }
             }
         }

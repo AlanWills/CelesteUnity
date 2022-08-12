@@ -165,7 +165,7 @@ namespace Celeste.Log
 
             if (type == LogType.Exception && IsLogLevelEnabled(HudLogLevel.Exception))
             {
-                Log(logString, Instance.errorColour);
+                Log($"{logString}\n{stackTrace}", Instance.errorColour);
             }
             else if (type == LogType.Assert && IsLogLevelEnabled(HudLogLevel.Assert))
             {
