@@ -72,8 +72,8 @@ namespace PolyAndCode.UI
             //Set content height according to no of rows
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
+            SetTopAnchor(Content);
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
-            //SetTopAnchor(Content);
 
             if (onInitialized != null) onInitialized();
         }

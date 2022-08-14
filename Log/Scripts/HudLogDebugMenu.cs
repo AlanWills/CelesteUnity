@@ -1,5 +1,5 @@
 ﻿using Celeste.Debug.Menus;
-using Celeste.Objects.Types;
+using Celeste.Log.DataStructures;
 using Celeste.Tools;
 using System;
 using UnityEngine;
@@ -12,11 +12,13 @@ namespace Celeste.Log
     {
         #region Properties and Fields
         
-        [SerializeField] private StringList logMessages;
+        [SerializeField] private HudLogMessageList logMessages;
 
+        [NonSerialized] private int currentlyExpanded = NOT_EXPANDED;
         [NonSerialized] private int currentPage = 0;
 
         private const int ENTRIES_PER_PAGE = 20;
+        private const int NOT_EXPANDED = -1;
 
         #endregion
 
@@ -39,7 +41,23 @@ namespace Celeste.Log
                     currentPage,
                     ENTRIES_PER_PAGE,
                     logMessages.NumItems,
-                    (i) => Label(logMessages.GetItem(i)));
+                    (i) =>
+                    {
+                        var logMessage = logMessages.GetItem(i);
+
+                        if (Button(logMessage.message))
+                        {
+                            currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
+                        }
+
+                        EndHorizontal();
+                        BeginHorizontal();
+
+                        if (currentlyExpanded == i)
+                        {
+                            Label(logMessage.callstack);
+                        }
+                    });
             }
         }
 

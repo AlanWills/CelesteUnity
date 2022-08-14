@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: HudLogDebugMenu
   m_EditorClassIdentifier: 
   displayName: Hud Log
-  logMessages: {fileID: 11400000, guid: a31f4040f4b88a14b9730e92f850cf72, type: 2}
+  logMessages: {fileID: 11400000, guid: 1a02d3721e635fe478c0a4b4d09996c5, type: 2}

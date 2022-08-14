@@ -30,6 +30,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,7 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d6e9fcb306d4aa4bb6ef1c5fddbd61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logMessages: {fileID: 11400000, guid: a31f4040f4b88a14b9730e92f850cf72, type: 2}
+  defaultLogLevel: 31
+  logMessages: {fileID: 11400000, guid: 1a02d3721e635fe478c0a4b4d09996c5, type: 2}
   hudMessages: {fileID: 3570087743746332946}
   infoColour: {r: 0.27650985, g: 0.7924528, b: 0.25044498, a: 1}
   warningColour: {r: 1, g: 0.5372549, b: 0, a: 1}

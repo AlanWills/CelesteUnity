@@ -1,4 +1,5 @@
-﻿using Celeste.Memory;
+﻿using Celeste.Log.DataStructures;
+using Celeste.Memory;
 using Celeste.Objects;
 using Celeste.Objects.Types;
 using System;
@@ -42,7 +43,7 @@ namespace Celeste.Log
         }
 
         [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Assert | HudLogLevel.Exception | HudLogLevel.Error | HudLogLevel.Warning | HudLogLevel.Info;
-        [SerializeField] private StringList logMessages;
+        [SerializeField] private HudLogMessageList logMessages;
         [SerializeField] private GameObjectAllocator hudMessages;
         [SerializeField] private Color infoColour = Color.white;
         [SerializeField] private Color warningColour = Color.yellow;
@@ -118,6 +119,11 @@ namespace Celeste.Log
 
         private void Log(string message, Color colour)
         {
+            Instance.Log(message, StackTraceUtility.ExtractStackTrace(), colour);
+        }
+
+        private void Log(string message, string callstack, Color colour)
+        {
             if (hudMessages.CanAllocate(1))
             {
                 GameObject messageGameObject = hudMessages.Allocate();
@@ -132,7 +138,7 @@ namespace Celeste.Log
 
             if (logMessages != null)
             {
-                logMessages.AddItem(message);
+                logMessages.AddItem(new HudLogMessage() { message = message, callstack = callstack });
             }
         }
 
@@ -165,11 +171,11 @@ namespace Celeste.Log
 
             if (type == LogType.Exception && IsLogLevelEnabled(HudLogLevel.Exception))
             {
-                Log($"{logString}\n{stackTrace}", Instance.errorColour);
+                Log($"{logString}", stackTrace, Instance.errorColour);
             }
             else if (type == LogType.Assert && IsLogLevelEnabled(HudLogLevel.Assert))
             {
-                Log(logString, Instance.errorColour);
+                Log(logString, stackTrace, Instance.errorColour);
             }
         }
 
