@@ -1,6 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
-using Celeste.UI.Nodes;
+using Celeste.UI;
 using System.Collections.Generic;
 using UnityEngine;
 

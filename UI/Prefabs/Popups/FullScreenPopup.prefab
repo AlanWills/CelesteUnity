@@ -189,7 +189,7 @@ MonoBehaviour:
   popupRoot: {fileID: 4631722049241556946}
   animator: {fileID: 0}
   showPopup: {fileID: 11400000, guid: ce9e19f1857ad5947b791325db372a28, type: 2}
-  onConfirmPressed: {fileID: 11400000, guid: faa48e110cfdd7a4b8f409eb6747f6cf, type: 2}
+  onConfirmPressed: {fileID: 0}
   onClosePressed: {fileID: 0}
 --- !u!114 &2441167336821529113
 MonoBehaviour:

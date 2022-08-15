@@ -2,7 +2,6 @@
 using Celeste.Parameters;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -16,10 +15,10 @@ namespace Celeste.Localisation.UI
         public LocalisationKey Key { get; private set; }
         public string Text { get; private set; }
 
-        [SerializeField] private bool dynamic = false;
-        [SerializeField, HideIf(nameof(dynamic))] private LanguageValue currentLanguage;
-        [SerializeField, HideIf(nameof(dynamic))] private LocalisationKey key;
+        [SerializeField] private LanguageValue currentLanguage;
         [SerializeField] private TextMeshProUGUI text;
+        [SerializeField] private bool dynamic = false;
+        [SerializeField, HideIf(nameof(dynamic))] private LocalisationKey key;
 
         #endregion
 
@@ -28,14 +27,9 @@ namespace Celeste.Localisation.UI
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if (!dynamic && currentLanguage == null)
+            if (currentLanguage == null)
             {
                 currentLanguage = Settings.LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
-                UnityEditor.EditorUtility.SetDirty(this);
-            }
-            else if (dynamic && currentLanguage != null)
-            {
-                currentLanguage = null;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
 #endif
@@ -78,6 +72,12 @@ namespace Celeste.Localisation.UI
             Text = language != null ? language.Localise(key) : key.Fallback;
 
             text.text = Text;
+        }
+
+        public void Localise(LocalisationKey key)
+        {
+            UnityEngine.Debug.Assert(currentLanguage != null, $"No current language set on {nameof(LocalisedTextUI)} component on {name}.");
+            Localise(key, currentLanguage.Value);
         }
 
         private void Localise()

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Celeste.UI.Nodes
+namespace Celeste.UI
 {
     public abstract class ShowPopupArgs : ScriptableObject, IPopupArgs
     {
