@@ -30,9 +30,10 @@ namespace Celeste.DataStructures
             return list[(int)index];
         }
 
-        public static int GetRandomIndex<T>(this IReadOnlyList<T> list)
+        public static T GetRandomEntry<T>(this IReadOnlyList<T> list)
         {
-            return Random.Range(0, list.Count);
+            int index = Random.Range(0, list.Count);
+            return Get(list, index);
         }
 
         public static Dictionary<string, T> ToNameLookup<T>(this IList<T> list) where T : Object
