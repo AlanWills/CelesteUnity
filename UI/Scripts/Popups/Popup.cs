@@ -12,8 +12,6 @@ namespace Celeste.UI.Popups
 
         private static int CLOSED_ANIMATION_NAME = Animator.StringToHash("Closed");
 
-        public GameObject PopupRoot => popupRoot;
-
         [SerializeField] private PopupRecord popupRecord;
         [SerializeField] private GameObject popupRoot;
         [SerializeField] private Animator animator;

@@ -47,7 +47,7 @@ namespace Celeste.UI.Popups
         {
             if (currentPopup.IsValid)
             {
-                currentPopup.popup.PopupRoot.SetActive(false);
+                currentPopup.popup.Hide();
                 popupStack.Push(currentPopup);
             }
 
