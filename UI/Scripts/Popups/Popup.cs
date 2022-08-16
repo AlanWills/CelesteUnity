@@ -1,10 +1,9 @@
 ﻿using Celeste.Events;
 using System.Collections;
 using UnityEngine;
-
 using Event = Celeste.Events.Event;
 
-namespace Celeste.UI
+namespace Celeste.UI.Popups
 {
     [AddComponentMenu("Celeste/UI/Popup")]
     public class Popup : MonoBehaviour
@@ -13,8 +12,14 @@ namespace Celeste.UI
 
         private static int CLOSED_ANIMATION_NAME = Animator.StringToHash("Closed");
 
+        public GameObject PopupRoot => popupRoot;
+
+        [SerializeField] private PopupRecord popupRecord;
         [SerializeField] private GameObject popupRoot;
         [SerializeField] private Animator animator;
+
+        [Header("Popup Settings")]
+        [SerializeField] private bool hideOnConfirm = true;
 
         [Header("Required Events")]
         [SerializeField] private ShowPopupEvent showPopup;
@@ -49,6 +54,17 @@ namespace Celeste.UI
 
         public void Show(IPopupArgs args)
         {
+            // Don't add to record with this call
+            ShowInternal(args, false);
+        }
+
+        private void ShowInternal(IPopupArgs args, bool notifyRecord)
+        {
+            if (notifyRecord)
+            {
+                popupRecord.OnPopupShown(this, args);
+            }
+
             popupRoot.SetActive(true);
             
             if (popupController != null)
@@ -59,16 +75,21 @@ namespace Celeste.UI
 
         public void Hide()
         {
+            HideInternal(false);
+        }
+
+        private void HideInternal(bool notifyRecord)
+        {
+            StartCoroutine(HideCoroutine(notifyRecord));
+        }
+
+        private IEnumerator HideCoroutine(bool notifyRecord)
+        {
             if (animator != null)
             {
                 animator.SetTrigger(CLOSED_ANIMATION_NAME);
             }
 
-            StartCoroutine(HideCoroutine());
-        }
-
-        private IEnumerator HideCoroutine()
-        {
             // The checking of the animation name is just to avoid this continuing on the first frame we transition from idle to closing
             while (animator != null && (animator.GetBool(CLOSED_ANIMATION_NAME) || animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 1f))
             {
@@ -86,6 +107,11 @@ namespace Celeste.UI
             }
 
             popupRoot.SetActive(false);
+
+            if (notifyRecord)
+            {
+                popupRecord.OnPopupHidden(this);
+            }
         }
 
         #endregion
@@ -94,7 +120,7 @@ namespace Celeste.UI
 
         private void OnEventRaised(IPopupArgs args)
         {
-            Show(args);
+            ShowInternal(args, true);
         }
 
         public void OnConfirmButtonPressed()
@@ -109,7 +135,10 @@ namespace Celeste.UI
                 onConfirmPressed.Invoke();
             }
 
-            Hide();
+            if (hideOnConfirm)
+            {
+                HideInternal(true);
+            }
         }
 
         public void OnCloseButtonPressed()
@@ -124,7 +153,7 @@ namespace Celeste.UI
                 onClosePressed.Invoke();
             }
 
-            Hide();
+            HideInternal(true);
         }
 
         #endregion

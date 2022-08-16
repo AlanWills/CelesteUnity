@@ -1,17 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7868513241221195765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198866441172855296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aef109fd2f0d5ad44b9f729ef3f1515c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4631722048366472805
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049331485432}
   m_RootOrder: 0
@@ -173,6 +162,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5616675362812257425}
   m_Father: {fileID: 0}
@@ -195,10 +185,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46c16249abe615f4f8abba41a5423531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popupRecord: {fileID: 11400000, guid: 35df2653bb4bc9640b6b240cf7db8e8f, type: 2}
   popupRoot: {fileID: 3198866441172855296}
   animator: {fileID: 0}
   showPopup: {fileID: 0}
-  onPopupHide: {fileID: 0}
+  onHidePopup: {fileID: 0}
+  onConfirmPressed: {fileID: 0}
+  onClosePressed: {fileID: 0}
 --- !u!1 &4631722049241556946
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,6 +220,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4631722049331485432}
   - {fileID: 4631722049443598181}
@@ -306,6 +300,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4631722048366472810}
   m_Father: {fileID: 4631722049241556947}
@@ -383,6 +378,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049241556947}
   m_RootOrder: 1
@@ -512,6 +508,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631722049241556947}
   m_RootOrder: 3
@@ -765,6 +762,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5431549301078976151, guid: c639adf61fa5116458bdf1c008432118, type: 3}
   m_PrefabInstance: {fileID: 7423081569500515479}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7868513241221195765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198866441172855296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aef109fd2f0d5ad44b9f729ef3f1515c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5616675362812257425 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3095772983383238662, guid: c639adf61fa5116458bdf1c008432118, type: 3}
