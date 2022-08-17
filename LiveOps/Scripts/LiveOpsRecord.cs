@@ -51,14 +51,14 @@ namespace Celeste.LiveOps
             long liveOpSubType = liveOpDTO.subType;
             long liveOpStartTimestamp = startTimestamp;
             LiveOpState liveOpState = liveOpDTO.state;
-            
+
             if (liveOpState == LiveOpState.Unknown)
             {
                 UnityEngine.Debug.LogAssertion($"Unknown liveop state found.  This is a serious error, so the liveop will probably not be scheduled...");
                 yield break;
             }
             else if (liveOps.Exists(x =>
-                x.Type == liveOpType && 
+                x.Type == liveOpType &&
                 x.SubType == liveOpSubType))
             {
                 UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
@@ -84,13 +84,16 @@ namespace Celeste.LiveOps
 
             LiveOpComponents liveOpComponents = new LiveOpComponents();
 
-            foreach (ComponentDTO componentDTO in liveOpDTO.components)
+            if (liveOpDTO.components != null && liveOpDTO.components.Count > 0)
             {
-                ComponentHandle componentHandle = liveOpsComponentCatalogue.CreateComponent(componentDTO.typeName, componentDTO.data);
-                
-                if (componentHandle.IsValid)
+                foreach (ComponentDTO componentDTO in liveOpDTO.components)
                 {
-                    liveOpComponents.AddComponent(componentHandle);
+                    ComponentHandle componentHandle = liveOpsComponentCatalogue.CreateComponent(componentDTO.typeName, componentDTO.data);
+
+                    if (componentHandle.IsValid)
+                    {
+                        liveOpComponents.AddComponent(componentHandle);
+                    }
                 }
             }
 
