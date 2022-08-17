@@ -60,7 +60,14 @@ namespace Celeste.LiveOps.Persistence
             // Add all our live ops from the save data
             foreach (LiveOpDTO liveOpDTO in liveOpsDTO.liveOps)
             {
-                yield return liveOpsRecord.AddLiveOp(liveOpDTO);
+                if (liveOpDTO.IsValid)
+                {
+                    yield return liveOpsRecord.AddLiveOp(liveOpDTO);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning($"Skipping invalid live op dto from save.");
+                }
             }
 
             yield return AddLiveOpsFromSchedule();
@@ -71,7 +78,14 @@ namespace Celeste.LiveOps.Persistence
             // Add any missing liveops from our schedule too, but make sure they're starting now if they will be added
             foreach (LiveOpDTO liveOpDTO in liveOpsSchedule.Items)
             {
-                yield return liveOpsRecord.AddLiveOp(liveOpDTO, GameTime.Now);
+                if (liveOpDTO.IsValid)
+                {
+                    yield return liveOpsRecord.AddLiveOp(liveOpDTO, GameTime.Now);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning($"Skipping invalid live op dto from schedule.");
+                }
             }
         }
     }

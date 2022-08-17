@@ -84,16 +84,14 @@ namespace Celeste.LiveOps
 
             LiveOpComponents liveOpComponents = new LiveOpComponents();
 
-            if (liveOpDTO.components != null && liveOpDTO.components.Count > 0)
+            UnityEngine.Debug.Assert(liveOpDTO.IsValid, $"Trying to add an invalid live to the live op record.");
+            foreach (ComponentDTO componentDTO in liveOpDTO.components)
             {
-                foreach (ComponentDTO componentDTO in liveOpDTO.components)
-                {
-                    ComponentHandle componentHandle = liveOpsComponentCatalogue.CreateComponent(componentDTO.typeName, componentDTO.data);
+                ComponentHandle componentHandle = liveOpsComponentCatalogue.CreateComponent(componentDTO.typeName, componentDTO.data);
 
-                    if (componentHandle.IsValid)
-                    {
-                        liveOpComponents.AddComponent(componentHandle);
-                    }
+                if (componentHandle.IsValid)
+                {
+                    liveOpComponents.AddComponent(componentHandle);
                 }
             }
 

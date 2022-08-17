@@ -9,6 +9,16 @@ namespace Celeste.LiveOps.Persistence
     [Serializable]
     public class LiveOpDTO
     {
+        #region Properties and Fields
+
+        public bool IsValid
+        {
+            get
+            {
+                return components != null && components.Count > 0;
+            }
+        }
+
         public long type;
         public long subType;
         [Timestamp] public long startTimestamp;
@@ -16,6 +26,8 @@ namespace Celeste.LiveOps.Persistence
         public long repeatsAfter;
         [ReadOnly] public LiveOpState state;
         public List<ComponentDTO> components;
+
+        #endregion
 
         public LiveOpDTO(LiveOp liveOp)
         {
