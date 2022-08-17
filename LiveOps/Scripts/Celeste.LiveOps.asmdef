@@ -16,9 +16,11 @@
         "Celeste.Parameters",
         "Celeste.Rewards",
         "Celeste.Features",
+        "Celeste.Log",
         "Unity.Addressables",
         "Unity.ResourceManager",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "NativeShare.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

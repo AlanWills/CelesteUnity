@@ -1,9 +1,11 @@
 ﻿using Celeste.Core;
 using Celeste.Debug.Menus;
 using Celeste.LiveOps.Persistence;
+using Celeste.Log;
 using Celeste.Persistence;
 using Celeste.Rewards.Catalogue;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Celeste.LiveOps.Debug
@@ -20,9 +22,22 @@ namespace Celeste.LiveOps.Debug
 
         protected override void OnDrawMenu()
         {
-            if (GUILayout.Button("Delete Save File"))
+            using (var horizontal = new GUILayout.HorizontalScope())
             {
-                PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
+                if (GUILayout.Button("Delete Save"))
+                {
+                    PersistenceUtility.DeletePersistentDataFile(LiveOpsManager.FILE_NAME);
+                }
+
+                if (GUILayout.Button($"Share Save"))
+                {
+                    string liveOpPath = Path.Combine(Application.persistentDataPath, LiveOpsManager.FILE_NAME);
+                    new NativeShare()
+                        .AddFile(Path.Combine(Application.persistentDataPath, liveOpPath))
+                        .SetSubject($"Share Live Ops Save")
+                        .SetCallback((result, shareTarget) => HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}"))
+                        .Share();
+                }
             }
 
             for (int i = 0, n = liveOpsRecord.NumLiveOps; i < n; i++)
