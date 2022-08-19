@@ -48,21 +48,9 @@ namespace Celeste.Web
 
                 for (int i = namedColumnsEnd + 2, n = csv.Length; i < n;)
                 {
-                    if (csv[i] == '\r')
+                    if (csv[i] == '\n')
                     {
-                        // End column is in the format '\r\n' so we add an extra increment to move past \n
                         currentColumn = 0;
-                        ++googleSheet.NumRows;
-                        i += 2;
-                    }
-                    else if (csv[i] == ',')
-                    {
-                        ++currentColumn;
-                        ++i;
-                    }
-                    else if (csv[i] == '\n')
-                    {
-                        ++i;
                     }
                     else
                     {
@@ -71,9 +59,20 @@ namespace Celeste.Web
                         string value = nextDelimiter >= 0 ? csv.Substring(i, nextDelimiter - i) : csv.Substring(i);
 
                         googleSheet.GetColumn(currentColumn).Values.Add(value);
-                        i = nextDelimiter >= 0 ? nextDelimiter : n; 
+                        i = nextDelimiter >= 0 ? nextDelimiter : n;
+                        ++currentColumn;
                     }
+
+                    ++i;
                 }
+            }
+
+            int numRows = googleSheet.GetColumn(0).Values.Count;
+            googleSheet.NumRows = numRows;
+
+            for (int i = 1; i < googleSheet.NumColumns; ++i)
+            {
+                Debug.Assert(googleSheet.GetColumn(i).Values.Count == numRows, $"Inconsistent column values - looks like there's a bug in parsing.");
             }
 
             return googleSheet;
