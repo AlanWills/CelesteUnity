@@ -45,6 +45,8 @@ namespace Celeste.LiveOps.Debug
                 LiveOp liveOp = liveOpsRecord.GetLiveOp(i);
 
                 GUILayout.Label($"Type: {liveOp.Type}");
+                GUILayout.Label($"SubType: {liveOp.SubType}");
+                GUILayout.Label($"State: {liveOp.State}");
 
                 DateTimeOffset startTime = GameTime.ToDateTimeOffset(liveOp.StartTimestamp);
                 GUILayout.Label($"UTC Start Time: {startTime}");
@@ -52,7 +54,7 @@ namespace Celeste.LiveOps.Debug
 
                 DateTimeOffset endTime = GameTime.ToDateTimeOffset(liveOp.EndTimestamp);
                 GUILayout.Label($"UTC End Time: {endTime}");
-                GUILayout.Label($"Locals End Time: {endTime.ToLocalTime()}");
+                GUILayout.Label($"Local End Time: {endTime.ToLocalTime()}");
 
                 using (var horizontal = new GUILayout.HorizontalScope())
                 {

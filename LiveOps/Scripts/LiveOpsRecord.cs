@@ -125,7 +125,7 @@ namespace Celeste.LiveOps
                 assets);
 
             yield return liveOp.Load();
-
+            
             if (liveOp.CanSchedule)
             {
                 liveOps.Add(liveOp);
