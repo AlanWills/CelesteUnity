@@ -1,5 +1,6 @@
 ﻿using Celeste.Assets;
 using Celeste.Core;
+using Celeste.Log;
 using Celeste.Persistence;
 using System.Collections;
 using UnityEngine;
@@ -67,7 +68,7 @@ namespace Celeste.LiveOps.Persistence
                 else
                 {
                     UnityEngine.Debug.Assert(liveOpDTO != null, $"Null liveop coming from save - probably a deserialization issue.");
-                    UnityEngine.Debug.LogWarning($"Skipping invalid live op dto from save.");
+                    HudLog.LogWarning($"Skipping invalid live op dto from save.");
                 }
             }
 
@@ -86,7 +87,7 @@ namespace Celeste.LiveOps.Persistence
                 else
                 {
                     UnityEngine.Debug.Assert(liveOpDTO != null, $"Null liveop coming from schedule - probably a bug in the pipeline or out of date data.");
-                    UnityEngine.Debug.LogWarning($"Skipping invalid live op dto from schedule.");
+                    HudLog.LogWarning($"Skipping invalid live op dto from schedule.");
                 }
             }
         }

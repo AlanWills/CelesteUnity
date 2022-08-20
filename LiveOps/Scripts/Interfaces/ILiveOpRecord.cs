@@ -3,11 +3,13 @@
     public interface ILiveOpRecord
     {
         bool IsEnabled { get; }
+        LiveOpState State { get; }
+        LiveOp LiveOp { get; }
 
         void Enable(LiveOp liveOp);
         void Disable();
 
-        void CheckIfFinished(LiveOp liveOp);
+        void CheckState();
 
         void Finish();
         void Complete();

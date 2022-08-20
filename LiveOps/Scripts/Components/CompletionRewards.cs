@@ -15,6 +15,7 @@ namespace Celeste.LiveOps.Components
         public class CompletionRewardsData : ComponentData
         {
             public int[] rewardGuids;
+            public bool completionAwardsRewarded;
         }
 
         #endregion
@@ -48,12 +49,24 @@ namespace Celeste.LiveOps.Components
             return rewards;
         }
 
+        public bool HaveCompletionRewardsBeenAwarded(Instance instance)
+        {
+            CompletionRewardsData rewardsData = instance.data as CompletionRewardsData;
+            return rewardsData.completionAwardsRewarded;
+        }
+
         public void AwardCompletionRewards(Instance instance, RewardCatalogue rewardCatalogue)
         {
+            UnityEngine.Debug.Assert(!HaveCompletionRewardsBeenAwarded(instance), $"Completion rewards have already been awarded.");
+
             foreach (Reward reward in GetCompletionRewards(instance, rewardCatalogue))
             {
                 reward.AwardReward();
             }
+        
+            CompletionRewardsData rewardsData = instance.data as CompletionRewardsData;
+            rewardsData.completionAwardsRewarded = true;
+            instance.events.ComponentDataChanged.Invoke();
         }
     }
 }

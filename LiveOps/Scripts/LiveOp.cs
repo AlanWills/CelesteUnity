@@ -132,14 +132,9 @@ namespace Celeste.LiveOps
             State = LiveOpState.Running;
         }
 
-        public void Complete(RewardCatalogue rewardCatalogue)
+        public void Complete()
         {
             State = LiveOpState.Completed;
-
-            if (Components.TryFindComponent<ILiveOpCompletionRewards>(out var rewards))
-            {
-                rewards.iFace.AwardCompletionRewards(rewards.instance, rewardCatalogue);
-            }
         }
 
         public void Finish()

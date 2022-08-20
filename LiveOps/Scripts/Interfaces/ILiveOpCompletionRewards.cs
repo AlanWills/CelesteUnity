@@ -9,6 +9,7 @@ namespace Celeste.LiveOps
         IReadOnlyList<int> GetCompletionRewardGuids(Instance instance);
         IReadOnlyList<Reward> GetCompletionRewards(Instance instance, RewardCatalogue rewardCatalogue);
 
+        bool HaveCompletionRewardsBeenAwarded(Instance instance);
         void AwardCompletionRewards(Instance instance, RewardCatalogue rewardCatalogue);
     }
 }

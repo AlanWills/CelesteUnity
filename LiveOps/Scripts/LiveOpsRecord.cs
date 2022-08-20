@@ -216,7 +216,7 @@ namespace Celeste.LiveOps
                 if (liveOp.ProgressRatio >= 1f)
                 {
                     // We actually have completed it!
-                    liveOp.Complete(rewardCatalogue);
+                    liveOp.Complete();
                 }
                 else
                 {
@@ -267,7 +267,7 @@ namespace Celeste.LiveOps
             if (liveOp.State == LiveOpState.Running && liveOp.ProgressRatio >= 1)
             {
                 // Our live op is running, but we have now completed it
-                liveOp.Complete(rewardCatalogue);
+                liveOp.Complete();
             }
 
             Schedule(liveOp);

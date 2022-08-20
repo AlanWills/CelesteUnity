@@ -91,8 +91,7 @@ namespace Celeste.LiveOps.UI
 
         public void OnLiveOpStateChanged(LiveOp liveOp)
         {
-            if (liveOp.State == LiveOpState.Running ||
-                liveOp.State == LiveOpState.Completed)
+            if (liveOp.State == LiveOpState.Running)
             {
                 TrySpawnWidget(liveOp);
             }

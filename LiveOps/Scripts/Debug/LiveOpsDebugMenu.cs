@@ -16,7 +16,6 @@ namespace Celeste.LiveOps.Debug
         #region Properties and Fields
 
         [SerializeField] private LiveOpsRecord liveOpsRecord;
-        [SerializeField] private RewardCatalogue rewardCatalogue;
 
         #endregion
 
@@ -62,7 +61,7 @@ namespace Celeste.LiveOps.Debug
 
                     if (GUILayout.Button("Complete", GUILayout.ExpandWidth(false)))
                     {
-                        liveOp.Complete(rewardCatalogue);
+                        liveOp.Complete();
                     }
 
                     if (GUILayout.Button("Finish", GUILayout.ExpandWidth(false)))
