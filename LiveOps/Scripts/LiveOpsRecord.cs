@@ -246,8 +246,7 @@ namespace Celeste.LiveOps
 
         private void HandleScheduleOfFinishedLiveOp(LiveOp liveOp)
         {
-            // Nothing we need to do right now - in fact, we shouldn't even get here because finished live ops are removed on start
-            // and if they've become finished during game time, we shouldn't reschedule them
+            liveOps.Remove(liveOp);
         }
 
         #endregion
