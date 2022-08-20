@@ -36,14 +36,15 @@ namespace Celeste.UI.Popups
         private void Awake()
         {
             Debug.Assert(showPopup != null, $"No 'showPopup' event found on Popup {gameObject.name}.");
-            showPopup.AddListener(OnEventRaised);
+            showPopup.AddListener(OnShowPopup);
+
             popupController = GetComponent<IPopupController>();
             Debug.Assert(popupController != null, $"No popup controller found on popup {gameObject.name}.");
         }
 
         private void OnDestroy()
         {
-            showPopup.RemoveListener(OnEventRaised);
+            showPopup.RemoveListener(OnShowPopup);
         }
 
         #endregion
@@ -116,7 +117,7 @@ namespace Celeste.UI.Popups
 
         #region Callbacks
 
-        private void OnEventRaised(IPopupArgs args)
+        private void OnShowPopup(IPopupArgs args)
         {
             ShowInternal(args, true);
         }
