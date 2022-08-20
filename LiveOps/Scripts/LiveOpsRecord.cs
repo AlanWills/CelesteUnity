@@ -129,9 +129,8 @@ namespace Celeste.LiveOps
             if (liveOp.CanSchedule)
             {
                 liveOps.Add(liveOp);
-                liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
-                liveOp.ProgressChanged.AddListener(OnLiveOpProgressChanged);
 
+                SetUpLiveOpCallbacks(liveOp);
                 Schedule(liveOp);
 
                 liveOpAdded.Invoke(liveOp);
@@ -246,12 +245,27 @@ namespace Celeste.LiveOps
 
         private void HandleScheduleOfFinishedLiveOp(LiveOp liveOp)
         {
+            TearDownLiveOpCallbacks(liveOp);
             liveOps.Remove(liveOp);
         }
 
         #endregion
 
         #region Callbacks
+
+        private void SetUpLiveOpCallbacks(LiveOp liveOp)
+        {
+            liveOp.StateChanged.AddListener(OnLiveOpStateChanged);
+            liveOp.ProgressChanged.AddListener(OnLiveOpProgressChanged);
+            liveOp.DataChanged.AddListener(OnLiveOpDataChanged);
+        }
+
+        private void TearDownLiveOpCallbacks(LiveOp liveOp)
+        {
+            liveOp.StateChanged.RemoveListener(OnLiveOpStateChanged);
+            liveOp.ProgressChanged.RemoveListener(OnLiveOpProgressChanged);
+            liveOp.DataChanged.RemoveListener(OnLiveOpDataChanged);
+        }
 
         private void OnLiveOpStateChanged(LiveOp liveOp)
         {
@@ -270,6 +284,11 @@ namespace Celeste.LiveOps
             }
 
             Schedule(liveOp);
+            save.Invoke();
+        }
+
+        private void OnLiveOpDataChanged(LiveOp liveOp)
+        {
             save.Invoke();
         }
 

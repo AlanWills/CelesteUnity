@@ -2,12 +2,15 @@
 using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Celeste.LiveOps
 {
     public class LiveOpComponents
     {
         #region Properties and Fields
+
+        public UnityEvent ComponentDataChanged { get; } = new UnityEvent();
 
         public int NumComponents => components.Count;
 
@@ -18,6 +21,7 @@ namespace Celeste.LiveOps
         public void AddComponent(ComponentHandle component)
         {
             components.Add(component);
+            component.instance.events.ComponentDataChanged.AddListener(ComponentDataChanged.Invoke);
         }
 
         public ComponentHandle GetComponent(int index)
@@ -36,6 +40,7 @@ namespace Celeste.LiveOps
             if (0 <= componentIndex && componentIndex < NumComponents)
 #endif
             {
+                components[componentIndex].instance.events.ComponentDataChanged.RemoveListener(ComponentDataChanged.Invoke);
                 components.RemoveAt(componentIndex);
             }
         }

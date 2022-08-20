@@ -1,5 +1,4 @@
 ﻿using Celeste.Components;
-using Celeste.Rewards.Catalogue;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +23,7 @@ namespace Celeste.LiveOps
 
         public UnityEvent<LiveOp> StateChanged { get; } = new UnityEvent<LiveOp>();
         public UnityEvent<LiveOp> ProgressChanged { get; } = new UnityEvent<LiveOp>();
+        public UnityEvent<LiveOp> DataChanged { get; } = new UnityEvent<LiveOp>();
 
         public InterfaceHandle<ILiveOpTimer> Timer { get; }
         public InterfaceHandle<ILiveOpProgress> Progress { get; }
@@ -103,6 +103,7 @@ namespace Celeste.LiveOps
             Assets = assets;
 
             Progress.instance.events.ComponentDataChanged.AddListener(OnProgressComponentDataChanged);
+            Components.ComponentDataChanged.AddListener(OnDataChanged);
         }
 
         public IEnumerator Load()
@@ -191,6 +192,11 @@ namespace Celeste.LiveOps
         private void OnProgressComponentDataChanged()
         {
             ProgressChanged.Invoke(this);
+        }
+
+        private void OnDataChanged()
+        {
+            DataChanged.Invoke(this);
         }
 
         #endregion
