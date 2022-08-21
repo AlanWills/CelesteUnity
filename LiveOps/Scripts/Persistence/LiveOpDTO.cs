@@ -25,7 +25,7 @@ namespace Celeste.LiveOps.Persistence
         public bool isRecurring;
         public long repeatsAfter;
         [ReadOnly] public LiveOpState state;
-        public List<ComponentDTO> components;
+        public List<ComponentDTO> components = new List<ComponentDTO>();
 
         #endregion
 
@@ -37,8 +37,7 @@ namespace Celeste.LiveOps.Persistence
             isRecurring = liveOp.IsRecurring;
             repeatsAfter = -1;
             state = liveOp.State;
-
-            components = new List<ComponentDTO>(liveOp.NumComponents);
+            components.Capacity = liveOp.NumComponents;
 
             for (int i = 0, n = liveOp.NumComponents; i < n; i++)
             {
@@ -55,7 +54,7 @@ namespace Celeste.LiveOps.Persistence
             isRecurring = template.IsRecurring;
             repeatsAfter = template.RepeatsAfter;
             state = LiveOpState.ComingSoon;
-            components = new List<ComponentDTO>(template.NumComponents);
+            components.Capacity = template.NumComponents;
 
             for (int i = 0, n = template.NumComponents; i < n; i++)
             {
