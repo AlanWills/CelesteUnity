@@ -3,7 +3,7 @@
 namespace Celeste.Components.Persistence
 {
     [Serializable]
-    public struct ComponentDTO
+    public class ComponentDTO
     {
         public string typeName;
         public string data;
