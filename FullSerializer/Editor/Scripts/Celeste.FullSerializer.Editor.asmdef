@@ -1,14 +1,12 @@
 {
-    "name": "Celeste.Persistence",
-    "rootNamespace": "Celeste.Persistence",
+    "name": "Celeste.FullSerializer.Editor",
+    "rootNamespace": "FullSerializer",
     "references": [
-        "Celeste.Log",
-        "Celeste.Objects",
-        "Celeste.Tools",
-        "Celeste.OdinSerializer",
         "Celeste.FullSerializer"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

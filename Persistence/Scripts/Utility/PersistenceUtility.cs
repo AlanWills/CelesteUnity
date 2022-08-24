@@ -1,6 +1,7 @@
 using Celeste.Log;
 using Celeste.OdinSerializer;
 using Celeste.Tools;
+using FullSerializer;
 using System.IO;
 using UnityEngine;
 
@@ -8,6 +9,12 @@ namespace Celeste.Persistence
 {
     public static class PersistenceUtility
     {
+        #region Properties and Fields
+        
+        private static readonly fsSerializer serializer = new fsSerializer();
+
+        #endregion
+
         #region Save/Load Methods
 
         public static bool CanLoad(string persistentFilePath)
@@ -22,26 +29,52 @@ namespace Celeste.Persistence
                 return default;
             }
 
-            byte[] bytes = File.ReadAllBytes(filePath);
-            T persistenceDTO = SerializationUtility.DeserializeValue<T>(bytes, DataFormat.Binary);
+            string serializedState = File.ReadAllText(filePath);
 
-            return persistenceDTO;
+            // Step 1: parse the JSON data
+            fsResult parseResult = fsJsonParser.Parse(serializedState, out fsData data);
+            if (parseResult.Failed)
+            {
+                return default;
+            }
+
+            // Step 2: deserialize the data
+            T deserialized = default;
+            fsResult deserializeResult = serializer.TryDeserialize(data, ref deserialized);
+
+            if (deserializeResult.Failed)
+            {
+                return default;
+            }
+
+            return deserialized;
         }
 
         public static void Save<T>(string filePath, T persistenceDTO)
         {
             // Save binary file
             {
-                byte[] bytes = SerializationUtility.SerializeValue(persistenceDTO, DataFormat.Binary);
-                File.WriteAllBytes(filePath, bytes);
+                // Serialize the data
+                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+
+                if (result.Succeeded)
+                {
+                    string jsonData = fsJsonPrinter.CompressedJson(data);
+                    File.WriteAllText(filePath, jsonData);
+                }
             }
 
 #if UNITY_EDITOR
             // Save debug human readable file
             {
                 string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
-                byte[] json = SerializationUtility.SerializeValue(persistenceDTO, DataFormat.JSON);
-                File.WriteAllBytes(debugPersistentFilePath, json);
+                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+                
+                if (result.Succeeded)
+                {
+                    string jsonData = fsJsonPrinter.PrettyJson(data);
+                    File.WriteAllText(filePath, jsonData);
+                }
             }
 #endif
 
