@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c3bf102edeefd42846f83f0bb90bfd, type: 3}
   m_Name: ShouldFallbackLoadAssets
   m_EditorClassIdentifier: 
+  helpText: We add a fallback asset loader for the Unity Editor, when not going through
+    the startup flow.  This flag indicates whether that fallback flow show be run
+    or whether assets will have been correctly initialized by bootstrap.
   defaultValue: 1
-  onValueChanged: {fileID: 0}

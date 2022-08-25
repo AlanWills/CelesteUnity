@@ -68,9 +68,16 @@ namespace CelesteEditor.BuildSystem
 
             using (var horizontal = new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Build Player"))
+                if (GUILayout.Button("Build"))
                 {
                     platformSettings.BuildPlayer();
+                }
+
+                if (GUILayout.Button("Build And Run"))
+                {
+                    var buildPlayerOptions = platformSettings.GenerateBuildPlayerOptions();
+                    buildPlayerOptions.options |= BuildOptions.AutoRunPlayer;
+                    platformSettings.BuildPlayer(buildPlayerOptions);
                 }
 
                 if (GUILayout.Button("Increment Build Version"))

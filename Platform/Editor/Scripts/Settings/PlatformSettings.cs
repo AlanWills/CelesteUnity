@@ -238,7 +238,24 @@ namespace CelesteEditor.BuildSystem
 
         #region Building
 
+        public BuildPlayerOptions GenerateBuildPlayerOptions()
+        {
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            buildPlayerOptions.options = BuildOptions;
+            buildPlayerOptions.locationPathName = Path.Combine(buildDirectory, outputName);
+            buildPlayerOptions.scenes = EditorBuildSettings.scenes.Select(x => x.path).ToArray();
+            buildPlayerOptions.target = BuildTarget;
+            buildPlayerOptions.targetGroup = BuildTargetGroup;
+
+            return buildPlayerOptions;
+        }
+
         public void BuildPlayer()
+        {
+            BuildPlayer(GenerateBuildPlayerOptions());
+        }
+
+        public void BuildPlayer(BuildPlayerOptions buildPlayerOptions)
         {
             Switch();
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
@@ -248,13 +265,6 @@ namespace CelesteEditor.BuildSystem
 
             Debug.Log($"Build Directory: {buildDirectory}");
             Debug.Log($"Output Name: {outputName}");
-
-            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-            buildPlayerOptions.options = BuildOptions;
-            buildPlayerOptions.locationPathName = Path.Combine(buildDirectory, outputName);
-            buildPlayerOptions.scenes = EditorBuildSettings.scenes.Select(x => x.path).ToArray();
-            buildPlayerOptions.target = BuildTarget;
-            buildPlayerOptions.targetGroup = BuildTargetGroup;
 
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             bool success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
