@@ -20,7 +20,7 @@ namespace CelesteEditor.BuildSystem
             AllPlatformSettings.GetOrCreateSettings().AndroidDebug.UpdateAssetsAndExit();
         }
 
-        [MenuItem("Celeste/Assets/Debug/Update Android Assets", validate = true)]
+        [MenuItem("Celeste/Assets/Release/Update Android Assets", validate = true)]
         public static bool ValidateUpdateReleaseAndroidAssets()
         {
             return AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle != null;

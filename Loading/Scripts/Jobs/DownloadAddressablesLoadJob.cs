@@ -24,7 +24,7 @@ namespace Celeste.Loading
             {
                 Debug.Assert(!string.IsNullOrEmpty(addressablesLabel), $"No addressables key set for download job.", this);
                 AsyncOperationHandle<long> getSizeOperation = Addressables.GetDownloadSizeAsync(addressablesLabel);
-
+                
                 using (var operationWrapper = new AddressableOperationHandleWrapper<long>(getSizeOperation))
                 {
                     if (getSizeOperation.IsValid())

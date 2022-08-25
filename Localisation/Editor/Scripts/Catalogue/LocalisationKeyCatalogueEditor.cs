@@ -31,6 +31,24 @@ namespace CelesteEditor.Localisation.Catalogue
                 AssetDatabase.SaveAssets();
             }
 
+            if (GUILayout.Button("Remove Null"))
+            {
+                Dictionary<string, LocalisationKey> newLookup = new Dictionary<string, LocalisationKey>();
+
+                foreach (var localisationKey in localisationKeyCatalogue.Items)
+                {
+                    if (localisationKey.Value != null)
+                    {
+                        newLookup.Add(localisationKey.Key, localisationKey.Value);
+                    }
+                }
+
+                localisationKeyCatalogue.SetItems(newLookup);
+
+                EditorUtility.SetDirty(target);
+                AssetDatabase.SaveAssets();
+            }
+
             base.OnInspectorGUI();
         }
     }
