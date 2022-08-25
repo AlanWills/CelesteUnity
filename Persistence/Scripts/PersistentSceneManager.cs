@@ -35,6 +35,7 @@ namespace Celeste.Persistence
 
         #region Unity Methods
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (snapshotRecord == null)
@@ -42,6 +43,7 @@ namespace Celeste.Persistence
                 snapshotRecord = PersistenceEditorSettings.GetOrCreateSettings().snapshotRecord;
             }
         }
+#endif
 
         protected virtual void Awake()
         {

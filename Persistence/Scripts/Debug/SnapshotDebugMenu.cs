@@ -42,12 +42,14 @@ namespace Celeste.Persistence.Debug
                     // Create data snapshot - if in editor create it in project, otherwise create it in persistent data as json
                     DataSnapshot dataSnapshot = snapshotRecord.CreateDataSnapshot();
 
+#if UNITY_EDITOR
                     if (Application.isEditor)
                     {
                         string snapshotPath = Path.Combine(snapshotCreationFolder, $"{dataSnapshot.name}.asset");
                         UnityEditor.AssetDatabase.CreateAsset(dataSnapshot, snapshotPath);
                     }
                     else
+#endif
                     {
                         string snapshotAsJson = PersistenceUtility.Serialize(dataSnapshot);
                         string path = Path.Combine(Application.persistentDataPath, $"{dataSnapshot.name}.datasnapshot");
