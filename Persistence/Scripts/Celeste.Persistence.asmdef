@@ -6,7 +6,10 @@
         "Celeste.Objects",
         "Celeste.Tools",
         "Celeste.OdinSerializer",
-        "Celeste.FullSerializer"
+        "Celeste.FullSerializer",
+        "Celeste.Debug",
+        "Celeste.DataStructures",
+        "NativeShare.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

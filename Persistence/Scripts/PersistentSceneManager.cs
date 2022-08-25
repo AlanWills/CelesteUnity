@@ -1,4 +1,6 @@
 ﻿using Celeste.Log;
+using Celeste.Persistence.Settings;
+using Celeste.Persistence.Snapshots;
 using Celeste.Persistence.Utility;
 using System.Collections;
 using System.IO;
@@ -6,11 +8,15 @@ using UnityEngine;
 
 namespace Celeste.Persistence
 {
-    public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour
+    public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour, IInterestedInSnapshots, ISupportsDataSnapshots, ISupportsFileSnapshots
         where TManager : PersistentSceneManager<TManager, TDTO>
         where TDTO : class  // Need for Odin to pick up AOT formatter for serialization
     {
         #region Properties and Fields
+
+        string IInterestedInSnapshots.UnpackPath => FileName;
+        object ISupportsDataSnapshots.Data => Serialize();
+        string ISupportsFileSnapshots.SourceFile => FilePath;
 
         protected string FilePath
         {
@@ -19,6 +25,7 @@ namespace Celeste.Persistence
 
         protected abstract string FileName { get; }
 
+        [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private bool loadOnAwake = true;
 
         private bool saveRequested = false;
@@ -28,12 +35,27 @@ namespace Celeste.Persistence
 
         #region Unity Methods
 
+        private void OnValidate()
+        {
+            if (snapshotRecord == null)
+            {
+                snapshotRecord = PersistenceEditorSettings.GetOrCreateSettings().snapshotRecord;
+            }
+        }
+
         protected virtual void Awake()
         {
+            snapshotRecord.RegisterInterestInSnapshots(this);
+
             if (loadOnAwake)
             {
                 Load();
             }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            snapshotRecord.DeregisterInterestInSnapshots(this);
         }
 
         #endregion
@@ -57,13 +79,13 @@ namespace Celeste.Persistence
                     }
                     else
                     {
-                        Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                        UnityEngine.Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
                         SetDefaultValues();
                     }
                 }
                 else
                 {
-                    Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
+                    UnityEngine.Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
                     SetDefaultValues();
                 }
             }

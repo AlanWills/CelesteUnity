@@ -2,7 +2,9 @@
     "name": "Celeste.Persistence.Editor",
     "rootNamespace": "CelesteEditor.Persistence",
     "references": [
-        "Celeste.Persistence"
+        "Celeste.Persistence",
+        "Celeste.Tools",
+        "Celeste.OdinSerializer"
     ],
     "includePlatforms": [
         "Editor"

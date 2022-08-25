@@ -25,8 +25,10 @@ namespace Celeste.Features.Persistence
             base.Awake();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             featureRecord.Shutdown(featureCatalogue);
         }
 

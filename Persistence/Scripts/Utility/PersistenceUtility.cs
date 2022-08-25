@@ -2,6 +2,7 @@ using Celeste.Log;
 using Celeste.OdinSerializer;
 using Celeste.Tools;
 using FullSerializer;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -30,24 +31,14 @@ namespace Celeste.Persistence
             }
 
             string serializedState = File.ReadAllText(filePath);
+            var deserializeResult = Deserialize<T>(serializedState);
 
-            // Step 1: parse the JSON data
-            fsResult parseResult = fsJsonParser.Parse(serializedState, out fsData data);
-            if (parseResult.Failed)
+            if (deserializeResult.Item1.Failed)
             {
                 return default;
             }
 
-            // Step 2: deserialize the data
-            T deserialized = default;
-            fsResult deserializeResult = serializer.TryDeserialize(data, ref deserialized);
-
-            if (deserializeResult.Failed)
-            {
-                return default;
-            }
-
-            return deserialized;
+            return deserializeResult.Item2;
         }
 
         public static void Save<T>(string filePath, T persistenceDTO)
@@ -83,6 +74,28 @@ namespace Celeste.Persistence
         }
 
         #endregion
+
+        public static string Serialize(object obj)
+        {
+            // Serialize the data
+            fsResult result = serializer.TrySerialize(obj.GetType(), obj, out fsData data);
+            return result.Succeeded ? fsJsonPrinter.CompressedJson(data) : string.Empty;
+        }
+
+        public static ValueTuple<fsResult, T> Deserialize<T>(string json)
+        {
+            fsResult parseResult = fsJsonParser.Parse(json, out fsData data);
+            
+            if (!parseResult.Succeeded)
+            {
+                return new ValueTuple<fsResult, T>(parseResult, default);
+            }
+
+            T obj = default;
+            fsResult deserializeResult = serializer.TryDeserialize(data, ref obj);
+
+            return new ValueTuple<fsResult, T>(deserializeResult, obj);
+        }
 
         public static void DeletePersistentDataFile(string fileNameAndExtension)
         {
