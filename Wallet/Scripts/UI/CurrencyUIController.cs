@@ -29,7 +29,10 @@ namespace Celeste.Wallet.UI
 
         private void Awake()
         {
-            currencyIcon.sprite = currency.Icon;
+            if (currency != null)
+            {
+                currencyIcon.sprite = currency.Icon;
+            }
         }
 
         private void OnEnable()

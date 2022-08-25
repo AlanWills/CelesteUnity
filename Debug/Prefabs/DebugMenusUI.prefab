@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 243910677141088662}
   - {fileID: 3480866751154039309}
@@ -54,6 +55,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guiSkin: {fileID: 11400000, guid: eec3a1103b8f0a64c80b822396322e3b, type: 2}
   inputBlocker: {fileID: 7130415474439956231}
+  screenWidthDivisor: 600
+  screenHeightDivisor: 600
 --- !u!114 &8675299248971474079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,6 +141,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3480866751154039309}
   m_RootOrder: 0
@@ -273,6 +277,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3697547168935792509}
   m_Father: {fileID: 42659240208492339}
@@ -280,8 +285,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -5, y: 5}
-  m_SizeDelta: {x: 24, y: 24}
+  m_AnchoredPosition: {x: -15, y: 15}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1328228463060766107
 CanvasRenderer:
@@ -430,13 +435,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c639adf61fa5116458bdf1c008432118, type: 3}
---- !u!1 &7130415474439956231 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5431549301078976151, guid: c639adf61fa5116458bdf1c008432118, type: 3}
-  m_PrefabInstance: {fileID: 2996281712224518544}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &243910677141088662 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3095772983383238662, guid: c639adf61fa5116458bdf1c008432118, type: 3}
+  m_PrefabInstance: {fileID: 2996281712224518544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7130415474439956231 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5431549301078976151, guid: c639adf61fa5116458bdf1c008432118, type: 3}
   m_PrefabInstance: {fileID: 2996281712224518544}
   m_PrefabAsset: {fileID: 0}

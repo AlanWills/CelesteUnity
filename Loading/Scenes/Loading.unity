@@ -280,6 +280,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 470799041084101822, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 470799041084101822, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
@@ -385,7 +389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 470799041297308360, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 470799041297308363, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_IsActive

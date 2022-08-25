@@ -29,6 +29,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6191592729197578152}
   m_RootOrder: 0
@@ -93,12 +94,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.85
+  m_fontSize: 22.75
   m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 28
+  m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -179,6 +180,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6191592728476165311}
   m_Father: {fileID: 0}
@@ -187,7 +189,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 40}
+  m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6191592729197578159
 CanvasRenderer:
@@ -259,7 +261,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 21300000, guid: 0d17d41168d094346958e72f5338c001, type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 113d5207b0624fe40a5a3d06694550c2, type: 3}
     m_SelectedSprite: {fileID: 21300000, guid: 7ddbcea6f22ca284d8d40f27c6f97ce8, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 7ddbcea6f22ca284d8d40f27c6f97ce8, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: d6fff048819e0a843b00ba1181bbc415, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
