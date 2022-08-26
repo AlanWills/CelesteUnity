@@ -16,6 +16,7 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
+using Newtonsoft.Json;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -286,6 +287,79 @@ namespace CelesteEditor.BuildSystem
 
         protected virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
 
+        #region TO REFACTOR
+
+        /// <summary>
+        ///Get RemoteBuild folder path
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAASRemoteBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName =
+                profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
+            return propName;
+        }
+
+        /// <summary>
+        ///Get LocalBuild folder path
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAASLocalBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName =
+                profileSettings.GetValueByName(settings.activeProfileId, "LocalBuildPath");
+            return profileSettings.EvaluateString(settings.activeProfileId, propName);
+        }
+
+        /// <summary>
+        ///Generate BundleCache file list
+        /// </summary>
+        /// <param name="result"></param>
+        static void BuildResource_CacheBundleList(AddressablesPlayerBuildResult result)
+        {
+            var buildRootDir = GetAASRemoteBuildDir();
+            var buildRootDirLen = buildRootDir.Length;
+            List<string> allBundles = new List<string>();
+
+            var filePathList = result.FileRegistry.GetFilePaths().Where((s => s.EndsWith(".bundle")));
+            foreach (var filePath in filePathList)
+            {
+                var bundlePath = filePath.Substring(buildRootDirLen + 1);
+                allBundles.Add(bundlePath);
+            }
+
+            var json = JsonConvert.SerializeObject(allBundles);
+            File.WriteAllText($"{buildRootDir}/AssetBundles.json", json);
+        }
+
+        /// <summary>
+        ///Copy the Bundle to AAS and package it with AAS
+        /// </summary>
+        static void BuildResource_CopyBundleDirToAAS()
+        {
+            var remoteBuildDir = GetAASRemoteBuildDir();
+            var aaDestDir = GetAASLocalBuildDir();
+
+            //Directory.Delete(aaDestDir, true);
+            Directory.CreateDirectory(aaDestDir);
+            //Copy bundle to aa folder
+            var allSrcFile = Directory.EnumerateFiles(remoteBuildDir, "*.*", SearchOption.AllDirectories);
+            foreach (var srcFile in allSrcFile)
+            {
+                var fileName = Path.GetFileName(srcFile);
+                var destFile = $"{aaDestDir}/{fileName}";
+                File.Copy(srcFile, destFile);
+            }
+
+            Debug.Log($"Bundle Copy complete:{remoteBuildDir}==>{aaDestDir}");
+        }
+
+        #endregion
+
         public void PrepareAssets()
         {
             foreach (AssetPreparationStep assetPreparationStep in assetPreparationSteps)
@@ -299,8 +373,15 @@ namespace CelesteEditor.BuildSystem
             PrepareAssets();
             Switch();
 
+            var buildRootDir = GetAASRemoteBuildDir();
+            //Delete existing folder
+            Directory.Delete(buildRootDir, true);
+
             Debug.Log("Beginning to build content");
-            AddressableAssetSettings.BuildPlayerContent();
+            AddressableAssetSettings.BuildPlayerContent(out var result);
+
+            BuildResource_CacheBundleList(result);
+            BuildResource_CopyBundleDirToAAS();
 
             WriteAssetsEnvironmentVariablesFile();
             Debug.Log("Finished building content");

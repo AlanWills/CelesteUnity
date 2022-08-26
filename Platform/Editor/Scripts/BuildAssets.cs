@@ -1,9 +1,101 @@
-﻿using UnityEditor;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Build;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static UnityEngine.Application;
 
 namespace CelesteEditor.BuildSystem
 {
+    public static class BuildEditor
+    {
+        [MenuItem("Tools/Build Resource #%&t")]
+        public static void BuildResource()
+        {
+            var buildRootDir = GetAASRemoteBuildDir();
+            //Delete existing folder
+            Directory.Delete(buildRootDir, true);
+            //Execute packaging logic
+            AddressableAssetSettings.BuildPlayerContent(out var result);
+            BuildResource_CacheBundleList(result);
+            BuildResource_CopyBundleDirToAAS();
+            Debug.Log($"build resource finish");
+        }
+
+        /// <summary>
+        ///Get RemoteBuild folder path
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAASRemoteBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName =
+                profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
+            return propName;
+        }
+
+        /// <summary>
+        ///Get LocalBuild folder path
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAASLocalBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName =
+                profileSettings.GetValueByName(settings.activeProfileId, "LocalBuildPath");
+            return profileSettings.EvaluateString(settings.activeProfileId, propName);
+        }
+
+        /// <summary>
+        ///Generate BundleCache file list
+        /// </summary>
+        /// <param name="result"></param>
+        static void BuildResource_CacheBundleList(AddressablesPlayerBuildResult result)
+        {
+            var buildRootDir = GetAASRemoteBuildDir();
+            var buildRootDirLen = buildRootDir.Length;
+            List<string> allBundles = new List<string>();
+
+            var filePathList = result.FileRegistry.GetFilePaths().Where((s => s.EndsWith(".bundle")));
+            foreach (var filePath in filePathList)
+            {
+                var bundlePath = filePath.Substring(buildRootDirLen + 1);
+                allBundles.Add(bundlePath);
+            }
+
+            var json = JsonConvert.SerializeObject(allBundles);
+            File.WriteAllText($"{buildRootDir}/AssetBundles.json", json);
+        }
+
+        /// <summary>
+        ///Copy the Bundle to AAS and package it with AAS
+        /// </summary>
+        static void BuildResource_CopyBundleDirToAAS()
+        {
+            var remoteBuildDir = GetAASRemoteBuildDir();
+            var aaDestDir = GetAASLocalBuildDir();
+
+            //Directory.Delete(aaDestDir, true);
+            Directory.CreateDirectory(aaDestDir);
+            //Copy bundle to aa folder
+            var allSrcFile = Directory.EnumerateFiles(remoteBuildDir, "*.*", SearchOption.AllDirectories);
+            foreach (var srcFile in allSrcFile)
+            {
+                var fileName = Path.GetFileName(srcFile);
+                var destFile = $"{aaDestDir}/{fileName}";
+                File.Copy(srcFile, destFile);
+            }
+
+            Debug.Log($"Bundle Copy complete:{remoteBuildDir}==>{aaDestDir}");
+        }
+    }
     public static class BuildAssets
     {
         #region Android
