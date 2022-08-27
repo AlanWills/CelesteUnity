@@ -48,9 +48,8 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-
             Debug.Log(Application.persistentDataPath);
-            //yield return Addressables.InitializeAsync();
+            yield return Addressables.InitializeAsync();
             //var checkHandle = Addressables.CheckForCatalogUpdates(false);
             //yield return checkHandle;
             //if (checkHandle.Status == AsyncOperationStatus.Succeeded && checkHandle.Result.Count > 0)
