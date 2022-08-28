@@ -28,5 +28,20 @@ namespace Celeste.Rewards.Catalogue
         {
             currency.Quantity += quantity;
         }
+
+        #region Factory Functions
+
+        public static Reward FromCurrency(Currency currency)
+        {
+            Reward reward = CreateInstance<Reward>();
+            reward.name = currency.name;
+            reward.guid = -1;
+            reward.currency = currency;
+            reward.quantity = currency.Quantity;
+
+            return reward;
+        }
+
+        #endregion
     }
 }

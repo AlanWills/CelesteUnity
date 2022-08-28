@@ -20,26 +20,26 @@ namespace CelesteEditor.BuildSystem
         }
 
         [MenuItem("Celeste/Builds/Release/Android Apk", validate = true)]
-        public static bool ValidateBuildReleaseAndroidApkPlayer()
+        public static bool ValidateBuildReleaseApkAndroidPlayer()
         {
             return AllPlatformSettings.GetOrCreateSettings().AndroidReleaseApk != null;
         }
 
         [MenuItem("Celeste/Builds/Release/Android Apk", validate = false)]
-        public static void BuildReleaseAndroidApkPlayer()
+        public static void BuildReleaseApkAndroidPlayer()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseApk.BuildPlayer();
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseApk.IncrementBuild();
         }
 
         [MenuItem("Celeste/Builds/Release/Android Bundle", validate = true)]
-        public static bool ValidateBuildReleaseAndroidPlayer()
+        public static bool ValidateBuildReleaseBundleAndroidPlayer()
         {
             return AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle != null;
         }
 
         [MenuItem("Celeste/Builds/Release/Android Bundle", validate = false)]
-        public static void BuildReleaseAndroidPlayer()
+        public static void BuildReleaseBundleAndroidPlayer()
         {
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle.BuildPlayer();
             AllPlatformSettings.GetOrCreateSettings().AndroidReleaseBundle.IncrementBuild();

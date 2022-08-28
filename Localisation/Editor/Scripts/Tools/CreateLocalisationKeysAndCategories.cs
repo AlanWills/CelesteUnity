@@ -21,6 +21,9 @@ namespace CelesteEditor.Localisation.Tools
         [SerializeField] private int categoryColumn = 1;
         [SerializeField] private int languagesColumnOffset = 2;
 
+        [Header("Validation")]
+        [SerializeField] private List<char> disallowedTrailingCharacters = new List<char>() { '?' };
+
         [Header("Data")]
         [SerializeField] private LanguageCatalogue languageCatalogue;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
@@ -53,6 +56,16 @@ namespace CelesteEditor.Localisation.Tools
                     {
                         Debug.LogAssertion($"Key {keyString} has no localised string set for language {language.name}.");
                         continue;
+                    }
+
+                    foreach (char disallowedTrailingCharacters in disallowedTrailingCharacters)
+                    {
+                        if (localisedString.EndsWith(disallowedTrailingCharacters))
+                        {
+                            Debug.LogError($"{keyString} {language.CountryCode} localisation ends with disallowed character {disallowedTrailingCharacters}.  Removing...");
+                            localisedString = localisedString.Remove(localisedString.Length - 1);
+                            break;
+                        }
                     }
 
                     // Need to create a new localisation key asset

@@ -60,7 +60,7 @@ namespace Celeste.Loading
             //Addressables.Release(checkHandle);
 
             //Get bundle list file from StreamingAsset
-            var bundleCacheFileURL = $"{Addressables.RuntimePath}/Android/AssetBundles.json";
+            var bundleCacheFileURL = $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/CachedAssetBundles.json";
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
         var url = bundleCacheFileURL;
 #else
@@ -78,7 +78,7 @@ namespace Celeste.Loading
             Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
         }
 
-        string Addressables_InternalIdTransformFunc(IResourceLocation location)
+        private string Addressables_InternalIdTransformFunc(IResourceLocation location)
         {
             if (location.Data is AssetBundleRequestOptions)
             {
@@ -87,7 +87,7 @@ namespace Celeste.Loading
                     var fileName = Path.GetFileName(location.PrimaryKey);
                     //Use LogError to test whether the StreamingAsset cache is used
                     HudLog.LogError($"StreamingAssetCache:{location.PrimaryKey}");
-                    return $"{Addressables.RuntimePath}/Android/{fileName}";
+                    return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";
                 }
                 else
                 {
@@ -96,6 +96,27 @@ namespace Celeste.Loading
             }
 
             return location.InternalId;
+        }
+
+        private static string ToBuildPlatformString(RuntimePlatform runtimePlatform)
+        {
+            switch (runtimePlatform)
+            {
+                case RuntimePlatform.IPhonePlayer:
+                    return "iOS";
+
+                case RuntimePlatform.Android:
+                    return "Android";
+
+                case RuntimePlatform.WindowsPlayer:
+                    return "Windows";
+
+                case RuntimePlatform.WebGLPlayer:
+                    return "WebGL";
+
+                default:
+                    return "Unknown";
+            }
         }
     }
 }
