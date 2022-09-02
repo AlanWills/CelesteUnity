@@ -17,7 +17,7 @@ namespace CelesteEditor.DataStructures
 
         #endregion
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             ItemsProperty = serializedObject.FindProperty("items");
             supportsGuids = typeof(IGuid).IsAssignableFrom(typeof(TIndexableItem));
@@ -88,6 +88,7 @@ namespace CelesteEditor.DataStructures
 
                 serializedObject.ApplyModifiedProperties();
 
+                OnNewItemsAdded();
             }
             
             TrySyncGuids();
@@ -121,6 +122,10 @@ namespace CelesteEditor.DataStructures
             }
 
             AssetDatabase.SaveAssets();
+        }
+
+        protected virtual void OnNewItemsAdded()
+        {
         }
     }
 }

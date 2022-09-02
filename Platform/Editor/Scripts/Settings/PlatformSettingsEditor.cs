@@ -47,14 +47,22 @@ namespace CelesteEditor.BuildSystem
 
             using (var horizontal = new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Prepare Assets"))
+                if (GUILayout.Button("Prepare Assets For Build"))
                 {
-                    platformSettings.PrepareAssets();
+                    platformSettings.PrepareAssetsForBuild();
                 }
 
                 if (GUILayout.Button("Build Assets"))
                 {
                     platformSettings.BuildAssets();
+                }
+            }
+
+            using (var horizontal = new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Prepare Assets For Update"))
+                {
+                    platformSettings.PrepareAssetsForUpdate();
                 }
 
                 if (GUILayout.Button("Update Assets"))

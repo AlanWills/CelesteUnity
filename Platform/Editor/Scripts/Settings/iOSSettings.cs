@@ -8,7 +8,7 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        [SerializeField]
+        [SerializeField, Header("iOS Settings")]
         private XcodeBuildConfig runInXCodeAs = XcodeBuildConfig.Debug;
         public XcodeBuildConfig RunInXCodeAs
         {

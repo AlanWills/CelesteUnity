@@ -10,7 +10,7 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        [SerializeField] private FullScreenMode fullScreenMode = FullScreenMode.FullScreenWindow;
+        [SerializeField, Header("Windows Settings")] private FullScreenMode fullScreenMode = FullScreenMode.FullScreenWindow;
         [SerializeField] private bool resizeableWindow = false;
 
         #endregion

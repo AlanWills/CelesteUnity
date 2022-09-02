@@ -106,7 +106,7 @@ namespace CelesteEditor.BuildSystem
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesS3UploadBucket;
-        public string AddressablesS3UploadBucket
+        public string AddressablesUploadURL
         {
             get { return Resolve(addressablesS3UploadBucket); }
         }
@@ -154,13 +154,27 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
         private ScriptingDefineSymbols scriptingDefineSymbols;
 
-        [SerializeField]
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
         private AddressableGroupNames addressableGroupsInBuild;
 
-        [SerializeField]
+        [Header("Build Assets")]
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Any custom scripting steps that should be run before building assets.  Useful for automated asset tooling.")]
-        private AssetPreparationSteps assetPreparationSteps;
+        private AssetPreparationSteps buildAssetsPreparationSteps;
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Any custom scripting steps that should be run after building assets.  Useful for automated asset tooling.")]
+        private AssetPostProcessSteps buildAssetsPostProcessSteps;
+
+        [Header("Update Assets")]
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Any custom scripting steps that should be run before updating assets.  Useful for automated asset tooling.")]
+        private AssetPreparationSteps updateAssetsPreparationSteps;
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Any custom scripting steps that should be run after updating assets.  Useful for automated asset tooling.")]
+        private AssetPostProcessSteps updateAssetsPostProcessSteps;
 
         #endregion
 
@@ -287,126 +301,60 @@ namespace CelesteEditor.BuildSystem
 
         protected virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
 
-        /// <summary>
-        ///Get RemoteBuild folder path
-        /// </summary>
-        /// <returns></returns>
-        private static string GetAddressablesRemoteBuildDir()
+        public void PrepareAssetsForBuild()
         {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
-            return propName;
-        }
-
-        private static void DeleteAddressablesRemoteBuildDir()
-        {
-            string buildDir = GetAddressablesRemoteBuildDir();
-
-            if (Directory.Exists(buildDir))
-            {
-                Directory.Delete(buildDir, true);
-            }
-        }
-
-        /// <summary>
-        ///Get LocalBuild folder path
-        /// </summary>
-        /// <returns></returns>
-        private static string GetAddressablesLocalBuildDir()
-        {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "LocalBuildPath");
-            return profileSettings.EvaluateString(settings.activeProfileId, propName);
-        }
-
-        private static void DeleteAddressablesLocalBuildDir()
-        {
-            string buildDir = GetAddressablesLocalBuildDir();
-
-            if (Directory.Exists(buildDir))
-            {
-                Directory.Delete(buildDir, true);
-            }
-        }
-
-        /// <summary>
-        ///Generate BundleCache file list
-        /// </summary>
-        /// <param name="result"></param>
-        private static void CacheRemoteAddressablesBundleList(AddressablesPlayerBuildResult result)
-        {
-            var buildRootDir = GetAddressablesRemoteBuildDir();
-            var buildRootDirLen = buildRootDir.Length;
-            List<string> allBundles = new List<string>();
-
-            var filePathList = result.FileRegistry.GetFilePaths().Where(s => s.EndsWith(".bundle"));
-            foreach (var filePath in filePathList)
-            {
-                var bundlePath = filePath.Substring(buildRootDirLen + 1);
-                allBundles.Add(bundlePath);
-            }
-
-            var json = JsonConvert.SerializeObject(allBundles);
-            File.WriteAllText($"{buildRootDir}/CachedAssetBundles.json", json);
-        }
-
-        /// <summary>
-        ///Copy the Bundle to AAS and package it with AAS
-        /// </summary>
-        private static void BundleRemoteAddressablesInBuild()
-        {
-            var remoteBuildDir = GetAddressablesRemoteBuildDir();
-            var aaDestDir = GetAddressablesLocalBuildDir();
-
-            DeleteAddressablesLocalBuildDir();
-            Directory.CreateDirectory(aaDestDir);
-            
-            //Copy bundle to aa folder
-            var allSrcFile = Directory.EnumerateFiles(remoteBuildDir, "*.*", SearchOption.AllDirectories);
-            foreach (var srcFile in allSrcFile)
-            {
-                var fileName = Path.GetFileName(srcFile);
-                var destFile = $"{aaDestDir}/{fileName}";
-                File.Copy(srcFile, destFile);
-            }
-        }
-
-        public void PrepareAssets()
-        {
-            foreach (AssetPreparationStep assetPreparationStep in assetPreparationSteps)
+            foreach (AssetPreparationStep assetPreparationStep in buildAssetsPreparationSteps)
             {
                 assetPreparationStep.Execute();
             }
         }
 
+        public void PrepareAssetsForUpdate()
+        {
+            foreach (AssetPreparationStep assetPreparationStep in updateAssetsPreparationSteps)
+            {
+                assetPreparationStep.Execute();
+            }
+        }
+
+        private void PostProcessAssetsForBuild(AddressablesPlayerBuildResult result)
+        {
+            foreach (AssetPostProcessStep assetPostProcessStep in buildAssetsPostProcessSteps)
+            {
+                assetPostProcessStep.Execute(result, this);
+            }
+        }
+
+        private void PostProcessAssetsForUpdate(AddressablesPlayerBuildResult result)
+        {
+            foreach (AssetPostProcessStep assetPostProcessStep in updateAssetsPostProcessSteps)
+            {
+                assetPostProcessStep.Execute(result, this);
+            }
+        }
+
         public void BuildAssets()
         {
-            PrepareAssets();
             Switch();
-            DeleteAddressablesRemoteBuildDir();
+            PrepareAssetsForBuild();
 
             Debug.Log("Beginning to build content");
             AddressableAssetSettings.BuildPlayerContent(out var result);
 
-            CacheRemoteAddressablesBundleList(result);
-            BundleRemoteAddressablesInBuild();
-            WriteAssetsEnvironmentVariablesFile();
-
+            PostProcessAssetsForBuild(result);
             Debug.Log("Finished building content");
         }
 
         public bool UpdateAssets()
         {
-            PrepareAssets();
             Switch();
+            PrepareAssetsForUpdate();
 
             Debug.Log("Beginning to update content");
 
             string contentStatePath = ContentUpdateScript.GetContentStateDataPath(false);
             Debug.Log($"Using content state path {contentStatePath}");
-            AddressableAssetBuildResult buildResult = ContentUpdateScript.BuildContentUpdate(AddressableAssetSettingsDefaultObject.Settings, contentStatePath);
+            AddressablesPlayerBuildResult buildResult = ContentUpdateScript.BuildContentUpdate(AddressableAssetSettingsDefaultObject.Settings, contentStatePath);
 
             if (buildResult != null)
             {
@@ -417,23 +365,9 @@ namespace CelesteEditor.BuildSystem
                 Debug.Log("Finished updating content with no build result");
             }
             
-            WriteAssetsEnvironmentVariablesFile();
+            PostProcessAssetsForUpdate(buildResult);
 
             return buildResult != null && string.IsNullOrEmpty(buildResult.Error);
-        }
-
-        private void WriteAssetsEnvironmentVariablesFile()
-        {
-            StringBuilder locationInfo = new StringBuilder();
-            locationInfo.Append($"ASSETS_SOURCE={AddressablesBuildDirectory}");
-            locationInfo.AppendLine();
-            locationInfo.Append($"ASSETS_DESTINATION={AddressablesS3UploadBucket}");
-
-            if (!Directory.Exists(AddressablesBuildDirectory))
-            {
-                Directory.CreateDirectory(AddressablesBuildDirectory);
-            }
-            File.WriteAllText(Path.Combine(new DirectoryInfo(AddressablesBuildDirectory).Parent.FullName, "ASSETS_ENV_VARS.txt"), locationInfo.ToString());
         }
 
         private static void SetAddressableAssetSettings()

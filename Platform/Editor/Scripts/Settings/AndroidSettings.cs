@@ -35,7 +35,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        [SerializeField]
+        [SerializeField, Header("Android Settings")]
         [Tooltip("Whether the build pipeline should create an apk or aab.  Set this to true if building for store release, as only an aab can be uploading to Google Play.")]
         private bool buildAppBundle;
         private bool BuildAppBundle
