@@ -30,7 +30,7 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.resizableWindow = resizeableWindow;
         }
 
-        protected override void InjectBuildEnvVars(StringBuilder stringBuilder)
+        public override void InjectBuildEnvVars(StringBuilder stringBuilder)
         {
             base.InjectBuildEnvVars(stringBuilder);
 

@@ -53,8 +53,17 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField]
-        [Tooltip("When integrating build upload to google drive through a pipeline like Jenkins, the variable 'BUILD_GDRIVE_UPLOAD_DIRECTORY' will be added to an environment variables file set to this value.")]
+        [Tooltip("A URL that can be passed to a build system to allow uploading of the output build.")]
         private string gDriveBuildUploadDirectory;
+        public string BuildUploadURL
+        {
+            get { return Resolve(gDriveBuildUploadDirectory); }
+            protected set
+            {
+                gDriveBuildUploadDirectory = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
 
         [SerializeField]
         [Tooltip("The name of the outputted build." + STRING_SUBSTITUTION_HELP)]
@@ -157,6 +166,10 @@ namespace CelesteEditor.BuildSystem
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
         private AddressableGroupNames addressableGroupsInBuild;
+
+        [SerializeField]
+        [Tooltip("Any custom scripting steps that should be run after creating a build.  Useful for automated asset tooling.")]
+        private BuildPostProcessSteps buildPostProcessSteps;
 
         [Header("Build Assets")]
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
@@ -280,17 +293,13 @@ namespace CelesteEditor.BuildSystem
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             bool success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
 
+            foreach (BuildPostProcessStep buildPostProcessStep in buildPostProcessSteps)
+            {
+                buildPostProcessStep.Execute(buildPlayerOptions, buildReport, this);
+            }
+
             if (success)
             {
-                StringBuilder buildInfo = new StringBuilder();
-                buildInfo.Append($"BUILD_LOCATION={buildPlayerOptions.locationPathName}");
-                buildInfo.AppendLine();
-                buildInfo.Append($"BUILD_VERSION={version}"); 
-                buildInfo.AppendLine();
-                buildInfo.Append($"BUILD_GDRIVE_UPLOAD_DIRECTORY={gDriveBuildUploadDirectory}");
-                InjectBuildEnvVars(buildInfo);
-                File.WriteAllText(Path.Combine(buildDirectory, "BUILD_ENV_VARS.txt"), buildInfo.ToString());
-
                 PersistenceMenuItemUtility.OpenExplorerAt(buildDirectory);
             }
             else if (Application.isBatchMode)
@@ -299,7 +308,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        protected virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
+        public virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
 
         public void PrepareAssetsForBuild()
         {
