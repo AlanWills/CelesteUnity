@@ -1,10 +1,8 @@
-using Celeste.Assets;
 using Celeste.DataStructures;
 using Celeste.Options.Internals;
 using Celeste.Parameters;
 using Celeste.Persistence;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using static Celeste.Options.Internals.OptionStructs;
 
@@ -52,8 +50,6 @@ namespace Celeste.Options
         private List<StringValue> stringOptions = new List<StringValue>();
 
         #endregion
-
-        private OptionsManager() { }
 
         #region Save/Load Methods
 
