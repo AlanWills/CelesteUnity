@@ -1,20 +1,9 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Celeste.Parameters
 {
-    public struct ValueChangedArgs<T>
-    {
-        public T oldValue;
-        public T newValue;
-
-        public ValueChangedArgs(T oldValue, T newValue)
-        {
-            this.oldValue = oldValue;
-            this.newValue = newValue;
-        }
-    }
-
     public class ParameterValue<T> : ScriptableObject, IValue<T>
     {
         #region Properties and Fields
