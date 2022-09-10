@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets;
+using Celeste.Events;
 using Celeste.Parameters;
 using Celeste.Sound.Settings;
 using Celeste.Tools;

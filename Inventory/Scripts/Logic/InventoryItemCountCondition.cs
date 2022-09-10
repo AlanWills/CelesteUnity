@@ -1,4 +1,5 @@
-﻿using Celeste.Logic;
+﻿using Celeste.Events;
+using Celeste.Logic;
 using Celeste.Parameters;
 using System.Collections;
 using UnityEngine;

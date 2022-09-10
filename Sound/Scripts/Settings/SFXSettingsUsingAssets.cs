@@ -35,12 +35,12 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void AddOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.RemoveValueChangedCallback(callback);
         }

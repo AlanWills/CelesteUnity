@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets;
+using Celeste.Events;
 using Celeste.Parameters;
 using System;
 using System.Collections;
@@ -18,8 +19,8 @@ namespace Celeste.Sound.Settings
         public abstract bool ShouldLoadAssets();
         public abstract IEnumerator LoadAssets();
 
-        public abstract void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
-        public abstract void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
+        public abstract void AddOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
+        public abstract void RemoveOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
 
         public abstract void AddOnPlaySFXCallback(Action<AudioClip> callback);
         public abstract void RemoveOnPlaySFXCallback(Action<AudioClip> callback);

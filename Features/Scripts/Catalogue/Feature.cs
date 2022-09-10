@@ -1,4 +1,5 @@
-﻿using Celeste.Logic;
+﻿using Celeste.Events;
+using Celeste.Logic;
 using Celeste.Objects;
 using Celeste.Parameters;
 using System;
@@ -40,9 +41,9 @@ namespace Celeste.Features
         {
             if (canEnable != null)
             {
-                canEnable.ValueChanged.AddListener(OnCanEnableValueChanged);
+                canEnable.AddOnIsMetConditionChanged(OnCanEnableValueChanged);
 
-                if (canEnable.Value)
+                if (canEnable.IsMet)
                 {
                     IsEnabled = true;
                 }
@@ -53,16 +54,16 @@ namespace Celeste.Features
         {
             if (canEnable != null)
             {
-                canEnable.ValueChanged.RemoveListener(OnCanEnableValueChanged);
+                canEnable.RemoveOnIsMetConditionChanged(OnCanEnableValueChanged);
             }
         }
 
-        public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public void AddOnEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             isEnabled.AddValueChangedCallback(callback);
         }
 
-        public void RemoveOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public void RemoveOnEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             isEnabled.RemoveValueChangedCallback(callback);
         }

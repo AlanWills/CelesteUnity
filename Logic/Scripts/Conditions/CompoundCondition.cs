@@ -1,4 +1,5 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Events;
+using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,7 +44,7 @@ namespace Celeste.Logic
         {
             for (int i = 0, n = conditions.Count; i < n; i++)
             {
-                conditions[i].ValueChanged.AddListener(OnConditionValueChanged);
+                conditions[i].AddOnIsMetConditionChanged(OnConditionValueChanged);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Celeste.Logic
         {
             for (int i = 0, n = conditions.Count; i < n; i++)
             {
-                conditions[i].ValueChanged.RemoveListener(OnConditionValueChanged);
+                conditions[i].RemoveOnIsMetConditionChanged(OnConditionValueChanged);
             }
         }
 
@@ -64,7 +65,7 @@ namespace Celeste.Logic
             for (int i = 0, n = conditions.Count; i < n; ++i)
             {
                 Condition condition = conditions[i];
-                bool conditionTrue = condition.Value;
+                bool conditionTrue = condition.IsMet;
 
                 if (!conditionTrue && logicalOperator == LogicalOperator.And)
                 {
@@ -72,7 +73,7 @@ namespace Celeste.Logic
                     return false;
                 }
 
-                isTrue |= condition.Value;
+                isTrue |= condition.IsMet;
             }
 
             return isTrue;

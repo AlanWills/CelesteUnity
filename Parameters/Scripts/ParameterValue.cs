@@ -1,14 +1,14 @@
 ﻿using Celeste.Events;
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Parameters
 {
-    public class ParameterValue<T> : ScriptableObject, IValue<T>
+    public class ParameterValue<T> : ScriptableObject, IValue<T> 
     {
         #region Properties and Fields
 
-        protected UnityEvent<ValueChangedArgs<T>> OnValueChanged { get; } = new UnityEvent<ValueChangedArgs<T>>();
+        protected virtual ParameterisedValueChangedEvent<T> OnValueChanged { get; }
 
         private T value;
         public T Value 
@@ -29,7 +29,11 @@ namespace Celeste.Parameters
                     T oldValue = this.value;
                     this.value = value;
 
-                    OnValueChanged.Invoke(new ValueChangedArgs<T>(oldValue, value));
+                    var onValueChanged = OnValueChanged;
+                    if (onValueChanged != null)
+                    {
+                        onValueChanged.Invoke(new ValueChangedArgs<T>(oldValue, value));
+                    }
                 }
             }
         }
@@ -71,19 +75,37 @@ namespace Celeste.Parameters
 
         protected virtual T ConstrainValue(T input) { return input; }
 
-        public void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
+        public void AddValueChangedCallback(Action<ValueChangedArgs<T>> callback)
         {
-            OnValueChanged.AddListener(callback);
+#if NULL_CHECKS
+            Debug.Assert(OnValueChanged != null, $"Trying to add value changed callback to {name}, but it's {nameof(OnValueChanged)} event is null.");
+            if (OnValueChanged != null)
+#endif
+            {
+                OnValueChanged.AddListener(callback);
+            }
         }
 
-        public void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
+        public void RemoveValueChangedCallback(Action<ValueChangedArgs<T>> callback)
         {
-            OnValueChanged.RemoveListener(callback);
+#if NULL_CHECKS
+            Debug.Assert(OnValueChanged != null, $"Trying to remove value changed callback from {name}, but it's {nameof(OnValueChanged)} event is null.");
+            if (OnValueChanged != null)
+#endif
+            {
+                OnValueChanged.RemoveListener(callback);
+            }
         }
 
         public void RemoveAllValueChangedCallbacks()
         {
-            OnValueChanged.RemoveAllListeners();
+#if NULL_CHECKS
+            Debug.Assert(OnValueChanged != null, $"Trying to remove all value changed callbacks from {name}, but it's {nameof(OnValueChanged)} event is null.");
+            if (OnValueChanged != null)
+#endif
+            {
+                OnValueChanged.RemoveAllListeners();
+            }
         }
 
         public override string ToString()

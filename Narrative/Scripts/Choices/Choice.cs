@@ -62,7 +62,7 @@ namespace Celeste.Narrative.Choices
         {
             for (int i = 0, n = conditions != null ? conditions.Length : 0; i < n; ++i)
             {
-                if (!conditions[i].Value)
+                if (!conditions[i].IsMet)
                 {
                     return false;
                 }

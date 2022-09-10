@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets.UnityAssetReferences;
+using Celeste.Events;
 using Celeste.Events.AssetReferences;
 using Celeste.Parameters;
 using Celeste.Parameters.AssetReferences;
@@ -72,12 +73,12 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void AddOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.RemoveValueChangedCallback(callback);
         }

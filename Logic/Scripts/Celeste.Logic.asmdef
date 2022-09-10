@@ -5,7 +5,8 @@
         "Celeste.Parameters",
         "Celeste.Objects",
         "Celeste.Assets",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

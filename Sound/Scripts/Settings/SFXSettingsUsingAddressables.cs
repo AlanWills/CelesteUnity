@@ -46,12 +46,12 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void AddOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.Asset.RemoveValueChangedCallback(callback);
         }

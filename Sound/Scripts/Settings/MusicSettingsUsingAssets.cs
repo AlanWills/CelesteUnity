@@ -41,12 +41,12 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void AddOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.RemoveValueChangedCallback(callback);
         }

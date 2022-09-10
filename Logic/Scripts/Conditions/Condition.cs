@@ -1,8 +1,7 @@
-﻿using Celeste.Objects;
-using Celeste.Parameters;
+﻿using Celeste.Events;
+using Celeste.Objects;
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Logic
 {
@@ -11,22 +10,22 @@ namespace Celeste.Logic
     {
         #region Properties and Fields
 
-        public UnityEvent<ValueChangedArgs<bool>> ValueChanged { get; } = new UnityEvent<ValueChangedArgs<bool>>();
-
-        public virtual bool Value
+        public virtual bool IsMet
         {
-            get => _value;
+            get => isMet;
             set
             {
-                if (_value != value)
+                if (isMet != value)
                 {
-                    _value = value;
-                    ValueChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
+                    isMet = value;
+                    onIsMetChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
                 }
             }
         }
 
-        [NonSerialized] private bool _value = false;
+        [SerializeField] private BoolValueChangedEvent onIsMetChanged;
+
+        [NonSerialized] private bool isMet = false;
         [NonSerialized] private int initCount = 0;
 
         #endregion
@@ -46,15 +45,15 @@ namespace Celeste.Logic
 
             if (--initCount == 0)
             {
-                ValueChanged.RemoveAllListeners();
+                onIsMetChanged.RemoveAllListeners();
                 DoShutdown();
             }
         }
 
         protected bool Check()
         {
-            Value = DoCheck();
-            return Value;
+            IsMet = DoCheck();
+            return IsMet;
         }
 
         protected virtual void DoInit() { }
@@ -67,6 +66,16 @@ namespace Celeste.Logic
         public abstract void CopyFrom(Condition original);
 
         #endregion
+
+        public void AddOnIsMetConditionChanged(Action<ValueChangedArgs<bool>> onIsMetConditionChanged)
+        {
+            onIsMetChanged.AddListener(onIsMetConditionChanged);
+        }
+
+        public void RemoveOnIsMetConditionChanged(Action<ValueChangedArgs<bool>> onIsMetConditionChanged)
+        {
+            onIsMetChanged.RemoveListener(onIsMetConditionChanged);
+        }
 
         protected T CreateDependentAsset<T>(string name) where T : ScriptableObject
         {

@@ -1,4 +1,5 @@
 ﻿using Celeste.Constants;
+using Celeste.Events;
 using Celeste.Parameters;
 using Celeste.Tools;
 using Celeste.UI.Parameters;

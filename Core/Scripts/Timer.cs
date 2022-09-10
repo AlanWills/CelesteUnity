@@ -1,7 +1,7 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Events;
+using Celeste.Parameters;
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Core
 {
@@ -15,14 +15,12 @@ namespace Celeste.Core
 
         [SerializeField] private FloatValue remainingTime;
         [SerializeField] private BoolValue paused;
-        [SerializeField] private Events.FloatEvent onTimerUpdate;
         [SerializeField] private Events.Event onTimerEnd;
 
         #endregion
 
         public void StartTimer(int timerTime)
         {
-            remainingTime.AddValueChangedCallback(OnRemainingTimeChanged);
             remainingTime.Value = timerTime;
             paused.Value = false;
         }
@@ -42,26 +40,20 @@ namespace Celeste.Core
 
         public void StopTimer()
         {
-            remainingTime.RemoveValueChangedCallback(OnRemainingTimeChanged);
             paused.Value = true;
             onTimerEnd.Invoke();
         }
 
         #region Callbacks
 
-        private void OnRemainingTimeChanged(ValueChangedArgs<float> valueChangedArgs)
+        public void AddTimerUpdateCallback(Action<ValueChangedArgs<float>> onTimerUpdateCallback)
         {
-            onTimerUpdate.InvokeSilently(valueChangedArgs.newValue);
+            remainingTime.AddValueChangedCallback(onTimerUpdateCallback);
         }
 
-        public void AddTimerUpdateCallback(Action<float> onTimerUpdate)
+        public void RemoveTimerUpdateCallback(Action<ValueChangedArgs<float>> onTimerUpdateCallback)
         {
-            this.onTimerUpdate.AddListener(onTimerUpdate);
-        }
-
-        public void RemoveTimerUpdateCallback(Action<float> onTimerUpdate)
-        {
-            this.onTimerUpdate.RemoveListener(onTimerUpdate);
+            remainingTime.RemoveValueChangedCallback(onTimerUpdateCallback);
         }
 
         #endregion

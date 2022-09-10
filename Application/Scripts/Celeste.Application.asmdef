@@ -4,6 +4,7 @@
     "references": [
         "Celeste.Constants",
         "Celeste.Parameters",
+        "Celeste.Events",
         "Celeste.Objects",
         "Celeste.Debug"
     ],

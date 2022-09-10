@@ -4,7 +4,8 @@
     "references": [
         "Unity.TextMeshPro",
         "Celeste.Tools",
-        "Celeste.Parameters"
+        "Celeste.Parameters",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

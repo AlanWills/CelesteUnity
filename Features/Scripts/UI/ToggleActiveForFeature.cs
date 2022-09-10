@@ -1,4 +1,4 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.Features.UI

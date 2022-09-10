@@ -1,4 +1,5 @@
-﻿using Celeste.Localisation.Parameters;
+﻿using Celeste.Events;
+using Celeste.Localisation.Parameters;
 using Celeste.Parameters;
 using Celeste.Tools;
 using System;

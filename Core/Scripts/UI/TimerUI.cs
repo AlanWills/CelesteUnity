@@ -1,4 +1,5 @@
-﻿using Celeste.Tools;
+﻿using Celeste.Events;
+using Celeste.Tools;
 using TMPro;
 using UnityEngine;
 
@@ -42,9 +43,9 @@ namespace Celeste.Core.UI
 
         #region Callbacks
 
-        private void OnTimerUpdate(float remainingTime)
+        private void OnTimerUpdate(ValueChangedArgs<float> args)
         {
-            SetText(remainingTime);
+            SetText(args.newValue);
         }
 
         #endregion
