@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(LongValue), menuName = "Celeste/Parameters/Numeric/Long Value")]
-    public class LongValue : ParameterValue<long>
+    public class LongValue : ParameterValue<long, LongValueChangedEvent>
     {
         #region Operators
 

@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace CelesteEditor.Parameters
 {
-    public abstract class ParameterValueEditor<T> : Editor
+    public abstract class ParameterValueEditor<T> : Editor where T : ScriptableObject
     {
         #region Properties and Fields
 
-        protected ParameterValue<T> Parameter
+        protected T Parameter
         {
-            get { return target as ParameterValue<T>; }
+            get { return target as T; }
         }
 
         #endregion

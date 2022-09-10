@@ -1,16 +1,10 @@
 ﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
-using UnityEngine;
 
 namespace CelesteEditor.Parameters.Numeric
 {
     [CustomEditor(typeof(FloatValue))]
-    public class FloatValueEditor : ParameterValueEditor<float>
+    public class FloatValueEditor : ParameterValueEditor<FloatValue>
     {
         #region GUI
 

@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(BoolValue), menuName = "Celeste/Parameters/Bool/Bool Value")]
-    public class BoolValue : ParameterValue<bool>
+    public class BoolValue : ParameterValue<bool, BoolValueChangedEvent>
     {
         #region Operators
 

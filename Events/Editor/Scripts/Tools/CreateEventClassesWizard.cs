@@ -50,7 +50,7 @@ namespace CelesteEditor.Events.Tools
 
         private const string EVENT_RAISER_CLASS_FORMAT =
 "using UnityEngine;\n" +
-"using Celeste.Events\n" +
+"using Celeste.Events;\n" +
 "\n" +
 "namespace {0}\n" +
 "{{\n" +

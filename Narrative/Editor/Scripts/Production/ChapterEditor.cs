@@ -51,7 +51,7 @@ namespace CelesteEditor.Narrative.Production
         }
 
         private void FindValues<T, TValue, TReference>(SerializedProperty valuesProperty)
-            where TValue : ParameterValue<T>
+            where TValue : ScriptableObject, IValue<T>
             where TReference : ParameterReference<T, TValue, TReference>
         {
             Chapter chapter = target as Chapter;
@@ -62,7 +62,7 @@ namespace CelesteEditor.Narrative.Production
         }
 
         private void FindValues<T, TValue, TReference>(SerializedProperty valuesProperty, FSMGraph fsmGraph, HashSet<TValue> values)
-            where TValue : ParameterValue<T>
+            where TValue : ScriptableObject, IValue<T>
             where TReference : ParameterReference<T, TValue, TReference>
         {
             foreach (FSMNode node in fsmGraph.nodes)

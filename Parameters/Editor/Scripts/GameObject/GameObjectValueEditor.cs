@@ -1,16 +1,11 @@
 ﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Parameters
 {
     [CustomEditor(typeof(GameObjectValue))]
-    public class GameObjectValueEditor : ParameterValueEditor<GameObject>
+    public class GameObjectValueEditor : ParameterValueEditor<GameObjectValue>
     {
         #region GUI
 

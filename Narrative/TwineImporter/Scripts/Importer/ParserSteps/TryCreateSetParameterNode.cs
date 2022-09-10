@@ -200,7 +200,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         }
 
         private bool CreateNode<T, TValue, TReference, TNode>(TwineNodeParseContext context, ScriptableObject parameter)
-            where TValue : ParameterValue<T>
+            where TValue : ScriptableObject, IValue<T>
             where TReference : ParameterReference<T, TValue, TReference>
             where TNode : SetValueNode<T, TValue, TReference>
         {

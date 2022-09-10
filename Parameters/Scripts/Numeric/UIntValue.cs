@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(UIntValue), menuName = "Celeste/Parameters/Numeric/UInt Value")]
-    public class UIntValue : ParameterValue<uint>
+    public class UIntValue : ParameterValue<uint, UIntValueChangedEvent>
     {
         #region Operators
 

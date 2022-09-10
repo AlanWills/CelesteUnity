@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(Vector3IntValue), menuName = "Celeste/Parameters/Vector/Vector3Int Value")]
-    public class Vector3IntValue : ParameterValue<Vector3Int>
+    public class Vector3IntValue : ParameterValue<Vector3Int, Vector3IntValueChangedEvent>
     {
         #region Operators
 

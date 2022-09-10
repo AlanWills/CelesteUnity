@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(CameraValue), menuName = "Celeste/Parameters/Viewport/Camera Value")]
-    public class CameraValue : ParameterValue<Camera>
+    public class CameraValue : ParameterValue<Camera, CameraValueChangedEvent>
     {
     }
 }

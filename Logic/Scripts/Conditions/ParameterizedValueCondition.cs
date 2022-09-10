@@ -7,7 +7,7 @@ namespace Celeste.Logic
 {
     [Serializable]
     public abstract class ParameterizedValueCondition<T, TValue, TReference> : Condition
-        where TValue : ParameterValue<T>
+        where TValue : IValue<T>
         where TReference : ParameterReference<T, TValue, TReference>
     {
         #region Properties and Fields

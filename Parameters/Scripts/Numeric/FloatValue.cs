@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
 namespace Celeste.Parameters
 {
     [CreateAssetMenu(fileName = nameof(FloatValue), menuName = "Celeste/Parameters/Numeric/Float Value")]
-    public class FloatValue : ParameterValue<float>
+    public class FloatValue : ParameterValue<float, FloatValueChangedEvent>
     {
         #region Operators
 

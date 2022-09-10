@@ -1,15 +1,10 @@
 ﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 
 namespace CelesteEditor.Parameters.String
 {
     [CustomEditor(typeof(StringValue))]
-    public class StringValueEditor : ParameterValueEditor<string>
+    public class StringValueEditor : ParameterValueEditor<StringValue>
     {
         #region GUI
 

@@ -3,6 +3,7 @@
     "rootNamespace": "Celeste.Options",
     "references": [
         "Celeste.Persistence",
+        "Celeste.Events",
         "Celeste.Parameters",
         "Celeste.Assets",
         "Celeste.Log",

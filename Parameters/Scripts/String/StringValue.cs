@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Celeste.Parameters
 {
     [Serializable]
     [CreateAssetMenu(fileName = nameof(StringValue), menuName = "Celeste/Parameters/String/String Value")]
-    public class StringValue : ParameterValue<string>
+    public class StringValue : ParameterValue<string, StringValueChangedEvent>
     {
         #region Operators
 

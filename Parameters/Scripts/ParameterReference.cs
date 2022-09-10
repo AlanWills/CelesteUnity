@@ -5,8 +5,8 @@ using UnityEngine;
 namespace Celeste.Parameters
 {
     [Serializable]
-    public class ParameterReference<T, TValue, TReference> : ScriptableObject, IValue<T>, ICopyable<TReference> 
-                where TValue : ParameterValue<T>
+    public class ParameterReference<T, TValue, TReference> : ScriptableObject, /*IValue<T>, */ICopyable<TReference> 
+                where TValue : IValue<T>
                 where TReference : ParameterReference<T, TValue, TReference>
     {
         #region Properties and Fields
@@ -20,7 +20,7 @@ namespace Celeste.Parameters
 
                 if (isConstant)
                 {
-                    referenceValue = null;
+                    referenceValue = default;
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace Celeste.Parameters
                 if (isConstant)
                 {
                     constantValue = value;
-                    referenceValue = null;
+                    referenceValue = default;
                 }
                 else
                 {

@@ -8,7 +8,7 @@ namespace Celeste.FSM.Nodes.Events
     [NodeWidth(250)]
     public abstract class ParameterisedEventRaiserNode<T, TValue, TReference, TEvent> : FSMNode 
         where TEvent : ParameterisedEvent<T>
-        where TValue : ParameterValue<T>
+        where TValue : IValue<T>
         where TReference : ParameterReference<T, TValue, TReference>
     {
         #region Properties and Fields

@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    public class ParameterValue<T> : ScriptableObject, IValue<T> 
+    public class ParameterValue<T, TValueChangedEvent> : ScriptableObject, IValue<T> 
+        where TValueChangedEvent : ParameterisedValueChangedEvent<T>
     {
         #region Properties and Fields
 
-        protected virtual ParameterisedValueChangedEvent<T> OnValueChanged { get; }
+        protected TValueChangedEvent OnValueChanged => onValueChanged;
 
         private T value;
         public T Value 
@@ -29,7 +30,6 @@ namespace Celeste.Parameters
                     T oldValue = this.value;
                     this.value = value;
 
-                    var onValueChanged = OnValueChanged;
                     if (onValueChanged != null)
                     {
                         onValueChanged.Invoke(new ValueChangedArgs<T>(oldValue, value));
@@ -61,6 +61,7 @@ namespace Celeste.Parameters
         [SerializeField, TextArea] private string helpText;
 #endif
         [SerializeField] private T defaultValue;
+        [SerializeField] private TValueChangedEvent onValueChanged;
 
         #endregion
 
