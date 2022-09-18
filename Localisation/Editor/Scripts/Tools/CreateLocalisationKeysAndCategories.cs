@@ -73,13 +73,13 @@ namespace CelesteEditor.Localisation.Tools
 
                     if (localisationKey == null)
                     {
+                        Debug.Assert(!string.IsNullOrEmpty(keyString), $"Null or empty key string found for column {column} in row {row} for category {categoryString}.");
+                        Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for column {column} in row {row} for category {categoryString}.");
                         localisationKey = CreateInstance<LocalisationKey>();
                         localisationKey.name = keyString.ToAssetName();
                         localisationKey.Key = keyString;
                         localisationKey.Fallback = localisedString;
 
-                        Debug.Assert(!string.IsNullOrEmpty(keyString), $"No key found for row {row}.");
-                        Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for row {row}.");
                         localisationKeyCatalogue.AddItem(keyString, localisationKey);
 
                         string directory = $"{localisationKeysDirectory}/{categoryString}";
