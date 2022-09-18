@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
@@ -20,13 +21,13 @@ namespace Celeste.Sound.Settings
         public abstract bool ShouldLoadAssets();
         public abstract IEnumerator LoadAssets();
 
-        public abstract void AddOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
-        public abstract void RemoveOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
+        public abstract void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
+        public abstract void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
 
-        public abstract void AddOnPlayMusicCallback(Action<AudioClip> callback);
-        public abstract void RemoveOnPlayMusicCallback(Action<AudioClip> callback);
+        public abstract void AddOnPlayMusicCallback(UnityAction<AudioClip> callback);
+        public abstract void RemoveOnPlayMusicCallback(UnityAction<AudioClip> callback);
 
-        public abstract void AddOnPlayMusicOneShotCallback(Action<AudioClip> callback);
-        public abstract void RemoveOnPlayMusicOneShotCallback(Action<AudioClip> callback);
+        public abstract void AddOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback);
+        public abstract void RemoveOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback);
     }
 }

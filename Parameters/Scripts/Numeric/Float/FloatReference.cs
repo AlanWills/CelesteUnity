@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "FloatReference", menuName = "Celeste/Parameters/Numeric/Float Reference")]
+    [CreateAssetMenu(fileName = nameof(FloatReference), menuName = "Celeste/Parameters/Numeric/Float/Float Reference")]
     public class FloatReference : ParameterReference<float, FloatValue, FloatReference>
     {
         #region Operators

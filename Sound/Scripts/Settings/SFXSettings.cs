@@ -19,13 +19,13 @@ namespace Celeste.Sound.Settings
         public abstract bool ShouldLoadAssets();
         public abstract IEnumerator LoadAssets();
 
-        public abstract void AddOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
-        public abstract void RemoveOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback);
+        public abstract void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
+        public abstract void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
 
-        public abstract void AddOnPlaySFXCallback(Action<AudioClip> callback);
-        public abstract void RemoveOnPlaySFXCallback(Action<AudioClip> callback);
+        public abstract void AddOnPlaySFXCallback(UnityAction<AudioClip> callback);
+        public abstract void RemoveOnPlaySFXCallback(UnityAction<AudioClip> callback);
 
-        public abstract void AddOnPlaySFXOneShotCallback(Action<AudioClip> callback);
-        public abstract void RemoveOnPlaySFXOneShotCallback(Action<AudioClip> callback);
+        public abstract void AddOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback);
+        public abstract void RemoveOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback);
     }
 }

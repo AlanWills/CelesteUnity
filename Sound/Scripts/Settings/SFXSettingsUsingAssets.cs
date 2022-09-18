@@ -35,32 +35,32 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlaySFXCallback(Action<AudioClip> callback)
+        public override void AddOnPlaySFXCallback(UnityAction<AudioClip> callback)
         {
             playSFX.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXCallback(Action<AudioClip> callback)
+        public override void RemoveOnPlaySFXCallback(UnityAction<AudioClip> callback)
         {
             playSFX.RemoveListener(callback);
         }
 
-        public override void AddOnPlaySFXOneShotCallback(Action<AudioClip> callback)
+        public override void AddOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
         {
             playSFXOneShot.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXOneShotCallback(Action<AudioClip> callback)
+        public override void RemoveOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
         {
             playSFXOneShot.RemoveListener(callback);
         }

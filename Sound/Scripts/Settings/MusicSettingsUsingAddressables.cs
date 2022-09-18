@@ -73,32 +73,32 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlayMusicCallback(Action<AudioClip> callback)
+        public override void AddOnPlayMusicCallback(UnityAction<AudioClip> callback)
         {
             playMusic.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicCallback(Action<AudioClip> callback)
+        public override void RemoveOnPlayMusicCallback(UnityAction<AudioClip> callback)
         {
             playMusic.Asset.RemoveListener(callback);
         }
 
-        public override void AddOnPlayMusicOneShotCallback(Action<AudioClip> callback)
+        public override void AddOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
         {
             playMusicOneShot.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicOneShotCallback(Action<AudioClip> callback)
+        public override void RemoveOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
         {
             playMusicOneShot.Asset.RemoveListener(callback);
         }

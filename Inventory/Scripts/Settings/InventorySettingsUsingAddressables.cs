@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Inventory.Settings
 {
@@ -40,12 +41,12 @@ namespace Celeste.Inventory.Settings
             return inventoryItemCatalogue.Asset.FindByGuid(guid);
         }
 
-        public override void AddInventoryItemAddedCallback(Action<InventoryItem> inventoryItem)
+        public override void AddInventoryItemAddedCallback(UnityAction<InventoryItem> inventoryItem)
         {
             inventoryItemAddedEvent.Asset.AddListener(inventoryItem);
         }
 
-        public override void RemoveInventoryItemAddedCallback(Action<InventoryItem> inventoryItem)
+        public override void RemoveInventoryItemAddedCallback(UnityAction<InventoryItem> inventoryItem)
         {
             inventoryItemAddedEvent.Asset.RemoveListener(inventoryItem);
         }

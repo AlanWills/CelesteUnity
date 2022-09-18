@@ -1,5 +1,6 @@
 ﻿using Celeste.Events;
 using System;
+using UnityEngine.Events;
 
 namespace Celeste.Parameters
 {
@@ -7,7 +8,7 @@ namespace Celeste.Parameters
     {
         T Value { get; set; }
 
-        void AddValueChangedCallback(Action<ValueChangedArgs<T>> args);
-        void RemoveValueChangedCallback(Action<ValueChangedArgs<T>> args);
+        void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> args);
+        void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> args);
     }
 }

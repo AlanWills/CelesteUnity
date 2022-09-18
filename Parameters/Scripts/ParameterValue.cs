@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Parameters
 {
@@ -9,9 +10,21 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        protected TValueChangedEvent OnValueChanged => onValueChanged;
+        [NonSerialized] private UnityEvent<ValueChangedArgs<T>> onValueChangedUnityEvent;
+        private UnityEvent<ValueChangedArgs<T>> OnValueChangedChangeUnityEvent
+        {
+            get
+            {
+                if (onValueChangedUnityEvent == null)
+                {
+                    onValueChangedUnityEvent = new UnityEvent<ValueChangedArgs<T>>();
+                }
 
-        private T value;
+                return onValueChangedUnityEvent;
+            }
+        }
+
+        [NonSerialized] private T value;
         public T Value 
         {
             get { return Application.isPlaying ? value : DefaultValue; }
@@ -76,36 +89,39 @@ namespace Celeste.Parameters
 
         protected virtual T ConstrainValue(T input) { return input; }
 
-        public void AddValueChangedCallback(Action<ValueChangedArgs<T>> callback)
+        public void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-#if NULL_CHECKS
-            Debug.Assert(OnValueChanged != null, $"Trying to add value changed callback to {name}, but it's {nameof(OnValueChanged)} event is null.");
-            if (OnValueChanged != null)
-#endif
+            if (onValueChanged != null)
             {
-                OnValueChanged.AddListener(callback);
+                onValueChanged.AddListener(callback);
+            }
+            else
+            {
+                OnValueChangedChangeUnityEvent.AddListener(callback);
             }
         }
 
-        public void RemoveValueChangedCallback(Action<ValueChangedArgs<T>> callback)
+        public void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-#if NULL_CHECKS
-            Debug.Assert(OnValueChanged != null, $"Trying to remove value changed callback from {name}, but it's {nameof(OnValueChanged)} event is null.");
-            if (OnValueChanged != null)
-#endif
+            if (onValueChanged != null)
             {
-                OnValueChanged.RemoveListener(callback);
+                onValueChanged.RemoveListener(callback);
+            }
+            else
+            {
+                OnValueChangedChangeUnityEvent.RemoveListener(callback);
             }
         }
 
         public void RemoveAllValueChangedCallbacks()
         {
-#if NULL_CHECKS
-            Debug.Assert(OnValueChanged != null, $"Trying to remove all value changed callbacks from {name}, but it's {nameof(OnValueChanged)} event is null.");
-            if (OnValueChanged != null)
-#endif
+            if (onValueChanged != null)
             {
-                OnValueChanged.RemoveAllListeners();
+                onValueChanged.RemoveAllListeners();
+            }
+            else
+            {
+                OnValueChangedChangeUnityEvent.RemoveAllListeners();
             }
         }
 

@@ -58,12 +58,12 @@ namespace Celeste.Features
             }
         }
 
-        public void AddOnEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             isEnabled.AddValueChangedCallback(callback);
         }
 
-        public void RemoveOnEnabledChangedCallback(Action<ValueChangedArgs<bool>> callback)
+        public void RemoveOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             isEnabled.RemoveValueChangedCallback(callback);
         }

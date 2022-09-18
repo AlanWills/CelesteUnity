@@ -2,6 +2,7 @@
 using Celeste.Parameters;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Core
 {
@@ -46,12 +47,12 @@ namespace Celeste.Core
 
         #region Callbacks
 
-        public void AddTimerUpdateCallback(Action<ValueChangedArgs<float>> onTimerUpdateCallback)
+        public void AddTimerUpdateCallback(UnityAction<ValueChangedArgs<float>> onTimerUpdateCallback)
         {
             remainingTime.AddValueChangedCallback(onTimerUpdateCallback);
         }
 
-        public void RemoveTimerUpdateCallback(Action<ValueChangedArgs<float>> onTimerUpdateCallback)
+        public void RemoveTimerUpdateCallback(UnityAction<ValueChangedArgs<float>> onTimerUpdateCallback)
         {
             remainingTime.RemoveValueChangedCallback(onTimerUpdateCallback);
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Narrative.Backgrounds.Settings
 {
@@ -23,7 +24,7 @@ namespace Celeste.Narrative.Backgrounds.Settings
             return FindBackgroundByGuid(CurrentBackgroundGuid);
         }
 
-        public abstract void AddSetBackgroundListener(Action<Background> background);
-        public abstract void RemoveSetBackgroundListener(Action<Background> background);
+        public abstract void AddSetBackgroundListener(UnityAction<Background> background);
+        public abstract void RemoveSetBackgroundListener(UnityAction<Background> background);
     }
 }

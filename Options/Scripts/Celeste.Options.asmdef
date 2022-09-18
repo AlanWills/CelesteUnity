@@ -8,7 +8,9 @@
         "Celeste.Assets",
         "Celeste.Log",
         "Celeste.Objects",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.DataStructures.Editor",
+        "Celeste.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

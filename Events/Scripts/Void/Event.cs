@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Events
 {
@@ -14,8 +15,8 @@ namespace Celeste.Events
         [SerializeField, TextArea] private string helpText;
 #endif
 
-        private List<Action> gameEventListeners = new List<Action>();
-        private List<Action> cachedListeners = new List<Action>();
+        private List<UnityAction> gameEventListeners = new List<UnityAction>();
+        private List<UnityAction> cachedListeners = new List<UnityAction>();
 
         #endregion
 
@@ -26,7 +27,7 @@ namespace Celeste.Events
             AddListener(listener.OnEventRaised);
         }
 
-        public void AddListener(Action callback)
+        public void AddListener(UnityAction callback)
         {
             gameEventListeners.Add(callback);
         }
@@ -36,7 +37,7 @@ namespace Celeste.Events
             RemoveListener(listener.OnEventRaised);
         }
 
-        public void RemoveListener(Action callback)
+        public void RemoveListener(UnityAction callback)
         {
             gameEventListeners.Remove(callback);
         }
