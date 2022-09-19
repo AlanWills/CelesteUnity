@@ -1,8 +1,8 @@
 ﻿using Celeste.Scene;
+using CelesteEditor.Tools;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
 namespace CelesteEditor.Scene
 {
@@ -11,18 +11,10 @@ namespace CelesteEditor.Scene
         [MenuItem("Celeste/Tools/Update Scenes In Build")]
         public static void UpdateScenesInBuild()
         {
-            Dictionary<string, string> scenePathLookup = new Dictionary<string, string>();
             HashSet<string> loadedScenes = new HashSet<string>();
-
-            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}"))
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath(sceneGuid);
-                SceneAsset unityScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);
-                scenePathLookup[unityScene.name] = assetPath;
-            }
-
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
             Dictionary<string, EditorBuildSettingsScene> newScenes = new Dictionary<string, EditorBuildSettingsScene>();
+            Dictionary<string, string> scenePathLookup = SceneUtility.CreateScenePathLookup();
 
             foreach (var scene in scenes)
             {
@@ -36,12 +28,34 @@ namespace CelesteEditor.Scene
 
                 for (int i = 0, n = sceneSet.NumScenes; i < n; ++i)
                 {
-                    string sceneName = sceneSet.GetSceneName(i);
-                    string scenePath = scenePathLookup[sceneName];
+                    SceneSetEntry sceneEntry = sceneSet.GetSceneEntry(i);
 
-                    if (!newScenes.ContainsKey(scenePath))
+                    if (sceneEntry.sceneType == SceneType.Baked)
                     {
-                        newScenes.Add(scenePath, new EditorBuildSettingsScene(scenePath, true));
+                        string scenePath = scenePathLookup[sceneEntry.sceneId];
+
+                        if (!newScenes.ContainsKey(scenePath))
+                        {
+                            newScenes.Add(scenePath, new EditorBuildSettingsScene(scenePath, true));
+                        }
+                    }
+                    else if (sceneEntry.sceneType == SceneType.Addressable)
+                    {
+                        if (scenePathLookup.TryGetValue(sceneEntry.sceneId, out string scenePath))
+                        {
+                            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+                            sceneAsset.SetAddressableAddress(sceneEntry.sceneId);
+
+                            if (newScenes.ContainsKey(scenePath))
+                            {
+                                // Remove an existing baked in scene because it is now addressable
+                                newScenes.Remove(scenePath);
+                            }
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogAssertion($"Failed to find scene path for {sceneEntry.sceneId}.");
+                        }
                     }
                 }
             }

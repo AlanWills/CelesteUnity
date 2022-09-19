@@ -10,7 +10,9 @@
         "Celeste.Objects",
         "Celeste.Assets",
         "Celeste.Tools",
-        "Celeste.OdinSerializer"
+        "Celeste.OdinSerializer",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

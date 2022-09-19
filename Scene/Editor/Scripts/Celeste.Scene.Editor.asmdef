@@ -5,7 +5,8 @@
         "Celeste.Scene",
         "Celeste.Persistence",
         "Celeste.Tools",
-        "Celeste.Tools.Editor"
+        "Celeste.Tools.Editor",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [
         "Editor"

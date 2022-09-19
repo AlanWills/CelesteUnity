@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: BootstrapSceneSet
   m_EditorClassIdentifier: 
   scenes:
-  - Loading
-  - Bootstrap
+  - sceneType: 1
+    sceneId: Loading
+  - sceneType: 1
+    sceneId: Bootstrap

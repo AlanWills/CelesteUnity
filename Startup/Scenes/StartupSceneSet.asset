@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: StartupSceneSet
   m_EditorClassIdentifier: 
   scenes:
-  - Startup
+  - sceneType: 0
+    sceneId: Startup

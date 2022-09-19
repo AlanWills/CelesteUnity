@@ -1,15 +1,30 @@
 ﻿using Celeste.Assets;
-using Celeste.Coroutines;
 using Celeste.DataStructures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityScene = UnityEngine.SceneManagement.Scene;
 
 namespace Celeste.Scene
 {
+    [Serializable]
+    public enum SceneType
+    {
+        Baked,
+        Addressable
+    }
+
+    [Serializable]
+    public struct SceneSetEntry
+    {
+        public SceneType sceneType;
+        public string sceneId;
+    }
+
     [CreateAssetMenu(fileName = nameof(SceneSet), menuName = "Celeste/Scene/Scene Set")]
     public class SceneSet : ScriptableObject
     {
@@ -20,65 +35,14 @@ namespace Celeste.Scene
             get { return scenes.Count; }
         }
 
-        [SerializeField] private List<string> scenes;
+        [SerializeField] private List<SceneSetEntry> scenes;
 
         #endregion
 
-        public string GetSceneName(int index)
+        public SceneSetEntry GetSceneEntry(int index)
         {
             return scenes.Get(index);
         }
-
-#if UNITY_EDITOR
-        public void EditorOnly_Load(LoadSceneMode loadSceneMode)
-        {
-            if (Application.isPlaying)
-            {
-                UnityEngine.Debug.LogAssertion($"Unable to synchronously load {name} whilst the application is playing.  This function is for setting up editor scenes only; use LoadAsync instead.");
-                return;
-            }
-
-            Dictionary<string, string> scenePathLookup = new Dictionary<string, string>();
-            HashSet<string> loadedScenes = new HashSet<string>();
-
-            foreach (string sceneGuid in UnityEditor.AssetDatabase.FindAssets($"t:{typeof(UnityEditor.SceneAsset).Name}"))
-            {
-                string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(sceneGuid);
-                UnityEditor.SceneAsset sceneAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.SceneAsset>(assetPath);
-                scenePathLookup[sceneAsset.name] = assetPath;
-            }
-
-            List<UnityScene> scenesToUnload = new List<UnityScene>();
-            for (int i = SceneManager.sceneCount; i > 0; --i)
-            {
-                UnityScene scene = SceneManager.GetSceneAt(i - 1);
-                if (loadSceneMode == LoadSceneMode.Single && !IsRequired(scene))
-                {
-                    scenesToUnload.Add(scene);
-                }
-                else
-                {
-                    loadedScenes.Add(scene.name);
-                }
-            }
-
-            for (int i = 0, n = scenes.Count; i < n; ++i)
-            {
-                if (!loadedScenes.Contains(scenes[i]))
-                {
-                    UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(scenes[i]), $"Could not find scene {scenes[i]} in lookup.");
-                    UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scenePathLookup[scenes[i]], UnityEditor.SceneManagement.OpenSceneMode.Additive);
-                }
-            }
-
-            foreach (UnityScene scene in scenesToUnload)
-            {
-                UnityEditor.SceneManagement.EditorSceneManager.CloseScene(scene, true);
-            }
-
-            EditorOnly_SortScenes();
-        }
-#endif
 
         public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action onLoadComplete)
         {
@@ -104,16 +68,34 @@ namespace Celeste.Scene
 
             for (int i = 0, n = scenes.Count; i < n; ++i)
             {
-                if (!loadedScenes.Contains(scenes[i]))
+                SceneSetEntry sceneSetEntry = scenes[i];
+
+                if (!loadedScenes.Contains(sceneSetEntry.sceneId))
                 {
-                    AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scenes[i], LoadSceneMode.Additive);
-                    while (!asyncOperation.isDone)
+                    if (sceneSetEntry.sceneType == SceneType.Baked)
                     {
-                        onProgressChanged.Invoke(progress + progressChunkPerScene * asyncOperation.progress);
-                        yield return null;
+                        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneSetEntry.sceneId, LoadSceneMode.Additive);
+                        while (!asyncOperation.isDone)
+                        {
+                            onProgressChanged.Invoke(progress + progressChunkPerScene * asyncOperation.progress);
+                            yield return null;
+                        }
+                    }
+                    else if (sceneSetEntry.sceneType == SceneType.Addressable)
+                    {
+                        AsyncOperationHandle asyncOperation = Addressables.LoadSceneAsync(sceneSetEntry.sceneId, LoadSceneMode.Additive);
+                        while (!asyncOperation.IsDone)
+                        {
+                            onProgressChanged.Invoke(progress + progressChunkPerScene * asyncOperation.PercentComplete);
+                            yield return null;
+                        }
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogError($"Unhandled scene type {sceneSetEntry.sceneType}.");
                     }
 
-                    yield return LoadAssets(SceneManager.GetSceneByName(scenes[i]));
+                    yield return LoadAssets(SceneManager.GetSceneByName(sceneSetEntry.sceneId));
 
                     progress += progressChunkPerScene;
                     onProgressChanged.Invoke(progress);
@@ -145,7 +127,7 @@ namespace Celeste.Scene
         {
             for (int i = 0, n = scenes.Count; i < n; ++i)
             {
-                if (string.CompareOrdinal(scenes[i], scene.name) == 0)
+                if (string.CompareOrdinal(scenes[i].sceneId, scene.name) == 0)
                 {
                     return true;
                 }
@@ -161,7 +143,7 @@ namespace Celeste.Scene
         }
 
 #if UNITY_EDITOR
-        private void EditorOnly_SortScenes()
+        public void EditorOnly_SortScenes()
         {
             List<UnityScene> unityScenes = new List<UnityScene>(SceneManager.sceneCount);
             for (int i = 0, n = SceneManager.sceneCount; i < n; ++i)
@@ -171,11 +153,11 @@ namespace Celeste.Scene
 
             for (int i = 0, n = scenes.Count; i < (n - 1); ++i)
             {
-                UnityScene first = unityScenes.Find(x => x.name == scenes[i]);
+                UnityScene first = unityScenes.Find(x => string.CompareOrdinal(x.name, scenes[i].sceneId) == 0);
 
                 for (int j = i + 1; j < n; ++j)
                 {
-                    UnityScene second = unityScenes.Find(x => x.name == scenes[j]);
+                    UnityScene second = unityScenes.Find(x => x.name == scenes[j].sceneId);
                     UnityEditor.SceneManagement.EditorSceneManager.MoveSceneBefore(first, second);
                 }
             }
