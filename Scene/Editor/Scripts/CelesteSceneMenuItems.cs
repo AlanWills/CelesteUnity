@@ -28,23 +28,27 @@ namespace CelesteEditor.Scene
 
                 for (int i = 0, n = sceneSet.NumScenes; i < n; ++i)
                 {
-                    SceneSetEntry sceneEntry = sceneSet.GetSceneEntry(i);
+                    string sceneId = sceneSet.GetSceneId(i);
+                    SceneType sceneType = sceneSet.GetSceneType(i);
 
-                    if (sceneEntry.sceneType == SceneType.Baked)
+                    if (sceneType == SceneType.Baked)
                     {
-                        string scenePath = scenePathLookup[sceneEntry.sceneId];
+                        string scenePath = scenePathLookup[sceneId];
 
                         if (!newScenes.ContainsKey(scenePath))
                         {
                             newScenes.Add(scenePath, new EditorBuildSettingsScene(scenePath, true));
                         }
                     }
-                    else if (sceneEntry.sceneType == SceneType.Addressable)
+                    else if (sceneType == SceneType.Addressable)
                     {
-                        if (scenePathLookup.TryGetValue(sceneEntry.sceneId, out string scenePath))
+                        // Also handle the case where the address has the file path at the end
+                        // We don't want to support that at runtime, but we do want to find it so we can fix it
+                        if (scenePathLookup.TryGetValue(sceneId, out string scenePath) ||
+                            scenePathLookup.TryGetValue($"{sceneId}.unity", out scenePath))
                         {
                             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
-                            sceneAsset.SetAddressableAddress(sceneEntry.sceneId);
+                            sceneAsset.SetAddressableAddress(sceneId);
 
                             if (newScenes.ContainsKey(scenePath))
                             {
@@ -54,7 +58,7 @@ namespace CelesteEditor.Scene
                         }
                         else
                         {
-                            UnityEngine.Debug.LogAssertion($"Failed to find scene path for {sceneEntry.sceneId}.");
+                            UnityEngine.Debug.LogAssertion($"Failed to find scene path for {sceneId}.");
                         }
                     }
                 }

@@ -62,7 +62,7 @@ namespace CelesteEditor.Scene
 
             for (int i = 0, n = sceneSet.NumScenes; i < n; ++i)
             {
-                string sceneId = sceneSet.GetSceneEntry(i).sceneId;
+                string sceneId = sceneSet.GetSceneId(i);
 
                 if (!loadedScenes.Contains(sceneId))
                 {

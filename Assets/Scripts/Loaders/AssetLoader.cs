@@ -59,15 +59,22 @@ namespace Celeste.Assets
         {
             AssetLoadingHandle assetLoadingHandle = new AssetLoadingHandle();
 
-            // Go through each root game object, to spare a whole hierarchy crawl
-            // See if it has an asset loader and get it to load it's assets
-            foreach (var rootGameObject in scene.GetRootGameObjects())
+            if (scene.IsValid())
             {
-                AssetLoader assetLoader = rootGameObject.GetComponent<AssetLoader>();
-                if (assetLoader != null)
+                // Go through each root game object, to spare a whole hierarchy crawl
+                // See if it has an asset loader and get it to load it's assets
+                foreach (var rootGameObject in scene.GetRootGameObjects())
                 {
-                    assetLoader.LoadAssets(assetLoadingHandle);
+                    AssetLoader assetLoader = rootGameObject.GetComponent<AssetLoader>();
+                    if (assetLoader != null)
+                    {
+                        assetLoader.LoadAssets(assetLoadingHandle);
+                    }
                 }
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Invalid scene {scene.name} passed into {nameof(LoadAllInScene)}.");
             }
 
             return assetLoadingHandle;

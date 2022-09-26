@@ -91,7 +91,7 @@ namespace CelesteEditor.Localisation.Tools
                     if (localisationKeyCategory == null)
                     {
                         localisationKeyCategory = CreateInstance<LocalisationKeyCategory>();
-                        localisationKeyCategory.name = categoryString.ToAssetName();
+                        localisationKeyCategory.name = $"{categoryString.ToAssetName()}Category";
                         localisationKeyCategory.CategoryName = categoryString;
 
                         localisationKeyCategoryCatalogue.AddItem(localisationKeyCategory);

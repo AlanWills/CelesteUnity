@@ -50,6 +50,11 @@ namespace CelesteEditor.BuildSystem.Steps
                 allBundles.Add(bundlePath);
             }
 
+            if (!Directory.Exists(buildRootDir))
+            {
+                Directory.CreateDirectory(buildRootDir);
+            }
+
             var json = JsonConvert.SerializeObject(allBundles);
             File.WriteAllText($"{buildRootDir}/CachedAssetBundles.json", json);
         }
@@ -59,7 +64,7 @@ namespace CelesteEditor.BuildSystem.Steps
             var remoteBuildDir = GetAddressablesRemoteBuildDir();
             var aaDestDir = GetAddressablesLocalBuildDir();
 
-            if (Directory.Exists(aaDestDir))
+            if (!Directory.Exists(aaDestDir))
             {
                 Directory.CreateDirectory(aaDestDir);
             }

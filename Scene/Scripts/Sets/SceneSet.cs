@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityScene = UnityEngine.SceneManagement.Scene;
 
@@ -39,9 +40,14 @@ namespace Celeste.Scene
 
         #endregion
 
-        public SceneSetEntry GetSceneEntry(int index)
+        public string GetSceneId(int index)
         {
-            return scenes.Get(index);
+            return scenes.Get(index).sceneId;
+        }
+
+        public SceneType GetSceneType(int index)
+        {
+            return scenes.Get(index).sceneType;
         }
 
         public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action onLoadComplete)
@@ -68,34 +74,50 @@ namespace Celeste.Scene
 
             for (int i = 0, n = scenes.Count; i < n; ++i)
             {
-                SceneSetEntry sceneSetEntry = scenes[i];
+                string sceneId = GetSceneId(i);
+                SceneType sceneType = GetSceneType(i);
 
-                if (!loadedScenes.Contains(sceneSetEntry.sceneId))
+                if (!loadedScenes.Contains(sceneId))
                 {
-                    if (sceneSetEntry.sceneType == SceneType.Baked)
+                    UnityEngine.Debug.Log($"Beginning to load scene {sceneId}.");
+                    UnityScene loadedScene = default;
+
+                    if (sceneType == SceneType.Baked)
                     {
-                        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneSetEntry.sceneId, LoadSceneMode.Additive);
+                        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneId, LoadSceneMode.Additive);
                         while (!asyncOperation.isDone)
                         {
                             onProgressChanged.Invoke(progress + progressChunkPerScene * asyncOperation.progress);
                             yield return null;
                         }
+
+                        loadedScene = SceneManager.GetSceneByName(sceneId);
                     }
-                    else if (sceneSetEntry.sceneType == SceneType.Addressable)
+                    else if (sceneType == SceneType.Addressable)
                     {
-                        AsyncOperationHandle asyncOperation = Addressables.LoadSceneAsync(sceneSetEntry.sceneId, LoadSceneMode.Additive);
+                        AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync(sceneId, LoadSceneMode.Additive);
                         while (!asyncOperation.IsDone)
                         {
                             onProgressChanged.Invoke(progress + progressChunkPerScene * asyncOperation.PercentComplete);
                             yield return null;
                         }
+
+                        loadedScene = asyncOperation.Result.Scene;
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError($"Unhandled scene type {sceneSetEntry.sceneType}.");
+                        UnityEngine.Debug.LogError($"Unhandled scene type {sceneType}.");
                     }
 
-                    yield return LoadAssets(SceneManager.GetSceneByName(sceneSetEntry.sceneId));
+                    if (loadedScene.IsValid())
+                    {
+                        yield return LoadAssets(loadedScene);
+                        UnityEngine.Debug.Log($"Successfully loaded scene {loadedScene.name}.");
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogError($"Failed to load scene {sceneId}.");
+                    }
 
                     progress += progressChunkPerScene;
                     onProgressChanged.Invoke(progress);
@@ -112,6 +134,7 @@ namespace Celeste.Scene
                     yield return null;
                 }
 
+                UnityEngine.Debug.Log($"Successfully unloaded scene {scenesToUnload[i].name}.");
                 progress += progressChunkPerScene;
                 onProgressChanged.Invoke(progress);
             }
