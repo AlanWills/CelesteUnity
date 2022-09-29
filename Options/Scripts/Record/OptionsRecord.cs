@@ -17,80 +17,80 @@ namespace Celeste.Options
 
         [SerializeField] private Events.Event saveOptions;
 
-        private List<BoolValue> boolOptions = new List<BoolValue>();
-        private List<FloatValue> floatOptions = new List<FloatValue>();
-        private List<IntValue> intOptions = new List<IntValue>();
-        private List<StringValue> stringOptions = new List<StringValue>();
+        private List<BoolOption> boolOptions = new List<BoolOption>();
+        private List<FloatOption> floatOptions = new List<FloatOption>();
+        private List<IntOption> intOptions = new List<IntOption>();
+        private List<StringOption> stringOptions = new List<StringOption>();
 
         #endregion
 
-        public void AddOption(BoolValue boolOption)
+        public void AddOption(BoolOption boolOption)
         {
             boolOption.AddValueChangedCallback((args) => OnOptionChanged());
             boolOptions.Add(boolOption);
         }
 
-        public void AddOption(FloatValue floatOption)
+        public void AddOption(FloatOption floatOption)
         {
             floatOption.AddValueChangedCallback((args) => OnOptionChanged());
             floatOptions.Add(floatOption);
         }
 
-        public void AddOption(IntValue intOption)
+        public void AddOption(IntOption intOption)
         {
             intOption.AddValueChangedCallback((args) => OnOptionChanged());
             intOptions.Add(intOption);
         }
 
-        public void AddOption(StringValue stringOption)
+        public void AddOption(StringOption stringOption)
         {
             stringOption.AddValueChangedCallback((args) => OnOptionChanged());
             stringOptions.Add(stringOption);
         }
 
-        public BoolValue GetBoolOption(int index)
+        public BoolOption GetBoolOption(int index)
         {
             return boolOptions.Get(index);
         }
 
-        public FloatValue GetFloatOption(int index)
+        public FloatOption GetFloatOption(int index)
         {
             return floatOptions.Get(index);
         }
 
-        public IntValue GetIntOption(int index)
+        public IntOption GetIntOption(int index)
         {
             return intOptions.Get(index);
         }
 
-        public StringValue GetStringOption(int index)
+        public StringOption GetStringOption(int index)
         {
             return stringOptions.Get(index);
         }
 
-        public BoolValue FindBoolOption(string boolOptionName)
+        public BoolOption FindBoolOption(string boolOptionName)
         {
             return boolOptions.Find(x => string.CompareOrdinal(x.name, boolOptionName) == 0);
         }
 
-        public FloatValue FindFloatOption(string floatOptionName)
+        public FloatOption FindFloatOption(string floatOptionName)
         {
             return floatOptions.Find(x => string.CompareOrdinal(x.name, floatOptionName) == 0);
         }
 
-        public IntValue FindIntOption(string intOptionName)
+        public IntOption FindIntOption(string intOptionName)
         {
             return intOptions.Find(x => string.CompareOrdinal(x.name, intOptionName) == 0);
         }
 
-        public StringValue FindStringOption(string stringOptionName)
+        public StringOption FindStringOption(string stringOptionName)
         {
             return stringOptions.Find(x => string.CompareOrdinal(x.name, stringOptionName) == 0);
         }
 
         public void SetOption(string optionName, bool value)
         {
-            BoolValue boolOption = FindBoolOption(optionName);
+            BoolOption boolOption = FindBoolOption(optionName);
 
 #if NULL_CHECKS
             if (boolOption != null)
@@ -102,7 +102,7 @@ namespace Celeste.Options
 
         public void SetOption(string floatOptionName, float value)
         {
-            FloatValue floatOption = FindFloatOption(floatOptionName);
+            FloatOption floatOption = FindFloatOption(floatOptionName);
 
 #if NULL_CHECKS
             if (floatOption != null)
@@ -114,7 +114,7 @@ namespace Celeste.Options
 
         public void SetOption(string optionName, int value)
         {
-            IntValue intOption = FindIntOption(optionName);
+            IntOption intOption = FindIntOption(optionName);
 
 #if NULL_CHECKS
             if (intOption != null)
@@ -126,7 +126,7 @@ namespace Celeste.Options
 
         public void SetOption(string optionName, string value)
         {
-            StringValue stringOption = FindStringOption(optionName);
+            StringOption stringOption = FindStringOption(optionName);
 
 #if NULL_CHECKS
             if (stringOption != null)

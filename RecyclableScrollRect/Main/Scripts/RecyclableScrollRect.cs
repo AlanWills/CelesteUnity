@@ -32,19 +32,13 @@ namespace PolyAndCode.UI
         public DirectionType Direction;
 
         //Segments : coloums for vertical and rows for horizontal.
-        public int Segments
-        {
-            set
-            {
-                _segments = Math.Max(value, 2);
-            }
-            get
-            {
-                return _segments;
-            }
-        }
-        [SerializeField]
-        private int _segments;
+        public int Segments => Screen.width > Screen.height ? _landscapeModeSegments : _portraitModeSegments;
+
+        [SerializeField, Min(2)]
+        private int _portraitModeSegments = 2;
+
+        [SerializeField, Min(2)]
+        private int _landscapeModeSegments = 4;
 
         private RecyclingSystem _recyclingSystem;
         private Vector2 _prevAnchoredPos;

@@ -1,34 +1,30 @@
 ﻿using Celeste.Parameters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Celeste.Options.Internals
 {
     public class OptionStructs
     {
         [Serializable]
-        public struct BoolOption
+        public struct BoolOptionDTO
         {
             public string name;
             public bool value;
 
-            public BoolOption(BoolValue boolValue)
+            public BoolOptionDTO(BoolOption boolOption)
             {
-                name = boolValue.name;
-                value = boolValue.Value;
+                name = boolOption.name;
+                value = boolOption.Value;
             }
         }
 
         [Serializable]
-        public struct FloatOption
+        public struct FloatOptionDTO
         {
             public string name;
             public float value;
 
-            public FloatOption(FloatValue floatValue)
+            public FloatOptionDTO(FloatOption floatValue)
             {
                 name = floatValue.name;
                 value = floatValue.Value;
@@ -36,12 +32,12 @@ namespace Celeste.Options.Internals
         }
 
         [Serializable]
-        public struct IntOption
+        public struct IntOptionDTO
         {
             public string name;
             public int value;
 
-            public IntOption(IntValue intValue)
+            public IntOptionDTO(IntOption intValue)
             {
                 name = intValue.name;
                 value = intValue.Value;
@@ -49,12 +45,12 @@ namespace Celeste.Options.Internals
         }
 
         [Serializable]
-        public struct StringOption
+        public struct StringOptionDTO
         {
             public string name;
             public string value;
 
-            public StringOption(StringValue stringValue)
+            public StringOptionDTO(StringOption stringValue)
             {
                 name = stringValue.name;
                 value = stringValue.Value;

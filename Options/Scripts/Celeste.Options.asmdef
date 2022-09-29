@@ -10,7 +10,8 @@
         "Celeste.Objects",
         "Celeste.DataStructures",
         "Celeste.DataStructures.Editor",
-        "Celeste.UI"
+        "Celeste.UI",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

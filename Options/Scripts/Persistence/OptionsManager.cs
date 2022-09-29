@@ -49,22 +49,22 @@ namespace Celeste.Options
         {
             AddOptions();
 
-            foreach (BoolOption boolOption in optionsManagerDTO.boolOptions)
+            foreach (BoolOptionDTO boolOption in optionsManagerDTO.boolOptions)
             {
                 optionsRecord.SetOption(boolOption.name, boolOption.value);
             }
 
-            foreach (IntOption intOption in optionsManagerDTO.intOptions)
+            foreach (IntOptionDTO intOption in optionsManagerDTO.intOptions)
             {
                 optionsRecord.SetOption(intOption.name, intOption.value);
             }
 
-            foreach (FloatOption floatOption in optionsManagerDTO.floatOptions)
+            foreach (FloatOptionDTO floatOption in optionsManagerDTO.floatOptions)
             {
                 optionsRecord.SetOption(floatOption.name, floatOption.value);
             }
 
-            foreach (StringOption stringOption in optionsManagerDTO.stringOptions)
+            foreach (StringOptionDTO stringOption in optionsManagerDTO.stringOptions)
             {
                 optionsRecord.SetOption(stringOption.name, stringOption.value);
             }

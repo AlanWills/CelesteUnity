@@ -10,15 +10,15 @@ namespace Celeste.Options.Settings
     {
         #region Properties and Fields
 
-        public override IEnumerable<BoolValue> BoolOptions => boolOptions;
-        public override IEnumerable<FloatValue> FloatOptions => floatOptions;
-        public override IEnumerable<IntValue> IntOptions => intOptions;
-        public override IEnumerable<StringValue> StringOptions => stringOptions;
+        public override IEnumerable<BoolOption> BoolOptions => boolOptions;
+        public override IEnumerable<FloatOption> FloatOptions => floatOptions;
+        public override IEnumerable<IntOption> IntOptions => intOptions;
+        public override IEnumerable<StringOption> StringOptions => stringOptions;
 
-        [SerializeField] private BoolValueList boolOptions;
-        [SerializeField] private FloatValueList floatOptions;
-        [SerializeField] private IntValueList intOptions;
-        [SerializeField] private StringValueList stringOptions;
+        [SerializeField] private BoolOptionList boolOptions;
+        [SerializeField] private FloatOptionList floatOptions;
+        [SerializeField] private IntOptionList intOptions;
+        [SerializeField] private StringOptionList stringOptions;
 
         #endregion
 

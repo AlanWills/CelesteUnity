@@ -31,6 +31,8 @@ namespace PolyAndCode.UI
         SerializedProperty _selfInitialize;
         SerializedProperty _direction;
         SerializedProperty _type;
+        SerializedProperty _portraitModeSegments;
+        SerializedProperty _landscapeModeSegments;
 
         AnimBool m_ShowElasticity;
         AnimBool m_ShowDecelerationRate;
@@ -54,6 +56,8 @@ namespace PolyAndCode.UI
             _selfInitialize = serializedObject.FindProperty("SelfInitialize");
             _direction = serializedObject.FindProperty("Direction");
             _type = serializedObject.FindProperty("IsGrid");
+            _portraitModeSegments = serializedObject.FindProperty(nameof(_portraitModeSegments));
+            _landscapeModeSegments = serializedObject.FindProperty(nameof(_landscapeModeSegments));
 
             m_ShowElasticity = new AnimBool(Repaint);
             m_ShowDecelerationRate = new AnimBool(Repaint);
@@ -89,8 +93,9 @@ namespace PolyAndCode.UI
             EditorGUILayout.PropertyField(_type, new GUIContent("Grid"));
             if (_type.boolValue)
             {
-                string title = _direction.enumValueIndex == (int)RecyclableScrollRect.DirectionType.Vertical ? "Coloumns" : "Rows";
-               _script.Segments =  EditorGUILayout.IntField(title, _script.Segments);
+                string title = _direction.enumValueIndex == (int)RecyclableScrollRect.DirectionType.Vertical ? "Columns" : "Rows";
+                EditorGUILayout.PropertyField(_portraitModeSegments, new GUIContent($"{title} in Portrait"));
+                EditorGUILayout.PropertyField(_landscapeModeSegments, new GUIContent($"{title} in Landscape"));
                 EditorUtility.SetDirty(_script);
             }
 

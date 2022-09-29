@@ -10,10 +10,10 @@ namespace Celeste.Options.Settings
     {
         #region Properties and Fields
 
-        public abstract IEnumerable<BoolValue> BoolOptions { get; }
-        public abstract IEnumerable<FloatValue> FloatOptions { get; }
-        public abstract IEnumerable<IntValue> IntOptions { get; }
-        public abstract IEnumerable<StringValue> StringOptions { get; }
+        public abstract IEnumerable<BoolOption> BoolOptions { get; }
+        public abstract IEnumerable<FloatOption> FloatOptions { get; }
+        public abstract IEnumerable<IntOption> IntOptions { get; }
+        public abstract IEnumerable<StringOption> StringOptions { get; }
 
         #endregion
 
