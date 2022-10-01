@@ -24,6 +24,12 @@ namespace Celeste.Scene
     {
         public SceneType sceneType;
         public string sceneId;
+
+        public SceneSetEntry(string sceneId, SceneType sceneType)
+        {
+            this.sceneId = sceneId;
+            this.sceneType = sceneType;
+        }
     }
 
     [CreateAssetMenu(fileName = nameof(SceneSet), menuName = "Celeste/Scene/Scene Set")]
@@ -39,6 +45,11 @@ namespace Celeste.Scene
         [SerializeField] private List<SceneSetEntry> scenes;
 
         #endregion
+
+        public void AddScene(string sceneId, SceneType sceneType)
+        {
+            scenes.Add(new SceneSetEntry(sceneId, sceneType));
+        }
 
         public string GetSceneId(int index)
         {

@@ -32,7 +32,7 @@ namespace CelesteEditor.BuildSystem
         public AppVersion Version
         {
             get { return version; }
-            protected set
+            set
             {
                 version = value;
                 EditorUtility.SetDirty(this);

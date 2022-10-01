@@ -38,24 +38,30 @@ namespace Celeste.Wallet.UI
 
         private void OnEnable()
         {
-            currency.AddOnQuantityChangedCallback(OnCurrencyChanged);
-
-            if (isCurrencyTarget)
+            if (currency != null)
             {
-                animatedCurrencyTransformCache.AddCurrencyTarget(currency, GetComponent<RectTransform>());
-            }
+                currency.AddOnQuantityChangedCallback(OnCurrencyChanged);
 
-            UpdateUI();
+                if (isCurrencyTarget)
+                {
+                    animatedCurrencyTransformCache.AddCurrencyTarget(currency, GetComponent<RectTransform>());
+                }
+
+                UpdateUI();
+            }
         }
 
         private void OnDisable()
         {
-            if (isCurrencyTarget)
+            if (currency != null)
             {
-                animatedCurrencyTransformCache.RemoveCurrencyTarget(currency);
-            }
+                if (isCurrencyTarget)
+                {
+                    animatedCurrencyTransformCache.RemoveCurrencyTarget(currency);
+                }
 
-            currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
+                currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
+            }
         }
 
         private void Start()

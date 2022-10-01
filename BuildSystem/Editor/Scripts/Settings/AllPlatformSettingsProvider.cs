@@ -207,7 +207,7 @@ namespace CelesteEditor.BuildSystem
 
             AssetUtility.CreateAssetInFolderAndSave(settings, folder);
 
-            settingsProperty.objectReferenceValue = settings;
+            settingsProperty.objectReferenceValue = AllPlatformSettings.GetOrCreateSettings().CreateSettingsAsset<T>(folder, settingsName);
         }
 
         #region Settings Provider
