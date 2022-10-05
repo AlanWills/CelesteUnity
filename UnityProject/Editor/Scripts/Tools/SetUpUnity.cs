@@ -33,13 +33,15 @@ namespace CelesteEditor.UnityProject
         {
             // Clone Repo and Update Submodules
             ExecuteProcessTerminal("git", "clone --recurse-submodules --remote-submodules git@github.com:AlanWills/CelesteUnity.git Celeste");
+
+            AssetDatabase.Refresh();
         }
 
         #endregion
 
         #region Utility
 
-        private static Tuple<string, string, int> ExecuteProcessTerminalReturnAll(string executable, string argument)
+        private static void ExecuteProcessTerminal(string executable, string argument)
         {
             try
             {
@@ -60,42 +62,13 @@ namespace CelesteEditor.UnityProject
                     StartInfo = startInfo
                 };
 
-                try
-                {
-                    myProcess.Start();
-                }
-                catch (Exception e)
-                {
-                    UnityEngine.Debug.LogError("Git is not set-up correctly, required to be on PATH, and to be a git project.");
-                    throw e;
-                }
-
+                myProcess.Start();
                 myProcess.WaitForExit();
                 myProcess.Close();
-
-                return new Tuple<string, string, int>(string.Empty, string.Empty, myProcess.ExitCode);
             }
             catch (Exception e)
             {
                 UnityEngine.Debug.LogException(e);
-                return new Tuple<string, string, int>(null, e.ToString(), -1);
-            }
-        }
-
-        private static string ExecuteProcessTerminal(string executable, string argument)
-        {
-            var data = ExecuteProcessTerminalReturnAll(executable, argument);
-            var output = data.Item1;
-            var error = data.Item2;
-            var returnCode = data.Item3;
-
-            if (returnCode == -1)
-            {
-                return null;
-            }
-            else
-            {
-                return output;
             }
         }
 
