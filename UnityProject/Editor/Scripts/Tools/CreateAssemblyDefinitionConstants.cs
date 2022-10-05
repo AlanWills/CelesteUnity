@@ -8,6 +8,7 @@
             "   public static class {1}EditorConstants\n" +
             "   {{\n" +
             "       public const string SCENE_SET_PATH = \"YOUR_PATH_HERE\";\n" +
+            "       public const string SCENE_MENU_ITEM = \"YOUR_MENU_PATH_HERE\";\n" +
             "   }}\n" +
             "}}";
 
@@ -19,7 +20,7 @@
             "{{\n" +
             "   public static class MenuItems\n" +
             "   {{\n" +
-            "       [MenuItem(\"YOUR_MENU_PATH_HERE\")]\n" +
+            "       [MenuItem({1}EditorConstants.SCENE_MENU_ITEM)]\n" +
             "       public static void Load{1}MenuItem()\n" +
             "       {{\n" +
             "           LoadSceneSetMenuItem({1}EditorConstants.SCENE_SET_PATH);\n" +

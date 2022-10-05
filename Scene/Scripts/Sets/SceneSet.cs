@@ -42,7 +42,7 @@ namespace Celeste.Scene
             get { return scenes.Count; }
         }
 
-        [SerializeField] private List<SceneSetEntry> scenes;
+        [SerializeField] private List<SceneSetEntry> scenes = new List<SceneSetEntry>();
 
         #endregion
 

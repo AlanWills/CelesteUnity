@@ -24,7 +24,7 @@ namespace CelesteEditor.Scene
                 if (unityScene.IsAssetAddressable())
                 {
                     AddressableAssetEntry unitySceneAddressableInfo = unityScene.GetAddressableInfo();
-                    scenePathLookup[unitySceneAddressableInfo.address] = assetPath;
+                    scenePathLookup[unityScene.name] = assetPath;
                 }
                 else
                 {

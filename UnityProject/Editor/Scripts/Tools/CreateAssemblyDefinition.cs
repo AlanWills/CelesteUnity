@@ -38,6 +38,12 @@ namespace CelesteEditor.UnityProject
 
     public static class CreateAssemblyDefinition
     {
+        #region Properties and Fields
+
+        private const string PLACEHOLDER_SCRIPT_NAME = "PlaceholderScript.cs";
+
+        #endregion
+
         public static void CreateAssemblies(CreateAssembliesParameters parameters)
         {
             string parentDirectory = parameters.parentDirectory;
@@ -73,7 +79,7 @@ namespace CelesteEditor.UnityProject
                     referencedAssemblies.Add("Celeste.Scene.Editor");
                 }
 
-                string editorScriptsAssembly = CreateAssembly(
+                string editorScriptsDirectory = CreateAssembly(
                     Path.Combine(parentDirectoryPath, directoryName),
                     "Editor",
                     $"{assemblyName}.Editor",
@@ -86,15 +92,21 @@ namespace CelesteEditor.UnityProject
                     string collapsedAssemblyName = assemblyName.Replace(".", "");
 
                     {
-                        string menuItemsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}MenuItems.cs");
+                        string menuItemsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}MenuItems.cs");
                         string menuItemsScript = string.Format(CreateAssemblyDefinitionConstants.MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
                         File.WriteAllText(menuItemsScriptPath, menuItemsScript);
                     }
 
                     {
-                        string editorConstantsScriptPath = Path.Combine(editorScriptsAssembly, $"{collapsedAssemblyName}EditorConstants.cs");
+                        string editorConstantsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}EditorConstants.cs");
                         string editorConstantsScript = string.Format(CreateAssemblyDefinitionConstants.EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
                         File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
+                    }
+
+                    {
+                        // We've created actual scripts so we can delete the placeholder script now
+                        string placeholderScriptPath = Path.Combine(editorScriptsDirectory, PLACEHOLDER_SCRIPT_NAME);
+                        File.Delete(placeholderScriptPath);
                     }
                 }
             }
@@ -124,7 +136,7 @@ namespace CelesteEditor.UnityProject
 
             string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
-            File.WriteAllText(Path.Combine(scriptsDirectory, $"PlaceholderScript.cs"), "");
+            File.WriteAllText(Path.Combine(scriptsDirectory, PLACEHOLDER_SCRIPT_NAME), "");
 
             return scriptsDirectory;
         }
