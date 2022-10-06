@@ -6,24 +6,14 @@ namespace CelesteEditor.Tools
 {
     public class CommandLine
     {
-        public static Tuple<string, string, int> ExecuteProcessTerminalReturnAll(
-            string executable, 
-            string argument, 
-            bool verbose = false, 
-            bool useShell = false)
+        public static void ExecuteProcessTerminal(string executable, string argument)
         {
             try
             {
-                if (verbose)
-                {
-                    UnityEngine.Debug.Log("============== Start Executing [" + executable + " " + argument + "] ===============");
-                    UnityEngine.Debug.Log("Current Working Directory: " + Application.dataPath);
-                }
-
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
                     FileName = executable,
-                    UseShellExecute = useShell,
+                    UseShellExecute = false,
                     RedirectStandardError = true,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
@@ -32,56 +22,18 @@ namespace CelesteEditor.Tools
                     WorkingDirectory = Application.dataPath
                 };
 
-                Process myProcess = Process.Start(startInfo);
-                
-                string output = myProcess.StandardOutput.ReadToEnd();
-
-                if (verbose)
+                Process myProcess = new Process()
                 {
-                    UnityEngine.Debug.Log(output);
-                }
+                    StartInfo = startInfo,
+                };
 
-                string error = myProcess.StandardError.ReadToEnd();
-
-                if (verbose && !string.IsNullOrWhiteSpace(error))
-                {
-                    UnityEngine.Debug.LogError(error);
-                }
-
+                myProcess.Start();
                 myProcess.WaitForExit();
-
-                if (verbose)
-                {
-                    UnityEngine.Debug.Log("============== End ===============");
-                }
-
-                return new Tuple<string, string, int>(output, error, myProcess.ExitCode);
+                myProcess.Close();
             }
             catch (Exception e)
             {
-                if (verbose)
-                {
-                    UnityEngine.Debug.LogException(e);
-                }
-
-                return new Tuple<string, string, int>(null, e.ToString(), -1);
-            }
-        }
-
-        public static string ExecuteProcessTerminal(string executable, string argument, bool verbose = false, bool useShell = false)
-        {
-            var data = ExecuteProcessTerminalReturnAll(executable, argument, verbose, useShell);
-            var output = data.Item1;
-            var error = data.Item2;
-            var returnCode = data.Item3;
-
-            if (returnCode == -1)
-            {
-                return null;
-            }
-            else
-            {
-                return output;
+                UnityEngine.Debug.LogException(e);
             }
         }
     }
