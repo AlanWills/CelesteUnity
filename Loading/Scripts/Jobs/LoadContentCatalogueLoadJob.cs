@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -50,6 +51,34 @@ namespace Celeste.Loading
         {
             Debug.Log(Application.persistentDataPath);
             yield return Addressables.InitializeAsync();
+            
+            //try having all the groups remote?
+            //do we need to do an update of the catalogues?
+            //dig deeper into LoadContentCatalogueAsync
+
+            var loadCatalogue = Addressables.LoadContentCatalogAsync(contentCatalogueURL);
+
+            yield return loadCatalogue;
+            //yield return Addressables.UpdateCatalogs();
+
+            if (loadCatalogue.Status == AsyncOperationStatus.Succeeded)
+            {
+                //Addressables.ClearResourceLocators();
+                List<IResourceLocator> resourceLocators = new List<IResourceLocator>(Addressables.ResourceLocators);
+
+                foreach (var resourceLocator in resourceLocators)
+                {
+                    Addressables.RemoveResourceLocator(resourceLocator);
+                }
+
+                Addressables.AddResourceLocator(loadCatalogue.Result);
+
+                foreach (var resourceLocator in resourceLocators)
+                {
+                    Addressables.AddResourceLocator(resourceLocator);
+                }
+            }
+
             //var checkHandle = Addressables.CheckForCatalogUpdates(false);
             //yield return checkHandle;
             //if (checkHandle.Status == AsyncOperationStatus.Succeeded && checkHandle.Result.Count > 0)
@@ -62,7 +91,7 @@ namespace Celeste.Loading
             //Get bundle list file from StreamingAsset
             var bundleCacheFileURL = $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/CachedAssetBundles.json";
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
-        var url = bundleCacheFileURL;
+            var url = bundleCacheFileURL;
 #else
             var url = Path.GetFullPath(bundleCacheFileURL);
 #endif
@@ -75,7 +104,15 @@ namespace Celeste.Loading
 
             Debug.Log($"BundleCache:{request.downloadHandler.text}");
             _bundleCacheList = JsonConvert.DeserializeObject<List<string>>(request.downloadHandler.text);
-            Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
+
+            if (_bundleCacheList != null)
+            {
+                Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
+            }
+            else
+            {
+                Debug.LogError($"No cached asset bundles found - ignoring custom transform func.");
+            }
         }
 
         private string Addressables_InternalIdTransformFunc(IResourceLocation location)
@@ -88,10 +125,6 @@ namespace Celeste.Loading
                     //Use LogError to test whether the StreamingAsset cache is used
                     HudLog.LogError($"StreamingAssetCache:{location.PrimaryKey}");
                     return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";
-                }
-                else
-                {
-                    HudLog.LogWarning($"{location.PrimaryKey} not {_bundleCacheList[0]}");
                 }
             }
 
@@ -109,7 +142,8 @@ namespace Celeste.Loading
                     return "Android";
 
                 case RuntimePlatform.WindowsPlayer:
-                    return "Windows";
+                case RuntimePlatform.WindowsEditor:
+                    return "StandaloneWindows64";
 
                 case RuntimePlatform.WebGLPlayer:
                     return "WebGL";

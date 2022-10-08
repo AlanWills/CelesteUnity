@@ -300,7 +300,7 @@ namespace CelesteEditor.BuildSystem
 
             if (success)
             {
-                PersistenceMenuItemUtility.OpenExplorerAt(buildDirectory);
+                PersistenceMenuItemUtility.OpenExplorerAt(BuildDirectory);
             }
             else if (Application.isBatchMode)
             {

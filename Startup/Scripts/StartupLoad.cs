@@ -1,4 +1,6 @@
+using Celeste.Loading;
 using Celeste.Scene;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +11,7 @@ namespace Celeste.Startup
     {
         #region Properties and Fields
 
-        [SerializeField] private SceneSet sceneSetToLoad;
+        [SerializeField] private LoadJob startupLoadJob;
 
         #endregion
 
@@ -17,7 +19,7 @@ namespace Celeste.Startup
 
         private void Awake()
         {
-            StartCoroutine(sceneSetToLoad.LoadAsync(LoadSceneMode.Single, (f) => { }, () => { }));
+            StartCoroutine(startupLoadJob.Execute((f) => { }, (s) => { }));
         }
 
         #endregion

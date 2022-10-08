@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.Startup",
     "references": [
         "Celeste.Scene",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Loading"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
