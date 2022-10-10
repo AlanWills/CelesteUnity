@@ -1,6 +1,4 @@
-﻿using Celeste.Assets;
-using Celeste.Log;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,90 +18,102 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
-        [Tooltip("Download the content catalogue at this URL.")]
-        [SerializeField] private string contentCatalogueURL;
+        private string LocalContentCatalogueHashPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.hash");
+        private string LocalContentCatalogueJsonPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.json");
+
+        [Tooltip("The URL to the file containing the hash of the latest content catalogue.")]
+        [SerializeField] private string remoteContentCatalogueHashURL;
+
+        [Tooltip("The URL to the file containing the json of the latest content catalogue.")]
+        [SerializeField] private string remoteContentCatalogueJsonURL;
 
         private List<string> _bundleCacheList = new List<string>();
 
         #endregion
 
-        //public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
-        //{
-        //    var loadCatalogue = Addressables.LoadContentCatalogAsync(contentCatalogueURL);
-
-        //    yield return loadCatalogue;
-        //    yield return Addressables.UpdateCatalogs();
-
-        //    if (loadCatalogue.Status == AsyncOperationStatus.Succeeded)
-        //    {
-        //        Addressables.ClearResourceLocators();
-        //        Addressables.AddResourceLocator(loadCatalogue.Result);
-        //    }
-        //    else
-        //    {
-        //        yield return new WaitForSeconds(10);
-        //    }
-
-        //    Addressables.Release(loadCatalogue);
-        //}
-
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            Debug.Log(Application.persistentDataPath);
-            yield return Addressables.InitializeAsync();
+            yield return Addressables.InitializeAsync(true);
             
-            //try having all the groups remote?
-            //do we need to do an update of the catalogues?
-            //dig deeper into LoadContentCatalogueAsync
+            // Get the hash of the remote catalogue and compare it with what we have previously downloaded (if anything)
+            // If the hash is different, download the new remote catalogue, then replace our local one with that
+            // Then, load the new catalogue from the local path
 
-            var loadCatalogue = Addressables.LoadContentCatalogAsync(contentCatalogueURL);
+            var remoteContentCatalogueHashRequest = UnityWebRequest.Get(remoteContentCatalogueHashURL);
+            yield return remoteContentCatalogueHashRequest.SendWebRequest();
 
-            yield return loadCatalogue;
-            //yield return Addressables.UpdateCatalogs();
-
-            if (loadCatalogue.Status == AsyncOperationStatus.Succeeded)
+            if (remoteContentCatalogueHashRequest.result == UnityWebRequest.Result.Success)
             {
-                //Addressables.ClearResourceLocators();
-                List<IResourceLocator> resourceLocators = new List<IResourceLocator>(Addressables.ResourceLocators);
+                string localContentCatalogueHash = File.Exists(LocalContentCatalogueHashPath) ? File.ReadAllText(LocalContentCatalogueHashPath) : string.Empty;
+                string remoteContentCatalogueHash = remoteContentCatalogueHashRequest.downloadHandler.text;
 
-                foreach (var resourceLocator in resourceLocators)
+                if (!string.IsNullOrEmpty(remoteContentCatalogueHash))
                 {
-                    Addressables.RemoveResourceLocator(resourceLocator);
-                }
+                    var remoteContentCatalogueJsonRequest = UnityWebRequest.Get(remoteContentCatalogueJsonURL);
+                    yield return remoteContentCatalogueJsonRequest.SendWebRequest();
 
-                Addressables.AddResourceLocator(loadCatalogue.Result);
-
-                foreach (var resourceLocator in resourceLocators)
-                {
-                    Addressables.AddResourceLocator(resourceLocator);
+                    if (remoteContentCatalogueJsonRequest.result == UnityWebRequest.Result.Success)
+                    {
+                        File.WriteAllText(LocalContentCatalogueJsonPath, remoteContentCatalogueJsonRequest.downloadHandler.text);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Could not download remote catalogue json at URL: {remoteContentCatalogueJsonURL}.");
+                    }
                 }
             }
-
-            //var checkHandle = Addressables.CheckForCatalogUpdates(false);
-            //yield return checkHandle;
-            //if (checkHandle.Status == AsyncOperationStatus.Succeeded && checkHandle.Result.Count > 0)
+            else
             {
-                //yield return Addressables.UpdateCatalogs(/*checkHandle.Result*/);
+                Debug.LogWarning($"Could not download remote catalogue hash at URL: {remoteContentCatalogueHashURL}.");
             }
 
-            //Addressables.Release(checkHandle);
+            if (File.Exists(LocalContentCatalogueJsonPath))
+            {
+                Debug.Assert(!string.IsNullOrEmpty(File.ReadAllText(LocalContentCatalogueJsonPath)), $"Found an empty local content catalogue at: {LocalContentCatalogueJsonPath}.");
+                var loadCatalogue = Addressables.LoadContentCatalogAsync(LocalContentCatalogueJsonPath);
 
-            //Get bundle list file from StreamingAsset
+                yield return loadCatalogue;
+
+                if (loadCatalogue.Status == AsyncOperationStatus.Succeeded)
+                {
+                    // We have to do this so that our remote content catalogue is prioritised over local catalogues
+                    // As an example of why this is required, go to AddressablesImpl.LoadSceneAsync
+                    // You will see we gather the resource locations and use the first one
+                    // However, unless our catalogue resource locator is first, we will use the local address not the remote address
+                    List<IResourceLocator> resourceLocators = new List<IResourceLocator>(Addressables.ResourceLocators);
+
+                    foreach (var resourceLocator in resourceLocators)
+                    {
+                        Addressables.RemoveResourceLocator(resourceLocator);
+                    }
+
+                    Addressables.AddResourceLocator(loadCatalogue.Result);
+
+                    foreach (var resourceLocator in resourceLocators)
+                    {
+                        Addressables.AddResourceLocator(resourceLocator);
+                    }
+                }
+
+                Addressables.Release(loadCatalogue);
+            }
+
+            // Get bundle list file from StreamingAsset
             var bundleCacheFileURL = $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/CachedAssetBundles.json";
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
             var url = bundleCacheFileURL;
 #else
             var url = Path.GetFullPath(bundleCacheFileURL);
 #endif
-            var request = UnityWebRequest.Get(url);
-            yield return request.SendWebRequest();
-            if (!string.IsNullOrEmpty(request.error))
+            var loadBundleCacheRequest = UnityWebRequest.Get(url);
+            yield return loadBundleCacheRequest.SendWebRequest();
+
+            if (!string.IsNullOrEmpty(loadBundleCacheRequest.error))
             {
-                Debug.LogError(request.error);
+                Debug.LogError(loadBundleCacheRequest.error);
             }
 
-            Debug.Log($"BundleCache:{request.downloadHandler.text}");
-            _bundleCacheList = JsonConvert.DeserializeObject<List<string>>(request.downloadHandler.text);
+            _bundleCacheList = JsonConvert.DeserializeObject<List<string>>(loadBundleCacheRequest.downloadHandler.text);
 
             if (_bundleCacheList != null)
             {
@@ -122,8 +132,6 @@ namespace Celeste.Loading
                 if (_bundleCacheList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
-                    //Use LogError to test whether the StreamingAsset cache is used
-                    HudLog.LogError($"StreamingAssetCache:{location.PrimaryKey}");
                     return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";
                 }
             }
