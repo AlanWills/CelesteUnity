@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Celeste.BuildSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +8,6 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
-using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace Celeste.Loading
 {
@@ -21,12 +19,6 @@ namespace Celeste.Loading
         private string LocalContentCatalogueHashPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.hash");
         private string LocalContentCatalogueJsonPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.json");
 
-        [Tooltip("The URL to the file containing the hash of the latest content catalogue.")]
-        [SerializeField] private string remoteContentCatalogueHashURL;
-
-        [Tooltip("The URL to the file containing the json of the latest content catalogue.")]
-        [SerializeField] private string remoteContentCatalogueJsonURL;
-
         private List<string> _bundleCacheList = new List<string>();
 
         #endregion
@@ -34,37 +26,54 @@ namespace Celeste.Loading
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
             yield return Addressables.InitializeAsync(true);
-            
-            // Get the hash of the remote catalogue and compare it with what we have previously downloaded (if anything)
-            // If the hash is different, download the new remote catalogue, then replace our local one with that
-            // Then, load the new catalogue from the local path
 
-            var remoteContentCatalogueHashRequest = UnityWebRequest.Get(remoteContentCatalogueHashURL);
-            yield return remoteContentCatalogueHashRequest.SendWebRequest();
+            string runtimeBuildSettingsFilePath = Path.Combine(Application.streamingAssetsPath, "BuildSettings.json");
+            var runtimeBuildSettingsRequest = UnityWebRequest.Get(runtimeBuildSettingsFilePath);
 
-            if (remoteContentCatalogueHashRequest.result == UnityWebRequest.Result.Success)
+            yield return runtimeBuildSettingsRequest.SendWebRequest();
+
+            if (runtimeBuildSettingsRequest.result == UnityWebRequest.Result.Success)
             {
-                string localContentCatalogueHash = File.Exists(LocalContentCatalogueHashPath) ? File.ReadAllText(LocalContentCatalogueHashPath) : string.Empty;
-                string remoteContentCatalogueHash = remoteContentCatalogueHashRequest.downloadHandler.text;
+                RuntimeBuildSettings runtimeBuildSettings = JsonUtility.FromJson<RuntimeBuildSettings>(runtimeBuildSettingsRequest.downloadHandler.text);
 
-                if (!string.IsNullOrEmpty(remoteContentCatalogueHash))
+                // Get the hash of the remote catalogue and compare it with what we have previously downloaded (if anything)
+                // If the hash is different, download the new remote catalogue, then replace our local one with that
+                // Then, load the new catalogue from the local path
+
+                var remoteContentCatalogueHashRequest = UnityWebRequest.Get(runtimeBuildSettings.RemoteContentCatalogueHashURL);
+                yield return remoteContentCatalogueHashRequest.SendWebRequest();
+
+                if (remoteContentCatalogueHashRequest.result == UnityWebRequest.Result.Success)
                 {
-                    var remoteContentCatalogueJsonRequest = UnityWebRequest.Get(remoteContentCatalogueJsonURL);
-                    yield return remoteContentCatalogueJsonRequest.SendWebRequest();
+                    string localContentCatalogueHash = File.Exists(LocalContentCatalogueHashPath) ? File.ReadAllText(LocalContentCatalogueHashPath) : string.Empty;
+                    string remoteContentCatalogueHash = remoteContentCatalogueHashRequest.downloadHandler.text;
 
-                    if (remoteContentCatalogueJsonRequest.result == UnityWebRequest.Result.Success)
+                    // We have a remote content catalogue and it has a different hash to our local saved one
+                    // We can download the new local content catalogue
+                    if (!string.IsNullOrEmpty(remoteContentCatalogueHash) &&
+                        string.CompareOrdinal(remoteContentCatalogueHash, localContentCatalogueHash) != 0)
                     {
-                        File.WriteAllText(LocalContentCatalogueJsonPath, remoteContentCatalogueJsonRequest.downloadHandler.text);
+                        var remoteContentCatalogueJsonRequest = UnityWebRequest.Get(runtimeBuildSettings.RemoteContentCatalogueJsonURL);
+                        yield return remoteContentCatalogueJsonRequest.SendWebRequest();
+
+                        if (remoteContentCatalogueJsonRequest.result == UnityWebRequest.Result.Success)
+                        {
+                            File.WriteAllText(LocalContentCatalogueJsonPath, remoteContentCatalogueJsonRequest.downloadHandler.text);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Could not download remote catalogue json at URL: {runtimeBuildSettings.RemoteContentCatalogueJsonURL}.");
+                        }
                     }
-                    else
-                    {
-                        Debug.LogWarning($"Could not download remote catalogue json at URL: {remoteContentCatalogueJsonURL}.");
-                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Could not download remote catalogue hash at URL: {runtimeBuildSettings.RemoteContentCatalogueHashURL}.");
                 }
             }
             else
             {
-                Debug.LogWarning($"Could not download remote catalogue hash at URL: {remoteContentCatalogueHashURL}.");
+                Debug.LogError($"Could not load runtime build settings from streaming assets: {runtimeBuildSettingsFilePath}.");
             }
 
             if (File.Exists(LocalContentCatalogueJsonPath))
@@ -96,68 +105,6 @@ namespace Celeste.Loading
                 }
 
                 Addressables.Release(loadCatalogue);
-            }
-
-            // Get bundle list file from StreamingAsset
-            var bundleCacheFileURL = $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/CachedAssetBundles.json";
-#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
-            var url = bundleCacheFileURL;
-#else
-            var url = Path.GetFullPath(bundleCacheFileURL);
-#endif
-            var loadBundleCacheRequest = UnityWebRequest.Get(url);
-            yield return loadBundleCacheRequest.SendWebRequest();
-
-            if (!string.IsNullOrEmpty(loadBundleCacheRequest.error))
-            {
-                Debug.LogError(loadBundleCacheRequest.error);
-            }
-
-            _bundleCacheList = JsonConvert.DeserializeObject<List<string>>(loadBundleCacheRequest.downloadHandler.text);
-
-            if (_bundleCacheList != null)
-            {
-                Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
-            }
-            else
-            {
-                Debug.LogError($"No cached asset bundles found - ignoring custom transform func.");
-            }
-        }
-
-        private string Addressables_InternalIdTransformFunc(IResourceLocation location)
-        {
-            if (location.Data is AssetBundleRequestOptions)
-            {
-                if (_bundleCacheList.Contains(location.PrimaryKey))
-                {
-                    var fileName = Path.GetFileName(location.PrimaryKey);
-                    return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";
-                }
-            }
-
-            return location.InternalId;
-        }
-
-        private static string ToBuildPlatformString(RuntimePlatform runtimePlatform)
-        {
-            switch (runtimePlatform)
-            {
-                case RuntimePlatform.IPhonePlayer:
-                    return "iOS";
-
-                case RuntimePlatform.Android:
-                    return "Android";
-
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                    return "StandaloneWindows64";
-
-                case RuntimePlatform.WebGLPlayer:
-                    return "WebGL";
-
-                default:
-                    return "Unknown";
             }
         }
     }

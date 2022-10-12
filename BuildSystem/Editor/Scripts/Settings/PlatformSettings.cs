@@ -83,7 +83,7 @@ namespace CelesteEditor.BuildSystem
         private bool addressablesEnabled = false;
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
-        [Tooltip("Used to target the addressables at a different version to the 'version' variable e.g. if you wanted addressables for '0.3.x'." + STRING_SUBSTITUTION_HELP)]
+        [Tooltip("A custom string that will be appended to the end of the remote addressables catalogue name in place of the Unity-generated hash." + STRING_SUBSTITUTION_HELP)]
         private string playerOverrideVersion;
         public string PlayerOverrideVersion
         {
@@ -159,6 +159,7 @@ namespace CelesteEditor.BuildSystem
             get { return buildOptions; }
         }
 
+        [Header("Build Player")]
         [SerializeField]
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
         private ScriptingDefineSymbols scriptingDefineSymbols;
@@ -167,8 +168,12 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
         private AddressableGroupNames addressableGroupsInBuild;
 
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Any custom scripting steps that should be run before making a player build.  Useful for creating extra metadata or custom build pipelines.")]
+        private BuildPreparationSteps buildPreparationSteps;
+
         [SerializeField]
-        [Tooltip("Any custom scripting steps that should be run after creating a build.  Useful for automated asset tooling.")]
+        [Tooltip("Any custom scripting steps that should be run after creating a build.  Useful for creating extra metadata or custom build pipelines.")]
         private BuildPostProcessSteps buildPostProcessSteps;
 
         [Header("Build Assets")]
@@ -289,6 +294,11 @@ namespace CelesteEditor.BuildSystem
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
 
             Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
+
+            foreach (BuildPreparationStep buildPreparationStep in buildPreparationSteps)
+            {
+                buildPreparationStep.Execute(buildPlayerOptions, this);
+            }
 
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             bool success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;

@@ -6,6 +6,7 @@
         "Celeste.Tools",
         "Celeste.Tools.Editor",
         "Celeste.Objects",
+        "Celeste.BuildSystem",
         "Celeste.Persistence.Editor",
         "Unity.Addressables",
         "Unity.Addressables.Editor"

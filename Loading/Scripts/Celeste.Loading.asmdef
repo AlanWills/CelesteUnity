@@ -2,15 +2,16 @@
     "name": "Celeste.Loading",
     "rootNamespace": "Celeste.Loading",
     "references": [
-        "GUID:9e24947de15b9834991c9d8411ea37cf",
-        "GUID:84651a3751eca9349aac36a66bba901b",
-        "GUID:7cfedb47a7dec8d4e8681b760be55faf",
-        "GUID:53010ec1db6f54b478952285443e341b",
-        "GUID:a46634193a4721d4d87925d12c2c4bcf",
-        "GUID:c95af7bc4649e4b4da85b957be8cc138",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "Celeste.Scene",
+        "Celeste.Events",
+        "Celeste.Log",
+        "Celeste.Objects",
         "Celeste.Assets",
         "Celeste.Coroutines",
-        "Celeste.Parameters"
+        "Celeste.Parameters",
+        "Celeste.BuildSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
