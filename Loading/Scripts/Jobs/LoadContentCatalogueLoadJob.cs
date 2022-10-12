@@ -16,9 +16,6 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
-        private string LocalContentCatalogueHashPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.hash");
-        private string LocalContentCatalogueJsonPath => Path.Combine(Application.persistentDataPath, "LocalContentCatalogue.json");
-
         private List<string> _bundleCacheList = new List<string>();
 
         #endregion
@@ -35,51 +32,7 @@ namespace Celeste.Loading
             if (runtimeBuildSettingsRequest.result == UnityWebRequest.Result.Success)
             {
                 RuntimeBuildSettings runtimeBuildSettings = JsonUtility.FromJson<RuntimeBuildSettings>(runtimeBuildSettingsRequest.downloadHandler.text);
-
-                // Get the hash of the remote catalogue and compare it with what we have previously downloaded (if anything)
-                // If the hash is different, download the new remote catalogue, then replace our local one with that
-                // Then, load the new catalogue from the local path
-
-                var remoteContentCatalogueHashRequest = UnityWebRequest.Get(runtimeBuildSettings.RemoteContentCatalogueHashURL);
-                yield return remoteContentCatalogueHashRequest.SendWebRequest();
-
-                if (remoteContentCatalogueHashRequest.result == UnityWebRequest.Result.Success)
-                {
-                    string localContentCatalogueHash = File.Exists(LocalContentCatalogueHashPath) ? File.ReadAllText(LocalContentCatalogueHashPath) : string.Empty;
-                    string remoteContentCatalogueHash = remoteContentCatalogueHashRequest.downloadHandler.text;
-
-                    // We have a remote content catalogue and it has a different hash to our local saved one
-                    // We can download the new local content catalogue
-                    if (!string.IsNullOrEmpty(remoteContentCatalogueHash) &&
-                        string.CompareOrdinal(remoteContentCatalogueHash, localContentCatalogueHash) != 0)
-                    {
-                        var remoteContentCatalogueJsonRequest = UnityWebRequest.Get(runtimeBuildSettings.RemoteContentCatalogueJsonURL);
-                        yield return remoteContentCatalogueJsonRequest.SendWebRequest();
-
-                        if (remoteContentCatalogueJsonRequest.result == UnityWebRequest.Result.Success)
-                        {
-                            File.WriteAllText(LocalContentCatalogueJsonPath, remoteContentCatalogueJsonRequest.downloadHandler.text);
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"Could not download remote catalogue json at URL: {runtimeBuildSettings.RemoteContentCatalogueJsonURL}.");
-                        }
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"Could not download remote catalogue hash at URL: {runtimeBuildSettings.RemoteContentCatalogueHashURL}.");
-                }
-            }
-            else
-            {
-                Debug.LogError($"Could not load runtime build settings from streaming assets: {runtimeBuildSettingsFilePath}.");
-            }
-
-            if (File.Exists(LocalContentCatalogueJsonPath))
-            {
-                Debug.Assert(!string.IsNullOrEmpty(File.ReadAllText(LocalContentCatalogueJsonPath)), $"Found an empty local content catalogue at: {LocalContentCatalogueJsonPath}.");
-                var loadCatalogue = Addressables.LoadContentCatalogAsync(LocalContentCatalogueJsonPath);
+                var loadCatalogue = Addressables.LoadContentCatalogAsync(runtimeBuildSettings.RemoteContentCatalogueJsonURL);
 
                 yield return loadCatalogue;
 
@@ -105,6 +58,10 @@ namespace Celeste.Loading
                 }
 
                 Addressables.Release(loadCatalogue);
+            }
+            else
+            {
+                Debug.LogError($"Could not load runtime build settings from streaming assets: {runtimeBuildSettingsFilePath}.");
             }
         }
     }
