@@ -22,47 +22,32 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            yield return Addressables.InitializeAsync(true);
+            var initialize =  Addressables.InitializeAsync(false);
 
-            string runtimeBuildSettingsFilePath = Path.Combine(Application.streamingAssetsPath, "BuildSettings.json");
-            var runtimeBuildSettingsRequest = UnityWebRequest.Get(runtimeBuildSettingsFilePath);
+            yield return initialize;
 
-            yield return runtimeBuildSettingsRequest.SendWebRequest();
-
-            if (runtimeBuildSettingsRequest.result == UnityWebRequest.Result.Success)
+            if (initialize.Status == AsyncOperationStatus.Succeeded)
             {
-                RuntimeBuildSettings runtimeBuildSettings = JsonUtility.FromJson<RuntimeBuildSettings>(runtimeBuildSettingsRequest.downloadHandler.text);
-                var loadCatalogue = Addressables.LoadContentCatalogAsync(runtimeBuildSettings.RemoteContentCatalogueJsonURL);
+                // We have to do this so that our remote content catalogue is prioritised over local catalogues
+                // As an example of why this is required, go to AddressablesImpl.LoadSceneAsync
+                // You will see we gather the resource locations and use the first one
+                // However, unless our catalogue resource locator is first, we will use the local address not the remote address
+                List<IResourceLocator> resourceLocators = new List<IResourceLocator>(Addressables.ResourceLocators);
 
-                yield return loadCatalogue;
-
-                if (loadCatalogue.Status == AsyncOperationStatus.Succeeded)
+                foreach (var resourceLocator in resourceLocators)
                 {
-                    // We have to do this so that our remote content catalogue is prioritised over local catalogues
-                    // As an example of why this is required, go to AddressablesImpl.LoadSceneAsync
-                    // You will see we gather the resource locations and use the first one
-                    // However, unless our catalogue resource locator is first, we will use the local address not the remote address
-                    List<IResourceLocator> resourceLocators = new List<IResourceLocator>(Addressables.ResourceLocators);
-
-                    foreach (var resourceLocator in resourceLocators)
-                    {
-                        Addressables.RemoveResourceLocator(resourceLocator);
-                    }
-
-                    Addressables.AddResourceLocator(loadCatalogue.Result);
-
-                    foreach (var resourceLocator in resourceLocators)
-                    {
-                        Addressables.AddResourceLocator(resourceLocator);
-                    }
+                    Addressables.RemoveResourceLocator(resourceLocator);
                 }
 
-                Addressables.Release(loadCatalogue);
+                Addressables.AddResourceLocator(initialize.Result);
+
+                foreach (var resourceLocator in resourceLocators)
+                {
+                    Addressables.AddResourceLocator(resourceLocator);
+                }
             }
-            else
-            {
-                Debug.LogError($"Could not load runtime build settings from streaming assets: {runtimeBuildSettingsFilePath}.");
-            }
+
+            Addressables.Release(initialize);
         }
     }
 }
