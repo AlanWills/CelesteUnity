@@ -11,6 +11,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using CelesteEditor.UnityProject.Constants;
 using Celeste.Bootstrap;
+using TMPro.EditorUtilities;
 
 namespace CelesteEditor.UnityProject
 {
@@ -347,7 +348,8 @@ namespace CelesteEditor.UnityProject
 
             if (parameters.usesTextMeshPro)
             {
-                EditorApplication.ExecuteMenuItem(IMPORT_TMPRO_ESSENTIALS_MENU_ITEM);
+                string packageFullPath = TMP_EditorUtility.packageFullPath;
+                AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
             }
         }
 

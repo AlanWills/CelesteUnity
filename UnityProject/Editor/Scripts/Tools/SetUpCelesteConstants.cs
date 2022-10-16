@@ -11,7 +11,7 @@
         public const string LOAD_BOOTSTRAP_SCENE_SET_LOAD_JOB_NAME = "LoadBootstrapSceneSet";
         public const string LOAD_JOB_NAME = "StartupLoadJob";
         public const string SCENE_NAME = "Startup";
-        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + "unity";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "StartupSceneSet";
         public const string NAMESPACE_NAME = "Startup";
     }
@@ -25,7 +25,7 @@
         public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemSceneSet";
         public const string LOAD_JOB_NAME = "BootstrapLoadJob";
         public const string SCENE_NAME = "Bootstrap";
-        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + "unity";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "BootstrapSceneSet";
         public const string NAMESPACE_NAME = "Bootstrap";
         public const string BOOTSTRAP_MANAGER_PREFAB_NAME = "BootstrapManager";
@@ -38,7 +38,7 @@
         public const string DATA_FOLDER_PATH = FOLDER_PATH + "Data/";
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
         public const string SCENE_NAME = "EngineSystems";
-        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + "unity";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "EngineSystemsSceneSet";
         public const string ENGINE_SYSTEMS_PREFAB_NAME = "EngineSystems";
     }

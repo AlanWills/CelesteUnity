@@ -52,7 +52,7 @@ namespace CelesteEditor.UnityProject
                     RedirectStandardError = false,
                     RedirectStandardInput = false,
                     RedirectStandardOutput = false,
-                    CreateNoWindow = true,
+                    CreateNoWindow = false,
                     Arguments = argument,
                     WorkingDirectory = Application.dataPath
                 };
