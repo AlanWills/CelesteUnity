@@ -314,7 +314,7 @@ namespace CelesteEditor.Tools
                 }
             }
 
-            Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.");
+            Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.  Found: {assets.Count}.");
             return default;
         }
     }

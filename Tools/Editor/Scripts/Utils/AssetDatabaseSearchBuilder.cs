@@ -17,7 +17,7 @@
 
         public AssetDatabaseSearchBuilder WithType<T>() where T : UnityEngine.Object
         {
-            typeName = typeof(T).FullName;
+            typeName = typeof(T).Name;
             return this;
         }
 
