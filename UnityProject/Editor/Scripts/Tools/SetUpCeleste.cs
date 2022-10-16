@@ -1,4 +1,6 @@
-﻿using Celeste.Scene;
+﻿using Celeste.Loading;
+using Celeste.Scene;
+using Celeste.Startup;
 using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem;
 using CelesteEditor.Tools;
@@ -7,6 +9,8 @@ using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using CelesteEditor.UnityProject.Constants;
+using Celeste.Bootstrap;
 
 namespace CelesteEditor.UnityProject
 {
@@ -27,6 +31,7 @@ namespace CelesteEditor.UnityProject
 
         [Header("Assets")]
         public bool usesAddressables;
+        [ShowIf(nameof(usesAddressables))] public bool usesBakedGroupsWithRemoteOverride;
         public bool usesTextMeshPro;
 
         [Header("Scenes")]
@@ -45,6 +50,7 @@ namespace CelesteEditor.UnityProject
             runsOnWebGL = true;
 
             usesAddressables = true;
+            usesBakedGroupsWithRemoteOverride = true;
             usesTextMeshPro = true;
 
             needsStartupScene = true;
@@ -65,7 +71,7 @@ namespace CelesteEditor.UnityProject
         {
             CreateAssetData(parameters);
             CreateBuildSystemData(parameters);
-            CreateSceneData(parameters);
+            CreateModules(parameters);
         }
 
         #region Utility
@@ -98,85 +104,236 @@ namespace CelesteEditor.UnityProject
             }
         }
 
-        private static void CreateSceneData(SetUpCelesteParameters parameters)
+        private static void CreateModules(SetUpCelesteParameters parameters)
         {
-            CreateStartupScene(parameters);
-            CreateBootstrapScene(parameters);
-            CreateEngineSystemsScene(parameters);
+            CreateEngineSystems(parameters);
+            CreateBootstrap(parameters);
+            CreateStartup(parameters);
         }
 
-        private static void CreateStartupScene(SetUpCelesteParameters parameters)
+        #region Startup
+
+        private static void CreateStartup(SetUpCelesteParameters parameters)
         {
             if (parameters.needsStartupScene)
             {
-                AssetUtility.CreateFolder("Assets/Startup/Scenes");
-
-                UnityEngine.SceneManagement.Scene startupScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-                EditorSceneManager.SaveScene(startupScene, "Assets/Startup/Scenes/Startup.unity");
-
-                SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
-                sceneSet.name = "StartupSceneSet";
-                sceneSet.AddScene("Startup", SceneType.Baked);
-                AssetUtility.CreateAssetInFolder(sceneSet, "Assets/Startup/Scenes");
-
-                EditorBuildSettings.scenes = new EditorBuildSettingsScene[]
-                {
-                    new EditorBuildSettingsScene("Assets/Startup/Scenes/Startup.scene", true)
-                };
-
-                // Create assembly definition and menu items
-                CreateAssembliesParameters startupAssembly = new CreateAssembliesParameters();
-                startupAssembly.hasEditorAssembly = true;
-                startupAssembly.assemblyName = $"{parameters.rootNamespaceName}.Startup";
-                startupAssembly.directoryName = "Startup";
-                startupAssembly.hasSceneMenuItem = true;
-
-                CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
+                CreateStartupFolders();
+                CreateStartupLoadJob(parameters);
+                CreateStartupScene();
+                CreateStartupAssemblies(parameters);
             }
         }
 
-        private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
+        private static void CreateStartupFolders()
+        {
+            AssetUtility.CreateFolder(StartupConstants.SCENES_FOLDER_PATH);
+            AssetUtility.CreateFolder(StartupConstants.LOAD_JOBS_FOLDER_PATH);
+        }
+
+        private static void CreateStartupLoadJob(SetUpCelesteParameters parameters)
+        {
+            var startupLoadJobBuilder = new MultiLoadJob.Builder();
+
+            // Disable fallback assets load job
+            {
+                var disableFallbackAssets = AssetUtility.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
+                Debug.Assert(disableFallbackAssets != null, $"Could not find disable fallback load assets load job: {CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME}.");
+                startupLoadJobBuilder.WithLoadJob(disableFallbackAssets);
+            }
+
+            if (parameters.usesAddressables && parameters.usesBakedGroupsWithRemoteOverride)
+            {
+                // Load content catalogue load job
+                {
+                    LoadContentCatalogueLoadJob loadContentCatalogue = ScriptableObject.CreateInstance<LoadContentCatalogueLoadJob>();
+                    loadContentCatalogue.name = StartupConstants.LOAD_CONTENT_CATALOGUE_LOAD_JOB_NAME;
+                    startupLoadJobBuilder.WithLoadJob(loadContentCatalogue);
+
+                    AssetUtility.CreateAssetInFolder(loadContentCatalogue, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                }
+
+                // Enable bundled addressables load job
+                {
+                    EnableBundledAddressablesLoadJob enableBundledAddressables = ScriptableObject.CreateInstance<EnableBundledAddressablesLoadJob>();
+                    enableBundledAddressables.name = StartupConstants.ENABLE_BUNDLED_ADDRESSABLES_LOAD_JOB_NAME;
+                    startupLoadJobBuilder.WithLoadJob(enableBundledAddressables);
+                    
+                    AssetUtility.CreateAssetInFolder(enableBundledAddressables, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                }
+            }
+
+            // Load bootstrap scene set load job
+            {
+                SceneSet bootstrapSceneSet = AssetUtility.FindAsset<SceneSet>(BootstrapConstants.SCENE_SET_NAME);
+                Debug.Assert(bootstrapSceneSet != null, $"Could not find bootstrap scene set for load job: {BootstrapConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
+                var loadBootstrapSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
+                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Single)
+                    .WithSceneSet(bootstrapSceneSet);
+
+                LoadSceneSetLoadJob loadBootstrapSceneSet = loadBootstrapSceneSetBuilder.Build();
+                loadBootstrapSceneSet.name = StartupConstants.LOAD_BOOTSTRAP_SCENE_SET_LOAD_JOB_NAME;
+                startupLoadJobBuilder.WithLoadJob(loadBootstrapSceneSet);
+
+                AssetUtility.CreateAssetInFolder(loadBootstrapSceneSet, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+            }
+
+            LoadJob startupLoadJob = startupLoadJobBuilder.Build();
+            startupLoadJob.name = StartupConstants.LOAD_JOB_NAME;
+            AssetUtility.CreateAssetInFolder(startupLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+        }
+
+        private static void CreateStartupScene()
+        {
+            UnityEngine.SceneManagement.Scene startupScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            
+            // Create main camera
+            {
+                GameObject cameraGameObject = new GameObject("Main Camera");
+                Camera camera = cameraGameObject.AddComponent<Camera>();
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = Color.white;
+                camera.orthographic = true;
+            }
+
+            // Create startup load component
+            {
+                GameObject startupLoadGameObject = new GameObject(nameof(StartupLoad));
+                StartupLoad startupLoad = startupLoadGameObject.AddComponent<StartupLoad>();
+                LoadJob startupLoadJob = AssetUtility.FindAsset<LoadJob>(StartupConstants.LOAD_JOB_NAME);
+                Debug.Assert(startupLoadJob != null, $"Could not find startup load job: {StartupConstants.LOAD_JOB_NAME}.  It will have to be set after it is created.");
+                startupLoad.StartupLoadJob = startupLoadJob;
+            }
+
+            EditorSceneManager.SaveScene(startupScene, StartupConstants.SCENE_PATH);
+
+            SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
+            sceneSet.name = StartupConstants.SCENE_SET_NAME;
+            sceneSet.AddScene(StartupConstants.SCENE_NAME, SceneType.Baked);
+            AssetUtility.CreateAssetInFolder(sceneSet, StartupConstants.SCENES_FOLDER_PATH);
+
+            EditorBuildSettings.scenes = new EditorBuildSettingsScene[]
+            {
+                new EditorBuildSettingsScene(StartupConstants.SCENE_PATH, true)
+            };
+        }
+
+        private static void CreateStartupAssemblies(SetUpCelesteParameters parameters)
+        {
+            // Create assembly definition and menu items
+            CreateAssembliesParameters startupAssembly = new CreateAssembliesParameters();
+            startupAssembly.hasEditorAssembly = true;
+            startupAssembly.assemblyName = $"{parameters.rootNamespaceName}.{StartupConstants.NAMESPACE_NAME}";
+            startupAssembly.directoryName = StartupConstants.FOLDER_NAME;
+            startupAssembly.hasSceneMenuItem = true;
+
+            CreateAssemblyDefinition.CreateAssemblies(startupAssembly); 
+        }
+
+        #endregion
+
+        #region Bootstrap
+
+        private static void CreateBootstrap(SetUpCelesteParameters parameters)
         {
             if (parameters.needsBootstrapScene)
             {
-                AssetUtility.CreateFolder("Assets/Bootstrap/Scenes");
-
-                UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-                EditorSceneManager.SaveScene(bootstrapScene, "Assets/Bootstrap/Scenes/Bootstrap.unity");
-
-                SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
-                bootstrapSceneSet.name = "BootstrapSceneSet";
-                bootstrapSceneSet.AddScene("Bootstrap", SceneType.Addressable);
-                AssetUtility.CreateAssetInFolder(bootstrapSceneSet, "Assets/Bootstrap/Scenes");
-
-                // Create assembly definition and menu items
-                CreateAssembliesParameters bootstrapAssembly = new CreateAssembliesParameters();
-                bootstrapAssembly.hasEditorAssembly = true;
-                bootstrapAssembly.assemblyName = $"{parameters.rootNamespaceName}.Bootstrap";
-                bootstrapAssembly.directoryName = "Bootstrap";
-                bootstrapAssembly.hasSceneMenuItem = true;
-
-                CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
+                CreateBootstrapFolders();
+                CreateBootstrapLoadJob();
+                CreateBootstrapScene();
+                CreateBootstrapAssemblies(parameters);
             }
         }
 
-        private static void CreateEngineSystemsScene(SetUpCelesteParameters parameters)
+        private static void CreateBootstrapFolders()
+        {
+            AssetUtility.CreateFolder(BootstrapConstants.SCENES_FOLDER_PATH);
+            AssetUtility.CreateFolder(BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+        }
+
+        private static void CreateBootstrapLoadJob()
+        {
+            var bootstrapLoadJobBuilder = new MultiLoadJob.Builder();
+
+            // Load engine systems scene set load job
+            {
+                SceneSet engineSystemsSceneSet = AssetUtility.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
+                Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
+                var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
+                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Single)
+                    .WithSceneSet(engineSystemsSceneSet);
+
+                LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
+                loadEngineSystemsSceneSet.name = BootstrapConstants.LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
+                bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
+
+                AssetUtility.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+            }
+
+            LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
+            bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
+            AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+        }
+
+        private static void CreateBootstrapScene()
+        {
+            UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            GameObject bootstrapManagerPrefab = AssetUtility.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
+            GameObject bootstrapManagerInstance = PrefabUtility.InstantiatePrefab(bootstrapManagerPrefab, bootstrapScene) as GameObject;
+            LoadJob bootstrapLoadJob = AssetUtility.FindAsset<LoadJob>(BootstrapConstants.LOAD_JOB_NAME);
+            Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
+            bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
+            EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
+
+            SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
+            bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
+            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable);
+            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable);
+            AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
+        }
+
+        private static void CreateBootstrapAssemblies(SetUpCelesteParameters parameters)
+        {
+            CreateAssembliesParameters bootstrapAssembly = new CreateAssembliesParameters();
+            bootstrapAssembly.hasEditorAssembly = true;
+            bootstrapAssembly.assemblyName = $"{parameters.rootNamespaceName}.{BootstrapConstants.NAMESPACE_NAME}";
+            bootstrapAssembly.directoryName = BootstrapConstants.FOLDER_NAME;
+            bootstrapAssembly.hasSceneMenuItem = true;
+
+            CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
+        }
+
+        #endregion
+
+        #region Engine Systems
+
+        private static void CreateEngineSystems(SetUpCelesteParameters parameters)
         {
             if (parameters.needsEngineSystemsScene)
             {
-                AssetUtility.CreateFolder("Assets/EngineSystems/Scenes");
-                
-                UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-                GameObject engineSystemsPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Celeste/Engine/Prefabs/EngineSystems.prefab");
-                PrefabUtility.InstantiatePrefab(engineSystemsPrefab, engineSystemsScene);
-                EditorSceneManager.SaveScene(engineSystemsScene, "Assets/EngineSystems/Scenes/EngineSystems.unity");
-
-                SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
-                engineSystemsSceneSet.name = "EngineSystemsSceneSet";
-                engineSystemsSceneSet.AddScene("EngineSystems", SceneType.Addressable);
-                AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, "Assets/EngineSystems/Scenes");
+                CreateEngineSystemsFolders();
+                CreateEngineSystemsScene();
             }
         }
+
+        private static void CreateEngineSystemsFolders()
+        {
+            AssetUtility.CreateFolder(EngineSystemsConstants.SCENES_FOLDER_PATH);
+        }
+
+        private static void CreateEngineSystemsScene()
+        {
+            UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            GameObject engineSystemsPrefab = AssetUtility.FindAsset<GameObject>(EngineSystemsConstants.ENGINE_SYSTEMS_PREFAB_NAME);
+            PrefabUtility.InstantiatePrefab(engineSystemsPrefab, engineSystemsScene);
+            EditorSceneManager.SaveScene(engineSystemsScene, EngineSystemsConstants.SCENE_PATH);
+
+            SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
+            engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable);
+            AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
+        }
+
+        #endregion
 
         private static void CreateAssetData(SetUpCelesteParameters parameters)
         {

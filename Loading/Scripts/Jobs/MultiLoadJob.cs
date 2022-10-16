@@ -16,7 +16,11 @@ namespace Celeste.Loading
 
             public Builder WithLoadJob(LoadJob loadJob)
             {
-                loadJobs.Add(loadJob);
+                if (loadJob != null)
+                {
+                    loadJobs.Add(loadJob);
+                }
+
                 return this;
             }
 
@@ -24,7 +28,7 @@ namespace Celeste.Loading
             {
                 MultiLoadJob multiLoadJob = CreateInstance<MultiLoadJob>();
                 multiLoadJob.name = nameof(MultiLoadJob);
-                multiLoadJob.loadJobs = loadJobs.ToArray();
+                multiLoadJob.loadJobs.AddRange(loadJobs);
 
                 return multiLoadJob;
             }
@@ -34,14 +38,14 @@ namespace Celeste.Loading
 
         #region Properties and Fields
 
-        [SerializeField] private LoadJob[] loadJobs;
+        [SerializeField] private List<LoadJob> loadJobs = new List<LoadJob>();
 
         #endregion
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
             Debug.Assert(loadJobs != null, $"No load jobs set in {nameof(MultiLoadJob)} '{name}'.");
-            for (int i = 0, n = loadJobs != null ? loadJobs.Length : 0; i < n; ++i)
+            for (int i = 0, n = loadJobs.Count; i < n; ++i)
             {
                 yield return loadJobs[i].Execute(setProgress, setOutput);
             }

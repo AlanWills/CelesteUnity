@@ -1,8 +1,5 @@
 using Celeste.Loading;
-using Celeste.Scene;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Celeste.Startup
 {
@@ -10,6 +7,17 @@ namespace Celeste.Startup
     public class StartupLoad : MonoBehaviour
     {
         #region Properties and Fields
+
+        public LoadJob StartupLoadJob
+        {
+            set
+            {
+                startupLoadJob = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(startupLoadJob);
+#endif
+            }
+        }
 
         [SerializeField] private LoadJob startupLoadJob;
 

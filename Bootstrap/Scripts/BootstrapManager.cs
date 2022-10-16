@@ -2,9 +2,9 @@ using Celeste.Loading;
 using Celeste.Loading.Events;
 using UnityEngine;
 
-namespace DnD.Bootstrap
+namespace Celeste.Bootstrap
 {
-    [AddComponentMenu("DnD/Bootstrap/Bootstrap Manager")]
+    [AddComponentMenu("Celeste/Bootstrap/Bootstrap Manager")]
     public class BootstrapManager : MonoBehaviour
     {
         #region Properties and Fields
