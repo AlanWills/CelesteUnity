@@ -29,6 +29,7 @@ namespace CelesteEditor.UnityProject
 
         [Header("Code")]
         public string rootNamespaceName;
+        public string rootMenuItemName;
 
         [Header("Assets")]
         public bool usesAddressables;
@@ -220,12 +221,13 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateStartupAssemblies(SetUpCelesteParameters parameters)
         {
-            // Create assembly definition and menu items
             CreateAssembliesParameters startupAssembly = new CreateAssembliesParameters();
             startupAssembly.hasEditorAssembly = true;
             startupAssembly.assemblyName = $"{parameters.rootNamespaceName}.{StartupConstants.NAMESPACE_NAME}";
             startupAssembly.directoryName = StartupConstants.FOLDER_NAME;
             startupAssembly.hasSceneMenuItem = true;
+            startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
+            startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_SET_NAME}";
 
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly); 
         }
@@ -301,6 +303,8 @@ namespace CelesteEditor.UnityProject
             bootstrapAssembly.assemblyName = $"{parameters.rootNamespaceName}.{BootstrapConstants.NAMESPACE_NAME}";
             bootstrapAssembly.directoryName = BootstrapConstants.FOLDER_NAME;
             bootstrapAssembly.hasSceneMenuItem = true;
+            bootstrapAssembly.sceneSetPath = $"{BootstrapConstants.SCENES_FOLDER_PATH}{BootstrapConstants.SCENE_SET_NAME}.asset";
+            bootstrapAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_SET_NAME}";
 
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
         }

@@ -7,8 +7,8 @@
             "{{\n" +
             "   public static class {1}EditorConstants\n" +
             "   {{\n" +
-            "       public const string SCENE_SET_PATH = \"YOUR_PATH_HERE\";\n" +
-            "       public const string SCENE_MENU_ITEM = \"YOUR_MENU_PATH_HERE\";\n" +
+            "       public const string SCENE_SET_PATH = \"{2}\";\n" +
+            "       public const string SCENE_MENU_ITEM = \"{3}\";\n" +
             "   }}\n" +
             "}}";
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Tools.Attributes.GUI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace CelesteEditor.UnityProject
         public bool hasRuntimeAssembly;
         public bool hasEditorAssembly;
         public bool hasSceneMenuItem;
+        [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath;
+        [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
     }
 
     public static class CreateAssemblyDefinition
@@ -99,7 +102,7 @@ namespace CelesteEditor.UnityProject
 
                     {
                         string editorConstantsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}EditorConstants.cs");
-                        string editorConstantsScript = string.Format(CreateAssemblyDefinitionConstants.EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName);
+                        string editorConstantsScript = string.Format(CreateAssemblyDefinitionConstants.EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName, parameters.sceneSetPath, parameters.sceneMenuItemPath);
                         File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
                     }
 
