@@ -227,7 +227,7 @@ namespace CelesteEditor.UnityProject
             startupAssembly.directoryName = StartupConstants.FOLDER_NAME;
             startupAssembly.hasSceneMenuItem = true;
             startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
-            startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_SET_NAME}";
+            startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
 
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly); 
         }
@@ -304,7 +304,7 @@ namespace CelesteEditor.UnityProject
             bootstrapAssembly.directoryName = BootstrapConstants.FOLDER_NAME;
             bootstrapAssembly.hasSceneMenuItem = true;
             bootstrapAssembly.sceneSetPath = $"{BootstrapConstants.SCENES_FOLDER_PATH}{BootstrapConstants.SCENE_SET_NAME}.asset";
-            bootstrapAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_SET_NAME}";
+            bootstrapAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
 
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
         }
