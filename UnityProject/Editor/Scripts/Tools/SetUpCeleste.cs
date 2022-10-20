@@ -276,16 +276,17 @@ namespace CelesteEditor.UnityProject
 
                 LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
                 loadEngineSystemsSceneSet.name = BootstrapConstants.LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
-                loadEngineSystemsSceneSet.MakeAddressable();
                 bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
 
                 AssetUtility.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+                loadEngineSystemsSceneSet.MakeAddressable();
             }
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
-            bootstrapLoadJob.MakeAddressable();
+            
             AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+            bootstrapLoadJob.MakeAddressable();
         }
 
         private static void CreateBootstrapScene()
@@ -299,14 +300,15 @@ namespace CelesteEditor.UnityProject
             Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).MakeAddressable();
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable);
             bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable);
-            bootstrapSceneSet.MakeAddressable();
+            
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
+            bootstrapSceneSet.MakeAddressable();
         }
 
         private static void CreateBootstrapAssemblies(SetUpCelesteParameters parameters)
@@ -346,13 +348,14 @@ namespace CelesteEditor.UnityProject
             GameObject engineSystemsPrefab = AssetUtility.FindAsset<GameObject>(EngineSystemsConstants.ENGINE_SYSTEMS_PREFAB_NAME);
             PrefabUtility.InstantiatePrefab(engineSystemsPrefab, engineSystemsScene);
             EditorSceneManager.SaveScene(engineSystemsScene, EngineSystemsConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH).MakeAddressable();
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH).SetAddressableAddress(EngineSystemsConstants.SCENE_NAME);
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable);
-            engineSystemsSceneSet.MakeAddressable();
+            
             AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
+            engineSystemsSceneSet.MakeAddressable();
         }
 
         #endregion
