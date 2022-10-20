@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -31,8 +32,12 @@ namespace CelesteEditor.UnityProject
         [MenuItem("Celeste/Bootstrap/2) Download Celeste", priority = 2)]
         public static void ExecuteDownloadCeleste()
         {
-            // Clone Repo and Update Submodules
-            ExecuteProcessTerminal("git", "clone --recurse-submodules --remote-submodules git@github.com:AlanWills/CelesteUnity.git Celeste");
+            string projectPath = Path.GetDirectoryName(Application.dataPath);
+
+            // Add Celeste submodule
+            ExecuteProcessTerminal("git", "init", projectPath);
+            ExecuteProcessTerminal("git", "submodule add git@github.com:AlanWills/CelesteUnity.git Assets/Celeste", projectPath);
+            ExecuteProcessTerminal("git", "submodule update --init --recursive", projectPath);
 
             AssetDatabase.Refresh();
         }
@@ -41,7 +46,7 @@ namespace CelesteEditor.UnityProject
 
         #region Utility
 
-        private static void ExecuteProcessTerminal(string executable, string argument)
+        private static void ExecuteProcessTerminal(string executable, string argument, string workingDirectory)
         {
             try
             {
@@ -54,7 +59,7 @@ namespace CelesteEditor.UnityProject
                     RedirectStandardOutput = false,
                     CreateNoWindow = false,
                     Arguments = argument,
-                    WorkingDirectory = Application.dataPath
+                    WorkingDirectory = workingDirectory
                 };
 
                 Process myProcess = new Process()

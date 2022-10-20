@@ -12,6 +12,7 @@ using UnityEngine;
 using CelesteEditor.UnityProject.Constants;
 using Celeste.Bootstrap;
 using TMPro.EditorUtilities;
+using System.IO;
 
 namespace CelesteEditor.UnityProject
 {
@@ -19,6 +20,10 @@ namespace CelesteEditor.UnityProject
     public struct SetUpCelesteParameters
     {
         #region Properties and Fields
+
+        [Header("Project")]
+        public bool usePresetGitIgnoreFile;
+        public bool usePresetGitLFSFile;
 
         [Header("Build System")]
         public bool needsBuildSystem;
@@ -45,6 +50,9 @@ namespace CelesteEditor.UnityProject
 
         public void UseDefaults()
         {
+            usePresetGitIgnoreFile = true;
+            usePresetGitLFSFile = true;
+
             needsBuildSystem = true;
             runsOnWindows = true;
             runsOnAndroid = true;
@@ -71,6 +79,7 @@ namespace CelesteEditor.UnityProject
 
         public static void Execute(SetUpCelesteParameters parameters)
         {
+            CreateProjectData(parameters);
             CreateAssetData(parameters);
             CreateBuildSystemData(parameters);
             CreateModules(parameters);
@@ -267,6 +276,7 @@ namespace CelesteEditor.UnityProject
 
                 LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
                 loadEngineSystemsSceneSet.name = BootstrapConstants.LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
+                loadEngineSystemsSceneSet.MakeAddressable();
                 bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
 
                 AssetUtility.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
@@ -274,6 +284,7 @@ namespace CelesteEditor.UnityProject
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
+            bootstrapLoadJob.MakeAddressable();
             AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
@@ -288,11 +299,13 @@ namespace CelesteEditor.UnityProject
             Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).MakeAddressable();
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable);
             bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable);
+            bootstrapSceneSet.MakeAddressable();
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
         }
 
@@ -333,14 +346,47 @@ namespace CelesteEditor.UnityProject
             GameObject engineSystemsPrefab = AssetUtility.FindAsset<GameObject>(EngineSystemsConstants.ENGINE_SYSTEMS_PREFAB_NAME);
             PrefabUtility.InstantiatePrefab(engineSystemsPrefab, engineSystemsScene);
             EditorSceneManager.SaveScene(engineSystemsScene, EngineSystemsConstants.SCENE_PATH);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH).MakeAddressable();
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable);
+            engineSystemsSceneSet.MakeAddressable();
             AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
         }
 
         #endregion
+
+        private static void CreateProjectData(SetUpCelesteParameters parameters)
+        {
+            string projectPath = Path.GetDirectoryName(Application.dataPath);
+
+            if (parameters.usePresetGitIgnoreFile)
+            {
+                try
+                {
+                    File.Move(CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to create preset git ignore file.  See the log for an exception.");
+                    Debug.LogException(ex);
+                }
+            }
+
+            if (parameters.usePresetGitLFSFile)
+            {
+                try
+                {
+                    File.Move(CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to create preset git lfs file.  See the log for an exception.");
+                    Debug.LogException(ex);
+                }
+            }
+        }
 
         private static void CreateAssetData(SetUpCelesteParameters parameters)
         {

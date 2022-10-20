@@ -47,5 +47,7 @@
     {
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
         public const string LOADING_SCENE_NAME = "Loading";
+        public const string CELESTE_GIT_IGNORE_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitignore.sample";
+        public const string CELESTE_GIT_LFS_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitattributes.sample";
     }
 }

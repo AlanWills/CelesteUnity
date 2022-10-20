@@ -66,6 +66,11 @@ namespace CelesteEditor.Tools
             entry.SetAddress(address);
         }
 
+        public static void MakeAddressable(this Object o)
+        {
+            SetAddressableAddress(o, AssetDatabase.GetAssetPath(o));
+        }
+
         public static bool AddressableResourceExists<T>(string key)
         {
             foreach (AddressableAssetGroup group in AddressableAssetSettingsDefaultObject.Settings.groups)
