@@ -7,19 +7,19 @@ using UnityEditor.AddressableAssets.Settings;
 namespace CelesteEditor.Assets.Analyze
 {
     [InitializeOnLoad]
-    public static class RegisterEnsureAssetsConfiguredCorrectlyAnalyzeRule
+    public static class RegisterEnsureAssetsHaveGroupLabelAnalyzeRule
     {
-        static RegisterEnsureAssetsConfiguredCorrectlyAnalyzeRule()
+        static RegisterEnsureAssetsHaveGroupLabelAnalyzeRule()
         {
-            AnalyzeSystem.RegisterNewRule<EnsureAssetsConfiguredCorrectlyAnalyzeRule>();
+            AnalyzeSystem.RegisterNewRule<EnsureAssetsHaveGroupLabelAnalyzeRule>();
         }
     }
 
-    public class EnsureAssetsConfiguredCorrectlyAnalyzeRule : AnalyzeRule
+    public class EnsureAssetsHaveGroupLabelAnalyzeRule : AnalyzeRule
     {
         #region Properties and Fields
 
-        public override string ruleName => "Ensure Assets Configured Correctly";
+        public override string ruleName => "Ensure Assets Have Group Label";
         public override bool CanFix { get; set; } = true;
 
         #endregion
