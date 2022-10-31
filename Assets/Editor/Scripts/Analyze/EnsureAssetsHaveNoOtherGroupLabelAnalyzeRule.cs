@@ -91,9 +91,9 @@ namespace CelesteEditor.Assets.Analyze
             foreach (var assetEntryToFix in Analyze(settings, addressableGroupNames))
             {
                 // Go through each label and remove any other addressable group names
-                foreach (string label in assetEntryToFix.labels)
+                foreach (string label in addressableGroupNames)
                 {
-                    if (addressableGroupNames.Contains(label) && string.CompareOrdinal(label, assetEntryToFix.parentGroup.Name) != 0)
+                    if (string.CompareOrdinal(label, assetEntryToFix.parentGroup.Name) != 0)
                     {
                         assetEntryToFix.SetLabel(label, false);
                     }
