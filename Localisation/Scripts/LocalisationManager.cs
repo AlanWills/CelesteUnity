@@ -1,7 +1,4 @@
 ﻿using Celeste.Assets;
-using Celeste.Localisation.AssetReferences;
-using Celeste.Localisation.Catalogue;
-using Celeste.Localisation.Parameters;
 using Celeste.Localisation.Settings;
 using System.Collections;
 using System.Globalization;

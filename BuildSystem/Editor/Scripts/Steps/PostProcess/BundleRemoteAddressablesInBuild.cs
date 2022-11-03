@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Celeste.BuildSystem;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,13 +39,13 @@ namespace CelesteEditor.BuildSystem.Steps
         {
             var buildRootDir = GetAddressablesRemoteBuildDir();
             var buildRootDirLen = buildRootDir.Length;
-            List<string> allBundles = new List<string>();
+            CachedAssetBundles cachedBundles = new CachedAssetBundles();
 
             var filePathList = result.FileRegistry.GetFilePaths().Where(s => s.EndsWith(".bundle"));
             foreach (var filePath in filePathList)
             {
                 var bundlePath = filePath.Substring(buildRootDirLen + 1);
-                allBundles.Add(bundlePath);
+                cachedBundles.cachedBundleList.Add(bundlePath);
             }
 
             if (!Directory.Exists(buildRootDir))
@@ -53,7 +53,7 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(buildRootDir);
             }
 
-            var json = JsonConvert.SerializeObject(allBundles);
+            var json = JsonUtility.ToJson(cachedBundles);
             File.WriteAllText($"{buildRootDir}/CachedAssetBundles.json", json);
         }
 

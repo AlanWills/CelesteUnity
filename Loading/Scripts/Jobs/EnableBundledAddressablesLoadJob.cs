@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Celeste.BuildSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
-        private List<string> _bundleCacheList = new List<string>();
+        private CachedAssetBundles cachedAssetBundles = new CachedAssetBundles();
 
         #endregion
 
@@ -37,9 +37,9 @@ namespace Celeste.Loading
                 Debug.LogError(loadBundleCacheRequest.error);
             }
 
-            _bundleCacheList = JsonConvert.DeserializeObject<List<string>>(loadBundleCacheRequest.downloadHandler.text);
+            JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
 
-            if (_bundleCacheList != null)
+            if (cachedAssetBundles != null && cachedAssetBundles.IsValid)
             {
                 Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
             }
@@ -53,7 +53,7 @@ namespace Celeste.Loading
         {
             if (location.Data is AssetBundleRequestOptions)
             {
-                if (_bundleCacheList.Contains(location.PrimaryKey))
+                if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
                     return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";

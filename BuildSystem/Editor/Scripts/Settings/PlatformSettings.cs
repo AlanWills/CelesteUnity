@@ -16,7 +16,6 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
-using Newtonsoft.Json;
 
 namespace CelesteEditor.BuildSystem
 {

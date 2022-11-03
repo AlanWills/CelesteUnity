@@ -1,13 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Build;
-using UnityEditor.AddressableAssets.Settings;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using static UnityEngine.Application;
 
 namespace CelesteEditor.BuildSystem

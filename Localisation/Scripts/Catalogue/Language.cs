@@ -87,6 +87,7 @@ namespace Celeste.Localisation
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
         [SerializeField] private NumberToLocalisedTextConverter numberToTextConverter;
         [SerializeField] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
+        [SerializeField] private Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
         [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
 
         #endregion
@@ -117,6 +118,23 @@ namespace Celeste.Localisation
             }
 
             return numberToTextConverter.Localise(number, this);
+        }
+
+        public AudioClip Synthesize(LocalisationKey key)
+        {
+            if (key == null)
+            {
+                UnityEngine.Debug.LogAssertion("Failed to perform synthesize due to null inputted key.  No fallback possible...");
+                return null;
+            }
+
+            if (!speechLookup.TryGetValue(key.Key, out AudioClip synthesizedText))
+            {
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to perform synthesize of '{key}' due to missing entry.  No fallback possible...");
+                return null;
+            }
+
+            return synthesizedText;
         }
 
         public void AddEntries(List<LocalisationEntry> localisationEntries)
