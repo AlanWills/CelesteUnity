@@ -8,6 +8,7 @@
         "Celeste.Objects",
         "Celeste.BuildSystem",
         "Celeste.Persistence.Editor",
+        "Celeste.Assets.Editor",
         "Unity.Addressables",
         "Unity.Addressables.Editor"
     ],

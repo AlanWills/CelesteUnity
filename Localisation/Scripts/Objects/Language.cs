@@ -1,4 +1,3 @@
-using Celeste.DataStructures;
 using Celeste.Localisation.Catalogue;
 using Celeste.OdinSerializer;
 using System;

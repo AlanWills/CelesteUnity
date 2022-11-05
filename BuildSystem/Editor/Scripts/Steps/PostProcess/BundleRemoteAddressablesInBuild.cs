@@ -1,7 +1,7 @@
 ﻿using Celeste.BuildSystem;
+using CelesteEditor.Assets.Schemas;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
@@ -13,8 +13,13 @@ namespace CelesteEditor.BuildSystem.Steps
     {
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
         {
-            CacheRemoteAddressablesBundleList(result);
-            BundleRemoteAddressables();
+            HashSet<string> bundledNames = GetBundledAssetBundleNames();
+
+            if (bundledNames.Count > 0)
+            {
+                CachedAssetBundles cachedAssetBundles = CacheRemoteAddressablesBundleList(result, bundledNames);
+                BundleRemoteAddressables(cachedAssetBundles);
+            }
         }
 
         #region Utility
@@ -24,7 +29,7 @@ namespace CelesteEditor.BuildSystem.Steps
             var settings = AddressableAssetSettingsDefaultObject.Settings;
             var profileSettings = settings.profileSettings;
             var propName = profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
-            return propName;
+            return profileSettings.EvaluateString(settings.activeProfileId, propName);
         }
 
         private static string GetAddressablesLocalBuildDir()
@@ -35,17 +40,22 @@ namespace CelesteEditor.BuildSystem.Steps
             return profileSettings.EvaluateString(settings.activeProfileId, propName);
         }
 
-        private static void CacheRemoteAddressablesBundleList(AddressablesPlayerBuildResult result)
+        private static CachedAssetBundles CacheRemoteAddressablesBundleList(AddressablesPlayerBuildResult result, HashSet<string> assetBundleNames)
         {
             var buildRootDir = GetAddressablesRemoteBuildDir();
             var buildRootDirLen = buildRootDir.Length;
             CachedAssetBundles cachedBundles = new CachedAssetBundles();
 
-            var filePathList = result.FileRegistry.GetFilePaths().Where(s => s.EndsWith(".bundle"));
-            foreach (var filePath in filePathList)
+            foreach (var assetBundleName in assetBundleNames)
             {
-                var bundlePath = filePath.Substring(buildRootDirLen + 1);
-                cachedBundles.cachedBundleList.Add(bundlePath);
+                string bundlePath = result.FileRegistry.GetFilePathForBundle(assetBundleName);
+
+                // This string could be empty - it simply means one of the two bundles for a group wasn't present
+                if (!string.IsNullOrEmpty(bundlePath))
+                {
+                    bundlePath = bundlePath.Substring(buildRootDirLen + 1);
+                    cachedBundles.cachedBundleList.Add(bundlePath);
+                }
             }
 
             if (!Directory.Exists(buildRootDir))
@@ -54,10 +64,12 @@ namespace CelesteEditor.BuildSystem.Steps
             }
 
             var json = JsonUtility.ToJson(cachedBundles);
-            File.WriteAllText($"{buildRootDir}/CachedAssetBundles.json", json);
+            File.WriteAllText(Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json"), json);
+
+            return cachedBundles;
         }
 
-        private static void BundleRemoteAddressables()
+        private static void BundleRemoteAddressables(CachedAssetBundles cachedAssetBundles)
         {
             var remoteBuildDir = GetAddressablesRemoteBuildDir();
             var aaDestDir = GetAddressablesLocalBuildDir();
@@ -68,12 +80,32 @@ namespace CelesteEditor.BuildSystem.Steps
             }
 
             // Copy bundles to aa folder
-            foreach (var srcFile in Directory.EnumerateFiles(remoteBuildDir, "*.*", SearchOption.AllDirectories))
+            foreach (string relativeBundlePath in cachedAssetBundles.cachedBundleList)
             {
-                var fileName = Path.GetFileName(srcFile);
-                var destFile = $"{aaDestDir}/{fileName}";
+                var srcFile = Path.Combine(remoteBuildDir, relativeBundlePath);
+                var destFile = Path.Combine(aaDestDir, relativeBundlePath);
                 File.Copy(srcFile, destFile, true);
             }
+        }
+
+        private static HashSet<string> GetBundledAssetBundleNames()
+        {
+            HashSet<string> bundledAssetBundleNames = new HashSet<string>();
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+
+            foreach (var group in settings.groups)
+            {
+                if (group.HasSchema<BundledGroupSchema>() &&
+                    group.GetSchema<BundledGroupSchema>().BundleInStreamingAssets)
+                {
+                    string lowerCaseName = group.Name.ToLowerInvariant();
+
+                    bundledAssetBundleNames.Add($"{lowerCaseName}_assets");
+                    bundledAssetBundleNames.Add($"{lowerCaseName}_scenes");
+                }
+            }
+
+            return bundledAssetBundleNames;
         }
 
         #endregion
