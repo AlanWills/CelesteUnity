@@ -17,11 +17,13 @@ namespace Celeste.Localisation
         {
             public LocalisationKey key;
             public string localisedText;
+            public AudioClip synthesizedSpeech;
 
-            public LocalisationEntry(LocalisationKey key, string localisedText)
+            public LocalisationEntry(LocalisationKey key, string localisedText, AudioClip synthesizedSpeech)
             {
                 this.key = key;
                 this.localisedText = localisedText;
+                this.synthesizedSpeech = synthesizedSpeech;
             }
         }
 
@@ -77,6 +79,7 @@ namespace Celeste.Localisation
         public LocalisationKey LanguageNameKey => languageNameKey;
         public int NumLocalisationKeys => localisationLookup.Count;
         public int NumLocalisationKeyCategories => categoryLookup.Count;
+        public int NumLocalisationSpeech => speechLookup.Count;
         public IReadOnlyDictionary<string, string> LocalisationLookup => localisationLookup;
         public IReadOnlyDictionary<LocalisationKeyCategory, List<LocalisationKey>> CategoryLookup => categoryLookup;
 
@@ -145,6 +148,7 @@ namespace Celeste.Localisation
 
                 if (localisationKey != null)
                 {
+                    // Add to text localisation lookup
                     if (!localisationLookup.ContainsKey(localisationKey.Key))
                     {
                         localisationLookup.Add(localisationKey.Key, localisationEntry.localisedText);
@@ -154,6 +158,7 @@ namespace Celeste.Localisation
                         UnityEngine.Debug.LogAssertion($"Localisation lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
                     }
 
+                    // Add to category lookup
                     if (localisationKey.Category != null)
                     {
                         if (!categoryLookup.TryGetValue(localisationKey.Category, out List<LocalisationKey> list))
@@ -168,6 +173,19 @@ namespace Celeste.Localisation
                     {
                         UnityEngine.Debug.LogAssertion($"No category set for localisation key {localisationKey}.");
                     }
+
+                    // Add to audio lookup
+                    if (localisationEntry.synthesizedSpeech != null)
+                    {
+                        if (!speechLookup.ContainsKey(localisationKey.Key))
+                        {
+                            speechLookup.Add(localisationKey.Key, localisationEntry.synthesizedSpeech);
+                        }
+                        else
+                        {
+                            UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
+                        }
+                    }
                 }
             }
         }
@@ -176,6 +194,7 @@ namespace Celeste.Localisation
         {
             localisationLookup.Clear();
             categoryLookup.Clear();
+            speechLookup.Clear();
 
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
@@ -190,6 +209,11 @@ namespace Celeste.Localisation
         public LocalisationKey FindKey(string key)
         {
             return localisationKeyCatalogue != null ? localisationKeyCatalogue.GetItem(key) : null;
+        }
+
+        public bool CanSynthesize(LocalisationKey key)
+        {
+            return speechLookup.ContainsKey(key.Key);
         }
 
         public int NumEntriesInCategory(LocalisationKeyCategory category)

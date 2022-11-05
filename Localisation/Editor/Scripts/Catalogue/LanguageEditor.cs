@@ -42,6 +42,7 @@ namespace CelesteEditor.Localisation.Catalogue
 
             EditorGUILayout.LabelField("Num Keys", $"{language.NumLocalisationKeys}");
             EditorGUILayout.LabelField("Num Categories", $"{language.NumLocalisationKeyCategories}");
+            EditorGUILayout.LabelField("Num Speech", $"{language.NumLocalisationSpeech}");
 
             serializedObject.Update();
 

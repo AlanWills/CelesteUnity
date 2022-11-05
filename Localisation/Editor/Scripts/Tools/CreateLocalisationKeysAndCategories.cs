@@ -8,6 +8,7 @@ using CelesteEditor.Localisation.Utility;
 using static Celeste.Localisation.Language;
 using Celeste.Localisation.Catalogue;
 using Celeste.Web.ImportSteps;
+using System.IO;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -30,6 +31,7 @@ namespace CelesteEditor.Localisation.Tools
         [SerializeField] private LocalisationKeyCategoryCatalogue localisationKeyCategoryCatalogue;
         [SerializeField] private string localisationKeysDirectory = "Assets/Localisation/Data/Keys";
         [SerializeField] private string localisationKeyCategoriesDirectory = "Assets/Localisation/Data/Categories";
+        [SerializeField] private string localisationAudioDirectory = "Assets/Localisation/Audio";
 
         #endregion
 
@@ -44,6 +46,7 @@ namespace CelesteEditor.Localisation.Tools
                 Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
                 Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
 
+                Dictionary<string, AudioClip> speechLookup = CreateSpeechLookup(language);
                 List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
                 for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
@@ -98,9 +101,14 @@ namespace CelesteEditor.Localisation.Tools
 
                         AssetUtility.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
                     }
+
+                    if (!speechLookup.TryGetValue(localisationKey.Key, out AudioClip audioClip))
+                    {
+                        Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
+                    }
                     
                     localisationKey.Category = localisationKeyCategory;
-                    localisationEntries.Add(new LocalisationEntry(localisationKey, localisedString));
+                    localisationEntries.Add(new LocalisationEntry(localisationKey, localisedString, audioClip));
                 }
 
                 language.AddEntries(localisationEntries);
@@ -109,6 +117,22 @@ namespace CelesteEditor.Localisation.Tools
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+        }
+
+        private Dictionary<string, AudioClip> CreateSpeechLookup(Language language)
+        {
+            Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
+            string audioDirectory = Path.Combine(localisationAudioDirectory, language.CountryCode);
+
+            if (Directory.Exists(audioDirectory))
+            {
+                foreach (AudioClip audioClip in AssetUtility.FindAssets<AudioClip>("", audioDirectory))
+                {
+                    speechLookup.Add(audioClip.name, audioClip);
+                }
+            }
+
+            return speechLookup;
         }
     }
 }
