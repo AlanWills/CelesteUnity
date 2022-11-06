@@ -50,7 +50,7 @@ namespace CelesteEditor.Tools
         public static bool AssetExists(string assetPath)
         {
             assetPath = EnsureRelativeToAssets(assetPath);
-            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath));
+            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath, AssetPathToGUIDOptions.OnlyExistingAssets));
         }
 
         public static void CreateAsset(Object asset, string assetPath)

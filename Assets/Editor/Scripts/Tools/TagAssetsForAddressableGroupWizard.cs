@@ -63,7 +63,7 @@ namespace CelesteEditor.Assets
 
         #endregion
 
-        #region Flashcard Creation
+        #region Utility
 
         private bool ShouldBeIncludedInTagging(Object obj)
         {
@@ -98,7 +98,7 @@ namespace CelesteEditor.Assets
 
             for (int i = 0, n = objectsToTag.Count; i < n; ++i)
             {
-                objectsToTag[i].SetAddressableInfo(groupName);
+                objectsToTag[i].SetAddressableInfo(groupName, AssetDatabase.GetAssetPath(objectsToTag[i]));
             }
         }
 
