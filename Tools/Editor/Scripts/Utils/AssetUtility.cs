@@ -22,6 +22,16 @@ namespace CelesteEditor.Tools
         {
             return path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
         }
+        
+        private static string EnsureRelativeToAssets(string path)
+        {
+            if (!path.StartsWith("Assets"))
+            {
+                path = Path.Combine("Assets", path);
+            }
+
+            return path;
+        }
 
         #endregion
 
@@ -33,11 +43,13 @@ namespace CelesteEditor.Tools
 
         public static bool AssetExists(string name, string parentFolder)
         {
+            parentFolder = EnsureRelativeToAssets(parentFolder);
             return AssetExists(Path.Combine(parentFolder, $"{name}.asset"));
         }
 
         public static bool AssetExists(string assetPath)
         {
+            assetPath = EnsureRelativeToAssets(assetPath);
             return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath));
         }
 

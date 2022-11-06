@@ -71,6 +71,11 @@ namespace CelesteEditor.Localisation.Tools
                         }
                     }
 
+                    if (string.CompareOrdinal(keyString, "GOODNIGHT") == 0)
+                    {
+                        Debug.Log("Got here");
+                    }
+
                     // Need to create a new localisation key asset
                     LocalisationKey localisationKey = localisationKeyCatalogue.GetItem(keyString);
 

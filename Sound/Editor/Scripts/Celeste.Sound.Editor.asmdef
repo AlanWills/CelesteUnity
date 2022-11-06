@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.Sound.Editor",
+    "rootNamespace": "CelesteEditor.Sound",
+    "references": [
+        "Celeste.Sound",
+        "Celeste.Tools",
+        "Celeste.Events"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

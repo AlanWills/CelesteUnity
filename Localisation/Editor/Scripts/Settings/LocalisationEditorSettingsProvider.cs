@@ -10,7 +10,7 @@ namespace CelesteEditor.Localisation.Settings
     {
         #region Styles
 
-        private class PlatformSettingStyles
+        private class LocalisationSettingStyles
         {
             public static GUIContent currentLanguageValue = new GUIContent("Current Language Value");
             public static GUIContent localisationKeyCatalogue = new GUIContent("Localisation Key Catalogue");
@@ -63,7 +63,7 @@ namespace CelesteEditor.Localisation.Settings
                 var provider = new LocalisationEditorSettingsProvider("Project/Celeste/Localisation Settings", SettingsScope.Project);
 
                 // Automatically extract all keywords from the Styles.
-                provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();
+                provider.keywords = GetSearchKeywordsFromGUIContentProperties<LocalisationSettingStyles>();
                 return provider;
             }
 
