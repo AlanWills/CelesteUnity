@@ -152,6 +152,9 @@ namespace CelesteEditor.BuildSystem
         private bool isDebugBuild = false;
 
         [SerializeField]
+        private bool waitForManagedDebugger = false;
+
+        [SerializeField]
         private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.StrictMode;
         public BuildOptions BuildOptions
         {
@@ -227,6 +230,7 @@ namespace CelesteEditor.BuildSystem
             ApplyImpl();
 
             EditorUserBuildSettings.development = development;
+            EditorUserBuildSettings.waitForManagedDebugger = waitForManagedDebugger;
             PlayerSettings.bundleVersion = Version.ToString();
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols.ToArray());
 

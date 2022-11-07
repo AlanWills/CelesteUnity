@@ -16,6 +16,26 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
+        private RuntimePlatform RuntimePlatform
+        {
+            get
+            {
+#if UNITY_EDITOR
+    #if UNITY_ANDROID
+                return RuntimePlatform.Android;
+    #elif UNITY_IOS
+                return RuntimePlatform.IPhonePlayer;
+    #elif UNITY_STANDALONE_OSX
+                return RuntimePlatform.OSXPlayer;
+    #elif UNITY_STANDALONE_WIN
+                return RuntimePlatform.WindowsPlayer;
+    #endif
+#else
+                return Application.platform;
+#endif
+            }
+        }
+
         private CachedAssetBundles cachedAssetBundles = new CachedAssetBundles();
 
         #endregion
@@ -56,7 +76,10 @@ namespace Celeste.Loading
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
-                    return $"{Addressables.RuntimePath}/{fileName}";
+                    string cachedFileName = $"{Addressables.RuntimePath}/{ToBuildPlatformString(RuntimePlatform)}/{fileName}";
+                    Debug.Log($"Loading cached asset bundle from: {cachedFileName}");
+
+                    return cachedFileName;
                 }
             }
 

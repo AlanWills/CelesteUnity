@@ -11,6 +11,12 @@ namespace CelesteEditor.BuildSystem.Steps
     [CreateAssetMenu(fileName = nameof(BundleRemoteAddressablesInBuild), menuName = "Celeste/Build System/Asset Post Process/Bundle Remote Addressables In Build")]
     public class BundleRemoteAddressablesInBuild : AssetPostProcessStep
     {
+        #region Properties and Fields
+
+        [SerializeField] private string unityBuiltInShadersPrefix = "alwaysbundle";
+
+        #endregion
+
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
         {
             HashSet<string> bundledNames = GetBundledAssetBundleNames();
@@ -88,9 +94,12 @@ namespace CelesteEditor.BuildSystem.Steps
             }
         }
 
-        private static HashSet<string> GetBundledAssetBundleNames()
+        private HashSet<string> GetBundledAssetBundleNames()
         {
-            HashSet<string> bundledAssetBundleNames = new HashSet<string>();
+            HashSet<string> bundledAssetBundleNames = new HashSet<string>()
+            {
+                $"{unityBuiltInShadersPrefix}_unitybuiltinshaders"
+            };
             var settings = AddressableAssetSettingsDefaultObject.Settings;
 
             foreach (var group in settings.groups)
