@@ -56,7 +56,7 @@ namespace Celeste.Loading
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
-                    return $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/{fileName}";
+                    return $"{Addressables.RuntimePath}/{fileName}";
                 }
             }
 
