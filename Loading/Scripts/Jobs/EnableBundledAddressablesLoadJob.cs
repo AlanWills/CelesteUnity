@@ -23,7 +23,7 @@ namespace Celeste.Loading
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
             // Get bundle list file from StreamingAsset
-            var bundleCacheFileURL = $"{Addressables.RuntimePath}/{ToBuildPlatformString(Application.platform)}/CachedAssetBundles.json";
+            var bundleCacheFileURL = Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json");
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
             var url = bundleCacheFileURL;
 #else
