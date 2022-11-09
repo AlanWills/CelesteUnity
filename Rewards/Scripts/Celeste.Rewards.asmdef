@@ -5,6 +5,7 @@
         "Celeste.Objects",
         "Celeste.Wallet",
         "Celeste.Tools",
+        "Celeste.Parameters",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
