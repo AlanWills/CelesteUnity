@@ -8,12 +8,18 @@ namespace Celeste.Components.Catalogue
     {
         public ComponentHandle CreateComponent(string typeName, string jsonData)
         {
-            Component component = GetItem(typeName);
-            
+            var componentHandle = CreateComponent<Component>(typeName, jsonData);
+            return new ComponentHandle(componentHandle.component, componentHandle.instance);
+        }
+
+        public ComponentHandle<T> CreateComponent<T>(string typeName, string jsonData) where T : Component
+        {
+            T component = GetItem(typeName) as T;
+
             if (component == null)
             {
                 Debug.LogAssertion($"Unable to instantiate component with type name {typeName}.");
-                return ComponentHandle.NULL;
+                return ComponentHandle<T>.NULL;
             }
 
             ComponentData componentData = component.CreateData();
@@ -21,7 +27,7 @@ namespace Celeste.Components.Catalogue
 
             JsonUtility.FromJsonOverwrite(jsonData, componentData);
 
-            return new ComponentHandle(component, componentData, componentEvents);
+            return new ComponentHandle<T>(component, componentData, componentEvents);
         }
     }
 }

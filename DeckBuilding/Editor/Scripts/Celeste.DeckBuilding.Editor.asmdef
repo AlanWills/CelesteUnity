@@ -5,7 +5,8 @@
         "GUID:528ce73c7757c8f43b7b5c50e8671ad8",
         "GUID:1e83f379d37edf04999a41dc4553067d",
         "Celeste.Tools.Editor",
-        "Celeste.Components"
+        "Celeste.Components",
+        "Celeste.Components.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,48 +1,18 @@
-﻿using Celeste.DeckBuilding.Cards;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Cards;
+using CelesteEditor.Components;
+using System;
 using UnityEditor;
-using UnityEngine;
 
 namespace CelesteEditor.DeckBuilding.Cards
 {
     [CustomEditor(typeof(Card))]
-    public class CardEditor : Editor
+    public class CardEditor : ComponentContainerUsingSubAssetsEditor<Component>
     {
         #region Properties and Fields
 
-        private Card Card
-        {
-            get { return target as Card; }
-        }
-
-        private SerializedProperty componentsProperty;
-        private int selectedTypeIndex = 0;
-
-        #endregion
-
-        private void OnEnable()
-        {
-            componentsProperty = serializedObject.FindProperty("components");
-        }
-
-        #region GUI
-
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
-
-            DrawPropertiesExcluding(serializedObject, "m_Script", "components");
-
-            selectedTypeIndex = CelesteEditorGUILayout.SubAssetListField(
-                "Components",
-                CardEditorConstants.AllCardComponentTypes,
-                CardEditorConstants.AllCardComponentDisplayNames,
-                selectedTypeIndex,
-                componentsProperty,
-                Card.AddComponent,
-                Card.RemoveComponent);
-
-            serializedObject.ApplyModifiedProperties();
-        }
+        protected override Type[] AllComponentTypes => CardEditorConstants.AllCardComponentTypes;
+        protected override string[] AllComponentDisplayNames => CardEditorConstants.AllCardComponentDisplayNames;
 
         #endregion
     }

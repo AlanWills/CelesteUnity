@@ -9,10 +9,7 @@ namespace Celeste.Components
     {
         public static readonly InterfaceHandle<T> NULL = new InterfaceHandle<T>();
 
-        public bool IsValid
-        {
-            get { return iFace != null; }
-        }
+        public bool IsValid => iFace != null;
 
         public T iFace;
         public Instance instance;
@@ -29,18 +26,20 @@ namespace Celeste.Components
     {
         public static readonly ComponentHandle NULL = new ComponentHandle();
 
-        public bool IsValid
-        {
-            get { return component != null; }
-        }
+        public bool IsValid => component != null;
 
         public Component component;
         public Instance instance;
 
         public ComponentHandle(Component component, ComponentData data, ComponentEvents events)
+             : this(component, new Instance(data, events))
+        {
+        }
+
+        public ComponentHandle(Component component, Instance instance)
         {
             this.component = component;
-            instance = new Instance(data, events);
+            this.instance = instance;
         }
 
         public bool Is<T>()
@@ -64,18 +63,35 @@ namespace Celeste.Components
     {
         public static readonly ComponentHandle<TComponent> NULL = new ComponentHandle<TComponent>();
         
-        public bool IsValid
-        {
-            get { return component != null; }
-        }
+        public bool IsValid => component != null;
 
         public TComponent component;
         public Instance instance;
+
+        public ComponentHandle(TComponent component, ComponentData data, ComponentEvents events)
+            : this(component, new Instance(data, events))
+        {
+        }
 
         public ComponentHandle(TComponent component, Instance instance)
         {
             this.component = component;
             this.instance = instance;
+        }
+
+        public bool Is<K>() where K : class
+        {
+            return component is K;
+        }
+
+        public InterfaceHandle<K> AsInterface<K>() where K : class
+        {
+            return new InterfaceHandle<K>(component as K, instance);
+        }
+
+        public ComponentHandle<K> AsComponent<K>() where K : TComponent
+        {
+            return new ComponentHandle<K>(component as K, instance);
         }
     }
 

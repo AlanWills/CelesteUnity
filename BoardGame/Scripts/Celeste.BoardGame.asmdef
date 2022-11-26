@@ -1,14 +1,11 @@
 {
-    "name": "Celeste.Components.Editor",
-    "rootNamespace": "CelesteEditor.Components",
+    "name": "Celeste.BoardGame",
+    "rootNamespace": "Celeste.BoardGame",
     "references": [
         "Celeste.Components",
-        "Celeste.Objects.Editor",
         "Celeste.Tools.Editor"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

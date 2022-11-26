@@ -14,6 +14,12 @@ namespace Celeste.Components.Persistence
             data = componentHandle.instance.data.ToJson();
         }
 
+        public ComponentDTO(ComponentHandle<Component> componentHandle)
+        {
+            typeName = componentHandle.component.name;
+            data = componentHandle.instance.data.ToJson();
+        }
+
         public ComponentDTO(ComponentTemplate componentTemplate)
         {
             typeName = componentTemplate.component.name;

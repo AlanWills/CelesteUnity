@@ -143,12 +143,12 @@ namespace Celeste.LiveOps
             State = LiveOpState.Finished;
         }
 
-        public ComponentHandle GetComponent(int index)
+        public ComponentHandle<Component> GetComponent(int index)
         {
             return Components.GetComponent(index);
         }
 
-        public bool HasComponent<T>() where T : class
+        public bool HasComponent<T>() where T : Component
         {
             return Components.HasComponent<T>();
         }

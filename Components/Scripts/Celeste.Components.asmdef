@@ -4,7 +4,8 @@
     "references": [
         "Celeste.Objects",
         "Celeste.Tools",
-        "Celeste.OdinSerializer"
+        "Celeste.OdinSerializer",
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

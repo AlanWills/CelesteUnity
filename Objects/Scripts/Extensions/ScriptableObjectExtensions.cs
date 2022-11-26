@@ -1,9 +1,6 @@
 ﻿using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Objects
@@ -16,10 +13,9 @@ namespace Celeste.Objects
             List<T> listToAddTo) where T : ScriptableObject
         {
             T subAsset = ScriptableObject.CreateInstance(subAssetType) as T;
-            subAsset.name = subAssetType.Name;
             Debug.AssertFormat(subAsset != null, "Failed to create sub asset of type {0}.  Inputting type is {1}", typeof(T).Name, subAssetType.Name);
+            subAsset.name = subAssetType.Name;
 
-            subAsset.hideFlags = HideFlags.HideInHierarchy;
             listToAddTo.Add(subAsset);
 
 #if UNITY_EDITOR

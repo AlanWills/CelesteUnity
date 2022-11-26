@@ -2,13 +2,14 @@
 
 namespace Celeste.Components
 {
-    public interface IComponentContainer
+    public interface IComponentContainer<T> where T : Component
     {
         int NumComponents { get; }
 
-        Component GetComponent(int index);
-        void AddComponent<T>(T component) where T : Component;
+        T GetComponent(int index);
+        void CreateComponent<K>() where K : T;
+        void CreateComponent(Type type);
         void RemoveComponent(int componentIndex);
-        bool HasComponent<T>() where T : Component;
+        bool HasComponent<K>() where K : T;
     }
 }
