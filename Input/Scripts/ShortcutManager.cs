@@ -1,10 +1,7 @@
 ﻿using Celeste.Parameters.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Celeste.Input
 {
@@ -23,7 +20,7 @@ namespace Celeste.Input
         {
             foreach (Shortcut shortcut in shortcuts)
             {
-                if (CheckModifiers(shortcut.modifiers) && CheckKey(shortcut.keyCode))
+                if (CheckModifiers(shortcut.modifiers) && CheckKey(shortcut.key))
                 {
                     shortcut.fired.Invoke();
                 }
@@ -44,9 +41,9 @@ namespace Celeste.Input
                 // That means players don't have to press both the modifiers and key at exactly the same time
                 // (And generally the modifiers go first)
                 bool hasFlag = modifiers.HasFlag(currentModifier);
-                bool keyDown = UnityEngine.Input.GetKey(currentModifier.AsKeyCode());
+                bool keyPressed = Keyboard.current[currentModifier.AsKey()].isPressed;
 
-                if (hasFlag != keyDown)
+                if (hasFlag != keyPressed)
                 {
                     // We either have the currentModifier set and it's not down
                     // Or we don't have it set and it is down
@@ -57,10 +54,10 @@ namespace Celeste.Input
             return true;
         }
 
-        private bool CheckKey(KeyCodeReference keyCodeReference)
+        private bool CheckKey(KeyReference keyReference)
         {
             // We should only trigger shortcuts when the primary key is first down
-            return UnityEngine.Input.GetKeyDown(keyCodeReference.Value);
+            return Keyboard.current[keyReference.Value].isPressed;
         }
 
         #endregion

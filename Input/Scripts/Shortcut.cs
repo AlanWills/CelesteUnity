@@ -1,10 +1,7 @@
 ﻿using Celeste.Parameters.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Celeste.Input
 {
@@ -24,24 +21,24 @@ namespace Celeste.Input
 
     public static class ModifiersExtensions
     { 
-        public static KeyCode AsKeyCode(this Modifiers modifier)
+        public static Key AsKey(this Modifiers modifier)
         {
             switch (modifier)
             {
                 case Modifiers.None:
-                    return KeyCode.None;
+                    return Key.None;
 
                 case Modifiers.LeftCtrl:
-                    return KeyCode.LeftControl;
+                    return Key.LeftCtrl;
 
                 case Modifiers.LeftShift:
-                    return KeyCode.LeftShift;
+                    return Key.LeftShift;
 
                 case Modifiers.LeftAlt:
-                    return KeyCode.LeftAlt;
+                    return Key.LeftAlt;
 
                 default:
-                    return KeyCode.None;
+                    return Key.None;
             }
         }
     }
@@ -51,7 +48,7 @@ namespace Celeste.Input
         #region Properties and Fields
 
         public Modifiers modifiers = default;
-        public KeyCodeReference keyCode = default;
+        public KeyReference key = default;
         [HideInInspector] public Events.Event fired = default;
 
         #endregion

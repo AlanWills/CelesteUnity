@@ -14,13 +14,13 @@ namespace Celeste.Viewport
         }
 
         [SerializeField] private Camera cameraToDrag;
+        [SerializeField] private Transform transformToMove;
         [SerializeField] private FloatReference dragSpeed;
 
         private float timeSinceFingerDown = 0;
         private const float DRAG_THRESHOLD = 0.1f;
-        private bool mouseDownLastFrame = false;
-        private Vector3 previousMouseDownPosition = new Vector3();
-        private Vector2 dragDelta = new Vector2();
+        private bool dragStarted = false;
+        private Vector2 previousMouseDownPosition = new Vector2();
 
         #endregion
 
@@ -38,40 +38,40 @@ namespace Celeste.Viewport
                 cameraToDrag = GetComponent<Camera>();
             }
 
-            CreateDragSpeedIfNotSet();
-        }
-
-        private void LateUpdate()
-        {
-            if (dragDelta != Vector2.zero)
+            if (transformToMove == null && cameraToDrag != null)
             {
-                transform.Translate(dragDelta.x, dragDelta.y, 0, Space.Self);
-                dragDelta = Vector2.zero;
+                transformToMove = cameraToDrag.transform;
             }
+
+            CreateDragSpeedIfNotSet();
         }
 
         #endregion
 
         #region Utility Functions
 
-        public void DragUsingMouse(Vector3 mousePosition)
+        public void StartDrag(Vector2 mousePosition)
         {
-            if (mouseDownLastFrame)
-            {
-                Vector3 mouseDelta = cameraToDrag.ScreenToViewportPoint(previousMouseDownPosition) - cameraToDrag.ScreenToViewportPoint(Input.mousePosition);
-                float scrollModifier = dragSpeed.Value * CameraSizeModifier;
-                dragDelta.x = mouseDelta.x * scrollModifier;
-                dragDelta.y = mouseDelta.y * scrollModifier;
-            }
+            dragStarted = true;
+            previousMouseDownPosition = mousePosition;
+        }
 
-            previousMouseDownPosition = Input.mousePosition;
-            mouseDownLastFrame = true;
+        public void DragUsingMouse(Vector2 mousePosition)
+        {
+            if (dragStarted)
+            {
+                float scrollModifier = dragSpeed.Value * CameraSizeModifier;
+                Vector2 mouseDelta = previousMouseDownPosition - mousePosition;
+                mouseDelta *= scrollModifier;
+
+                transformToMove.position += new Vector3(mouseDelta.x, mouseDelta.y, 0);
+                previousMouseDownPosition = mousePosition;
+            }
         }
 
         public void EndDrag()
         {
-            mouseDownLastFrame = false;
-            dragDelta = Vector2.zero;
+            dragStarted = false;
         }
 
         public void DragUsingTouch(Touch touch)

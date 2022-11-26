@@ -2,7 +2,8 @@
 using Celeste.Parameters;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Input
 {
@@ -17,7 +18,7 @@ namespace Celeste.Input
         {
             get
             {
-                Vector2 viewportCoords = raycastCamera.Value.ScreenToViewportPoint(UnityEngine.Input.mousePosition);
+                Vector2 viewportCoords = raycastCamera.Value.ScreenToViewportPoint(Mouse.current.position.ReadValue());
                 return viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1;
             }
         }
@@ -31,20 +32,20 @@ namespace Celeste.Input
 #region Desktop Variables
 
         [Header("Desktop Events")]
-        public Vector3Event leftMouseButtonFirstDown;
-        public Vector3Event leftMouseButtonDown;
-        public Vector3Event leftMouseButtonFirstUp;
+        public Vector2Event leftMouseButtonFirstDown;
+        public Vector2Event leftMouseButtonDown;
+        public Vector2Event leftMouseButtonFirstUp;
 
-        public Vector3Event middleMouseButtonFirstDown;
-        public Vector3Event middleMouseButtonDown;
-        public Vector3Event middleMouseButtonFirstUp;
+        public Vector2Event middleMouseButtonFirstDown;
+        public Vector2Event middleMouseButtonDown;
+        public Vector2Event middleMouseButtonFirstUp;
 
-        public Vector3Event rightMouseButtonFirstDown;
-        public Vector3Event rightMouseButtonDown;
-        public Vector3Event rightMouseButtonFirstUp;
+        public Vector2Event rightMouseButtonFirstDown;
+        public Vector2Event rightMouseButtonDown;
+        public Vector2Event rightMouseButtonFirstUp;
 
         public FloatEvent mouseScrolled;
-        public Vector3Event mouseMoved;
+        public Vector2Event mouseMoved;
 
 #endregion
 
@@ -72,62 +73,57 @@ namespace Celeste.Input
 
         private void Update()
         {
-            if (raycastCamera.Value == null)
-            {
-                return;
-            }
-
 #if UNITY_ANDROID || UNITY_IOS
             //if (UnityEngine.Input.touchCount != 1)
             //{
             //    firstHitGameObject = null;
             //}
 
-            if (UnityEngine.Input.touchCount == 1)
-            {
-                Touch touch = UnityEngine.Input.GetTouch(0);
-                singleTouchEvent.InvokeSilently(touch);
+            //if (UnityEngine.Input.touchCount == 1)
+            //{
+            //    //Touch touch = UnityEngine.Input.GetTouch(0);
+            //    //singleTouchEvent.InvokeSilently(touch);
 
-                //Vector3 touchWorldPosition = raycastCamera.ScreenToWorldPoint(touch.position);
-                //GameObject hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
+            //    //Vector3 touchWorldPosition = raycastCamera.ScreenToWorldPoint(touch.position);
+            //    //GameObject hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
 
-                //if (touch.phase == TouchPhase.Began)
-                //{
-                //    firstHitGameObject = hitGameObject;
-                //    firstHitGameObjectPosition = touchWorldPosition;
-                //}
-                //else if (touch.phase == TouchPhase.Ended)
-                //{
-                //    if (firstHitGameObject != null && 
-                //        firstHitGameObject == hitGameObject && 
-                //        (touchWorldPosition - firstHitGameObjectPosition).sqrMagnitude < 0.05f)
-                //    {
-                //        gameObjectLeftClicked.Raise(new GameObjectClickEventArgs()
-                //        {
-                //            gameObject = hitGameObject,
-                //            clickWorldPosition = touchWorldPosition
-                //        });
-                //    }
+            //    //if (touch.phase == TouchPhase.Began)
+            //    //{
+            //    //    firstHitGameObject = hitGameObject;
+            //    //    firstHitGameObjectPosition = touchWorldPosition;
+            //    //}
+            //    //else if (touch.phase == TouchPhase.Ended)
+            //    //{
+            //    //    if (firstHitGameObject != null && 
+            //    //        firstHitGameObject == hitGameObject && 
+            //    //        (touchWorldPosition - firstHitGameObjectPosition).sqrMagnitude < 0.05f)
+            //    //    {
+            //    //        gameObjectLeftClicked.Raise(new GameObjectClickEventArgs()
+            //    //        {
+            //    //            gameObject = hitGameObject,
+            //    //            clickWorldPosition = touchWorldPosition
+            //    //        });
+            //    //    }
 
-                //    firstHitGameObject = null;
-                //}
-            }
-            else if (UnityEngine.Input.touchCount == 2)
-            {
-                doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
-                {
-                    touchCount = 2,
-                    touches = UnityEngine.Input.touches,
-                });
-            }
-            else if (UnityEngine.Input.touchCount == 3)
-            {
-                tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
-                {
-                    touchCount = 3,
-                    touches = UnityEngine.Input.touches,
-                });
-            }
+            //    //    firstHitGameObject = null;
+            //    //}
+            //}
+            //else if (UnityEngine.Input.touchCount == 2)
+            //{
+            //    doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
+            //    {
+            //        touchCount = 2,
+            //        touches = UnityEngine.Input.touches,
+            //    });
+            //}
+            //else if (UnityEngine.Input.touchCount == 3)
+            //{
+            //    tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
+            //    {
+            //        touchCount = 3,
+            //        touches = UnityEngine.Input.touches,
+            //    });
+            //}
 #else
 
 #if UNITY_EDITOR
@@ -137,21 +133,20 @@ namespace Celeste.Input
                 return;
             }
 #endif
+            Mouse mouse = Mouse.current;
 
-            CheckMouseButton(MouseButton.LeftMouse, leftMouseButtonFirstDown, leftMouseButtonDown, leftMouseButtonFirstUp, gameObjectLeftClicked);
-            CheckMouseButton(MouseButton.RightMouse, rightMouseButtonFirstDown, rightMouseButtonDown, rightMouseButtonFirstUp, gameObjectRightClicked);
-            CheckMouseButton(MouseButton.MiddleMouse, middleMouseButtonFirstDown, middleMouseButtonDown, middleMouseButtonFirstUp, gameObjectMiddleClicked);
+            CheckMouseButton(mouse.leftButton, leftMouseButtonFirstDown, leftMouseButtonDown, leftMouseButtonFirstUp, gameObjectLeftClicked);
+            CheckMouseButton(mouse.rightButton, rightMouseButtonFirstDown, rightMouseButtonDown, rightMouseButtonFirstUp, gameObjectRightClicked);
+            CheckMouseButton(mouse.middleButton, middleMouseButtonFirstDown, middleMouseButtonDown, middleMouseButtonFirstUp, gameObjectMiddleClicked);
 
-            float mouseScrollDelta = UnityEngine.Input.mouseScrollDelta.y;
+            float mouseScrollDelta = mouse.scroll.ReadValue().y;
             if (mouseScrollDelta != 0)
             {
                 mouseScrolled.InvokeSilently(mouseScrollDelta);
             }
 
-            Vector3 mousePosition = UnityEngine.Input.mousePosition;
-            mousePosition.z = -raycastCamera.Value.transform.position.z;
-            Vector3 mouseWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
-            mouseMoved.InvokeSilently(mouseWorldPosition);
+            Vector2 mousePosition = mouse.position.ReadValue();
+            mouseMoved.InvokeSilently(mousePosition);
 #endif
         }
 
@@ -160,10 +155,10 @@ namespace Celeste.Input
         #region Utility Functions
 
         private void CheckMouseButton(
-            MouseButton mouseButton, 
-            Vector3Event mouseButtonFirstDown,
-            Vector3Event mouseButtonDown,
-            Vector3Event mouseButtonFirstUpEvent,
+            ButtonControl buttonControl,
+            Vector2Event mouseButtonFirstDown,
+            Vector2Event mouseButtonDown,
+            Vector2Event mouseButtonFirstUpEvent,
             GameObjectClickEvent gameObjectClickedEvent)
         {
             if (eventSystem.currentSelectedGameObject != null)
@@ -173,33 +168,36 @@ namespace Celeste.Input
                 return;
             }
         
-            Vector3 mousePosition = UnityEngine.Input.mousePosition;
-            mousePosition.z = -raycastCamera.Value.transform.position.z;
-            Vector3 clickWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-            if (UnityEngine.Input.GetMouseButtonDown((int)mouseButton))
+            if (buttonControl.wasPressedThisFrame)
             {
-                mouseButtonFirstDown.InvokeSilently(clickWorldPosition);
+                mouseButtonFirstDown.InvokeSilently(mousePosition);
 
-                GameObject hitGameObject = Raycast(new Vector2(clickWorldPosition.x, clickWorldPosition.y));
-                if (hitGameObject != null)
+                if (raycastCamera.Value != null)
                 {
-                    gameObjectClickedEvent.Invoke(new GameObjectClickEventArgs()
+                    Vector3 clickWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
+                    GameObject hitGameObject = Raycast(new Vector2(clickWorldPosition.x, clickWorldPosition.y));
+
+                    if (hitGameObject != null)
                     {
-                        gameObject = hitGameObject,
-                        clickWorldPosition = clickWorldPosition
-                    });
+                        gameObjectClickedEvent.Invoke(new GameObjectClickEventArgs()
+                        {
+                            gameObject = hitGameObject,
+                            clickWorldPosition = clickWorldPosition
+                        });
+                    }
                 }
             }
 
-            if (UnityEngine.Input.GetMouseButton((int)mouseButton))
+            if (buttonControl.isPressed)
             {
-                mouseButtonDown.InvokeSilently(clickWorldPosition);
+                mouseButtonDown.InvokeSilently(mousePosition);
             }
 
-            if (UnityEngine.Input.GetMouseButtonUp((int)mouseButton))
+            if (buttonControl.wasReleasedThisFrame)
             {
-                mouseButtonFirstUpEvent.InvokeSilently(clickWorldPosition);
+                mouseButtonFirstUpEvent.InvokeSilently(mousePosition);
             }
         }
 

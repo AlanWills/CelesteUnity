@@ -1,7 +1,9 @@
 {
     "name": "Celeste.Events",
     "rootNamespace": "Celeste.Events",
-    "references": [],
+    "references": [
+        "Unity.InputSystem"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

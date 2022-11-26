@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6377833682834265279}
   m_Father: {fileID: 0}
@@ -48,17 +49,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastCamera: {fileID: 11400000, guid: 14ae487a7b0d7524e8df71e5b3255874, type: 2}
   eventSystem: {fileID: 6377833682834265272}
-  leftMouseButtonFirstDown: {fileID: 11400000, guid: 411f74b7e0ff9724782bd877fe46ecb2, type: 2}
-  leftMouseButtonDown: {fileID: 11400000, guid: 5bde9aec2932a17479dde0f37d6be05d, type: 2}
-  leftMouseButtonFirstUp: {fileID: 11400000, guid: 879988b114f8ff241baf78a36cf358b2, type: 2}
-  middleMouseButtonFirstDown: {fileID: 11400000, guid: beda8dd954a6f1e418a5ca09b8c2c66e, type: 2}
-  middleMouseButtonDown: {fileID: 11400000, guid: ed019946831f25c4a8d9b6a37bd25203, type: 2}
-  middleMouseButtonFirstUp: {fileID: 11400000, guid: fa6be8710e80aa04c9b31acae19f188f, type: 2}
-  rightMouseButtonFirstDown: {fileID: 11400000, guid: 5b1b9bf5891bc1847afb07260010ae5b, type: 2}
-  rightMouseButtonDown: {fileID: 11400000, guid: bc209591cf7be4f45bd314934378e90a, type: 2}
-  rightMouseButtonFirstUp: {fileID: 11400000, guid: 04bfa20a4434ecf4abe87c91a6532fd6, type: 2}
+  leftMouseButtonFirstDown: {fileID: 11400000, guid: 3e0f99d77fe7e284b98c11650a91e607, type: 2}
+  leftMouseButtonDown: {fileID: 11400000, guid: 80d21d9030dfeee4ab10e4c4d0c06dc2, type: 2}
+  leftMouseButtonFirstUp: {fileID: 11400000, guid: 1d0dd8082f5d9f14cae4daf109e914b0, type: 2}
+  middleMouseButtonFirstDown: {fileID: 11400000, guid: 7ed9008c9f02d0a468e3b188c757ef49, type: 2}
+  middleMouseButtonDown: {fileID: 11400000, guid: a70d2ad7caf24ba4c8d6bd16fd4f8958, type: 2}
+  middleMouseButtonFirstUp: {fileID: 11400000, guid: a3aa7b1cee5289041a03094b573b5bf5, type: 2}
+  rightMouseButtonFirstDown: {fileID: 11400000, guid: 13b1cee57fbb72f44a516ef604d57345, type: 2}
+  rightMouseButtonDown: {fileID: 11400000, guid: 15b9eca4d3a0b3044923f2861faa7254, type: 2}
+  rightMouseButtonFirstUp: {fileID: 11400000, guid: 5a819ea16b858ac49b37e65c28d077b0, type: 2}
   mouseScrolled: {fileID: 11400000, guid: f8e41487b26e73a4a8c520f166a1d589, type: 2}
-  mouseMoved: {fileID: 11400000, guid: c60d66d1ecc34d948b70d115706bee63, type: 2}
+  mouseMoved: {fileID: 11400000, guid: 563148fb673d6dc4dafd34d657d1bf33, type: 2}
   singleTouchEvent: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
   doubleTouchEvent: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
   tripleTouchEvent: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
@@ -149,6 +150,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6377833681284458535}
   m_RootOrder: 0
@@ -180,8 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -195,3 +199,4 @@ MonoBehaviour:
   m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 2
+  m_CursorLockBehavior: 0

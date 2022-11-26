@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.UI
 {
-    [CreateAssetMenu(fileName = nameof(CanvasLayer), menuName = "Celeste/UI/Canvas Layer")]
+    [CreateAssetMenu(fileName = nameof(CanvasLayer), menuName = "Celeste/UI/Canvas/Canvas Layer")]
     public class CanvasLayer : ScriptableObject
     {
         public int SortOrder

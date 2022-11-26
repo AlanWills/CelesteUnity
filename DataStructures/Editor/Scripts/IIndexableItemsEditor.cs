@@ -39,7 +39,7 @@ namespace CelesteEditor.DataStructures
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
-                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>(AssetUtility.GetAssetFolderPath(target)));
+                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>("", AssetUtility.GetAssetFolderPath(target)));
             }
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())

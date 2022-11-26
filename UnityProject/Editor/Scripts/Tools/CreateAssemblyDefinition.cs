@@ -35,6 +35,7 @@ namespace CelesteEditor.UnityProject
         public bool hasRuntimeAssembly;
         public bool hasEditorAssembly;
         public bool hasSceneMenuItem;
+        [Tooltip("The path relative to the project folder (must include Assets/).")]
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath;
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
     }

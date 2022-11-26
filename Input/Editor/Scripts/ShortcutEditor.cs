@@ -1,8 +1,6 @@
 using Celeste.Input;
 using Celeste.Parameters.Input;
 using CelesteEditor.Tools;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,18 +14,18 @@ namespace CelesteEditor.Input
         [MenuItem("Assets/Create/Celeste/Input/Shortcut")]
         public static void CreateMenuItem()
         {
-            Shortcut shortcut = ScriptableObject.CreateInstance<Shortcut>();
+            Shortcut shortcut = CreateInstance<Shortcut>();
             shortcut.name = "New Shortcut";
 
             // Create the asset first, so it will be persistent when we create the sub assets
             AssetUtility.CreateAssetInFolderAndSave(shortcut, AssetUtility.GetSelectionObjectPath());
 
-            shortcut.keyCode = ScriptableObject.CreateInstance<KeyCodeReference>();
-            shortcut.keyCode.name = "KeyCodeReference";
-            shortcut.keyCode.hideFlags = HideFlags.HideInHierarchy;
-            AssetDatabase.AddObjectToAsset(shortcut.keyCode, shortcut);
+            shortcut.key = CreateInstance<KeyReference>();
+            shortcut.key.name = "KeyCodeReference";
+            shortcut.key.hideFlags = HideFlags.HideInHierarchy;
+            AssetDatabase.AddObjectToAsset(shortcut.key, shortcut);
 
-            shortcut.fired = ScriptableObject.CreateInstance<Celeste.Events.Event>();
+            shortcut.fired = CreateInstance<Celeste.Events.Event>();
             shortcut.fired.name = "FiredEvent";
             shortcut.fired.hideFlags = HideFlags.HideInHierarchy;
             AssetDatabase.AddObjectToAsset(shortcut.fired, shortcut);

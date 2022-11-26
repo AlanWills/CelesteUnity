@@ -31,6 +31,19 @@ namespace Celeste.Sound.Settings
 
         #endregion
 
+        #region Unity Events
+
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            playMusic = SoundEditorSettings.GetOrCreateSettings().playMusicEvent;
+            playMusicOneShot = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotEvent;
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
+        #endregion
+
         public override bool ShouldLoadAssets()
         {
             return false;

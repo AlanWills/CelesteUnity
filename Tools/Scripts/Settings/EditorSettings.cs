@@ -18,6 +18,8 @@ namespace Celeste.Tools.Settings
                 UnityEditor.AssetDatabase.Refresh();
                 UnityEditor.AssetDatabase.CreateAsset(settings, filePath);
                 UnityEditor.AssetDatabase.SaveAssets();
+                
+                settings.OnCreate();
             }
             return settings;
         }
@@ -26,6 +28,8 @@ namespace Celeste.Tools.Settings
         {
             return new UnityEditor.SerializedObject(GetOrCreateSettings(folderPath, filePath));
         }
+
+        protected virtual void OnCreate() { }
 #endif
     }
 }

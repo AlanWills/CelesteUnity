@@ -35,6 +35,20 @@ namespace CelesteEditor.Scene
             return scenePathLookup;
         }
 
+        public static Dictionary<string, SceneAsset> CreateSceneAssetLookup()
+        {
+            Dictionary<string, SceneAsset> scenePathLookup = new Dictionary<string, SceneAsset>();
+
+            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}"))
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(sceneGuid);
+                SceneAsset unityScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);
+                scenePathLookup[unityScene.name] = unityScene;
+            }
+
+            return scenePathLookup;
+        }
+
         public static void EditorOnly_Load(this SceneSet sceneSet, LoadSceneMode loadSceneMode)
         {
             if (Application.isPlaying)

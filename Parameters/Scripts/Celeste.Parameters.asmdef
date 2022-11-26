@@ -4,7 +4,8 @@
     "references": [
         "Celeste.Objects",
         "Celeste.Events",
-        "Celeste.Constraints"
+        "Celeste.Constraints",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

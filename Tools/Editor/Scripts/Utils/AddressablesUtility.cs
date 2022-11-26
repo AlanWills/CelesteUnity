@@ -46,8 +46,7 @@ namespace CelesteEditor.Tools
         public static AddressableAssetEntry GetAddressableInfo(this Object obj)
         {
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-            AddressableAssetEntry entry = settings.FindAssetEntry(AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj)));
-            return entry;
+            return settings.FindAssetEntry(AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj)));
         }
 
         public static void SetAddressableLabel(this Object o, string group, string label, bool enabled)
