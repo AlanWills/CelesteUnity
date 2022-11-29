@@ -3,11 +3,9 @@ using Celeste.Constants;
 using Celeste.DataStructures;
 using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Events;
-using Celeste.DeckBuilding.Extensions;
 using Celeste.Events;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
@@ -25,13 +23,10 @@ namespace Celeste.DeckBuilding
 
         #region Properties and Fields
 
-        public int DeckIndex { get; }
         public ID Owner { get; set; }
 
-        public string CardName
-        {
-            get { return card.name; }
-        }
+        public int CardGuid => card.Guid;
+        public string CardName => card.name;
 
         public bool IsFaceUp
         {
@@ -71,10 +66,9 @@ namespace Celeste.DeckBuilding
 
         #endregion
 
-        public CardRuntime(Card card, int deckIndex)
+        public CardRuntime(Card card)
         {
             this.card = card;
-            DeckIndex = deckIndex;
 
             InitComponents();
         }

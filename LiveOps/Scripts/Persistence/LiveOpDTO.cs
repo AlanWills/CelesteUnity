@@ -2,7 +2,6 @@
 using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.LiveOps.Persistence
 {
@@ -58,7 +57,7 @@ namespace Celeste.LiveOps.Persistence
 
             for (int i = 0, n = template.NumComponents; i < n; i++)
             {
-                components.Add(new ComponentDTO(template.GetComponent(i)));
+                components.Add(new ComponentDTO(template.GetComponent(i), template.GetComponentData(i)));
             }
         }
     }

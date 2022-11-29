@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.DeckBuilding
 {
     [AddComponentMenu("Celeste/Deck Building/Current Hand")]
-    public class CurrentHand : MonoBehaviour, ICardStorage
+    public class CurrentHand : MonoBehaviour
     {
         #region Properties and Fields
 

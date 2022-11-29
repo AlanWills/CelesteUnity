@@ -1,7 +1,4 @@
-﻿using Celeste.DeckBuilding.Decks;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.DeckBuilding.UI
 {
@@ -10,21 +7,19 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private DeckUIManager deckController;
+        [SerializeField] private DeckMatchPlayerUIManager deckController;
         [SerializeField] private StageUIManager stageUIManager;
 
         #endregion
 
-        public void Hookup(DeckRuntime deckRuntime)
+        public void Hookup(DeckMatchPlayerRuntime playerRuntime)
         {
             deckController.Hookup(
-                deckRuntime.AvailableResources,
-                deckRuntime.CurrentHand,
-                deckRuntime.DrawPile,
-                deckRuntime.DiscardPile,
-                deckRuntime.RemovedPile);
+                playerRuntime.AvailableResources,
+                playerRuntime.CurrentHand,
+                playerRuntime.Deck);
             
-            stageUIManager.Hookup(deckRuntime.Stage);
+            stageUIManager.Hookup(playerRuntime.Stage);
         }
     }
 }

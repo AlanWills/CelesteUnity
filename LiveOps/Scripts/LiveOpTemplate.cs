@@ -25,7 +25,8 @@ namespace Celeste.LiveOps
         [SerializeField, Timestamp] private long startTimestamp;
         [SerializeField, Tooltip("The wait time between an event starting and the next recurring event starting in seconds.")] private bool isRecurring;
         [SerializeField, ShowIf(nameof(isRecurring))] private long repeatsAfter;
-        [SerializeField] private List<ComponentTemplate> components = new List<ComponentTemplate>();
+        [SerializeField] private List<Component> components = new List<Component>();
+        [SerializeField] private List<ComponentData> componentsData = new List<ComponentData>();
 
         #endregion
 
@@ -38,19 +39,12 @@ namespace Celeste.LiveOps
 #endif
             {
                 component.name = type.Name;
-                component.hideFlags = HideFlags.HideInHierarchy;
-
-                ComponentTemplate componentTemplate = CreateInstance<ComponentTemplate>();
-                componentTemplate.name = type.Name;
-                componentTemplate.component = component;
-                componentTemplate.componentData = component.CreateData();
-
-                components.Add(componentTemplate);
+                components.Add(component);
+                componentsData.Add(component.CreateData());
 #if UNITY_EDITOR
                 if (!Application.isPlaying)
                 {
-                    UnityEditor.AssetDatabase.AddObjectToAsset(componentTemplate, this);
-                    UnityEditor.AssetDatabase.AddObjectToAsset(component, this);
+                    UnityEditor.EditorUtility.SetDirty(this);
                     UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
                 }
 #endif
@@ -63,13 +57,11 @@ namespace Celeste.LiveOps
             if (0 <= componentIndex && componentIndex < components.Count)
 #endif
             {
-                ComponentTemplate componentTemplate = components[componentIndex];
                 components.RemoveAt(componentIndex);
+                componentsData.RemoveAt(componentIndex);
 #if UNITY_EDITOR
                 if (!Application.isPlaying)
                 {
-                    DestroyImmediate(componentTemplate.component, true);
-                    DestroyImmediate(componentTemplate, true);
                     UnityEditor.EditorUtility.SetDirty(this);
                     UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
                 }
@@ -77,9 +69,14 @@ namespace Celeste.LiveOps
             }
         }
 
-        public ComponentTemplate GetComponent(int componentIndex)
+        public Component GetComponent(int componentIndex)
         {
             return components.Get(componentIndex);
+        }
+
+        public ComponentData GetComponentData(int componentIndex)
+        {
+            return componentsData.Get(componentIndex);
         }
     }
 }

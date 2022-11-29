@@ -8,14 +8,14 @@ namespace CelesteEditor.BoardGame
     {
         #region Properties and Fields
 
-        public static readonly Type[] AllTokenComponentTypes;
-        public static readonly string[] AllTokenComponentDisplayNames;
+        public static readonly Type[] AllBoardGameObjectComponentTypes;
+        public static readonly string[] AllBoardGameObjectComponentDisplayNames;
 
         #endregion
 
         static BoardGameEditorConstants()
         {
-            TypeUtils.LoadTypes<TokenComponent>(ref AllTokenComponentTypes, ref AllTokenComponentDisplayNames);
+            TypeUtils.LoadTypes<BoardGameObjectComponent>(ref AllBoardGameObjectComponentTypes, ref AllBoardGameObjectComponentDisplayNames);
         }
     }
 }

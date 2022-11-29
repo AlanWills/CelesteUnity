@@ -1,12 +1,10 @@
 ﻿using Celeste.Events;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.DeckBuilding
 {
-    [AddComponentMenu("Celeste/Deck Building/Available Resources")]
-    public class AvailableResources : MonoBehaviour
+    [CreateAssetMenu(fileName = nameof(AvailableResources), menuName = "Celeste/Deck Building/Available Resources")]
+    public class AvailableResources : ScriptableObject
     {
         #region Properties and Fields
 

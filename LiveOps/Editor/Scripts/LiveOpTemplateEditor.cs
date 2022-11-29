@@ -106,7 +106,7 @@ namespace CelesteEditor.LiveOps
 
             for (int i = 0, n = template.NumComponents; i < n; ++i)
             {
-                var component = template.GetComponent(i).component;
+                var component = template.GetComponent(i);
                 
                 if (!assetsFound)
                 {

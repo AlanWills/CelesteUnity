@@ -3,6 +3,13 @@
     "rootNamespace": "Celeste.BoardGame",
     "references": [
         "Celeste.Components",
+        "Celeste.Events",
+        "Celeste.Parameters",
+        "Celeste.Scene",
+        "Celeste.DataStructures",
+        "Celeste.Objects",
+        "Celeste.OdinSerializer",
+        "Celeste.Tools",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

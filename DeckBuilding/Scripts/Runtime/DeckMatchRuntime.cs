@@ -15,22 +15,22 @@ namespace Celeste.DeckBuilding
     {
         #region Properties and Fields
 
-        public DeckRuntime ActiveDeckRuntime
+        public DeckMatchPlayerRuntime ActiveDeckRuntime
         {
             get { return playerDeckRuntime.IsActive ? playerDeckRuntime : enemyDeckRuntime; }
         }
 
-        public DeckRuntime InactiveDeckRuntime
+        public DeckMatchPlayerRuntime InactiveDeckRuntime
         {
             get { return playerDeckRuntime.IsActive ? enemyDeckRuntime : playerDeckRuntime; }
         }
 
-        public DeckRuntime PlayerDeckRuntime
+        public DeckMatchPlayerRuntime PlayerDeckRuntime
         {
             get { return playerDeckRuntime; }
         }
 
-        public DeckRuntime EnemyDeckRuntime
+        public DeckMatchPlayerRuntime EnemyDeckRuntime
         {
             get { return enemyDeckRuntime; }
         }
@@ -40,8 +40,8 @@ namespace Celeste.DeckBuilding
         [SerializeField] private FSMRuntime deckMatchFSMRuntime;
 
         [Header("Deck Runtimes")]
-        [SerializeField] private DeckRuntime playerDeckRuntime;
-        [SerializeField] private DeckRuntime enemyDeckRuntime;
+        [SerializeField] private DeckMatchPlayerRuntime playerDeckRuntime;
+        [SerializeField] private DeckMatchPlayerRuntime enemyDeckRuntime;
 
         [Header("Events")]
         [SerializeField] private LoadDeckMatchEvent loadDeckMatchEvent;
@@ -60,7 +60,7 @@ namespace Celeste.DeckBuilding
 
         private void HookupDeck(
             Deck deck, 
-            DeckRuntime deckRuntime,
+            DeckMatchPlayerRuntime deckRuntime,
             DeckRuntimeUIManager deckRuntimeUI)
         {
             deckRuntimeUI.Hookup(deckRuntime);

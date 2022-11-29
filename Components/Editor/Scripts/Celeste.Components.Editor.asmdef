@@ -3,6 +3,7 @@
     "rootNamespace": "CelesteEditor.Components",
     "references": [
         "Celeste.Components",
+        "Celeste.Tools",
         "Celeste.Objects.Editor",
         "Celeste.Tools.Editor"
     ],

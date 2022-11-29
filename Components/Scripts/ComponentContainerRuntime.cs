@@ -32,6 +32,7 @@ namespace Celeste.Components
             ComponentHandle<T> handle = new ComponentHandle<T>(component, data, events);
             components.Add(handle);
             events.ComponentDataChanged.AddListener(ComponentDataChanged.Invoke);
+
         }
 
         public void AddComponent(ComponentHandle<T> componentHandle)

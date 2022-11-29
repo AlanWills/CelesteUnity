@@ -1,9 +1,7 @@
-﻿using Celeste.Constants;
-using Celeste.DeckBuilding.Cards;
+﻿using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Extensions;
-using Celeste.DeckBuilding.Match;
 using Celeste.DeckBuilding.Persistence;
 using Celeste.FSM;
 using Celeste.Persistence;
@@ -93,7 +91,7 @@ namespace Celeste.DeckBuilding
 
         #endregion
 
-        private void Deserialize(DeckRuntime deckRuntime, DeckRuntimeDTO deckRuntimeDTO)
+        private void Deserialize(DeckMatchPlayerRuntime deckRuntime, DeckMatchPlayerRuntimeDTO deckRuntimeDTO)
         {
             Deck deck = deckRuntime.Deck;
 
@@ -132,14 +130,14 @@ namespace Celeste.DeckBuilding
 
         private CardRuntime CreateCardRuntime(Deck deck, CardRuntimeDTO cardRuntimeDTO)
         {
-            Card card = deck.GetCard(cardRuntimeDTO.deckIndex);
+            Card card = deck.GetCardFromDeck(cardRuntimeDTO.deckIndex);
             CardRuntime cardRuntime = new CardRuntime(card, cardRuntimeDTO.deckIndex);
             cardRuntime.LoadComponents(cardRuntimeDTO.componentNames, cardRuntimeDTO.componentData);
 
             return cardRuntime;
         }
 
-        private void SetDefaultValues(DeckRuntime deckRuntime)
+        private void SetDefaultValues(DeckMatchPlayerRuntime deckRuntime)
         {
             var deck = deckRuntime.Deck;
 
@@ -147,7 +145,7 @@ namespace Celeste.DeckBuilding
 
             for (int i = 0, n = deck.NumCards; i < n; ++i)
             {
-                CardRuntime card = new CardRuntime(deck.GetCard(i), i);
+                CardRuntime card = new CardRuntime(deck.GetCardFromDeck(i), i);
                 if (card.SupportsActor() && card.IsOnStage())
                 {
                     deckRuntime.AddCardToStage(card);

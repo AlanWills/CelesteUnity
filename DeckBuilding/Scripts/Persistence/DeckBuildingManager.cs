@@ -34,7 +34,7 @@ namespace Celeste.DeckBuilding.Persistence
                 {
                     Card card = cardCatalogue.FindByGuid(cardGuid);
                     UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
-                    deck.AddCard(card);
+                    deck.AddCardToDeck(card);
                 }
             }
         }

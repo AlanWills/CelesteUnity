@@ -1,23 +1,35 @@
 ﻿using Celeste.DeckBuilding.Decks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
+ 
 namespace Celeste.DeckBuilding.Persistence
 {
     [Serializable]
     public class DeckDTO
     {
-        public List<int> cards = new List<int>();
+        public List<int> cardsInDrawPile = new List<int>();
+        public List<int> cardsInDiscardPile = new List<int>();
+        public List<int> cardsInRemovedPile = new List<int>();
 
         public DeckDTO(Deck deck)
         {
-            cards.Capacity = deck.NumCards;
+            cardsInDrawPile.Capacity = deck.NumCardsInDrawPile;
+            cardsInDiscardPile.Capacity = deck.NumCardsInDiscardPile;
+            cardsInRemovedPile.Capacity = deck.NumCardsInRemovedPile;
 
-            for (int i = 0, n = deck.NumCards; i < n; ++i)
+            for (int i = 0, n = deck.NumCardsInDrawPile; i < n; ++i)
             {
-                cards.Add(deck.GetCard(i).Guid);
+                cardsInDrawPile.Add(deck.GetCardInDrawPile(i).CardGuid);
+            }
+
+            for (int i = 0, n = deck.NumCardsInDiscardPile; i < n; ++i)
+            {
+                cardsInDiscardPile.Add(deck.GetCardInDiscardPile(i).CardGuid);
+            }
+
+            for (int i = 0, n = deck.NumCardsInRemovedPile; i < n; ++i)
+            {
+                cardsInRemovedPile.Add(deck.GetCardInRemovedPile(i).CardGuid);
             }
         }
     }

@@ -15,22 +15,22 @@ namespace Celeste.DeckBuilding.Commands
             get { return deckMatchRuntime; }
         }
 
-        public DeckRuntime ActiveDeckRuntime
+        public DeckMatchPlayerRuntime ActiveDeckRuntime
         {
             get { return deckMatchRuntime.ActiveDeckRuntime; }
         }
 
-        public DeckRuntime InactiveDeckRuntime
+        public DeckMatchPlayerRuntime InactiveDeckRuntime
         {
             get { return deckMatchRuntime.InactiveDeckRuntime; }
         }
 
-        public DeckRuntime PlayerDeckRuntime
+        public DeckMatchPlayerRuntime PlayerDeckRuntime
         {
             get { return deckMatchRuntime.PlayerDeckRuntime; }
         }
 
-        public DeckRuntime EnemyDeckRuntime
+        public DeckMatchPlayerRuntime EnemyDeckRuntime
         {
             get { return deckMatchRuntime.InactiveDeckRuntime; }
         }

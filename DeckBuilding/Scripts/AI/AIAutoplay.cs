@@ -11,8 +11,8 @@ namespace Celeste.DeckBuilding.AI
         #region Properties and Fields
 
         [SerializeField] private BTRuntime aiRuntime;
-        [SerializeField] private DeckRuntime controlledDeckRuntime;
-        [SerializeField] private DeckRuntime opponentDeckRuntime;
+        [SerializeField] private DeckMatchPlayerRuntime controlledDeckRuntime;
+        [SerializeField] private DeckMatchPlayerRuntime opponentDeckRuntime;
 
         [Header("Events")]
         [SerializeField] private Celeste.Events.Event endTurnEvent;

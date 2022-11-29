@@ -2,15 +2,13 @@
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.DeckBuilding
 {
-    [AddComponentMenu("Celeste/Deck Building/Stage")]
-    public class Stage : MonoBehaviour, ICardStorage
+    [CreateAssetMenu(fileName = nameof(Stage), menuName = "Celeste/Deck Building/Stage")]
+    public class Stage : ScriptableObject
     {
         #region Properties and Fields
 

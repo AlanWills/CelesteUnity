@@ -57,7 +57,7 @@ namespace Celeste.DeckBuilding.Commands
             }
         }
 
-        private void TryUseCardOnAllActors(CardRuntime card, DeckRuntime friendlyDeck, DeckRuntime enemyDeck)
+        private void TryUseCardOnAllActors(CardRuntime card, DeckMatchPlayerRuntime friendlyDeck, DeckMatchPlayerRuntime enemyDeck)
         {
             if (card.SupportsEffect() && !card.EffectRequiresTarget())
             {

@@ -20,10 +20,10 @@ namespace Celeste.Components.Persistence
             data = componentHandle.instance.data.ToJson();
         }
 
-        public ComponentDTO(ComponentTemplate componentTemplate)
+        public ComponentDTO(Component component, ComponentData componentData)
         {
-            typeName = componentTemplate.component.name;
-            data = componentTemplate.componentData.ToJson();
+            typeName = component.name;
+            data = componentData.ToJson();
         }
     }
 }

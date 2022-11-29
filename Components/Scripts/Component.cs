@@ -19,6 +19,12 @@ namespace Celeste.Components
             this.iFace = iFace;
             this.instance = instance;
         }
+
+        public void MakeNull()
+        {
+            iFace = null;
+            instance.MakeNull();
+        }
     }
 
     [Serializable]
@@ -116,6 +122,12 @@ namespace Celeste.Components
         {
             this.data = data;
             this.events = events;
+        }
+
+        public void MakeNull()
+        {
+            data = null;
+            events = null;
         }
     }
 

@@ -19,8 +19,8 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
         protected override BTNode OnEvaluate(BTBlackboard btBlackboard)
         {
-            DeckRuntime controlledDeck = btBlackboard.GetObject<DeckRuntime>(DeckBuildingAIBlackboardKeys.CONTROLLED_DECK);
-            DeckRuntime opponentDeck = btBlackboard.GetObject<DeckRuntime>(DeckBuildingAIBlackboardKeys.OPPONENT_DECK);
+            DeckMatchPlayerRuntime controlledDeck = btBlackboard.GetObject<DeckMatchPlayerRuntime>(DeckBuildingAIBlackboardKeys.CONTROLLED_DECK);
+            DeckMatchPlayerRuntime opponentDeck = btBlackboard.GetObject<DeckMatchPlayerRuntime>(DeckBuildingAIBlackboardKeys.OPPONENT_DECK);
             CurrentHand currentHand = controlledDeck.CurrentHand;
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)

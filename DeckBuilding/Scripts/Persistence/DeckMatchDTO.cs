@@ -11,8 +11,8 @@ namespace Celeste.DeckBuilding.Persistence
     public class DeckMatchDTO
     {
         public bool isPlayerTurn;
-        public DeckRuntimeDTO playerDeckRuntime;
-        public DeckRuntimeDTO enemyDeckRuntime;
+        public DeckMatchPlayerRuntimeDTO playerDeckRuntime;
+        public DeckMatchPlayerRuntimeDTO enemyDeckRuntime;
         public string currentFSMRuntimeNode;
 
         public DeckMatchDTO(DeckMatchRuntime deckMatchRuntime, FSMRuntime deckMatchFSMRuntime)

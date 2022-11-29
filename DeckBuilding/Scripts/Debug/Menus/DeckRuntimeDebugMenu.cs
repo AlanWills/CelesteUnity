@@ -11,11 +11,11 @@ namespace Celeste.DeckBuilding.Debug.Menus
     {
         #region Properties and Fields
 
-        private DeckRuntime deckRuntime;
+        private DeckMatchPlayerRuntime deckRuntime;
 
         #endregion
 
-        public void Hookup(DeckRuntime deckRuntime)
+        public void Hookup(DeckMatchPlayerRuntime deckRuntime)
         {
             this.deckRuntime = deckRuntime;
         }
