@@ -16,6 +16,8 @@ namespace Celeste.DeckBuilding.Decks
         public int NumCardsInDiscardPile => discardPile.Count;
         public int NumCardsInRemovedPile => removedPile.Count;
         public bool DrawPileEmpty => NumCardsInDrawPile == 0;
+        public bool DiscardPileEmpty => NumCardsInDiscardPile == 0;
+        public bool RemovedPileEmpty => NumCardsInRemovedPile == 0;
 
         public CardShuffler CardShuffler
         {
@@ -80,6 +82,12 @@ namespace Celeste.DeckBuilding.Decks
             return drawPile.Get(index);
         }
 
+        public CardRuntime PeekTopCardOfDrawPile()
+        {
+            UnityEngine.Debug.Assert(!DrawPileEmpty, $"Attempting to peek top card of draw pile when it is empty.");
+            return NumCardsInDrawPile > 0 ? drawPile[NumCardsInDrawPile - 1] : null;
+        }
+
         #endregion
 
         #region Discard Pile Management
@@ -104,6 +112,12 @@ namespace Celeste.DeckBuilding.Decks
             return discardPile.Get(index);
         }
 
+        public CardRuntime PeekTopCardOfDiscardPile()
+        {
+            UnityEngine.Debug.Assert(!DiscardPileEmpty, $"Attempting to peek top card of discard pile when it is empty.");
+            return NumCardsInDiscardPile > 0 ? discardPile[NumCardsInDiscardPile - 1] : null;
+        }
+
         #endregion
 
         #region Removed Pile Management
@@ -117,6 +131,12 @@ namespace Celeste.DeckBuilding.Decks
         public CardRuntime GetCardInRemovedPile(int index)
         {
             return removedPile.Get(index);
+        }
+
+        public CardRuntime PeekTopCardOfRemovedPile()
+        {
+            UnityEngine.Debug.Assert(!RemovedPileEmpty, $"Attempting to peek top card of removed pile when it is empty.");
+            return NumCardsInRemovedPile > 0 ? removedPile[NumCardsInRemovedPile - 1] : null;
         }
 
         #endregion

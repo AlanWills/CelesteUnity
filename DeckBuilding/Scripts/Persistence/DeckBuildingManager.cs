@@ -17,7 +17,6 @@ namespace Celeste.DeckBuilding.Persistence
         }
 
         [SerializeField] private CardCatalogue cardCatalogue;
-        [SerializeField] private PrebuiltDeck[] startingDecks;
         [SerializeField] private DeckBuildingRecord deckBuildingRecord;
 
         #endregion
@@ -30,11 +29,25 @@ namespace Celeste.DeckBuilding.Persistence
             {
                 Deck deck = deckBuildingRecord.CreateDeck();
                 
-                foreach (int cardGuid in deckDTO.cards)
+                foreach (CardRuntimeDTO cardRuntimeDTO in deckDTO.cardsInDrawPile)
                 {
-                    Card card = cardCatalogue.FindByGuid(cardGuid);
-                    UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
-                    deck.AddCardToDeck(card);
+                    Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
+                    UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
+                    deck.AddCardToDrawPile(new CardRuntime(card));
+                }
+
+                foreach (CardRuntimeDTO cardRuntimeDTO in deckDTO.cardsInDiscardPile)
+                {
+                    Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
+                    UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
+                    deck.AddCardToDiscardPile(new CardRuntime(card));
+                }
+
+                foreach (CardRuntimeDTO cardRuntimeDTO in deckDTO.cardsInRemovedPile)
+                {
+                    Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
+                    UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
+                    deck.AddCardToRemovedPile(new CardRuntime(card));
                 }
             }
         }
@@ -46,10 +59,6 @@ namespace Celeste.DeckBuilding.Persistence
 
         protected override void SetDefaultValues()
         {
-            for (int i = 0, n = startingDecks != null ? startingDecks.Length : 0; i < n; ++i)
-            {
-                deckBuildingRecord.AddDeck(startingDecks[i].ToDeck());
-            }
         }
 
         #endregion

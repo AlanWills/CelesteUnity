@@ -28,11 +28,6 @@ namespace Celeste.DeckBuilding.Debug.Menus
                 return;
             }
 
-            if (GUILayout.Button("Lose"))
-            {
-                deckRuntime.Lose();
-            }
-
             // Available Resources
             {
                 GUILayout.Label("Available Resources");

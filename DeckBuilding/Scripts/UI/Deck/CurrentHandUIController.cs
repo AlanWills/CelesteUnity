@@ -1,9 +1,6 @@
-﻿using Celeste.DeckBuilding.Cards;
-using Celeste.Memory;
+﻿using Celeste.Memory;
 using Celeste.Tools;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.UI

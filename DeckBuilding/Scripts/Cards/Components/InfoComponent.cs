@@ -1,4 +1,5 @@
 ﻿using Celeste.Components;
+using Celeste.DeckBuilding.Components;
 using System.Collections;
 using System.ComponentModel;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Celeste.DeckBuilding.Cards
 {
     [DisplayName("Info")]
-    public class InfoComponent : Components.Component
+    public class InfoComponent : CardComponent
     {
         #region Properties and Fields
 

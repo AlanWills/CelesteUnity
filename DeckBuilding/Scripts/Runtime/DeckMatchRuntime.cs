@@ -60,11 +60,10 @@ namespace Celeste.DeckBuilding
 
         private void HookupDeck(
             Deck deck, 
-            DeckMatchPlayerRuntime deckRuntime,
+            DeckMatchPlayerRuntime playerRuntime,
             DeckRuntimeUIManager deckRuntimeUI)
         {
-            deckRuntimeUI.Hookup(deckRuntime);
-            deckRuntime.Hookup(deck);
+            deckRuntimeUI.Hookup(playerRuntime);
         }
 
         #region Callbacks

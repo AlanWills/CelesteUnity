@@ -2,10 +2,12 @@
 using Celeste.Constants;
 using Celeste.DataStructures;
 using Celeste.DeckBuilding.Cards;
+using Celeste.DeckBuilding.Components;
 using Celeste.DeckBuilding.Events;
 using Celeste.Events;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
@@ -27,6 +29,8 @@ namespace Celeste.DeckBuilding
 
         public int CardGuid => card.Guid;
         public string CardName => card.name;
+        public Sprite CardBack => card.CardBack;
+        public Sprite CardFront => card.CardFront;
 
         public bool IsFaceUp
         {
@@ -105,7 +109,7 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        private ComponentHandle AddComponent(Components.Component component)
+        private ComponentHandle AddComponent(CardComponent component)
         {
             ComponentData data = component.CreateData();
             ComponentEvents events = component.CreateEvents();
@@ -115,7 +119,7 @@ namespace Celeste.DeckBuilding
             return handle;
         }
 
-        public bool HasComponent<T>() where T : Components.Component
+        public bool HasComponent<T>() where T : CardComponent
         {
             for (int i = 0, n = components.Count; i < n; ++i)
             {
@@ -128,7 +132,7 @@ namespace Celeste.DeckBuilding
             return false;
         }
 
-        public ComponentHandle<T> FindComponent<T>() where T : Components.Component
+        public ComponentHandle<T> FindComponent<T>() where T : CardComponent
         {
             for (int i = 0, n = components.Count; i < n; ++i)
             {

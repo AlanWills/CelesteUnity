@@ -1,4 +1,5 @@
 ﻿using Celeste.Components;
+using Celeste.DeckBuilding.Components;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace Celeste.DeckBuilding.Cards
     }
 
     [DisplayName("Status")]
-    public class StatusComponent : Components.Component
+    public class StatusComponent : CardComponent
     {
         #region Save Data
 

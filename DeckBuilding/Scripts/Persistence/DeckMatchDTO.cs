@@ -18,8 +18,8 @@ namespace Celeste.DeckBuilding.Persistence
         public DeckMatchDTO(DeckMatchRuntime deckMatchRuntime, FSMRuntime deckMatchFSMRuntime)
         {
             isPlayerTurn = deckMatchRuntime.ActiveDeckRuntime == deckMatchRuntime.PlayerDeckRuntime;
-            playerDeckRuntime = new DeckRuntimeDTO(deckMatchRuntime.PlayerDeckRuntime);
-            enemyDeckRuntime = new DeckRuntimeDTO(deckMatchRuntime.EnemyDeckRuntime);
+            playerDeckRuntime = new DeckMatchPlayerRuntimeDTO(deckMatchRuntime.PlayerDeckRuntime);
+            enemyDeckRuntime = new DeckMatchPlayerRuntimeDTO(deckMatchRuntime.EnemyDeckRuntime);
             currentFSMRuntimeNode = deckMatchFSMRuntime.CurrentNode != null ? deckMatchFSMRuntime.CurrentNode.Guid : "";
         }
     }

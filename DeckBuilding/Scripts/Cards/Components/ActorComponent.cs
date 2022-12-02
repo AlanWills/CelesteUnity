@@ -1,11 +1,12 @@
 ﻿using Celeste.Components;
+using Celeste.DeckBuilding.Components;
 using System.ComponentModel;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards
 {
     [DisplayName("Actor")]
-    public class ActorComponent : Components.Component
+    public class ActorComponent : CardComponent
     {
         #region Save Data
 

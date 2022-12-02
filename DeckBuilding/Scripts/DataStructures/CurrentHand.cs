@@ -7,19 +7,12 @@ using UnityEngine;
 namespace Celeste.DeckBuilding
 {
     [AddComponentMenu("Celeste/Deck Building/Current Hand")]
-    public class CurrentHand : MonoBehaviour
+    public class CurrentHand : ScriptableObject
     {
         #region Properties and Fields
 
-        public bool IsFull
-        {
-            get { return NumCards == handLimit; }
-        }
-
-        public int NumCards
-        {
-            get { return cards.Count; }
-        }
+        public bool IsFull => NumCards == handLimit;
+        public int NumCards => cards.Count;
 
         [SerializeField] private bool cardsEnterFaceUp = true;
         [SerializeField] private int handLimit = 10;

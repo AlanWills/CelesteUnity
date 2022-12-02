@@ -1,7 +1,6 @@
 ﻿using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
-using Celeste.DeckBuilding.Extensions;
 using Celeste.DeckBuilding.Persistence;
 using Celeste.FSM;
 using Celeste.Persistence;
@@ -41,6 +40,8 @@ namespace Celeste.DeckBuilding
         {
             get { return FILE_NAME; }
         }
+
+        [SerializeField] private CardCatalogue cardCatalogue;
 
         private DeckMatchPersistenceContext persistenceContext;
 
@@ -91,47 +92,25 @@ namespace Celeste.DeckBuilding
 
         #endregion
 
-        private void Deserialize(DeckMatchPlayerRuntime deckRuntime, DeckMatchPlayerRuntimeDTO deckRuntimeDTO)
+        private void Deserialize(DeckMatchPlayerRuntime playerRuntime, DeckMatchPlayerRuntimeDTO playerRuntimeDTO)
         {
-            Deck deck = deckRuntime.Deck;
+            playerRuntime.SetResources(playerRuntimeDTO.availableResources);
 
-            deckRuntime.SetResources(deckRuntimeDTO.availableResources);
-
-            foreach (var cardRuntimeDTO in deckRuntimeDTO.cardsInDrawPile)
+            foreach (var cardRuntimeDTO in playerRuntimeDTO.cardsInHand)
             {
-                CardRuntime cardRuntime = CreateCardRuntime(deck, cardRuntimeDTO);
-                deckRuntime.AddCardToDrawPile(cardRuntime);
+                playerRuntime.AddCardToHand(CreateCardRuntime(cardRuntimeDTO));
             }
 
-            foreach (var cardRuntimeDTO in deckRuntimeDTO.cardsInHand)
+            foreach (var cardRuntimeDTO in playerRuntimeDTO.cardsOnStage)
             {
-                CardRuntime cardRuntime = CreateCardRuntime(deck, cardRuntimeDTO);
-                deckRuntime.AddCardToHand(cardRuntime);
-            }
-
-            foreach (var cardRuntimeDTO in deckRuntimeDTO.cardsInDiscardPile)
-            {
-                CardRuntime cardRuntime = CreateCardRuntime(deck, cardRuntimeDTO);
-                deckRuntime.AddCardToDiscardPile(cardRuntime);
-            }
-
-            foreach (var cardRuntimeDTO in deckRuntimeDTO.cardsInRemovedPile)
-            {
-                CardRuntime cardRuntime = CreateCardRuntime(deck, cardRuntimeDTO);
-                deckRuntime.AddCardToRemovedPile(cardRuntime);
-            }
-
-            foreach (var cardRuntimeDTO in deckRuntimeDTO.cardsOnStage)
-            {
-                CardRuntime cardRuntime = CreateCardRuntime(deck, cardRuntimeDTO);
-                deckRuntime.AddCardToStage(cardRuntime);
+                playerRuntime.AddCardToStage(CreateCardRuntime(cardRuntimeDTO));
             }
         }
 
-        private CardRuntime CreateCardRuntime(Deck deck, CardRuntimeDTO cardRuntimeDTO)
+        private CardRuntime CreateCardRuntime(CardRuntimeDTO cardRuntimeDTO)
         {
-            Card card = deck.GetCardFromDeck(cardRuntimeDTO.deckIndex);
-            CardRuntime cardRuntime = new CardRuntime(card, cardRuntimeDTO.deckIndex);
+            Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
+            CardRuntime cardRuntime = new CardRuntime(card);
             cardRuntime.LoadComponents(cardRuntimeDTO.componentNames, cardRuntimeDTO.componentData);
 
             return cardRuntime;
@@ -139,22 +118,7 @@ namespace Celeste.DeckBuilding
 
         private void SetDefaultValues(DeckMatchPlayerRuntime deckRuntime)
         {
-            var deck = deckRuntime.Deck;
-
             deckRuntime.SetResources(0);
-
-            for (int i = 0, n = deck.NumCards; i < n; ++i)
-            {
-                CardRuntime card = new CardRuntime(deck.GetCardFromDeck(i), i);
-                if (card.SupportsActor() && card.IsOnStage())
-                {
-                    deckRuntime.AddCardToStage(card);
-                }
-                else
-                {
-                    deckRuntime.AddCardToDrawPile(card);
-                }
-            }
         }
 
         #region Callbacks

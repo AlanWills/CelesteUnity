@@ -1,5 +1,5 @@
-﻿using Celeste.Components;
-using Celeste.DeckBuilding.Cards;
+﻿using Celeste.DeckBuilding.Cards;
+using Celeste.DeckBuilding.Components;
 using CelesteEditor.Components;
 using System;
 using UnityEditor;
@@ -7,7 +7,7 @@ using UnityEditor;
 namespace CelesteEditor.DeckBuilding.Cards
 {
     [CustomEditor(typeof(Card))]
-    public class CardEditor : ComponentContainerUsingSubAssetsEditor<Component>
+    public class CardEditor : ComponentContainerUsingSubAssetsEditor<CardComponent>
     {
         #region Properties and Fields
 

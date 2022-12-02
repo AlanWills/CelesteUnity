@@ -7,9 +7,9 @@ namespace Celeste.DeckBuilding.Persistence
     [Serializable]
     public class DeckDTO
     {
-        public List<int> cardsInDrawPile = new List<int>();
-        public List<int> cardsInDiscardPile = new List<int>();
-        public List<int> cardsInRemovedPile = new List<int>();
+        public List<CardRuntimeDTO> cardsInDrawPile = new List<CardRuntimeDTO>();
+        public List<CardRuntimeDTO> cardsInDiscardPile = new List<CardRuntimeDTO>();
+        public List<CardRuntimeDTO> cardsInRemovedPile = new List<CardRuntimeDTO>();
 
         public DeckDTO(Deck deck)
         {
@@ -19,17 +19,17 @@ namespace Celeste.DeckBuilding.Persistence
 
             for (int i = 0, n = deck.NumCardsInDrawPile; i < n; ++i)
             {
-                cardsInDrawPile.Add(deck.GetCardInDrawPile(i).CardGuid);
+                cardsInDrawPile.Add(new CardRuntimeDTO(deck.GetCardInDrawPile(i)));
             }
 
             for (int i = 0, n = deck.NumCardsInDiscardPile; i < n; ++i)
             {
-                cardsInDiscardPile.Add(deck.GetCardInDiscardPile(i).CardGuid);
+                cardsInDiscardPile.Add(new CardRuntimeDTO(deck.GetCardInDiscardPile(i)));
             }
 
             for (int i = 0, n = deck.NumCardsInRemovedPile; i < n; ++i)
             {
-                cardsInRemovedPile.Add(deck.GetCardInRemovedPile(i).CardGuid);
+                cardsInRemovedPile.Add(new CardRuntimeDTO(deck.GetCardInRemovedPile(i)));
             }
         }
     }

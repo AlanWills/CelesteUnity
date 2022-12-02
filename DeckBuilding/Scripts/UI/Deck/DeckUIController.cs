@@ -1,6 +1,8 @@
 ﻿using Celeste.DeckBuilding.Decks;
+using Celeste.Tools.Attributes.GUI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Celeste.DeckBuilding.UI
 {
@@ -9,36 +11,96 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private TextMeshProUGUI drawPileCount;
-        [SerializeField] private TextMeshProUGUI discardPileCount;
-        [SerializeField] private TextMeshProUGUI removedPileCount;
+        [SerializeField] private Deck deck;
+        [SerializeField] private bool usesUIComponents = true;
 
-        private Deck deck;
+        // UI Elements
+        [SerializeField, ShowIf(nameof(usesUIComponents))] private Image drawPileUI;
+        [SerializeField, ShowIf(nameof(usesUIComponents))] private Image discardPileUI;
+        [SerializeField, ShowIf(nameof(usesUIComponents))] private Image removedPileUI;
+
+        // Non UI Elements
+        [SerializeField, HideIf(nameof(usesUIComponents))] private SpriteRenderer drawPile;
+        [SerializeField, HideIf(nameof(usesUIComponents))] private SpriteRenderer discardPile;
+        [SerializeField, HideIf(nameof(usesUIComponents))] private SpriteRenderer removedPile;
 
         #endregion
 
-        public void Hookup(Deck deck)
-        {
-            this.deck = deck;
+        #region Unity Methods
 
+        public void Awake()
+        {
             UpdateDrawPileUI();
             UpdateDiscardPileUI();
             UpdateRemovedPileUI();
         }
 
+        #endregion
+
         private void UpdateDrawPileUI()
         {
-            drawPileCount.text = deck.NumCardsInDrawPile.ToString();
+            if (usesUIComponents)
+            {
+                drawPileUI.enabled = !deck.DrawPileEmpty;
+
+                if (!deck.DrawPileEmpty)
+                {
+                    drawPileUI.sprite = deck.PeekTopCardOfDrawPile().CardBack;
+                }
+            }
+            else
+            {
+                drawPile.enabled = !deck.DrawPileEmpty;
+
+                if (!deck.DrawPileEmpty)
+                {
+                    drawPile.sprite = deck.PeekTopCardOfDrawPile().CardBack;
+                }
+            }
         }
 
         private void UpdateDiscardPileUI()
         {
-            discardPileCount.text = deck.NumCardsInDiscardPile.ToString();
+            if (usesUIComponents)
+            {
+                discardPileUI.enabled = !deck.DiscardPileEmpty;
+
+                if (!deck.DiscardPileEmpty)
+                {
+                    discardPileUI.sprite = deck.PeekTopCardOfDiscardPile().CardFront;
+                }
+            }
+            else
+            {
+                discardPile.enabled = !deck.DiscardPileEmpty;
+
+                if (!deck.DiscardPileEmpty)
+                {
+                    discardPile.sprite = deck.PeekTopCardOfDiscardPile().CardFront;
+                }
+            }
         }
 
         private void UpdateRemovedPileUI()
         {
-            removedPileCount.text = deck.NumCardsInRemovedPile.ToString();
+            if (usesUIComponents)
+            {
+                removedPileUI.enabled = !deck.RemovedPileEmpty;
+
+                if (!deck.RemovedPileEmpty)
+                {
+                    removedPileUI.sprite = deck.PeekTopCardOfRemovedPile().CardFront;
+                }
+            }
+            else
+            {
+                removedPile.enabled = !deck.RemovedPileEmpty;
+
+                if (!deck.RemovedPileEmpty)
+                {
+                    removedPile.sprite = deck.PeekTopCardOfRemovedPile().CardFront;
+                }
+            }
         }
 
         #region Callbacks

@@ -1,11 +1,12 @@
 using Celeste.Components;
+using Celeste.DeckBuilding.Components;
 using Celeste.Objects;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards
 {
     [CreateAssetMenu(fileName = nameof(Card), menuName = "Celeste/Deck Building/Cards/Card")]
-    public class Card : ComponentContainerUsingSubAssets<Components.Component>, IGuid
+    public class Card : ComponentContainerUsingSubAssets<CardComponent>, IGuid
     {
         #region Properties and Fields
 
@@ -21,7 +22,33 @@ namespace Celeste.DeckBuilding.Cards
             }
         }
 
+        public Sprite CardBack
+        {
+            get { return cardBack; }
+            set
+            {
+                cardBack = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
+        public Sprite CardFront
+        {
+            get { return cardFront; }
+            set
+            {
+                cardFront = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
         [SerializeField] private int guid;
+        [SerializeField] private Sprite cardBack;
+        [SerializeField] private Sprite cardFront;
 
         #endregion
     }

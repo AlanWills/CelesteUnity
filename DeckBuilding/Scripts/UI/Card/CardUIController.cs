@@ -1,8 +1,5 @@
-﻿using Celeste.DeckBuilding.Cards;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Celeste.DeckBuilding.UI
 {

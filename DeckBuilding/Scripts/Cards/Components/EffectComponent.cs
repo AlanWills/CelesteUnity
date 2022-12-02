@@ -1,11 +1,12 @@
 ﻿using Celeste.Components;
 using Celeste.DeckBuilding.Commands;
+using Celeste.DeckBuilding.Components;
 using Celeste.DeckBuilding.Logic;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards
 {
-    public abstract class EffectComponent : Components.Component, IRequiresTarget
+    public abstract class EffectComponent : CardComponent, IRequiresTarget
     {
         #region Properties and Fields
 
