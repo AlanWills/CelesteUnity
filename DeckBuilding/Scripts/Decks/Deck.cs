@@ -19,12 +19,6 @@ namespace Celeste.DeckBuilding.Decks
         public bool DiscardPileEmpty => NumCardsInDiscardPile == 0;
         public bool RemovedPileEmpty => NumCardsInRemovedPile == 0;
 
-        public CardShuffler CardShuffler
-        {
-            get { return cardShuffler; }
-            set { cardShuffler = value; }
-        }
-
         [SerializeField] private CardShuffler cardShuffler;
 
         [Header("Draw Pile Events")]
@@ -51,6 +45,15 @@ namespace Celeste.DeckBuilding.Decks
         {
             drawPile.Add(cardRuntime);
             cardAddedToDrawPileEvent.Invoke(cardRuntime);
+        }
+
+        public CardRuntime RemoveCardFromDrawPile(int index)
+        {
+            CardRuntime card = drawPile.Get(index);
+            cardRemovedFromDrawPileEvent.Invoke(card);
+            drawPile.RemoveAt(index);
+
+            return card;
         }
 
         public CardRuntime DrawCard()
@@ -126,6 +129,15 @@ namespace Celeste.DeckBuilding.Decks
         {
             removedPile.Add(cardRuntime);
             cardAddedToRemovedPileEvent.Invoke(cardRuntime);
+        }
+
+        public CardRuntime RemoveCardFromRemovedPile(int index)
+        {
+            CardRuntime card = removedPile.Get(index);
+            cardRemovedFromRemovedPileEvent.Invoke(card);
+            removedPile.RemoveAt(index);
+
+            return card;
         }
 
         public CardRuntime GetCardInRemovedPile(int index)

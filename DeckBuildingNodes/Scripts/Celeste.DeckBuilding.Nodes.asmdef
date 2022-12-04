@@ -2,15 +2,16 @@
     "name": "Celeste.DeckBuilding.Nodes",
     "rootNamespace": "Celeste.DeckBuilding.Nodes",
     "references": [
-        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
-        "GUID:ae2e7ad57e5e6e54a908990832d82fe2",
-        "GUID:64e1797b2e2f2194581475e207c0e421",
-        "GUID:528ce73c7757c8f43b7b5c50e8671ad8",
-        "GUID:7cfedb47a7dec8d4e8681b760be55faf",
+        "XNode",
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
+        "Celeste.DeckBuilding",
+        "Celeste.Scene",
         "Celeste.Parameters",
         "Celeste.BT",
         "Celeste.Events",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Components"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

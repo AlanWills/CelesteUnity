@@ -8,7 +8,7 @@ namespace Celeste.DeckBuilding.Debug.Menus
     public class HookupDeckRuntimeDebugMenu : MonoBehaviour
     {
         [SerializeField] private DeckMatchPlayerRuntime deckRuntime;
-        [SerializeField] private DeckRuntimeDebugMenu debugMenu;
+        [SerializeField] private DeckMatchPlayerRuntimeDebugMenu debugMenu;
 
         private void Start()
         {

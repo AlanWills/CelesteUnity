@@ -41,7 +41,7 @@ namespace Celeste.LiveOps.Persistence
             for (int i = 0, n = liveOp.NumComponents; i < n; i++)
             {
                 var component = liveOp.GetComponent(i);
-                components.Add(new ComponentDTO(component));
+                components.Add(ComponentDTO.From(component));
             }
         }
 
@@ -57,7 +57,7 @@ namespace Celeste.LiveOps.Persistence
 
             for (int i = 0, n = template.NumComponents; i < n; i++)
             {
-                components.Add(new ComponentDTO(template.GetComponent(i), template.GetComponentData(i)));
+                components.Add(ComponentDTO.From(template.GetComponent(i), template.GetComponentData(i)));
             }
         }
     }

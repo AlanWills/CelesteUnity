@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Celeste.DeckBuilding
 {
     [Serializable]
-    public class CardRuntime
+    public class CardRuntime : ComponentContainerRuntime<CardComponent>
     {
         #region Events
 
@@ -58,13 +58,7 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public int NumComponents 
-        {
-            get { return components.Count; }
-        }
-
         [NonSerialized] private Card card;
-        [NonSerialized] private List<ComponentHandle> components = new List<ComponentHandle>();
         [NonSerialized] private bool faceUp = false;
         [NonSerialized] private bool canPlay;
 
@@ -74,83 +68,8 @@ namespace Celeste.DeckBuilding
         {
             this.card = card;
 
-            InitComponents();
+            InitComponents(card);
         }
-
-        #region Components
-
-        private void InitComponents()
-        {
-            for (int i = 0, n = card.NumComponents; i < n; ++i)
-            {
-                AddComponent(card.GetComponent(i));
-            }
-        }
-
-        public void LoadComponents(List<string> componentNames, List<string> componentData)
-        {
-            for (int i = 0, n = componentNames.Count; i < n; ++i)
-            {
-                string componentName = componentNames[i];
-                var existingComponent = components.Find(x => string.CompareOrdinal(x.component.GetType().Name, componentName) == 0);
-
-                if (existingComponent.IsValid)
-                {
-                    existingComponent.instance.data.FromJson(componentData[i]);
-                }
-                else
-                {
-                    // Maybe re-add this later if we add dynamic components, but for now any missing component is ignored
-                    UnityEngine.Debug.LogAssertion($"Ignoring component '{componentName}' from save file as it is not present on card {card.name}.");
-                    //Cards.Component component = ScriptableObject.CreateInstance(componentName) as Cards.Component;
-                    //UnityEngine.Debug.Assert(component != null, $"Unable to create component {componentName} from save data.");
-                    //existingComponent = AddComponent(component);
-                }
-            }
-        }
-
-        private ComponentHandle AddComponent(CardComponent component)
-        {
-            ComponentData data = component.CreateData();
-            ComponentEvents events = component.CreateEvents();
-            ComponentHandle handle = new ComponentHandle(component, data, events);
-            components.Add(handle);
-
-            return handle;
-        }
-
-        public bool HasComponent<T>() where T : CardComponent
-        {
-            for (int i = 0, n = components.Count; i < n; ++i)
-            {
-                if (components[i].Is<T>())
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public ComponentHandle<T> FindComponent<T>() where T : CardComponent
-        {
-            for (int i = 0, n = components.Count; i < n; ++i)
-            {
-                if (components[i].Is<T>())
-                {
-                    return components[i].AsComponent<T>();
-                }
-            }
-
-            return new ComponentHandle<T>();
-        }
-
-        public ComponentHandle GetComponent(int index)
-        {
-            return components.Get(index);
-        }
-
-        #endregion
 
         public bool IsForCard(Card card)
         {

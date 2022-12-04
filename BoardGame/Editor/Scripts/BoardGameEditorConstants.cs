@@ -8,6 +8,9 @@ namespace CelesteEditor.BoardGame
     {
         #region Properties and Fields
 
+        public static readonly Type[] AllBoardGameComponentTypes;
+        public static readonly string[] AllBoardGameComponentDisplayNames;
+        
         public static readonly Type[] AllBoardGameObjectComponentTypes;
         public static readonly string[] AllBoardGameObjectComponentDisplayNames;
 
@@ -15,6 +18,7 @@ namespace CelesteEditor.BoardGame
 
         static BoardGameEditorConstants()
         {
+            TypeUtils.LoadTypes<BoardGameComponent>(ref AllBoardGameComponentTypes, ref AllBoardGameComponentDisplayNames);
             TypeUtils.LoadTypes<BoardGameObjectComponent>(ref AllBoardGameObjectComponentTypes, ref AllBoardGameObjectComponentDisplayNames);
         }
     }

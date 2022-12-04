@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Components.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Celeste.DeckBuilding.Persistence
@@ -7,8 +8,7 @@ namespace Celeste.DeckBuilding.Persistence
     public class CardRuntimeDTO
     {
         public int cardGuid;
-        public List<string> componentNames = new List<string>();
-        public List<string> componentData = new List<string>();
+        public List<ComponentDTO> components = new List<ComponentDTO>();
 
         public CardRuntimeDTO(CardRuntime cardRuntime)
         {
@@ -17,8 +17,7 @@ namespace Celeste.DeckBuilding.Persistence
             for (int i = 0, n = cardRuntime.NumComponents; i < n; ++i)
             {
                 var componentHandle = cardRuntime.GetComponent(i);
-                componentNames.Add(componentHandle.component.name);
-                componentData.Add(componentHandle.instance.data.ToJson());
+                components.Add(ComponentDTO.From(componentHandle));
             }
         }
     }

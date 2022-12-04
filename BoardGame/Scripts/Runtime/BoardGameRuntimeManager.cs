@@ -1,4 +1,5 @@
-﻿using Celeste.BoardGame.UI;
+﻿using Celeste.Components;
+using Celeste.Persistence;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,7 @@ namespace Celeste.BoardGame.Runtime
     [Serializable]
     public struct BoardGameRuntimeInitializedArgs
     {
-        public BoardGame boardGame;
-        public List<BoardGameObjectRuntime> boardGameObjectRuntimes;
+        public BoardGameRuntime boardGameRuntime;
     }
 
     [Serializable]
@@ -18,9 +18,12 @@ namespace Celeste.BoardGame.Runtime
     {
     }
 
-    public class BoardGameRuntimeManager : MonoBehaviour
+    public class BoardGameRuntimeManager : PersistentSceneManager<BoardGameRuntimeManager, BoardGameRuntimeDTO>
     {
         #region Properties and Fields
+
+        public const string FILE_NAME = "BoardGame.dat";
+        protected override string FileName => FILE_NAME;
 
         [SerializeField] private BoardGame boardGame;
 
@@ -28,7 +31,7 @@ namespace Celeste.BoardGame.Runtime
         [SerializeField] private UnityEvent<BoardGameRuntimeInitializedArgs> onRuntimeInitialized = new UnityEvent<BoardGameRuntimeInitializedArgs>();
         [SerializeField] private UnityEvent<BoardGameRuntimeShutdownArgs> onRuntimeShutdown = new UnityEvent<BoardGameRuntimeShutdownArgs>();
 
-        [NonSerialized] private List<BoardGameObjectRuntime> boardGameObjectRuntimes = new List<BoardGameObjectRuntime>();
+        [NonSerialized] private BoardGameRuntime boardGameRuntime;
 
         #endregion
 
@@ -36,17 +39,13 @@ namespace Celeste.BoardGame.Runtime
 
         private void Start()
         {
-            for (int i = 0, n = boardGame.NumBoardGameObjects; i < n; ++i)
-            {
-                BoardGameObject boardGameObject = boardGame.GetBoardGameObject(i);
-                BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
-                boardGameObjectRuntimes.Add(boardGameObjectRuntime);
-            }
+            boardGameRuntime = new BoardGameRuntime(boardGame);
+
+            Load();
 
             onRuntimeInitialized.Invoke(new BoardGameRuntimeInitializedArgs()
             {
-                boardGame = boardGame,
-                boardGameObjectRuntimes = boardGameObjectRuntimes
+                boardGameRuntime = boardGameRuntime
             });
         }
 
@@ -55,6 +54,47 @@ namespace Celeste.BoardGame.Runtime
             onRuntimeShutdown.Invoke(new BoardGameRuntimeShutdownArgs()
             {
             });
+        }
+
+        #endregion
+
+        #region Save/Load
+
+        protected override BoardGameRuntimeDTO Serialize()
+        {
+            return new BoardGameRuntimeDTO(boardGameRuntime);
+        }
+
+        protected override void Deserialize(BoardGameRuntimeDTO dto)
+        {
+            boardGameRuntime.LoadComponents(dto.components.ToLookup());
+
+            Dictionary<int, BoardGameObjectRuntimeDTO> dtoLookup = new Dictionary<int, BoardGameObjectRuntimeDTO>();
+
+            foreach (var boardGameObjectRuntimeDTO in dto.boardGameObjectRuntimes)
+            {
+                dtoLookup.Add(boardGameObjectRuntimeDTO.guid, boardGameObjectRuntimeDTO);
+            }
+
+            for (int i = 0, n = boardGameRuntime.NumBoardGameObjects; i < n; i++)
+            {
+                BoardGameObjectRuntime runtime = boardGameRuntime.GetBoardGameObject(i);
+
+                if (dtoLookup.TryGetValue(runtime.Guid, out BoardGameObjectRuntimeDTO boardGameObjectRuntimeDTO))
+                {
+                    runtime.LoadComponents(boardGameObjectRuntimeDTO.components.ToLookup());
+                }
+                else
+                {
+                    Debug.Log($"Looks like a new board game object ({runtime.Name} - {runtime.Guid}) was added prior to the last save.  Setting default values...");
+                    runtime.SetDefaultValues();
+                }
+            }
+        }
+
+        protected override void SetDefaultValues()
+        {
+            boardGameRuntime.SetDefaultValues();
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using Celeste.DeckBuilding.Cards;
+﻿using Celeste.Components;
+using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Persistence;
@@ -111,7 +112,7 @@ namespace Celeste.DeckBuilding
         {
             Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
             CardRuntime cardRuntime = new CardRuntime(card);
-            cardRuntime.LoadComponents(cardRuntimeDTO.componentNames, cardRuntimeDTO.componentData);
+            cardRuntime.LoadComponents(cardRuntimeDTO.components.ToLookup());
 
             return cardRuntime;
         }

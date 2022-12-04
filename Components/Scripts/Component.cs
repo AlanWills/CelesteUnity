@@ -142,5 +142,7 @@ namespace Celeste.Components
         {
             return new ComponentEvents();
         }
+
+        public virtual void SetDefaultValues(Instance instance) { }
     }
 }

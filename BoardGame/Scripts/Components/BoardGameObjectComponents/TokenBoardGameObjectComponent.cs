@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Flippable")]
-    [CreateAssetMenu(fileName = nameof(TokenBoardGameObjectComponent), menuName = "Celeste/Board Game/Components/Token")]
+    [CreateAssetMenu(fileName = nameof(TokenBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Token")]
     public class TokenBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectToken
     {
         #region Save Data
@@ -41,15 +41,18 @@ namespace Celeste.BoardGame.Components
 
         public override ComponentData CreateData()
         {
-            SaveData saveData = new SaveData();
-            saveData.isFaceUp = startsFaceUp;
-
-            return saveData;
+            return new SaveData();
         }
 
         public override ComponentEvents CreateEvents()
         {
             return new Events();
+        }
+
+        public override void SetDefaultValues(Instance instance)
+        {
+            SaveData saveData = instance.data as SaveData;
+            saveData.isFaceUp = startsFaceUp;
         }
 
         public Sprite GetSprite(Instance instance)
@@ -70,6 +73,7 @@ namespace Celeste.BoardGame.Components
             if (saveData.isFaceUp != isFaceUp)
             {
                 saveData.isFaceUp = isFaceUp;
+                events.ComponentDataChanged.Invoke();
                 events.OnIsFaceUpChanged.Invoke(new ValueChangedArgs<bool>(!isFaceUp, isFaceUp));
             }
         }

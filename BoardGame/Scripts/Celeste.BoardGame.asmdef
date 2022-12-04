@@ -9,6 +9,8 @@
         "Celeste.DataStructures",
         "Celeste.Objects",
         "Celeste.OdinSerializer",
+        "Celeste.Persistence",
+        "Celeste.DeckBuilding",
         "Celeste.Tools",
         "Celeste.Tools.Editor"
     ],

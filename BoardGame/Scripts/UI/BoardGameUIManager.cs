@@ -1,4 +1,5 @@
-﻿using Celeste.BoardGame.Runtime;
+﻿using Celeste.BoardGame.Interfaces;
+using Celeste.BoardGame.Runtime;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,6 @@ namespace Celeste.BoardGame.UI
 
         [SerializeField] private Transform boardAnchor;
 
-        [NonSerialized] private GameObject currentBoard;
         [NonSerialized] private List<BoardGameObjectUIController> boardGameObjectUIControllers = new List<BoardGameObjectUIController>();
 
         #endregion
@@ -21,13 +21,21 @@ namespace Celeste.BoardGame.UI
 
         public void OnBoardGameRuntimeInitialized(BoardGameRuntimeInitializedArgs args)
         {
-            currentBoard = args.boardGame.InstantiateBoard(boardAnchor);
-
-            foreach (BoardGameObjectRuntime boardGameObjectRuntime in args.boardGameObjectRuntimes)
+            if (args.boardGameRuntime.TryFindComponent<IBoardGameActor>(out var boardActor))
             {
-                if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var actor))
+                boardActor.iFace.InstantiateActor(boardActor.instance, boardAnchor);
+            }
+
+            bool hasLocations = args.boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations);
+
+            for (int i = 0, n = args.boardGameRuntime.NumBoardGameObjects; i < n; ++i)
+            {
+                BoardGameObjectRuntime boardGameObjectRuntime = args.boardGameRuntime.GetBoardGameObject(i);
+
+                if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
                 {
-                    GameObject gameObject = actor.iFace.InstantiateActor(args.boardGame, actor.instance);
+                    Transform boardGameObjectLocation = hasLocations ? locations.iFace.FindLocation(boardGameObjectActor.iFace.GetCurrentLocationName(boardGameObjectActor.instance)) : null;
+                    GameObject gameObject = boardGameObjectActor.iFace.InstantiateActor(boardGameObjectActor.instance, boardGameObjectLocation);
                     BoardGameObjectUIController uiController = gameObject.GetComponent<BoardGameObjectUIController>();
 
                     if (uiController != null)

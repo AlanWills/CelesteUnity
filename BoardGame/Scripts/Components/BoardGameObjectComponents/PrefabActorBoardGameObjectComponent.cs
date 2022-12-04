@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Prefab Actor")]
-    [CreateAssetMenu(fileName = nameof(PrefabActorBoardGameObjectComponent), menuName = "Celeste/Board Game/Components/Prefab Actor")]
+    [CreateAssetMenu(fileName = nameof(PrefabActorBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Prefab Actor")]
     public class PrefabActorBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectActor
     {
         #region Save Data
@@ -31,19 +31,18 @@ namespace Celeste.BoardGame.Components
 
         public override ComponentData CreateData()
         {
-            SaveData saveData = new SaveData();
-            saveData.currentLocationName = defaultLocationName;
-
-            return saveData;
+            return new SaveData();
         }
 
-        public GameObject InstantiateActor(BoardGame boardGame, Instance instance)
+        public override void SetDefaultValues(Instance instance)
         {
             SaveData saveData = instance.data as SaveData;
-            GameObject location = boardGame.FindBoardLocation(saveData.currentLocationName);
-            Debug.Assert(location != null, $"Could not find board location {saveData.currentLocationName}.");
+            saveData.currentLocationName = defaultLocationName;
+        }
 
-            GameObject gameObject = Instantiate(prefab, location.transform);
+        public GameObject InstantiateActor(Instance instance, Transform parent)
+        {
+            GameObject gameObject = Instantiate(prefab, parent);
 
             if (customiseScale)
             {
@@ -51,6 +50,19 @@ namespace Celeste.BoardGame.Components
             }
 
             return gameObject;
+        }
+
+        public string GetCurrentLocationName(Instance instance)
+        {
+            SaveData saveData = instance.data as SaveData;
+            return saveData.currentLocationName;
+        }
+
+        public void SetCurrentLocationName(Instance instance, string locationName)
+        {
+            SaveData saveData = instance.data as SaveData;
+            saveData.currentLocationName = locationName;
+            instance.events.ComponentDataChanged.Invoke();
         }
     }
 }

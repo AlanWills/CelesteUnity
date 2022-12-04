@@ -8,22 +8,25 @@ namespace Celeste.Components.Persistence
         public string typeName;
         public string data;
 
-        public ComponentDTO(ComponentHandle componentHandle)
-        {
-            typeName = componentHandle.component.name;
-            data = componentHandle.instance.data.ToJson();
-        }
-
-        public ComponentDTO(ComponentHandle<Component> componentHandle)
-        {
-            typeName = componentHandle.component.name;
-            data = componentHandle.instance.data.ToJson();
-        }
-
-        public ComponentDTO(Component component, ComponentData componentData)
+        private ComponentDTO(Component component, ComponentData componentData)
         {
             typeName = component.name;
             data = componentData.ToJson();
+        }
+
+        public static ComponentDTO From(Component component, ComponentData componentData)
+        {
+            return new ComponentDTO(component, componentData);
+        }
+
+        public static ComponentDTO From(ComponentHandle componentHandle)
+        {
+            return new ComponentDTO(componentHandle.component, componentHandle.instance.data);
+        }
+
+        public static ComponentDTO From<T>(ComponentHandle<T> componentHandle) where T : Component
+        {
+            return new ComponentDTO(componentHandle.component, componentHandle.instance.data);
         }
     }
 }

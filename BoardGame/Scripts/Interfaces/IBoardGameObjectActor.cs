@@ -5,6 +5,9 @@ namespace Celeste.BoardGame
 {
     public interface IBoardGameObjectActor
     {
-        GameObject InstantiateActor(BoardGame boardGame, Instance instance);
+        GameObject InstantiateActor(Instance instance, Transform parent);
+
+        string GetCurrentLocationName(Instance instance);
+        void SetCurrentLocationName(Instance instance, string locationName);
     }
 }

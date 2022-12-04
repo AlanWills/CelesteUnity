@@ -1,5 +1,8 @@
 ﻿using Celeste.BoardGame;
+using Celeste.BoardGame.Components;
+using CelesteEditor.Components;
 using CelesteEditor.Tools;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -7,8 +10,15 @@ using UnityEngine;
 namespace CelesteEditor.BoardGame.Objects
 {
     [CustomEditor(typeof(Celeste.BoardGame.BoardGame))]
-    public class BoardGameEditor : Editor
+    public class BoardGameEditor : ComponentContainerUsingSubAssetsEditor<BoardGameComponent>
     {
+        #region Properties and Fields
+
+        protected override Type[] AllComponentTypes => BoardGameEditorConstants.AllBoardGameComponentTypes;
+        protected override string[] AllComponentDisplayNames => BoardGameEditorConstants.AllBoardGameComponentDisplayNames;
+
+        #endregion
+
         public override void OnInspectorGUI()
         {
             if (GUILayout.Button("Find Board Game Objects"))

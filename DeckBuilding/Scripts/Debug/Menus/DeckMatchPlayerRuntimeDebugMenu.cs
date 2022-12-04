@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Debug.Menus
 {
-    [CreateAssetMenu(fileName = nameof(DeckRuntimeDebugMenu), menuName = "Celeste/Deck Building/Debug/Deck Runtime Debug Menu")]
-    public class DeckRuntimeDebugMenu : DebugMenu
+    [CreateAssetMenu(fileName = nameof(DeckMatchPlayerRuntimeDebugMenu), menuName = "Celeste/Deck Building/Debug/Deck Match Player Runtime Debug Menu")]
+    public class DeckMatchPlayerRuntimeDebugMenu : DebugMenu
     {
         #region Properties and Fields
 
