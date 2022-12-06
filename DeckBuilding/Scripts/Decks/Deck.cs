@@ -200,62 +200,62 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Draw Pile Events
 
-        public void AddCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void AddCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToDrawPileEvent.AddListener(cardRuntime);
+            cardAddedToDrawPileEvent.AddListener(callback);
         }
 
-        public void RemoveCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void RemoveCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToDrawPileEvent.RemoveListener(cardRuntime);
+            cardAddedToDrawPileEvent.RemoveListener(callback);
         }
 
-        public void AddCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void AddCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardRemovedFromDrawPileEvent.AddListener(cardRuntime);
+            cardRemovedFromDrawPileEvent.AddListener(callback);
         }
 
-        public void RemoveCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void RemoveCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardRemovedFromDrawPileEvent.RemoveListener(cardRuntime);
+            cardRemovedFromDrawPileEvent.RemoveListener(callback);
         }
 
         #endregion
 
         #region Discard Pile Events
 
-        public void AddCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void AddCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToDiscardPileEvent.AddListener(cardRuntime);
+            cardAddedToDiscardPileEvent.AddListener(callback);
         }
 
-        public void RemoveCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void RemoveCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToDiscardPileEvent.RemoveListener(cardRuntime);
+            cardAddedToDiscardPileEvent.RemoveListener(callback);
         }
 
-        public void AddCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void AddCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardRemovedFromDiscardPileEvent.AddListener(cardRuntime);
+            cardRemovedFromDiscardPileEvent.AddListener(callback);
         }
 
-        public void RemoveCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void RemoveCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardRemovedFromDiscardPileEvent.RemoveListener(cardRuntime);
+            cardRemovedFromDiscardPileEvent.RemoveListener(callback);
         }
 
         #endregion
 
         #region Removed Pile Events
 
-        public void AddCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void AddCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToRemovedPileEvent.AddListener(cardRuntime);
+            cardAddedToRemovedPileEvent.AddListener(callback);
         }
 
-        public void RemoveCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public void RemoveCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> callback)
         {
-            cardAddedToRemovedPileEvent.RemoveListener(cardRuntime);
+            cardAddedToRemovedPileEvent.RemoveListener(callback);
         }
 
         public void AddCardRemovedFromRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)

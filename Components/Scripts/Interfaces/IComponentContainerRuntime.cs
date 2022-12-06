@@ -13,7 +13,7 @@ namespace Celeste.Components
         void AddComponent(ComponentHandle<T> componentHandle);
         void AddComponent(T component);
         void RemoveComponent(int componentIndex);
-        bool HasComponent<K>() where K : T;
+        bool HasComponent<K>() where K : class;
         bool TryFindComponent<K>(out InterfaceHandle<K> iFace) where K : class;
     }
 }

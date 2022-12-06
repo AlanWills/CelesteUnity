@@ -85,7 +85,7 @@ namespace Celeste.Components
             return components.Get(index);
         }
 
-        public bool HasComponent<K>() where K : T
+        public bool HasComponent<K>() where K : class
         {
             return components.Exists(x => x.component is K);
         }

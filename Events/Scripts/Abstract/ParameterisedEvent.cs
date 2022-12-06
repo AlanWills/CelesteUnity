@@ -13,21 +13,24 @@ namespace Celeste.Events
         [SerializeField, TextArea] private string helpText;
 #endif
 
-        private List<UnityAction<T>> gameEventListeners = new List<UnityAction<T>>();
-        private List<UnityAction<T>> cachedListeners = new List<UnityAction<T>>();
+        private List<UnityActionCallback<T>> gameEventListeners = new List<UnityActionCallback<T>>();
+        private List<UnityActionCallback<T>> cachedListeners = new List<UnityActionCallback<T>>();
 
         #endregion
 
         #region Event Management
 
-        public void AddListener(IEventListener<T> listener)
+        public ICallbackHandle AddListener(IEventListener<T> listener)
         {
-            AddListener(listener.OnEventRaised);
+            return AddListener(listener.OnEventRaised);
         }
 
-        public void AddListener(UnityAction<T> callback)
+        public ICallbackHandle AddListener(UnityAction<T> callback)
         {
-            gameEventListeners.Add(callback);
+            ICallbackHandle callbackHandle = CallbackHandle.New();
+            gameEventListeners.Add(new UnityActionCallback<T>(callbackHandle, callback));
+
+            return callbackHandle;
         }
 
         public void RemoveListener(IEventListener<T> listener)
@@ -37,7 +40,20 @@ namespace Celeste.Events
 
         public void RemoveListener(UnityAction<T> callback)
         {
-            gameEventListeners.Remove(callback);
+            int callbackIndex = gameEventListeners.FindIndex(x => x.Action == callback);
+            if (callbackIndex >= 0)
+            {
+                gameEventListeners.RemoveAt(callbackIndex);
+            }
+        }
+
+        public void RemoveListener(ICallbackHandle callbackHandle)
+        {
+            int callbackIndex = gameEventListeners.FindIndex(x => x.Handle.Equals(callbackHandle));
+            if (callbackIndex >= 0)
+            {
+                gameEventListeners.RemoveAt(callbackIndex);
+            }
         }
 
         public void RemoveAllListeners()
@@ -63,8 +79,8 @@ namespace Celeste.Events
                 // we can handle that and don't fall over
                 for (int i = 0; i < gameEventListenersCount; ++i)
                 {
-                    Debug.Assert(cachedListeners[i] != null, $"Event {name} has a cached listener which is null.");
-                    cachedListeners[i](argument);
+                    Debug.Assert(cachedListeners[i].Action != null, $"Event {name} has a cached listener which is null.");
+                    cachedListeners[i].Action(argument);
                 }
 
                 cachedListeners.Clear();

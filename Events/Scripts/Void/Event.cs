@@ -15,21 +15,24 @@ namespace Celeste.Events
         [SerializeField, TextArea] private string helpText;
 #endif
 
-        private List<UnityAction> gameEventListeners = new List<UnityAction>();
-        private List<UnityAction> cachedListeners = new List<UnityAction>();
+        private List<UnityActionCallback> gameEventListeners = new List<UnityActionCallback>();
+        private List<UnityActionCallback> cachedListeners = new List<UnityActionCallback>();
 
         #endregion
 
         #region Event Management
 
-        public void AddListener(IEventListener listener)
+        public ICallbackHandle AddListener(IEventListener listener)
         {
-            AddListener(listener.OnEventRaised);
+            return AddListener(listener.OnEventRaised);
         }
 
-        public void AddListener(UnityAction callback)
+        public ICallbackHandle AddListener(UnityAction callback)
         {
-            gameEventListeners.Add(callback);
+            CallbackHandle callbackHandle = CallbackHandle.New();
+            gameEventListeners.Add(new UnityActionCallback(callbackHandle, callback));
+
+            return callbackHandle;
         }
 
         public void RemoveListener(IEventListener listener)
@@ -39,7 +42,20 @@ namespace Celeste.Events
 
         public void RemoveListener(UnityAction callback)
         {
-            gameEventListeners.Remove(callback);
+            int callbackIndex = gameEventListeners.FindIndex(x => x.Action == callback);
+            if (callbackIndex >= 0)
+            {
+                gameEventListeners.RemoveAt(callbackIndex);
+            }
+        }
+
+        public void RemoveListener(ICallbackHandle callbackHandle)
+        {
+            int callbackIndex = gameEventListeners.FindIndex(x => x.Handle.Equals(callbackHandle));
+            if (callbackIndex >= 0)
+            {
+                gameEventListeners.RemoveAt(callbackIndex);
+            }
         }
 
         public void RemoveAllListeners()
@@ -67,8 +83,8 @@ namespace Celeste.Events
                 // we can handle that and don't fall over
                 for (int i = 0; i < gameEventListenersCount; ++i)
                 {
-                    Debug.Assert(cachedListeners[i] != null, $"Event {name} has a cached listener which is null.");
-                    cachedListeners[i]();
+                    Debug.Assert(cachedListeners[i].Action != null, $"Event {name} has a cached listener which is null.");
+                    cachedListeners[i].Action();
                 }
 
                 cachedListeners.Clear();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,9 @@ namespace Celeste.Core
         {
             public long timestamp;
             public Action callback;
-            public CallbackHandle handle;
+            public ICallbackHandle handle;
 
-            public ScheduledCallback(long timestamp, Action callback, CallbackHandle handle)
+            public ScheduledCallback(long timestamp, Action callback, ICallbackHandle handle)
             {
                 this.timestamp = timestamp;
                 this.callback = callback;
@@ -38,7 +39,7 @@ namespace Celeste.Core
             return handle;
         }
 
-        public void Cancel(CallbackHandle callbackHandle)
+        public void Cancel(ICallbackHandle callbackHandle)
         {
             int index = callbacks.FindIndex(x => x.handle == callbackHandle);
             if (index != -1)

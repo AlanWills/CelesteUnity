@@ -148,7 +148,7 @@ namespace Celeste.LiveOps
             return Components.GetComponent(index);
         }
 
-        public bool HasComponent<T>() where T : Component
+        public bool HasComponent<T>() where T : class
         {
             return Components.HasComponent<T>();
         }
