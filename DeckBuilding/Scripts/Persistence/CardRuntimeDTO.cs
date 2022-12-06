@@ -8,11 +8,13 @@ namespace Celeste.DeckBuilding.Persistence
     public class CardRuntimeDTO
     {
         public int cardGuid;
+        public int deckGuid;
         public List<ComponentDTO> components = new List<ComponentDTO>();
 
         public CardRuntimeDTO(CardRuntime cardRuntime)
         {
             cardGuid = cardRuntime.CardGuid;
+            deckGuid = cardRuntime.DeckGuid;
 
             for (int i = 0, n = cardRuntime.NumComponents; i < n; ++i)
             {

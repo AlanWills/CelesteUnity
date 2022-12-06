@@ -1,11 +1,13 @@
 ﻿using Celeste.Components;
 using Celeste.DeckBuilding;
 using Celeste.DeckBuilding.Cards;
+using Celeste.DeckBuilding.Catalogue;
 using Celeste.DeckBuilding.Decks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.BoardGame.Components
 {
@@ -48,21 +50,39 @@ namespace Celeste.BoardGame.Components
 
             foreach (Card card in startingDrawPileCards)
             {
-                deck.AddCardToDrawPile(new CardRuntime(card));
+                deck.AddCardToDrawPile(card);
                 saveData.cardsInDrawPile.Add(card.Guid);
             }
 
             foreach (Card card in startingDiscardPileCards)
             {
-                deck.AddCardToDrawPile(new CardRuntime(card));
+                deck.AddCardToDrawPile(card);
                 saveData.cardsInDiscardPile.Add(card.Guid);
             }
 
             foreach (Card card in startingRemovedPileCards)
             {
-                deck.AddCardToRemovedPile(new CardRuntime(card));
+                deck.AddCardToRemovedPile(card);
                 saveData.cardsInRemovedPile.Add(card.Guid);
             }
         }
+
+        public override void Initialize(Instance instance)
+        {
+            deck.AddCardAddedToDrawPileEventCallback(
+                (CardRuntime cardRuntime) =>
+                {
+                    OnCardInDeckChanged(instance);
+                });
+        }
+
+        #region Callbacks
+
+        private void OnCardInDeckChanged(Instance instance)
+        {
+            instance.events.ComponentDataChanged.Invoke();
+        }
+
+        #endregion
     }
 }

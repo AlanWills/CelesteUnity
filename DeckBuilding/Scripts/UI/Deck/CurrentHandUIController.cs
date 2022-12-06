@@ -1,5 +1,7 @@
-﻿using Celeste.Memory;
+﻿using Celeste.DeckBuilding.Interfaces;
+using Celeste.Memory;
 using Celeste.Tools;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +12,10 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
+        [SerializeField] private CurrentHand currentHand;
         [SerializeField] private GameObjectAllocator cardsAllocator;
 
-        private List<CardUIController> cardControllers = new List<CardUIController>();
+        [NonSerialized] private List<ICardUIController> cardControllers = new List<ICardUIController>();
 
         #endregion
 
@@ -23,23 +26,28 @@ namespace Celeste.DeckBuilding.UI
             this.TryGetInChildren(ref cardsAllocator);
         }
 
-        #endregion
-
-        public void Hookup(CurrentHand currentHand)
+        private void OnEnable()
         {
-            cardControllers.Clear();
-            for (int i = 0, n = currentHand.NumCards; i < n; ++i)
+            for (int i = 0, n = currentHand.NumCards; i < n; i++)
             {
                 AllocateCardController(currentHand.GetCard(i));
             }
         }
+
+        private void OnDisable()
+        {
+            cardControllers.Clear();
+            cardsAllocator.DeallocateAll();
+        }
+
+        #endregion
 
         private void AllocateCardController(CardRuntime card)
         {
             if (cardsAllocator.CanAllocate(1))
             {
                 GameObject cardControllerGameObject = cardsAllocator.Allocate();
-                CardUIController cardController = cardControllerGameObject.GetComponent<CardUIController>();
+                ICardUIController cardController = cardControllerGameObject.GetComponent<ICardUIController>();
                 cardController.Hookup(card);
                 cardController.transform.SetSiblingIndex(0);
                 cardControllerGameObject.SetActive(true);
@@ -56,7 +64,7 @@ namespace Celeste.DeckBuilding.UI
             int cardControllerIndex = cardControllers.FindIndex(x => x.IsForCard(card));
             if (cardControllerIndex >= 0)
             {
-                CardUIController cardController = cardControllers[cardControllerIndex];
+                ICardUIController cardController = cardControllers[cardControllerIndex];
                 cardsAllocator.Deallocate(cardController.gameObject);
                 cardControllers.RemoveAt(cardControllerIndex);
             }

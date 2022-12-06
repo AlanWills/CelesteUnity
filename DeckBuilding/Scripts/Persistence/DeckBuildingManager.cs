@@ -1,4 +1,5 @@
 ﻿using Celeste.DeckBuilding.Cards;
+using Celeste.DeckBuilding.Catalogue;
 using Celeste.DeckBuilding.Decks;
 using Celeste.Persistence;
 using UnityEngine;
@@ -33,21 +34,21 @@ namespace Celeste.DeckBuilding.Persistence
                 {
                     Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
                     UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
-                    deck.AddCardToDrawPile(new CardRuntime(card));
+                    deck.AddCardToDrawPile(card);
                 }
 
                 foreach (CardRuntimeDTO cardRuntimeDTO in deckDTO.cardsInDiscardPile)
                 {
                     Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
                     UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
-                    deck.AddCardToDiscardPile(new CardRuntime(card));
+                    deck.AddCardToDiscardPile(card);
                 }
 
                 foreach (CardRuntimeDTO cardRuntimeDTO in deckDTO.cardsInRemovedPile)
                 {
                     Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
                     UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardRuntimeDTO}.");
-                    deck.AddCardToRemovedPile(new CardRuntime(card));
+                    deck.AddCardToRemovedPile(card);
                 }
             }
         }

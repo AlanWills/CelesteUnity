@@ -144,5 +144,7 @@ namespace Celeste.Components
         }
 
         public virtual void SetDefaultValues(Instance instance) { }
+        public virtual void Initialize(Instance instance) { }
+        public virtual void Shutdown(Instance instance) { }
     }
 }

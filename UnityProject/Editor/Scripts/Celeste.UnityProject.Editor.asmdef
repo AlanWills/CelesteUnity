@@ -9,6 +9,7 @@
         "Celeste.Startup",
         "Celeste.Loading",
         "Celeste.Bootstrap",
+        "Celeste.Persistence.Editor",
         "Unity.Addressables.Editor",
         "Unity.TextMeshPro.Editor"
     ],

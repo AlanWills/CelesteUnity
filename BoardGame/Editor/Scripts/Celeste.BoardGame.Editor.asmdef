@@ -5,7 +5,8 @@
         "Celeste.BoardGame",
         "Celeste.Components",
         "Celeste.Components.Editor",
-        "Celeste.Tools.Editor"
+        "Celeste.Tools.Editor",
+        "Celeste.DataStructures.Editor"
     ],
     "includePlatforms": [
         "Editor"

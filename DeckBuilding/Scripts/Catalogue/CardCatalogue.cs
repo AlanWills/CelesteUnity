@@ -1,10 +1,11 @@
-﻿using Celeste.Objects;
+﻿using Celeste.DeckBuilding.Cards;
+using Celeste.Objects;
 using System.Collections;
 using UnityEngine;
 
-namespace Celeste.DeckBuilding.Cards
+namespace Celeste.DeckBuilding.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(CardCatalogue), menuName = "Celeste/Deck Building/Cards/Card Catalogue")]
+    [CreateAssetMenu(fileName = nameof(CardCatalogue), menuName = "Celeste/Deck Building/Catalogue/Card Catalogue")]
     public class CardCatalogue : ArrayScriptableObject<Card>
     {
         public Card FindByGuid(int guid)

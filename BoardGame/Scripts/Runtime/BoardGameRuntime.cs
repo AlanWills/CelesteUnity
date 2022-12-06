@@ -8,7 +8,7 @@ namespace Celeste.BoardGame.Runtime
     public class BoardGameRuntime : ComponentContainerRuntime<BoardGameComponent>
     {
         #region Properties and Fields
-        
+
         public int NumBoardGameObjects => boardGameObjectRuntimes.Count;
 
         private List<BoardGameObjectRuntime> boardGameObjectRuntimes = new List<BoardGameObjectRuntime>();
@@ -17,12 +17,13 @@ namespace Celeste.BoardGame.Runtime
 
         public BoardGameRuntime(BoardGame boardGame)
         {
-            InitComponents(boardGame);
+            InitializeComponents(boardGame);
 
             for (int i = 0, n = boardGame.NumBoardGameObjects; i < n; ++i)
             {
                 BoardGameObject boardGameObject = boardGame.GetBoardGameObject(i);
                 BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
+                boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
                 boardGameObjectRuntimes.Add(boardGameObjectRuntime);
             }
         }
@@ -37,9 +38,27 @@ namespace Celeste.BoardGame.Runtime
             }
         }
 
+        public void Shutdown()
+        {
+            foreach (BoardGameObjectRuntime boardGameObjectRuntime in boardGameObjectRuntimes)
+            {
+                boardGameObjectRuntime.ComponentDataChanged.RemoveListener(OnBoardGameObjectRuntimeChanged);
+                boardGameObjectRuntime.ShutdownComponents();
+            }
+        }
+
         public BoardGameObjectRuntime GetBoardGameObject(int index)
         {
             return boardGameObjectRuntimes.Get(index);
         }
+
+        #region Callbacks
+
+        private void OnBoardGameObjectRuntimeChanged()
+        {
+            ComponentDataChanged.Invoke();
+        }
+
+        #endregion
     }
 }

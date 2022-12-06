@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Celeste.DeckBuilding.Interfaces;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Celeste.DeckBuilding.UI
 {
     [AddComponentMenu("Celeste/Deck Building/UI/Card UI Controller")]
-    public class CardUIController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class CardUIController : MonoBehaviour, ICardUIController, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         #region Properties and Fields
 
@@ -47,7 +48,7 @@ namespace Celeste.DeckBuilding.UI
         {
             // Because these values are driven by an animator, setting them in Hookup will do nothing
             // When the animator is enabled the parameters will be set to their default values and our changes will be ignored
-            // Consequently, we initialze the values in OnEnable to ensure correct UI behaviour
+            // Consequently, we initialize the values in OnEnable to ensure correct UI behaviour
             UpdateCanPlay(card.CanPlay);
             UpdateFaceUp(card.IsFaceUp);
         }

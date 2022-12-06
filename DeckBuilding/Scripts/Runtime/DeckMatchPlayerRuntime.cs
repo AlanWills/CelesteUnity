@@ -55,14 +55,8 @@ namespace Celeste.DeckBuilding
 
         #region Deck Management
 
-        private void AssignOwner(CardRuntime card)
-        {
-            card.Owner = playerID;
-        }
-
         public void AddCardToDrawPile(CardRuntime card)
         {
-            AssignOwner(card);
             deck.AddCardToDrawPile(card);
         }
 
@@ -70,7 +64,6 @@ namespace Celeste.DeckBuilding
         {
             if (!currentHand.IsFull)
             {
-                AssignOwner(card);
                 currentHand.AddCard(card);
                 UpdateCanPlayCard(card);
             }
@@ -82,13 +75,11 @@ namespace Celeste.DeckBuilding
 
         public void AddCardToDiscardPile(CardRuntime card)
         {
-            AssignOwner(card);
             deck.AddCardToDiscardPile(card);
         }
 
         public void AddCardToRemovedPile(CardRuntime card)
         {
-            AssignOwner(card);
             deck.AddCardToRemovedPile(card);
         }
 
@@ -97,7 +88,6 @@ namespace Celeste.DeckBuilding
             UnityEngine.Debug.Assert(card.SupportsActor(), $"Could not add card '{card.CardName}' to stage, it does not support it.");
             if (card.SupportsActor())
             {
-                AssignOwner(card);
                 Stage.AddCard(card);
             }
         }
@@ -106,11 +96,6 @@ namespace Celeste.DeckBuilding
         {
             for (int i = 0; i < quantity; ++i)
             {
-                if (deck.DrawPileEmpty)
-                {
-                    deck.RemakeDrawPile();
-                }
-
                 if (!deck.DrawPileEmpty)
                 {
                     AddCardToHand(deck.DrawCard());
@@ -201,10 +186,8 @@ namespace Celeste.DeckBuilding
             UpdateCanPlayCard(costChangedArgs.card);
         }
 
-        private void OnPlayCardSuccess(PlayCardSuccessArgs playArgs)
+        private void OnPlayCardSuccess(CardRuntime card)
         {
-            CardRuntime card = playArgs.cardRuntime;
-
             CurrentHand.RemoveCard(card);
 
             if (card.SupportsCost())

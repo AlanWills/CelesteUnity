@@ -1,5 +1,6 @@
 ﻿using Celeste.Components;
 using Celeste.DeckBuilding.Cards;
+using Celeste.DeckBuilding.Catalogue;
 using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Persistence;
@@ -99,19 +100,19 @@ namespace Celeste.DeckBuilding
 
             foreach (var cardRuntimeDTO in playerRuntimeDTO.cardsInHand)
             {
-                playerRuntime.AddCardToHand(CreateCardRuntime(cardRuntimeDTO));
+                playerRuntime.AddCardToHand(CreateCardRuntime(cardRuntimeDTO, playerRuntime.Deck));
             }
 
             foreach (var cardRuntimeDTO in playerRuntimeDTO.cardsOnStage)
             {
-                playerRuntime.AddCardToStage(CreateCardRuntime(cardRuntimeDTO));
+                playerRuntime.AddCardToStage(CreateCardRuntime(cardRuntimeDTO, playerRuntime.Deck));
             }
         }
 
-        private CardRuntime CreateCardRuntime(CardRuntimeDTO cardRuntimeDTO)
+        private CardRuntime CreateCardRuntime(CardRuntimeDTO cardRuntimeDTO, Deck deck)
         {
             Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
-            CardRuntime cardRuntime = new CardRuntime(card);
+            CardRuntime cardRuntime = new CardRuntime(deck, card);
             cardRuntime.LoadComponents(cardRuntimeDTO.components.ToLookup());
 
             return cardRuntime;

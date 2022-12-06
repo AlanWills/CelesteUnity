@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
-    [AddComponentMenu("Celeste/Deck Building/Current Hand")]
+    [CreateAssetMenu(fileName = nameof(CurrentHand), menuName = "Celeste/Deck Building/Current Hand")]
     public class CurrentHand : ScriptableObject
     {
         #region Properties and Fields
@@ -21,7 +21,7 @@ namespace Celeste.DeckBuilding
         [SerializeField] private CardRuntimeEvent cardAddedEvent;
         [SerializeField] private CardRuntimeEvent cardRemovedEvent;
 
-        private List<CardRuntime> cards = new List<CardRuntime>();
+        [NonSerialized] private List<CardRuntime> cards = new List<CardRuntime>();
 
         #endregion
 
@@ -33,6 +33,7 @@ namespace Celeste.DeckBuilding
             if (!IsFull)
             {
                 card.IsFaceUp = cardsEnterFaceUp;
+                card.OnPlayCardSuccess.AddListener(OnPlayCardSuccess);
                 cards.Add(card);
                 cardAddedEvent.Invoke(card);
             }
@@ -47,6 +48,7 @@ namespace Celeste.DeckBuilding
         {
             if (cards.Remove(card))
             {
+                card.OnPlayCardSuccess.RemoveListener(OnPlayCardSuccess);
                 cardRemovedEvent.Invoke(card);
                 return true;
             }
@@ -58,6 +60,15 @@ namespace Celeste.DeckBuilding
         public bool HasCard(Predicate<CardRuntime> predicate)
         {
             return cards.Exists(predicate);
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        private void OnPlayCardSuccess(CardRuntime cardRuntime)
+        {
+            RemoveCard(cardRuntime);
         }
 
         #endregion

@@ -18,7 +18,7 @@ namespace Celeste.BoardGame.Runtime
         {
             this.boardGameObject = boardGameObject;
 
-            InitComponents(boardGameObject);
+            InitializeComponents(boardGameObject);
         }
 
         public void SetDefaultValues()

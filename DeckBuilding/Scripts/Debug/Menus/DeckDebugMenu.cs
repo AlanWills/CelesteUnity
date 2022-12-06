@@ -1,7 +1,5 @@
 ﻿using Celeste.Debug.Menus;
 using Celeste.DeckBuilding.Decks;
-using System.Runtime.Serialization.Configuration;
-using UnityEditor;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding.Debug
@@ -19,7 +17,7 @@ namespace Celeste.DeckBuilding.Debug
         {
             for (int i = deck.NumCardsInDrawPile - 1; i >= 0; --i)
             {
-                using (var horizontal = new EditorGUILayout.HorizontalScope())
+                using (var horizontal = new GUILayout.HorizontalScope())
                 {
                     CardRuntime card = deck.GetCardInDrawPile(i);
                     GUILayout.Label(card.CardName);
@@ -40,7 +38,7 @@ namespace Celeste.DeckBuilding.Debug
 
             for (int i = deck.NumCardsInDiscardPile - 1; i >= 0; --i)
             {
-                using (var horizontal = new EditorGUILayout.HorizontalScope())
+                using (var horizontal = new GUILayout.HorizontalScope())
                 {
                     CardRuntime card = deck.GetCardInDiscardPile(i);
                     GUILayout.Label(card.CardName);
@@ -61,7 +59,7 @@ namespace Celeste.DeckBuilding.Debug
 
             for (int i = deck.NumCardsInRemovedPile - 1; i >= 0; --i)
             {
-                using (var horizontal = new EditorGUILayout.HorizontalScope())
+                using (var horizontal = new GUILayout.HorizontalScope())
                 {
                     CardRuntime card = deck.GetCardInRemovedPile(i);
                     GUILayout.Label(card.CardName);

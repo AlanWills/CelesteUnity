@@ -1,4 +1,5 @@
-﻿using Celeste.Components;
+﻿using Celeste.BoardGame.Persistence;
+using Celeste.Components;
 using Celeste.Persistence;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,8 @@ namespace Celeste.BoardGame.Runtime
 
             Load();
 
+            boardGameRuntime.ComponentDataChanged.AddListener(OnBoardGameChanged);
+
             onRuntimeInitialized.Invoke(new BoardGameRuntimeInitializedArgs()
             {
                 boardGameRuntime = boardGameRuntime
@@ -51,9 +54,8 @@ namespace Celeste.BoardGame.Runtime
 
         private void OnDisable()
         {
-            onRuntimeShutdown.Invoke(new BoardGameRuntimeShutdownArgs()
-            {
-            });
+            onRuntimeShutdown.Invoke(new BoardGameRuntimeShutdownArgs() { });
+            boardGameRuntime.Shutdown();
         }
 
         #endregion
@@ -95,6 +97,15 @@ namespace Celeste.BoardGame.Runtime
         protected override void SetDefaultValues()
         {
             boardGameRuntime.SetDefaultValues();
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        private void OnBoardGameChanged()
+        {
+            Save();
         }
 
         #endregion

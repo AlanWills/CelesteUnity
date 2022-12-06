@@ -1,12 +1,12 @@
 ﻿using Celeste.Components;
 using Celeste.Constants;
-using Celeste.DataStructures;
 using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Components;
+using Celeste.DeckBuilding.Decks;
 using Celeste.DeckBuilding.Events;
+using Celeste.DeckBuilding.Extensions;
 using Celeste.Events;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.DeckBuilding
@@ -18,19 +18,18 @@ namespace Celeste.DeckBuilding
 
         public BoolUnityEvent OnFaceUpChanged { get; } = new BoolUnityEvent();
         public BoolUnityEvent OnCanPlayChanged { get; } = new BoolUnityEvent();
-        public PlayCardSuccessUnityEvent OnPlayCardSuccess { get; } = new PlayCardSuccessUnityEvent();
-        public PlayCardFailureUnityEvent OnPlayCardFailure { get; } = new PlayCardFailureUnityEvent();
+        public CardRuntimeUnityEvent OnPlayCardSuccess { get; } = new CardRuntimeUnityEvent();
+        public CardRuntimeUnityEvent OnPlayCardFailure { get; } = new CardRuntimeUnityEvent();
 
         #endregion
 
         #region Properties and Fields
 
-        public ID Owner { get; set; }
-
         public int CardGuid => card.Guid;
         public string CardName => card.name;
         public Sprite CardBack => card.CardBack;
         public Sprite CardFront => card.CardFront;
+        public int DeckGuid => deck.Guid;
 
         public bool IsFaceUp
         {
@@ -58,17 +57,19 @@ namespace Celeste.DeckBuilding
             }
         }
 
+        [NonSerialized] private Deck deck;
         [NonSerialized] private Card card;
         [NonSerialized] private bool faceUp = false;
         [NonSerialized] private bool canPlay;
 
         #endregion
 
-        public CardRuntime(Card card)
+        public CardRuntime(Deck deck, Card card)
         {
+            this.deck = deck;
             this.card = card;
 
-            InitComponents(card);
+            InitializeComponents(card);
         }
 
         public bool IsForCard(Card card)
@@ -80,12 +81,22 @@ namespace Celeste.DeckBuilding
         {
             if (CanPlay)
             {
-                OnPlayCardSuccess.Invoke(new PlayCardSuccessArgs() { cardRuntime = this });
+                OnPlayCardSuccess.Invoke(this);
+
+                if (this.IsRemovedFromDeckWhenPlayed())
+                {
+                    deck.AddCardToRemovedPile(this);
+                }
+                else
+                {
+                    deck.AddCardToDiscardPile(this);
+                }
+
                 return true;
             }
             else
             {
-                OnPlayCardFailure.Invoke(new PlayCardFailureArgs() { cardRuntime = this });
+                OnPlayCardFailure.Invoke(this);
                 return false;
             }
         }

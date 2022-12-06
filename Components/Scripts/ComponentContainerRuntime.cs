@@ -19,11 +19,20 @@ namespace Celeste.Components
 
         #endregion
 
-        public void InitComponents(IComponentContainer<T> componentContainer)
+        public void InitializeComponents(IComponentContainer<T> componentContainer)
         {
             for (int i = 0, n = componentContainer.NumComponents; i < n; ++i)
             {
                 AddComponent(componentContainer.GetComponent(i));
+            }
+        }
+
+        public void ShutdownComponents()
+        {
+            for (int i = 0, n = components.Count; i < n; ++i)
+            {
+                var componentHandle = components[i];
+                componentHandle.component.Shutdown(componentHandle.instance);
             }
         }
 
@@ -59,9 +68,10 @@ namespace Celeste.Components
             ComponentData data = component.CreateData();
             ComponentEvents events = component.CreateEvents();
             ComponentHandle<T> handle = new ComponentHandle<T>(component, data, events);
+
+            component.Initialize(handle.instance);
             components.Add(handle);
             events.ComponentDataChanged.AddListener(ComponentDataChanged.Invoke);
-
         }
 
         public void AddComponent(ComponentHandle<T> componentHandle)

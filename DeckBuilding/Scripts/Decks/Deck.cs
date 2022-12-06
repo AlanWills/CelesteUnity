@@ -1,16 +1,32 @@
-﻿using Celeste.DataStructures;
+﻿using Celeste.Constants;
+using Celeste.DataStructures;
+using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Shuffler;
+using Celeste.Objects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.DeckBuilding.Decks
 {
     [CreateAssetMenu(fileName = nameof(Deck), menuName = "Celeste/Deck Building/Deck")]
-    public class Deck : ScriptableObject
+    public class Deck : ScriptableObject, IGuid
     {
         #region Properties and Fields
+
+        public int Guid
+        {
+            get { return guid; }
+            set
+            {
+                guid = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
 
         public int NumCardsInDrawPile => drawPile.Count;
         public int NumCardsInDiscardPile => discardPile.Count;
@@ -19,6 +35,7 @@ namespace Celeste.DeckBuilding.Decks
         public bool DiscardPileEmpty => NumCardsInDiscardPile == 0;
         public bool RemovedPileEmpty => NumCardsInRemovedPile == 0;
 
+        [SerializeField] private int guid;
         [SerializeField] private CardShuffler cardShuffler;
 
         [Header("Draw Pile Events")]
@@ -41,6 +58,11 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Draw Pile Management
 
+        public void AddCardToDrawPile(Card card)
+        {
+            AddCardToDrawPile(new CardRuntime(this, card));
+        }
+
         public void AddCardToDrawPile(CardRuntime cardRuntime)
         {
             drawPile.Add(cardRuntime);
@@ -58,6 +80,17 @@ namespace Celeste.DeckBuilding.Decks
 
         public CardRuntime DrawCard()
         {
+            if (drawPile.Count + discardPile.Count == 0)
+            {
+                UnityEngine.Debug.LogAssertion($"No cards left in deck.");
+                return null;
+            }
+
+            if (DrawPileEmpty)
+            {
+                RemakeDrawPile();
+            }
+
             UnityEngine.Debug.Assert(NumCardsInDrawPile > 0, "No cards left in draw pile.");
             CardRuntime card = drawPile[NumCardsInDrawPile - 1];
             drawPile.RemoveAt(NumCardsInDrawPile - 1);
@@ -66,7 +99,7 @@ namespace Celeste.DeckBuilding.Decks
             return card;
         }
 
-        public void RemakeDrawPile()
+        private void RemakeDrawPile()
         {
             for (int i = NumCardsInDiscardPile - 1; i >= 0; --i)
             {
@@ -94,6 +127,11 @@ namespace Celeste.DeckBuilding.Decks
         #endregion
 
         #region Discard Pile Management
+
+        public void AddCardToDiscardPile(Card card)
+        {
+            AddCardToDiscardPile(new CardRuntime(this, card));
+        }
 
         public void AddCardToDiscardPile(CardRuntime cardRuntime)
         {
@@ -125,6 +163,11 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Removed Pile Management
 
+        public void AddCardToRemovedPile(Card card)
+        {
+            AddCardToRemovedPile(new CardRuntime(this, card));
+        }
+
         public void AddCardToRemovedPile(CardRuntime cardRuntime)
         {
             removedPile.Add(cardRuntime);
@@ -150,6 +193,82 @@ namespace Celeste.DeckBuilding.Decks
             UnityEngine.Debug.Assert(!RemovedPileEmpty, $"Attempting to peek top card of removed pile when it is empty.");
             return NumCardsInRemovedPile > 0 ? removedPile[NumCardsInRemovedPile - 1] : null;
         }
+
+        #endregion
+
+        #region Callbacks
+
+        #region Draw Pile Events
+
+        public void AddCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToDrawPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToDrawPileEvent.RemoveListener(cardRuntime);
+        }
+
+        public void AddCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromDrawPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromDrawPileEvent.RemoveListener(cardRuntime);
+        }
+
+        #endregion
+
+        #region Discard Pile Events
+
+        public void AddCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToDiscardPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToDiscardPileEvent.RemoveListener(cardRuntime);
+        }
+
+        public void AddCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromDiscardPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromDiscardPileEvent.RemoveListener(cardRuntime);
+        }
+
+        #endregion
+
+        #region Removed Pile Events
+
+        public void AddCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToRemovedPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardAddedToRemovedPileEvent.RemoveListener(cardRuntime);
+        }
+
+        public void AddCardRemovedFromRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromRemovedPileEvent.AddListener(cardRuntime);
+        }
+
+        public void RemoveCardRemovedFromRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        {
+            cardRemovedFromRemovedPileEvent.RemoveListener(cardRuntime);
+        }
+
+        #endregion
 
         #endregion
     }

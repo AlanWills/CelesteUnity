@@ -1,8 +1,9 @@
-﻿using Celeste.Components.Persistence;
+﻿using Celeste.BoardGame.Runtime;
+using Celeste.Components.Persistence;
 using System;
 using System.Collections.Generic;
 
-namespace Celeste.BoardGame.Runtime
+namespace Celeste.BoardGame.Persistence
 {
     [Serializable]
     public class BoardGameObjectRuntimeDTO
