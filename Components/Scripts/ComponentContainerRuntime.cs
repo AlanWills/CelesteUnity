@@ -45,6 +45,7 @@ namespace Celeste.Components
                 if (componentDTOLookup.TryGetValue(componentHandle.component.name, out ComponentDTO dto))
                 {
                     JsonUtility.FromJsonOverwrite(dto.data, componentHandle.instance.data);
+                    componentHandle.component.Load(componentHandle.instance);
                 }
                 else
                 {

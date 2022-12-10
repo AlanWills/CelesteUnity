@@ -111,6 +111,7 @@ namespace Celeste.Debug.Menus
             if (!debugMenus.Contains(debugMenu))
             {
                 debugMenus.Add(debugMenu);
+                debugMenus.Sort((a, b) => b.MenuPriority - a.MenuPriority);
             }
             else
             {

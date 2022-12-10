@@ -1,6 +1,6 @@
-﻿using Celeste.DeckBuilding.Cards;
-using Celeste.DeckBuilding.Events;
+﻿using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Extensions;
+using Celeste.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +22,7 @@ namespace Celeste.DeckBuilding.UI
             }
         }
 
+        [SerializeField] private InputState inputState;
         [SerializeField] private ActorUIManager availableTargetsUI;
         [SerializeField] private RectTransform targetingLineTransform;
         [SerializeField] private Image targetingLine;
@@ -43,13 +44,13 @@ namespace Celeste.DeckBuilding.UI
         {
             if (PendingActor != null)
             {
-                Vector2 mousePosition = Input.mousePosition;
+                Vector2 mousePosition = inputState.MousePosition;
                 Vector2 currentPosition = transform.position;
                 Vector2 diffToTarget = mousePosition - currentPosition;
                 targetingLineTransform.sizeDelta = new Vector2(10, diffToTarget.magnitude / targetingLineTransform.lossyScale.y);
                 targetingLineTransform.SetPositionAndRotation(currentPosition + diffToTarget * 0.5f, Quaternion.AngleAxis(Vector2.SignedAngle(Vector3.up, diffToTarget), Vector3.forward));
 
-                if (Input.GetMouseButtonDown(0))
+                if (inputState.LeftMouseButton.wasPressedThisFrame)
                 {
                     // Find target first - maybe keep a list of valid targets as they're added to the UI?
                     ActorUIController target = availableTargetsUI.FindCardActorUI(x => x.IsMouseOver);
@@ -58,7 +59,7 @@ namespace Celeste.DeckBuilding.UI
                         AttackActorWithPendingActor(target.Card);
                     }
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (inputState.RightMouseButton.wasPressedThisFrame)
                 {
                     CancelAttack();
                 }

@@ -1,10 +1,5 @@
-﻿using Celeste.DeckBuilding.Cards;
-using Celeste.DeckBuilding.Commands;
-using Celeste.DeckBuilding.Events;
+﻿using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Extensions;
-using Celeste.Maths;
-using Celeste.Tools;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,7 +43,7 @@ namespace Celeste.DeckBuilding.UI
         {
             if (PendingCard != null)
             {
-                Vector2 mousePosition = Input.mousePosition;
+                Vector2 mousePosition = UnityEngine.Input.mousePosition;
                 Vector2 currentPosition = transform.position;
                 Vector2 diffToTarget = mousePosition - currentPosition;
                 targetingLineTransform.sizeDelta = new Vector2(10, diffToTarget.magnitude / targetingLineTransform.lossyScale.y);
@@ -63,14 +58,14 @@ namespace Celeste.DeckBuilding.UI
                     target.IsValidTarget = usableOnTarget;
                 }
 
-                if (Input.GetMouseButtonDown(0))
+                if (UnityEngine.Input.GetMouseButtonDown(0))
                 {
                     if (usableOnTarget)
                     {
                         UsePendingCardOnActor(target.Card);
                     }
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (UnityEngine.Input.GetMouseButtonDown(1))
                 {
                     CancelPendingCard();
                 }

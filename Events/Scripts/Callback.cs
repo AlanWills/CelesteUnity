@@ -7,16 +7,16 @@ namespace Celeste.Events
     {
         bool IsValid { get; }
         int Id { get; }
+
+        void MakeInvalid();
     }
 
     public struct CallbackHandle : ICallbackHandle
     {
         #region Properties and Fields
 
-        public static readonly CallbackHandle INVALID_HANDLE = new CallbackHandle(-1);
-
-        public bool IsValid => Id != INVALID_HANDLE.Id;
-        public int Id { get; }
+        public bool IsValid => Id != default;
+        public int Id { get; private set; }
 
         private static int s_guid = 1;
 
@@ -25,6 +25,11 @@ namespace Celeste.Events
         public CallbackHandle(int id)
         {
             Id = id;
+        }
+
+        public void MakeInvalid()
+        {
+            Id = default;
         }
 
         public static CallbackHandle New()

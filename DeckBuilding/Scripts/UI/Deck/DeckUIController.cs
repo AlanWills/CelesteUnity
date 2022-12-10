@@ -1,5 +1,8 @@
 ﻿using Celeste.DeckBuilding.Decks;
+using Celeste.Events;
+using Celeste.Input;
 using Celeste.Tools.Attributes.GUI;
+using Celeste.UI.Input;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,8 +14,14 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
+        private Transform DrawPileTransform => usesUIComponents? drawPileUI.transform : drawPile.transform;
+        private Transform DiscardPileTransform => usesUIComponents ? discardPileUI.transform : discardPile.transform;
+        private Transform RemovedPileTransform => usesUIComponents ? removedPileUI.transform : removedPile.transform;
+
         [SerializeField] private Deck deck;
         [SerializeField] private bool usesUIComponents = true;
+        [SerializeField] private ShowTooltipEvent showTooltip;
+        [SerializeField] private Celeste.Events.Event hideTooltip;
 
         // UI Elements
         [SerializeField, ShowIf(nameof(usesUIComponents))] private Image drawPileUI;
@@ -133,6 +142,51 @@ namespace Celeste.DeckBuilding.UI
         public void OnCardRemovedFromRemovedPile(CardRuntime card)
         {
             UpdateRemovedPileUI();
+        }
+
+        public void OnMouseEnterDrawPile(Vector2 mousePosition)
+        {
+            showTooltip.Invoke(new TooltipArgs()
+            {
+                position = DrawPileTransform.position,
+                isWorldSpace = true,
+                text = deck.NumCardsInDrawPile.ToString()
+            });
+        }
+
+        public void OnMouseExitDrawPile()
+        {
+            hideTooltip.Invoke();
+        }
+
+        public void OnMouseEnterDiscardPile(Vector2 mousePosition)
+        {
+            showTooltip.Invoke(new TooltipArgs()
+            {
+                position = DiscardPileTransform.position,
+                isWorldSpace = true,
+                text = deck.NumCardsInDiscardPile.ToString()
+            });
+        }
+
+        public void OnMouseExitDiscardPile()
+        {
+            hideTooltip.Invoke();
+        }
+
+        public void OnMouseEnterRemovedPile(Vector2 mousePosition)
+        {
+            showTooltip.Invoke(new TooltipArgs()
+            {
+                position = RemovedPileTransform.position,
+                isWorldSpace = true,
+                text = deck.NumCardsInRemovedPile.ToString()
+            });
+        }
+
+        public void OnMouseExitRemovedPile()
+        {
+            hideTooltip.Invoke();
         }
 
         #endregion

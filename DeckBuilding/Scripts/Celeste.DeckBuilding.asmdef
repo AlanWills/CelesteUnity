@@ -18,6 +18,8 @@
         "Celeste.Logic",
         "Celeste.Constants",
         "Celeste.Components",
+        "Celeste.UI",
+        "Celeste.Input",
         "Unity.TextMeshPro",
         "XNode"
     ],

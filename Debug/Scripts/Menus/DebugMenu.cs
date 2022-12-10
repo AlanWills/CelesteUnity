@@ -26,12 +26,22 @@ namespace Celeste.Debug.Menus
             }
         }
 
-        public string DisplayName
+        public string DisplayName => displayName;
+
+        public int MenuPriority
         {
-            get { return displayName; }
+            get => menuPriority;
+            set
+            {
+                menuPriority = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
         }
 
         [SerializeField] private string displayName;
+        [SerializeField, Tooltip("The higher the number, the higher up the debug GUI this will appear.")] private int menuPriority = 0;
 
         #endregion
 

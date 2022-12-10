@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raycastCamera: {fileID: 11400000, guid: 14ae487a7b0d7524e8df71e5b3255874, type: 2}
+  inputState: {fileID: 11400000, guid: 8294e469dc48dcd48bef4ac737260cf9, type: 2}
   eventSystem: {fileID: 6381089565103586265}
   leftMouseButtonFirstDown: {fileID: 11400000, guid: 3e0f99d77fe7e284b98c11650a91e607, type: 2}
   leftMouseButtonDown: {fileID: 11400000, guid: 80d21d9030dfeee4ab10e4c4d0c06dc2, type: 2}

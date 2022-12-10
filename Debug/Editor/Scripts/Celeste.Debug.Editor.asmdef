@@ -2,7 +2,9 @@
     "name": "Celeste.Debug.Editor",
     "rootNamespace": "CelesteEditor.Debug",
     "references": [
-        "Celeste.Debug"
+        "Celeste.Debug",
+        "Celeste.Objects",
+        "Celeste.DataStructures.Editor"
     ],
     "includePlatforms": [
         "Editor"

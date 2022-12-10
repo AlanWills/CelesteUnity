@@ -26,13 +26,12 @@ namespace Celeste.Core
 
         [NonSerialized] private List<ScheduledCallback> callbacks = new List<ScheduledCallback>();
         [NonSerialized] private List<ScheduledCallback> callbacksCopy = new List<ScheduledCallback>();
-        [NonSerialized] private int latestHandleId = CallbackHandle.INVALID_HANDLE.Id;
 
         #endregion
 
         public CallbackHandle Schedule(long timestamp, Action callback)
         {
-            CallbackHandle handle = new CallbackHandle(++latestHandleId);
+            CallbackHandle handle = CallbackHandle.New();
             ScheduledCallback scheduledCallback = new ScheduledCallback(timestamp, callback, handle);
             callbacks.Add(scheduledCallback);
 

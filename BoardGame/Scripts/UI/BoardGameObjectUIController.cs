@@ -39,7 +39,10 @@ namespace Celeste.BoardGame.UI
         {
             foreach (var component in componentUIControllers)
             {
-                component.GetComponent<IBoardGameObjectComponentUIController>().Shutdown();
+                if (component != null)
+                {
+                    component.GetComponent<IBoardGameObjectComponentUIController>().Shutdown();
+                }
             }
         }
     }

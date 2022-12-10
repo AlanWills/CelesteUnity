@@ -1,5 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Viewport
@@ -9,10 +10,13 @@ namespace Celeste.Viewport
     {
         #region Properties and Fields
 
-        public Camera cameraToZoom;
-        public FloatReference minZoom;
-        public FloatReference maxZoom;
-        public FloatReference zoomSpeed;
+        [SerializeField] private Camera cameraToZoom;
+        [SerializeField] private FloatReference minZoom;
+        [SerializeField] private FloatReference maxZoom;
+        [SerializeField] private FloatReference zoomSpeed;
+        [SerializeField] private float animateSpeed = 0.1f;
+
+        private Coroutine zoomCoroutine;
 
         #endregion
 
@@ -55,17 +59,53 @@ namespace Celeste.Viewport
                 return;
             }
 
+            if (zoomCoroutine != null)
+            {
+                StopCoroutine(zoomCoroutine);
+            }
+
+            StartCoroutine(ZoomImpl(scrollAmount));
+        }
+
+        private IEnumerator ZoomImpl(float scrollAmount)
+        {
             scrollAmount *= zoomSpeed.Value;
+
+            float animationTime = Mathf.Abs(scrollAmount) / animateSpeed;
+            float currentAnimationTime = 0;
 
             if (cameraToZoom.orthographic)
             {
-                cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize - scrollAmount, minZoom.Value, maxZoom.Value);
+                float startingSize = cameraToZoom.orthographicSize;
+                float finishingSize = Mathf.Clamp(startingSize - scrollAmount, minZoom.Value, maxZoom.Value);
+
+                while (currentAnimationTime < animationTime)
+                {
+                    currentAnimationTime += Time.deltaTime;
+                    
+                    float lerpAmount = currentAnimationTime / animationTime;
+                    cameraToZoom.orthographicSize = Mathf.Lerp(startingSize, finishingSize, lerpAmount);
+
+                    yield return null;
+                }
             }
             else
             {
                 Vector3 position = transform.localPosition;
-                position.z = Mathf.Clamp(position.z + scrollAmount, minZoom.Value, maxZoom.Value);
-                transform.localPosition = position;
+                float startingZ = position.z;
+                float finishingZ = position.z + scrollAmount;
+
+                while (currentAnimationTime < animationTime)
+                {
+                    currentAnimationTime += Time.deltaTime;
+                    
+                    float lerpAmount = currentAnimationTime / animationTime;
+                    position = transform.localPosition;
+                    position.z = Mathf.Lerp(startingZ, finishingZ, lerpAmount);
+                    transform.localPosition = position;
+
+                    yield return null;
+                }
             }
         }
 

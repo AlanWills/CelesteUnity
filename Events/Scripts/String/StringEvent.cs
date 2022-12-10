@@ -8,7 +8,7 @@ namespace Celeste.Events
     public class StringUnityEvent : UnityEvent<string> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "StringEvent", menuName = "Celeste/Events/String Event")]
+    [CreateAssetMenu(fileName = "StringEvent", menuName = "Celeste/Events/String/String Event")]
     public class StringEvent : ParameterisedEvent<string>
     {
     }

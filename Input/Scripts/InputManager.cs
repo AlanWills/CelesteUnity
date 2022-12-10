@@ -1,5 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -27,7 +28,10 @@ namespace Celeste.Input
 
         public CameraValue raycastCamera = default;
 
+        [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
+
+        private GameObject previousMouseOver;
 
 #region Desktop Variables
 
@@ -134,10 +138,49 @@ namespace Celeste.Input
             }
 #endif
             Mouse mouse = Mouse.current;
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Vector3 mouseWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
 
-            CheckMouseButton(mouse.leftButton, leftMouseButtonFirstDown, leftMouseButtonDown, leftMouseButtonFirstUp, gameObjectLeftClicked);
-            CheckMouseButton(mouse.rightButton, rightMouseButtonFirstDown, rightMouseButtonDown, rightMouseButtonFirstUp, gameObjectRightClicked);
-            CheckMouseButton(mouse.middleButton, middleMouseButtonFirstDown, middleMouseButtonDown, middleMouseButtonFirstUp, gameObjectMiddleClicked);
+            inputState.MousePosition = mousePosition;
+            inputState.MouseWorldPosition = mouseWorldPosition;
+            
+            GameObject hitGameObject = null;
+            
+            if (raycastCamera.Value != null)
+            {
+                hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
+            }
+            inputState.HitGameObject = hitGameObject;
+
+            CheckMouseButton(
+                mousePosition, 
+                hitGameObject, 
+                mouse.leftButton,
+                MouseButton.Left,
+                leftMouseButtonFirstDown, 
+                leftMouseButtonDown, 
+                leftMouseButtonFirstUp, 
+                gameObjectLeftClicked);
+
+            CheckMouseButton(
+                mousePosition,
+                hitGameObject,
+                mouse.rightButton,
+                MouseButton.Right,
+                rightMouseButtonFirstDown, 
+                rightMouseButtonDown, 
+                rightMouseButtonFirstUp, 
+                gameObjectRightClicked);
+
+            CheckMouseButton(
+                mousePosition, 
+                hitGameObject, 
+                mouse.middleButton,
+                MouseButton.Middle,
+                middleMouseButtonFirstDown, 
+                middleMouseButtonDown, 
+                middleMouseButtonFirstUp, 
+                gameObjectMiddleClicked);
 
             float mouseScrollDelta = mouse.scroll.ReadValue().y;
             if (mouseScrollDelta != 0)
@@ -145,7 +188,6 @@ namespace Celeste.Input
                 mouseScrolled.InvokeSilently(mouseScrollDelta);
             }
 
-            Vector2 mousePosition = mouse.position.ReadValue();
             mouseMoved.InvokeSilently(mousePosition);
 #endif
         }
@@ -155,7 +197,10 @@ namespace Celeste.Input
         #region Utility Functions
 
         private void CheckMouseButton(
+            Vector2 mousePosition,
+            GameObject hitGameObject,
             ButtonControl buttonControl,
+            MouseButton mouseButton,
             Vector2Event mouseButtonFirstDown,
             Vector2Event mouseButtonDown,
             Vector2Event mouseButtonFirstUpEvent,
@@ -167,38 +212,39 @@ namespace Celeste.Input
                 // Interacting with a UI element, so nothing should fire
                 return;
             }
-        
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-            if (buttonControl.wasPressedThisFrame)
+            MouseButtonState mouseButtonState = new MouseButtonState()
+            {
+                wasPressedThisFrame = buttonControl.wasPressedThisFrame,
+                isPressed = buttonControl.isPressed,
+                wasReleasedThisFrame= buttonControl.wasReleasedThisFrame,
+            };
+        
+            if (mouseButtonState.wasPressedThisFrame)
             {
                 mouseButtonFirstDown.InvokeSilently(mousePosition);
-
-                if (raycastCamera.Value != null)
+                
+                if (hitGameObject != null)
                 {
-                    Vector3 clickWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
-                    GameObject hitGameObject = Raycast(new Vector2(clickWorldPosition.x, clickWorldPosition.y));
-
-                    if (hitGameObject != null)
+                    gameObjectClickedEvent.Invoke(new GameObjectClickEventArgs()
                     {
-                        gameObjectClickedEvent.Invoke(new GameObjectClickEventArgs()
-                        {
-                            gameObject = hitGameObject,
-                            clickWorldPosition = clickWorldPosition
-                        });
-                    }
+                        gameObject = hitGameObject,
+                        clickWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition)
+                    });
                 }
             }
 
-            if (buttonControl.isPressed)
+            if (mouseButtonState.isPressed)
             {
                 mouseButtonDown.InvokeSilently(mousePosition);
             }
 
-            if (buttonControl.wasReleasedThisFrame)
+            if (mouseButtonState.wasReleasedThisFrame)
             {
                 mouseButtonFirstUpEvent.InvokeSilently(mousePosition);
             }
+
+            inputState.SetMouseButton(mouseButton, mouseButtonState);
         }
 
         #endregion
