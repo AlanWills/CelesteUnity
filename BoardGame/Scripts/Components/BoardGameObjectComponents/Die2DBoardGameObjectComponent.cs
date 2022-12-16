@@ -59,11 +59,6 @@ namespace Celeste.BoardGame.Components
             return new Events();
         }
 
-        public override void SetDefaultValues(Instance instance)
-        {
-            SetValue(instance, 1);
-        }
-
         public Sprite GetSprite(Instance instance)
         {
             int value = GetValue(instance);

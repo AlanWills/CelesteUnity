@@ -20,10 +20,5 @@ namespace Celeste.BoardGame.Runtime
 
             InitializeComponents(boardGameObject);
         }
-
-        public void SetDefaultValues()
-        {
-            SetComponentDefaultValues();
-        }
     }
 }

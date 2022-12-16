@@ -11,6 +11,20 @@ namespace Celeste.BoardGame.Persistence
         public List<ComponentDTO> components = new List<ComponentDTO>();
         public List<BoardGameObjectRuntimeDTO> boardGameObjectRuntimes = new List<BoardGameObjectRuntimeDTO>();
 
+        public BoardGameRuntimeDTO(BoardGame boardGame)
+        {
+            if (boardGame != null)
+            {
+                components.Capacity = boardGame.NumComponents;
+
+                for (int i = 0, n = boardGame.NumComponents; i < n; ++i)
+                {
+                    var component = boardGame.GetComponent(i);
+                    components.Add(ComponentDTO.From(component, component.CreateData()));
+                }
+            }
+        }
+
         public BoardGameRuntimeDTO(BoardGameRuntime boardGameRuntime)
         {
             {

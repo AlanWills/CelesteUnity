@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Celeste.Tools.Attributes.GUI;
+using System;
+using UnityEngine;
 
 namespace Celeste.Components.Persistence
 {
@@ -6,7 +8,7 @@ namespace Celeste.Components.Persistence
     public class ComponentDTO
     {
         public string typeName;
-        public string data;
+        [Json] public string data;
 
         private ComponentDTO(Component component, ComponentData componentData)
         {

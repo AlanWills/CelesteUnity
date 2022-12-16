@@ -1,4 +1,5 @@
 ﻿using Celeste.BoardGame.Components;
+using Celeste.BoardGame.Persistence;
 using Celeste.Components;
 using Celeste.DataStructures;
 using System;
@@ -35,11 +36,6 @@ namespace Celeste.BoardGame.Runtime
             InitializeComponents(boardGame);
         }
 
-        public void SetDefaultValues()
-        {
-            SetComponentDefaultValues();
-        }
-
         public void Shutdown()
         {
             foreach (BoardGameObjectRuntime boardGameObjectRuntime in boardGameObjectRuntimes)
@@ -52,24 +48,23 @@ namespace Celeste.BoardGame.Runtime
         public BoardGameObjectRuntime AddBoardGameObject(BoardGameObject boardGameObject)
         {
             BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
-            boardGameObjectRuntime.SetDefaultValues();
             boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
             boardGameObjectRuntimes.Add(boardGameObjectRuntime);
 
             return boardGameObjectRuntime;
         }
 
-        public BoardGameObjectRuntime AddBoardGameObject(int boardGameObjectGuid)
+        public BoardGameObjectRuntime AddBoardGameObject(BoardGameObjectRuntimeDTO boardGameObjectDTO)
         {
-            BoardGameObject boardGameObject = boardGame.FindBoardGameObject(boardGameObjectGuid);
+            BoardGameObject boardGameObject = boardGame.FindBoardGameObject(boardGameObjectDTO.guid);
             if (boardGameObject == null)
             {
-                UnityEngine.Debug.LogAssertion($"Could not find board game object with guid {boardGameObjectGuid}.");
+                UnityEngine.Debug.LogAssertion($"Could not find board game object with guid {boardGameObjectDTO.guid}.");
                 return null;
             }
 
             BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
-            boardGameObjectRuntime.SetDefaultValues();
+            boardGameObjectRuntime.LoadComponents(boardGameObjectDTO.components.ToLookup());
             boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
             boardGameObjectRuntimes.Add(boardGameObjectRuntime);
 

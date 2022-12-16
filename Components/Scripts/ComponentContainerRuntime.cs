@@ -47,20 +47,6 @@ namespace Celeste.Components
                     JsonUtility.FromJsonOverwrite(dto.data, componentHandle.instance.data);
                     componentHandle.component.Load(componentHandle.instance);
                 }
-                else
-                {
-                    Debug.Log($"Looks like a new component was added since the last save.  Will set default values...");
-                    componentHandle.component.SetDefaultValues(componentHandle.instance);
-                }
-            }
-        }
-
-        protected void SetComponentDefaultValues()
-        {
-            for (int i = 0, n = NumComponents; i < n; ++i)
-            {
-                var componentHandle = GetComponent(i);
-                componentHandle.component.SetDefaultValues(componentHandle.instance);
             }
         }
 
@@ -70,7 +56,6 @@ namespace Celeste.Components
             ComponentEvents events = component.CreateEvents();
             ComponentHandle<T> handle = new ComponentHandle<T>(component, data, events);
 
-            component.Initialize(handle.instance);
             components.Add(handle);
             events.ComponentDataChanged.AddListener(ComponentDataChanged.Invoke);
         }
