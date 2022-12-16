@@ -12,6 +12,8 @@
         "Celeste.Persistence",
         "Celeste.DeckBuilding",
         "Celeste.Tools",
+        "Celeste.UI",
+        "Celeste.Debug",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

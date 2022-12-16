@@ -1,10 +1,5 @@
 ﻿using Celeste.Tools.Attributes.GUI;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.FX
@@ -14,7 +9,7 @@ namespace Celeste.FX
     {
         #region Properties and Fields
 
-        [SerializeField, Min(0), ReadOnlyAtRuntime] private float seconds = 1;
+        [SerializeField, Tools.Attributes.GUI.Min(0), ReadOnlyAtRuntime] private float seconds = 1;
 
         private WaitForSeconds waitForSeconds;
         private Coroutine disableCoroutine;

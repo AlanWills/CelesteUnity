@@ -1,4 +1,5 @@
-﻿using Celeste.Components;
+﻿using Celeste.BoardGame.Interfaces;
+using Celeste.Components;
 using Celeste.Events;
 using System;
 using System.ComponentModel;
@@ -7,9 +8,9 @@ using UnityEngine.Events;
 
 namespace Celeste.BoardGame.Components
 {
-    [DisplayName("Flippable")]
+    [DisplayName("Token")]
     [CreateAssetMenu(fileName = nameof(TokenBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Token")]
-    public class TokenBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectToken
+    public class TokenBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectToken, IBoardGameObjectTooltip
     {
         #region Save Data
 
@@ -33,9 +34,17 @@ namespace Celeste.BoardGame.Components
 
         #region Properties and Fields
 
-        [SerializeField] private bool startsFaceUp = true;
+        [Header("Sprites")]
         [SerializeField] private Sprite faceUpSprite;
         [SerializeField] private Sprite faceDownSprite;
+
+        [Header("Tooltips")]
+        [SerializeField] private string faceUpTooltip;
+        [SerializeField] private string faceDownTooltip;
+
+        [Header("Events")]
+        [SerializeField] private ShowTooltipEvent showTooltipEvent;
+        [SerializeField] private Celeste.Events.Event hideTooltipEvent;
 
         #endregion
 
@@ -47,12 +56,6 @@ namespace Celeste.BoardGame.Components
         public override ComponentEvents CreateEvents()
         {
             return new Events();
-        }
-
-        public override void SetDefaultValues(Instance instance)
-        {
-            SaveData saveData = instance.data as SaveData;
-            saveData.isFaceUp = startsFaceUp;
         }
 
         public Sprite GetSprite(Instance instance)
@@ -83,14 +86,33 @@ namespace Celeste.BoardGame.Components
             SetFaceUp(instance, !IsFaceUp(instance));
         }
 
-        public void AddIsFaceUpChangedListener(Instance instance, UnityAction<ValueChangedArgs<bool>> listener)
+        public void AddIsFaceUpChangedCallback(Instance instance, UnityAction<ValueChangedArgs<bool>> listener)
         {
             (instance.events as Events).OnIsFaceUpChanged.AddListener(listener);
         }
 
-        public void RemoveIsFaceUpChangedListener(Instance instance, UnityAction<ValueChangedArgs<bool>> listener)
+        public void RemoveIsFaceUpChangedCallback(Instance instance, UnityAction<ValueChangedArgs<bool>> listener)
         {
             (instance.events as Events).OnIsFaceUpChanged.RemoveListener(listener);
         }
+
+        #region IBoardGameObjectTooltip
+
+        public void ShowTooltip(Instance instance, Vector3 position, bool isWorldSpace)
+        {
+            showTooltipEvent.Invoke(new TooltipArgs()
+            {
+                position = position,
+                isWorldSpace= isWorldSpace,
+                text = IsFaceUp(instance) ? faceUpTooltip : faceDownTooltip
+            });
+        }
+
+        public void HideTooltip(Instance instance)
+        {
+            hideTooltipEvent.Invoke();
+        }
+
+        #endregion
     }
 }

@@ -2,30 +2,31 @@
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
 using Celeste.Events;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Celeste.BoardGame.UI
 {
-    [AddComponentMenu("Celeste/Board Game/UI/Token UI Controller")]
-    public class TokenBoardGameObjectComponentUIController : MonoBehaviour, IBoardGameObjectComponentUIController
+    [AddComponentMenu("Celeste/Board Game/UI/Die 2D UI Controller")]
+    public class Die2DBoardGameObjectComponentUIController : MonoBehaviour, IBoardGameObjectComponentUIController
     {
         #region Properties and Fields
 
         [Header("UI Elements")]
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        private InterfaceHandle<IBoardGameObjectToken> token;
+        private InterfaceHandle<IBoardGameObjectDie2D> die2D;
         private InterfaceHandle<IBoardGameObjectTooltip> tooltip;
 
         #endregion
 
         public void Hookup(BoardGameObjectRuntime runtime)
         {
-            if (runtime.TryFindComponent(out token))
+            if (runtime.TryFindComponent(out die2D))
             {
                 UpdateUI();
 
-                token.iFace.AddIsFaceUpChangedCallback(token.instance, OnIsFaceUpChanged);
+                die2D.iFace.AddValueChangedListener(die2D.instance, OnValueChangedArgs);
             }
 
             runtime.TryFindComponent(out tooltip);
@@ -33,36 +34,36 @@ namespace Celeste.BoardGame.UI
 
         public void Shutdown()
         {
-            if (token.IsValid)
+            if (die2D.IsValid)
             {
-                token.iFace.RemoveIsFaceUpChangedCallback(token.instance, OnIsFaceUpChanged);
-                token.MakeNull();
+                die2D.iFace.RemoveValueChangedListener(die2D.instance, OnValueChangedArgs);
+                die2D.MakeNull();
             }
 
             tooltip.MakeNull();
         }
 
-        public void Flip()
+        public void SetValue(int value)
         {
-            if (token.IsValid)
+            if (die2D.IsValid)
             {
-                token.iFace.Flip(token.instance);
+                die2D.iFace.SetValue(die2D.instance, value);
             }
         }
 
         private void UpdateUI()
         {
-            spriteRenderer.sprite = token.iFace.GetSprite(token.instance);
+            spriteRenderer.sprite = die2D.iFace.GetSprite(die2D.instance);
         }
 
         #region Callbacks
 
-        private void OnIsFaceUpChanged(ValueChangedArgs<bool> valueChangedArgs)
+        private void OnValueChangedArgs(ValueChangedArgs<int> args)
         {
             UpdateUI();
         }
 
-        public void OnMouseEnterToken(Vector2 mousePosition)
+        public void OnMouseEnterDie(Vector2 mousePosition)
         {
             if (tooltip.IsValid)
             {
@@ -70,7 +71,7 @@ namespace Celeste.BoardGame.UI
             }
         }
 
-        public void OnMouseExitToken()
+        public void OnMouseExitDie()
         {
             if (tooltip.IsValid)
             {

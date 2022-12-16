@@ -20,7 +20,7 @@ namespace Celeste.BoardGame.Components
 #if NULL_CHECKS
             if (string.IsNullOrEmpty(name))
             {
-                Debug.LogAssertion($"Null or empty name passed into {nameof(FindLocation)}.");
+                UnityEngine.Debug.LogAssertion($"Null or empty name passed into {nameof(FindLocation)}.");
                 return null;
             }
 #endif

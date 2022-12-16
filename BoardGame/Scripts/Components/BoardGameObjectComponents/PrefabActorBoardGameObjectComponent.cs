@@ -22,7 +22,6 @@ namespace Celeste.BoardGame.Components
 
         #region Properties and Fields
 
-        [SerializeField] private string defaultLocationName;
         [SerializeField] private GameObject prefab;
         [SerializeField] private bool customiseScale = true;
         [SerializeField, ShowIf(nameof(customiseScale))] private Vector3 scale = Vector3.one;
@@ -32,12 +31,6 @@ namespace Celeste.BoardGame.Components
         public override ComponentData CreateData()
         {
             return new SaveData();
-        }
-
-        public override void SetDefaultValues(Instance instance)
-        {
-            SaveData saveData = instance.data as SaveData;
-            saveData.currentLocationName = defaultLocationName;
         }
 
         public GameObject InstantiateActor(Instance instance, Transform parent)

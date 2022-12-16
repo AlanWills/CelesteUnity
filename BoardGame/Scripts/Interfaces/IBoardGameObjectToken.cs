@@ -13,7 +13,7 @@ namespace Celeste.BoardGame
         void SetFaceUp(Instance instance, bool isFaceUp);
         void Flip(Instance instance);
 
-        void AddIsFaceUpChangedListener(Instance instance, UnityAction<ValueChangedArgs<bool>> listener);
-        void RemoveIsFaceUpChangedListener(Instance instance, UnityAction<ValueChangedArgs<bool>> listener);
+        void AddIsFaceUpChangedCallback(Instance instance, UnityAction<ValueChangedArgs<bool>> callback);
+        void RemoveIsFaceUpChangedCallback(Instance instance, UnityAction<ValueChangedArgs<bool>> callback);
     }
 }

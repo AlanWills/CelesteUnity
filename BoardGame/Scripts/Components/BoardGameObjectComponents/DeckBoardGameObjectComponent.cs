@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.BoardGame.Components
 {
@@ -52,31 +51,6 @@ namespace Celeste.BoardGame.Components
             return new SaveData();
         }
 
-        public override void SetDefaultValues(Instance instance)
-        {
-            SaveData saveData = instance.data as SaveData;
-
-            foreach (Card card in startingDrawPileCards)
-            {
-                deck.AddCardToDrawPile(card);
-                saveData.cardsInDrawPile.Add(card.Guid);
-            }
-
-            foreach (Card card in startingDiscardPileCards)
-            {
-                deck.AddCardToDrawPile(card);
-                saveData.cardsInDiscardPile.Add(card.Guid);
-            }
-
-            foreach (Card card in startingRemovedPileCards)
-            {
-                deck.AddCardToRemovedPile(card);
-                saveData.cardsInRemovedPile.Add(card.Guid);
-            }
-
-            AddListeners(instance);
-        }
-
         public override void Load(Instance instance)
         {
             SaveData saveData = instance.data as SaveData;
@@ -84,21 +58,21 @@ namespace Celeste.BoardGame.Components
             foreach (int cardGuid in saveData.cardsInDrawPile)
             {
                 Card card = cardCatalogue.FindByGuid(cardGuid);
-                Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
+                UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
                 deck.AddCardToDrawPile(card);
             }
 
             foreach (int cardGuid in saveData.cardsInDiscardPile)
             {
                 Card card = cardCatalogue.FindByGuid(cardGuid);
-                Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
+                UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
                 deck.AddCardToDiscardPile(card);
             }
 
             foreach (int cardGuid in saveData.cardsInRemovedPile)
             {
                 Card card = cardCatalogue.FindByGuid(cardGuid);
-                Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
+                UnityEngine.Debug.Assert(card != null, $"Could not find card with guid {cardGuid}.");
                 deck.AddCardToRemovedPile(card);
             }
 

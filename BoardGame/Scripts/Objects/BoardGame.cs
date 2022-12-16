@@ -1,6 +1,6 @@
-﻿using Celeste.BoardGame.Components;
+﻿using Celeste.BoardGame.Catalogue;
+using Celeste.BoardGame.Components;
 using Celeste.Components;
-using Celeste.DataStructures;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,15 +11,13 @@ namespace Celeste.BoardGame
     {
         #region Properties and Fields
 
-        public int NumBoardGameObjects => boardGameObjects.Count;
-
-        [SerializeField] private List<BoardGameObject> boardGameObjects = new List<BoardGameObject>();
+        [SerializeField] private BoardGameObjectCatalogue boardGameObjectCatalogue;
 
         #endregion
 
-        public BoardGameObject GetBoardGameObject(int index)
+        public BoardGameObject FindBoardGameObject(int guid)
         {
-            return boardGameObjects.Get(index);
+            return boardGameObjectCatalogue.FindByGuid(guid);
         }
     }
 }

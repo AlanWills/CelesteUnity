@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,8 +26,9 @@ namespace Celeste.Debug.Menus
         [SerializeField] private float screenWidthDivisor = 600f;
         [SerializeField] private float screenHeightDivisor = 600f;
 
-        private List<DebugMenu> debugMenus = new List<DebugMenu>();
-        private Vector2 scrollPosition;
+        [NonSerialized] private List<DebugMenu> debugMenus = new List<DebugMenu>();
+        [NonSerialized] private Vector2 scrollPosition;
+        [NonSerialized] private GUISkin oldSkin;
 
         #endregion
 
@@ -44,7 +46,11 @@ namespace Celeste.Debug.Menus
                 return;
             }
 
-            var oldSkin = GUI.skin;
+            if (oldSkin == null)
+            {
+                oldSkin = GUI.skin;
+            }
+
             GUI.skin = guiSkin;
 
             float xAspectRatio = Screen.width / screenWidthDivisor;
