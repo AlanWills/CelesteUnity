@@ -4,9 +4,11 @@
     "references": [
         "Celeste.BoardGame",
         "Celeste.Components",
+        "Celeste.Events",
         "Celeste.Components.Editor",
         "Celeste.Tools.Editor",
-        "Celeste.DataStructures.Editor"
+        "Celeste.DataStructures.Editor",
+        "Celeste.Events.Editor"
     ],
     "includePlatforms": [
         "Editor"

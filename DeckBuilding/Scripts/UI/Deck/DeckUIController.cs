@@ -1,9 +1,6 @@
 ﻿using Celeste.DeckBuilding.Decks;
 using Celeste.Events;
-using Celeste.Input;
 using Celeste.Tools.Attributes.GUI;
-using Celeste.UI.Input;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,7 +147,7 @@ namespace Celeste.DeckBuilding.UI
             {
                 position = DrawPileTransform.position,
                 isWorldSpace = true,
-                text = deck.NumCardsInDrawPile.ToString()
+                text = $"{deck.NumCardsInDrawPile} {deck.DisplayName}"
             });
         }
 
@@ -165,7 +162,7 @@ namespace Celeste.DeckBuilding.UI
             {
                 position = DiscardPileTransform.position,
                 isWorldSpace = true,
-                text = deck.NumCardsInDiscardPile.ToString()
+                text = $"{deck.NumCardsInDiscardPile} Discarded"
             });
         }
 
@@ -180,7 +177,7 @@ namespace Celeste.DeckBuilding.UI
             {
                 position = RemovedPileTransform.position,
                 isWorldSpace = true,
-                text = deck.NumCardsInRemovedPile.ToString()
+                text = $"{deck.NumCardsInRemovedPile} Removed"
             });
         }
 

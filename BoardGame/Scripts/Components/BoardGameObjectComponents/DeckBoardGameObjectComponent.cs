@@ -32,17 +32,12 @@ namespace Celeste.BoardGame.Components
         [SerializeField] private Deck deck;
         [SerializeField] private CardCatalogue cardCatalogue;
 
-        [Header("Default Values")]
-        [SerializeField] private List<Card> startingDrawPileCards = new List<Card>();
-        [SerializeField] private List<Card> startingDiscardPileCards = new List<Card>();
-        [SerializeField] private List<Card> startingRemovedPileCards = new List<Card>();
-
-        [NonSerialized] private ICallbackHandle cardAddedToDrawPileCallback;
-        [NonSerialized] private ICallbackHandle cardRemovedFromDrawPileCallback;
-        [NonSerialized] private ICallbackHandle cardAddedToDiscardPileCallback;
-        [NonSerialized] private ICallbackHandle cardRemovedFromDiscardPileCallback;
-        [NonSerialized] private ICallbackHandle cardAddedToRemovedPileCallback;
-        [NonSerialized] private ICallbackHandle cardRemovedFromRemovedPileCallback;
+        [NonSerialized] private ICallbackHandle cardAddedToDrawPileCallback = CallbackHandle.Invalid;
+        [NonSerialized] private ICallbackHandle cardRemovedFromDrawPileCallback = CallbackHandle.Invalid;
+        [NonSerialized] private ICallbackHandle cardAddedToDiscardPileCallback = CallbackHandle.Invalid;
+        [NonSerialized] private ICallbackHandle cardRemovedFromDiscardPileCallback = CallbackHandle.Invalid;
+        [NonSerialized] private ICallbackHandle cardAddedToRemovedPileCallback = CallbackHandle.Invalid;
+        [NonSerialized] private ICallbackHandle cardRemovedFromRemovedPileCallback = CallbackHandle.Invalid;
 
         #endregion
 

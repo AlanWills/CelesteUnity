@@ -1,9 +1,4 @@
 ﻿using Celeste.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,18 +18,17 @@ namespace CelesteEditor.Events
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
-            EditorGUILayout.BeginHorizontal();
-
-            argument = DrawArgument(argument);
-
-            if (GUILayout.Button("Raise"))
+            using (var horizontal = new GUILayout.HorizontalScope())
             {
-                (target as TEvent).Invoke(argument);
-            }
+                argument = DrawArgument(argument);
 
-            EditorGUILayout.EndHorizontal();
+                if (GUILayout.Button("Raise", GUILayout.ExpandWidth(false)))
+                {
+                    (target as TEvent).Invoke(argument);
+                }
+            }
+            
+            base.OnInspectorGUI();
         }
 
         #endregion

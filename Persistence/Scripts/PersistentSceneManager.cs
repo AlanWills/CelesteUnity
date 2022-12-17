@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Persistence
 {
-    public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour, IInterestedInSnapshots, ISupportsDataSnapshots, ISupportsFileSnapshots
+    public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour, IPersistentSceneManager, IInterestedInSnapshots, ISupportsDataSnapshots, ISupportsFileSnapshots
         where TManager : PersistentSceneManager<TManager, TDTO>
         where TDTO : class  // Need for Odin to pick up AOT formatter for serialization
     {
@@ -99,6 +99,11 @@ namespace Celeste.Persistence
             {
                 StartCoroutine(DoSave());
             }
+        }
+
+        string IPersistentSceneManager.SerializeToString()
+        {
+            return JsonUtility.ToJson(Serialize());
         }
 
         private IEnumerator DoSave()

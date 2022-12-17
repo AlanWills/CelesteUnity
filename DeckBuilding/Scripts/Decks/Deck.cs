@@ -29,6 +29,8 @@ namespace Celeste.DeckBuilding.Decks
             }
         }
 
+        public string DisplayName => displayName;
+
         public int NumCardsInDrawPile => drawPile.Count;
         public int NumCardsInDiscardPile => discardPile.Count;
         public int NumCardsInRemovedPile => removedPile.Count;
@@ -37,6 +39,7 @@ namespace Celeste.DeckBuilding.Decks
         public bool RemovedPileEmpty => NumCardsInRemovedPile == 0;
 
         [SerializeField] private int guid;
+        [SerializeField] private string displayName;
         [SerializeField] private CardShuffler cardShuffler;
 
         [Header("Draw Pile Events")]

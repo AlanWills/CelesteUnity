@@ -15,6 +15,8 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
+        public static CallbackHandle Invalid => new CallbackHandle(default);
+
         public bool IsValid => Id != default;
         public int Id { get; private set; }
 
