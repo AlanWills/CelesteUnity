@@ -9,6 +9,8 @@ namespace Celeste.BoardGame.UI
     {
         #region Properties and Fields
 
+        public BoardGameObjectRuntime BoardGameObjectRuntime { get; private set; }
+
         [SerializeField] private List<GameObject> componentUIControllers = new List<GameObject>();
 
         #endregion
@@ -29,6 +31,8 @@ namespace Celeste.BoardGame.UI
 
         public void Hookup(BoardGameObjectRuntime runtime)
         {
+            BoardGameObjectRuntime = runtime;
+
             foreach (var component in componentUIControllers)
             {
                 component.GetComponent<IBoardGameObjectComponentUIController>().Hookup(runtime);
@@ -44,6 +48,8 @@ namespace Celeste.BoardGame.UI
                     component.GetComponent<IBoardGameObjectComponentUIController>().Shutdown();
                 }
             }
+
+            BoardGameObjectRuntime = null;
         }
     }
 }

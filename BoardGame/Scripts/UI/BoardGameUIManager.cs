@@ -35,7 +35,10 @@ namespace Celeste.BoardGame.UI
 
                 if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
                 {
-                    Transform boardGameObjectLocation = hasLocations ? locations.iFace.FindLocation(boardGameObjectActor.iFace.GetCurrentLocationName(boardGameObjectActor.instance)) : null;
+                    string currentLocation = boardGameObjectActor.iFace.GetCurrentLocationName(boardGameObjectActor.instance);
+                    Transform boardGameObjectLocation = hasLocations ? locations.iFace.FindLocation(currentLocation) : null;
+                    UnityEngine.Debug.Assert(boardGameObjectLocation != null, $"Failed to find location {currentLocation}.");
+
                     GameObject gameObject = boardGameObjectActor.iFace.InstantiateActor(boardGameObjectActor.instance, boardGameObjectLocation);
                     BoardGameObjectUIController uiController = gameObject.GetComponent<BoardGameObjectUIController>();
                     ILayoutContainer container = boardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
