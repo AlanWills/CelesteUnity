@@ -27,6 +27,7 @@ namespace Celeste.BoardGame.Persistence
 
         public BoardGameObjectRuntimeDTO(BoardGameObjectRuntime boardGameObjectRuntime)
         {
+            name = boardGameObjectRuntime.Name;
             guid = boardGameObjectRuntime.Guid;
 
             for (int i = 0, n = boardGameObjectRuntime.NumComponents; i < n; ++i)
