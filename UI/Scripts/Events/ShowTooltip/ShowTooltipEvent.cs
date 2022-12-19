@@ -10,6 +10,11 @@ namespace Celeste.Events
         public string text;
         public Vector3 position;
         public bool isWorldSpace;
+
+        public override string ToString()
+        {
+            return $"{position} - {isWorldSpace} - {text}";
+        }
     }
 
     [Serializable]

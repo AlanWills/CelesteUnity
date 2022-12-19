@@ -149,6 +149,7 @@ namespace Celeste.Input
             if (raycastCamera.Value != null)
             {
                 hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
+                Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
             }
             inputState.HitGameObject = hitGameObject;
 
