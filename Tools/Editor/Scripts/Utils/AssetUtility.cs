@@ -75,7 +75,7 @@ namespace CelesteEditor.Tools
 		{
             CreateAssetInFolder(asset, parentFolder);
 
-			AssetDatabase.SaveAssets();
+			AssetDatabase.SaveAssetIfDirty(asset);
 			AssetDatabase.Refresh();
 
 			SelectAsset(asset);

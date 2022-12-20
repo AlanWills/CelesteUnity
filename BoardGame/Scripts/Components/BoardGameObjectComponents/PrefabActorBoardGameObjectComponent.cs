@@ -22,6 +22,30 @@ namespace Celeste.BoardGame.Components
 
         #region Properties and Fields
 
+        public GameObject Prefab
+        {
+            get => prefab;
+            set
+            {
+                prefab = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
+        public bool CustomiseScale
+        {
+            get => customiseScale;
+            set
+            {
+                customiseScale = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
         [SerializeField] private GameObject prefab;
         [SerializeField] private bool customiseScale = true;
         [SerializeField, ShowIf(nameof(customiseScale))] private Vector3 scale = Vector3.one;

@@ -37,7 +37,7 @@ namespace CelesteEditor.Components
                 AllComponentDisplayNames,
                 selectedTypeIndex,
                 componentsProperty,
-                ComponentContainer.CreateComponent,
+                (t) => ComponentContainer.CreateComponent(t),
                 ComponentContainer.RemoveComponent);
 
             DrawInspectorGUI();

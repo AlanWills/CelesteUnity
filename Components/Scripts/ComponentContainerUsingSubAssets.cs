@@ -16,14 +16,14 @@ namespace Celeste.Components
 
         #endregion
 
-        public void CreateComponent<K>() where K : T
+        public K CreateComponent<K>() where K : T
         {
-            CreateComponent(typeof(K));
+            return CreateComponent(typeof(K)) as K;
         }
 
-        public void CreateComponent(Type type)
+        public T CreateComponent(Type type)
         {
-            this.AddSubAsset(type, components);
+            return this.AddSubAsset(type, components);
         }
 
         public T GetComponent(int index)
