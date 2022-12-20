@@ -47,7 +47,7 @@ namespace Celeste.UI.Layout
         [SerializeField, Min(1), ShowIfEnum(nameof(layoutType), (int)LayoutType.FixedRowCount)] private int fixedRowCount = 1;
         [SerializeField, Min(1), ShowIfEnum(nameof(layoutType), (int)LayoutType.FixedColumnCount)] private int fixedColumnCount = 1;
         [SerializeField, ShowIfEnum(nameof(layoutType), (int)LayoutType.Square)] private SquareType squareType;
-        [SerializeField] private Vector2 cellSize = new Vector2(100, 100);
+        [SerializeField] private Vector2 cellSize = Vector2.one;
         [SerializeField] private bool reverseXDirection = false;
         [SerializeField] private bool reverseYDirection = false;
 

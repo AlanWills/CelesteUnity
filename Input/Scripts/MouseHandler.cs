@@ -14,12 +14,12 @@ namespace Celeste.Input
 
         #endregion
 
-        private void OnMouseEnter(Vector2 mousePosition)
+        private void OnMouseEntered(Vector2 mousePosition)
         {
             onMouseEnter.Invoke(mousePosition);
         }
 
-        private void OnMouseExit()
+        private void OnMouseExited()
         {
             onMouseExit.Invoke();
         }

@@ -8,6 +8,12 @@ namespace Celeste.Scene.Hierarchy
     {
         #region Properties and Fields
 
+        public string CacheId
+        {
+            get => cacheId;
+            set => cacheId = value;
+        }
+
         [SerializeField] private string cacheId;
         [SerializeField] private StringGameObjectDictionary gameObjectCache;
 
