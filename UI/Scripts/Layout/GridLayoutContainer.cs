@@ -90,8 +90,8 @@ namespace Celeste.UI.Layout
             {
                 var child = transform.GetChild(i);
                 Vector3 localPosition = new Vector3(
-                    xDirection * (xHorizontalAnchor + i / fixedRowCount) * cellSize.x,
-                    yDirection * (yHorizontalAnchor + i % fixedRowCount) * cellSize.y,
+                    xDirection * (xHorizontalAnchor + i / fixedRowCount * cellSize.x),
+                    yDirection * (yHorizontalAnchor + i % fixedRowCount * cellSize.y),
                     0);
 
                 child.transform.localPosition = localPosition;
@@ -112,8 +112,8 @@ namespace Celeste.UI.Layout
             {
                 var child = transform.GetChild(i);
                 Vector3 localPosition = new Vector3(
-                    xDirection * (xHorizontalAnchor + i % fixedColumnCount) * cellSize.x,
-                    yDirection * (yHorizontalAnchor + i / fixedColumnCount) * cellSize.y,
+                    xDirection * (xHorizontalAnchor + i % fixedColumnCount * cellSize.x),
+                    yDirection * (yHorizontalAnchor + i / fixedColumnCount * cellSize.y),
                     0);
 
                 child.transform.localPosition = localPosition;
