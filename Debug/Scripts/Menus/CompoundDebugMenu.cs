@@ -42,5 +42,13 @@ namespace Celeste.Debug.Menus
                 }
             }
         }
+
+        protected override void OnHideMenu()
+        {
+            base.OnHideMenu();
+
+            // Make sure the current debug menu is closed when we close this one
+            currentDebugMenu = -1;
+        }
     }
 }

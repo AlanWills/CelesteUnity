@@ -17,6 +17,9 @@ namespace Celeste.DeckBuilding.UI
 
         [SerializeField] private Deck deck;
         [SerializeField] private bool usesUIComponents = true;
+        [SerializeField] private bool showDrawPileFaceUp = false;
+        [SerializeField] private bool showDiscardPileFaceUp = true;
+        [SerializeField] private bool showRemovedPileFaceUp = true;
         [SerializeField] private ShowTooltipEvent showTooltip;
         [SerializeField] private Celeste.Events.Event hideTooltip;
 
@@ -51,7 +54,7 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.DrawPileEmpty)
                 {
-                    drawPileUI.sprite = deck.PeekTopCardOfDrawPile().CardBack;
+                    drawPileUI.sprite = GetDrawPileTopCardSprite();
                 }
             }
             else
@@ -60,7 +63,7 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.DrawPileEmpty)
                 {
-                    drawPile.sprite = deck.PeekTopCardOfDrawPile().CardBack;
+                    drawPile.sprite = GetDrawPileTopCardSprite();
                 }
             }
         }
@@ -73,7 +76,7 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.DiscardPileEmpty)
                 {
-                    discardPileUI.sprite = deck.PeekTopCardOfDiscardPile().CardFront;
+                    discardPileUI.sprite = GetDiscardPileTopCardSprite();
                 }
             }
             else
@@ -82,7 +85,7 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.DiscardPileEmpty)
                 {
-                    discardPile.sprite = deck.PeekTopCardOfDiscardPile().CardFront;
+                    discardPile.sprite = GetDiscardPileTopCardSprite();
                 }
             }
         }
@@ -95,7 +98,7 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.RemovedPileEmpty)
                 {
-                    removedPileUI.sprite = deck.PeekTopCardOfRemovedPile().CardFront;
+                    removedPileUI.sprite = GetRemovedPileTopCardSprite();
                 }
             }
             else
@@ -104,9 +107,27 @@ namespace Celeste.DeckBuilding.UI
 
                 if (!deck.RemovedPileEmpty)
                 {
-                    removedPile.sprite = deck.PeekTopCardOfRemovedPile().CardFront;
+                    removedPile.sprite = GetRemovedPileTopCardSprite();
                 }
             }
+        }
+
+        private Sprite GetDrawPileTopCardSprite()
+        {
+            CardRuntime topCard = deck.PeekTopCardOfDrawPile();
+            return showDrawPileFaceUp ? topCard.CardFront : topCard.CardBack;
+        }
+
+        private Sprite GetDiscardPileTopCardSprite()
+        {
+            CardRuntime topCard = deck.PeekTopCardOfDiscardPile();
+            return showDiscardPileFaceUp ? topCard.CardFront : topCard.CardBack;
+        }
+
+        private Sprite GetRemovedPileTopCardSprite()
+        {
+            CardRuntime topCard = deck.PeekTopCardOfRemovedPile();
+            return showRemovedPileFaceUp ? topCard.CardFront : topCard.CardBack;
         }
 
         #region Callbacks
