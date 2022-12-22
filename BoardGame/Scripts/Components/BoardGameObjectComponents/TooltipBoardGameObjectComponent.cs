@@ -20,12 +20,7 @@ namespace Celeste.BoardGame.Components
 
         public void ShowTooltip(Instance instance, Vector3 position, bool isWorldSpace)
         {
-            showTooltipEvent.Invoke(new TooltipArgs()
-            {
-                isWorldSpace = isWorldSpace,
-                position = position,
-                text = tooltip,
-            });
+            showTooltipEvent.Invoke(TooltipArgs.AnchoredToMouse(tooltip));
         }
 
         public void HideTooltip(Instance instance)

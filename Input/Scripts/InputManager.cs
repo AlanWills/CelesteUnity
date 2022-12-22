@@ -31,8 +31,6 @@ namespace Celeste.Input
         [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
 
-        private GameObject previousMouseOver;
-
 #region Desktop Variables
 
         [Header("Desktop Events")]

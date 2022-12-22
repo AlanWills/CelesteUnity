@@ -12,7 +12,8 @@
         "Celeste.Scene",
         "Celeste.FSM",
         "Celeste.Constants",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Input"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

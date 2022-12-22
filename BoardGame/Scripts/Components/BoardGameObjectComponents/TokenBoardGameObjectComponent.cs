@@ -100,12 +100,7 @@ namespace Celeste.BoardGame.Components
 
         public void ShowTooltip(Instance instance, Vector3 position, bool isWorldSpace)
         {
-            showTooltipEvent.Invoke(new TooltipArgs()
-            {
-                position = position,
-                isWorldSpace= isWorldSpace,
-                text = IsFaceUp(instance) ? faceUpTooltip : faceDownTooltip
-            });
+            showTooltipEvent.Invoke(TooltipArgs.AnchoredToMouse(IsFaceUp(instance) ? faceUpTooltip : faceDownTooltip));
         }
 
         public void HideTooltip(Instance instance)

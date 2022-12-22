@@ -14,6 +14,7 @@
         "Celeste.Tools",
         "Celeste.UI",
         "Celeste.Debug",
+        "Celeste.Input",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

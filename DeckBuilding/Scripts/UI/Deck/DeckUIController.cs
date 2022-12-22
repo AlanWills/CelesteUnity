@@ -1,5 +1,6 @@
 ﻿using Celeste.DeckBuilding.Decks;
 using Celeste.Events;
+using Celeste.Input;
 using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -162,14 +163,9 @@ namespace Celeste.DeckBuilding.UI
             UpdateRemovedPileUI();
         }
 
-        public void OnMouseEnterDrawPile(Vector2 mousePosition)
+        public void OnMouseEnterDrawPile(InputState inputState)
         {
-            showTooltip.Invoke(new TooltipArgs()
-            {
-                position = DrawPileTransform.position,
-                isWorldSpace = true,
-                text = $"{deck.NumCardsInDrawPile} {deck.DisplayName}"
-            });
+            showTooltip.Invoke(TooltipArgs.AnchoredToMouse($"{deck.NumCardsInDrawPile} {deck.DisplayName}"));
         }
 
         public void OnMouseExitDrawPile()
@@ -177,14 +173,9 @@ namespace Celeste.DeckBuilding.UI
             hideTooltip.Invoke();
         }
 
-        public void OnMouseEnterDiscardPile(Vector2 mousePosition)
+        public void OnMouseEnterDiscardPile(InputState inputState)
         {
-            showTooltip.Invoke(new TooltipArgs()
-            {
-                position = DiscardPileTransform.position,
-                isWorldSpace = true,
-                text = $"{deck.NumCardsInDiscardPile} Discarded"
-            });
+            showTooltip.Invoke(TooltipArgs.AnchoredToMouse($"{deck.NumCardsInDiscardPile} Discarded"));
         }
 
         public void OnMouseExitDiscardPile()
@@ -192,14 +183,9 @@ namespace Celeste.DeckBuilding.UI
             hideTooltip.Invoke();
         }
 
-        public void OnMouseEnterRemovedPile(Vector2 mousePosition)
+        public void OnMouseEnterRemovedPile(InputState inputState)
         {
-            showTooltip.Invoke(new TooltipArgs()
-            {
-                position = RemovedPileTransform.position,
-                isWorldSpace = true,
-                text = $"{deck.NumCardsInRemovedPile} Removed"
-            });
+            showTooltip.Invoke(TooltipArgs.AnchoredToMouse($"{deck.NumCardsInRemovedPile} Removed"));
         }
 
         public void OnMouseExitRemovedPile()

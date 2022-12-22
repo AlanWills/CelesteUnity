@@ -10,6 +10,40 @@ namespace Celeste.Events
         public string text;
         public Vector3 position;
         public bool isWorldSpace;
+        public bool anchorToMouse;
+
+        public static TooltipArgs AtFixedWorldPosition(Vector3 position, string text)
+        {
+            return new TooltipArgs
+            {
+                position = position,
+                isWorldSpace = true,
+                text = text,
+                anchorToMouse = false
+            };
+        }
+
+        public static TooltipArgs AtFixedScreenPosition(Vector3 position, string text)
+        {
+            return new TooltipArgs
+            {
+                position = position,
+                isWorldSpace = false,
+                text = text,
+                anchorToMouse = false
+            };
+        }
+
+        public static TooltipArgs AnchoredToMouse(string text)
+        {
+            return new TooltipArgs
+            {
+                position = Vector3.zero,
+                isWorldSpace = false,
+                text = text,
+                anchorToMouse = true
+            };
+        }
 
         public override string ToString()
         {

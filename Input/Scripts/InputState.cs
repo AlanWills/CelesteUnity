@@ -44,8 +44,12 @@ namespace Celeste.Input
 
                     if (hitGameObject != null)
                     {
-                        hitGameObject.SendMessage(onMouseEnterMessage, MousePosition, SendMessageOptions.DontRequireReceiver);
+                        hitGameObject.SendMessage(onMouseEnterMessage, this, SendMessageOptions.DontRequireReceiver);
                     }
+                }
+                else if (hitGameObject != null)
+                {
+                    hitGameObject.SendMessage(onMouseOverMessage, this, SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
@@ -54,8 +58,9 @@ namespace Celeste.Input
         public MouseButtonState MiddleMouseButton { get; set; }
         public MouseButtonState RightMouseButton { get; set; }
 
-        [SerializeField] private string onMouseEnterMessage = "OnMouseEnter";
-        [SerializeField] private string onMouseExitMessage = "OnMouseExit";
+        [SerializeField] private string onMouseEnterMessage = "OnMouseEnterCollider";
+        [SerializeField] private string onMouseOverMessage = "OnMouseOverCollider";
+        [SerializeField] private string onMouseExitMessage = "OnMouseExitCollider";
 
         #endregion
 

@@ -9,17 +9,23 @@ namespace Celeste.Input
     {
         #region Properties and Fields
 
-        [SerializeField] private Vector2UnityEvent onMouseEnter = new Vector2UnityEvent();
+        [SerializeField] private UnityEvent<InputState> onMouseEnter = new UnityEvent<InputState>();
+        [SerializeField] private UnityEvent<InputState> onMouseOver = new UnityEvent<InputState>();
         [SerializeField] private UnityEvent onMouseExit = new UnityEvent();
 
         #endregion
 
-        private void OnMouseEntered(Vector2 mousePosition)
+        private void OnMouseEnterCollider(InputState inputState)
         {
-            onMouseEnter.Invoke(mousePosition);
+            onMouseEnter.Invoke(inputState);
         }
 
-        private void OnMouseExited()
+        private void OnMouseOverCollider(InputState inputState)
+        {
+            onMouseOver.Invoke(inputState);
+        }
+
+        private void OnMouseExitCollider()
         {
             onMouseExit.Invoke();
         }

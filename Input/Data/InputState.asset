@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b7c35d468b38a4296a6ccfb5a689a2, type: 3}
   m_Name: InputState
   m_EditorClassIdentifier: 
-  onMouseEnterMessage: OnMouseEntered
-  onMouseExitMessage: OnMouseExited
+  onMouseEnterMessage: OnMouseEnterCollider
+  onMouseOverMessage: OnMouseOverCollider
+  onMouseExitMessage: OnMouseExitCollider

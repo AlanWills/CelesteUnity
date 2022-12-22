@@ -115,10 +115,14 @@ namespace CelesteEditor.DataStructures
             for (int i = 0, n = indexableItems.NumItems; i < n; i++)
             {
                 TIndexableItem item = indexableItems.GetItem(i);
-                IGuid guid = item as IGuid;
-                guid.Guid = i + 1;     // 1 index the guids
+                
+                if (item != null)
+                {
+                    IGuid guid = item as IGuid;
+                    guid.Guid = i + 1;     // 1 index the guids
 
-                EditorUtility.SetDirty(item);
+                    EditorUtility.SetDirty(item);
+                }
             }
 
             AssetDatabase.SaveAssets();
