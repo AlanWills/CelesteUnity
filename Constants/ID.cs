@@ -30,5 +30,25 @@ namespace Celeste.Constants
         {
             return name;
         }
+
+        public static bool operator ==(ID a, int b)
+        {
+            return a != null && a.Equals(b);
+        }
+
+        public static bool operator==(int a, ID b)
+        {
+            return b == a;
+        }
+
+        public static bool operator !=(ID a, int b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator !=(int a, ID b)
+        {
+            return !(b == a);
+        }
     }
 }

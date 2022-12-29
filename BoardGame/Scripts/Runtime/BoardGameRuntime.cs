@@ -7,17 +7,6 @@ using System.Collections.Generic;
 
 namespace Celeste.BoardGame.Runtime
 {
-    [Serializable]
-    public struct BoardGameLoadedArgs
-    {
-        public BoardGameRuntime boardGameRuntime;
-    }
-
-    [Serializable]
-    public struct BoardGameShutdownArgs
-    {
-    }
-
     public class BoardGameRuntime : ComponentContainerRuntime<BoardGameComponent>
     {
         #region Properties and Fields

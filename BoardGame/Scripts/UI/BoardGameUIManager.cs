@@ -1,6 +1,7 @@
 ﻿using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
+using Celeste.Events;
 using Celeste.UI;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,10 @@ namespace Celeste.BoardGame.UI
 
         #region Callbacks
 
-        public void OnBoardGameReady(BoardGameRuntime boardGameRuntime)
+        public void OnBoardGameReady(BoardGameReadyArgs args)
         {
+            BoardGameRuntime boardGameRuntime = args.boardGameRuntime;
+
             if (boardGameRuntime.TryFindComponent<IBoardGameActor>(out var boardActor))
             {
                 boardActor.iFace.InstantiateActor(boardActor.instance, boardAnchor);
@@ -65,14 +68,14 @@ namespace Celeste.BoardGame.UI
             }
         }
 
-        public void OnBoardGameObjectAdded(BoardGameRuntime boardGameRuntime, BoardGameObjectRuntime boardGameObjectRuntime)
+        public void OnBoardGameObjectAdded(BoardGameObjectAddedArgs args)
         {
-            if (!boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
+            if (!args.boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
             {
                 UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
             }
 
-            AddBoardGameObjectUI(boardGameObjectRuntime, locations);
+            AddBoardGameObjectUI(args.boardGameObjectRuntime, locations);
         }
 
         public void OnBoardGameRuntimeShutdown(BoardGameShutdownArgs args)
