@@ -6,6 +6,42 @@ namespace Celeste.FSM.Nodes.Events
 {
     [Serializable]
     [NodeWidth(250)]
+    public abstract class ParameterisedEventRaiserNode<T, TEvent> : FSMNode
+        where TEvent : ParameterisedEvent<T>
+    {
+        #region Properties and Fields
+
+        public T argument;
+        public TEvent toRaise;
+
+        #endregion
+
+        #region Add/Remove/Copy
+
+        protected override void OnCopyInGraph(FSMNode original)
+        {
+            base.OnCopyInGraph(original);
+
+            ParameterisedEventRaiserNode<T, TEvent> eventRaiserNode = original as ParameterisedEventRaiserNode<T, TEvent>;
+            argument = eventRaiserNode.argument;
+        }
+
+        #endregion
+
+        #region FSM Runtime
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+
+            toRaise.Invoke(argument);
+        }
+
+        #endregion
+    }
+
+    [Serializable]
+    [NodeWidth(250)]
     public abstract class ParameterisedEventRaiserNode<T, TValue, TReference, TEvent> : FSMNode 
         where TEvent : ParameterisedEvent<T>
         where TValue : IValue<T>
