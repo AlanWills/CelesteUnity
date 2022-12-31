@@ -144,6 +144,21 @@ namespace CelesteEditor.Tools
             AssetDatabase.SaveAssets();
         }
 
+        public static void RemoveHideFlags(Object obj, HideFlags hideFlags)
+        {
+            foreach (Object o in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(obj)))
+            {
+                if (o != null && !AssetDatabase.IsMainAsset(o))
+                {
+                    o.hideFlags &= ~hideFlags;
+                    EditorUtility.SetDirty(o);
+                    EditorUtility.SetDirty(obj);
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+        }
+
         public static string GetSelectionObjectPath()
         {
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);

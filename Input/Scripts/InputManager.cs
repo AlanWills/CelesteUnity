@@ -1,10 +1,12 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.UI;
 
 namespace Celeste.Input
 {
@@ -68,6 +70,8 @@ namespace Celeste.Input
         public GameObjectClickEvent gameObjectRightClicked;
 
         #endregion
+
+        [NonSerialized] private List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
         #endregion
 
@@ -144,8 +148,9 @@ namespace Celeste.Input
             
             GameObject hitGameObject = null;
             
-            if (raycastCamera.Value != null)
+            if (raycastCamera.Value != null && !eventSystem.IsPointerOverGameObject())
             {
+                // If we haven't hit any UI, see if we have hit any game objects in the world
                 hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
                 Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
             }

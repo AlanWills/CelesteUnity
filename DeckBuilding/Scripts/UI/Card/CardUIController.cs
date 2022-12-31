@@ -9,6 +9,7 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
+        [Header("Input")]
         [SerializeField] private bool interactable = true;
 
         [Header("UI")]

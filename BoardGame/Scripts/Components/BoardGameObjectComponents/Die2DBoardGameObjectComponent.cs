@@ -51,7 +51,7 @@ namespace Celeste.BoardGame.Components
 
         public override ComponentData CreateData()
         {
-            return new SaveData();
+            return new SaveData() { currentValue = minValue };
         }
 
         public override ComponentEvents CreateEvents()
@@ -61,13 +61,12 @@ namespace Celeste.BoardGame.Components
 
         public Sprite GetSprite(Instance instance)
         {
-            int value = GetValue(instance);
-            return sprites.Get(value);
+            return GetSprite(instance, GetValue(instance));
         }
 
         public Sprite GetSprite(Instance instance, int value)
         {
-            return sprites.Get(value);
+            return sprites.Get(value - minValue);
         }
 
         public int GetValue(Instance instance)

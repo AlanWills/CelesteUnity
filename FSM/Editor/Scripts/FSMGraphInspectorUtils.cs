@@ -24,6 +24,11 @@ namespace CelesteEditor.FSM
                 {
                     AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
                 }
+
+                if (GUILayout.Button("Remove Hide Flags"))
+                {
+                    AssetUtility.RemoveHideFlags(graph, HideFlags.HideInHierarchy);
+                }
             }
 
             using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())
