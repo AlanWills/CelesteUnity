@@ -32,8 +32,9 @@ namespace Celeste.Input
 
         [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
+        [SerializeField] private InputSystemUIInputModule uiInputModule;
 
-#region Desktop Variables
+        #region Desktop Variables
 
         [Header("Desktop Events")]
         public Vector2Event leftMouseButtonFirstDown;
@@ -70,8 +71,6 @@ namespace Celeste.Input
         public GameObjectClickEvent gameObjectRightClicked;
 
         #endregion
-
-        [NonSerialized] private List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
         #endregion
 
@@ -148,11 +147,20 @@ namespace Celeste.Input
             
             GameObject hitGameObject = null;
             
-            if (raycastCamera.Value != null && !eventSystem.IsPointerOverGameObject())
+            if (raycastCamera.Value != null)
             {
-                // If we haven't hit any UI, see if we have hit any game objects in the world
-                hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
-                Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
+                {
+                    hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
+                    Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                }
+
+                if (hitGameObject == null)
+                {
+                    // If we haven't hit any UI, see if we have hit any game objects in the world
+                    hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
+                    Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                }
             }
             inputState.HitGameObject = hitGameObject;
 
