@@ -119,6 +119,18 @@ namespace XNode {
                 return false;
             }
         }
-#endregion
+        #endregion
+
+        #region Fix API
+
+        public virtual void TryFix() 
+        {
+            foreach (var node in nodes)
+            {
+                node.TryFix();
+            }
+        }
+
+        #endregion
     }
 }

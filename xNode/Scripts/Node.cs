@@ -385,7 +385,13 @@ namespace XNode {
                 this.width = width;
             }
         }
-#endregion
+        #endregion
+
+        #region Fix API
+
+        public virtual void TryFix() { }
+
+        #endregion
 
         [Serializable] private class NodePortDictionary : Dictionary<string, NodePort>, ISerializationCallbackReceiver {
             [SerializeField] private List<string> keys = new List<string>();

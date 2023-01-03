@@ -34,6 +34,8 @@ namespace XNodeEditor {
 #if ODIN_INSPECTOR
             inNodeEditor = true;
 #endif
+            DrawFixGUI();
+
             // Unity specifically requires this to save/update any serial object.
             // serializedObject.Update(); must go at the start of an inspector gui, and
             // serializedObject.ApplyModifiedProperties(); goes at the end.
@@ -58,12 +60,11 @@ namespace XNodeEditor {
                 window.Repaint();
             }
 #endif
-
 #if ODIN_INSPECTOR
             inNodeEditor = false;
 #endif
         }
-        
+
         public void DrawNodeProperties(SerializedObject serializedObject, string[] excludes)
         {
 #if ODIN_INSPECTOR
@@ -91,6 +92,16 @@ namespace XNodeEditor {
                 }
             }
 #endif
+        }
+
+        public void DrawFixGUI()
+        {
+            if (GUILayout.Button("Try Fix"))
+            {
+                target.TryFix();
+            }
+
+            GUILayout.Space(4);
         }
 
         public virtual int GetWidth() {

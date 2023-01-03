@@ -22,6 +22,8 @@ namespace CelesteEditor.FSM.Nodes.Events
 
         public override void OnBodyGUI()
         {
+            DrawFixGUI();
+
             MultiEventNode multiEventNode = target as MultiEventNode;
 
             NodeEditorGUILayout.PortPair(

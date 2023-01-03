@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using XNode;
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
@@ -26,6 +27,11 @@ namespace XNodeEditor {
 
             if (GUILayout.Button("Edit graph", GUILayout.Height(40))) {
                 NodeEditorWindow.Open(serializedObject.targetObject as XNode.NodeGraph);
+            }
+
+            if (GUILayout.Button("Try Fix"))
+            {
+                (target as NodeGraph).TryFix();
             }
 
             GUILayout.Space(EditorGUIUtility.singleLineHeight);
@@ -60,6 +66,11 @@ namespace XNodeEditor {
                 SerializedProperty graphProp = serializedObject.FindProperty("graph");
                 NodeEditorWindow w = NodeEditorWindow.Open(graphProp.objectReferenceValue as XNode.NodeGraph);
                 w.Home(); // Focus selected node
+            }
+
+            if (GUILayout.Button("Try Fix"))
+            {
+                (target as Node).TryFix();
             }
 
             GUILayout.Space(EditorGUIUtility.singleLineHeight);
