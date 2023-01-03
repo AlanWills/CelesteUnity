@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Events;
+using System;
 using UnityEngine;
 
 namespace Celeste.Input
@@ -38,6 +39,7 @@ namespace Celeste.Input
                     if (hitGameObject != null)
                     {
                         hitGameObject.SendMessage(onMouseExitMessage, SendMessageOptions.DontRequireReceiver);
+                        pointerExitedGameObjectEvent.Invoke(hitGameObject);
                     }
 
                     hitGameObject = value;
@@ -45,6 +47,7 @@ namespace Celeste.Input
                     if (hitGameObject != null)
                     {
                         hitGameObject.SendMessage(onMouseEnterMessage, this, SendMessageOptions.DontRequireReceiver);
+                        pointerEnteredGameObjectEvent.Invoke(hitGameObject);
                     }
                 }
                 else if (hitGameObject != null)
@@ -61,6 +64,10 @@ namespace Celeste.Input
         [SerializeField] private string onMouseEnterMessage = "OnMouseEnterCollider";
         [SerializeField] private string onMouseOverMessage = "OnMouseOverCollider";
         [SerializeField] private string onMouseExitMessage = "OnMouseExitCollider";
+
+        [Header("Events")]
+        [SerializeField] private GameObjectEvent pointerEnteredGameObjectEvent;
+        [SerializeField] private GameObjectEvent pointerExitedGameObjectEvent;
 
         #endregion
 

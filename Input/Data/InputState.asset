@@ -15,3 +15,5 @@ MonoBehaviour:
   onMouseEnterMessage: OnMouseEnterCollider
   onMouseOverMessage: OnMouseOverCollider
   onMouseExitMessage: OnMouseExitCollider
+  pointerEnteredGameObjectEvent: {fileID: 11400000, guid: 18d131f46cfdfc042b3309fedecc35a4, type: 2}
+  pointerExitedGameObjectEvent: {fileID: 11400000, guid: ab881b82897d13e4586a10be2790acdb, type: 2}

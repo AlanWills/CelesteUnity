@@ -13,7 +13,8 @@
         "Celeste.FSM",
         "Celeste.Constants",
         "Celeste.DataStructures",
-        "Celeste.Input"
+        "Celeste.Input",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

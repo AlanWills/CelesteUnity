@@ -2,6 +2,8 @@
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
 using Celeste.Events;
+using Celeste.Input;
+using Celeste.UI;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -63,7 +65,7 @@ namespace Celeste.BoardGame.UI
             UpdateUI();
         }
 
-        public void OnMouseEnterDie(Vector2 mousePosition)
+        public void OnMouseEnterDie(InputState inputState)
         {
             if (tooltip.IsValid)
             {
