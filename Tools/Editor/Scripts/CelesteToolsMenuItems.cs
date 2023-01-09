@@ -1,5 +1,8 @@
 ﻿using Celeste.Tools;
+using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CelesteEditor.Tools
 {

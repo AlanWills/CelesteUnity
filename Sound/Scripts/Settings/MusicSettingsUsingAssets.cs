@@ -36,9 +36,16 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            playMusic = SoundEditorSettings.GetOrCreateSettings().playMusicEvent;
-            playMusicOneShot = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotEvent;
-            UnityEditor.EditorUtility.SetDirty(this);
+            if (playMusic == null)
+            {
+                playMusic = SoundEditorSettings.GetOrCreateSettings().playMusicEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playMusicOneShot == null)
+            {
+                playMusicOneShot = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotEvent;
+            }
 #endif
         }
 

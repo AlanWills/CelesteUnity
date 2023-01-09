@@ -30,9 +30,17 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            playSFX = SoundEditorSettings.GetOrCreateSettings().playSFXEvent;
-            playSFXOneShot = SoundEditorSettings.GetOrCreateSettings().playSFXOneShotEvent;
-            UnityEditor.EditorUtility.SetDirty(this);
+            if (playSFX == null)
+            {
+                playSFX = SoundEditorSettings.GetOrCreateSettings().playSFXEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playSFXOneShot == null)
+            {
+                playSFXOneShot = SoundEditorSettings.GetOrCreateSettings().playSFXOneShotEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
 #endif
         }
 
