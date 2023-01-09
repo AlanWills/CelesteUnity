@@ -29,7 +29,7 @@ namespace Celeste.Wallet
             base.Awake();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             walletRecord.Shutdown();
         }

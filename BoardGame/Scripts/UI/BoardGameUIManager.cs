@@ -6,7 +6,6 @@ using Celeste.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 namespace Celeste.BoardGame.UI
 {
