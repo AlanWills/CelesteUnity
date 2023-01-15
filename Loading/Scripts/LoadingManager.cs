@@ -47,10 +47,7 @@ namespace DnD.Core.Loading
             loadingScreenUI.SetActive(true);
 
             yield return loadJob.Execute(
-                (progress) =>
-                {
-                    progressBar.value = progress;
-                }, 
+                (progress) => progressBar.value = progress, 
                 (s) => { });
 
             loadingScreenUI.SetActive(false);
