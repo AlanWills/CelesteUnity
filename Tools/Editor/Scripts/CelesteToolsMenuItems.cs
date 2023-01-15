@@ -1,8 +1,5 @@
 ﻿using Celeste.Tools;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CelesteEditor.Tools
 {
@@ -12,6 +9,12 @@ namespace CelesteEditor.Tools
         public static void ClearCacheMenuItem()
         {
             CachingUtility.ClearCache();
+        }
+
+        [MenuItem("Celeste/Tools/Find Missing Components")]
+        public static void FindMissingComponentsInLoadedScenesMenuItem()
+        {
+            SceneUtility.FindMissingComponentsInLoadedScenes();
         }
     }
 }

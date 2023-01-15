@@ -1,5 +1,8 @@
 ﻿using Celeste.Assets;
 using Celeste.DataStructures;
+using Celeste.Debug.Settings;
+using Celeste.Parameters;
+using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,12 +40,48 @@ namespace Celeste.Scene
     {
         #region Properties and Fields
 
-        public int NumScenes
+        public int NumScenes => scenes.Count;
+
+        private bool ShouldDebug
         {
-            get { return scenes.Count; }
+            get
+            {
+                if (isDebugBuild != null)
+                {
+                    return isDebugBuild.Value;
+                }
+
+                return UnityEngine.Debug.isDebugBuild;
+            }
         }
 
         [SerializeField] private List<SceneSetEntry> scenes = new List<SceneSetEntry>();
+
+        [Header("Loading Settings")]
+        [SerializeField] private bool unloadResourcesOnLoad = true;
+
+        [Header("Debug Settings")]
+        [SerializeField] private bool checkForMissingComponents = true;
+        [SerializeField, ShowIf(nameof(checkForMissingComponents))] private BoolValue isDebugBuild;
+
+        #endregion
+
+        #region Unity Methods
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (isDebugBuild == null)
+            {
+                isDebugBuild = DebugEditorSettings.GetOrCreateSettings().isDebugBuildValue;
+
+                if (isDebugBuild != null)
+                {
+                    UnityEditor.EditorUtility.SetDirty(this);
+                }
+            }
+        }
+#endif
 
         #endregion
 
@@ -153,6 +192,22 @@ namespace Celeste.Scene
 #if UNITY_EDITOR
             EditorOnly_SortScenes();
 #endif
+
+            if (unloadResourcesOnLoad)
+            {
+                UnityEngine.Debug.Log($"Beginning to unload unused assets.");
+                yield return Resources.UnloadUnusedAssets();
+                UnityEngine.Debug.Log($"Finished unloading unused assets.");
+            }
+
+            // Debug Actions
+            if (ShouldDebug)
+            {
+                if (checkForMissingComponents)
+                {
+                    Tools.SceneUtility.FindMissingComponentsInLoadedScenes();
+                }
+            }
 
             onLoadComplete.Invoke();
         }

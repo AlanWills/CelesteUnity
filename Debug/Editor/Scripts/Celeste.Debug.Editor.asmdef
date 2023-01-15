@@ -4,6 +4,8 @@
     "references": [
         "Celeste.Debug",
         "Celeste.Objects",
+        "Celeste.Parameters",
+        "Celeste.Tools",
         "Celeste.DataStructures.Editor"
     ],
     "includePlatforms": [
