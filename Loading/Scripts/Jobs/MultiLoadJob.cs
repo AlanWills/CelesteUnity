@@ -47,7 +47,9 @@ namespace Celeste.Loading
             Debug.Assert(loadJobs != null, $"No load jobs set in {nameof(MultiLoadJob)} '{name}'.");
             for (int i = 0, n = loadJobs.Count; i < n; ++i)
             {
-                yield return loadJobs[i].Execute(setProgress, setOutput);
+                // Normalize the progress to take into account the overall progression through all the jobs
+                yield return loadJobs[i].Execute((f) => setProgress((i + f) / n), 
+                setOutput);
             }
         }
     }

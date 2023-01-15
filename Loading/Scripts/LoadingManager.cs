@@ -32,8 +32,6 @@ namespace DnD.Core.Loading
                 (progress) => progressBar.value = progress,
                 () => { });
 
-            yield return Resources.UnloadUnusedAssets();
-
             if (loadContextArgs.onContextLoaded != null)
             {
                 loadContextArgs.onContextLoaded.Invoke(new OnContextLoadedArgs(loadContextArgs.context));
@@ -49,7 +47,10 @@ namespace DnD.Core.Loading
             loadingScreenUI.SetActive(true);
 
             yield return loadJob.Execute(
-                (progress) => progressBar.value = progress, 
+                (progress) =>
+                {
+                    progressBar.value = progress;
+                }, 
                 (s) => { });
 
             loadingScreenUI.SetActive(false);
