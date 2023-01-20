@@ -39,7 +39,7 @@ namespace Celeste.LiveOps.Debug
                 }
             }
 
-            for (int i = 0, n = liveOpsRecord.NumLiveOps; i < n; i++)
+            for (int i = liveOpsRecord.NumLiveOps - 1; i >= 0; --i)
             {
                 LiveOp liveOp = liveOpsRecord.GetLiveOp(i);
 

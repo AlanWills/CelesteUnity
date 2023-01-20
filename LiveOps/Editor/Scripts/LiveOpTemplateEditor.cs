@@ -4,7 +4,6 @@ using Celeste.Components.Catalogue;
 using Celeste.LiveOps;
 using Celeste.LiveOps.Settings;
 using Celeste.Tools;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -18,10 +17,11 @@ namespace CelesteEditor.LiveOps
         #region Properties and Fields
 
         private SerializedProperty componentsProperty;
+        private SerializedProperty componentsDataProperty;
 
         private ComponentCatalogue componentCatalogue;
-        private List<Type> availableTypes = new List<Type>();
-        private string[] availableTypeNames = default;
+        private List<Celeste.Components.Component> availableComponents = new List<Celeste.Components.Component>();
+        private string[] availableComponentNames = default;
         private int selectedType = -1;
         private int currentPage = 0;
 
@@ -32,6 +32,7 @@ namespace CelesteEditor.LiveOps
         private void OnEnable()
         {
             componentsProperty = serializedObject.FindProperty("components");
+            componentsDataProperty = serializedObject.FindProperty("componentsData");
             componentCatalogue = LiveOpsEditorSettings.GetOrCreateSettings().defaultComponentCatalogue;
 
             RefreshDataUsingComponentCatalogue();
@@ -54,44 +55,79 @@ namespace CelesteEditor.LiveOps
                     RefreshDataUsingComponentCatalogue();
                 }
 
-                if (availableTypes.Count > 0)
+                if (availableComponents.Count > 0)
                 {
                     using (var horizontal = new EditorGUILayout.HorizontalScope())
                     {
-                        selectedType = EditorGUILayout.Popup("Component Type", selectedType, availableTypeNames);
+                        selectedType = EditorGUILayout.Popup("Component Type", selectedType, availableComponentNames);
 
                         if (selectedType >= 0)
                         {
                             if (GUILayout.Button("Add", GUILayout.ExpandWidth(false)))
                             {
                                 LiveOpTemplate liveOpTemplate = target as LiveOpTemplate;
-                                liveOpTemplate.AddComponent(availableTypes[selectedType]);
+                                liveOpTemplate.AddComponent(availableComponents[selectedType]);
                             }
                         }
                     }
                 }
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Components", CelesteGUIStyles.BoldLabel);
-            EditorGUILayout.Space();
+            // Components
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Components", CelesteGUIStyles.BoldLabel);
+                EditorGUILayout.Space();
 
-            DrawValidationGUI();
+                DrawValidationGUI();
 
-            currentPage = GUIUtils.PaginatedList(
-                currentPage,
-                40,
-                componentsProperty.arraySize,
-                (i) =>
+                currentPage = GUIUtils.PaginatedList(
+                    currentPage,
+                    40,
+                    componentsProperty.arraySize,
+                    (i) =>
+                    {
+                        EditorGUILayout.PropertyField(componentsProperty.GetArrayElementAtIndex(i), true);
+                    },
+                    () => false,
+                    () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
+                    () => { },
+                    (i) => { (target as LiveOpTemplate).RemoveComponent(i); });
+
+                serializedObject.ApplyModifiedProperties();
+            }
+
+            // Components Data
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Components Data", CelesteGUIStyles.BoldLabel);
+                EditorGUILayout.Space();
+
+                if (componentsDataProperty.arraySize == 0 && componentsProperty.arraySize > 0)
                 {
-                    EditorGUILayout.PropertyField(componentsProperty.GetArrayElementAtIndex(i), true);
-                },
-                () => false,
-                () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
-                () => { },
-                (i) => { (target as LiveOpTemplate).RemoveComponent(i); });
+                    if (GUILayout.Button("Create Components Data"))
+                    {
+                        (target as LiveOpTemplate).CreateComponentsData();
+                    }
+                }
+                else
+                {
+                    DrawValidationGUI();
 
-            serializedObject.ApplyModifiedProperties();
+                    currentPage = GUIUtils.ReadOnlyPaginatedList(
+                        currentPage,
+                        40,
+                        componentsDataProperty.arraySize,
+                        (i) =>
+                        {
+                            CelesteEditorGUILayout.JsonText(
+                                componentsProperty.GetArrayElementAtIndex(i).objectReferenceValue.name, 
+                                componentsDataProperty.GetArrayElementAtIndex(i));
+                        });
+
+                    serializedObject.ApplyModifiedProperties();
+                }
+            }
         }
 
         #endregion
@@ -160,16 +196,16 @@ namespace CelesteEditor.LiveOps
             {
                 foreach (var type in componentCatalogue.Items)
                 {
-                    availableTypes.Add(type.Value.GetType());
+                    availableComponents.Add(type.Value);
                 }
 
-                availableTypeNames = availableTypes.Select(x => x.Name).ToArray();
+                availableComponentNames = availableComponents.Select(x => x.name).ToArray();
                 selectedType = 0;
             }
             else
             {
-                availableTypes.Clear();
-                availableTypeNames = null;
+                availableComponents.Clear();
+                availableComponentNames = null;
                 selectedType = -1;
             }
         }

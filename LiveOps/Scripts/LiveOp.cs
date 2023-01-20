@@ -108,7 +108,7 @@ namespace Celeste.LiveOps
 
         public IEnumerator Load()
         {
-            yield return Assets.iFace.Load(Assets.instance);
+            yield return Assets.iFace.LoadAssets(Assets.instance);
 
             if (!Assets.iFace.IsLoaded)
             {

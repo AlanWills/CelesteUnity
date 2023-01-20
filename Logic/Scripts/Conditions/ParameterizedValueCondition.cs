@@ -1,7 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System;
-using UnityEngine.Events;
 
 namespace Celeste.Logic
 {

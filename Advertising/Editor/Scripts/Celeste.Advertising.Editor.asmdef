@@ -1,19 +1,17 @@
 {
-    "name": "Celeste.Tools.Editor",
-    "rootNamespace": "CelesteEditor.Tools",
+    "name": "Celeste.Advertising.Editor",
+    "rootNamespace": "CelesteEditor.Advertising",
     "references": [
-        "Unity.Addressables.Editor",
-        "Celeste.Tools"
+        "Celeste.Advertising",
+        "Celeste.DataStructures.Editor"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "Newtonsoft.Json.dll"
-    ],
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

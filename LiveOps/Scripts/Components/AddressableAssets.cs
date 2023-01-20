@@ -32,7 +32,7 @@ namespace Celeste.LiveOps.Components
             return new AddressableAssetsData();
         }
 
-        public IEnumerator Load(Instance instance)
+        public IEnumerator LoadAssets(Instance instance)
         {
             IsLoaded = false;
 

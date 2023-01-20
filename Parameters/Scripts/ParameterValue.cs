@@ -43,9 +43,15 @@ namespace Celeste.Parameters
                     T oldValue = this.value;
                     this.value = value;
 
+                    ValueChangedArgs<T> valueChangedArgs = new ValueChangedArgs<T>(oldValue, value);
+
                     if (onValueChanged != null)
                     {
-                        onValueChanged.Invoke(new ValueChangedArgs<T>(oldValue, value));
+                        onValueChanged.Invoke(valueChangedArgs);
+                    }
+                    else
+                    {
+                        OnValueChangedChangeUnityEvent.Invoke(valueChangedArgs);
                     }
                 }
             }

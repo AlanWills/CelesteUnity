@@ -3,6 +3,7 @@ using Celeste.DataStructures;
 using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using Component = Celeste.Components.Component;
 
@@ -26,21 +27,19 @@ namespace Celeste.LiveOps
         [SerializeField, Tooltip("The wait time between an event starting and the next recurring event starting in seconds.")] private bool isRecurring;
         [SerializeField, ShowIf(nameof(isRecurring))] private long repeatsAfter;
         [SerializeField] private List<Component> components = new List<Component>();
-        [SerializeField] private List<ComponentData> componentsData = new List<ComponentData>();
+        [SerializeField] private List<string> componentsData = new List<string>();
 
         #endregion
 
-        public void AddComponent(Type type)
+        public void AddComponent(Component component)
         {
-            Component component = CreateInstance(type) as Component;
 #if NULL_CHECKS
             UnityEngine.Debug.Assert(component != null, $"Null component added to {name}.");
             if (component != null)
 #endif
             {
-                component.name = type.Name;
                 components.Add(component);
-                componentsData.Add(component.CreateData());
+                componentsData.Add(JsonUtility.ToJson(component.CreateData()));
 #if UNITY_EDITOR
                 if (!Application.isPlaying)
                 {
@@ -57,6 +56,7 @@ namespace Celeste.LiveOps
             if (0 <= componentIndex && componentIndex < components.Count)
 #endif
             {
+                Component component = components[componentIndex];
                 components.RemoveAt(componentIndex);
                 componentsData.RemoveAt(componentIndex);
 #if UNITY_EDITOR
@@ -69,6 +69,16 @@ namespace Celeste.LiveOps
             }
         }
 
+        public void CreateComponentsData()
+        {
+            componentsData.Clear();
+
+            for (int i = 0, n = components.Count; i < n; i++)
+            {
+                componentsData.Add(JsonUtility.ToJson(components[i].CreateData()));
+            }
+        }
+
         public Component GetComponent(int componentIndex)
         {
             return components.Get(componentIndex);
@@ -76,7 +86,12 @@ namespace Celeste.LiveOps
 
         public ComponentData GetComponentData(int componentIndex)
         {
-            return componentsData.Get(componentIndex);
+            Component component = components.Get(componentIndex);
+            ComponentData componentData = component.CreateData();
+            string componentDataJson = componentsData.Get(componentIndex);
+            JsonUtility.FromJsonOverwrite(componentDataJson, componentData);
+
+            return componentData;
         }
     }
 }

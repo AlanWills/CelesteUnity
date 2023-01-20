@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Advertising",
+    "rootNamespace": "Celeste.Advertising",
+    "references": [
+        "Celeste.Objects",
+        "Celeste.Parameters",
+        "Celeste.Events",
+        "Celeste.Debug",
+        "Celeste.Tools",
+        "UnityEngine.Advertisements"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

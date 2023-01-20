@@ -117,7 +117,10 @@ namespace Celeste.Tools
                         removeIndex = i;
                     }
 
-                    drawItem(i);
+                    using (var vertical = new VerticalScope())
+                    {
+                        drawItem(i);
+                    }
                 }
             }
 

@@ -29,7 +29,7 @@ namespace Celeste.LiveOps.Components
 
         #endregion
 
-        public IEnumerator Load(Instance instance)
+        public IEnumerator LoadAssets(Instance instance)
         {
             yield break;
         }

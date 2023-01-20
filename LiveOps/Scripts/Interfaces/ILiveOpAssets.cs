@@ -9,7 +9,7 @@ namespace Celeste.LiveOps
     {
         bool IsLoaded { get; }
 
-        IEnumerator Load(Instance instance);
+        IEnumerator LoadAssets(Instance instance);
 
         ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent);
     }
@@ -18,7 +18,7 @@ namespace Celeste.LiveOps
     {
         public bool IsLoaded => false;
 
-        public IEnumerator Load(Instance instance)
+        public IEnumerator LoadAssets(Instance instance)
         {
             yield break;
         }
