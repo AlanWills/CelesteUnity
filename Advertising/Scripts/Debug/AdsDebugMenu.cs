@@ -27,7 +27,7 @@ namespace Celeste.Advertising.Debug
                 using (var indent = new GUIIndentScope())
                 {
                     GUILayout.Space(5);
-                    GUILayout.Label($"Loaded: {adPlacement.IsLoaded}");
+                    adPlacement.IsLoaded = GUILayout.Toggle(adPlacement.IsLoaded, adPlacement.PlacementId);
 
                     using (var horizontal = new GUILayout.HorizontalScope())
                     {

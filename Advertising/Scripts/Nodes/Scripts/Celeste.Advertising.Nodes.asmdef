@@ -4,7 +4,9 @@
     "references": [
         "Celeste.Advertising",
         "Celeste.FSM",
-        "Celeste.Logic"
+        "Celeste.Logic",
+        "Celeste.Events",
+        "XNode"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

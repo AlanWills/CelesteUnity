@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Celeste.Events;
+using Celeste.Parameters;
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Advertising
 {
@@ -41,14 +44,30 @@ namespace Celeste.Advertising
             }
         }
 
+        public bool IsLoaded
+        {
+            get => isLoaded.Value;
+            set => isLoaded.Value = value;
+        }
+
         public AdPlacementType PlacementType => placementType;
-        public bool IsLoaded { get; set; }
         public Action<AdWatchResult> OnShow { get; set; }
 
         [SerializeField] private string androidPlacementId;
         [SerializeField] private string iOSPlacementId;
         [SerializeField] private AdPlacementType placementType;
+        [SerializeField] private BoolValue isLoaded;
 
         #endregion
+
+        public void AddIsLoadedChangedCallback(UnityAction<ValueChangedArgs<bool>> isLoadedChanged)
+        {
+            isLoaded.AddValueChangedCallback(isLoadedChanged);
+        }
+
+        public void RemoveIsLoadedChangedCallback(UnityAction<ValueChangedArgs<bool>> isLoadedChanged)
+        {
+            isLoaded.RemoveValueChangedCallback(isLoadedChanged);
+        }
     }
 }
