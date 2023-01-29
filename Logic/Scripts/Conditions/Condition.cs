@@ -11,20 +11,6 @@ namespace Celeste.Logic
     {
         #region Properties and Fields
 
-        private BoolValueChangedUnityEvent onIsMetChangedUnityEvent;
-        private BoolValueChangedUnityEvent OnIsMetChangedUnityEvent
-        {
-            get
-            {
-                if (onIsMetChangedUnityEvent == null)
-                {
-                    onIsMetChangedUnityEvent = new BoolValueChangedUnityEvent();
-                }
-
-                return onIsMetChangedUnityEvent;
-            }
-        }
-
         public virtual bool IsMet
         {
             get => isMet;
@@ -33,13 +19,12 @@ namespace Celeste.Logic
                 if (isMet != value)
                 {
                     isMet = value;
-
-                    InvokeValueChanged(new ValueChangedArgs<bool>(!value, value));
+                    onIsMetChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
                 }
             }
         }
 
-        [SerializeField] private BoolValueChangedEvent onIsMetChanged;
+        [SerializeField] private GuaranteedBoolValueChangedEvent onIsMetChanged = new GuaranteedBoolValueChangedEvent();
 
         [NonSerialized] private bool isMet = false;
         [NonSerialized] private int initCount = 0;
@@ -85,50 +70,22 @@ namespace Celeste.Logic
 
         public void AddOnIsMetConditionChanged(UnityAction<ValueChangedArgs<bool>> onIsMetConditionChanged)
         {
-            if (onIsMetChanged != null)
-            {
-                onIsMetChanged.AddListener(onIsMetConditionChanged);
-            }
-            else
-            {
-                OnIsMetChangedUnityEvent.AddListener(onIsMetConditionChanged);
-            }
+            onIsMetChanged.AddListener(onIsMetConditionChanged);
         }
 
         public void RemoveOnIsMetConditionChanged(UnityAction<ValueChangedArgs<bool>> onIsMetConditionChanged)
         {
-            if (onIsMetChanged != null)
-            {
-                onIsMetChanged.RemoveListener(onIsMetConditionChanged);
-            }
-            else
-            {
-                OnIsMetChangedUnityEvent.RemoveListener(onIsMetConditionChanged);
-            }
+            onIsMetChanged.RemoveListener(onIsMetConditionChanged);
         }
 
         private void InvokeValueChanged(ValueChangedArgs<bool> valueChangedArgs)
         {
-            if (onIsMetChanged != null)
-            {
-                onIsMetChanged.Invoke(valueChangedArgs);
-            }
-            else
-            {
-                OnIsMetChangedUnityEvent.Invoke(valueChangedArgs);
-            }
+            onIsMetChanged.Invoke(valueChangedArgs);
         }
 
         private void RemoveAllListeners()
         {
-            if (onIsMetChanged != null)
-            {
-                onIsMetChanged.RemoveAllListeners();
-            }
-            else
-            {
-                OnIsMetChangedUnityEvent.RemoveAllListeners();
-            }
+            onIsMetChanged.RemoveAllListeners();
         }
 
         protected T CreateDependentAsset<T>(string name) where T : ScriptableObject

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace Celeste.Events
 {
     [Serializable]
-    public class GuaranteedParameterisedEvent<TEvent, TParam> : IEvent<TParam> where TEvent : ParameterisedEvent<TParam>
+    public class GuaranteedParameterisedValueChangedEvent<TEvent, TParam> : IEvent<ValueChangedArgs<TParam>> where TEvent : ParameterisedEvent<ValueChangedArgs<TParam>>
     {
         #region Properties and Fields
 
@@ -27,22 +27,22 @@ namespace Celeste.Events
 
         #endregion
 
-        public ICallbackHandle AddListener(IEventListener<TParam> listener)
+        public ICallbackHandle AddListener(IEventListener<ValueChangedArgs<TParam>> listener)
         {
             return BakedEvent.AddListener(listener);
         }
 
-        public ICallbackHandle AddListener(UnityAction<TParam> unityAction)
+        public ICallbackHandle AddListener(UnityAction<ValueChangedArgs<TParam>> unityAction)
         {
             return BakedEvent.AddListener(unityAction);
         }
 
-        public void RemoveListener(UnityAction<TParam> callback)
+        public void RemoveListener(UnityAction<ValueChangedArgs<TParam>> callback)
         {
             BakedEvent.RemoveListener(callback);
         }
 
-        public void RemoveListener(IEventListener<TParam> listener)
+        public void RemoveListener(IEventListener<ValueChangedArgs<TParam>> listener)
         {
             BakedEvent.RemoveListener(listener);
         }
@@ -57,12 +57,12 @@ namespace Celeste.Events
             BakedEvent.RemoveAllListeners();
         }
 
-        public void Invoke(TParam param)
+        public void Invoke(ValueChangedArgs<TParam> param)
         {
             BakedEvent.Invoke(param);
         }
 
-        public void InvokeSilently(TParam param)
+        public void InvokeSilently(ValueChangedArgs<TParam> param)
         {
             BakedEvent.InvokeSilently(param);
         }

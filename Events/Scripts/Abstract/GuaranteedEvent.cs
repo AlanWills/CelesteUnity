@@ -9,56 +9,57 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
-        private Event ObjectEvent
+        private Event BakedEvent
         {
             get
             {
-                if (objectEvent == null)
+                Debug.Assert(Application.isPlaying, $"Should only be accessing {nameof(BakedEvent)} whilst application is running.");
+                if (bakedEvent == null)
                 {
-                    objectEvent = ScriptableObject.CreateInstance<Event>();
+                    bakedEvent = ScriptableObject.CreateInstance<Event>();
                 }
 
-                return objectEvent;
+                return bakedEvent;
             }
         }
 
-        [SerializeField] private Event objectEvent;
+        [SerializeField] private Event bakedEvent;
 
         #endregion
 
         public ICallbackHandle AddListener(IEventListener listener)
         {
-            return ObjectEvent.AddListener(listener);
+            return BakedEvent.AddListener(listener);
         }
 
         public ICallbackHandle AddListener(UnityAction unityAction)
         {
-            return ObjectEvent.AddListener(unityAction);
+            return BakedEvent.AddListener(unityAction);
         }
 
         public void RemoveListener(UnityAction callback)
         {
-            ObjectEvent.RemoveListener(callback);
+            BakedEvent.RemoveListener(callback);
         }
 
         public void RemoveListener(IEventListener listener)
         {
-            ObjectEvent.RemoveListener(listener);
+            BakedEvent.RemoveListener(listener);
         }
 
         public void RemoveListener(ICallbackHandle callbackHandle)
         {
-            ObjectEvent.RemoveListener(callbackHandle);
+            BakedEvent.RemoveListener(callbackHandle);
         }
 
         public void Invoke()
         {
-            ObjectEvent.Invoke();
+            BakedEvent.Invoke();
         }
 
         public void InvokeSilently()
         {
-            ObjectEvent.InvokeSilently();
+            BakedEvent.InvokeSilently();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Celeste.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(BoolEvent), menuName = "Celeste/Events/Bool/Bool Event")]
-    public class BoolEvent : ParameterisedEvent<bool>
-    {
-    }
+    public class BoolEvent : ParameterisedEvent<bool> { }
+
+    [Serializable]
+    public class GuaranteedBoolEvent : GuaranteedParameterisedEvent<BoolEvent, bool> { }
 }

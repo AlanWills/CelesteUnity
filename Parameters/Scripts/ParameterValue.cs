@@ -10,17 +10,16 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        [NonSerialized] private UnityEvent<ValueChangedArgs<T>> onValueChangedUnityEvent;
-        private UnityEvent<ValueChangedArgs<T>> OnValueChangedChangeUnityEvent
+        private TValueChangedEvent OnValueChangedChangedEvent
         {
             get
             {
-                if (onValueChangedUnityEvent == null)
+                if (onValueChanged == null)
                 {
-                    onValueChangedUnityEvent = new UnityEvent<ValueChangedArgs<T>>();
+                    onValueChanged = CreateInstance<TValueChangedEvent>();
                 }
 
-                return onValueChangedUnityEvent;
+                return onValueChanged;
             }
         }
 
@@ -43,16 +42,7 @@ namespace Celeste.Parameters
                     T oldValue = this.value;
                     this.value = value;
 
-                    ValueChangedArgs<T> valueChangedArgs = new ValueChangedArgs<T>(oldValue, value);
-
-                    if (onValueChanged != null)
-                    {
-                        onValueChanged.Invoke(valueChangedArgs);
-                    }
-                    else
-                    {
-                        OnValueChangedChangeUnityEvent.Invoke(valueChangedArgs);
-                    }
+                    OnValueChangedChangedEvent.Invoke(new ValueChangedArgs<T>(oldValue, value));
                 }
             }
         }
@@ -97,38 +87,17 @@ namespace Celeste.Parameters
 
         public void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            if (onValueChanged != null)
-            {
-                onValueChanged.AddListener(callback);
-            }
-            else
-            {
-                OnValueChangedChangeUnityEvent.AddListener(callback);
-            }
+            OnValueChangedChangedEvent.AddListener(callback);
         }
 
         public void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            if (onValueChanged != null)
-            {
-                onValueChanged.RemoveListener(callback);
-            }
-            else
-            {
-                OnValueChangedChangeUnityEvent.RemoveListener(callback);
-            }
+            OnValueChangedChangedEvent.RemoveListener(callback);
         }
 
         public void RemoveAllValueChangedCallbacks()
         {
-            if (onValueChanged != null)
-            {
-                onValueChanged.RemoveAllListeners();
-            }
-            else
-            {
-                OnValueChangedChangeUnityEvent.RemoveAllListeners();
-            }
+            OnValueChangedChangedEvent.RemoveAllListeners();
         }
 
         public override string ToString()

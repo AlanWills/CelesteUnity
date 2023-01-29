@@ -8,7 +8,8 @@ namespace Celeste.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(BoolValueChangedEvent), menuName = "Celeste/Events/Bool/Bool Value Changed Event")]
-    public class BoolValueChangedEvent : ParameterisedValueChangedEvent<bool>
-    {
-    }
+    public class BoolValueChangedEvent : ParameterisedValueChangedEvent<bool> { }
+
+    [Serializable]
+    public class GuaranteedBoolValueChangedEvent : GuaranteedParameterisedValueChangedEvent<BoolValueChangedEvent, bool> { }
 }
