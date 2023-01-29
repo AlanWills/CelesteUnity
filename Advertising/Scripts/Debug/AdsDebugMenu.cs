@@ -1,4 +1,5 @@
 ﻿using Celeste.Debug.Menus;
+using Celeste.Parameters;
 using Celeste.Tools;
 using UnityEngine;
 
@@ -9,12 +10,14 @@ namespace Celeste.Advertising.Debug
     {
         #region Properties and Fields
 
+        [SerializeField] private BoolValue adsTestMode;
         [SerializeField] private AdRecord adRecord;
 
         #endregion
 
         protected override void OnDrawMenu()
         {
+            adsTestMode.Value = GUILayout.Toggle(adsTestMode.Value, "Ads Test Mode");
             adRecord.AdsEnabled = GUILayout.Toggle(adRecord.AdsEnabled, "Ads Enabled");
 
             for (int i = 0, n = adRecord.NumAdPlacements; i < n; i++)

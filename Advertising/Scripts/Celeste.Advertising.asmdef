@@ -7,6 +7,7 @@
         "Celeste.Events",
         "Celeste.Debug",
         "Celeste.Tools",
+        "Celeste.Persistence",
         "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],
