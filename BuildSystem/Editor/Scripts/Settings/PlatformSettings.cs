@@ -308,7 +308,10 @@ namespace CelesteEditor.BuildSystem
 
             foreach (BuildPostProcessStep buildPostProcessStep in buildPostProcessSteps)
             {
-                buildPostProcessStep.Execute(buildPlayerOptions, buildReport, this);
+                if (success || !buildPostProcessStep.OnlyExecuteOnSuccess)
+                {
+                    buildPostProcessStep.Execute(buildPlayerOptions, buildReport, this);
+                }
             }
 
             if (success)
@@ -343,7 +346,10 @@ namespace CelesteEditor.BuildSystem
         {
             foreach (AssetPostProcessStep assetPostProcessStep in buildAssetsPostProcessSteps)
             {
-                assetPostProcessStep.Execute(result, this);
+                if (string.IsNullOrEmpty(result.Error) || !assetPostProcessStep.OnlyExecuteOnSuccess)
+                {
+                    assetPostProcessStep.Execute(result, this);
+                }
             }
         }
 
@@ -351,7 +357,10 @@ namespace CelesteEditor.BuildSystem
         {
             foreach (AssetPostProcessStep assetPostProcessStep in updateAssetsPostProcessSteps)
             {
-                assetPostProcessStep.Execute(result, this);
+                if (string.IsNullOrEmpty(result.Error) || !assetPostProcessStep.OnlyExecuteOnSuccess)
+                {
+                    assetPostProcessStep.Execute(result, this);
+                }
             }
         }
 
