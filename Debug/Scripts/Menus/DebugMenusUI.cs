@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -54,24 +55,16 @@ namespace Celeste.Debug.Menus
 
             GUI.skin = guiSkin;
 
-            Vector3[] worldCorners = new Vector3[4];
-            debugGuiDrawArea.GetWorldCorners(worldCorners);
-
-            Rect worldRect = new Rect(
-                worldCorners[0].x,
-                worldCorners[0].y,
-                worldCorners[3].x - worldCorners[0].x,
-                worldCorners[1].y - worldCorners[0].y);
-
-            float xAspectRatio = worldRect.width / screenWidthDivisor;
-            float yAspectRatio = worldRect.height / screenHeightDivisor;
+            Rect debugScreenSpaceRect = GetScreenSpaceRect(debugGuiDrawArea);
+            float xAspectRatio = debugScreenSpaceRect.width / screenWidthDivisor;
+            float yAspectRatio = debugScreenSpaceRect.height / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
 
             Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
             GUI.matrix = Matrix4x4.Scale(scale);
 
-            Rect screenRect = new Rect(worldRect.xMin / maxAspectRatio, worldRect.yMin / maxAspectRatio, worldRect.width / maxAspectRatio, worldRect.height / maxAspectRatio);
-            Rect viewRect = new Rect(worldRect.xMin, worldRect.yMin, screenRect.width, screenRect.height * 4);
+            Rect screenRect = new Rect(debugScreenSpaceRect.xMin / maxAspectRatio, debugScreenSpaceRect.yMin / maxAspectRatio, debugScreenSpaceRect.width / maxAspectRatio, debugScreenSpaceRect.height / maxAspectRatio);
+            Rect viewRect = new Rect(debugScreenSpaceRect.xMin, debugScreenSpaceRect.yMin, screenRect.width, screenRect.height * 4);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
             {
@@ -80,7 +73,13 @@ namespace Celeste.Debug.Menus
 
                 using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
                 {
-                    GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel);
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel);
+                        GUILayout.FlexibleSpace();
+                    }
+
                     GUILayout.Space(10);
 
                     DebugMenu visibleDebugMenu = debugMenus.Find(x => x.Visible);
@@ -110,6 +109,12 @@ namespace Celeste.Debug.Menus
             }
 
             GUI.skin = oldSkin;
+        }
+
+        private static Rect GetScreenSpaceRect(RectTransform transform)
+        {
+            Vector2 size = Vector2.Scale(transform.rect.size, transform.lossyScale);
+            return new Rect((Vector2)transform.position - (size * transform.pivot), size);
         }
 
         #endregion
