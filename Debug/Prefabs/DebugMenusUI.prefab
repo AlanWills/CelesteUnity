@@ -55,6 +55,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guiSkin: {fileID: 11400000, guid: eec3a1103b8f0a64c80b822396322e3b, type: 2}
   inputBlocker: {fileID: 7130415474439956231}
+  debugGuiDrawArea: {fileID: 42659240208492339}
   screenWidthDivisor: 600
   screenHeightDivisor: 600
 --- !u!114 &8675299248971474079
@@ -206,7 +207,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 48.3
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -50,9 +50,6 @@ namespace Celeste.Log
                             currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
                         }
 
-                        EndHorizontal();
-                        BeginHorizontal();
-
                         if (currentlyExpanded == i)
                         {
                             Label(logMessage.callstack);

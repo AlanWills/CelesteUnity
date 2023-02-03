@@ -23,6 +23,7 @@ namespace Celeste.Debug.Menus
 
         [SerializeField] private GUISkin guiSkin;
         [SerializeField] private GameObject inputBlocker;
+        [SerializeField] private RectTransform debugGuiDrawArea;
         [SerializeField] private float screenWidthDivisor = 600f;
         [SerializeField] private float screenHeightDivisor = 600f;
 
@@ -53,14 +54,15 @@ namespace Celeste.Debug.Menus
 
             GUI.skin = guiSkin;
 
-            float xAspectRatio = Screen.width / screenWidthDivisor;
-            float yAspectRatio = Screen.height / screenHeightDivisor;
+            Vector2 debugGuiAreaSize = debugGuiDrawArea.rect.size * debugGuiDrawArea.lossyScale;
+            float xAspectRatio = debugGuiAreaSize.x / screenWidthDivisor;
+            float yAspectRatio = debugGuiAreaSize.y / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
 
             Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
             GUI.matrix = Matrix4x4.Scale(scale);
 
-            Rect screenRect = new Rect(0, 0, Screen.width / maxAspectRatio, Screen.height / maxAspectRatio);
+            Rect screenRect = new Rect(0, 0, debugGuiAreaSize.x / maxAspectRatio, debugGuiAreaSize.y / maxAspectRatio);
             Rect viewRect = new Rect(0, 10, screenRect.width, screenRect.height * 4);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
