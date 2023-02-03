@@ -54,16 +54,24 @@ namespace Celeste.Debug.Menus
 
             GUI.skin = guiSkin;
 
-            Vector2 debugGuiAreaSize = debugGuiDrawArea.rect.size * debugGuiDrawArea.lossyScale;
-            float xAspectRatio = debugGuiAreaSize.x / screenWidthDivisor;
-            float yAspectRatio = debugGuiAreaSize.y / screenHeightDivisor;
+            Vector3[] worldCorners = new Vector3[4];
+            debugGuiDrawArea.GetWorldCorners(worldCorners);
+
+            Rect worldRect = new Rect(
+                worldCorners[0].x,
+                worldCorners[0].y,
+                worldCorners[3].x - worldCorners[0].x,
+                worldCorners[1].y - worldCorners[0].y);
+
+            float xAspectRatio = worldRect.width / screenWidthDivisor;
+            float yAspectRatio = worldRect.height / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
 
             Vector3 scale = new Vector3(maxAspectRatio, maxAspectRatio, 1);
             GUI.matrix = Matrix4x4.Scale(scale);
 
-            Rect screenRect = new Rect(0, 0, debugGuiAreaSize.x / maxAspectRatio, debugGuiAreaSize.y / maxAspectRatio);
-            Rect viewRect = new Rect(0, 10, screenRect.width, screenRect.height * 4);
+            Rect screenRect = new Rect(worldRect.xMin / maxAspectRatio, worldRect.yMin / maxAspectRatio, worldRect.width / maxAspectRatio, worldRect.height / maxAspectRatio);
+            Rect viewRect = new Rect(worldRect.xMin, worldRect.yMin, screenRect.width, screenRect.height * 4);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
             {
@@ -72,7 +80,6 @@ namespace Celeste.Debug.Menus
 
                 using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
                 {
-                    GUILayout.Space(10);
                     GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel);
                     GUILayout.Space(10);
 

@@ -434,6 +434,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputBlocker
       objectReference: {fileID: 0}
+    - target: {fileID: 7697679320334757742, guid: c639adf61fa5116458bdf1c008432118, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c639adf61fa5116458bdf1c008432118, type: 3}
 --- !u!224 &243910677141088662 stripped
