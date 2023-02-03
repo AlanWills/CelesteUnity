@@ -44,6 +44,7 @@ namespace Celeste.Persistence.Snapshots
             {
                 Data snapshotData = data[i];
                 string filePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
+                UnityEngine.Debug.Log($"Unpacking snapshot data {i} to {filePath} with contents {snapshotData.SourceData}.");
                 File.WriteAllText(filePath, snapshotData.SourceData);
             }
         }

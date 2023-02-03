@@ -48,8 +48,7 @@ namespace Celeste.Loading
             for (int i = 0, n = loadJobs.Count; i < n; ++i)
             {
                 // Normalize the progress to take into account the overall progression through all the jobs
-                yield return loadJobs[i].Execute((f) => setProgress((i + f) / n), 
-                setOutput);
+                yield return loadJobs[i].Execute((f) => { Debug.Log($"Setting progress to {(i + f) / n} from {loadJobs[i].name}"); setProgress((i + f) / n); }, setOutput);
             }
         }
     }

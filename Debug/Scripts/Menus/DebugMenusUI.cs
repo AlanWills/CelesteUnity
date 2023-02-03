@@ -76,7 +76,7 @@ namespace Celeste.Debug.Menus
                     using (new GUILayout.HorizontalScope())
                     {
                         GUILayout.FlexibleSpace();
-                        GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel);
+                        GUILayout.Label("Debug Menu", CelesteGUIStyles.BoldLabel, GUILayout.ExpandWidth(true));
                         GUILayout.FlexibleSpace();
                     }
 
