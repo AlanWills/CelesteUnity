@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Celeste.Persistence.Snapshots
 {
+    // A lightweight snapshot which does not embed the data, but rather references it in a file system.
+    // When unpacking, it will find the appropriate file and use it's contents.
+    // This can be useful when baking save files into a game - the individual files can be organised in the file system
+    // and then this snapshot will reference their locations and write their data at runtime.
+    // Different snapshots can also reference the same file, allowing efficiencies with overall snapshot file sizes.
     [CreateAssetMenu(fileName = nameof(FileSnapshot), menuName = "Celeste/Persistence/Snapshots/File Snapshot")]
     public class FileSnapshot : Snapshot
     {
@@ -44,6 +49,11 @@ namespace Celeste.Persistence.Snapshots
                 string filePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
                 File.WriteAllText(filePath, sourceData);
             }
+        }
+
+        public override string Serialize()
+        {
+            return JsonUtility.ToJson(this);
         }
     }
 }

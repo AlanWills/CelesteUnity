@@ -1,5 +1,4 @@
 ﻿using Celeste.OdinSerializer;
-using UnityEngine;
 
 namespace Celeste.Persistence.Snapshots
 {
@@ -7,5 +6,7 @@ namespace Celeste.Persistence.Snapshots
     {
         public abstract void AddItem(string unpackPath, string snapshotData);
         public abstract void UnpackItems();
+
+        public abstract string Serialize();
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Celeste.Persistence.Snapshots
 {
+    // A more heavyweight snapshot where all data is embedded and baked into this snapshot.
+    // This is simpler to use out of the box as all data is contained within it, but could represent a larger overall size.
+    // Generally though, this is the more recommended approach, especially when delivering save data over the air.
     [CreateAssetMenu(fileName = nameof(DataSnapshot), menuName = "Celeste/Persistence/Snapshots/Data Snapshot")]
     public class DataSnapshot : Snapshot
     {
@@ -43,6 +46,11 @@ namespace Celeste.Persistence.Snapshots
                 string filePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
                 File.WriteAllText(filePath, snapshotData.SourceData);
             }
+        }
+
+        public override string Serialize()
+        {
+            return JsonUtility.ToJson(this);
         }
     }
 }
