@@ -61,6 +61,7 @@ namespace Celeste.Persistence.Snapshots
                 }
             }
 
+            UnityEngine.Debug.Log($"Snapshot creating with {snapshot.NumDataFiles} files.");
             return snapshot;
         }
 

@@ -120,6 +120,8 @@ namespace Celeste.Scene
 
             int totalScenesToLoadOrUnload = scenesToUnload.Count + scenes.Count - loadedScenes.Count;
             float progressChunkPerScene = 1f / totalScenesToLoadOrUnload;
+            UnityEngine.Debug.Assert(progressChunkPerScene > 0, $"Negative progress chunk for SceneSet loading.  This is undoubtedly a bug.");
+
             float progress = 0;
 
             for (int i = 0, n = scenes.Count; i < n; ++i)

@@ -24,6 +24,8 @@ namespace Celeste.Persistence.Snapshots
 
         #region Properties and Fields
 
+        public int NumDataFiles => data.Count;
+
         [SerializeField] private List<Data> data = new List<Data>();
 
         #endregion
@@ -40,6 +42,7 @@ namespace Celeste.Persistence.Snapshots
 
         public override void UnpackItems()
         {
+            UnityEngine.Debug.Log($"Snapshot has {data.Count} files contained within it.");
             for (int i = 0, n = data.Count; i < n; ++i)
             {
                 Data snapshotData = data[i];
