@@ -1,0 +1,25 @@
+{
+    "name": "Celeste.CloudSave",
+    "rootNamespace": "Celeste.CloudSave",
+    "references": [
+        "Celeste.Coroutines",
+        "Celeste.Loading",
+        "Celeste.Debug",
+        "Celeste.Scene",
+        "Celeste.Persistence",
+        "Celeste.OdinSerializer",
+        "Celeste.Objects",
+        "Celeste.Parameters",
+        "Celeste.Events",
+        "Google.Play.Games"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
