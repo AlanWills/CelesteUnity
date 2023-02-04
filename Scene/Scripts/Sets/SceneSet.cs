@@ -108,13 +108,15 @@ namespace Celeste.Scene
             for (int i = 0, n = SceneManager.sceneCount; i < n; ++i)
             {
                 UnityScene scene = SceneManager.GetSceneAt(i);
-                if (loadSceneMode == LoadSceneMode.Single && !IsRequired(scene))
-                {
-                    scenesToUnload.Add(scene);
-                }
-                else
+                if (IsRequired(scene))
                 {
                     loadedScenes.Add(scene.name);
+                }
+                else if (loadSceneMode == LoadSceneMode.Single)
+                {
+                    // In single load mode, we must remove any un-needed scenes, but in additive mode we don't care
+                    // We can just leave anything that's already loaded be
+                    scenesToUnload.Add(scene);
                 }
             }
 
