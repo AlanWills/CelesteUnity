@@ -1,6 +1,7 @@
 using Celeste.Loading;
 using Celeste.Scene.Events;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ namespace DnD.Core.Loading
         [Header("UI")]
         [SerializeField] private GameObject loadingScreenUI;
         [SerializeField] private Slider progressBar;
+        [SerializeField] private TextMeshProUGUI loadingInfo;
 
         [Header("Events")]
         [SerializeField] private Celeste.Events.Event disableInput;
@@ -26,6 +28,7 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
+            loadingInfo.text = "";
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
@@ -45,10 +48,11 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
+            loadingInfo.text = "";
 
             yield return loadJob.Execute(
                 (progress) => progressBar.value = progress, 
-                (s) => { });
+                (s) => { loadingInfo.text = s; });
 
             loadingScreenUI.SetActive(false);
             enableInput.Invoke();

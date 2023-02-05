@@ -11,6 +11,8 @@
         "Celeste.Objects",
         "Celeste.Parameters",
         "Celeste.Events",
+        "Celeste.Tools",
+        "Celeste.Log",
         "Google.Play.Games"
     ],
     "includePlatforms": [],

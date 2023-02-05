@@ -44,7 +44,7 @@ namespace Celeste.CloudSave
                 Snapshot snapshot = snapshotRecord.CreateDataSnapshot();
                 string snapshotString = snapshot.Serialize();
 
-                CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString, TimeSpan.FromSeconds(60)));
+                CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString));
             }
 
             if (GUILayout.Button("Delete Default Save Game"))

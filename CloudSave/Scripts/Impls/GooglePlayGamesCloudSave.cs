@@ -12,12 +12,16 @@ namespace Celeste.CloudSave
 
         public bool IsAuthenticated => PlayGamesPlatform.Instance.IsAuthenticated();
 
+        private bool enableLogging = false;
+
         #endregion
 
         #region ICloudSave
 
         public void Activate(bool debugLogging)
         {
+            enableLogging = debugLogging;
+
             PlayGamesPlatform.DebugLogEnabled = debugLogging;
             PlayGamesPlatform.Activate();
         }
@@ -32,7 +36,7 @@ namespace Celeste.CloudSave
                 {
                     if (status == SignInStatus.Success)
                     {
-                        UnityEngine.Debug.Log($"Successfully signed in with Google Play Games");
+                        Log($"Successfully signed in with Google Play Games");
                         onAuthenticateSucceeded?.Invoke();
                     }
                     else
@@ -41,12 +45,12 @@ namespace Celeste.CloudSave
                         {
                             if (status == SignInStatus.Success)
                             {
-                                UnityEngine.Debug.Log($"Successfully signed in with Google Play Games");
+                                Log($"Successfully signed in with Google Play Games");
                                 onAuthenticateSucceeded?.Invoke();
                             }
                             else
                             {
-                                UnityEngine.Debug.LogError($"Failed to sign in with Google Play Games: {status}");
+                                LogError($"Failed to sign in with Google Play Games: {status}");
                                 onAuthenticateFailed?.Invoke(ToAuthenticateStatus(status));
                             }
                         });
@@ -69,12 +73,12 @@ namespace Celeste.CloudSave
                 {
                     if (status == SavedGameRequestStatus.Success)
                     {
-                        UnityEngine.Debug.Log($"Open Cloud Save Game {metadata.Filename} succeeded");
+                        Log($"Open Cloud Save Game {metadata.Filename} succeeded");
                         onSaveGameOpenedSucceeded?.Invoke(metadata.Filename);
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError($"Open Cloud Save Game {saveGameName} failed: {status}");
+                        LogError($"Open Cloud Save Game {saveGameName} failed: {status}");
                         onSaveGameOpenedFailed?.Invoke(ToSaveRequestStatus(status));
                     }
                 });
@@ -94,13 +98,13 @@ namespace Celeste.CloudSave
                     {
                         if (status == SavedGameRequestStatus.Success)
                         {
-                            UnityEngine.Debug.Log($"Read Cloud Save Game {game.Filename} succeeded");
+                            Log($"Read Cloud Save Game {game.Filename} succeeded");
                             string saveString = Encoding.UTF8.GetString(data);
                             onSaveGameReadSucceeded?.Invoke(saveString);
                         }
                         else
                         {
-                            UnityEngine.Debug.LogError($"Read Cloud Save Game {game.Filename} failed: {status}");
+                            LogError($"Read Cloud Save Game {game.Filename} failed: {status}");
                             onSaveGameReadFailed?.Invoke(ToSaveRequestStatus(status));
                         }
                     });
@@ -139,12 +143,12 @@ namespace Celeste.CloudSave
                         {
                             if (status == SavedGameRequestStatus.Success)
                             {
-                                UnityEngine.Debug.Log($"Write Cloud Save Game {metadata.Filename} succeeded");
+                                Log($"Write Cloud Save Game {metadata.Filename} succeeded");
                                 onSaveGameSucceeded?.Invoke();
                             }
                             else
                             {
-                                UnityEngine.Debug.LogError($"Write Cloud Save Game {metadata.Filename} failed: {status}");
+                                LogError($"Write Cloud Save Game {metadata.Filename} failed: {status}");
                                 onSaveGameFailed?.Invoke(ToSaveRequestStatus(status));
                             }
                         });
@@ -194,12 +198,12 @@ namespace Celeste.CloudSave
                 {
                     if (status == SelectUIStatus.SavedGameSelected)
                     {
-                        UnityEngine.Debug.Log($"Select Cloud Save Game {metadata.Filename} succeeded");
+                        Log($"Select Cloud Save Game {metadata.Filename} succeeded");
                         onSavedGameSelectedSucceeded?.Invoke(metadata);
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError($"Select Cloud Save Game was cancelled or failed: {status}");
+                        LogError($"Select Cloud Save Game was cancelled or failed: {status}");
                         onSavedGameSelectedFailed?.Invoke(status);
                     }
                 });
@@ -219,12 +223,12 @@ namespace Celeste.CloudSave
                 {
                     if (status == SavedGameRequestStatus.Success)
                     {
-                        UnityEngine.Debug.Log($"Open Cloud Save Game {metadata.Filename} succeeded");
+                        Log($"Open Cloud Save Game {metadata.Filename} succeeded");
                         onSaveGameOpenedSucceeded?.Invoke(metadata);
                     }
                     else
                     {
-                        UnityEngine.Debug.LogError($"Open Cloud Save Game {saveGameName} failed: {status}");
+                        LogError($"Open Cloud Save Game {saveGameName} failed: {status}");
                         onSaveGameOpenedFailed?.Invoke(status);
                     }
                 });
@@ -234,7 +238,7 @@ namespace Celeste.CloudSave
             ISavedGameMetadata game,
             Action onSaveGameDeletedSucceeded = null)
         {
-            UnityEngine.Debug.Log($"Delete Cloud Save Game {game.Filename} succeeded");
+            Log($"Delete Cloud Save Game {game.Filename} succeeded");
             PlayGamesPlatform.Instance.SavedGame.Delete(game);
             onSaveGameDeletedSucceeded?.Invoke();
         }
@@ -242,6 +246,22 @@ namespace Celeste.CloudSave
         #endregion
 
         #region Utility
+
+        private void Log(string message)
+        {
+            if (enableLogging)
+            {
+                UnityEngine.Debug.Log(message);
+            }
+        }
+
+        private void LogError(string message)
+        {
+            if (enableLogging)
+            {
+                UnityEngine.Debug.LogError(message);
+            }
+        }
 
         private static AuthenticateStatus ToAuthenticateStatus(SignInStatus signInStatus)
         {

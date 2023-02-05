@@ -4,6 +4,7 @@
     "references": [
         "Unity.Addressables",
         "Unity.ResourceManager",
+        "Unity.TextMeshPro",
         "Celeste.Scene",
         "Celeste.Events",
         "Celeste.Log",

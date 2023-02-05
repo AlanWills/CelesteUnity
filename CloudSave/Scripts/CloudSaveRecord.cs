@@ -11,6 +11,7 @@ namespace Celeste.CloudSave
         #region Properties and Fields
 
         public bool IsAuthenticated => impl.IsAuthenticated;
+        public DateTimeOffset PlaytimeStart { get; set; }
 
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private string defaultSaveGameName = "DefaultSaveGame";
@@ -87,7 +88,6 @@ namespace Celeste.CloudSave
 
         public IEnumerator WriteDefaultSaveGameAsync(
             string saveData,
-            TimeSpan totalPlaytime,
             Action onSaveGameSucceeded = null,
             Action<SaveRequestStatus> onSaveGameFailed = null)
         {
@@ -96,7 +96,7 @@ namespace Celeste.CloudSave
             impl.WriteSaveGame(
                 defaultSaveGameName,
                 saveData,
-                totalPlaytime,
+                DateTimeOffset.UtcNow - PlaytimeStart,
                 () =>
                 {
                     writeComplete = true;
