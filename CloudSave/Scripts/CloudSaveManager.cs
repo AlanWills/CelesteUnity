@@ -23,6 +23,7 @@ namespace Celeste.CloudSave
 
         #region Unity Methods
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (snapshotRecord == null)
@@ -30,6 +31,7 @@ namespace Celeste.CloudSave
                 snapshotRecord = PersistenceEditorSettings.GetOrCreateSettings().snapshotRecord;
             }
         }
+#endif
 
         #endregion
 
