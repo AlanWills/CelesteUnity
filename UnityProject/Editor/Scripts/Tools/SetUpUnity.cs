@@ -20,13 +20,20 @@ namespace CelesteEditor.UnityProject
             PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Standalone, ApiCompatibilityLevel.NET_4_6);
             PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.WebGL, ApiCompatibilityLevel.NET_4_6);
 
-            // Add Packages
-            Client.AddAndRemove(new string[]
-            {
-                "com.unity.addressables",
-                "com.unity.editorcoroutines",
-                "com.unity.inputsystem"
-            });
+            // Add and Remove relevant packages
+            Client.AddAndRemove(
+                new string[]
+                {
+                    // To add
+                    "com.unity.addressables",
+                    "com.unity.editorcoroutines",
+                    "com.unity.inputsystem"
+                },
+                new string[]
+                {
+                    // To remove
+                    "com.unity.collab-proxy"
+                });
         }
 
         [MenuItem("Celeste/Bootstrap/2) Download Celeste", priority = 2)]

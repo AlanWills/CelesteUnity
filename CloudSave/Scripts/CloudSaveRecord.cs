@@ -24,7 +24,7 @@ namespace Celeste.CloudSave
 
         private void OnEnable()
         {
-#if UNITY_ANDROID
+#if UNITY_ANDROID && GOOGLE_PLAY_GAMES
             impl = new GooglePlayGamesCloudSave();
 #endif
         }
