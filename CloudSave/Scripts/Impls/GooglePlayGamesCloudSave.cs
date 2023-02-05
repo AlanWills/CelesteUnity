@@ -1,4 +1,5 @@
-﻿using GooglePlayGames;
+﻿#if UNITY_ANDROID && GOOGLE_PLAY_GAMES
+using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
 using System;
@@ -310,3 +311,4 @@ namespace Celeste.CloudSave
         #endregion
     }
 }
+#endif

@@ -30,6 +30,7 @@ namespace Celeste
                 {
                     boldLabel = new GUIStyle(GUI.skin.label);
                     boldLabel.fontStyle = FontStyle.Bold;
+                    boldLabel.normal.textColor = Color.black;
                 }
 
                 return boldLabel;

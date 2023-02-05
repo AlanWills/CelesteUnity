@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_ADS
+using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -162,3 +163,4 @@ namespace Celeste.Advertising
         }
     }
 }
+#endif
