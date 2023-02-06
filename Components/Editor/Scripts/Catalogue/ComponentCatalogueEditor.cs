@@ -5,15 +5,14 @@ using UnityEditor;
 
 namespace CelesteEditor.Components.Catalogue
 {
-    [CustomEditor(typeof(ComponentCatalogue))]
-    public class ComponentCatalogueEditor : DictionaryScriptableObjectEditor<string, Component>
+    public class ComponentCatalogueEditor<T> : DictionaryScriptableObjectEditor<string, T> where T : Component
     {
-        protected override string GetKey(Component item)
+        protected override string GetKey(T item)
         {
             return item.name;
         }
 
-        protected override void DrawEntry(string key, Component value)
+        protected override void DrawEntry(string key, T value)
         {
             using (var disabled = new EditorGUI.DisabledScope())
             {
@@ -21,4 +20,7 @@ namespace CelesteEditor.Components.Catalogue
             }
         }
     }
+
+    [CustomEditor(typeof(ComponentCatalogue))]
+    public class ComponentCatalogueEditor : ComponentCatalogueEditor<Component> { }
 }

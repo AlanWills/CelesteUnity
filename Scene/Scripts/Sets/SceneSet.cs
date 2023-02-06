@@ -61,8 +61,8 @@ namespace Celeste.Scene
         [SerializeField] private bool unloadResourcesOnLoad = true;
 
         [Header("Debug Settings")]
-        [SerializeField] private bool checkForMissingComponents = true;
-        [SerializeField, ShowIf(nameof(checkForMissingComponents))] private BoolValue isDebugBuild;
+        [SerializeField] private BoolValue isDebugBuild;
+        [SerializeField, HideIfNull(nameof(isDebugBuild))] private bool checkForMissingComponents = true;
 
         #endregion
 

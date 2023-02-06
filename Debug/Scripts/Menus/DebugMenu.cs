@@ -60,7 +60,12 @@ namespace Celeste.Debug.Menus
         public void DrawMenu()
         {
             GUILayout.Space(10);
-            GUILayout.Label(displayName, CelesteGUIStyles.BoldLabel);
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(displayName, CelesteGUIStyles.BoldLabel);
+                GUILayout.FlexibleSpace();
+            }
             GUILayout.Space(10);
 
             OnDrawMenu();

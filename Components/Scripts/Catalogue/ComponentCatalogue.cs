@@ -3,23 +3,22 @@ using UnityEngine;
 
 namespace Celeste.Components.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(ComponentCatalogue), menuName = "Celeste/Components/Component Catalogue")]
-    public class ComponentCatalogue : DictionaryScriptableObject<string, Component>
+    public class ComponentCatalogue<T> : DictionaryScriptableObject<string, T> where T : Component
     {
         public ComponentHandle CreateComponent(string typeName, string jsonData)
         {
-            var componentHandle = CreateComponent<Component>(typeName, jsonData);
+            var componentHandle = CreateComponent<T>(typeName, jsonData);
             return new ComponentHandle(componentHandle.component, componentHandle.instance);
         }
 
-        public ComponentHandle<T> CreateComponent<T>(string typeName, string jsonData) where T : Component
+        public ComponentHandle<K> CreateComponent<K>(string typeName, string jsonData) where K : T
         {
-            T component = GetItem(typeName) as T;
+            K component = GetItem(typeName) as K;
 
             if (component == null)
             {
                 Debug.LogAssertion($"Unable to instantiate component with type name {typeName}.");
-                return ComponentHandle<T>.NULL;
+                return ComponentHandle<K>.NULL;
             }
 
             ComponentData componentData = component.CreateData();
@@ -27,7 +26,10 @@ namespace Celeste.Components.Catalogue
 
             JsonUtility.FromJsonOverwrite(jsonData, componentData);
 
-            return new ComponentHandle<T>(component, componentData, componentEvents);
+            return new ComponentHandle<K>(component, componentData, componentEvents);
         }
     }
+
+    [CreateAssetMenu(fileName = nameof(ComponentCatalogue), menuName = "Celeste/Components/Component Catalogue")]
+    public class ComponentCatalogue : ComponentCatalogue<Component> { }
 }
