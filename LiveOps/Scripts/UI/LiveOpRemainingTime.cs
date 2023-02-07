@@ -30,7 +30,7 @@ namespace Celeste.LiveOps.UI
 
         private IEnumerator UpdateTimerTick(InterfaceHandle<ILiveOpTimer> timer, long startTimestamp)
         {
-            long remainingTime = timer.iFace.GetEndTimestamp(timer.instance, startTimestamp) - GameTime.Now;
+            long remainingTime = timer.iFace.GetEndTimestamp(timer.instance, startTimestamp) - GameTime.UtcNow;
 
             while (remainingTime > 0)
             {

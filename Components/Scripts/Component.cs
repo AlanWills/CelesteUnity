@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,16 @@ namespace Celeste.Components
         {
             iFace = null;
             instance.MakeNull();
+        }
+
+        public bool Is<K>() where K : class
+        {
+            return iFace is K;
+        }
+
+        public InterfaceHandle<K> As<K>() where K : class
+        {
+            return new InterfaceHandle<K>(iFace as K, instance);
         }
     }
 

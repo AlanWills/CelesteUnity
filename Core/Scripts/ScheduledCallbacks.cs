@@ -59,7 +59,7 @@ namespace Celeste.Core
                 {
                     var scheduledCallback = callbacksCopy[i];
 
-                    if (GameTime.Now >= scheduledCallback.timestamp)
+                    if (GameTime.UtcNow >= scheduledCallback.timestamp)
                     {
                         scheduledCallback.callback();
                         
