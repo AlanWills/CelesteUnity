@@ -101,6 +101,11 @@ namespace Celeste.Persistence
             }
         }
 
+        public void DelayedSave()
+        {
+            StartCoroutine(DoDelayedSave());
+        }
+
         string IPersistentSceneManager.SerializeToString()
         {
             return JsonUtility.ToJson(Serialize());
@@ -111,6 +116,16 @@ namespace Celeste.Persistence
             yield return new WaitForEndOfFrame();
 
             SaveImpl();
+        }
+
+        private IEnumerator DoDelayedSave()
+        {
+            while (loadingLock.Locked)
+            {
+                yield return null;
+            }
+            
+            yield return DoSave();
         }
 
         private void SaveImpl()

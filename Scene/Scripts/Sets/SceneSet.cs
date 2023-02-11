@@ -100,7 +100,7 @@ namespace Celeste.Scene
             return scenes.Get(index).sceneType;
         }
 
-        public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action onLoadComplete)
+        public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action<string> setOutput, Action onLoadComplete)
         {
             List<UnityScene> scenesToUnload = new List<UnityScene>();
             HashSet<string> loadedScenes = new HashSet<string>();
@@ -133,6 +133,7 @@ namespace Celeste.Scene
 
                 if (!loadedScenes.Contains(sceneId))
                 {
+                    setOutput($"Loading {sceneId}");
                     UnityEngine.Debug.Log($"Beginning to load scene {sceneId}.");
                     UnityScene loadedScene = default;
 

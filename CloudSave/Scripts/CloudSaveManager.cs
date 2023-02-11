@@ -4,6 +4,7 @@ using Celeste.Persistence;
 using Celeste.Persistence.Settings;
 using Celeste.Persistence.Snapshots;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Celeste.CloudSave
@@ -56,7 +57,9 @@ namespace Celeste.CloudSave
 
             // Save this playtime first start value as soon as it's been set
             // We'll never have to update it once we've first set it so job's a goodun
-            Save();
+            // However, if we Save() here it won't work because of our lock
+            // We have to do a delayed save once we've finishing loading
+            DelayedSave();
         }
 
         #endregion
