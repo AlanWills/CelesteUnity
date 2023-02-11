@@ -1,11 +1,11 @@
 ﻿using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Tools;
+using System;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Events.Tools
 {
+    [Serializable]
     public struct CreateEventClassesArgs
     {
         [Tooltip("The path relative to the Assets/ folder of the project.")]
@@ -15,8 +15,8 @@ namespace CelesteEditor.Events.Tools
         public string arguments;
         public bool generateEventClasses;
         public bool generateValueChangedEventClasses;
-        public string eventCreateAssetMenuPath;
-        public string valueChangedEventCreateAssetMenuPath;
+        [ShowIf(nameof(generateEventClasses))] public string eventCreateAssetMenuPath;
+        [ShowIf(nameof(generateValueChangedEventClasses))] public string valueChangedEventCreateAssetMenuPath;
     }
 
     public static class CreateEventClasses

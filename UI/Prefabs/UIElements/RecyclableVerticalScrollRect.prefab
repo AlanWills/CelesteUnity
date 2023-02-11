@@ -27,6 +27,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1281685450868785124}
   m_Father: {fileID: 0}
@@ -71,7 +72,9 @@ MonoBehaviour:
   PrototypeCell: {fileID: 0}
   SelfInitialize: 1
   Direction: 0
-  _segments: 2
+  VerticalDirection: -1
+  _portraitModeSegments: 2
+  _landscapeModeSegments: 4
 --- !u!1 &1281685450868785125
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +104,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7668181536702287148}
   m_Father: {fileID: 1281685450000268385}
@@ -188,6 +192,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1281685450868785124}
   m_RootOrder: 0

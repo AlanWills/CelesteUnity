@@ -20,6 +20,7 @@ namespace PolyAndCode.UI
 
         //Cell dimensions
         private float _cellWidth, _cellHeight;
+        private int _direction = 1;
 
         //Pool Generation
         private List<RectTransform> _cellPool;
@@ -39,7 +40,7 @@ namespace PolyAndCode.UI
         private Vector2 zeroVector = Vector2.zero;
 
         #region INIT
-        public VerticalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int coloumns)
+        public VerticalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int coloumns, int direction)
         {
             PrototypeCell = prototypeCell;
             Viewport = viewport;
@@ -48,6 +49,7 @@ namespace PolyAndCode.UI
             IsGrid = isGrid;
             _coloumns = isGrid ? coloumns : 1;
             _recyclableViewBounds = new Bounds();
+            _direction = direction;
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace PolyAndCode.UI
             //Set content height according to no of rows
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
-            SetTopAnchor(Content);
+            //SetTopAnchor(Content);
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
 
             if (onInitialized != null) onInitialized();
@@ -129,7 +131,7 @@ namespace PolyAndCode.UI
 
             //set new cell size according to its aspect ratio
             _cellWidth = Content.rect.width / _coloumns;
-            _cellHeight = PrototypeCell.sizeDelta.x != 0 ? PrototypeCell.sizeDelta.y / PrototypeCell.sizeDelta.x * _cellWidth : PrototypeCell.sizeDelta.y;
+            _cellHeight = PrototypeCell.sizeDelta.x > 0 ? PrototypeCell.sizeDelta.y / PrototypeCell.sizeDelta.x * _cellWidth : PrototypeCell.sizeDelta.y;
 
             //Get the required pool coverage and mininum size for the Cell pool
             float requriedCoverage = MinPoolCoverage * Viewport.rect.height;
@@ -159,7 +161,7 @@ namespace PolyAndCode.UI
                 else
                 {
                     item.anchoredPosition = new Vector2(0, posY);
-                    posY = item.anchoredPosition.y - item.rect.height;
+                    posY = item.anchoredPosition.y + _direction * item.rect.height;
                     currentPoolCoverage += item.rect.height;
                 }
 

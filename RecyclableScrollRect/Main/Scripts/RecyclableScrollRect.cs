@@ -29,7 +29,14 @@ namespace PolyAndCode.UI
             Horizontal
         }
 
+        public enum VerticalDirectionType
+        {
+            TopToBottom = -1,
+            BottomToTop = 1
+        }
+
         public DirectionType Direction;
+        public VerticalDirectionType VerticalDirection = VerticalDirectionType.TopToBottom;
 
         //Segments : coloums for vertical and rows for horizontal.
         public int Segments => Screen.width > Screen.height ? _landscapeModeSegments : _portraitModeSegments;
@@ -63,7 +70,7 @@ namespace PolyAndCode.UI
             //Contruct the recycling system.
             if (Direction == DirectionType.Vertical)
             {
-                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments);
+                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments, (int)VerticalDirection);
             }
             else if (Direction == DirectionType.Horizontal)
             {

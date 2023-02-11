@@ -37,6 +37,21 @@ namespace Celeste
             }
         }
 
+        private static GUIStyle centredBoldLabel;
+        public static GUIStyle CentredBoldLabel
+        {
+            get
+            {
+                if (centredBoldLabel == null)
+                {
+                    centredBoldLabel = new GUIStyle(BoldLabel);
+                    centredBoldLabel.alignment = TextAnchor.UpperCenter;
+                }
+
+                return centredBoldLabel;
+            }
+        }
+
         private static GUIStyle successLabel;
         public static GUIStyle SuccessLabel
         {

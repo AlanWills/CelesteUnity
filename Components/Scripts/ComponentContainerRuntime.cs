@@ -36,6 +36,11 @@ namespace Celeste.Components
             }
         }
 
+        public void LoadComponents(List<ComponentDTO> componentDTOs)
+        {
+            LoadComponents(componentDTOs.ToLookup());
+        }
+
         public void LoadComponents(Dictionary<string, ComponentDTO> componentDTOLookup)
         {
             for (int i = 0, n = NumComponents; i < n; i++)

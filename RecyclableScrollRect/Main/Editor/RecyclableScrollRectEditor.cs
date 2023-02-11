@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEditor.AnimatedValues;
 using UnityEditor;
 using UnityEngine;
+using static PolyAndCode.UI.RecyclableScrollRect;
 
 namespace PolyAndCode.UI
 {
@@ -30,6 +31,7 @@ namespace PolyAndCode.UI
         SerializedProperty _protoTypeCell;
         SerializedProperty _selfInitialize;
         SerializedProperty _direction;
+        SerializedProperty _verticalDirection;
         SerializedProperty _type;
         SerializedProperty _portraitModeSegments;
         SerializedProperty _landscapeModeSegments;
@@ -55,6 +57,7 @@ namespace PolyAndCode.UI
             _protoTypeCell = serializedObject.FindProperty("PrototypeCell");
             _selfInitialize = serializedObject.FindProperty("SelfInitialize");
             _direction = serializedObject.FindProperty("Direction");
+            _verticalDirection = serializedObject.FindProperty(nameof(RecyclableScrollRect.VerticalDirection));
             _type = serializedObject.FindProperty("IsGrid");
             _portraitModeSegments = serializedObject.FindProperty(nameof(_portraitModeSegments));
             _landscapeModeSegments = serializedObject.FindProperty(nameof(_landscapeModeSegments));
@@ -90,6 +93,12 @@ namespace PolyAndCode.UI
             serializedObject.Update();
           
             EditorGUILayout.PropertyField(_direction);
+
+            if (_direction.enumValueIndex == (int)DirectionType.Vertical)
+            {
+                EditorGUILayout.PropertyField(_verticalDirection);
+            }
+
             EditorGUILayout.PropertyField(_type, new GUIContent("Grid"));
             if (_type.boolValue)
             {
