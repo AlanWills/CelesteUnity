@@ -223,7 +223,7 @@ namespace CelesteEditor.BuildSystem
         {
             if (IsSettingsAvailable())
             {
-                var provider = new AllPlatformSettingsProvider("Project/Celeste/Platform Settings", SettingsScope.Project);
+                var provider = new AllPlatformSettingsProvider("Project/Celeste/All Platform Settings", SettingsScope.Project);
 
                 // Automatically extract all keywords from the Styles.
                 provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();

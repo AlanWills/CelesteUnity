@@ -32,8 +32,8 @@ namespace DnD.Core.Loading
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
-                (s) => { loadingInfo.text = s; },
                 (progress) => progressBar.value = progress,
+                (s) => { loadingInfo.text = s; },
                 () => { });
 
             if (loadContextArgs.onContextLoaded != null)

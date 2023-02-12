@@ -13,6 +13,13 @@ using CelesteEditor.UnityProject.Constants;
 using Celeste.Bootstrap;
 using TMPro.EditorUtilities;
 using System.IO;
+using CelesteEditor.Scene.Settings;
+using Celeste.Sound.Settings;
+using Celeste.Persistence.Settings;
+using Celeste.Localisation.Settings;
+using Celeste.LiveOps.Settings;
+using Celeste.Debug.Settings;
+using Celeste.DataImporters.Settings;
 
 namespace CelesteEditor.UnityProject
 {
@@ -22,29 +29,29 @@ namespace CelesteEditor.UnityProject
         #region Properties and Fields
 
         [Header("Project")]
-        public bool usePresetGitIgnoreFile;
-        public bool usePresetGitLFSFile;
+        [LabelWidth(300)] public bool usePresetGitIgnoreFile;
+        [LabelWidth(300)] public bool usePresetGitLFSFile;
 
         [Header("Build System")]
-        public bool needsBuildSystem;
-        [ShowIf(nameof(needsBuildSystem))] public bool runsOnWindows;
-        [ShowIf(nameof(needsBuildSystem))] public bool runsOnAndroid;
-        [ShowIf(nameof(needsBuildSystem))] public bool runsOniOS;
-        [ShowIf(nameof(needsBuildSystem))] public bool runsOnWebGL;
+        [LabelWidth(300)] public bool needsBuildSystem;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnWindows;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnAndroid;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOniOS;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnWebGL;
 
         [Header("Code")]
-        public string rootNamespaceName;
-        public string rootMenuItemName;
+        [LabelWidth(300)] public string rootNamespaceName;
+        [LabelWidth(300)] public string rootMenuItemName;
 
         [Header("Assets")]
-        public bool usesAddressables;
-        [ShowIf(nameof(usesAddressables))] public bool usesBakedGroupsWithRemoteOverride;
-        public bool usesTextMeshPro;
+        [LabelWidth(300)] public bool usesAddressables;
+        [LabelWidth(300), ShowIf(nameof(usesAddressables))] public bool usesBakedGroupsWithRemoteOverride;
+        [LabelWidth(300)] public bool usesTextMeshPro;
 
         [Header("Scenes")]
-        public bool needsStartupScene;
-        public bool needsBootstrapScene;
-        public bool needsEngineSystemsScene;
+        [LabelWidth(300)] public bool needsStartupScene;
+        [LabelWidth(300)] public bool needsBootstrapScene;
+        [LabelWidth(300)] public bool needsEngineSystemsScene;
 
         #endregion
 
@@ -83,6 +90,7 @@ namespace CelesteEditor.UnityProject
             CreateAssetData(parameters);
             CreateBuildSystemData(parameters);
             CreateModules(parameters);
+            CreateEditorSettings();
         }
 
         #region Utility
@@ -271,7 +279,7 @@ namespace CelesteEditor.UnityProject
                 SceneSet engineSystemsSceneSet = AssetUtility.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
                 Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
-                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Single)
+                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Additive)
                     .WithSceneSet(engineSystemsSceneSet);
 
                 LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
@@ -299,13 +307,15 @@ namespace CelesteEditor.UnityProject
             LoadJob bootstrapLoadJob = AssetUtility.FindAsset<LoadJob>(BootstrapConstants.LOAD_JOB_NAME);
             Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
+            EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(CelesteConstants.LOADING_SCENE_NAME).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
             AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
+            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable);
-            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable);
             
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
             bootstrapSceneSet.MakeAddressable();
@@ -406,6 +416,21 @@ namespace CelesteEditor.UnityProject
                 string packageFullPath = TMP_EditorUtility.packageFullPath;
                 AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
             }
+        }
+
+        #endregion
+
+        #region Editor Settings
+
+        private static void CreateEditorSettings()
+        {
+            DataImporterEditorSettings.GetOrCreateSettings();
+            DebugEditorSettings.GetOrCreateSettings();
+            LiveOpsEditorSettings.GetOrCreateSettings();
+            LocalisationEditorSettings.GetOrCreateSettings();
+            PersistenceEditorSettings.GetOrCreateSettings();
+            SceneEditorSettings.GetOrCreateSettings();
+            SoundEditorSettings.GetOrCreateSettings();
         }
 
         #endregion

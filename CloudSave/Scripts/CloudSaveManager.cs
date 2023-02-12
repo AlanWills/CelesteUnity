@@ -1,10 +1,8 @@
 ﻿using Celeste.CloudSave.Persistence;
 using Celeste.Log;
 using Celeste.Persistence;
-using Celeste.Persistence.Settings;
 using Celeste.Persistence.Snapshots;
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.CloudSave
@@ -17,22 +15,7 @@ namespace Celeste.CloudSave
         public const string FILE_NAME = "CloudSave.dat";
         protected override string FileName => FILE_NAME;
 
-        [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private CloudSaveRecord cloudSaveRecord;
-
-        #endregion
-
-        #region Unity Methods
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (snapshotRecord == null)
-            {
-                snapshotRecord = PersistenceEditorSettings.GetOrCreateSettings().snapshotRecord;
-            }
-        }
-#endif
 
         #endregion
 
@@ -68,7 +51,7 @@ namespace Celeste.CloudSave
 
         public void OnWriteCloudSave()
         {
-            DataSnapshot dataSnapshot = snapshotRecord.CreateDataSnapshot();
+            DataSnapshot dataSnapshot = SnapshotRecord.CreateDataSnapshot();
             string saveDataString = dataSnapshot.Serialize();
             cloudSaveRecord.WriteDefaultSaveGameAsync(
                 saveDataString,

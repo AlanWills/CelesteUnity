@@ -10,50 +10,15 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        public iOSSettings iOSDebug
-        {
-            get { return m_iOSDebug; }
-        }
-
-        public iOSSettings iOSRelease
-        {
-            get { return m_iOSRelease; }
-        }
-
-        public AndroidSettings AndroidDebug
-        {
-            get { return m_androidDebug; }
-        }
-
-        public AndroidSettings AndroidReleaseApk
-        {
-            get { return m_androidReleaseApk; }
-        }
-
-        public AndroidSettings AndroidReleaseBundle
-        {
-            get { return m_androidReleaseBundle; }
-        }
-
-        public WindowsSettings WindowsDebug
-        {
-            get { return m_windowsDebug; }
-        }
-
-        public WindowsSettings WindowsRelease
-        {
-            get { return m_windowsRelease; }
-        }
-
-        public WebGLSettings WebGLDebug
-        {
-            get { return m_webGLDebug; }
-        }
-
-        public WebGLSettings WebGLRelease
-        {
-            get { return m_webGLRelease; }
-        }
+        public iOSSettings iOSDebug => m_iOSDebug;
+        public iOSSettings iOSRelease => m_iOSRelease;
+        public AndroidSettings AndroidDebug => m_androidDebug;
+        public AndroidSettings AndroidReleaseApk => m_androidReleaseApk;
+        public AndroidSettings AndroidReleaseBundle => m_androidReleaseBundle;
+        public WindowsSettings WindowsDebug => m_windowsDebug;
+        public WindowsSettings WindowsRelease => m_windowsRelease;
+        public WebGLSettings WebGLDebug => m_webGLDebug;
+        public WebGLSettings WebGLRelease => m_webGLRelease;
 
         [SerializeField] private iOSSettings m_iOSDebug;
         [SerializeField] private iOSSettings m_iOSRelease;
@@ -91,7 +56,8 @@ namespace CelesteEditor.BuildSystem
         {
             m_windowsDebug = CreateSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsDebug");
             m_windowsRelease = CreateSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsRelease");
-            
+            EditorUtility.SetDirty(this);
+
             AppVersion appVersion = CreateVersionAsset(WindowsPlatformSettingsPath, "WindowsAppVersion");
             m_windowsDebug.Version = appVersion;
             m_windowsRelease.Version = appVersion;
@@ -102,6 +68,7 @@ namespace CelesteEditor.BuildSystem
             m_androidDebug = CreateSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidDebug");
             m_androidReleaseApk = CreateSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseApk");
             m_androidReleaseBundle = CreateSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseBundle");
+            EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(AndroidPlatformSettingsPath, "AndroidAppVersion");
             m_androidDebug.Version = appVersion;
@@ -113,6 +80,7 @@ namespace CelesteEditor.BuildSystem
         {
             m_iOSDebug = CreateSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSDebug");
             m_iOSRelease = CreateSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSRelease");
+            EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(iOSPlatformSettingsPath, "iOSAppVersion");
             m_iOSDebug.Version = appVersion;
@@ -123,6 +91,7 @@ namespace CelesteEditor.BuildSystem
         {
             m_webGLDebug = CreateSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLDebug");
             m_webGLRelease = CreateSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLRelease");
+            EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(WebGLPlatformSettingsPath, "WebGLAppVersion");
             m_webGLDebug.Version = appVersion;

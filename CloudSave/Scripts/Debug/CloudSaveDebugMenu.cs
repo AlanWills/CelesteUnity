@@ -35,7 +35,8 @@ namespace Celeste.CloudSave
                         JsonUtility.FromJsonOverwrite(saveGameString, snapshot);
                         snapshot.UnpackItems();
 
-                        CoroutineManager.Instance.StartCoroutine(startupSceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, () => { }));
+                        CoroutineManager.Instance.StartCoroutine(
+                            startupSceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, (s) => { }, () => { }));
                     }));
             }
 

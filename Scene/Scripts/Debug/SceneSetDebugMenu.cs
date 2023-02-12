@@ -31,12 +31,14 @@ namespace Celeste.Scene.Debug
 
                     if (Button($"Single", ExpandWidth(false)))
                     {
-                        CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, () => { }));
+                        CoroutineManager.Instance.StartCoroutine(
+                            sceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, (s) => { }, () => { }));
                     }
 
                     if (Button($"Additive", ExpandWidth(false)))
                     {
-                        CoroutineManager.Instance.StartCoroutine(sceneSet.LoadAsync(LoadSceneMode.Additive, (f) => { }, () => { }));
+                        CoroutineManager.Instance.StartCoroutine(
+                            sceneSet.LoadAsync(LoadSceneMode.Additive, (f) => { }, (s) => { }, () => { }));
                     }
                 }
             }

@@ -18,12 +18,9 @@ namespace Celeste.Persistence
         object ISupportsDataSnapshots.Data => Serialize();
         string ISupportsFileSnapshots.SourceFile => FilePath;
 
-        protected string FilePath
-        {
-            get { return Path.Combine(Application.persistentDataPath, FileName); }
-        }
-
         protected abstract string FileName { get; }
+        protected string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        protected SnapshotRecord SnapshotRecord => snapshotRecord;
 
         [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private bool loadOnAwake = true;

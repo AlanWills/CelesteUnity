@@ -9,6 +9,12 @@
         "Celeste.Startup",
         "Celeste.Loading",
         "Celeste.Bootstrap",
+        "Celeste.DataImporters",
+        "Celeste.Debug",
+        "Celeste.LiveOps",
+        "Celeste.Localisation",
+        "Celeste.Persistence",
+        "Celeste.Sound",
         "Celeste.Persistence.Editor",
         "Unity.Addressables.Editor",
         "Unity.TextMeshPro.Editor"

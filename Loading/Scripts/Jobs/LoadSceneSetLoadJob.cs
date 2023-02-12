@@ -71,7 +71,7 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            yield return sceneSet.LoadAsync(loadSceneMode, setProgress, () =>
+            yield return sceneSet.LoadAsync(loadSceneMode, setProgress, setOutput, () =>
             { 
                 if (onContextLoadedEvent != null)
                 {
