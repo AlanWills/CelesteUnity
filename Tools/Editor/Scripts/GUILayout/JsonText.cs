@@ -14,13 +14,13 @@ namespace CelesteEditor
             {
                 using (var horizontal = new GUILayout.HorizontalScope())
                 {
-                    property.stringValue = EditorGUILayout.TextArea(property.stringValue);
-
                     if (GUILayout.Button("Prettify", GUILayout.ExpandWidth(false)))
                     {
                         JToken jt = JToken.Parse(property.stringValue);
                         property.stringValue = jt.ToString(Newtonsoft.Json.Formatting.Indented);
                     }
+
+                    property.stringValue = EditorGUILayout.TextArea(property.stringValue);
                 }
             }
         }

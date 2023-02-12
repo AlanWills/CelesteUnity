@@ -48,11 +48,14 @@ namespace CelesteEditor.LiveOps
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())
             {
-                componentCatalogue = EditorGUILayout.ObjectField(componentCatalogue, typeof(ComponentCatalogue), false) as ComponentCatalogue;
-
-                if (changeCheck.changed)
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    RefreshDataUsingComponentCatalogue();
+                    componentCatalogue = EditorGUILayout.ObjectField(componentCatalogue, typeof(ComponentCatalogue), false) as ComponentCatalogue;
+
+                    if (GUILayout.Button("Refresh Components", GUILayout.ExpandWidth(false)) || changeCheck.changed)
+                    {
+                        RefreshDataUsingComponentCatalogue();
+                    }
                 }
 
                 if (availableComponents.Count > 0)

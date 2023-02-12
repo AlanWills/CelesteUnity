@@ -62,28 +62,31 @@ namespace CelesteEditor.Tools.PropertyDrawers.Attributes
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            MultiPropertyAttribute multiPropertyAttribute = RetrieveAttributes();
-            var storedAttributes = multiPropertyAttribute.stored;
-
-            // Calls to IsVisible. If it returns false for any attribute, the property will not be rendered.
-            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+            using (new EditorGUI.PropertyScope(position, label, property))
             {
-                if (!storedAttributes[i].IsVisible(property)) return;
-            }
+                MultiPropertyAttribute multiPropertyAttribute = RetrieveAttributes();
+                var storedAttributes = multiPropertyAttribute.stored;
 
-            // Calls to OnPreRender before the last attribute draws the UI.
-            for (int i = 0, n = storedAttributes.Count; i < n; ++i)
-            {
-                storedAttributes[i].OnPreGUI(position, property);
-            }
+                // Calls to IsVisible. If it returns false for any attribute, the property will not be rendered.
+                for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+                {
+                    if (!storedAttributes[i].IsVisible(property)) return;
+                }
 
-            // The last attribute is in charge of actually drawing something:
-            multiPropertyAttribute.stored[multiPropertyAttribute.stored.Count - 1].OnGUI(position, property, label);
+                // Calls to OnPreRender before the last attribute draws the UI.
+                for (int i = 0, n = storedAttributes.Count; i < n; ++i)
+                {
+                    storedAttributes[i].OnPreGUI(position, property);
+                }
 
-            // Calls to OnPostRender after the last attribute draws the UI. These are called in reverse order.
-            for (int i = storedAttributes.Count - 1; i >= 0; --i)
-            {
-                storedAttributes[i].OnPostGUI(position, property);
+                // The last attribute is in charge of actually drawing something:
+                multiPropertyAttribute.stored[multiPropertyAttribute.stored.Count - 1].OnGUI(position, property, label);
+
+                // Calls to OnPostRender after the last attribute draws the UI. These are called in reverse order.
+                for (int i = storedAttributes.Count - 1; i >= 0; --i)
+                {
+                    storedAttributes[i].OnPostGUI(position, property);
+                }
             }
         }
     }

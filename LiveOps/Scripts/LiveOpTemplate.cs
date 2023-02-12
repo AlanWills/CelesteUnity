@@ -1,9 +1,7 @@
 ﻿using Celeste.Components;
 using Celeste.DataStructures;
 using Celeste.Tools.Attributes.GUI;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using Component = Celeste.Components.Component;
 

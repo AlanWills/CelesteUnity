@@ -35,8 +35,6 @@ namespace Celeste.Tools.Attributes.GUI
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
             Rect drawRect = new Rect(position);
             drawRect.y += TOP_SPACING;
 
@@ -57,8 +55,6 @@ namespace Celeste.Tools.Attributes.GUI
             }
 
             --EditorGUI.indentLevel;
-
-            EditorGUI.EndProperty();
         }
 
         private IEnumerable<SerializedProperty> VisibleChildren(SerializedProperty property)
