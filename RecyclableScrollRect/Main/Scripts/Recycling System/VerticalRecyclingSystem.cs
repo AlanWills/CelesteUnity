@@ -74,7 +74,7 @@ namespace PolyAndCode.UI
             //Set content height according to no of rows
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
-            //SetTopAnchor(Content);
+            SetTopAnchor(Content);
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
 
             if (onInitialized != null) onInitialized();
@@ -154,15 +154,15 @@ namespace PolyAndCode.UI
                     if (++_bottomMostCellColoumn >= _coloumns)
                     {
                         _bottomMostCellColoumn = 0;
-                        posY -= _cellHeight;
+                        posY += _direction * _cellHeight;
                         currentPoolCoverage += item.rect.height;
                     }
                 }
                 else
                 {
                     item.anchoredPosition = new Vector2(0, posY);
-                    posY = item.anchoredPosition.y + _direction * item.rect.height;
-                    currentPoolCoverage += item.rect.height;
+                    posY = item.anchoredPosition.y + _direction * _cellHeight;
+                    currentPoolCoverage += _cellHeight;
                 }
 
                 //Setting data for Cell

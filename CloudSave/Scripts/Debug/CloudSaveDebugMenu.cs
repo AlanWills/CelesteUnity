@@ -21,6 +21,8 @@ namespace Celeste.CloudSave
 
         protected override void OnDrawMenu()
         {
+            GUILayout.Label($"Playtime Start: {cloudSave.PlaytimeStart}");
+
             if (GUILayout.Button("Authenticate"))
             {
                 CoroutineManager.Instance.StartCoroutine(cloudSave.AuthenticateAsync());

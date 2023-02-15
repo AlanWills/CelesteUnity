@@ -65,11 +65,11 @@ namespace Celeste.Debug.Menus
 
             Rect screenRect = new Rect(debugScreenSpaceRect.xMin / maxAspectRatio, debugScreenSpaceRect.yMin / maxAspectRatio, debugScreenSpaceRect.width / maxAspectRatio, debugScreenSpaceRect.height / maxAspectRatio);
             Rect viewRect = new Rect(debugScreenSpaceRect.xMin, debugScreenSpaceRect.yMin, screenRect.width, screenRect.height * 4);
+            viewRect.size -= new Vector2(35, 0);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
             {
                 viewRect.position += new Vector2(10, 10);
-                viewRect.size -= new Vector2(30, 0);
 
                 using (GUILayout.AreaScope areaScope = new GUILayout.AreaScope(viewRect))
                 {
