@@ -1,4 +1,5 @@
 ﻿using Celeste.Events;
+using Celeste.Tools.Attributes.GUI;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -42,7 +43,14 @@ namespace Celeste.Parameters
                     T oldValue = this.value;
                     this.value = value;
 
-                    OnValueChangedChangedEvent.Invoke(new ValueChangedArgs<T>(oldValue, value));
+                    if (invokeValueChangedSilently)
+                    {
+                        OnValueChangedChangedEvent.InvokeSilently(oldValue, value);
+                    }
+                    else
+                    {
+                        OnValueChangedChangedEvent.Invoke(oldValue, value);
+                    }
                 }
             }
         }
@@ -71,6 +79,7 @@ namespace Celeste.Parameters
 #endif
         [SerializeField] private T defaultValue;
         [SerializeField] private TValueChangedEvent onValueChanged;
+        [SerializeField, HideIfNull(nameof(onValueChanged))] private bool invokeValueChangedSilently = false;
 
         #endregion
 
