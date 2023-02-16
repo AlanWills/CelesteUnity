@@ -49,7 +49,7 @@ namespace Celeste.CloudSave
 
         #region Callbacks
 
-        public void OnWriteCloudSave()
+        public void RequestWriteCloudSave()
         {
             DataSnapshot dataSnapshot = SnapshotRecord.CreateDataSnapshot();
             string saveDataString = dataSnapshot.Serialize();

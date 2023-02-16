@@ -82,9 +82,7 @@ namespace Celeste.Tools
                     }
                 }
 
-                FlexibleSpace();
-                Label($"{currentPage + 1} / {numPages}", ExpandWidth(false));
-                FlexibleSpace();
+                Label($"{currentPage + 1} / {numPages}", GUI.skin.label.New().UpperCentreAligned());
 
                 // Forward
                 using (var guiEnabled = new GUIEnabledScope(currentPage < numPages - 1))

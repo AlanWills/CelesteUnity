@@ -31,33 +31,30 @@ namespace Celeste.CloudSave
             Action onAuthenticateSucceeded = null,
             Action<AuthenticateStatus> onAuthenticateFailed = null)
         {
-            if (!IsAuthenticated)
+            PlayGamesPlatform.Instance.Authenticate((SignInStatus status) =>
             {
-                PlayGamesPlatform.Instance.Authenticate((SignInStatus status) =>
+                if (status == SignInStatus.Success)
                 {
-                    if (status == SignInStatus.Success)
+                    Log($"Successfully signed in with Google Play Games");
+                    onAuthenticateSucceeded?.Invoke();
+                }
+                else
+                {
+                    PlayGamesPlatform.Instance.ManuallyAuthenticate((SignInStatus status) =>
                     {
-                        Log($"Successfully signed in with Google Play Games");
-                        onAuthenticateSucceeded?.Invoke();
-                    }
-                    else
-                    {
-                        PlayGamesPlatform.Instance.ManuallyAuthenticate((SignInStatus status) =>
+                        if (status == SignInStatus.Success)
                         {
-                            if (status == SignInStatus.Success)
-                            {
-                                Log($"Successfully signed in with Google Play Games");
-                                onAuthenticateSucceeded?.Invoke();
-                            }
-                            else
-                            {
-                                LogError($"Failed to sign in with Google Play Games: {status}");
-                                onAuthenticateFailed?.Invoke(ToAuthenticateStatus(status));
-                            }
-                        });
-                    }
-                });
-            }
+                            Log($"Successfully signed in with Google Play Games");
+                            onAuthenticateSucceeded?.Invoke();
+                        }
+                        else
+                        {
+                            LogError($"Failed to sign in with Google Play Games: {status}");
+                            onAuthenticateFailed?.Invoke(ToAuthenticateStatus(status));
+                        }
+                    });
+                }
+            });
         }
 
         public void OpenSaveGame(

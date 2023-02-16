@@ -1,4 +1,5 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Log;
+using Celeste.Parameters;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -40,6 +41,12 @@ namespace Celeste.CloudSave
             Action onAuthenticateSucceeded = null,
             Action<AuthenticateStatus> onAuthenticateFailed = null)
         {
+            if (impl.IsAuthenticated)
+            {
+                onAuthenticateSucceeded?.Invoke();
+                yield break;
+            }
+
             bool authenticationComplete = false;
 
             impl.Authenticate(
@@ -71,11 +78,13 @@ namespace Celeste.CloudSave
                 defaultSaveGameName,
                 (saveDataString) =>
                 {
+                    HudLog.LogWarning("Successfully read default cloud save game.");
                     readComplete = true;
                     onSaveGameReadSucceeded?.Invoke(saveDataString);
                 },
                 (status) =>
                 {
+                    HudLog.LogWarning("Unsuccessfully read default cloud save game.");
                     readComplete = true;
                     onSaveGameReadFailed?.Invoke(status);
                 });
@@ -99,11 +108,13 @@ namespace Celeste.CloudSave
                 DateTimeOffset.UtcNow - PlaytimeStart,
                 () =>
                 {
+                    HudLog.LogInfo("Successfully wrote default cloud save game.");
                     writeComplete = true;
                     onSaveGameSucceeded?.Invoke();
                 },
                 (status) =>
                 {
+                    HudLog.LogWarning("Unsuccessfully wrote default cloud save game.");
                     writeComplete = true;
                     onSaveGameFailed?.Invoke(status);
                 });
@@ -124,11 +135,13 @@ namespace Celeste.CloudSave
                 defaultSaveGameName,
                 () =>
                 {
+                    HudLog.LogInfo("Successfully deleted default cloud save game.");
                     deleteComplete = true;
                     onSaveGameDeletedSucceeded?.Invoke();
                 },
                 (status) =>
                 {
+                    HudLog.LogWarning("Unsuccessfully deleted default cloud save game.");
                     deleteComplete = true;
                     onSaveGameDeletedFailed?.Invoke(status);
                 });

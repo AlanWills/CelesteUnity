@@ -28,8 +28,7 @@ namespace Celeste
             {
                 if (boldLabel == null)
                 {
-                    boldLabel = new GUIStyle(GUI.skin.label);
-                    boldLabel.fontStyle = FontStyle.Bold;
+                    boldLabel = GUI.skin.label.New().Bold();
                     boldLabel.normal.textColor = Color.black;
                 }
 
@@ -44,8 +43,7 @@ namespace Celeste
             {
                 if (centredBoldLabel == null)
                 {
-                    centredBoldLabel = new GUIStyle(BoldLabel);
-                    centredBoldLabel.alignment = TextAnchor.UpperCenter;
+                    centredBoldLabel = BoldLabel.New().UpperCentreAligned();
                 }
 
                 return centredBoldLabel;
@@ -83,5 +81,22 @@ namespace Celeste
         }
 
         #endregion
+
+        public static GUIStyle New(this GUIStyle guiStyle)
+        {
+            return new GUIStyle(guiStyle);
+        }
+
+        public static GUIStyle Bold(this GUIStyle guiStyle)
+        {
+            guiStyle.fontStyle = FontStyle.Bold;
+            return guiStyle;
+        }
+
+        public static GUIStyle UpperCentreAligned(this GUIStyle guiStyle)
+        {
+            guiStyle.alignment = TextAnchor.UpperCenter;
+            return guiStyle;
+        }
     }
 }

@@ -63,7 +63,7 @@ namespace Celeste.Debug.Menus
 
             using (new GUILayout.HorizontalScope())
             {
-                GUILayout.Label(displayName, CelesteGUIStyles.CentredBoldLabel);
+                GUILayout.Label(displayName, GUI.skin.label.New().Bold().UpperCentreAligned());
             }
 
             OnDrawMenu();

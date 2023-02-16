@@ -378,7 +378,7 @@ namespace CelesteEditor.UnityProject
             {
                 try
                 {
-                    File.Move(CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
+                    File.Copy(CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
                 }
                 catch (Exception ex)
                 {
@@ -391,7 +391,7 @@ namespace CelesteEditor.UnityProject
             {
                 try
                 {
-                    File.Move(CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
+                    File.Copy(CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
                 }
                 catch (Exception ex)
                 {
