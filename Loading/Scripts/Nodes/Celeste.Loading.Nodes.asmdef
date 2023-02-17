@@ -7,6 +7,7 @@
         "Celeste.Loading",
         "Celeste.Events",
         "Celeste.Parameters",
+        "Celeste.Scene",
         "XNode"
     ],
     "includePlatforms": [],

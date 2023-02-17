@@ -31,19 +31,12 @@ namespace Celeste.FSM.Nodes.Logic
     {
         #region Properties and Fields
 
-        [Input]
-        public object inArgument;
+        [Input] public object inArgument;
+        [Output] public object outArgument;
 
-        [Output]
-        public object outArgument;
+        public uint NumConditions => (uint)conditions.Count;
 
-        public uint NumConditions
-        {
-            get { return (uint)conditions.Count; }
-        }
-
-        [SerializeField]
-        private List<IfCondition> conditions = new List<IfCondition>();
+        [SerializeField] private List<IfCondition> conditions = new List<IfCondition>();
 
         #endregion
 
@@ -143,7 +136,7 @@ namespace Celeste.FSM.Nodes.Logic
             {
                 if (condition.UseArgument)
                 {
-                    condition.Condition.SetTarget(_argument);
+                    condition.Condition.SetVariable(_argument);
                 }
 
                 if (condition.Condition.IsMet)

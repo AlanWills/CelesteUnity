@@ -39,7 +39,6 @@ namespace Celeste.UI.Popups
             showPopup.AddListener(OnShowPopup);
 
             popupController = GetComponent<IPopupController>();
-            Debug.Assert(popupController != null, $"No popup controller found on popup {gameObject.name}.");
         }
 
         private void OnDestroy()

@@ -255,7 +255,7 @@ MonoBehaviour:
   popupRoot: {fileID: 4631722049241556946}
   animator: {fileID: 0}
   hideOnConfirm: 1
-  showPopup: {fileID: 11400000, guid: ce9e19f1857ad5947b791325db372a28, type: 2}
+  showPopup: {fileID: 0}
   onHidePopup: {fileID: 0}
   onConfirmPressed: {fileID: 0}
   onClosePressed: {fileID: 0}

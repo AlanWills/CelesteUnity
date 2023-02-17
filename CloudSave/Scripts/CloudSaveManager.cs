@@ -17,6 +17,8 @@ namespace Celeste.CloudSave
 
         [SerializeField] private CloudSaveRecord cloudSaveRecord;
 
+        [NonSerialized] private bool savingCloudSave = false;
+
         #endregion
 
         #region Save/Load
@@ -51,11 +53,18 @@ namespace Celeste.CloudSave
 
         public void RequestWriteCloudSave()
         {
-            DataSnapshot dataSnapshot = SnapshotRecord.CreateDataSnapshot();
-            string saveDataString = dataSnapshot.Serialize();
-            cloudSaveRecord.WriteDefaultSaveGameAsync(
-                saveDataString,
-                () => HudLog.LogInfo("Successfully wrote cloud save."));
+            if (!savingCloudSave)
+            {
+                savingCloudSave = true;
+                DataSnapshot dataSnapshot = SnapshotRecord.CreateDataSnapshot();
+                string saveDataString = dataSnapshot.Serialize();
+                
+                StartCoroutine(
+                    cloudSaveRecord.WriteDefaultSaveGameAsync(
+                    saveDataString,
+                    () => savingCloudSave = false,
+                    (error) => savingCloudSave = false));
+            }
         }
 
         #endregion

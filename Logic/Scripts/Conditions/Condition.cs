@@ -19,7 +19,11 @@ namespace Celeste.Logic
                 if (isMet != value)
                 {
                     isMet = value;
-                    onIsMetChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
+                    
+                    if (Application.isPlaying)
+                    {
+                        onIsMetChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
+                    }
                 }
             }
         }
@@ -60,7 +64,7 @@ namespace Celeste.Logic
         protected virtual void DoInit() { }
         protected virtual void DoShutdown() { }
         protected abstract bool DoCheck();
-        public abstract void SetTarget(object arg);
+        public abstract void SetVariable(object arg);
 
         #region ICopyable
 

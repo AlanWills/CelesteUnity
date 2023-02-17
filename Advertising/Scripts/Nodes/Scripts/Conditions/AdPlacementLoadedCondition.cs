@@ -23,7 +23,7 @@ namespace Celeste.Advertising.Nodes.Conditions
             trueIfLoaded = adPlacementLoadedCondition.trueIfLoaded;
         }
 
-        public override void SetTarget(object arg)
+        public override void SetVariable(object arg)
         {
             trueIfLoaded = (bool)arg;
         }

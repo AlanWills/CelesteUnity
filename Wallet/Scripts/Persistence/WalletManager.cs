@@ -63,5 +63,9 @@ namespace Celeste.Wallet
         }
 
         #endregion
+
+        #region Callbacks
+
+        #endregion
     }
 }

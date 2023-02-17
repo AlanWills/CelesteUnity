@@ -36,6 +36,8 @@ namespace Celeste.Web
                 {
                     Debug.Log("Download Success!");
                     downloadData = webRequest.downloadHandler.text;
+                    PlayerPrefs.GetString("LastDataDownloaded");
+                    PlayerPrefs.Save();
                 }
             }
 

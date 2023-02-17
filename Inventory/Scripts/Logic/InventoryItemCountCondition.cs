@@ -63,7 +63,7 @@ namespace Celeste.Inventory.Logic
             return count.SatisfiesComparison(condition, target.Value);
         }
 
-        public override void SetTarget(object arg)
+        public override void SetVariable(object arg)
         {
             target.IsConstant = true;
             target.Value = arg != null ? (int)arg : default;

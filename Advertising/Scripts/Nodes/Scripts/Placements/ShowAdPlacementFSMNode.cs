@@ -1,5 +1,6 @@
 using Celeste.FSM;
 using UnityEngine;
+using XNode;
 
 namespace Celeste.Advertising.Nodes
 {
@@ -7,6 +8,8 @@ namespace Celeste.Advertising.Nodes
     public class ShowAdPlacementFSMNode : FSMNode
     {
         #region Properties and Fields
+
+        [Output] public AdWatchResult adWatchResult;
 
         [SerializeField] private AdRecord adRecord;
         [SerializeField] private AdPlacement adPlacement;
@@ -21,6 +24,7 @@ namespace Celeste.Advertising.Nodes
         {
             base.OnEnter();
 
+            adWatchResult = AdWatchResult.Unknown;
             inProgress = adPlacement.IsLoaded;
             adRecord.PlayAdPlacement(adPlacement, OnShowCallback);
         }
@@ -37,11 +41,17 @@ namespace Celeste.Advertising.Nodes
             base.OnExit();
         }
 
+        public override object GetValue(NodePort port)
+        {
+            return adWatchResult;
+        }
+
         #endregion
 
         private void OnShowCallback(AdWatchResult result)
         {
             UnityEngine.Debug.Log($"Ad Placement {adPlacement.PlacementId} finished with result {result}.");
+            adWatchResult = result;
             inProgress = false;
         }
     }

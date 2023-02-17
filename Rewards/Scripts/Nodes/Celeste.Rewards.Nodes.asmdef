@@ -1,13 +1,12 @@
 {
-    "name": "Celeste.Rewards",
-    "rootNamespace": "Celeste.Rewards",
+    "name": "Celeste.Rewards.Nodes",
+    "rootNamespace": "Celeste.Rewards.Nodes",
     "references": [
-        "Celeste.Objects",
-        "Celeste.Wallet",
-        "Celeste.Tools",
-        "Celeste.Parameters",
+        "Celeste.Rewards",
         "Celeste.Events",
-        "Unity.TextMeshPro"
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
+        "XNode"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

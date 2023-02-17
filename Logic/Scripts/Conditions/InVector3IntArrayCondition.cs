@@ -36,7 +36,7 @@ namespace Celeste.Logic
 
         #region Check Methods
 
-        public override void SetTarget(object arg)
+        public override void SetVariable(object arg)
         {
             target.IsConstant = true;
             target.Value = arg != null ? (Vector3Int)arg : default;

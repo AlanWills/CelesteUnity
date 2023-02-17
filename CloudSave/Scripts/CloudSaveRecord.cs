@@ -25,7 +25,9 @@ namespace Celeste.CloudSave
 
         private void OnEnable()
         {
-#if UNITY_ANDROID && GOOGLE_PLAY_GAMES
+#if UNITY_EDITOR
+            impl = new DisabledCloudSave();
+#elif UNITY_ANDROID && GOOGLE_PLAY_GAMES
             impl = new GooglePlayGamesCloudSave();
 #endif
         }
@@ -43,20 +45,24 @@ namespace Celeste.CloudSave
         {
             if (impl.IsAuthenticated)
             {
+                HudLog.LogInfo("Cloud Save already authenticated.");
                 onAuthenticateSucceeded?.Invoke();
                 yield break;
             }
 
             bool authenticationComplete = false;
+            HudLog.LogInfo("Beginning to authenticate cloud save.");
 
             impl.Authenticate(
                 () =>
                 {
+                    HudLog.LogInfo("Successfully authenticated cloud save.");
                     authenticationComplete = true;
                     onAuthenticateSucceeded?.Invoke();
                 },
                 (status) =>
                 {
+                    HudLog.LogInfo("Unsuccessfully authenticated cloud save.");
                     impl = new DisabledCloudSave();
                     authenticationComplete = true;
                     onAuthenticateFailed?.Invoke(status);
@@ -73,6 +79,7 @@ namespace Celeste.CloudSave
             Action<SaveRequestStatus> onSaveGameReadFailed = null)
         {
             bool readComplete = false;
+            HudLog.LogInfo("Beginning to read default cloud save.");
 
             impl.ReadSaveGame(
                 defaultSaveGameName,
@@ -101,6 +108,7 @@ namespace Celeste.CloudSave
             Action<SaveRequestStatus> onSaveGameFailed = null)
         {
             bool writeComplete = false;
+            HudLog.LogInfo("Beginning to write default cloud save.");
 
             impl.WriteSaveGame(
                 defaultSaveGameName,
@@ -130,6 +138,7 @@ namespace Celeste.CloudSave
             Action<SaveRequestStatus> onSaveGameDeletedFailed = null)
         {
             bool deleteComplete = false;
+            HudLog.LogInfo("Beginning to delete default cloud save.");
 
             impl.DeleteSaveGame(
                 defaultSaveGameName,
