@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Tools.Attributes.GUI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Celeste.Persistence.Snapshots
         private struct Data
         {
             public string UnpackPath;
-            public string SourceData;
+            [Json] public string SourceData;
         }
 
         #endregion
@@ -38,6 +39,19 @@ namespace Celeste.Persistence.Snapshots
                 UnpackPath = unpackPath,
                 SourceData = saveData,
             });
+        }
+
+        public string FindData(string unpackPath)
+        {
+            UnityEngine.Debug.Assert(data.Exists(x => string.CompareOrdinal(x.UnpackPath, unpackPath) == 0), $"{unpackPath} has not been registered in the snapshot.");
+            return data.Find(x => string.CompareOrdinal(x.UnpackPath, unpackPath) == 0).SourceData;
+        }
+
+        public TDTO DeserializeData<TDTO>(string unpackPath) where TDTO : class
+        {
+            string data = FindData(unpackPath);
+            var deserializeResult = PersistenceUtility.Deserialize<TDTO>(data);
+            return deserializeResult.Item1.Succeeded ? deserializeResult.Item2 : default;
         }
 
         public override void UnpackItems()

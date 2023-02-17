@@ -37,12 +37,12 @@ namespace Celeste.BoardGame.Persistence
             }
 
             {
-                boardGameObjectRuntimes.Capacity = boardGameRuntime.NumBoardGameObjects;
+                boardGameObjectRuntimes.Capacity = boardGameRuntime.NumBoardGameObjectRuntimes;
                 boardGameObjectRuntimes.Clear();
 
-                for (int i = 0, n = boardGameRuntime.NumBoardGameObjects; i < n; ++i)
+                for (int i = 0, n = boardGameRuntime.NumBoardGameObjectRuntimes; i < n; ++i)
                 {
-                    boardGameObjectRuntimes.Add(new BoardGameObjectRuntimeDTO(boardGameRuntime.GetBoardGameObject(i)));
+                    boardGameObjectRuntimes.Add(new BoardGameObjectRuntimeDTO(boardGameRuntime.GetBoardGameObjectRuntime(i)));
                 }
             }
         }

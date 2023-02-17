@@ -7,16 +7,19 @@ namespace Celeste.BoardGame.Runtime
     {
         #region Properties and Fields
 
+        public int InstanceId { get; }
         public int Guid => boardGameObject.Guid;
         public string Name => boardGameObject.name;
 
         private BoardGameObject boardGameObject;
+        private static int currentInstanceId = 0;
 
         #endregion
 
         public BoardGameObjectRuntime(BoardGameObject boardGameObject)
         {
             this.boardGameObject = boardGameObject;
+            InstanceId = ++currentInstanceId;
 
             InitializeComponents(boardGameObject);
         }

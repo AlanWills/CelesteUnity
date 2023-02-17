@@ -13,7 +13,7 @@ namespace Celeste.Persistence.Debug
         #region Properties and Fields
 
         [SerializeField] private SnapshotRecord snapshotRecord;
-        [SerializeField] private string snapshotCreationFolder = "Assets/Persistence/Snapshots";
+        [SerializeField] private string snapshotCreationFolder = "Assets/Snapshots";
 
         private Dictionary<string, bool> snapshotListFoldout = new Dictionary<string, bool>();
 

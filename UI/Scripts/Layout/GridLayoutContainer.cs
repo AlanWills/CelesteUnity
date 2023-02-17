@@ -58,6 +58,11 @@ namespace Celeste.UI.Layout
             Layout();
         }
 
+        public void OnChildRemoved(GameObject gameObject)
+        {
+            Layout();
+        }
+
         public void Layout()
         {
             switch (layoutType)

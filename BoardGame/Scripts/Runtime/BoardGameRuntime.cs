@@ -1,9 +1,11 @@
 ﻿using Celeste.BoardGame.Components;
+using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Persistence;
 using Celeste.Components;
 using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Celeste.BoardGame.Runtime
 {
@@ -11,7 +13,7 @@ namespace Celeste.BoardGame.Runtime
     {
         #region Properties and Fields
 
-        public int NumBoardGameObjects => boardGameObjectRuntimes.Count;
+        public int NumBoardGameObjectRuntimes => boardGameObjectRuntimes.Count;
 
         private BoardGame boardGame;
         private List<BoardGameObjectRuntime> boardGameObjectRuntimes = new List<BoardGameObjectRuntime>();
@@ -34,7 +36,7 @@ namespace Celeste.BoardGame.Runtime
             }
         }
 
-        public BoardGameObjectRuntime AddBoardGameObject(BoardGameObject boardGameObject)
+        public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObject boardGameObject)
         {
             BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
             boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
@@ -43,7 +45,7 @@ namespace Celeste.BoardGame.Runtime
             return boardGameObjectRuntime;
         }
 
-        public BoardGameObjectRuntime AddBoardGameObject(BoardGameObjectRuntimeDTO boardGameObjectDTO)
+        public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObjectRuntimeDTO boardGameObjectDTO)
         {
             BoardGameObject boardGameObject = boardGame.FindBoardGameObject(boardGameObjectDTO.guid);
             if (boardGameObject == null)
@@ -60,9 +62,24 @@ namespace Celeste.BoardGame.Runtime
             return boardGameObjectRuntime;
         }
 
-        public BoardGameObjectRuntime GetBoardGameObject(int index)
+        public BoardGameObjectRuntime GetBoardGameObjectRuntime(int index)
         {
             return boardGameObjectRuntimes.Get(index);
+        }
+
+        public BoardGameObjectRuntime FindBoardGameObjectRuntime(int instanceId)
+        {
+            return boardGameObjectRuntimes.Find(x => x.InstanceId == instanceId);
+        }
+
+        public BoardGameObjectRuntime FindBoardGameObjectRuntime(string name)
+        {
+            return boardGameObjectRuntimes.Find(x => string.CompareOrdinal(x.Name, name) == 0);
+        }
+
+        public void MoveBoardGameObjectRuntime(BoardGameObjectRuntime runtime, string newLocation)
+        {
+            
         }
 
         #region Callbacks

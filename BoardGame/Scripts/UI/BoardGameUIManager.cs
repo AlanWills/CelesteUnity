@@ -1,4 +1,5 @@
-﻿using Celeste.BoardGame.Interfaces;
+﻿using Celeste.BoardGame.Events;
+using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
 using Celeste.Events;
@@ -45,6 +46,41 @@ namespace Celeste.BoardGame.UI
             }
         }
 
+        private void MoveBoardGameObjectUI(
+            BoardGameObjectRuntime boardGameObjectRuntime, 
+            InterfaceHandle<IBoardGameLocations> locations,
+            string oldLocation,
+            string newLocation)
+        {
+            if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
+            {
+                Transform oldBoardGameObjectLocation = locations.IsValid ? locations.iFace.FindLocation(oldLocation) : null;
+                UnityEngine.Debug.Assert(oldBoardGameObjectLocation != null, $"Failed to find old location {oldLocation}.");
+
+                Transform newBoardGameObjectLocation = locations.IsValid ? locations.iFace.FindLocation(newLocation) : null;
+                UnityEngine.Debug.Assert(newBoardGameObjectLocation != null, $"Failed to find new location {newLocation}.");
+
+                ILayoutContainer oldLocationContainer = oldBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
+                ILayoutContainer newLocationContainer = newBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
+                BoardGameObjectUIController uiController = boardGameObjectUIControllers.Find(x => x.BoardGameObjectRuntime == boardGameObjectRuntime);
+
+                if (uiController != null)
+                {
+                    uiController.transform.SetParent(newBoardGameObjectLocation);
+                }
+
+                if (oldLocationContainer != null)
+                {
+                    oldLocationContainer.OnChildRemoved(uiController.gameObject);
+                }
+
+                if (newLocationContainer != null)
+                {
+                    newLocationContainer.OnChildAdded(uiController.gameObject);
+                }
+            }
+        }
+
         #region Callbacks
 
         public void OnBoardGameReady(BoardGameReadyArgs args)
@@ -61,9 +97,9 @@ namespace Celeste.BoardGame.UI
                 UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
             }
 
-            for (int i = 0, n = boardGameRuntime.NumBoardGameObjects; i < n; ++i)
+            for (int i = 0, n = boardGameRuntime.NumBoardGameObjectRuntimes; i < n; ++i)
             {
-                AddBoardGameObjectUI(boardGameRuntime.GetBoardGameObject(i), locations);
+                AddBoardGameObjectUI(boardGameRuntime.GetBoardGameObjectRuntime(i), locations);
             }
         }
 
@@ -75,6 +111,16 @@ namespace Celeste.BoardGame.UI
             }
 
             AddBoardGameObjectUI(args.boardGameObjectRuntime, locations);
+        }
+
+        public void OnBoardGameObjectMoved(BoardGameObjectMovedArgs args)
+        {
+            if (!args.boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
+            {
+                UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
+            }
+
+            MoveBoardGameObjectUI(args.boardGameObjectRuntime, locations, args.oldLocation, args.newLocation);
         }
 
         public void OnBoardGameRuntimeShutdown(BoardGameShutdownArgs args)

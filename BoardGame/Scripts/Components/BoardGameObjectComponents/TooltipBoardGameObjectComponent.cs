@@ -14,7 +14,7 @@ namespace Celeste.BoardGame.Components
 
         [SerializeField] private string tooltip;
         [SerializeField] private ShowTooltipEvent showTooltipEvent;
-        [SerializeField] private Events.Event hideTooltipEvent;
+        [SerializeField] private Celeste.Events.Event hideTooltipEvent;
 
         #endregion
 

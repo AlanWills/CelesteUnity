@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using static UnityEngine.GUILayout;
 
@@ -7,6 +6,22 @@ namespace Celeste.Tools
 {
     public static class GUIUtils
     {
+        public static int IntField(int currentInt)
+        {
+            string currentIntText = currentInt.ToString();
+            currentIntText = TextField(currentIntText);
+
+            if (GUI.changed)
+            {
+                if (int.TryParse(currentIntText, out int newInt))
+                {
+                    currentInt = newInt;
+                }
+            }
+
+            return currentInt;
+        }
+
         public static int PaginatedList(
             int currentPage,
             int entriesPerPage,
