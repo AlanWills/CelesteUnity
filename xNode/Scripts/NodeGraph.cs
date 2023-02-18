@@ -57,11 +57,14 @@ namespace XNode {
         public virtual XNode.NodeGraph Copy() {
             // Instantiate a new nodegraph instance
             NodeGraph graph = Instantiate(this);
+            graph.name = name;
+
             // Instantiate all nodes inside the graph
             for (int i = 0; i < nodes.Count; i++) {
                 if (nodes[i] == null) continue;
                 Node.graphHotfix = graph;
                 Node node = Instantiate(nodes[i]) as Node;
+                node.name = nodes[i].name;
                 node.graph = graph;
                 graph.nodes[i] = node;
             }

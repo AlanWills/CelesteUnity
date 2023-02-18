@@ -12,7 +12,12 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
-        IFSMGraph IFSMGraph.ParentFSMGraph => null;
+        public IFSMGraph ParentFSMGraph
+        {
+            get => parentFSMGraph;
+            set => parentFSMGraph = value;
+        }
+
         FSMNode IFSMGraph.StartNode => startNode;
         FSMNode IFSMGraph.FinishNode => finishNode;
         IEnumerable<FSMNode> IFSMGraph.Nodes
@@ -36,7 +41,24 @@ namespace Celeste.FSM
         private List<ScriptableObject> parameters = new List<ScriptableObject>();
 #endif
 
+        [NonSerialized] private IFSMGraph parentFSMGraph;
+
         #endregion
+
+        public override NodeGraph Copy()
+        {
+            FSMGraph graph = base.Copy() as FSMGraph;
+
+            for (int i = 0, n = graph.nodes.Count; i < n; i++)
+            {
+                (graph.nodes[i] as FSMNode).CopyInGraph(nodes[i] as FSMNode);
+            }
+
+            graph.startNode = graph.FindNode(startNode.Guid);
+            graph.finishNode = graph.FindNode(finishNode.Guid);
+
+            return graph;
+        }
 
         #region Node Utility Methods
 

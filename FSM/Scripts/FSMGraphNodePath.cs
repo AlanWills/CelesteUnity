@@ -42,24 +42,33 @@ namespace Celeste.FSM
         {
             if (fsmNode != null)
             {
-                Node = fsmNode;
-
                 StringBuilder guidPathBuilder = new StringBuilder(64);
                 StringBuilder readablePathBuilder = new StringBuilder(64);
-                guidPathBuilder.Append(fsmNode.Guid);
-                readablePathBuilder.Append(fsmNode.name);
 
-                IFSMGraph parentGraph = fsmNode.FSMGraph;
-                
-                while (parentGraph != null)
+                Node = fsmNode;
+
+                do
                 {
-                    // TODO: How do we find the sub fsm node that our parent graph could be part of?
-                    //guidPathBuilder.Append('.');
-                    //guidPathBuilder.Append(parentGraph.Guid);
+                    IFSMGraph parentGraph = fsmNode.FSMGraph;
+
+                    guidPathBuilder.Append(fsmNode.Guid);
+                    readablePathBuilder.Append(fsmNode.name);
                     readablePathBuilder.Append('.');
                     readablePathBuilder.Append(parentGraph.name);
-                    parentGraph = parentGraph.ParentFSMGraph;
+
+                    // If our parent graph is actually contained within a linear runtime, we hop the boundary and continue
+                    if (parentGraph.ParentFSMGraph is ILinearRuntime<FSMNode>)
+                    {
+                        fsmNode = parentGraph.ParentFSMGraph as FSMNode;
+                        guidPathBuilder.Append('.');
+                        readablePathBuilder.Append('.');
+                    }
+                    else
+                    {
+                        fsmNode = null;
+                    }    
                 }
+                while (fsmNode != null);
 
                 GuidPath = guidPathBuilder.ToString();
                 ReadablePath = readablePathBuilder.ToString();

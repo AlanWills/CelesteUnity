@@ -21,6 +21,12 @@ namespace Celeste.FSM
 
         #endregion
 
+        public FSMNode()
+        {
+            AddDefaultInputPort();
+            AddDefaultOutputPort();
+        }
+
         #region FSM Runtime Methods
 
         protected override void Init()
@@ -35,16 +41,6 @@ namespace Celeste.FSM
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
 #endif
-            }
-
-            if (GetDefaultInputPort() == null)
-            {
-                AddDefaultInputPort();
-            }
-
-            if (GetDefaultOutputPort() == null)
-            {
-                AddDefaultOutputPort();
             }
         }
 

@@ -98,5 +98,11 @@ namespace Celeste
             guiStyle.alignment = TextAnchor.UpperCenter;
             return guiStyle;
         }
+
+        public static GUIStyle EnableWrapping(this GUIStyle guiStyle)
+        {
+            guiStyle.wordWrap = true;
+            return guiStyle;
+        }
     }
 }

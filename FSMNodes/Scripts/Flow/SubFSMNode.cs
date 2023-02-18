@@ -52,8 +52,9 @@ namespace Celeste.FSM.Nodes
 
         public FSMGraph subFSM;
 
-        private ILinearRuntime<FSMNode> fsmRuntime;
-        private FSMRuntimeEngine runtimeEngine;
+        [NonSerialized] private FSMGraph runtimeSubFSMGraph;
+        [NonSerialized] private ILinearRuntime<FSMNode> fsmRuntime;
+        [NonSerialized] private FSMRuntimeEngine runtimeEngine;
 
         #endregion
 
@@ -63,6 +64,12 @@ namespace Celeste.FSM.Nodes
         {
             base.OnEnter();
 
+            if (runtimeSubFSMGraph == null)
+            {
+                runtimeSubFSMGraph = subFSM.Copy() as FSMGraph;
+                runtimeSubFSMGraph.ParentFSMGraph = this;
+            }
+
             fsmRuntime = FSMGraph.Runtime;
 
             OnNodeEnter.AddListener(fsmRuntime.OnNodeEnter.Invoke);
@@ -70,7 +77,7 @@ namespace Celeste.FSM.Nodes
             OnNodeExit.AddListener(fsmRuntime.OnNodeExit.Invoke);
 
             runtimeEngine = new FSMRuntimeEngine(this);
-            runtimeEngine.Start(subFSM.startNode);
+            runtimeEngine.Start(runtimeSubFSMGraph.startNode);
         }
 
         protected override FSMNode OnUpdate()
