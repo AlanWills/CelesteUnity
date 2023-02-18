@@ -14,25 +14,12 @@ namespace Celeste.FSM
         public const string DEFAULT_INPUT_PORT_NAME = " ";
         public const string DEFAULT_OUTPUT_PORT_NAME = "";
 
-        public FSMGraph FSMGraph
-        {
-            get { return graph as FSMGraph; }
-        }
-
-        public string Guid
-        {
-            get { return guid; }
-        }
+        public FSMGraph FSMGraph => graph as FSMGraph;
+        public string Guid => guid;
 
         [SerializeField, HideInNodeEditor] private string guid;
 
         #endregion
-
-        public FSMNode()
-        {
-            AddDefaultInputPort();
-            AddDefaultOutputPort();
-        }
 
         #region FSM Runtime Methods
 
@@ -48,6 +35,16 @@ namespace Celeste.FSM
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
 #endif
+            }
+
+            if (GetDefaultInputPort() == null)
+            {
+                AddDefaultInputPort();
+            }
+
+            if (GetDefaultOutputPort() == null)
+            {
+                AddDefaultOutputPort();
             }
         }
 

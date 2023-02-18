@@ -17,7 +17,7 @@ namespace Celeste.Narrative.Persistence
         public ChapterDTO(ChapterRecord chapterRecord)
         {
             guid = chapterRecord.Chapter.Guid;
-            currentNodePath = chapterRecord.CurrentNodePath.Path;
+            currentNodePath = chapterRecord.CurrentNodePath.GuidPath;
             currentBackgroundGuid = chapterRecord.CurrentBackgroundGuid;
 
             characters = new List<CharacterDTO>(chapterRecord.NumCharacterRecords);

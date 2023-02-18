@@ -110,6 +110,8 @@ namespace Celeste.Persistence
 
         private IEnumerator DoSave()
         {
+            saveRequested = true;
+
             yield return new WaitForEndOfFrame();
 
             SaveImpl();

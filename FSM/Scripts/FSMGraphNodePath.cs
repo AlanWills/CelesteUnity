@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Celeste.FSM
@@ -8,25 +9,33 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
-        public FSMNode Node { get; private set; }
-        public string Path { get; private set; }
+        public FSMNode Node { get; }
+        public string GuidPath { get; }
+        public string ReadablePath { get; }
 
         public static readonly FSMGraphNodePath EMPTY = new FSMGraphNodePath(null);
 
         #endregion
 
-        public FSMGraphNodePath(IFSMGraph graph, string path)
+        public FSMGraphNodePath(IFSMGraph graph, string guidPath)
         {
             Node = null;
-            Path = path;
+            GuidPath = guidPath;
 
-            string[] subPaths = Path.Split('.');
+            string[] subPaths = GuidPath.Split('.');
+            StringBuilder readablePath = new StringBuilder(64);
 
             for (int i = subPaths != null ? subPaths.Length : 0; i > 0; --i)
             {
                 Node = graph.FindNode(subPaths[i - 1]);
                 graph = Node as IFSMGraph;
+
+                readablePath.Append(Node.name);
+                readablePath.Append(".");
             }
+
+            readablePath.Append(Node.FSMGraph.name);
+            ReadablePath = readablePath.ToString();
         }
 
         public FSMGraphNodePath(FSMNode fsmNode)
@@ -35,30 +44,31 @@ namespace Celeste.FSM
             {
                 Node = fsmNode;
 
-                StringBuilder pathBuilder = new StringBuilder(32);
+                StringBuilder guidPathBuilder = new StringBuilder(64);
+                StringBuilder readablePathBuilder = new StringBuilder(64);
+                guidPathBuilder.Append(fsmNode.Guid);
+                readablePathBuilder.Append(fsmNode.name);
+
                 IFSMGraph parentGraph = fsmNode.FSMGraph;
-
-                while (fsmNode != null)
+                
+                while (parentGraph != null)
                 {
-                    pathBuilder.Append(fsmNode.Guid);
+                    // TODO: How do we find the sub fsm node that our parent graph could be part of?
+                    //guidPathBuilder.Append('.');
+                    //guidPathBuilder.Append(parentGraph.Guid);
+                    readablePathBuilder.Append('.');
+                    readablePathBuilder.Append(parentGraph.name);
                     parentGraph = parentGraph.ParentFSMGraph;
-
-                    if (parentGraph != null)
-                    {
-                        pathBuilder.Append('.');
-                    }
-                    else
-                    {
-                        break;
-                    }
                 }
 
-                Path = pathBuilder.ToString();
+                GuidPath = guidPathBuilder.ToString();
+                ReadablePath = readablePathBuilder.ToString();
             }
             else
             {
                 Node = null;
-                Path = string.Empty;
+                GuidPath = string.Empty;
+                ReadablePath = "null";
             }
         }
     }

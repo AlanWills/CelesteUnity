@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM;
+using Celeste.FSM.Nodes;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -32,7 +33,9 @@ namespace CelesteEditor.FSM
             CelesteEditorGUILayout.HorizontalLine();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("lateUpdate"));
-            EditorGUILayout.LabelField(string.Format("Current Node: {0}", fsmRuntime.CurrentNode != null ? fsmRuntime.CurrentNode.name : "null"));
+
+            FSMGraphNodePath currentNodeGraphPath = new FSMGraphNodePath(fsmRuntime.CurrentNode);
+            EditorGUILayout.LabelField($"Current Node: {currentNodeGraphPath.ReadablePath}");
 
             serializedObject.ApplyModifiedProperties();
         }

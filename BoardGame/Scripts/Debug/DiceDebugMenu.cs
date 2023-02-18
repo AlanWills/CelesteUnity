@@ -19,6 +19,11 @@ namespace Celeste.BoardGame.Debug
             {
                 dice.RollAll();
             }
+
+            if (GUILayout.Button("Reset All Positions"))
+            {
+                dice.ResetAllPositions();
+            }
         }
     }
 }

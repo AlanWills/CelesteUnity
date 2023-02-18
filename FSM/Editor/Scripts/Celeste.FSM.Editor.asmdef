@@ -5,6 +5,7 @@
         "XNode",
         "XNodeEditor",
         "Celeste.FSM",
+        "Celeste.FSM.Nodes",
         "Celeste.Tools.Editor",
         "Celeste.Validation.Editor"
     ],

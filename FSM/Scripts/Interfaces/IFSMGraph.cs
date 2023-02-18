@@ -4,6 +4,7 @@ namespace Celeste.FSM
 {
     public interface IFSMGraph
     {
+        string name { get; }
         IFSMGraph ParentFSMGraph { get; }
 
         FSMNode StartNode { get; }
