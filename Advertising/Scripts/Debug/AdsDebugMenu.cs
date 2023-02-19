@@ -25,7 +25,7 @@ namespace Celeste.Advertising.Debug
                 AdPlacement adPlacement = adRecord.GetAdPlacement(i);
 
                 GUILayout.Space(10);
-                GUILayout.Label($"{adPlacement.PlacementId} ({adPlacement.PlacementType})", CelesteGUIStyles.BoldLabel);
+                GUILayout.Label($"{adPlacement.PlacementId} ({adPlacement.PlacementType})", GUI.skin.label.New().Bold());
 
                 using (var indent = new GUIIndentScope())
                 {
