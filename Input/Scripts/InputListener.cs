@@ -1,11 +1,5 @@
 ﻿using Celeste.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Celeste.Input
 {
@@ -16,7 +10,7 @@ namespace Celeste.Input
         #region Properties and Fields
 
         public GameObjectClickEvent gameEvent;
-        public Vector3UnityEvent response;
+        public GameObjectClickUnityEvent response;
 
         #endregion
 
@@ -40,7 +34,7 @@ namespace Celeste.Input
         {
             if (clickedGameObjectArgs.gameObject == gameObject)
             {
-                response.Invoke(clickedGameObjectArgs.clickWorldPosition);
+                response.Invoke(clickedGameObjectArgs);
             }
         }
 

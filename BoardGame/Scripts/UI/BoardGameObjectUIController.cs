@@ -1,5 +1,4 @@
-﻿using Celeste.BoardGame.Events;
-using Celeste.BoardGame.Runtime;
+﻿using Celeste.BoardGame.Runtime;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ namespace Celeste.BoardGame.UI
 
         public BoardGameObjectRuntime BoardGameObjectRuntime { get; private set; }
 
-        [SerializeField] private MoveBoardGameObjectEvent moveBoardGameObjectEvent;
         [SerializeField] private List<GameObject> componentUIControllers = new List<GameObject>();
 
         #endregion
@@ -53,18 +51,5 @@ namespace Celeste.BoardGame.UI
 
             BoardGameObjectRuntime = null;
         }
-
-        #region Callbacks
-
-        public void OnMoveBoardGameObject(string newLocation)
-        {
-            moveBoardGameObjectEvent.Invoke(new MoveBoardGameObjectArgs()
-            {
-                boardGameObjectRuntime = BoardGameObjectRuntime,
-                newLocation = newLocation
-            });
-        }
-
-        #endregion
     }
 }

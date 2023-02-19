@@ -2,6 +2,7 @@
 using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
+using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ namespace Celeste.BoardGame.Objects
     public class Dice : ScriptableObject
     {
         #region Properties and Fields
+
+        public int NumDice => dice.Count;
 
         [SerializeField] private string dieResetLocation;
 
@@ -33,6 +36,11 @@ namespace Celeste.BoardGame.Objects
             dice.Remove(die);
         }
 
+        public BoardGameObjectRuntime GetDie(int index)
+        {
+            return dice.Get(index);
+        }
+
         public void RollAll()
         {
             for (int i = 0, n = dice.Count; i < n; ++i)
@@ -46,25 +54,13 @@ namespace Celeste.BoardGame.Objects
         {
             for (int i = 0, n = dice.Count; i < n; ++i)
             {
-                Move(dice[i], dieResetLocation);
+                MoveDiceTo(dice[i], dieResetLocation);
             }
         }
 
-        public void MoveAllMatchingDiceTo(int value, string location)
+        public void MoveDiceTo(BoardGameObjectRuntime die, string location)
         {
-            for (int i = 0, n = dice.Count; i < n; ++i)
-            {
-                dice[i].TryFindComponent<IBoardGameObjectDie>(out var die);
-                
-                if (die.iFace.GetValue(die.instance) == value)
-                {
-                    Move(dice[i], location);
-                }
-            }
-        }
-
-        private void Move(BoardGameObjectRuntime die, string location)
-        {
+            UnityEngine.Debug.Assert(dice.Contains(die), $"Could not find inputted die {die.Name} in {name}.");
             moveBoardGameObjectEvent.Invoke(new MoveBoardGameObjectArgs()
             {
                 boardGameObjectRuntime = die,

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -49,6 +48,21 @@ namespace Celeste.Debug.Menus
 
             // Make sure the current debug menu is closed when we close this one
             currentDebugMenu = -1;
+        }
+
+        public void Synchronize()
+        {
+            for (int i = 0, n = debugMenus.Count; i < n; ++i)
+            {
+                if (debugMenus[i] != null)
+                {
+                    debugMenus[i].MenuPriority = i;
+                }
+            }
+
+#if UNITY_EDITOR
+            UnityEditor.AssetDatabase.SaveAssets();
+#endif
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Events
 {
+    [Serializable]
     public struct GameObjectClickEventArgs
     {
         public GameObject gameObject;
