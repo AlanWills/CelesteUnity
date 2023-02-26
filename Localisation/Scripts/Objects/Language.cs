@@ -77,6 +77,7 @@ namespace Celeste.Localisation
 
         public string CountryCode => countryCode;
         public LocalisationKey LanguageNameKey => languageNameKey;
+        public Sprite LanguageIcon => languageIcon;
         public int NumLocalisationKeys => localisationLookup.Count;
         public int NumLocalisationKeyCategories => categoryLookup.Count;
         public int NumLocalisationSpeech => speechLookup.Count;
@@ -85,6 +86,7 @@ namespace Celeste.Localisation
 
         [SerializeField] private string countryCode;
         [SerializeField] private LocalisationKey languageNameKey;
+        [SerializeField] private Sprite languageIcon;
         [SerializeField] private bool assertOnFallback = true;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
         [SerializeField] private NumberToLocalisedTextConverter numberToTextConverter;

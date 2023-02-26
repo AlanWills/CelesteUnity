@@ -45,7 +45,7 @@ namespace Celeste.Wallet
                 Currency currency = currencyCatalogue.FindByGuid(currencyDto.currencyGuid);
                 UnityEngine.Debug.Assert(currency != null, $"Could not find currency with guid {currencyDto.currencyGuid} in catalogue.");
 
-                if (currency != null)
+                if (currency != null && currency.IsPersistent)
                 {
                     currency.Quantity = currencyDto.quantity;
                 }
@@ -61,10 +61,6 @@ namespace Celeste.Wallet
         {
             walletRecord.CreateStartingWallet();
         }
-
-        #endregion
-
-        #region Callbacks
 
         #endregion
     }

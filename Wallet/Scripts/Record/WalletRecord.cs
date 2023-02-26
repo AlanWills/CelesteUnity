@@ -11,10 +11,7 @@ namespace Celeste.Wallet
     {
         #region Properties and Fields
 
-        public int NumCurrencies
-        {
-            get { return currencies.Count; }
-        }
+        public int NumCurrencies => currencies.Count;
 
         [Header("Events")]
         [SerializeField] private CurrencyChangedEvent currencyChanged;
@@ -29,11 +26,18 @@ namespace Celeste.Wallet
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
                 Currency currency = currencyCatalogue.GetItem(i);
+                
                 currency.AddOnQuantityChangedCallback((args) =>
                 {
                     currencyChanged.Invoke(new CurrencyChangedArgs(currency, args.oldValue, args.newValue));
-                    save.Invoke();
+
+                    if (currency.IsPersistent)
+                    {
+                        // Only save if the currency should be persistent, otherwise it is just a runtime value
+                        save.Invoke();
+                    }
                 });
+
                 currencies.Add(currency);
             }
         }

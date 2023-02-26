@@ -23,10 +23,12 @@ namespace Celeste.Components.Catalogue
 
             ComponentData componentData = component.CreateData();
             ComponentEvents componentEvents = component.CreateEvents();
-
+            var componentHandle = new ComponentHandle<K>(component, componentData, componentEvents);
+            
             JsonUtility.FromJsonOverwrite(jsonData, componentData);
+            component.Load(componentHandle.instance);
 
-            return new ComponentHandle<K>(component, componentData, componentEvents);
+            return componentHandle;
         }
     }
 

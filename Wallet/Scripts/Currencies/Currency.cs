@@ -37,11 +37,13 @@ namespace Celeste.Wallet
 
         public Sprite Icon => icon;
         public string GlyphName => $"\"{glyphName}\"";
+        public bool IsPersistent => isPersistent;
 
         [SerializeField] private int guid;
         [SerializeField] private int startingQuantity;
         [SerializeField] private Sprite icon;
         [SerializeField] private string glyphName;
+        [SerializeField] private bool isPersistent = true;
 
         [Header("Runtime")]
         [SerializeField] private IntValue quantity;
