@@ -53,7 +53,7 @@ namespace Celeste.Logic
                     return !value.Value.Contains(target.Value);
 
                 default:
-                    Debug.LogAssertionFormat("Condition Operator {0} is not supported in InVector3IntArray Condition", condition);
+                    UnityEngine.Debug.LogAssertionFormat("Condition Operator {0} is not supported in InVector3IntArray Condition", condition);
                     return false;
             }
         }

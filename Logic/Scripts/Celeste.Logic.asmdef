@@ -6,7 +6,9 @@
         "Celeste.Objects",
         "Celeste.Assets",
         "Celeste.DataStructures",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Debug",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

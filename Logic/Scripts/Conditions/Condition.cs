@@ -46,7 +46,7 @@ namespace Celeste.Logic
 
         public void Shutdown()
         {
-            Debug.Assert(initCount > 0, $"Condition {name} {nameof(Shutdown)} called more times than {nameof(Init)}.");
+            UnityEngine.Debug.Assert(initCount > 0, $"Condition {name} {nameof(Shutdown)} called more times than {nameof(Init)}.");
 
             if (--initCount == 0)
             {
