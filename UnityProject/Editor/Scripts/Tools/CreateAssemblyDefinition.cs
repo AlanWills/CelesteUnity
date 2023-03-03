@@ -1,4 +1,6 @@
-﻿using Celeste.Tools.Attributes.GUI;
+﻿using Celeste.Scene;
+using Celeste.Tools.Attributes.GUI;
+using CelesteEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +40,7 @@ namespace CelesteEditor.UnityProject
         [Tooltip("The path relative to the project folder (must include Assets/).")]
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath;
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
+        [ShowIf(nameof(hasSceneMenuItem))] public bool createSceneSet;
     }
 
     public static class CreateAssemblyDefinition
@@ -95,20 +98,30 @@ namespace CelesteEditor.UnityProject
                 {
                     string collapsedAssemblyName = assemblyName.Replace(".", "");
 
+                    // Create the code file for the menu items
                     {
                         string menuItemsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}MenuItems.cs");
                         string menuItemsScript = string.Format(CreateAssemblyDefinitionConstants.MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
                         File.WriteAllText(menuItemsScriptPath, menuItemsScript);
                     }
 
+                    // Create the code file for the constants
                     {
                         string editorConstantsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}EditorConstants.cs");
                         string editorConstantsScript = string.Format(CreateAssemblyDefinitionConstants.EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName, parameters.sceneSetPath, parameters.sceneMenuItemPath);
                         File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
                     }
 
+                    // Create the scene set asset if we want to
+                    if (parameters.createSceneSet)
                     {
-                        // We've created actual scripts so we can delete the placeholder script now
+                        SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
+                        sceneSet.name = $"{directoryName}SceneSet";
+                        AssetUtility.CreateAsset(sceneSet, parameters.sceneSetPath);
+                    }
+
+                    // We've created actual scripts so we can delete the placeholder script now
+                    {
                         string placeholderScriptPath = Path.Combine(editorScriptsDirectory, PLACEHOLDER_SCRIPT_NAME);
                         File.Delete(placeholderScriptPath);
                     }
