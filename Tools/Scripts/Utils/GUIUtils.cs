@@ -22,6 +22,26 @@ namespace Celeste.Tools
             return currentInt;
         }
 
+        public static int PlusMinusField(string label, int currentInt)
+        {
+            using (new HorizontalScope())
+            {
+                Label($"{label}: {currentInt}");
+
+                if (Button("+", ExpandWidth(false)))
+                {
+                    ++currentInt;
+                }
+
+                if (Button("-", ExpandWidth(false)))
+                {
+                    --currentInt;
+                }
+            }
+
+            return currentInt;
+        }
+
         public static int PaginatedList(
             int currentPage,
             int entriesPerPage,

@@ -1,9 +1,5 @@
 ﻿using Celeste.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using XNode;
 
@@ -18,15 +14,15 @@ namespace Celeste.DS.Nodes.Objects
         public GameObject GameObject { get; set; }
 
         [Input]
-        public string childName;
+        public string gameObjectName;
 
         public FindConstraint findConstraint = FindConstraint.ActiveInHierarchy;
         public bool cache = true;
 
         [Output]
-        public GameObject child;
+        public GameObject gameObject;
 
-        private GameObject foundChild;
+        private GameObject foundGameObject;
 
         #endregion
 
@@ -34,15 +30,15 @@ namespace Celeste.DS.Nodes.Objects
 
         public override object GetValue(NodePort port)
         {
-            if (!cache || foundChild == null)
+            if (!cache || foundGameObject == null)
             {
-                string _childName = GetInputValue(nameof(childName), childName);
+                string _childName = GetInputValue(nameof(gameObjectName), gameObjectName);
                 string[] splitChildName = _childName.Split('.');
-                foundChild = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
+                foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
             }
 
-            Debug.AssertFormat(foundChild != null, "Could not find child '{0}'", childName);
-            return foundChild;
+            Debug.AssertFormat(foundGameObject != null, "Could not find child '{0}'", gameObjectName);
+            return foundGameObject;
         }
 
         #endregion
