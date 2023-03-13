@@ -88,7 +88,7 @@ namespace Celeste.Debug.Menus
                     {
                         foreach (DebugMenu debugMenu in debugMenus)
                         {
-                            if (GUILayout.Button(debugMenu.DisplayName))
+                            if (GUILayout.Button(debugMenu.DisplayName, GUILayout.ExpandWidth(true)))
                             {
                                 debugMenu.Visible = true;
                             }

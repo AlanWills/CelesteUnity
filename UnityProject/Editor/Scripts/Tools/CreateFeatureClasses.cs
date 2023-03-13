@@ -38,7 +38,7 @@ namespace CelesteEditor.UnityProject
         [ShowIf(nameof(createManager))] public string managerTypeName;
         [ShowIf(nameof(createManager))] public string addManagerMenuPath;
         [ShowIf(nameof(createManager))] public bool isManagerPersistent;
-        [ShowIf(nameof(isManagerPersistent))] public bool managerDTOTypeName;
+        [ShowIf(nameof(isManagerPersistent))] public string managerDTOTypeName;
     }
 
     public static class CreateFeatureClasses

@@ -99,6 +99,12 @@ namespace Celeste
             return guiStyle;
         }
 
+        public static GUIStyle MiddleCentreAligned(this GUIStyle guiStyle)
+        {
+            guiStyle.alignment = TextAnchor.MiddleCenter;
+            return guiStyle;
+        }
+
         public static GUIStyle EnableWrapping(this GUIStyle guiStyle)
         {
             guiStyle.wordWrap = true;

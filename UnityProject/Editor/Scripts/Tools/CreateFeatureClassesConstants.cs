@@ -21,7 +21,7 @@
            "namespace {0}.Catalogue\n" +
            "{{\n" +
            "    [CreateAssetMenu(fileName = nameof({1}), menuName = \"{2}\")]\n" +
-           "    public class {1} : ListScriptableObject<3>\n" +
+           "    public class {1} : ListScriptableObject<{3}>\n" +
            "    {{\n" +
            "    }}\n" +
            "}}";
@@ -35,7 +35,7 @@
            "namespace {0}.Catalogue\n" +
            "{{\n" +
            "    [CustomEditor(typeof({2}))]\n" +
-           "    public class {1}Editor : IIndexableItemsEditor<2>\n" +
+           "    public class {1}Editor : IIndexableItemsEditor<{2}>\n" +
            "    {{\n" +
            "    }}\n" +
            "}}";
@@ -72,6 +72,10 @@
             "    [AddComponentMenu(\"{2}\")]\n" +
             "    public class {1} : PersistentSceneManager<{1}, {3}>\n" +
             "    {{\n" +
+            "\n" +
+            "        public const string FILE_NAME = \"{1}.dat\";\n"+
+            "        protected override string FileName => FILE_NAME;\n" +
+            "\n" +
             "        protected override {3} Serialize()\n" +
             "        {{\n" +
             "            return new {3}();\n" +
