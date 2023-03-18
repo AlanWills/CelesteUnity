@@ -1,4 +1,7 @@
-﻿namespace Celeste.LiveOps
+﻿using Celeste.Events;
+using UnityEngine.Events;
+
+namespace Celeste.LiveOps
 {
     public interface ILiveOpRecord
     {
@@ -13,5 +16,11 @@
 
         void Finish();
         void Complete();
+
+        void AddIsEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
+        void RemoveIsEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
+
+        void AddDataChangedCallback(UnityAction callback);
+        void RemoveDataChangedCallback(UnityAction callback);
     }
 }

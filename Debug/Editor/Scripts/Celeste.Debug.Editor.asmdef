@@ -6,7 +6,8 @@
         "Celeste.Objects",
         "Celeste.Parameters",
         "Celeste.Tools",
-        "Celeste.DataStructures.Editor"
+        "Celeste.DataStructures.Editor",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

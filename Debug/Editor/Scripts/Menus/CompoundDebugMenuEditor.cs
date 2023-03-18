@@ -1,4 +1,5 @@
 ﻿using Celeste.Debug.Menus;
+using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUI;
@@ -23,30 +24,29 @@ namespace CelesteEditor.Debug
         {
             CompoundDebugMenu debugMenu = target as CompoundDebugMenu;
 
-            serializedObject.Update();
-
-            DrawPropertiesExcluding(serializedObject, "m_Script", "debugMenus");
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Synchronize"))
+            using (new UpdateAndApplyModificationsScope(serializedObject))
             {
-                debugMenu.Synchronize();
-            }
+                DrawPropertiesExcluding(serializedObject, "m_Script", "debugMenus");
 
-            using (var changeCheck = new ChangeCheckScope())
-            {
-                EditorGUILayout.PropertyField(debugMenusProperty);
+                EditorGUILayout.Space();
 
-                if (changeCheck.changed)
+                if (GUILayout.Button("Synchronize"))
                 {
                     debugMenu.Synchronize();
                 }
+
+                using (var changeCheck = new ChangeCheckScope())
+                {
+                    EditorGUILayout.PropertyField(debugMenusProperty);
+
+                    if (changeCheck.changed)
+                    {
+                        debugMenu.Synchronize();
+                    }
+                }
+
+                debugMenu.DrawMenu();
             }
-
-            debugMenu.DrawMenu();
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

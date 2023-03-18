@@ -1,30 +1,41 @@
-﻿#if UNITY_ADS
-using System;
+﻿using System;
 using UnityEngine;
+#if UNITY_ADS
 using UnityEngine.Advertisements;
+#endif
 
 namespace Celeste.Advertising
 {
     [CreateAssetMenu(fileName = nameof(UnityAdRecord), menuName = "Celeste/Advertising/Unity Ad Record")]
-    public class UnityAdRecord : AdRecord, IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
+    public class UnityAdRecord : AdRecord
+#if UNITY_ADS
+        , IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
+#endif
     {
+        public override void Initialize(bool testMode)
+        {
+#if UNITY_ADS
+            Advertisement.Initialize(GameId, testMode, this);
+#endif
+        }
+
         public override void LoadAdPlacement(AdPlacement adPlacement)
         {
+#if UNITY_ADS
             Advertisement.Load(adPlacement.PlacementId, this);
+#endif
         }
 
         public override void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShowSuccessful)
         {
+#if UNITY_ADS
             adPlacement.OnShow += onShowSuccessful;
             Advertisement.Show(adPlacement.PlacementId, this);
+#endif
         }
 
+#if UNITY_ADS
         #region IUnityAdsInitializationListener
-
-        public override void Initialize(bool testMode)
-        {
-            Advertisement.Initialize(GameId, testMode, this);
-        }
 
         public void OnInitializationComplete()
         {
@@ -161,6 +172,6 @@ namespace Celeste.Advertising
                     return AdWatchResult.Unknown;
             }
         }
+#endif
     }
 }
-#endif

@@ -27,7 +27,10 @@ namespace Celeste.Logic.Debug
                 (index) =>
                 {
                     Condition condition = conditionCatalogue.GetItem(index);
-                    condition.IsMet = GUILayout.Toggle(condition.IsMet, condition.name);
+                    if (condition != null)
+                    {
+                        condition.IsMet = GUILayout.Toggle(condition.IsMet, condition.name);
+                    }
                 });
         }
     }

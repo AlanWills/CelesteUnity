@@ -14,6 +14,7 @@
         "Celeste.Constants",
         "Celeste.DataStructures",
         "Celeste.Input",
+        "Celeste.Logic",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

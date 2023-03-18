@@ -26,7 +26,7 @@ namespace Celeste.UI
         }
     }
 
-    [AddComponentMenu("WOTR/Board Game/UI/Graphic Detail UI Controller")]
+    [AddComponentMenu("Celeste/Board Game/UI/Graphic Detail UI Controller")]
     public class GraphicDetailUIController : DetailUIController
     {
         #region Properties and Fields

@@ -20,10 +20,15 @@ namespace Celeste.Debug.Menus
             {
                 for (int i = 0, n = debugMenus.Count; i < n; i++)
                 {
-                    if (GUILayout.Button(debugMenus[i].DisplayName))
+                    var debugMenu = debugMenus[i];
+
+                    if (debugMenu != null)
                     {
-                        currentDebugMenu = i;
-                        debugMenus[i].Visible = true;
+                        if (GUILayout.Button(debugMenu.DisplayName))
+                        {
+                            currentDebugMenu = i;
+                            debugMenu.Visible = true;
+                        }
                     }
                 }
             }

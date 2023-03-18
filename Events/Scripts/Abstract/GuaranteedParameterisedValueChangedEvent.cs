@@ -57,9 +57,19 @@ namespace Celeste.Events
             BakedEvent.RemoveAllListeners();
         }
 
+        public void Invoke(TParam oldValue, TParam newValue)
+        {
+            BakedEvent.Invoke(new ValueChangedArgs<TParam>(oldValue, newValue));
+        }
+
         public void Invoke(ValueChangedArgs<TParam> param)
         {
             BakedEvent.Invoke(param);
+        }
+
+        public void InvokeSilently(TParam oldValue, TParam newValue)
+        {
+            BakedEvent.InvokeSilently(new ValueChangedArgs<TParam>(oldValue, newValue));
         }
 
         public void InvokeSilently(ValueChangedArgs<TParam> param)
