@@ -46,9 +46,14 @@ namespace Celeste.Objects
             return ItemsImpl.TryGetValue(key, out TValue value) ? value : default;
         }
 
+        public bool TryFindItem(TKey key, out TValue value)
+        {
+            return ItemsImpl.TryGetValue(key, out value);
+        }
+
         public void AddItem(TKey key, TValue value)
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
 #if KEY_CHECKS
                 if (ItemsImpl.ContainsKey(key))
@@ -63,7 +68,7 @@ namespace Celeste.Objects
 
         public bool RemoveItem(TKey key)
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 return ItemsImpl.Remove(key);
             }
@@ -71,7 +76,7 @@ namespace Celeste.Objects
 
         public void SetItems(IReadOnlyDictionary<TKey, TValue> newItems)
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Clear();
                 
@@ -84,7 +89,7 @@ namespace Celeste.Objects
 
         public void Clear()
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Clear();
             }

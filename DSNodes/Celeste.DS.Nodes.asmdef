@@ -9,7 +9,9 @@
         "Celeste.Parameters",
         "Celeste.Input",
         "Celeste.Scene",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.OdinSerializer",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -25,7 +25,7 @@ namespace Celeste.Logic
         #region Properties and Fields
 
         [SerializeField] private LogicalOperator logicalOperator;
-        [SerializeField] private List<Condition> conditions = new List<Condition>();
+        [SerializeField] private List<Condition> conditions = new();
 
         #endregion
 

@@ -7,7 +7,7 @@ namespace Celeste.Shop.Purchasing
     [CreateAssetMenu(fileName = nameof(ShopPurchaser), menuName = "Celeste/Shop/Shop Purchaser")]
     public class ShopPurchaser : ScriptableObject
     {
-        public void PurchaseWithCurrency(ShopItem shopItem)
+        public void Purchase(ShopItem shopItem)
         {
             var cost = shopItem.Cost;
 

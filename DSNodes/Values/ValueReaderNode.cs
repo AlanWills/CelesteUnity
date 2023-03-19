@@ -1,5 +1,8 @@
 ﻿using Celeste.Parameters;
 using System;
+using Celeste.Tools.Attributes.GUI;
+using UnityEditor;
+using UnityEngine;
 using XNode;
 
 namespace Celeste.DS.Nodes.Values
@@ -9,11 +12,9 @@ namespace Celeste.DS.Nodes.Values
     {
         #region Properties and Fields
 
-        [Input]
-        public TValue value;
-
-        [Output]
-        public T output;
+        [Input] public TValue value;
+        [Output] public T output;
+        [Output] public T outputAsString;
 
         #endregion
 
@@ -21,7 +22,19 @@ namespace Celeste.DS.Nodes.Values
 
         public override object GetValue(NodePort port)
         {
-            return GetInputValue(nameof(value), value).Value;
+            T v = GetInputValue(nameof(value), value).Value;
+
+            if (string.CompareOrdinal(port.fieldName, nameof(output)) == 0)
+            {
+                return v;
+            }
+            
+            if (string.CompareOrdinal(port.fieldName, nameof(outputAsString)) == 0)
+            {
+                return v != null ? v.ToString() : null;
+            }
+
+            return default;
         }
 
         #endregion

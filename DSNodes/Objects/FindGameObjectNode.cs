@@ -1,5 +1,6 @@
 ﻿using Celeste.Utils;
 using System;
+using Celeste.Scene.Hierarchy;
 using UnityEngine;
 using XNode;
 
@@ -13,14 +14,12 @@ namespace Celeste.DS.Nodes.Objects
 
         public GameObject GameObject { get; set; }
 
-        [Input]
-        public string gameObjectName;
+        [Input] public string gameObjectName;
+        [Output] public GameObject gameObject;
 
-        public FindConstraint findConstraint = FindConstraint.ActiveInHierarchy;
-        public bool cache = true;
-
-        [Output]
-        public GameObject gameObject;
+        [SerializeField] private StringGameObjectDictionary gameObjectCache; 
+        [SerializeField] private FindConstraint findConstraint = FindConstraint.ActiveInHierarchy;
+        [SerializeField] private bool cache = true;
 
         private GameObject foundGameObject;
 
@@ -33,8 +32,11 @@ namespace Celeste.DS.Nodes.Objects
             if (!cache || foundGameObject == null)
             {
                 string _childName = GetInputValue(nameof(gameObjectName), gameObjectName);
-                string[] splitChildName = _childName.Split('.');
-                foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
+                if (gameObjectCache == null || !gameObjectCache.TryFindItem(_childName, out foundGameObject))
+                {
+                    string[] splitChildName = _childName.Split('.');
+                    foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
+                }
             }
 
             Debug.AssertFormat(foundGameObject != null, "Could not find child '{0}'", gameObjectName);

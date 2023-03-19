@@ -32,10 +32,12 @@ namespace Celeste.DS.Nodes.UI
             }
 
             string currentValue = GetInputValue("value", value);
-            if (currentValue != text.text)
+            string _format = GetInputValue("format", format);
+            currentValue = string.IsNullOrEmpty(_format) ? currentValue : string.Format(_format, currentValue);
+            
+            if (string.CompareOrdinal(currentValue, text.text) == 0)
             {
-                string _format = GetInputValue("format", format);
-                text.text = string.IsNullOrEmpty(_format) ? currentValue : string.Format(_format, currentValue);
+                text.text = currentValue;
             }
         }
 
