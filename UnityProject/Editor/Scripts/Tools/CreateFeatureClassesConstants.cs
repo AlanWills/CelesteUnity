@@ -4,7 +4,7 @@
     {
         public const string OBJECT_SCRIPT_CONTENTS =
             "using UnityEngine;\n" +
-            "\n\n" +
+            "\n" +
             "namespace {0}.Objects\n" +
             "{{\n" +
             "    [CreateAssetMenu(fileName = nameof({1}), menuName = \"{2}\")]\n" +
@@ -17,7 +17,7 @@
            "using UnityEngine;\n" +
            "using Celeste.Objects;\n" +
            "using {0}.Objects;\n" +
-           "\n\n" +
+           "\n" +
            "namespace {0}.Catalogue\n" +
            "{{\n" +
            "    [CreateAssetMenu(fileName = nameof({1}), menuName = \"{2}\")]\n" +
@@ -30,8 +30,8 @@
            "using UnityEngine;\n" +
            "using UnityEditor;\n" +
            "using CelesteEditor.DataStructures;\n" +
-           "using {0}.Objects;" +
-           "\n\n" +
+           "using {3}.Objects;" +
+           "\n" +
            "namespace {0}.Catalogue\n" +
            "{{\n" +
            "    [CustomEditor(typeof({2}))]\n" +
@@ -42,7 +42,7 @@
 
         public const string RECORD_SCRIPT_CONTENTS =
             "using UnityEngine;\n" +
-            "\n\n" +
+            "\n" +
             "namespace {0}.Record\n" +
             "{{\n" +
             "    [CreateAssetMenu(fileName = nameof({1}), menuName = \"{2}\")]\n" +
@@ -53,7 +53,7 @@
 
         public const string NON_PERSISTENT_MANAGER_SCRIPT_CONTENTS =
             "using UnityEngine;\n" +
-            "\n\n" +
+            "\n" +
             "namespace {0}.Managers\n" +
             "{{\n" +
             "    [AddComponentMenu(\"{2}\")]\n" +
@@ -66,13 +66,12 @@
             "using UnityEngine;\n" +
             "using Celeste.Persistence;\n" +
             "using {0}.Persistence;\n" +
-            "\n\n" +
+            "\n" +
             "namespace {0}.Managers\n" +
             "{{\n" +
             "    [AddComponentMenu(\"{2}\")]\n" +
             "    public class {1} : PersistentSceneManager<{1}, {3}>\n" +
             "    {{\n" +
-            "\n" +
             "        public const string FILE_NAME = \"{1}.dat\";\n"+
             "        protected override string FileName => FILE_NAME;\n" +
             "\n" +
@@ -93,7 +92,7 @@
 
         public const string DTO_SCRIPT_CONTENTS =
             "using System;\n" +
-            "\n\n" +
+            "\n" +
             "namespace {0}.Persistence\n" +
             "{{\n" +
             "    [Serializable]\n" +

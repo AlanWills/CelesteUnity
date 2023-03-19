@@ -11,34 +11,34 @@ namespace CelesteEditor.UnityProject
     public struct CreateFeatureClassesParameters
     {
         [Header("Assembly")]
-        public string runtimeNamespaceName;
-        public string editorNamespaceName;
+        [LabelWidth(200)] public string runtimeNamespaceName;
+        [LabelWidth(200)] public string editorNamespaceName;
 
         [Header("Directories")]
-        public string runtimeScriptsDirectory;
-        public string editorScriptsDirectory;
+        [LabelWidth(200)] public string runtimeScriptsDirectory;
+        [LabelWidth(200)] public string editorScriptsDirectory;
 
         [Header("Object")]
-        public bool createObject;
-        [ShowIf(nameof(createObject))] public string objectTypeName;
-        [ShowIf(nameof(createObject))] public string createObjectMenuPath;
+        [LabelWidth(200)] public bool createObject;
+        [LabelWidth(200), ShowIf(nameof(createObject))] public string objectTypeName;
+        [LabelWidth(200), ShowIf(nameof(createObject))] public string createObjectMenuPath;
 
         [Header("Catalogue")]
-        public bool createCatalogue;
-        [ShowIf(nameof(createCatalogue))] public string catalogueTypeName;
-        [ShowIf(nameof(createCatalogue))] public string createCatalogueMenuPath;
+        [LabelWidth(200)] public bool createCatalogue;
+        [LabelWidth(200), ShowIf(nameof(createCatalogue))] public string catalogueTypeName;
+        [LabelWidth(200), ShowIf(nameof(createCatalogue))] public string createCatalogueMenuPath;
 
         [Header("Record")]
         public bool createRecord;
-        [ShowIf(nameof(createRecord))] public string recordTypeName;
-        [ShowIf(nameof(createRecord))] public string createRecordMenuPath;
+        [LabelWidth(200), ShowIf(nameof(createRecord))] public string recordTypeName;
+        [LabelWidth(200), ShowIf(nameof(createRecord))] public string createRecordMenuPath;
 
         [Header("Manager")]
         public bool createManager;
-        [ShowIf(nameof(createManager))] public string managerTypeName;
-        [ShowIf(nameof(createManager))] public string addManagerMenuPath;
-        [ShowIf(nameof(createManager))] public bool isManagerPersistent;
-        [ShowIf(nameof(isManagerPersistent))] public string managerDTOTypeName;
+        [LabelWidth(200), ShowIf(nameof(createManager))] public string managerTypeName;
+        [LabelWidth(200), ShowIf(nameof(createManager))] public string addManagerMenuPath;
+        [LabelWidth(200), ShowIf(nameof(createManager))] public bool isManagerPersistent;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string managerDTOTypeName;
     }
 
     public static class CreateFeatureClasses
@@ -100,7 +100,8 @@ namespace CelesteEditor.UnityProject
                         CreateFeatureClassesConstants.CATALOGUE_EDITOR_SCRIPT_CONTENTS,
                         parameters.editorNamespaceName,
                         parameters.catalogueTypeName,
-                        parameters.objectTypeName);
+                        parameters.objectTypeName,
+                        parameters.runtimeNamespaceName);
                     File.WriteAllText(catalogueEditorScriptPath, catalogueEditorScriptContents);
                 }
             }
@@ -115,7 +116,7 @@ namespace CelesteEditor.UnityProject
 
                 string recordScriptPath = $"{recordFolderPath}/{parameters.recordTypeName}.cs";
                 string recordScriptContents = string.Format(
-                    CreateFeatureClassesConstants.OBJECT_SCRIPT_CONTENTS,
+                    CreateFeatureClassesConstants.RECORD_SCRIPT_CONTENTS,
                     parameters.runtimeNamespaceName,
                     parameters.recordTypeName,
                     parameters.createRecordMenuPath);

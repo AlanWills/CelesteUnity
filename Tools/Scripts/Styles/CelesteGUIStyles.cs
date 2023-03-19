@@ -29,7 +29,6 @@ namespace Celeste
                 if (boldLabel == null)
                 {
                     boldLabel = GUI.skin.label.New().Bold();
-                    boldLabel.normal.textColor = Color.black;
                 }
 
                 return boldLabel;

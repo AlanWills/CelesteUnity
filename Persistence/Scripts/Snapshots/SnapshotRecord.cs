@@ -53,9 +53,9 @@ namespace Celeste.Persistence.Snapshots
 
             foreach (IInterestedInSnapshots interested in interestedInSnapshots)
             {
-                if (interested is ISupportsDataSnapshots)
+                if (interested is ISupportsDataSnapshots snapshots)
                 {
-                    object data = (interested as ISupportsDataSnapshots).Data;
+                    object data = snapshots.Data;
                     string serializedData = PersistenceUtility.Serialize(data);
                     snapshot.AddItem(interested.UnpackPath, serializedData);
                 }

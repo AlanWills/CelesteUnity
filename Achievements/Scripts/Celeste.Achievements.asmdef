@@ -1,0 +1,22 @@
+{
+    "name": "Celeste.Achievements",
+    "rootNamespace": "Celeste.Achievements",
+    "references": [
+        "Celeste.Persistence",
+        "Celeste.Objects",
+        "Celeste.Events",
+        "Celeste.Logic",
+        "Celeste.Localisation",
+        "Celeste.Rewards",
+        "Celeste.DataStructures"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
