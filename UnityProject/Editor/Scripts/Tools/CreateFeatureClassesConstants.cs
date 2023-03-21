@@ -30,11 +30,12 @@
            "using UnityEngine;\n" +
            "using UnityEditor;\n" +
            "using CelesteEditor.DataStructures;\n" +
-           "using {3}.Objects;" +
+           "using {3}.Objects;\n" +
+           "using {3}.Catalogue;\n" +
            "\n" +
            "namespace {0}.Catalogue\n" +
            "{{\n" +
-           "    [CustomEditor(typeof({2}))]\n" +
+           "    [CustomEditor(typeof({1}))]\n" +
            "    public class {1}Editor : IIndexableItemsEditor<{2}>\n" +
            "    {{\n" +
            "    }}\n" +

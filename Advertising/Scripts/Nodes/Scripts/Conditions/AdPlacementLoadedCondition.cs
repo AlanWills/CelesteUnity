@@ -28,7 +28,7 @@ namespace Celeste.Advertising.Nodes.Conditions
             trueIfLoaded = (bool)arg;
         }
 
-        protected override void DoInit()
+        protected override void DoInitialize()
         {
             adPlacement.AddIsLoadedChangedCallback(OnAdIsLoadedChanged);
         }

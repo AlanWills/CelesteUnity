@@ -14,7 +14,7 @@ namespace CelesteEditor.Events
 
         public static void DrawBakedEvent(Rect position, SerializedProperty property, GUIContent label)
         {
-            using (var propertyScope = new EditorGUI.PropertyScope(position, label, property))
+            using (new EditorGUI.PropertyScope(position, label, property))
             {
                 EditorGUILayout.PropertyField(property.FindPropertyRelative("bakedEvent"));
             }

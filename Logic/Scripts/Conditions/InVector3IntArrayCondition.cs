@@ -19,7 +19,7 @@ namespace Celeste.Logic
 
         #region Init Methods
 
-        protected override void DoInit()
+        protected override void DoInitialize()
         {
             if (target == null)
             {

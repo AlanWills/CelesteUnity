@@ -34,7 +34,7 @@ namespace Celeste.Logic
         {
             foreach (var condition in conditionSettings.Conditions)
             {
-                condition.Init();
+                condition.Initialize();
             }
         }
 

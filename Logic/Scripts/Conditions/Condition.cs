@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Celeste.Logic
 {
     [Serializable]
-    public abstract class Condition : ScriptableObject, ICopyable<Condition>
+    public abstract class Condition : ScriptableObject, ICopyable<Condition>, IInitializable
     {
         #region Properties and Fields
 
@@ -35,18 +35,18 @@ namespace Celeste.Logic
 
         #endregion
 
-        public void Init()
+        public void Initialize()
         {
             if (initCount++ == 0)
             {
-                DoInit();
+                DoInitialize();
                 Check();
             }
         }
 
         public void Shutdown()
         {
-            UnityEngine.Debug.Assert(initCount > 0, $"Condition {name} {nameof(Shutdown)} called more times than {nameof(Init)}.");
+            UnityEngine.Debug.Assert(initCount > 0, $"Condition {name} {nameof(Shutdown)} called more times than {nameof(Initialize)}.");
 
             if (--initCount == 0)
             {
@@ -61,7 +61,7 @@ namespace Celeste.Logic
             return IsMet;
         }
 
-        protected virtual void DoInit() { }
+        protected virtual void DoInitialize() { }
         protected virtual void DoShutdown() { }
         protected abstract bool DoCheck();
         public abstract void SetVariable(object arg);

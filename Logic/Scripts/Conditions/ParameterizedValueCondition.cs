@@ -17,7 +17,7 @@ namespace Celeste.Logic
 
         #endregion
 
-        protected override void DoInit()
+        protected override void DoInitialize()
         {
             if (value == null)
             {

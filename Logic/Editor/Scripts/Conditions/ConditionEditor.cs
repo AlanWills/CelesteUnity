@@ -13,9 +13,9 @@ namespace CelesteEditor.Logic
             SerializedObject serializedObject = new SerializedObject(target);
             serializedObject.Update();
 
-            if (GUILayout.Button("Init"))
+            if (GUILayout.Button("Initialize"))
             {
-                (target as Condition).Init();
+                (target as Condition).Initialize();
             }
 
             OnInspectorGUIImpl(serializedObject);

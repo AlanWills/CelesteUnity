@@ -18,7 +18,7 @@ namespace Celeste.Inventory.Logic
 
         #endregion
 
-        protected override void DoInit()
+        protected override void DoInitialize()
         {
             if (target == null)
             {

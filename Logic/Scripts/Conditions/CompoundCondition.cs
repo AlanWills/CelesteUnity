@@ -40,7 +40,7 @@ namespace Celeste.Logic
             // No-op
         }
 
-        protected override void DoInit()
+        protected override void DoInitialize()
         {
             for (int i = 0, n = conditions.Count; i < n; i++)
             {
