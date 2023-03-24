@@ -8,7 +8,12 @@
         "Celeste.Logic",
         "Celeste.Localisation",
         "Celeste.Rewards",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "RecyclableScrollRect",
+        "Celeste.Tools",
+        "Celeste.Parameters",
+        "Unity.TextMeshPro",
+        "Celeste.Debug"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

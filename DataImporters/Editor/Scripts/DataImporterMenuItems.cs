@@ -15,7 +15,19 @@ namespace CelesteEditor.DataImporters
         [MenuItem("Celeste/Data Importers/Import All", validate = false)]
         public static void ImportAll()
         {
-            EditorCoroutineUtility.StartCoroutineOwnerless(DataImporterEditorSettings.GetOrCreateSettings().dataImporterCatalogue.ImportAll());
+            EditorCoroutineUtility.StartCoroutineOwnerless(DataImporterEditorSettings.GetOrCreateSettings().dataImporterCatalogue.ImportAll(
+                UpdateProgressOfImportAll,
+                ImportAllComplete));
+        }
+
+        private static void UpdateProgressOfImportAll(string log, float currentProgress)
+        {
+            EditorUtility.DisplayProgressBar("Importing Data", log, currentProgress);
+        }
+
+        private static void ImportAllComplete()
+        {
+            EditorUtility.ClearProgressBar();
         }
     }
 }

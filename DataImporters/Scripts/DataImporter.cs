@@ -1,4 +1,5 @@
-﻿using Celeste.DataImporters.ImportSteps;
+﻿using System;
+using Celeste.DataImporters.ImportSteps;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Celeste.DataImporters
 
         #endregion
 
-        public IEnumerator Import()
+        public IEnumerator Import(Action<string, float> progressCallback = null)
         {
             for (int i = 0; i < preImportSteps.Count; i++)
             {
@@ -22,7 +23,7 @@ namespace Celeste.DataImporters
                 preImportSteps[i].Execute();
             }
 
-            yield return DoImport();
+            yield return DoImport(progressCallback);
 
             for (int i = 0; i < postImportSteps.Count; i++)
             {
@@ -31,6 +32,6 @@ namespace Celeste.DataImporters
             }
         }
 
-        protected abstract IEnumerator DoImport();
+        protected abstract IEnumerator DoImport(Action<string, float> progressCallback = null);
     }
 }

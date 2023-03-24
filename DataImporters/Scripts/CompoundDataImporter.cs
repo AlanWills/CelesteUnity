@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +14,18 @@ namespace Celeste.DataImporters
 
         #endregion
 
-        protected override IEnumerator DoImport()
+        protected override IEnumerator DoImport(Action<string, float> progressCallback = null)
         {
-            for (int i = 0; i < dataImporters.Count; i++)
+            for (int i = 0, n = dataImporters.Count; i < n; ++i)
             {
-                Debug.Assert(dataImporters[i] != null, $"Data importer {i} was null on compound importer {name}.");
-                yield return dataImporters[i].Import();
+                DataImporter importer = dataImporters[i];
+                Debug.Assert(importer != null, $"Data importer {i} was null on compound importer {name}.");
+                progressCallback?.Invoke($"Importing {importer.name}", i / (float)n);
+                
+                yield return importer.Import((s, f) =>
+                {
+                    progressCallback?.Invoke($"{importer.name}: {s}", (i + f) / n);
+                });
             }
         }
     }

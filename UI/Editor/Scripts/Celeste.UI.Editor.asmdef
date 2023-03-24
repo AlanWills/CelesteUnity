@@ -6,7 +6,9 @@
         "Celeste.Objects",
         "Celeste.Events",
         "Celeste.DataStructures.Editor",
-        "Celeste.Events.Editor"
+        "Celeste.Events.Editor",
+        "GUID:bc28c6dc120e98e408c12c7c01932dc4",
+        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a"
     ],
     "includePlatforms": [
         "Editor"

@@ -52,12 +52,12 @@ namespace Celeste.Achievements.Managers
                 }
             }
             
-            achievementRecord.Init(achievementCatalogue);
+            achievementRecord.Initialize(achievementCatalogue);
         }
 
         protected override void SetDefaultValues()
         {
-            achievementRecord.Init(achievementCatalogue);
+            achievementRecord.Initialize(achievementCatalogue);
         }
         
         #endregion

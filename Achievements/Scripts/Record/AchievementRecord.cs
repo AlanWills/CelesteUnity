@@ -18,12 +18,12 @@ namespace Celeste.Achievements.Objects
 
         #endregion
 
-        public void Init(IIndexableItems<Achievement> achievementItems)
+        public void Initialize(IIndexableItems<Achievement> achievementItems)
         {
             for (int i = 0, n = achievementItems.NumItems; i < n; ++i)
             {
                 Achievement achievement = achievementItems.GetItem(i);
-                achievement.Init();
+                achievement.Initialize();
                 achievement.AddOnStateChangedCallback(OnAchievementStateChanged);
                 achievements.Add(achievement);
             }

@@ -21,6 +21,7 @@ namespace UnityEngine.UI.Extensions
             _currentPage = StartingScreen;
             panelDimensions = gameObject.GetComponent<RectTransform>().rect;
             UpdateLayout();
+            ScreenChange();
         }
 
         void Update()

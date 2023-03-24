@@ -1,4 +1,5 @@
-﻿using Celeste.DataImporters;
+﻿using System;
+using Celeste.DataImporters;
 using Celeste.Web.ImportSteps;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Celeste.Web.DataImporters
 
         #endregion
 
-        protected override IEnumerator DoImport()
+        protected override IEnumerator DoImport(Action<string, float> progressCallback = null)
         {
             yield return GoogleSheetsCSVDownloader.DownloadData(sheetId, tabId, OnDownloadData);
         }
