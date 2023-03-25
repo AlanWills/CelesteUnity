@@ -4,6 +4,7 @@ using Celeste.Shop.Purchasing;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections.Generic;
 using Celeste.Localisation;
+using Celeste.Rewards.Objects;
 using UnityEngine;
 
 namespace Celeste.Shop.Catalogue
@@ -22,13 +23,13 @@ namespace Celeste.Shop.Catalogue
         public LocalisationKey Title => title;
         public Sprite Icon => icon;
         public Cost Cost => cost;
-        public IReadOnlyList<Reward> Rewards => rewards;
+        public Reward Reward => reward;
 
         [SerializeField] private int guid;
         [SerializeField] private LocalisationKey title;
         [SerializeField] private Sprite icon;
         [SerializeField, InlineDataInInspector] private Cost cost;
-        [SerializeField] private List<Reward> rewards = new();
+        [SerializeField] private Reward reward;
 
         #endregion
     }

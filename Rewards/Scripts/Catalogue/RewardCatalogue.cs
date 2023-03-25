@@ -1,4 +1,5 @@
 ﻿using Celeste.Objects;
+using Celeste.Rewards.Objects;
 using UnityEngine;
 
 namespace Celeste.Rewards.Catalogue
@@ -14,7 +15,7 @@ namespace Celeste.Rewards.Catalogue
         public Reward MustFindByGuid(int guid)
         {
             Reward reward = FindByGuid(guid);
-            UnityEngine.Debug.Assert(reward != null, $"Could not find reward with guid {guid} in catalogue.");
+            UnityEngine.Debug.Assert(reward != null, $"Could not find {nameof(Reward)} with guid {guid} in catalogue.");
 
             return reward;
         }

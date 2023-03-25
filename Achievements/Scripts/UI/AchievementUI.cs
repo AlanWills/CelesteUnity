@@ -32,18 +32,19 @@ namespace Celeste.Achievements.UI
 			achievement = achievementUIData.Achievement;
 			achievement.AddOnStateChangedCallback(OnAchievementStateChanged);
 
+			achievementTitle.Localise(achievement.Title);
+			rewardUI.Hookup(achievement.Reward);
+			
 			RefreshUI();
 		}
 
 		private void RefreshUI()
 		{
 			AchievementState state = achievement.State;
-
-			achievementTitle.Localise(achievement.Title);
+			
 			inProgressUI.SetActive(state == AchievementState.InProgress);
 			achievedUI.SetActive(state == AchievementState.Achieved);
 			collectedUI.SetActive(state == AchievementState.Collected);
-			rewardUI.Hookup(achievement.Reward);
 
 			bool achievementHasProgress = achievement.TryGetProgress(out var progress);
 			bool showProgressUI = achievementHasProgress && state == AchievementState.InProgress;

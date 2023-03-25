@@ -5,8 +5,8 @@ using UnityEditor;
 
 namespace CelesteEditor.Rewards.Catalogue
 {
-    [CustomEditor(typeof(RewardCatalogue))]
-    public class RewardCatalogueEditor : IIndexableItemsEditor<Reward>
+    [CustomEditor(typeof(RewardItemCatalogue))]
+    public class RewardItemCatalogueEditor : IIndexableItemsEditor<RewardItem>
     {
     }
 }

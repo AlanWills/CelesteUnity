@@ -7,6 +7,7 @@ using Celeste.Logic;
 using Celeste.Logic.Interfaces;
 using Celeste.Objects;
 using Celeste.Rewards.Catalogue;
+using Celeste.Rewards.Objects;
 using UnityEngine;
 using UnityEngine.Events;
 

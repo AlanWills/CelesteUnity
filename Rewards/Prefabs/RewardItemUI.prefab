@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4900202774259197124}
-  - component: {fileID: 2645751550328870599}
+  - component: {fileID: 1453057038285990893}
   m_Layer: 5
-  m_Name: Reward
+  m_Name: RewardItemUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchoredPosition: {x: 15, y: 15}
   m_SizeDelta: {x: 120, y: 30}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2645751550328870599
+--- !u!114 &1453057038285990893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6604809980890607621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d0a182080cafe43963fc227c2aea91, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c7de48b7e404db1a754c46184a8f542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rewardIcon: {fileID: 6041287626326187791}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

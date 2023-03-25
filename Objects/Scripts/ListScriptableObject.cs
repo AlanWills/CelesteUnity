@@ -31,12 +31,12 @@ namespace Celeste.Objects
 
         #region Properties and Fields
 
-        public int NumItems { get { return ItemsImpl.Count; } }
+        public int NumItems => ItemsImpl.Count;
         public IReadOnlyList<T> Items => new ReadOnlyCollection<T>(ItemsImpl);
 
-        private List<T> ItemsImpl => runtimeModifiedItems != null ? runtimeModifiedItems : items;
+        private List<T> ItemsImpl => runtimeModifiedItems ?? items;
 
-        [SerializeField] private List<T> items = new List<T>();
+        [SerializeField] private List<T> items = new();
 
         [NonSerialized] private List<T> runtimeModifiedItems;
 

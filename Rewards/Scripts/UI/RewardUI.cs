@@ -1,7 +1,7 @@
-﻿using Celeste.Rewards.Catalogue;
-using TMPro;
+﻿using System;
+using Celeste.Memory;
+using Celeste.Rewards.Objects;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Celeste.Rewards.UI
 {
@@ -10,22 +10,38 @@ namespace Celeste.Rewards.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private Image rewardIcon;
-        [SerializeField] private TextMeshProUGUI rewardQuantity;
-        [SerializeField] private bool showQuantity = true;
+        [SerializeField] private GameObjectAllocator rewardItemUIAllocator;
 
         #endregion
 
         public void Hookup(Reward reward)
         {
-            UnityEngine.Debug.Assert(reward != null, $"Null reward inputted into {nameof(RewardUI)}.");
+            Debug.Assert(reward != null, $"Null reward inputted into {nameof(RewardUI)}.");
             if (reward != null)
             {
-                rewardIcon.sprite = reward.Icon;
-                rewardQuantity.text = $"x {reward.Quantity}";
+                for (int i = 0, n = reward.NumItems; i < n; ++i)
+                {
+                    GameObject rewardItemUIGameObject = rewardItemUIAllocator.Allocate();
+                    Debug.Assert(rewardItemUIGameObject != null,
+                        $"Failed to allocate UI for item in reward {reward.Items}.  Exceeded max allocator capacity of {rewardItemUIAllocator.Capacity}.");
 
-                rewardQuantity.gameObject.SetActive(showQuantity);
+                    if (rewardItemUIGameObject != null)
+                    {
+                        RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
+                        rewardItemUI.Hookup(reward.GetItem(i));
+                        rewardItemUIGameObject.gameObject.SetActive(true);
+                    }
+                }
             }
         }
+        
+        #region Unity Methods
+
+        private void OnDisable()
+        {
+            rewardItemUIAllocator.DeallocateAll();
+        }
+
+        #endregion
     }
 }

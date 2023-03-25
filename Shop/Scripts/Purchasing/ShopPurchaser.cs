@@ -1,4 +1,5 @@
 ﻿using Celeste.Rewards.Catalogue;
+using Celeste.Rewards.Objects;
 using Celeste.Shop.Catalogue;
 using UnityEngine;
 
@@ -14,11 +15,7 @@ namespace Celeste.Shop.Purchasing
             if (cost.CanAfford)
             {
                 cost.currency.Quantity -= cost.quantity;
-
-                foreach (Reward reward in shopItem.Rewards)
-                {
-                    reward.AwardReward();
-                }
+                shopItem.Reward.AwardReward();
             }
         }
     }

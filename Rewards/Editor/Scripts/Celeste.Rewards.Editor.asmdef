@@ -3,7 +3,9 @@
     "rootNamespace": "CelesteEditor.Rewards",
     "references": [
         "Celeste.Rewards",
-        "Celeste.DataStructures.Editor"
+        "Celeste.Objects",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

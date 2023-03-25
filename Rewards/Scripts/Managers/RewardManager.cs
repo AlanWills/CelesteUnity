@@ -1,4 +1,4 @@
-﻿using Celeste.Rewards.Catalogue;
+﻿using Celeste.Rewards.Objects;
 using UnityEngine;
 
 namespace Celeste.Rewards.Managers

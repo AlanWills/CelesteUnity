@@ -9,10 +9,8 @@ namespace Celeste.Memory
     {
         #region Properties and Fields
 
-        public int Available
-        {
-            get { return cache.Count - allocated; }
-        }
+        public int Capacity => cache.Count;
+        public int Available => cache.Count - allocated;
 
         public GameObject prefab;
 

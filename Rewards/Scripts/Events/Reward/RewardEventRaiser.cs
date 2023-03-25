@@ -1,6 +1,5 @@
-using UnityEngine;
 using Celeste.Events;
-using Celeste.Rewards.Catalogue;
+using Celeste.Rewards.Objects;
 
 namespace Celeste.Rewards.Events
 {

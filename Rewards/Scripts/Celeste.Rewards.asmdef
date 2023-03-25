@@ -7,7 +7,8 @@
         "Celeste.Tools",
         "Celeste.Parameters",
         "Celeste.Events",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Celeste.Memory"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
