@@ -35,7 +35,7 @@ namespace Celeste.Notifications.Impls
         {
             var timeTrigger = new iOSNotificationTimeIntervalTrigger()
             {
-                TimeInterval = new TimeSpan(0, minutes, seconds),
+                //TimeInterval = new TimeSpan(0, minutes, seconds),
                 Repeats = false
             };
 
