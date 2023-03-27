@@ -1,3 +1,4 @@
+#if UNITY_IOS
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -109,3 +110,4 @@ namespace Celeste.Notifications.Impls
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_ANDROID
 using Celeste.Notifications.Interfaces;
 using Unity.Notifications.Android;
 using UnityEngine.Android;
@@ -76,3 +77,4 @@ namespace Celeste.Notifications.Impls
         }
     }
 }
+#endif
