@@ -7,6 +7,7 @@
         "Celeste.Tools",
         "Celeste.Parameters",
         "Celeste.Events",
+        "Celeste.DataStructures",
         "Unity.TextMeshPro",
         "Celeste.Memory"
     ],

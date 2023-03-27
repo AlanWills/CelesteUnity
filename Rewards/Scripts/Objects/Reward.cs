@@ -1,6 +1,4 @@
 ﻿using Celeste.Objects;
-using Celeste.Parameters;
-using Celeste.Wallet;
 using UnityEngine;
 
 namespace Celeste.Rewards.Objects

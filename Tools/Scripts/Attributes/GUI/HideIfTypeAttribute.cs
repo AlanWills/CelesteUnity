@@ -10,9 +10,9 @@ namespace Celeste.Tools.Attributes.GUI
     public class HideIfTypeAttribute : MultiPropertyAttribute
     {
         private string propertyName;
-        private SerializedPropertyType targetType;
+        private int targetType;
 
-        public HideIfTypeAttribute(string propertyName, SerializedPropertyType targetType)
+        public HideIfTypeAttribute(string propertyName, int targetType)
         {
             this.propertyName = propertyName;
             this.targetType = targetType;
@@ -35,7 +35,7 @@ namespace Celeste.Tools.Attributes.GUI
             string conditionPath = propertyPath.Replace(property.name, propertyName);
             SerializedProperty dependentProperty = property.serializedObject.FindProperty(conditionPath);
 
-            return dependentProperty != null && dependentProperty.propertyType == targetType;
+            return dependentProperty != null && (int)dependentProperty.propertyType == targetType;
         }
 #endif
     }
