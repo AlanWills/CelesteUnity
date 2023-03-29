@@ -7,20 +7,20 @@ using UnityEditor.AddressableAssets.Settings;
 namespace CelesteEditor.Assets.Analyze
 {
     [InitializeOnLoad]
-    public static class RegisterEnsureAssetsHaveGroupLabelAnalyzeRule
+    public static class RegisterEnsureNoLabelsCollideWithAssetsAnalyzeRule
     {
-        static RegisterEnsureAssetsHaveGroupLabelAnalyzeRule()
+        static RegisterEnsureNoLabelsCollideWithAssetsAnalyzeRule()
         {
-            AnalyzeSystem.RegisterNewRule<EnsureAssetsHaveGroupLabelAnalyzeRule>();
+            AnalyzeSystem.RegisterNewRule<EnsureNoLabelsCollideWithAssetsAnalyzeRule>();
         }
     }
 
-    public class EnsureAssetsHaveGroupLabelAnalyzeRule : AnalyzeRule
+    public class EnsureNoLabelsCollideWithAssetsAnalyzeRule : AnalyzeRule
     {
         #region Properties and Fields
 
-        public override string ruleName => "Ensure Assets Have Group Label";
-        public override bool CanFix { get; set; } = true;
+        public override string ruleName => "Ensure No Labels Collide With Assets";
+        public override bool CanFix { get; set; } = false;
 
         #endregion
 
@@ -35,50 +35,35 @@ namespace CelesteEditor.Assets.Analyze
                 AddAnalyzeResult(assetEntry, analyzeResults);
             }
 
-            CanFix = true;
-
             return analyzeResults;
         }
 
         private List<AddressableAssetEntry> Analyze(AddressableAssetSettings settings)
         {
-            List<AddressableAssetEntry> assetEntriesToFix = new List<AddressableAssetEntry>();
+            HashSet<string> labels = new HashSet<string>(settings.GetLabels());
+            List<AddressableAssetEntry> brokenAssetEntries = new List<AddressableAssetEntry>();
 
             foreach (AddressableAssetGroup addressableGroup in settings.groups)
             {
                 foreach (var assetEntry in addressableGroup.entries)
                 {
-                    if (assetEntry.TargetAsset != null && !assetEntry.labels.Contains(addressableGroup.Name))
+                    if (labels.Contains(assetEntry.address))
                     {
-                        assetEntriesToFix.Add(assetEntry);
+                        brokenAssetEntries.Add(assetEntry);
                     }
                 }
             }
 
-            return assetEntriesToFix;
+            return brokenAssetEntries;
         }
 
         private void AddAnalyzeResult(AddressableAssetEntry assetEntry, List<AnalyzeResult> analyzeResults)
         {
             analyzeResults.Add(new AnalyzeResult()
             {
-                resultName = $"'{assetEntry.TargetAsset.name}' does not have the corresponding group label '{assetEntry.parentGroup.Name}' ({assetEntry.address})",
+                resultName = $"'{assetEntry.TargetAsset.name}' has an address which is also a label ({assetEntry.address})",
                 severity = MessageType.Error
             });
-        }
-
-        #endregion
-
-        #region Fix
-
-        public override void FixIssues(AddressableAssetSettings settings)
-        {
-            foreach (var assetEntryToFix in Analyze(settings))
-            {
-                assetEntryToFix.SetLabel(assetEntryToFix.parentGroup.Name, true);
-            }
-
-            ClearAnalysis();
         }
 
         #endregion

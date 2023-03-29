@@ -71,13 +71,13 @@ namespace Celeste.Viewport
         {
             scrollAmount *= zoomSpeed.Value;
 
-            float animationTime = Mathf.Abs(scrollAmount) / animateSpeed;
             float currentAnimationTime = 0;
 
             if (cameraToZoom.orthographic)
             {
                 float startingSize = cameraToZoom.orthographicSize;
                 float finishingSize = Mathf.Clamp(startingSize - scrollAmount, minZoom.Value, maxZoom.Value);
+                float animationTime = Mathf.Abs(finishingSize - startingSize) / animateSpeed;
 
                 while (currentAnimationTime < animationTime)
                 {
@@ -94,6 +94,7 @@ namespace Celeste.Viewport
                 Vector3 position = transform.localPosition;
                 float startingZ = position.z;
                 float finishingZ = position.z + scrollAmount;
+                float animationTime = Mathf.Abs(scrollAmount) / animateSpeed;
 
                 while (currentAnimationTime < animationTime)
                 {

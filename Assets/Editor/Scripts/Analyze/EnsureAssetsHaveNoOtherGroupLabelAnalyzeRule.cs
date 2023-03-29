@@ -71,7 +71,7 @@ namespace CelesteEditor.Assets.Analyze
         {
             analyzeResults.Add(new AnalyzeResult()
             {
-                resultName = $"'{assetEntry.TargetAsset.name}' has a tag from another group ({assetEntry.address})",
+                resultName = $"'{assetEntry.TargetAsset.name}' has a label from another group ({assetEntry.address})",
                 severity = MessageType.Error
             });
         }

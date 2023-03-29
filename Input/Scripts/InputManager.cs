@@ -84,56 +84,50 @@ namespace Celeste.Input
         private void Update()
         {
 #if UNITY_ANDROID || UNITY_IOS
-            //if (UnityEngine.Input.touchCount != 1)
-            //{
-            //    firstHitGameObject = null;
-            //}
+            GameObject hitGameObject = null;
 
-            //if (UnityEngine.Input.touchCount == 1)
-            //{
-            //    //Touch touch = UnityEngine.Input.GetTouch(0);
-            //    //singleTouchEvent.InvokeSilently(touch);
+            if (UnityEngine.Input.touchCount == 1)
+            {
+                Touch touch = UnityEngine.Input.GetTouch(0);
+                Vector3 touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touch.position);
 
-            //    //Vector3 touchWorldPosition = raycastCamera.ScreenToWorldPoint(touch.position);
-            //    //GameObject hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
+                singleTouchEvent.InvokeSilently(touch);
 
-            //    //if (touch.phase == TouchPhase.Began)
-            //    //{
-            //    //    firstHitGameObject = hitGameObject;
-            //    //    firstHitGameObjectPosition = touchWorldPosition;
-            //    //}
-            //    //else if (touch.phase == TouchPhase.Ended)
-            //    //{
-            //    //    if (firstHitGameObject != null && 
-            //    //        firstHitGameObject == hitGameObject && 
-            //    //        (touchWorldPosition - firstHitGameObjectPosition).sqrMagnitude < 0.05f)
-            //    //    {
-            //    //        gameObjectLeftClicked.Raise(new GameObjectClickEventArgs()
-            //    //        {
-            //    //            gameObject = hitGameObject,
-            //    //            clickWorldPosition = touchWorldPosition
-            //    //        });
-            //    //    }
+                if (raycastCamera.Value != null)
+                {
+                    if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
+                    {
+                        hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
+                        Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                    }
 
-            //    //    firstHitGameObject = null;
-            //    //}
-            //}
-            //else if (UnityEngine.Input.touchCount == 2)
-            //{
-            //    doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
-            //    {
-            //        touchCount = 2,
-            //        touches = UnityEngine.Input.touches,
-            //    });
-            //}
-            //else if (UnityEngine.Input.touchCount == 3)
-            //{
-            //    tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
-            //    {
-            //        touchCount = 3,
-            //        touches = UnityEngine.Input.touches,
-            //    });
-            //}
+                    if (hitGameObject == null)
+                    {
+                        // If we haven't hit any UI, see if we have hit any game objects in the world
+                        hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
+                        Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                    }
+                }
+                
+            }
+            else if (UnityEngine.Input.touchCount == 2)
+            {
+                doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
+                {
+                    touchCount = 2,
+                    touches = UnityEngine.Input.touches,
+                });
+            }
+            else if (UnityEngine.Input.touchCount == 3)
+            {
+                tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
+                {
+                    touchCount = 3,
+                    touches = UnityEngine.Input.touches,
+                });
+            }
+            
+            inputState.HitGameObject = hitGameObject;
 #else
 
 #if UNITY_EDITOR
