@@ -2,6 +2,7 @@
 using Celeste.Parameters;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Viewport
 {
@@ -112,20 +113,19 @@ namespace Celeste.Viewport
 
         public void ZoomUsingPinch(MultiTouchEventArgs touchEventArgs)
         {
-            Debug.AssertFormat(touchEventArgs.touchCount == 2, "Expected 2 touches for ZoomUsingPinch, but got {0}", touchEventArgs.touchCount);
-            if (Input.touchCount == 2)
+            if (touchEventArgs.touchCount == 2)
             {
                 // Store both touches.
-                Touch touchZero = Input.GetTouch(0);
-                Touch touchOne = Input.GetTouch(1);
+                var touchZero = touchEventArgs.touches[0];
+                var touchOne = touchEventArgs.touches[1];
 
                 // Find the position in the previous frame of each touch.
-                Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-                Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+                Vector2 touchZeroPrevPos = touchZero.screenPosition - touchZero.delta;
+                Vector2 touchOnePrevPos = touchOne.screenPosition - touchOne.delta;
 
                 // Find the magnitude of the vector (the distance) between the touches in each frame.
                 float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-                float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+                float touchDeltaMag = (touchZero.screenPosition - touchOne.screenPosition).magnitude;
 
                 // Find the difference in the distances between each frame.
                 float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;

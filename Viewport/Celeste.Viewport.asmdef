@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.Viewport",
     "references": [
         "Celeste.Parameters",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

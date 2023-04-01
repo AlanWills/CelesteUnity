@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.Utilities;
 
 namespace Celeste.Events
 {
@@ -8,7 +9,7 @@ namespace Celeste.Events
     public struct MultiTouchEventArgs
     {
         public int touchCount;
-        public Touch[] touches;
+        public ReadOnlyArray<UnityEngine.InputSystem.EnhancedTouch.Touch> touches;
     }
 
     [Serializable]

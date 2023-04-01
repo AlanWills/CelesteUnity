@@ -1,11 +1,10 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.UI;
 
 namespace Celeste.Input
@@ -81,17 +80,37 @@ namespace Celeste.Input
 
         #region Unity Methods
 
+        private void OnEnable()
+        {
+            if (!EnhancedTouchSupport.enabled)
+            {
+                EnhancedTouchSupport.Enable();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (EnhancedTouchSupport.enabled)
+            {
+                EnhancedTouchSupport.Disable();
+            }
+        }
+
         private void Update()
         {
 #if UNITY_ANDROID || UNITY_IOS
             GameObject hitGameObject = null;
 
-            if (UnityEngine.Input.touchCount == 1)
-            {
-                Touch touch = UnityEngine.Input.GetTouch(0);
-                Vector3 touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touch.position);
+            Touchscreen touchScreen = Touchscreen.current;
+            var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+            int numTouches = touches.Count;
 
-                singleTouchEvent.InvokeSilently(touch);
+            if (numTouches == 1)
+            {
+                Vector3 touchPosition = touches[0].screenPosition;
+                Vector3 touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touchPosition);
+
+                singleTouchEvent.InvokeSilently(touches[0]);
 
                 if (raycastCamera.Value != null)
                 {
@@ -110,20 +129,20 @@ namespace Celeste.Input
                 }
                 
             }
-            else if (UnityEngine.Input.touchCount == 2)
+            else if (numTouches == 2)
             {
                 doubleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
                 {
-                    touchCount = 2,
-                    touches = UnityEngine.Input.touches,
+                    touchCount = numTouches,
+                    touches = touches,
                 });
             }
-            else if (UnityEngine.Input.touchCount == 3)
+            else if (numTouches == 3)
             {
                 tripleTouchEvent.InvokeSilently(new MultiTouchEventArgs()
                 {
-                    touchCount = 3,
-                    touches = UnityEngine.Input.touches,
+                    touchCount = numTouches,
+                    touches = touches,
                 });
             }
             

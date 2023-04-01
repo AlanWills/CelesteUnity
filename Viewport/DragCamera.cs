@@ -1,5 +1,6 @@
 ﻿using Celeste.Parameters;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Viewport
 {
@@ -74,27 +75,27 @@ namespace Celeste.Viewport
             dragStarted = false;
         }
 
-        public void DragUsingTouch(Touch touch)
+        public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
         {
             switch (touch.phase)
             {
-                case TouchPhase.Began:
+                case UnityEngine.InputSystem.TouchPhase.Began:
                     timeSinceFingerDown = 0;
                     break;
 
-                case TouchPhase.Stationary:
+                case UnityEngine.InputSystem.TouchPhase.Stationary:
                     timeSinceFingerDown += Time.deltaTime;
                     break;
 
-                case TouchPhase.Moved:
+                case UnityEngine.InputSystem.TouchPhase.Moved:
                     timeSinceFingerDown += Time.deltaTime;
 
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
-                        Vector2 dragAmount = -touch.deltaPosition;
+                        Vector2 dragAmount = -touch.delta;
                         float scrollModifier = dragSpeed.Value * Time.deltaTime * CameraSizeModifier;
 
-                        transform.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
+                        transformToMove.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                     }
                     break;
 
