@@ -7,13 +7,13 @@ namespace CelesteEditor.Narrative
 {
     public static class MenuItems
     {
-        [MenuItem("Celeste/Save/Open Narrative Save", priority = 0)]
+        [MenuItem("Celeste/Save/Files/Open Narrative Save", priority = 0)]
         public static void OpenNarrativeSaveMenuItem()
         {
             OpenExplorerAtPersistentData();
         }
 
-        [MenuItem("Celeste/Save/Delete Narrative Save", priority = 100)]
+        [MenuItem("Celeste/Save/Files/Delete Narrative Save", priority = 100)]
         public static void DeleteNarrativeSaveMenuItem()
         {
             PersistenceUtility.DeletePersistentDataFile(NarrativeManager.FILE_NAME);

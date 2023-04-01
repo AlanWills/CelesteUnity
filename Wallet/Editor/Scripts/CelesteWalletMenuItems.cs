@@ -7,13 +7,13 @@ namespace CelesteEditor.Wallet
 {
     public static class CelesteWalletMenuItems
     {
-        [MenuItem("Celeste/Save/Open Wallet Save", priority = 0)]
+        [MenuItem("Celeste/Save/Files/Open Wallet Save", priority = 0)]
         public static void OpenWalletSaveMenuItem()
         {
             PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
         }
 
-        [MenuItem("Celeste/Save/Delete Wallet Save", priority = 100)]
+        [MenuItem("Celeste/Save/Files/Delete Wallet Save", priority = 100)]
         public static void DeleteWalletSaveMenuItem()
         {
             PersistenceUtility.DeletePersistentDataFile(WalletManager.FILE_NAME);

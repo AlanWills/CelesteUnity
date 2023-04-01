@@ -1,4 +1,8 @@
-﻿namespace CelesteEditor.UnityProject
+﻿using Celeste.Persistence;
+using CelesteEditor.Persistence;
+using UnityEditor;
+
+namespace CelesteEditor.UnityProject
 {
     public static class CreateFeatureClassesConstants
     {
@@ -73,7 +77,7 @@
             "    [AddComponentMenu(\"{2}\")]\n" +
             "    public class {1} : PersistentSceneManager<{1}, {3}>\n" +
             "    {{\n" +
-            "        public const string FILE_NAME = \"{1}.dat\";\n"+
+            "        public const string FILE_NAME = \"{1}.dat\";\n" +
             "        protected override string FileName => FILE_NAME;\n" +
             "\n" +
             "        protected override {3} Serialize()\n" +
@@ -101,5 +105,26 @@
             "    {{\n" +
             "    }}\n" +
             "}}";
+
+        public const string PERSISTENCE_MENU_ITEMS_SCRIPT_CONTENTS =
+            "using System;\n" +
+            "\n" +
+            "namespace {0}.Persistence\n" +
+            "{{\n" +
+            "    public static class {1}PersistenceMenuItems\n" +
+            "    {{\n" +
+            "        [MenuItem(\"{2}\", priority = 0)]\n" +
+            "        public static void Open{1}SaveMenuItem()\n" +
+            "        {{\n" +
+            "            PersistenceMenuItemUtility.OpenExplorerAtPersistentData();\n" +
+            "        }}\n" +
+            "\n" +
+            "        [MenuItem(\"{3}\", priority = 100)]\n" +
+            "        public static void Delete{1}SaveMenuItem()\n" +
+            "        {{\n" +
+                         "PersistenceUtility.DeletePersistentDataFile({4}.FILE_NAME);\n" +
+            "        }}\n" +
+            "    }}\n" +
+            "}}\n";
     }
 }

@@ -39,6 +39,9 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(200), ShowIf(nameof(createManager))] public string addManagerMenuPath;
         [LabelWidth(200), ShowIf(nameof(createManager))] public bool isManagerPersistent;
         [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string managerDTOTypeName;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string persistenceMenuItemsName;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string openMenuPath;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string deleteMenuPath;
     }
 
     public static class CreateFeatureClasses
@@ -149,18 +152,33 @@ namespace CelesteEditor.UnityProject
                     File.WriteAllText(managerScriptPath, managerScriptContents);
                 }
 
-                // Create DTO
                 if (parameters.isManagerPersistent)
                 {
-                    string dtoFolderPath = $"{parameters.runtimeScriptsDirectory}/Persistence";
-                    AssetUtility.CreateFolder(dtoFolderPath);
+                    // Create DTO
+                    {
+                        string dtoFolderPath = $"{parameters.runtimeScriptsDirectory}/Persistence";
+                        AssetUtility.CreateFolder(dtoFolderPath);
 
-                    string dtoScriptPath = $"{dtoFolderPath}/{parameters.managerDTOTypeName}.cs";
-                    string dtoScriptContents = string.Format(
-                            CreateFeatureClassesConstants.DTO_SCRIPT_CONTENTS,
-                            parameters.runtimeNamespaceName,
-                            parameters.managerDTOTypeName);
-                    File.WriteAllText(dtoScriptPath, dtoScriptContents);
+                        string dtoScriptPath = $"{dtoFolderPath}/{parameters.managerDTOTypeName}.cs";
+                        string dtoScriptContents = string.Format(
+                                CreateFeatureClassesConstants.DTO_SCRIPT_CONTENTS,
+                                parameters.runtimeNamespaceName,
+                                parameters.managerDTOTypeName);
+                        File.WriteAllText(dtoScriptPath, dtoScriptContents);
+                    }
+
+                    // Create Persistence Menu Items
+                    {
+                        string dtoScriptPath = $"{parameters.editorScriptsDirectory}/{parameters.persistenceMenuItemsName}PersistenceMenuItems.cs";
+                        string dtoScriptContents = string.Format(
+                                CreateFeatureClassesConstants.PERSISTENCE_MENU_ITEMS_SCRIPT_CONTENTS,
+                                parameters.editorNamespaceName,
+                                parameters.persistenceMenuItemsName,
+                                parameters.openMenuPath,
+                                parameters.deleteMenuPath,
+                                parameters.managerTypeName);
+                        File.WriteAllText(dtoScriptPath, dtoScriptContents);
+                    }
                 }
             }
         }

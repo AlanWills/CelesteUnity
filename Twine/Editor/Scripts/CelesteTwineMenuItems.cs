@@ -7,13 +7,13 @@ namespace CelesteEditor.Twine
 {
     public static class MenuItems
     {
-        [MenuItem("Celeste/Save/Open Twine Save", priority = 0)]
+        [MenuItem("Celeste/Save/Files/Open Twine Save", priority = 0)]
         public static void OpenTwineSaveMenuItem()
         {
             OpenExplorerAtPersistentData();
         }
 
-        [MenuItem("Celeste/Save/Delete Twine Save", priority = 100)]
+        [MenuItem("Celeste/Save/Files/Delete Twine Save", priority = 100)]
         public static void DeleteTwineSaveMenuItem()
         {
             PersistenceUtility.DeletePersistentDataFile(TwineManager.FILE_NAME);
