@@ -1,11 +1,6 @@
 ﻿using Celeste.Constants;
 using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Application
@@ -17,7 +12,7 @@ namespace Celeste.Application
             if (isEditor != null)
             {
                 isEditor.Value = UnityEngine.Application.isEditor;
-                UnityEngine.Debug.LogFormat("isEditor set to {0}", isEditor.Value);
+                UnityEngine.Debug.Log($"isEditor set to {isEditor.Value}");
             }
         }
 
@@ -25,8 +20,14 @@ namespace Celeste.Application
         {
             if (isMobile != null)
             {
+#if UNITY_EDITOR
+                var buildTarget = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
+                isMobile.Value = buildTarget == UnityEditor.BuildTarget.Android ||
+                                 buildTarget == UnityEditor.BuildTarget.iOS;
+#else
                 isMobile.Value = UnityEngine.Application.isMobilePlatform;
-                UnityEngine.Debug.LogFormat("isMobile set to {0}", isMobile.Value);
+#endif
+                UnityEngine.Debug.Log($"isMobile set to {isMobile.Value}");
             }
         }
 

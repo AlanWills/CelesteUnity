@@ -11,6 +11,7 @@
         "Celeste.DataStructures",
         "Celeste.DataStructures.Editor",
         "Celeste.UI",
+        "Celeste.Application",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

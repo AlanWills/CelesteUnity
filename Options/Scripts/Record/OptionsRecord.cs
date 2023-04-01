@@ -1,4 +1,5 @@
-﻿using Celeste.DataStructures;
+﻿using Celeste.Application;
+using Celeste.DataStructures;
 using Celeste.Parameters;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,20 @@ namespace Celeste.Options
         public int NumIntOptions => intOptions.Count;
         public int NumStringOptions => stringOptions.Count;
 
+        private ApplicationPlatform PlatformForOptions
+        {
+            get
+            {
+                if (isMobilePlatform.Value)
+                {
+                    return ApplicationPlatform.Mobile;
+                }
+
+                return ApplicationPlatform.Computer;
+            }
+        }
+
+        [SerializeField] private BoolValue isMobilePlatform;
         [SerializeField] private Events.Event saveOptions;
 
         private List<BoolOption> boolOptions = new List<BoolOption>();
@@ -26,24 +41,28 @@ namespace Celeste.Options
 
         public void AddOption(BoolOption boolOption)
         {
+            boolOption.SetDefaultValue(PlatformForOptions);
             boolOption.AddValueChangedCallback((args) => OnOptionChanged());
             boolOptions.Add(boolOption);
         }
 
         public void AddOption(FloatOption floatOption)
         {
+            floatOption.SetDefaultValue(PlatformForOptions);
             floatOption.AddValueChangedCallback((args) => OnOptionChanged());
             floatOptions.Add(floatOption);
         }
 
         public void AddOption(IntOption intOption)
         {
+            intOption.SetDefaultValue(PlatformForOptions);
             intOption.AddValueChangedCallback((args) => OnOptionChanged());
             intOptions.Add(intOption);
         }
 
         public void AddOption(StringOption stringOption)
         {
+            stringOption.SetDefaultValue(PlatformForOptions);
             stringOption.AddValueChangedCallback((args) => OnOptionChanged());
             stringOptions.Add(stringOption);
         }

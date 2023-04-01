@@ -61,7 +61,7 @@ namespace Celeste.Viewport
         {
             if (dragStarted)
             {
-                float scrollModifier = dragSpeed.Value * CameraSizeModifier;
+                float scrollModifier = -dragSpeed.Value * CameraSizeModifier;
                 Vector2 mouseDelta = previousMouseDownPosition - mousePosition;
                 mouseDelta *= scrollModifier;
 
@@ -93,7 +93,7 @@ namespace Celeste.Viewport
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
                         Vector2 dragAmount = -touch.delta;
-                        float scrollModifier = dragSpeed.Value * Time.deltaTime * CameraSizeModifier;
+                        float scrollModifier = -dragSpeed.Value * Time.deltaTime * CameraSizeModifier;
 
                         transformToMove.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                     }

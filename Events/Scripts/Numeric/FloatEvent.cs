@@ -8,7 +8,7 @@ namespace Celeste.Events
     public class FloatUnityEvent : UnityEvent<float> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "FloatEvent", menuName = "Celeste/Events/Float Event")]
+    [CreateAssetMenu(fileName = nameof(FloatEvent), menuName = "Celeste/Events/Numeric/Float Event")]
     public class FloatEvent : ParameterisedEvent<float>
     {
     }
