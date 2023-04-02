@@ -27,7 +27,10 @@ namespace CelesteEditor.UnityProject
                     // To add
                     "com.unity.addressables",
                     "com.unity.editorcoroutines",
-                    "com.unity.inputsystem"
+                    "com.unity.inputsystem",
+                    "com.unity.mobile.android-logcat",
+                    "com.unity.ads",
+                    "com.unity.mobile.notifications"
                 },
                 new string[]
                 {
