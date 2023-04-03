@@ -82,18 +82,22 @@ namespace Celeste.Input
 
         private void OnEnable()
         {
+#if UNITY_ANDROID || UNITY_IOS
             if (!EnhancedTouchSupport.enabled)
             {
                 EnhancedTouchSupport.Enable();
             }
+#endif
         }
 
         private void OnDisable()
         {
+#if UNITY_ANDROID || UNITY_IOS
             if (EnhancedTouchSupport.enabled)
             {
                 EnhancedTouchSupport.Disable();
             }
+#endif
         }
 
         private void Update()
@@ -224,7 +228,7 @@ namespace Celeste.Input
 
 #endregion
 
-        #region Utility Functions
+#region Utility Functions
 
         private void CheckMouseButton(
             Vector2 mousePosition,
@@ -277,9 +281,9 @@ namespace Celeste.Input
             inputState.SetMouseButton(mouseButton, mouseButtonState);
         }
 
-        #endregion
+#endregion
 
-        #region Raycasting
+#region Raycasting
 
         private GameObject Raycast(Vector2 origin)
         {
@@ -287,6 +291,6 @@ namespace Celeste.Input
             return raycastHit.transform != null ? raycastHit.transform.gameObject : null;
         }
 
-        #endregion
+#endregion
     }
 }

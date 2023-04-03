@@ -26,7 +26,7 @@
             "\t\tprivate void OnValidate()\n" +
             "\t\t{{\n" +
                 "\t\t\tthis.TryGetInChildren(ref scrollRect);\n" +
-            "\t\t}}" +
+            "\t\t}}\n" +
 "\n" +
             "\t\tprivate void Start()\n" +
             "\t\t{{\n" +
@@ -74,7 +74,7 @@
         "\n" +
             "\t\t#endregion\n" +
 "\n" +
-            "\t\tpublic AchievementUIData(Achievement achievement)\n" +
+            "\t\tpublic {1}UIData({1} item)\n" +
             "\t\t{{\n" +
                 "\t\t\t{1} = {2};\n" +
             "\t\t}}\n" +
@@ -109,6 +109,6 @@
 "\n" +
             "\t\t#endregion\n" +
         "\t}}\n" +
-                                              "}}\n";
+    "}}\n";
     }
 }

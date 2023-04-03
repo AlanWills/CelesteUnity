@@ -104,10 +104,15 @@ namespace Celeste.Localisation
                 return string.Empty;
             }
 
-            if (!localisationLookup.TryGetValue(key.Key, out string localisedText))
+            return Localise(key.Key, key.Fallback);
+        }
+
+        public string Localise(string key, string fallback = "")
+        {
+            if (!localisationLookup.TryGetValue(key, out string localisedText))
             {
                 UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry.");
-                return key.Fallback;
+                return fallback;
             }
 
             return localisedText;
