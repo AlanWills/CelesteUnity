@@ -25,8 +25,8 @@ namespace Celeste.Input
     {
         #region Properties and Fields
 
-        public Vector2 MousePosition { get; set; }
-        public Vector3 MouseWorldPosition { get; set; }
+        public Vector2 PointerPosition { get; set; }
+        public Vector3 PointerWorldPosition { get; set; }
 
         [NonSerialized] private GameObject hitGameObject;
         public GameObject HitGameObject

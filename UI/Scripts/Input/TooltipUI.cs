@@ -23,7 +23,7 @@ namespace Celeste.UI.Input
         {
             if (anchorToMouse)
             {
-                tooltipRoot.position = inputState.MousePosition;
+                tooltipRoot.position = inputState.PointerPosition;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Celeste.UI.Input
             }
             else
             {
-                tooltipRoot.position = inputState.MousePosition;
+                tooltipRoot.position = inputState.PointerPosition;
                 anchorToMouse = true;
             }
 

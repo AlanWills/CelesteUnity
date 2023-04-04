@@ -108,16 +108,18 @@ namespace Celeste.Input
             Touchscreen touchScreen = Touchscreen.current;
             var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
             int numTouches = touches.Count;
+            Vector3 touchPosition = Vector3.zero;
+            Vector3 touchWorldPosition = Vector3.zero;
 
             if (numTouches == 1)
             {
-                Vector3 touchPosition = touches[0].screenPosition;
-                Vector3 touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touchPosition);
-
+                touchPosition = touches[0].screenPosition;
                 singleTouchEvent.InvokeSilently(touches[0]);
 
                 if (raycastCamera.Value != null)
                 {
+                    touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touchPosition);
+
                     if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                     {
                         hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
@@ -149,7 +151,9 @@ namespace Celeste.Input
                     touches = touches,
                 });
             }
-            
+
+            inputState.PointerPosition = touchPosition;
+            inputState.PointerWorldPosition = touchWorldPosition;
             inputState.HitGameObject = hitGameObject;
 #else
 
@@ -162,15 +166,13 @@ namespace Celeste.Input
 #endif
             Mouse mouse = Mouse.current;
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            Vector3 mouseWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
-
-            inputState.MousePosition = mousePosition;
-            inputState.MouseWorldPosition = mouseWorldPosition;
-            
+            Vector3 mouseWorldPosition = Vector3.zero;
             GameObject hitGameObject = null;
             
             if (raycastCamera.Value != null)
             {
+                mouseWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
+
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
                     hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
@@ -184,6 +186,9 @@ namespace Celeste.Input
                     Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
                 }
             }
+            
+            inputState.PointerPosition = mousePosition;
+            inputState.PointerWorldPosition = mouseWorldPosition;
             inputState.HitGameObject = hitGameObject;
 
             CheckMouseButton(

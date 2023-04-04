@@ -44,7 +44,7 @@ namespace Celeste.DeckBuilding.UI
         {
             if (PendingActor != null)
             {
-                Vector2 mousePosition = inputState.MousePosition;
+                Vector2 mousePosition = inputState.PointerPosition;
                 Vector2 currentPosition = transform.position;
                 Vector2 diffToTarget = mousePosition - currentPosition;
                 targetingLineTransform.sizeDelta = new Vector2(10, diffToTarget.magnitude / targetingLineTransform.lossyScale.y);

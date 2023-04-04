@@ -188,6 +188,7 @@ MonoBehaviour:
   popupRecord: {fileID: 11400000, guid: 35df2653bb4bc9640b6b240cf7db8e8f, type: 2}
   popupRoot: {fileID: 3198866441172855296}
   animator: {fileID: 0}
+  hideOnConfirm: 1
   showPopup: {fileID: 0}
   onHidePopup: {fileID: 0}
   onConfirmPressed: {fileID: 0}
