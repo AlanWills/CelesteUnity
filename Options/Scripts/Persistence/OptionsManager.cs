@@ -13,7 +13,7 @@ namespace Celeste.Options
     {
         #region Properties and Fields
 
-        private const string FILE_NAME = "Options.dat";
+        public const string FILE_NAME = "Options.dat";
 
         protected override string FileName => FILE_NAME;
 

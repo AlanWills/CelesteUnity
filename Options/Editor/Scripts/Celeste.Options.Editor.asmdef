@@ -3,7 +3,9 @@
     "rootNamespace": "CelesteEditor.Options",
     "references": [
         "Celeste.Options",
-        "Celeste.DataStructures.Editor"
+        "Celeste.Persistence",
+        "Celeste.DataStructures.Editor",
+        "Celeste.Persistence.Editor"
     ],
     "includePlatforms": [
         "Editor"
