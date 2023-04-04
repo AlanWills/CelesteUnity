@@ -13,6 +13,7 @@
         "Celeste.UI",
         "Celeste.Application",
         "Celeste.Debug",
+        "Celeste.Tools",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

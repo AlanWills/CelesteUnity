@@ -8,11 +8,6 @@ namespace Celeste.Viewport
     {
         #region Properties and Fields
 
-        public float CameraSizeModifier
-        {
-            get { return cameraToDrag.orthographic ? cameraToDrag.orthographicSize : -cameraToDrag.transform.position.z; }
-        }
-
         [SerializeField] private Camera cameraToDrag;
         [SerializeField] private Transform transformToMove;
         [SerializeField] private FloatReference dragSpeed;
@@ -96,7 +91,7 @@ namespace Celeste.Viewport
                         Vector3 previousTouchDownWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition - touch.delta);
                         Vector3 touchWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition);
                         Vector2 dragAmount = touchWorldPosition - previousTouchDownWorldPosition;
-                        float scrollModifier = dragSpeed.Value * Time.deltaTime/* * CameraSizeModifier*/;
+                        float scrollModifier = dragSpeed.Value;
 
                         transformToMove.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                     }

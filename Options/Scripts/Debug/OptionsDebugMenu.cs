@@ -1,4 +1,5 @@
 ﻿using Celeste.Debug.Menus;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Options.Debug
@@ -10,6 +11,13 @@ namespace Celeste.Options.Debug
 
         [SerializeField] private OptionsRecord options;
 
+        private int boolOptionsCurrentPage;
+        private int intOptionsCurrentPage;
+        private int floatOptionsCurrentPage;
+        private int stringOptionsCurrentPage;
+
+        private const int ENTRIES_PER_PAGE = 8;
+
         #endregion
 
         protected override void OnDrawMenu()
@@ -17,6 +25,74 @@ namespace Celeste.Options.Debug
             if (GUILayout.Button("Reset", GUILayout.ExpandWidth(true)))
             {
                 options.ResetAll();
+            }
+
+            // Bool Options
+            {
+                GUILayout.Space(5);
+                GUILayout.Label("Bool Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
+                GUILayout.Space(5);
+
+                boolOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                    boolOptionsCurrentPage,
+                    ENTRIES_PER_PAGE,
+                    options.NumBoolOptions,
+                    (i) =>
+                    {
+                        BoolOption boolOption = options.GetBoolOption(i);
+                        GUILayout.Label($"{boolOption.DisplayName}: {boolOption.Value}");
+                    });
+            }
+
+            // Int Options
+            {
+                GUILayout.Space(5);
+                GUILayout.Label("Int Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
+                GUILayout.Space(5);
+
+                intOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                    intOptionsCurrentPage,
+                    ENTRIES_PER_PAGE,
+                    options.NumIntOptions,
+                    (i) =>
+                    {
+                        IntOption intOption = options.GetIntOption(i);
+                        GUILayout.Label($"{intOption.DisplayName}: {intOption.Value}");
+                    });
+            }
+
+            // Float Options
+            {
+                GUILayout.Space(5);
+                GUILayout.Label("Float Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
+                GUILayout.Space(5);
+
+                floatOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                    floatOptionsCurrentPage,
+                    ENTRIES_PER_PAGE,
+                    options.NumFloatOptions,
+                    (i) =>
+                    {
+                        FloatOption floatOption = options.GetFloatOption(i);
+                        GUILayout.Label($"{floatOption.DisplayName}: {floatOption.Value}");
+                    });
+            }
+
+            // String Options
+            {
+                GUILayout.Space(5);
+                GUILayout.Label("String Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
+                GUILayout.Space(5);
+
+                stringOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                    stringOptionsCurrentPage,
+                    ENTRIES_PER_PAGE,
+                    options.NumStringOptions,
+                    (i) =>
+                    {
+                        StringOption stringOption = options.GetStringOption(i);
+                        GUILayout.Label($"{stringOption.DisplayName}: {stringOption.Value}");
+                    });
             }
         }
     }

@@ -95,7 +95,7 @@ namespace Celeste.Tools
             Action addItem,
             Action<int> removeItem)
         {
-            int numPages = Mathf.CeilToInt((float)numItems / entriesPerPage);
+            int numPages = Mathf.Max(1, Mathf.CeilToInt((float)numItems / entriesPerPage));
 
             using (HorizontalScope horizontal = new HorizontalScope())
             {
