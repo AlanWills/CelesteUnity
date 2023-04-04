@@ -7,7 +7,7 @@ namespace Celeste.Viewport
     public class DragCamera : MonoBehaviour
     {
         #region Properties and Fields
-
+        
         [SerializeField] private Camera cameraToDrag;
         [SerializeField] private Transform transformToMove;
         [SerializeField] private FloatReference dragSpeed;

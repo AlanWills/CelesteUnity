@@ -1,16 +1,17 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
+using Celeste.Tools;
 using System.Collections;
 using UnityEngine;
 
-namespace Celeste.Viewport
+namespace Celeste.FX
 {
-    [AddComponentMenu("Celeste/Viewport/Zoom Camera")]
-    public class ZoomCamera : MonoBehaviour
+    [AddComponentMenu("Celeste/FX/Scale Object")]
+    public class ScaleObject : MonoBehaviour
     {
         #region Properties and Fields
 
-        [SerializeField] private Camera cameraToZoom;
+        [SerializeField] private Transform transformToZoom;
         [SerializeField] private FloatReference minZoom;
         [SerializeField] private FloatReference maxZoom;
         [SerializeField] private FloatReference zoomSpeed;
@@ -24,10 +25,7 @@ namespace Celeste.Viewport
 
         private void OnValidate()
         {
-            if (cameraToZoom == null)
-            {
-                cameraToZoom = GetComponent<Camera>();
-            }
+            this.TryGet(ref transformToZoom);
 
             if (minZoom == null)
             {
@@ -73,40 +71,19 @@ namespace Celeste.Viewport
 
             float currentAnimationTime = 0;
 
-            if (cameraToZoom.orthographic)
+            float startingScale = transformToZoom.localScale.x;
+            float finishingScale = Mathf.Clamp(startingScale - scrollAmount, minZoom.Value, maxZoom.Value);
+            float animationTime = Mathf.Abs(finishingScale - startingScale) / animateSpeed;
+
+            while (currentAnimationTime < animationTime)
             {
-                float startingSize = cameraToZoom.orthographicSize;
-                float finishingSize = Mathf.Clamp(startingSize - scrollAmount, minZoom.Value, maxZoom.Value);
-                float animationTime = Mathf.Abs(finishingSize - startingSize) / animateSpeed;
+                currentAnimationTime += Time.deltaTime;
 
-                while (currentAnimationTime < animationTime)
-                {
-                    currentAnimationTime += Time.deltaTime;
-                    
-                    float lerpAmount = currentAnimationTime / animationTime;
-                    cameraToZoom.orthographicSize = Mathf.Lerp(startingSize, finishingSize, lerpAmount);
+                float lerpAmount = currentAnimationTime / animationTime;
+                float newScale = Mathf.Lerp(startingScale, finishingScale, lerpAmount);
+                transformToZoom.localScale = new Vector3(newScale, newScale, 1);
 
-                    yield return null;
-                }
-            }
-            else
-            {
-                Vector3 position = transform.localPosition;
-                float startingZ = position.z;
-                float finishingZ = position.z + scrollAmount;
-                float animationTime = Mathf.Abs(scrollAmount) / animateSpeed;
-
-                while (currentAnimationTime < animationTime)
-                {
-                    currentAnimationTime += Time.deltaTime;
-                    
-                    float lerpAmount = currentAnimationTime / animationTime;
-                    position = transform.localPosition;
-                    position.z = Mathf.Lerp(startingZ, finishingZ, lerpAmount);
-                    transform.localPosition = position;
-
-                    yield return null;
-                }
+                yield return null;
             }
         }
 
@@ -128,8 +105,9 @@ namespace Celeste.Viewport
 
                 // Find the difference in the distances between each frame.
                 float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+                float newScale = Mathf.Clamp(transform.localScale[0] + deltaMagnitudeDiff * zoomSpeed.Value, minZoom.Value, maxZoom.Value);
 
-                cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize + deltaMagnitudeDiff * zoomSpeed.Value, minZoom.Value, maxZoom.Value);
+                transformToZoom.localScale = new Vector3(newScale, newScale, 1);
             }
         }
 

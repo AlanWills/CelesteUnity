@@ -3,6 +3,7 @@
     "rootNamespace": "Celeste.FX",
     "references": [
         "Unity.TextMeshPro",
+        "Unity.InputSystem",
         "Celeste.Tools",
         "Celeste.Parameters",
         "Celeste.Events"
