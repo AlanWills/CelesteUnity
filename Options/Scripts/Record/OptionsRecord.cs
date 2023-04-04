@@ -155,6 +155,33 @@ namespace Celeste.Options
             }
         }
 
+        public void ResetAll()
+        {
+            var applicationPlatform = PlatformForOptions;
+
+            foreach (BoolOption boolOption in boolOptions)
+            {
+                boolOption.SetDefaultValue(applicationPlatform);
+            }
+
+            foreach (IntOption intOption in intOptions)
+            {
+                intOption.SetDefaultValue(applicationPlatform);
+            }
+
+            foreach (FloatOption floatOption in floatOptions)
+            {
+                floatOption.SetDefaultValue(applicationPlatform);
+            }
+
+            foreach (StringOption stringOption in stringOptions)
+            {
+                stringOption.SetDefaultValue(applicationPlatform);
+            }
+
+            saveOptions.Invoke();
+        }
+
         private void OnOptionChanged()
         {
             saveOptions.Invoke();

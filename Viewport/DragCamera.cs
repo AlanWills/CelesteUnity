@@ -1,6 +1,5 @@
 ﻿using Celeste.Parameters;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Viewport
 {
@@ -61,9 +60,10 @@ namespace Celeste.Viewport
         {
             if (dragStarted)
             {
-                float scrollModifier = -dragSpeed.Value * CameraSizeModifier;
-                Vector2 mouseDelta = previousMouseDownPosition - mousePosition;
-                mouseDelta *= scrollModifier;
+                Vector3 previousMouseDownWorldPosition = cameraToDrag.ScreenToWorldPoint(previousMouseDownPosition);
+                Vector3 mouseWorldPosition = cameraToDrag.ScreenToWorldPoint(mousePosition);
+                Vector2 mouseDelta = mouseWorldPosition - previousMouseDownWorldPosition;
+                mouseDelta *= dragSpeed.Value;
 
                 transformToMove.position += new Vector3(mouseDelta.x, mouseDelta.y, 0);
                 previousMouseDownPosition = mousePosition;
@@ -92,8 +92,11 @@ namespace Celeste.Viewport
 
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
-                        Vector2 dragAmount = -touch.delta;
-                        float scrollModifier = -dragSpeed.Value * Time.deltaTime * CameraSizeModifier;
+                        Vector2 touchPosition = touch.screenPosition;
+                        Vector3 previousTouchDownWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition - touch.delta);
+                        Vector3 touchWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition);
+                        Vector2 dragAmount = touchWorldPosition - previousTouchDownWorldPosition;
+                        float scrollModifier = dragSpeed.Value * Time.deltaTime/* * CameraSizeModifier*/;
 
                         transformToMove.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                     }
