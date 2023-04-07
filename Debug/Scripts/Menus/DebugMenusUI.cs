@@ -27,6 +27,7 @@ namespace Celeste.Debug.Menus
         [SerializeField] private RectTransform debugGuiDrawArea;
         [SerializeField] private float screenWidthDivisor = 600f;
         [SerializeField] private float screenHeightDivisor = 600f;
+        [SerializeField] private float screenOffset = 0;
 
         [NonSerialized] private List<DebugMenu> debugMenus = new List<DebugMenu>();
         [NonSerialized] private Vector2 scrollPosition;
@@ -55,7 +56,7 @@ namespace Celeste.Debug.Menus
 
             GUI.skin = guiSkin;
 
-            Rect debugScreenSpaceRect = GetScreenSpaceRect(debugGuiDrawArea);
+            Rect debugScreenSpaceRect = GetGuiSpaceRect(debugGuiDrawArea);
             float xAspectRatio = debugScreenSpaceRect.width / screenWidthDivisor;
             float yAspectRatio = debugScreenSpaceRect.height / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
@@ -65,6 +66,8 @@ namespace Celeste.Debug.Menus
 
             Rect screenRect = new Rect(debugScreenSpaceRect.xMin / maxAspectRatio, debugScreenSpaceRect.yMin / maxAspectRatio, debugScreenSpaceRect.width / maxAspectRatio, debugScreenSpaceRect.height / maxAspectRatio);
             Rect viewRect = new Rect(debugScreenSpaceRect.xMin, debugScreenSpaceRect.yMin, screenRect.width, screenRect.height * 4);
+
+            // Take into account the vertical scroll bar here, so the debug menu doesn't go over it
             viewRect.size -= new Vector2(35, 0);
 
             using (GUI.ScrollViewScope scrollView = new GUI.ScrollViewScope(screenRect, scrollPosition, viewRect, false, true))
@@ -102,15 +105,20 @@ namespace Celeste.Debug.Menus
             GUI.skin = oldSkin;
         }
 
-        private static Rect GetScreenSpaceRect(RectTransform transform)
+        private static Rect GetGuiSpaceRect(RectTransform transform)
         {
             Vector2 size = Vector2.Scale(transform.rect.size, transform.lossyScale);
-            return new Rect((Vector2)transform.position - (size * transform.pivot), size);
+            Rect rect = new Rect((Vector2)transform.position - (size * transform.pivot), size);
+#if UNITY_ANDROID
+            rect.y += (Screen.height - rect.height);    // Adjust for safe area, but only on Android.  Don't know why, but it works...
+#endif
+
+            return rect;
         }
 
-        #endregion
+#endregion
 
-        #region Callbacks
+#region Callbacks
 
         public void OnToggle()
         {
@@ -138,6 +146,6 @@ namespace Celeste.Debug.Menus
             }
         }
 
-        #endregion
+#endregion
     }
 }

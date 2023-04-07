@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,10 +58,15 @@ namespace Celeste.DataStructures
 
         public static void Shuffle<T>(this IList<T> list)
         {
+            list.Shuffle(Random.Range);
+        }
+
+        public static void Shuffle<T>(this IList<T> list, System.Func<int, int, int> rangeFunc)
+        {
             for (int i = 0; i < list.Count; i++)
             {
                 T temp = list[i];
-                int randomIndex = Random.Range(i, list.Count);
+                int randomIndex = rangeFunc(i, list.Count);
                 list[i] = list[randomIndex];
                 list[randomIndex] = temp;
             }

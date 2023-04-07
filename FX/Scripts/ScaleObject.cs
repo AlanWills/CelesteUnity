@@ -70,9 +70,8 @@ namespace Celeste.FX
             scrollAmount *= zoomSpeed.Value;
 
             float currentAnimationTime = 0;
-
             float startingScale = transformToZoom.localScale.x;
-            float finishingScale = Mathf.Clamp(startingScale - scrollAmount, minZoom.Value, maxZoom.Value);
+            float finishingScale = Mathf.Clamp(startingScale + scrollAmount, minZoom.Value, maxZoom.Value);
             float animationTime = Mathf.Abs(finishingScale - startingScale) / animateSpeed;
 
             while (currentAnimationTime < animationTime)
@@ -104,7 +103,7 @@ namespace Celeste.FX
                 float touchDeltaMag = (touchZero.screenPosition - touchOne.screenPosition).magnitude;
 
                 // Find the difference in the distances between each frame.
-                float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+                float deltaMagnitudeDiff = touchDeltaMag - prevTouchDeltaMag;
                 float newScale = Mathf.Clamp(transform.localScale[0] + deltaMagnitudeDiff * zoomSpeed.Value, minZoom.Value, maxZoom.Value);
 
                 transformToZoom.localScale = new Vector3(newScale, newScale, 1);
