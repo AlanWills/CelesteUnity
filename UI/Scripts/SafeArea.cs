@@ -106,6 +106,7 @@ namespace Crystal
         [SerializeField] bool ConformX = true;  // Conform to screen safe area on X-axis (default true, disable to ignore)
         [SerializeField] bool ConformY = true;  // Conform to screen safe area on Y-axis (default true, disable to ignore)
         [SerializeField] bool Logging = false;  // Conform to screen safe area on Y-axis (default true, disable to ignore)
+        [SerializeField] RectTransform topUnsafeArea;
 
         void Awake ()
         {
@@ -224,6 +225,14 @@ namespace Crystal
                 {
                     Panel.anchorMin = anchorMin;
                     Panel.anchorMax = anchorMax;
+                }
+
+                if (topUnsafeArea != null)
+                {
+                    Vector2 unsafeAnchorMin = new Vector2(0, anchorMax.y);
+                    Vector2 unsafeAnchorMax = new Vector2(1, 1);
+                    topUnsafeArea.anchorMin = unsafeAnchorMin;
+                    topUnsafeArea.anchorMax = unsafeAnchorMax;
                 }
             }
 

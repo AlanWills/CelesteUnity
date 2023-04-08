@@ -1,7 +1,6 @@
 ﻿using Celeste.Logic;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.EditorGUILayout;
 
 namespace CelesteEditor.Logic
 {
@@ -10,7 +9,6 @@ namespace CelesteEditor.Logic
     {
         public override void OnInspectorGUI()
         {
-            SerializedObject serializedObject = new SerializedObject(target);
             serializedObject.Update();
 
             if (GUILayout.Button("Initialize"))
