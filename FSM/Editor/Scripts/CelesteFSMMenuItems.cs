@@ -1,24 +1,25 @@
-﻿using UnityEditor;
+﻿using Celeste.FSM;
+using UnityEditor;
+using UnityEngine;
 
 namespace CelesteEditor.FSM
 {
     public static class CelesteFSMMenuItems
     {
-        private const string CREATE_FSM_RUNTIME_MENU_PATH = "GameObject/Celeste/FSM/FSM Runtime";
+        private const string MAKE_INTO_AN_FSM_RUNTIME_MENU_PATH = "GameObject/Celeste/FSM/Make Into An FSM Runtime";
 
-        [MenuItem(CREATE_FSM_RUNTIME_MENU_PATH, true)]
-        public static bool ValidateCreateFSMRuntimeContextMenuItem()
+        [MenuItem(MAKE_INTO_AN_FSM_RUNTIME_MENU_PATH, true)]
+        public static bool ValidateMakeIntoAnFSMRuntimeContextMenuItem()
         {
-            return true;
+            return Selection.activeGameObject != null;
         }
 
-        [MenuItem(CREATE_FSM_RUNTIME_MENU_PATH)]
-        public static void CreateFSMRuntimeContextMenuItem()
+        [MenuItem(MAKE_INTO_AN_FSM_RUNTIME_MENU_PATH)]
+        public static void MakeIntoAnFSMRuntimeContextMenuItem()
         {
-            string assetGuid = Selection.assetGUIDs[0];
-            var a = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(AssetDatabase.GUIDToAssetPath(assetGuid));
-            var o = Selection.activeObject;
-            UnityEngine.Debug.Log("Here");
+            GameObject gameObject = Selection.activeGameObject;
+            gameObject.AddComponent<FSMRuntime>();
+            EditorUtility.SetDirty(gameObject);
         }
     }
 }
