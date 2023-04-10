@@ -2,7 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Celeste.Notifications.Interfaces;
+using Celeste.Notifications;
+using Celeste.Notifications.Objects;
 using Unity.Notifications.iOS;
 using UnityEngine;
 
@@ -10,9 +11,21 @@ namespace Celeste.Notifications.Impls
 {
     public class IOSNotificationSystem : INotificationSystem
     {
-        public bool HasNotificationsPermissions =>
-            iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
-        
+        #region Properties and Fields
+
+        public bool HasNotificationsPermissions => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
+
+        public string LastRespondedNotificationData
+        {
+            get
+            {
+                var notification = iOSNotificationCenter.GetLastRespondedNotification();
+                return notification != null ? notification.Data : string.Empty;
+            }
+        }
+
+        #endregion
+
         public IEnumerator RequestAuthorization()
         {
             var authorizationOption = AuthorizationOption.Alert | AuthorizationOption.Badge;
@@ -28,85 +41,97 @@ namespace Celeste.Notifications.Impls
                 res += "\n granted :  " + req.Granted;
                 res += "\n error:  " + req.Error;
                 res += "\n deviceToken:  " + req.DeviceToken;
-                Debug.Log(res);
+                UnityEngine.Debug.Log(res);
             }
         }
 
-        public void ScheduleNotification()
+        public NotificationStatus GetNotificationStatus(Notification notification)
         {
-            var timeTrigger = new iOSNotificationTimeIntervalTrigger()
-            {
-                //TimeInterval = new TimeSpan(0, minutes, seconds),
-                Repeats = false
-            };
+            string notificationId = notification.ID.ToString();
+            var scheduledNotifications = iOSNotificationCenter.GetScheduledNotifications();
 
-            var notification = new iOSNotification()
+            if (scheduledNotifications != null && Array.Exists(scheduledNotifications, x => x.Identifier == notificationId))
+            {
+                return NotificationStatus.Scheduled;
+            }
+
+            var deliveredNotifications = iOSNotificationCenter.GetDeliveredNotifications();
+
+            if (deliveredNotifications != null && Array.Exists(deliveredNotifications, x => x.Identifier == notificationId))
+            {
+                return NotificationStatus.Delivered;
+            }
+
+            return NotificationStatus.Unknown;
+        }
+
+        public void AddNotificationChannel(NotificationChannel notificationChannel)
+        {
+
+        }
+
+        public void ScheduleNotification(Notification notification, DateTime dateTime, string intentData)
+        {
+            var dateTimeTrigger = CreateCalendarTrigger(dateTime);
+            string notificationID = notification.ID.ToString();
+
+            var iOSNotification = new iOSNotification()
             {
                 // You can specify a custom identifier which can be used to manage the notification later.
                 // If you don't provide one, a unique string will be generated automatically.
-                Identifier = "_notification_01",
-                Title = "Title",
-                Body = "Scheduled at: " + DateTime.Now.ToShortDateString() + " triggered in 5 seconds",
-                Subtitle = "This is a subtitle, something, something important...",
+                Identifier = notificationID,
+                Title = notification.Title,
+                Subtitle = notification.SubTitle,
+                Body = notification.Text,
                 ShowInForeground = true,
                 ForegroundPresentationOption = (PresentationOption.Alert | PresentationOption.Sound),
-                CategoryIdentifier = "category_a",
+                CategoryIdentifier = notification.NotificationChannelID,
                 ThreadIdentifier = "thread1",
-                Trigger = timeTrigger,
+                Trigger = dateTimeTrigger,
+                Data = intentData
             };
-            notification.Data = "{\"title\": \"Notification 1\", \"data\": \"200\"}";
-            
-            iOSNotificationCenter.ScheduleNotification(notification);
 
-            // The following code example cancels a notification if it doesn’t trigger.
-            //iOSNotificationCenter.GetScheduledNotifications();
-            //iOSNotificationCenter.RemoveScheduledNotification(notification.Identifier);
+            NotificationStatus notificationStatus = GetNotificationStatus(notification);
 
-            // The following code example removes a notification from the Notification Center if it's already delivered.
-            //iOSNotificationCenter.GetDeliveredNotifications();
-            //iOSNotificationCenter.RemoveDeliveredNotification(notification.Identifier);
-        }
-
-        public void GetLastRespondedNotification()
-        {
-            var notification = iOSNotificationCenter.GetLastRespondedNotification();
-            if (notification != null)
+            if (notificationStatus == NotificationStatus.Scheduled ||
+                notificationStatus == NotificationStatus.Delivered)
             {
-                var msg = "Last Received Notification: " + notification.Identifier;
-                msg += "\n - Notification received: ";
-                msg += "\n - .Title: " + notification.Title;
-                msg += "\n - .Badge: " + notification.Badge;
-                msg += "\n - .Body: " + notification.Body;
-                msg += "\n - .CategoryIdentifier: " + notification.CategoryIdentifier;
-                msg += "\n - .Subtitle: " + notification.Subtitle;
-                msg += "\n - .Data: " + notification.Data;
-                Debug.Log(msg);
+                CancelNotification(notification);
             }
+            
+            SendNotification(iOSNotification);
         }
-        
-        private void CreateCalendarTrigger()
+
+        public void CancelNotification(Notification notification)
         {
-            var calendarTrigger = new iOSNotificationCalendarTrigger()
+            string notificationID = notification.ID.ToString();
+            iOSNotificationCenter.RemoveScheduledNotification(notificationID);
+            iOSNotificationCenter.RemoveDeliveredNotification(notificationID);
+        }
+
+        public void CancelAllNotifications()
+        {
+            iOSNotificationCenter.RemoveAllScheduledNotifications();
+            iOSNotificationCenter.RemoveAllDeliveredNotifications();
+        }
+
+        private iOSNotificationCalendarTrigger CreateCalendarTrigger(DateTime dateTime)
+        {
+            return new iOSNotificationCalendarTrigger()
             {
-                // Year = 2020,
-                // Month = 6,
-                //Day = 1,
-                Hour = 12,
-                Minute = 0,
-                // Second = 0
+                Year = dateTime.Year,
+                Month = dateTime.Month,
+                Day = dateTime.Day,
+                Hour = dateTime.Hour,
+                Minute = dateTime.Minute,
+                Second = dateTime.Second,
                 Repeats = false
             };
         }
 
-        private void CreateLocationTrigger()
+        private void SendNotification(iOSNotification notification)
         {
-            var locationTrigger = new iOSNotificationLocationTrigger()
-            {
-                Center = new Vector2(2.294498f, 48.858263f),
-                Radius = 250f,
-                NotifyOnEntry = true,
-                NotifyOnExit = false,
-            };
+            iOSNotificationCenter.ScheduleNotification(notification);
         }
     }
 }

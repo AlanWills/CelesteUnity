@@ -107,7 +107,9 @@ namespace CelesteEditor.UnityProject
             "}}";
 
         public const string PERSISTENCE_MENU_ITEMS_SCRIPT_CONTENTS =
-            "using System;\n" +
+            "using UnityEditor;\n" +
+            "using Celeste.Persistence;\n" +
+            "using CelesteEditor.Persistence;\n" +
             "\n" +
             "namespace {0}.Persistence\n" +
             "{{\n" +
@@ -122,7 +124,7 @@ namespace CelesteEditor.UnityProject
             "        [MenuItem(\"{3}\", priority = 100)]\n" +
             "        public static void Delete{1}SaveMenuItem()\n" +
             "        {{\n" +
-                         "PersistenceUtility.DeletePersistentDataFile({4}.FILE_NAME);\n" +
+            "            PersistenceUtility.DeletePersistentDataFile({4}.FILE_NAME);\n" +
             "        }}\n" +
             "    }}\n" +
             "}}\n";

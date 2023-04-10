@@ -1,0 +1,21 @@
+{
+    "name": "Celeste.Notifications.Editor",
+    "rootNamespace": "CelesteEditor.Notifications",
+    "references": [
+        "Celeste.Notifications",
+        "Celeste.Persistence",
+        "Celeste.Persistence.Editor",
+        "Celeste.DataStructures.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

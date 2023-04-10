@@ -1,5 +1,7 @@
 #if UNITY_ANDROID
-using Celeste.Notifications.Interfaces;
+using Celeste.Notifications.Objects;
+using System;
+using System.Collections;
 using Unity.Notifications.Android;
 using UnityEngine.Android;
 
@@ -11,68 +13,134 @@ namespace Celeste.Notifications.Impls
         
         public bool HasNotificationsPermissions => Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
         
+        public string LastRespondedNotificationData
+        {
+            get
+            {
+                var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
+                return notificationIntentData != null ? notificationIntentData.Notification.IntentData : string.Empty;
+            }
+        }
+
         private const string ANDROID_NOTIFICATIONS_PERMISSION = "android.permission.POST_NOTIFICATIONS";
         
         #endregion
 
-        public void RequestNotificationsPermissions()
+        public IEnumerator RequestAuthorization()
         {
             if (!Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION))
             {
                 Permission.RequestUserPermission(ANDROID_NOTIFICATIONS_PERMISSION);
             }
+
+            yield break;
         }
         
-        public void AddNotificationChannel()
+        public NotificationStatus GetNotificationStatus(Notification notification)
+        {
+            var status = AndroidNotificationCenter.CheckScheduledNotificationStatus(notification.ID);
+
+            switch (status)
+            {
+                case Unity.Notifications.Android.NotificationStatus.Unavailable:
+                    return NotificationStatus.Unavailable;
+
+                case Unity.Notifications.Android.NotificationStatus.Unknown:
+                    return NotificationStatus.Unknown;
+
+                case Unity.Notifications.Android.NotificationStatus.Scheduled:
+                    return NotificationStatus.Scheduled;
+
+                case Unity.Notifications.Android.NotificationStatus.Delivered:
+                    return NotificationStatus.Delivered;
+
+                default:
+                    UnityEngine.Debug.LogAssertion($"Failed to convert android notification status '{status}' into a celeste notification status.");
+                    return NotificationStatus.Unknown;
+            }
+        }
+
+        public void AddNotificationChannel(NotificationChannel notificationChannel)
         {
             var channel = new AndroidNotificationChannel
             {
-                Id = "channel_id",
-                Name = "Default Channel",
-                Importance = Importance.Default,
-                Description = "Generic notifications",
+                Id = notificationChannel.ID,
+                Name = notificationChannel.name,
+                Importance = ToAndroidImportance(notificationChannel.Importance),
+                Description = notificationChannel.Description,
             };
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
         }
 
-        public void ScheduleNotification(int notificationId)
+        public void ScheduleNotification(Notification notification, DateTime dateTime, string intentData)
         {
-            var notification = new AndroidNotification();
-            notification.Title = "Your Title";
-            notification.Text = "Your Text";
-            notification.FireTime = System.DateTime.Now.AddMinutes(1);
-            notification.SmallIcon = "";
-            notification.LargeIcon = "";
-            notification.IntentData = "{\"title\": \"Notification 1\", \"data\": \"200\"}";
-            
-            var notificationStatus = AndroidNotificationCenter.CheckScheduledNotificationStatus(notificationId);
+            var androidNotification = new AndroidNotification()
+            {
+                Title = notification.Title,
+                Text = notification.Text,
+                FireTime = dateTime,
+                SmallIcon = notification.SmallIcon,
+                LargeIcon = notification.LargeIcon,
+                IntentData = intentData
+            };
+
+            int notificationId = notification.ID;
+            string notificationChannelId = notification.NotificationChannelID;
+            NotificationStatus notificationStatus = GetNotificationStatus(notification);
 
             if (notificationStatus == NotificationStatus.Scheduled)
             {
                 // Replace the scheduled notification with a new notification.
-                AndroidNotificationCenter.UpdateScheduledNotification(notificationId, notification, "channel_id");
+                AndroidNotificationCenter.UpdateScheduledNotification(notificationId, androidNotification, notificationChannelId);
             }
             else if (notificationStatus == NotificationStatus.Delivered)
             {
-                // Remove the previously shown notification from the status bar.
-                AndroidNotificationCenter.CancelNotification(notificationId);
+                CancelNotification(notification);
+                SendNotification(androidNotification, notificationChannelId, notificationId);
             }
             else if (notificationStatus == NotificationStatus.Unknown)
             {
-                AndroidNotificationCenter.SendNotification(notification, "channel_id");
+                SendNotification(androidNotification, notificationChannelId, notificationId);
             }
-
-            AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", notificationId);
         }
 
-        public void GetLastNotificationIntent()
+        public void CancelNotification(Notification notification)
         {
-            var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
-            if (notificationIntentData != null)
+            AndroidNotificationCenter.CancelNotification(notification.ID);
+        }
+
+        public void CancelAllNotifications()
+        {
+            AndroidNotificationCenter.CancelAllNotifications();
+        }
+
+        private void SendNotification(
+            AndroidNotification androidNotification,
+            string notificationChannelId,
+            int notificationId)
+        {
+            AndroidNotificationCenter.SendNotificationWithExplicitID(androidNotification, notificationChannelId, notificationId);
+        }
+
+        private static Importance ToAndroidImportance(NotificationChannelImportance importance)
+        {
+            switch (importance)
             {
-                var id = notificationIntentData.Id;
-                var channel = notificationIntentData.Channel;
-                var notification = notificationIntentData.Notification;
+                case NotificationChannelImportance.Low:
+                    return Importance.Low;
+
+                case NotificationChannelImportance.None:
+                    return Importance.None;
+
+                case NotificationChannelImportance.Default:
+                    return Importance.Default;
+
+                case NotificationChannelImportance.High:
+                    return Importance.High;
+
+                default:
+                    UnityEngine.Debug.LogAssertion($"Failed to convert celeste importance '{importance}' to android importance enum.");
+                    return Importance.None;
             }
         }
     }

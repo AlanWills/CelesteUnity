@@ -1,7 +1,28 @@
-namespace Celeste.Notifications.Interfaces
+using Celeste.Notifications.Objects;
+using System;
+using System.Collections;
+
+namespace Celeste.Notifications
 {
-    public class INotificationSystem
+    public enum NotificationStatus
     {
-        
+        Unavailable = -1,
+        Unknown = 0,
+        Scheduled = 1,
+        Delivered = 2
+    }
+
+    public interface INotificationSystem
+    {
+        bool HasNotificationsPermissions { get; }
+        string LastRespondedNotificationData { get; }
+
+        IEnumerator RequestAuthorization();
+        NotificationStatus GetNotificationStatus(Notification notification);
+
+        void AddNotificationChannel(NotificationChannel notificationChannel);
+        void ScheduleNotification(Notification notification, DateTime dateTime, string intentData);
+        void CancelNotification(Notification notification);
+        void CancelAllNotifications();
     }
 }

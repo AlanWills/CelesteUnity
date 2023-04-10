@@ -4,7 +4,12 @@
     "references": [
         "Unity.Notifications",
         "Unity.Notifications.Android",
-        "Unity.Notifications.iOS"
+        "Unity.Notifications.iOS",
+        "Celeste.Objects",
+        "Celeste.Persistence",
+        "Celeste.Loading",
+        "Celeste.Debug",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -29,12 +29,12 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(200), ShowIf(nameof(createCatalogue))] public string createCatalogueMenuPath;
 
         [Header("Record")]
-        public bool createRecord;
+        [LabelWidth(200)] public bool createRecord;
         [LabelWidth(200), ShowIf(nameof(createRecord))] public string recordTypeName;
         [LabelWidth(200), ShowIf(nameof(createRecord))] public string createRecordMenuPath;
 
         [Header("Manager")]
-        public bool createManager;
+        [LabelWidth(200)] public bool createManager;
         [LabelWidth(200), ShowIf(nameof(createManager))] public string managerTypeName;
         [LabelWidth(200), ShowIf(nameof(createManager))] public string addManagerMenuPath;
         [LabelWidth(200), ShowIf(nameof(createManager))] public bool isManagerPersistent;
