@@ -37,6 +37,11 @@ namespace Celeste.Notifications.Debug
                 }
             }
 
+            if (GUILayout.Button("Add All Notification Channels"))
+            {
+                notificationRecord.AddAllNotificationChannels();
+            }
+
             currentPage = GUIUtils.ReadOnlyPaginatedList(
                 currentPage,
                 NOTIFICATIONS_PER_PAGE,

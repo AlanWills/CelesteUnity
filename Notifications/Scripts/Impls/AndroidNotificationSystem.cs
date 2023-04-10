@@ -3,15 +3,14 @@ using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
 using Unity.Notifications.Android;
-using UnityEngine.Android;
 
 namespace Celeste.Notifications.Impls
 {
     public class AndroidNotificationSystem : INotificationSystem
     {
         #region Properties and Fields
-        
-        public bool HasPermissions => Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
+
+        public bool HasPermissions => AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.Allowed;
         
         public string LastRespondedNotificationData
         {
@@ -22,8 +21,6 @@ namespace Celeste.Notifications.Impls
             }
         }
 
-        private const string ANDROID_NOTIFICATIONS_PERMISSION = "android.permission.POST_NOTIFICATIONS";
-        
         #endregion
 
         public bool Initialize()
@@ -33,7 +30,7 @@ namespace Celeste.Notifications.Impls
 
         public IEnumerator RequestPermissions()
         {
-            if (!HasPermissions)
+            if (AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.NotRequested)
             {
                 PermissionRequest permissionRequest = new PermissionRequest();
                 
