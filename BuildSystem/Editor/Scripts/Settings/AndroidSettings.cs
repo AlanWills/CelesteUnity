@@ -45,8 +45,8 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         [Tooltip("A flag to instruct the build pipeline to create debug symbols to help symbolicate crashes?")]
-        private bool buildSymbols;
-        private bool BuildSymbols
+        private AndroidCreateSymbols buildSymbols = AndroidCreateSymbols.Disabled;
+        private AndroidCreateSymbols BuildSymbols
         {
             get { return buildSymbols; }
         }
@@ -107,7 +107,7 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.Android.targetArchitectures = Architecture;
             PlayerSettings.Android.minifyRelease = MinifyRelease;
             EditorUserBuildSettings.buildAppBundle = BuildAppBundle;
-            EditorUserBuildSettings.androidCreateSymbolsZip = BuildSymbols;
+            EditorUserBuildSettings.androidCreateSymbols = BuildSymbols;
         }
     }
 }
