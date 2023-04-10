@@ -1,4 +1,5 @@
 #if UNITY_ANDROID
+using Celeste.Log;
 using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
@@ -30,6 +31,8 @@ namespace Celeste.Notifications.Impls
 
         public IEnumerator RequestPermissions()
         {
+            HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}");
+
             if (AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.NotRequested)
             {
                 PermissionRequest permissionRequest = new PermissionRequest();
