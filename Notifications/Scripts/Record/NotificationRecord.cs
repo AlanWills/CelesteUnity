@@ -12,7 +12,7 @@ namespace Celeste.Notifications.Record
     {
         #region Properties and Fields
 
-        public bool HasNotificationsPermissions => impl.HasNotificationsPermissions;
+        public bool HasPermissions => impl.HasPermissions;
         public string LastRespondedNotificationData => impl.LastRespondedNotificationData;
 
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
@@ -35,11 +35,11 @@ namespace Celeste.Notifications.Record
             return impl.Initialize();
         }
 
-        public IEnumerator RequestAuthorization()
+        public IEnumerator RequestPermissions()
         {
-            if (!HasNotificationsPermissions)
+            if (!HasPermissions)
             {
-                yield return impl.RequestAuthorization();
+                yield return impl.RequestPermissions();
             }
         }
 

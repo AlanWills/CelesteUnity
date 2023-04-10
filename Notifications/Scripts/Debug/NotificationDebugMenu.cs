@@ -1,4 +1,5 @@
-﻿using Celeste.Debug.Menus;
+﻿using Celeste.Coroutines;
+using Celeste.Debug.Menus;
 using Celeste.Notifications.Catalogue;
 using Celeste.Notifications.Record;
 using Celeste.Tools;
@@ -23,6 +24,19 @@ namespace Celeste.Notifications.Debug
 
         protected override void OnDrawMenu()
         {
+            using (var horizontal = new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label($"Has Permissions: {notificationRecord.HasPermissions}");
+
+                using (new GUIEnabledScope(!notificationRecord.HasPermissions))
+                {
+                    if (GUILayout.Button("Request"))
+                    {
+                        CoroutineManager.Instance.StartCoroutine(notificationRecord.RequestPermissions());
+                    }
+                }
+            }
+
             currentPage = GUIUtils.ReadOnlyPaginatedList(
                 currentPage,
                 NOTIFICATIONS_PER_PAGE,

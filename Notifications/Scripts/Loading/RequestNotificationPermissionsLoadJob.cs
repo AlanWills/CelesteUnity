@@ -14,10 +14,10 @@ namespace Celeste.Notifications.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            yield return notificationRecord.RequestAuthorization();
+            yield return notificationRecord.RequestPermissions();
 
-            HudLog.LogInfo($"Notification Permissions? {notificationRecord.HasNotificationsPermissions}");
-            if (notificationRecord.HasNotificationsPermissions)
+            HudLog.LogInfo($"Notification Permissions? {notificationRecord.HasPermissions}");
+            if (notificationRecord.HasPermissions)
             {
                 notificationRecord.AddAllNotificationChannels();
             }

@@ -8,7 +8,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool HasNotificationsPermissions => false;
+        public bool HasPermissions => false;
         public string LastRespondedNotificationData => string.Empty;
 
         #endregion
@@ -18,7 +18,7 @@ namespace Celeste.Notifications.Impls
             return true;
         }
 
-        public IEnumerator RequestAuthorization()
+        public IEnumerator RequestPermissions()
         {
             yield break;
         }
