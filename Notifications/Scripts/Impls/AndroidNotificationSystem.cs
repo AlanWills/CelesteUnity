@@ -1,9 +1,8 @@
-#if UNITY_ANDROID || true
+#if UNITY_ANDROID
 using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
 using Unity.Notifications.Android;
-using UnityEngine;
 using UnityEngine.Android;
 
 namespace Celeste.Notifications.Impls
@@ -12,8 +11,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
         
-        public bool HasNotificationsPermissions =>
-            !isExplicitPermissionsRequired || Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
+        public bool HasNotificationsPermissions => Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
         
         public string LastRespondedNotificationData
         {
@@ -24,32 +22,26 @@ namespace Celeste.Notifications.Impls
             }
         }
 
-        private bool isExplicitPermissionsRequired;
-
-        private const int MIN_ANDROID_API_LEVEL_FOR_EXPLICIT_PERMISSIONS = 33;
         private const string ANDROID_NOTIFICATIONS_PERMISSION = "android.permission.POST_NOTIFICATIONS";
         
         #endregion
 
         public bool Initialize()
         {
-            using (var version = new AndroidJavaClass("android.os.Build$VERSION"))
-            {
-                int androidSDKVersion = version.GetStatic<int>("SDK_INT");
-                isExplicitPermissionsRequired = androidSDKVersion >= MIN_ANDROID_API_LEVEL_FOR_EXPLICIT_PERMISSIONS;
-            }
-
             return AndroidNotificationCenter.Initialize();
         }
 
         public IEnumerator RequestAuthorization()
         {
-            if (isExplicitPermissionsRequired && !Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION))
+            if (!HasNotificationsPermissions)
             {
-                Permission.RequestUserPermission(ANDROID_NOTIFICATIONS_PERMISSION);
+                PermissionRequest permissionRequest = new PermissionRequest();
+                
+                while (permissionRequest.Status == PermissionStatus.RequestPending)
+                {
+                    yield return null;
+                }
             }
-
-            yield break;
         }
         
         public NotificationStatus GetNotificationStatus(Notification notification)
