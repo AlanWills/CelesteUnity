@@ -2,6 +2,7 @@ using UnityEngine;
 using Celeste.Persistence;
 using Celeste.Notifications.Persistence;
 using Celeste.Notifications.Record;
+using Celeste.Log;
 
 namespace Celeste.Notifications.Managers
 {
@@ -12,6 +13,24 @@ namespace Celeste.Notifications.Managers
 
         public const string FILE_NAME = "NotificationManager.dat";
         protected override string FileName => FILE_NAME;
+
+        [SerializeField] private NotificationRecord notificationRecord;
+
+        #endregion
+
+        #region Unity Methods
+
+        private void Start()
+        {
+            if (notificationRecord.Initialize())
+            {
+                HudLog.LogInfo("Successfully initialized notifications");
+            }
+            else
+            {
+                HudLog.LogError("Notifications failed to initialize");
+            }
+        }
 
         #endregion
 

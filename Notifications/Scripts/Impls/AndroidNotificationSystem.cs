@@ -26,6 +26,11 @@ namespace Celeste.Notifications.Impls
         
         #endregion
 
+        public bool Initialize()
+        {
+            return AndroidNotificationCenter.Initialize();
+        }
+
         public IEnumerator RequestAuthorization()
         {
             if (!Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION))

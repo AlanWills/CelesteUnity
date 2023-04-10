@@ -23,9 +23,7 @@ namespace Celeste.Notifications.Record
 
         #endregion
 
-        #region Unity Methods
-
-        private void OnEnable()
+        public bool Initialize()
         {
 #if UNITY_EDITOR
             impl = new DisabledNotificationSystem();
@@ -34,13 +32,12 @@ namespace Celeste.Notifications.Record
 #elif UNITY_IOS
             impl = new IOSNotificationSystem();
 #endif
+            return impl.Initialize();
         }
-
-        #endregion
 
         public IEnumerator RequestAuthorization()
         {
-            if (!impl.HasNotificationsPermissions)
+            if (!HasNotificationsPermissions)
             {
                 yield return impl.RequestAuthorization();
             }

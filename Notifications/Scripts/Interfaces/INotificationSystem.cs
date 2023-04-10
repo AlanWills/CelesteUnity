@@ -17,6 +17,7 @@ namespace Celeste.Notifications
         bool HasNotificationsPermissions { get; }
         string LastRespondedNotificationData { get; }
 
+        bool Initialize();
         IEnumerator RequestAuthorization();
         NotificationStatus GetNotificationStatus(Notification notification);
 

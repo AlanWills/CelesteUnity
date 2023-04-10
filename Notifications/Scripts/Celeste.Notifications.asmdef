@@ -9,7 +9,8 @@
         "Celeste.Persistence",
         "Celeste.Loading",
         "Celeste.Debug",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.Log"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

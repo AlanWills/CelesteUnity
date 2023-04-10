@@ -13,6 +13,11 @@ namespace Celeste.Notifications.Impls
 
         #endregion
 
+        public bool Initialize()
+        {
+            return true;
+        }
+
         public IEnumerator RequestAuthorization()
         {
             yield break;
