@@ -28,7 +28,7 @@ namespace Celeste.Notifications.Record
 #if UNITY_EDITOR
             impl = new DisabledNotificationSystem();
 #elif UNITY_ANDROID
-            impl = new AndroidNotificationSystem();
+            impl = new DisabledNotificationSystem();
 #elif UNITY_IOS
             impl = new IOSNotificationSystem();
 #endif
