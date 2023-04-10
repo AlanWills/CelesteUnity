@@ -11,7 +11,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool HasPermissions => true;//AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.Allowed;
+        public bool HasPermissions => AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.Allowed;
         
         public string LastRespondedNotificationData
         {
@@ -32,8 +32,6 @@ namespace Celeste.Notifications.Impls
         public IEnumerator RequestPermissions()
         {
             HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}");
-
-            yield break;
 
             if (AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.NotRequested)
             {
