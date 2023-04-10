@@ -11,7 +11,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
         
-        public bool HasNotificationsPermissions => Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
+        public bool HasPermissions => Permission.HasUserAuthorizedPermission(ANDROID_NOTIFICATIONS_PERMISSION);
         
         public string LastRespondedNotificationData
         {
@@ -31,9 +31,9 @@ namespace Celeste.Notifications.Impls
             return AndroidNotificationCenter.Initialize();
         }
 
-        public IEnumerator RequestAuthorization()
+        public IEnumerator RequestPermissions()
         {
-            if (!HasNotificationsPermissions)
+            if (!HasPermissions)
             {
                 PermissionRequest permissionRequest = new PermissionRequest();
                 

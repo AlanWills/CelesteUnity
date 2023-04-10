@@ -1,11 +1,8 @@
 #if UNITY_IOS
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Celeste.Notifications;
 using Celeste.Notifications.Objects;
 using Unity.Notifications.iOS;
-using UnityEngine;
 
 namespace Celeste.Notifications.Impls
 {
@@ -13,7 +10,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool HasNotificationsPermissions => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
+        public bool HasPermissions => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
 
         public string LastRespondedNotificationData
         {
@@ -31,22 +28,25 @@ namespace Celeste.Notifications.Impls
             return true;
         }
 
-        public IEnumerator RequestAuthorization()
+        public IEnumerator RequestPermissions()
         {
-            var authorizationOption = AuthorizationOption.Alert | AuthorizationOption.Badge;
-            using (var req = new AuthorizationRequest(authorizationOption, true))
+            if (!HasPermissions)
             {
-                while (!req.IsFinished)
+                var authorizationOption = AuthorizationOption.Alert | AuthorizationOption.Badge;
+                using (var req = new AuthorizationRequest(authorizationOption, true))
                 {
-                    yield return null;
-                };
+                    while (!req.IsFinished)
+                    {
+                        yield return null;
+                    };
 
-                string res = "\n RequestAuthorization:";
-                res += "\n finished: " + req.IsFinished;
-                res += "\n granted :  " + req.Granted;
-                res += "\n error:  " + req.Error;
-                res += "\n deviceToken:  " + req.DeviceToken;
-                UnityEngine.Debug.Log(res);
+                    string res = "\n RequestAuthorization:";
+                    res += "\n finished: " + req.IsFinished;
+                    res += "\n granted :  " + req.Granted;
+                    res += "\n error:  " + req.Error;
+                    res += "\n deviceToken:  " + req.DeviceToken;
+                    UnityEngine.Debug.Log(res);
+                }
             }
         }
 
