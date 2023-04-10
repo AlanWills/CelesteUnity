@@ -35,7 +35,7 @@ namespace Celeste.DS.Nodes.UI
             string _format = GetInputValue("format", format);
             currentValue = string.IsNullOrEmpty(_format) ? currentValue : string.Format(_format, currentValue);
             
-            if (string.CompareOrdinal(currentValue, text.text) == 0)
+            if (string.CompareOrdinal(currentValue, text.text) != 0)
             {
                 text.text = currentValue;
             }
