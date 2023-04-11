@@ -41,6 +41,9 @@ namespace Celeste.Notifications.Impls
                 {
                     yield return null;
                 }
+
+                HudLog.LogInfo($"Permission Request finished with status: {permissionRequest.Status}");
+                HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}");
             }
         }
         
