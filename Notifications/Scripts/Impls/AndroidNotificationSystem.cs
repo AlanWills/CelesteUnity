@@ -4,6 +4,7 @@ using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
 using Unity.Notifications.Android;
+using UnityEngine;
 
 namespace Celeste.Notifications.Impls
 {
@@ -32,6 +33,14 @@ namespace Celeste.Notifications.Impls
         public IEnumerator RequestPermissions()
         {
             HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}");
+
+            using (var version = new AndroidJavaClass("android/os/Build$VERSION"))
+            {
+                int currentSDK = version.GetStatic<int>("SDK_INT");
+                HudLog.LogInfo($"Current SDK: {currentSDK}");
+                PermissionStatus playerPrefs = (PermissionStatus)PlayerPrefs.GetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
+                HudLog.LogInfo($"Player Prefs permissions: {playerPrefs}");
+            }
 
             if (AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.NotRequested)
             {
