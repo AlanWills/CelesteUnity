@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Advertising
 {
-    public class AdsManager : PersistentSceneManager<AdsManager, AdsDTO>
+    public class AdsManager : PersistentSceneManager<AdsManager, AdsManagerDTO>
     {
         #region Properties and Fields
 
@@ -27,21 +27,26 @@ namespace Celeste.Advertising
 
             Load();
 
-            // Only enter test mode if we have enabled the flag and we are in a debug build
-            // We should never be able to allow test mode on release builds, even if the flag is on for some reason
-            adRecord.Initialize(adTestMode.Value && isDebugBuild.Value);
+            if (!isDebugBuild.Value)
+            {
+                // Only enter test mode if we have enabled the flag and we are in a debug build
+                // We should never be able to allow test mode on release builds, even if the flag is on for some reason
+                adTestMode.Value = false;
+            }
+
+            adRecord.Initialize();
         }
 
         #endregion
 
         #region Save/Load
 
-        protected override AdsDTO Serialize()
+        protected override AdsManagerDTO Serialize()
         {
-            return new AdsDTO(adTestMode.Value);
+            return new AdsManagerDTO(adTestMode.Value);
         }
 
-        protected override void Deserialize(AdsDTO dto)
+        protected override void Deserialize(AdsManagerDTO dto)
         {
             adTestMode.Value = dto.adsTestMode;
         }

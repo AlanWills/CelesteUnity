@@ -3,11 +3,11 @@
 namespace Celeste.Advertising.Persistence
 {
     [Serializable]
-    public class AdsDTO
+    public class AdsManagerDTO
     {
         public bool adsTestMode = true;
 
-        public AdsDTO(bool adsTestMode)
+        public AdsManagerDTO(bool adsTestMode)
         {
             this.adsTestMode = adsTestMode;
         }

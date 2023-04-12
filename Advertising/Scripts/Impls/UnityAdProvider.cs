@@ -1,32 +1,69 @@
-﻿using System;
+﻿using Celeste.Parameters;
+using System;
 using UnityEngine;
 #if UNITY_ADS
 using UnityEngine.Advertisements;
 #endif
 
-namespace Celeste.Advertising
+namespace Celeste.Advertising.Impls
 {
-    [CreateAssetMenu(fileName = nameof(UnityAdRecord), menuName = "Celeste/Advertising/Unity Ad Record")]
-    public class UnityAdRecord : AdRecord
+    [CreateAssetMenu(fileName = nameof(UnityAdProvider), menuName = "Celeste/Advertising/Providers/Unity Ad Provider")]
+    public class UnityAdProvider : ScriptableObject, IAdProvider
 #if UNITY_ADS
         , IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 #endif
     {
-        public override void Initialize(bool testMode)
+        #region Properties and Fields
+
+        public string GameId
         {
+            get
+            {
+#if UNITY_ANDROID
+                return androidGameId;
+#elif UNITY_IOS
+                return iOSGameId;
+#else
+                return string.Empty;
+#endif
+            }
+        }
+
+        [SerializeField] private string androidGameId;
+        [SerializeField] private string iOSGameId;
+        [SerializeField] private BoolValue testMode;
+
+        [NonSerialized] private AdPlacementCatalogue adPlacements;
+        [NonSerialized] private Action onInitializationComplete;
+        [NonSerialized] private Action<string> onInitializationFailed;
+
+#endregion
+
+        public void Initialize(
+            AdPlacementCatalogue adPlacements,
+            Action onInitializationComplete,
+            Action<string> onInitializationFailed)
+        {
+            this.adPlacements = adPlacements;
+            this.onInitializationComplete = onInitializationComplete;
+            this.onInitializationFailed = onInitializationFailed;
+
 #if UNITY_ADS
-            Advertisement.Initialize(GameId, testMode, this);
+            if (!Advertisement.isInitialized)
+            {
+                Advertisement.Initialize(GameId, testMode.Value, this);
+            }
 #endif
         }
 
-        public override void LoadAdPlacement(AdPlacement adPlacement)
+        public void LoadAdPlacement(AdPlacement adPlacement)
         {
 #if UNITY_ADS
             Advertisement.Load(adPlacement.PlacementId, this);
 #endif
         }
 
-        public override void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShowSuccessful)
+        public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShowSuccessful)
         {
 #if UNITY_ADS
             adPlacement.OnShow += onShowSuccessful;
@@ -34,23 +71,29 @@ namespace Celeste.Advertising
 #endif
         }
 
+        private AdPlacement FindAdPlacement(string placementId)
+        {
+            return adPlacements.FindPlacementById(placementId);
+        }
+
 #if UNITY_ADS
         #region IUnityAdsInitializationListener
 
         public void OnInitializationComplete()
         {
-            UnityEngine.Debug.Log($"Initialization of ads was completed successfully.");
-            LoadAllAdPlacements();
+            UnityEngine.Debug.Log($"Initialization of unity ads was completed successfully.");
+            onInitializationComplete?.Invoke();
         }
 
         public void OnInitializationFailed(UnityAdsInitializationError error, string message)
         {
-            UnityEngine.Debug.LogError($"Initialization of ads failed with message {message} and error {error}.");
+            UnityEngine.Debug.LogError($"Initialization of unity ads failed with message {message} and error {error}.");
+            onInitializationFailed?.Invoke(message);
         }
 
-        #endregion
+#endregion
 
-        #region IUnityAdsLoadListener
+#region IUnityAdsLoadListener
 
         public void OnUnityAdsAdLoaded(string placementId)
         {
@@ -76,9 +119,9 @@ namespace Celeste.Advertising
             }
         }
 
-        #endregion
+#endregion
 
-        #region IUnityAdsShowListener
+#region IUnityAdsShowListener
 
         public void OnUnityAdsShowClick(string placementId)
         {
@@ -124,7 +167,7 @@ namespace Celeste.Advertising
             }
         }
 
-        #endregion
+#endregion
 
         private AdWatchResult ToAdWatchResult(UnityAdsShowCompletionState showCompleteState)
         {

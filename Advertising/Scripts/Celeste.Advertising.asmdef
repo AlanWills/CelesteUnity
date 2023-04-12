@@ -9,6 +9,7 @@
         "Celeste.Tools",
         "Celeste.Persistence",
         "Celeste.Logic",
+        "Celeste.UI",
         "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],

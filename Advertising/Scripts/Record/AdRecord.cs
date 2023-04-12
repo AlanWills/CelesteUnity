@@ -1,24 +1,15 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Advertising.Impls;
+using Celeste.Events;
+using Celeste.Parameters;
 using System;
 using UnityEngine;
 
 namespace Celeste.Advertising
 {
-    public abstract class AdRecord : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(AdRecord), menuName = "Celeste/Advertising/Ad Record")]
+    public class AdRecord : ScriptableObject, IAdProvider
     {
         #region Properties and Fields
-
-        public string GameId
-        {
-            get
-            {
-#if UNITY_ANDROID
-                return androidGameId;
-#else
-                return iOSGameId;
-#endif
-            }
-        }
 
         public bool AdsEnabled
         {
@@ -27,26 +18,53 @@ namespace Celeste.Advertising
         }
 
         public int NumAdPlacements => adPlacements.NumItems;
+        public string GameId => impl.GameId;
 
-        [SerializeField] private string androidGameId;
-        [SerializeField] private string iOSGameId;
         [SerializeField] private BoolValue adsEnabled;
         [SerializeField] private AdPlacementCatalogue adPlacements;
 
+        [Header("Providers")]
+#if UNITY_EDITOR
+        [SerializeField] private EditorAdProvider editorAdProvider;
+#endif
+#if UNITY_ADS
+        [SerializeField] private UnityAdProvider unityAdProvider;
+#endif
+
+        [NonSerialized] private IAdProvider impl = new DisabledAdProvider();
+        [NonSerialized] private DisabledAdProvider disabledAdProvider = new DisabledAdProvider();
+
         #endregion
 
-        public abstract void Initialize(bool testMode);
-        public abstract void LoadAdPlacement(AdPlacement adPlacement);
-        public abstract void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShow);
-        
-        public AdPlacement FindAdPlacement(string placementId)
+        public void Initialize()
         {
-            return adPlacements.FindPlacementById(placementId);
+            adsEnabled.AddValueChangedCallback(OnAdsEnabledValueChanged);
+
+            SelectImpl();
         }
 
-        public AdPlacement GetAdPlacement(int index)
+        private void SelectImpl()
         {
-            return adPlacements.GetItem(index);
+            if (adsEnabled.Value)
+            {
+    #if UNITY_EDITOR
+                impl = editorAdProvider;
+#elif UNITY_ADS
+                impl = unityAdProvider;
+                impl.Initialize(adPlacements, LoadAllAdPlacements, null);
+#else
+                impl = disabledAdProvider;
+#endif
+            }
+            else
+            {
+                impl = disabledAdProvider;
+            }
+        }
+
+        public void LoadAdPlacement(AdPlacement adPlacement)
+        {
+            impl.LoadAdPlacement(adPlacement);
         }
 
         protected void LoadAllAdPlacements()
@@ -56,5 +74,24 @@ namespace Celeste.Advertising
                 LoadAdPlacement(adPlacement);
             }
         }
+
+        public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShow)
+        {
+            impl.PlayAdPlacement(adPlacement, onShow);
+        }
+        
+        public AdPlacement GetAdPlacement(int index)
+        {
+            return adPlacements.GetItem(index);
+        }
+
+        #region Callbacks
+
+        private void OnAdsEnabledValueChanged(ValueChangedArgs<bool> args)
+        {
+            SelectImpl();
+        }
+
+        #endregion
     }
 }
