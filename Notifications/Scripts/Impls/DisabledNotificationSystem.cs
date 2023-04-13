@@ -8,6 +8,7 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
+        public bool PermissionsRequested => true;
         public bool PermissionsGranted => false;
         public string LastRespondedNotificationData => string.Empty;
 
@@ -22,6 +23,8 @@ namespace Celeste.Notifications.Impls
         {
             yield break;
         }
+
+        public void ResetPermissions() { }
 
         public NotificationStatus GetNotificationStatus(Notification notification)
         {
