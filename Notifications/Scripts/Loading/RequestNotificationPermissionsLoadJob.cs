@@ -16,8 +16,8 @@ namespace Celeste.Notifications.Loading
         {
             yield return notificationRecord.RequestPermissions();
 
-            HudLog.LogInfo($"Notification Permissions? {notificationRecord.HasPermissions}");
-            if (notificationRecord.HasPermissions)
+            HudLog.LogInfo($"Notification Permissions? {notificationRecord.PermissionsGranted}");
+            if (notificationRecord.PermissionsGranted)
             {
                 notificationRecord.AddAllNotificationChannels();
             }

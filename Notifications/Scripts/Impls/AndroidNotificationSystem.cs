@@ -12,7 +12,8 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool HasPermissions => AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.Allowed;
+        public bool PermissionsRequested => AndroidNotificationCenter.UserPermissionToPost != PermissionStatus.NotRequested;
+        public bool PermissionsGranted => AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.Allowed;
         
         public string LastRespondedNotificationData
         {
@@ -33,19 +34,21 @@ namespace Celeste.Notifications.Impls
         public IEnumerator RequestPermissions()
         {
             HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}");
+            PermissionRequest permissionRequest = new PermissionRequest();
 
-            if (AndroidNotificationCenter.UserPermissionToPost == PermissionStatus.NotRequested)
+            while (permissionRequest.Status == PermissionStatus.RequestPending)
             {
-                PermissionRequest permissionRequest = new PermissionRequest();
-                
-                while (permissionRequest.Status == PermissionStatus.RequestPending)
-                {
-                    yield return null;
-                }
-
-                HudLog.LogInfo($"Permission Request finished with status: {permissionRequest.Status}");
-                HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}");
+                yield return null;
             }
+
+            HudLog.LogInfo($"Permission Request finished with status: {permissionRequest.Status}");
+            HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}");
+        }
+
+        public void ResetPermissions()
+        {
+            PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
+            PlayerPrefs.Save();
         }
         
         public NotificationStatus GetNotificationStatus(Notification notification)

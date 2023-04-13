@@ -10,7 +10,8 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool HasPermissions => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
+        public bool PermissionsRequested => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.NotDetermined;
+        public bool PermissionsGranted => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
 
         public string LastRespondedNotificationData
         {
@@ -30,24 +31,26 @@ namespace Celeste.Notifications.Impls
 
         public IEnumerator RequestPermissions()
         {
-            if (!HasPermissions)
+            var authorizationOption = AuthorizationOption.Alert | AuthorizationOption.Badge;
+            using (var req = new AuthorizationRequest(authorizationOption, true))
             {
-                var authorizationOption = AuthorizationOption.Alert | AuthorizationOption.Badge;
-                using (var req = new AuthorizationRequest(authorizationOption, true))
+                while (!req.IsFinished)
                 {
-                    while (!req.IsFinished)
-                    {
-                        yield return null;
-                    };
+                    yield return null;
+                };
 
-                    string res = "\n RequestAuthorization:";
-                    res += "\n finished: " + req.IsFinished;
-                    res += "\n granted :  " + req.Granted;
-                    res += "\n error:  " + req.Error;
-                    res += "\n deviceToken:  " + req.DeviceToken;
-                    UnityEngine.Debug.Log(res);
-                }
+                string res = "\n RequestAuthorization:";
+                res += "\n finished: " + req.IsFinished;
+                res += "\n granted :  " + req.Granted;
+                res += "\n error:  " + req.Error;
+                res += "\n deviceToken:  " + req.DeviceToken;
+                UnityEngine.Debug.Log(res);
             }
+        }
+
+        public void ResetPermissions()
+        {
+            UnityEngine.Debug.LogAssertion($"Cannot reset permissions on iOS yet.");
         }
 
         public NotificationStatus GetNotificationStatus(Notification notification)

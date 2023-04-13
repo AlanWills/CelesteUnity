@@ -14,11 +14,13 @@ namespace Celeste.Notifications
 
     public interface INotificationSystem
     {
-        bool HasPermissions { get; }
+        bool PermissionsRequested { get; }
+        bool PermissionsGranted { get; }
         string LastRespondedNotificationData { get; }
 
         bool Initialize();
         IEnumerator RequestPermissions();
+        void ResetPermissions();
         NotificationStatus GetNotificationStatus(Notification notification);
 
         void AddNotificationChannel(NotificationChannel notificationChannel);

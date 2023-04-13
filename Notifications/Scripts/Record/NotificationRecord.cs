@@ -12,7 +12,8 @@ namespace Celeste.Notifications.Record
     {
         #region Properties and Fields
 
-        public bool HasPermissions => impl.HasPermissions;
+        public bool PermissionsRequested => impl.PermissionsRequested;
+        public bool PermissionsGranted => impl.PermissionsGranted;
         public string LastRespondedNotificationData => impl.LastRespondedNotificationData;
 
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
@@ -37,10 +38,15 @@ namespace Celeste.Notifications.Record
 
         public IEnumerator RequestPermissions()
         {
-            if (!HasPermissions)
+            if (!PermissionsRequested)
             {
                 yield return impl.RequestPermissions();
             }
+        }
+
+        public void ResetPermissions()
+        {
+            impl.ResetPermissions();
         }
 
         public NotificationStatus GetNotificationStatus(Notification notification)
