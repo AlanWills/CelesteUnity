@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c3bf102edeefd42846f83f0bb90bfd, type: 3}
   m_Name: SFXEnabled
   m_EditorClassIdentifier: 
+  helpText: 
   defaultValue: 1
   onValueChanged: {fileID: 11400000, guid: cb8842c1d047ec7499fb7294f61d3a52, type: 2}
+  invokeValueChangedSilently: 0

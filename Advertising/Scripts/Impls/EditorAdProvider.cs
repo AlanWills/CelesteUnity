@@ -16,6 +16,11 @@ namespace Celeste.Advertising.Impls
 
         #endregion
 
+        public void Initialize(AdPlacementCatalogue adPlacements, Action onInitializeSuccess, Action<string> onInitializeFail)
+        {
+            onInitializeSuccess?.Invoke();
+        }
+
         public void LoadAdPlacement(AdPlacement adPlacement)
         {
             adPlacement.IsLoaded = true;

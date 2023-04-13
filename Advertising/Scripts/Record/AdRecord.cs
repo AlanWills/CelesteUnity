@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.Advertising
 {
     [CreateAssetMenu(fileName = nameof(AdRecord), menuName = "Celeste/Advertising/Ad Record")]
-    public class AdRecord : ScriptableObject, IAdProvider
+    public class AdRecord : ScriptableObject
     {
         #region Properties and Fields
 
@@ -47,14 +47,14 @@ namespace Celeste.Advertising
         {
             if (adsEnabled.Value)
             {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
                 impl = editorAdProvider;
 #elif UNITY_ADS
                 impl = unityAdProvider;
-                impl.Initialize(adPlacements, LoadAllAdPlacements, null);
 #else
                 impl = disabledAdProvider;
 #endif
+                impl.Initialize(adPlacements, LoadAllAdPlacements, null);
             }
             else
             {

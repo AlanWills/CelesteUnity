@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59c3bf102edeefd42846f83f0bb90bfd, type: 3}
-  m_Name: MusicEnabled
+  m_Script: {fileID: 11500000, guid: 3c5249a2bc082174498ecced6d7fa227, type: 3}
+  m_Name: ShowEditorAdFullScreenPopup
   m_EditorClassIdentifier: 
   helpText: 
-  defaultValue: 1
-  onValueChanged: {fileID: 11400000, guid: 2d29920b3d6cd3042ba61ee81ce76db6, type: 2}
-  invokeValueChangedSilently: 0
