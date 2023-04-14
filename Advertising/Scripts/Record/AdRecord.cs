@@ -54,12 +54,13 @@ namespace Celeste.Advertising
 #else
                 impl = disabledAdProvider;
 #endif
-                impl.Initialize(adPlacements, LoadAllAdPlacements, null);
             }
             else
             {
                 impl = disabledAdProvider;
             }
+            
+            impl.Initialize(adPlacements, LoadAllAdPlacements, null);
         }
 
         public void LoadAdPlacement(AdPlacement adPlacement)

@@ -66,6 +66,11 @@ namespace Celeste.Objects
             }
         }
 
+        public bool ContainsItem(T item)
+        {
+            return ItemsImpl.Contains(item);
+        }
+
         public void SetItems(IReadOnlyList<T> newItems)
         {
             using (ChangeBlock changeBlock = new ChangeBlock(this))
