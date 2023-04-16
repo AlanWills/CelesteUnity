@@ -52,6 +52,13 @@ namespace Celeste.LiveOps
             long liveOpStartTimestamp = startTimestamp;
             LiveOpState liveOpState = liveOpDTO.state;
 
+            // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
+            if (liveOpDTO.isRecurring)
+            {
+                long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
+                liveOpStartTimestamp = GameTime.UtcNowTimestamp - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
+            }
+
             if (liveOpState == LiveOpState.Unknown)
             {
                 UnityEngine.Debug.LogAssertion($"Unknown liveop state found.  This is a serious error, so the liveop will probably not be scheduled...");
@@ -73,10 +80,6 @@ namespace Celeste.LiveOps
                     // This live op is not recurring so we will not add it
                     yield break;
                 }
-
-                // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
-                long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
-                liveOpStartTimestamp = GameTime.UtcNowTimestamp - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
 
                 // Set the state to ComingSoon, so it'll be handled properly when we schedule - we can't do more without the timer
                 liveOpState = LiveOpState.ComingSoon;
@@ -202,7 +205,7 @@ namespace Celeste.LiveOps
             if (endTime <= GameTime.UtcNowTimestamp)
             {
                 // Event has timed out - use the progress interface to see if we can just dismiss the event
-                if (liveOp.ProgressRatio <= 0f)
+                if (!liveOp.PlayerActionRequired)
                 {
                     // We can immediately end this event now as the player has no unresolved progress
                     liveOp.Finish();

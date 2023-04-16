@@ -62,6 +62,7 @@ namespace Celeste.LiveOps
         public int NumComponents => Components.NumComponents;
         public long EndTimestamp => Timer.iFace.GetEndTimestamp(Timer.instance, StartTimestamp);
         public float ProgressRatio => Progress.iFace.ProgressRatio(Progress.instance);
+        public bool PlayerActionRequired => Progress.iFace.PlayerActionRequired(Progress.instance);
         public LiveOpState State
         {
             get => liveOpState;
@@ -131,6 +132,12 @@ namespace Celeste.LiveOps
         public void Start()
         {
             State = LiveOpState.Running;
+
+            if (IsRecurring)
+            {
+                // Reset the progress of this recurring liveop
+                Progress.iFace.ResetProgress(Progress.instance);
+            }
         }
 
         public void Complete()
