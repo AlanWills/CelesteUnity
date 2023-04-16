@@ -87,13 +87,13 @@ namespace Celeste.Notifications.Impls
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
         }
 
-        public void ScheduleNotification(Notification notification, DateTime dateTime, string intentData)
+        public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
             var androidNotification = new AndroidNotification()
             {
                 Title = notification.Title,
                 Text = notification.Text,
-                FireTime = dateTime,
+                FireTime = dateTimeOffset.DateTime,
                 SmallIcon = notification.SmallIcon,
                 LargeIcon = notification.LargeIcon,
                 IntentData = intentData

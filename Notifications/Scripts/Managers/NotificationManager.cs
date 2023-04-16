@@ -36,7 +36,7 @@ namespace Celeste.Notifications.Managers
 
         protected override NotificationManagerDTO Serialize()
         {
-            return new NotificationManagerDTO();
+            return new NotificationManagerDTO(notificationRecord);
         }
 
         protected override void Deserialize(NotificationManagerDTO dto)

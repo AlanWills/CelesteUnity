@@ -82,7 +82,7 @@ namespace Celeste.LiveOps.Persistence
             {
                 if (liveOpDTO != null && liveOpDTO.IsValid)
                 {
-                    yield return liveOpsRecord.AddLiveOp(liveOpDTO, GameTime.UtcNow);
+                    yield return liveOpsRecord.AddLiveOp(liveOpDTO, GameTime.UtcNowTimestamp);
                 }
                 else
                 {

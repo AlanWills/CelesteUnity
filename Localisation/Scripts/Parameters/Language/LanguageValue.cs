@@ -10,5 +10,10 @@ namespace Celeste.Localisation.Parameters
         {
             return Value.Localise(localisationKey);
         }
+
+        public string Truncate(int number)
+        {
+            return Value.Truncate(number);
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace Celeste.Notifications
         NotificationStatus GetNotificationStatus(Notification notification);
 
         void AddNotificationChannel(NotificationChannel notificationChannel);
-        void ScheduleNotification(Notification notification, DateTime dateTime, string intentData);
+        void ScheduleNotification(Notification notification, DateTimeOffset dateTime, string intentData);
         void CancelNotification(Notification notification);
         void CancelAllNotifications();
     }

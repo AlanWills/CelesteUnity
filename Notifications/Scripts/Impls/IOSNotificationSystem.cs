@@ -8,7 +8,7 @@ namespace Celeste.Notifications.Impls
 {
     public class IOSNotificationSystem : INotificationSystem
     {
-        #region Properties and Fields
+#region Properties and Fields
 
         public bool PermissionsRequested => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.NotDetermined;
         public bool PermissionsGranted => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
@@ -22,7 +22,7 @@ namespace Celeste.Notifications.Impls
             }
         }
 
-        #endregion
+#endregion
         
         public bool Initialize()
         {
@@ -78,7 +78,7 @@ namespace Celeste.Notifications.Impls
 
         }
 
-        public void ScheduleNotification(Notification notification, DateTime dateTime, string intentData)
+        public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
             var dateTimeTrigger = CreateCalendarTrigger(dateTime);
             string notificationID = notification.ID.ToString();
@@ -123,16 +123,16 @@ namespace Celeste.Notifications.Impls
             iOSNotificationCenter.RemoveAllDeliveredNotifications();
         }
 
-        private iOSNotificationCalendarTrigger CreateCalendarTrigger(DateTime dateTime)
+        private iOSNotificationCalendarTrigger CreateCalendarTrigger(DateTimeOffset dateTimeOffset)
         {
             return new iOSNotificationCalendarTrigger()
             {
-                Year = dateTime.Year,
-                Month = dateTime.Month,
-                Day = dateTime.Day,
-                Hour = dateTime.Hour,
-                Minute = dateTime.Minute,
-                Second = dateTime.Second,
+                Year = dateTimeOffset.Year,
+                Month = dateTimeOffset.Month,
+                Day = dateTimeOffset.Day,
+                Hour = dateTimeOffset.Hour,
+                Minute = dateTimeOffset.Minute,
+                Second = dateTimeOffset.Second,
                 Repeats = false
             };
         }

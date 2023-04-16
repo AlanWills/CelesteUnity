@@ -14,10 +14,13 @@ namespace Celeste.Notifications.Debug
         #region Properties and Fields
 
         [SerializeField] private NotificationRecord notificationRecord;
+        [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
         [SerializeField] private NotificationCatalogue notificationCatalogue;
 
-        [NonSerialized] private int currentPage;
+        [NonSerialized] private int currentNotificationsChannelPage;
+        [NonSerialized] private int currentNotificationsPage;
 
+        private const int NOTIFICATIONS_CHANNEL_PER_PAGE = 20;
         private const int NOTIFICATIONS_PER_PAGE = 20;
 
         #endregion
@@ -51,9 +54,9 @@ namespace Celeste.Notifications.Debug
                 notificationRecord.AddAllNotificationChannels();
             }
 
-            currentPage = GUIUtils.ReadOnlyPaginatedList(
-                currentPage,
-                NOTIFICATIONS_PER_PAGE,
+            currentNotificationsChannelPage = GUIUtils.ReadOnlyPaginatedList(
+                currentNotificationsChannelPage,
+                NOTIFICATIONS_CHANNEL_PER_PAGE,
                 notificationCatalogue.NumItems,
                 (index) =>
                 {
@@ -72,6 +75,18 @@ namespace Celeste.Notifications.Debug
                                 string.Empty);
                         }
                     }
+                });
+
+            currentNotificationsPage = GUIUtils.ReadOnlyPaginatedList(
+                currentNotificationsPage,
+                NOTIFICATIONS_PER_PAGE,
+                notificationChannelCatalogue.NumItems,
+                (index) =>
+                {
+                    var notificationChannel = notificationChannelCatalogue.GetItem(index);
+                    notificationChannel.Enabled = GUILayout.Toggle(
+                        notificationChannel.Enabled,
+                        $"{notificationChannel.name} ({notificationChannel.ID})");
                 });
         }
     }

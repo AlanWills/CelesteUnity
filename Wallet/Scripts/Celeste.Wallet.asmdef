@@ -2,16 +2,17 @@
     "name": "Celeste.Wallet",
     "rootNamespace": "Celeste.Wallet",
     "references": [
+        "Unity.TextMeshPro",
         "Celeste.Persistence",
         "Celeste.Objects",
         "Celeste.Events",
         "Celeste.DataStructures",
-        "Unity.TextMeshPro",
         "Celeste.Debug",
         "Celeste.Parameters",
         "Celeste.Scene",
         "Celeste.Memory",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.Localisation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

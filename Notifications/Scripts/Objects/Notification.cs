@@ -29,6 +29,7 @@ namespace Celeste.Notifications.Objects
         public string Text => text;
         public string SmallIcon => smallIcon;
         public string LargeIcon => largeIcon;
+        public bool NotificationChannelEnabled => notificationChannel.Enabled;
         public string NotificationChannelID => notificationChannel.ID;
 
         [SerializeField] private int guid;

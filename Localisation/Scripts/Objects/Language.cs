@@ -129,6 +129,11 @@ namespace Celeste.Localisation
             return numberToTextConverter.Localise(number, this);
         }
 
+        public string Truncate(int number)
+        {
+            return numberToTextConverter != null ? numberToTextConverter.Truncate(number, this) : number.ToString();
+        }
+
         public AudioClip Synthesize(LocalisationKey key)
         {
             if (key == null)

@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
-using Celeste.Parameters;
-using System.Collections;
+using Celeste.Localisation;
+using Celeste.Localisation.Parameters;
+using Celeste.Tools.Attributes.GUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,8 @@ namespace Celeste.Wallet.UI
 
         [Header("Settings")]
         [SerializeField] private bool isCurrencyTarget = true;
+        [SerializeField] private bool truncateCurrency = true;
+        [SerializeField, ShowIf(nameof(truncateCurrency))] private LanguageValue currentLanguage;
 
         #endregion
 
@@ -47,6 +50,11 @@ namespace Celeste.Wallet.UI
                     animatedCurrencyTransformCache.AddCurrencyTarget(currency, GetComponent<RectTransform>());
                 }
 
+                if (truncateCurrency && currentLanguage != null)
+                {
+                    currentLanguage.AddValueChangedCallback(OnCurrentLanguageChanged);
+                }
+
                 UpdateUI();
             }
         }
@@ -58,6 +66,11 @@ namespace Celeste.Wallet.UI
                 if (isCurrencyTarget)
                 {
                     animatedCurrencyTransformCache.RemoveCurrencyTarget(currency);
+                }
+
+                if (truncateCurrency && currentLanguage != null)
+                {
+                    currentLanguage.RemoveValueChangedCallback(OnCurrentLanguageChanged);
                 }
 
                 currency.RemoveOnQuantityChangedCallback(OnCurrencyChanged);
@@ -73,12 +86,17 @@ namespace Celeste.Wallet.UI
 
         public void UpdateUI()
         {
-            quantityText.text = currency.Quantity.ToString();
+            quantityText.text = truncateCurrency ? currentLanguage.Truncate(currency.Quantity) : currency.Quantity.ToString();
         }
 
         #region Callbacks
 
         private void OnCurrencyChanged(ValueChangedArgs<int> args)
+        {
+            UpdateUI();
+        }
+
+        private void OnCurrentLanguageChanged(ValueChangedArgs<Language> args)
         {
             UpdateUI();
         }

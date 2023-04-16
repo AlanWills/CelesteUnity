@@ -1,8 +1,10 @@
+using Celeste.Events;
 using Celeste.Notifications.Catalogue;
 using Celeste.Notifications.Impls;
 using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
+using System.Runtime.Remoting.Channels;
 using UnityEngine;
 
 namespace Celeste.Notifications.Record
@@ -19,6 +21,7 @@ namespace Celeste.Notifications.Record
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
 
         [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
+        [SerializeField] private Celeste.Events.Event save;
 
         [NonSerialized] private INotificationSystem impl = new DisabledNotificationSystem();
 
@@ -57,11 +60,15 @@ namespace Celeste.Notifications.Record
         public void AddNotificationChannel(NotificationChannel notificationChannel)
         {
             impl.AddNotificationChannel(notificationChannel);
+            notificationChannel.AddEnabledChangedCallback(OnChannelEnabledChanged);
         }
 
-        public void ScheduleNotification(Notification notification, DateTime dateTime, string intentData)
+        public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
-            impl.ScheduleNotification(notification, dateTime, intentData);
+            if (notification.NotificationChannelEnabled)
+            {
+                impl.ScheduleNotification(notification, dateTimeOffset.ToUniversalTime(), intentData);
+            }
         }
 
         public void CancelNotification(Notification notification)
@@ -86,5 +93,14 @@ namespace Celeste.Notifications.Record
         {
             return notificationChannelCatalogue.GetItem(index);
         }
+
+        #region Callbacks
+
+        private void OnChannelEnabledChanged(ValueChangedArgs<bool> args)
+        {
+            save.Invoke();
+        }
+
+        #endregion
     }
 }

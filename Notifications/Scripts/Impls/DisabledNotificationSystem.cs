@@ -32,7 +32,7 @@ namespace Celeste.Notifications.Impls
         }
 
         public void AddNotificationChannel(NotificationChannel notificationChannel) { }
-        public void ScheduleNotification(Notification channel, DateTime dateTime, string intentData) { }
+        public void ScheduleNotification(Notification channel, DateTimeOffset dateTime, string intentData) { }
         public void CancelNotification(Notification channel) { }
         public void CancelAllNotifications() { }
     }

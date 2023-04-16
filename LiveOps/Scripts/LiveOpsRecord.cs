@@ -75,8 +75,8 @@ namespace Celeste.LiveOps
                 }
 
                 // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
-                long diffBetweenNowAndStart = GameTime.UtcNow - liveOpStartTimestamp;
-                liveOpStartTimestamp = GameTime.UtcNow - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
+                long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
+                liveOpStartTimestamp = GameTime.UtcNowTimestamp - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
 
                 // Set the state to ComingSoon, so it'll be handled properly when we schedule - we can't do more without the timer
                 liveOpState = LiveOpState.ComingSoon;
@@ -174,9 +174,9 @@ namespace Celeste.LiveOps
 
         private void HandleScheduleOfComingSoonLiveOp(LiveOp liveOp)
         {
-            if (liveOp.StartTimestamp <= GameTime.UtcNow)
+            if (liveOp.StartTimestamp <= GameTime.UtcNowTimestamp)
             {
-                if (liveOp.EndTimestamp > GameTime.UtcNow)
+                if (liveOp.EndTimestamp > GameTime.UtcNowTimestamp)
                 {
                     // We can actually start the live op now, so let's do it!
                     liveOp.Start();
@@ -199,7 +199,7 @@ namespace Celeste.LiveOps
         {
             long endTime = liveOp.EndTimestamp;
 
-            if (endTime <= GameTime.UtcNow)
+            if (endTime <= GameTime.UtcNowTimestamp)
             {
                 // Event has timed out - use the progress interface to see if we can just dismiss the event
                 if (liveOp.ProgressRatio <= 0f)
@@ -229,7 +229,7 @@ namespace Celeste.LiveOps
         {
             long endTime = liveOp.EndTimestamp;
 
-            if (endTime <= GameTime.UtcNow)
+            if (endTime <= GameTime.UtcNowTimestamp)
             {
                 // Event has timed out.  Since we've completed it already, we can just finish it here
                 liveOp.Finish();

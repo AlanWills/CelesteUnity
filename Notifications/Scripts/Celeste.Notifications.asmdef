@@ -11,7 +11,9 @@
         "Celeste.Debug",
         "Celeste.Tools",
         "Celeste.Log",
-        "Celeste.Coroutines"
+        "Celeste.Coroutines",
+        "Celeste.Parameters",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
