@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using UnityEngine;
 
 namespace CelesteEditor.Validation
 {
+    public interface IFixableCondition
+    {
+        bool CanFix();
+        void Fix(StringBuilder output);
+    }
+
     public interface IFixableCondition<T> where T : Object
     {
         bool CanFix(T asset);

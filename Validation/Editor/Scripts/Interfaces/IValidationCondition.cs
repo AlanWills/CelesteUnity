@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using UnityEngine;
 
 namespace CelesteEditor.Validation
 {
+    public interface IValidationCondition
+    {
+        string DisplayName { get; }
+
+        bool Validate(StringBuilder output);
+    }
+
     public interface IValidationCondition<T> where T : Object
     {
         string DisplayName { get; }
