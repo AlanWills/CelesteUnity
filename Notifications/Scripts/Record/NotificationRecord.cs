@@ -4,7 +4,6 @@ using Celeste.Notifications.Impls;
 using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
-using System.Runtime.Remoting.Channels;
 using UnityEngine;
 
 namespace Celeste.Notifications.Record
@@ -21,7 +20,7 @@ namespace Celeste.Notifications.Record
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
 
         [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
-        [SerializeField] private Celeste.Events.Event save;
+        [SerializeField] private Events.Event save;
 
         [NonSerialized] private INotificationSystem impl = new DisabledNotificationSystem();
 

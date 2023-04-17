@@ -80,7 +80,7 @@ namespace Celeste.Notifications.Impls
 
         public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
-            var dateTimeTrigger = CreateCalendarTrigger(dateTime);
+            var dateTimeTrigger = CreateCalendarTrigger(notification, dateTimeOffset);
             string notificationID = notification.ID.ToString();
 
             var iOSNotification = new iOSNotification()
@@ -123,7 +123,7 @@ namespace Celeste.Notifications.Impls
             iOSNotificationCenter.RemoveAllDeliveredNotifications();
         }
 
-        private iOSNotificationCalendarTrigger CreateCalendarTrigger(DateTimeOffset dateTimeOffset)
+        private iOSNotificationCalendarTrigger CreateCalendarTrigger(Notification notification, DateTimeOffset dateTimeOffset)
         {
             return new iOSNotificationCalendarTrigger()
             {
@@ -133,7 +133,7 @@ namespace Celeste.Notifications.Impls
                 Hour = dateTimeOffset.Hour,
                 Minute = dateTimeOffset.Minute,
                 Second = dateTimeOffset.Second,
-                Repeats = false
+                Repeats = notification.IsRepeating
             };
         }
 

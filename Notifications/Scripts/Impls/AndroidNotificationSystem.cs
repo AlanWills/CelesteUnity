@@ -96,7 +96,8 @@ namespace Celeste.Notifications.Impls
                 FireTime = dateTimeOffset.DateTime,
                 SmallIcon = notification.SmallIcon,
                 LargeIcon = notification.LargeIcon,
-                IntentData = intentData
+                IntentData = intentData,
+                RepeatInterval = notification.IsRepeating ? TimeSpan.FromSeconds(notification.RepeatTimeInSeconds) : null
             };
 
             int notificationId = notification.ID;

@@ -1,4 +1,5 @@
 using Celeste.Objects;
+using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 
 namespace Celeste.Notifications.Objects
@@ -31,6 +32,8 @@ namespace Celeste.Notifications.Objects
         public string LargeIcon => largeIcon;
         public bool NotificationChannelEnabled => notificationChannel.Enabled;
         public string NotificationChannelID => notificationChannel.ID;
+        public bool IsRepeating => isRepeating;
+        public long RepeatTimeInSeconds => repeatTimeInSeconds;
 
         [SerializeField] private int guid;
         [SerializeField] private string title;
@@ -39,6 +42,8 @@ namespace Celeste.Notifications.Objects
         [SerializeField] private string smallIcon;
         [SerializeField] private string largeIcon;
         [SerializeField] private NotificationChannel notificationChannel;
+        [SerializeField] private bool isRepeating;
+        [SerializeField, ShowIf(nameof(isRepeating))] private long repeatTimeInSeconds;
 
         #endregion
     }
