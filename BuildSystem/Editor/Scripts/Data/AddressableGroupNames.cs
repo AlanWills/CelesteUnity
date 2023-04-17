@@ -10,7 +10,6 @@ namespace CelesteEditor.BuildSystem.Data
     {
         #region Properties and Fields
 
-        [SerializeField] private string defaultGroupName;
         [SerializeField] private bool useAllCreatedAddressableGroups = true;
 
         #endregion
@@ -19,11 +18,6 @@ namespace CelesteEditor.BuildSystem.Data
 
         private void OnValidate()
         {
-            if (string.IsNullOrEmpty(defaultGroupName) && NumItems > 0)
-            {
-                defaultGroupName = GetItem(0);
-            }
-
             if (useAllCreatedAddressableGroups)
             {
                 foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
