@@ -227,7 +227,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
             sceneSet.name = StartupConstants.SCENE_SET_NAME;
-            sceneSet.AddScene(StartupConstants.SCENE_NAME, SceneType.Baked);
+            sceneSet.AddScene(StartupConstants.SCENE_NAME, SceneType.Baked, false);
             AssetUtility.CreateAssetInFolder(sceneSet, StartupConstants.SCENES_FOLDER_PATH);
 
             EditorBuildSettings.scenes = new EditorBuildSettingsScene[]
@@ -314,8 +314,8 @@ namespace CelesteEditor.UnityProject
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
-            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable); // This must be first
-            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable);
+            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable, false); // This must be first
+            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable, false);
             
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
             bootstrapSceneSet.MakeAddressable();
@@ -362,7 +362,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
-            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable);
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable, false);
             
             AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             engineSystemsSceneSet.MakeAddressable();

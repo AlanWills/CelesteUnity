@@ -37,17 +37,17 @@ namespace Celeste.Application
             {
                 TextAsset textAsset = Resources.Load<TextAsset>(DebugConstants.IS_DEBUG_BUILD_FILE);
                 isDebugBuild.Value = textAsset != null && textAsset.text == "1";
-                UnityEngine.Debug.LogFormat("IS_DEBUG_BUILD_FILE file {0} ", textAsset != null ? "found with contents " + textAsset.text : "not found");
-                UnityEngine.Debug.LogFormat("isDebugBuild set to {0}", isDebugBuild.Value);
+                UnityEngine.Debug.Log($"IS_DEBUG_BUILD_FILE file {(textAsset != null ? "found with contents " + textAsset.text : "not found")} ");
+                UnityEngine.Debug.Log($"isDebugBuild set to {isDebugBuild.Value}");
 
                 string settingsOverrideFile = Path.Combine(UnityEngine.Application.persistentDataPath, DebugConstants.IS_DEBUG_BUILD_FILE + ".txt");
                 if (File.Exists(settingsOverrideFile))
                 {
-                    // The override file is present in persistent data - we want to change this build to debug after all
+                    // The override file is present in persistent data - we want to change this build to whatever is in the file
                     string fileContents = File.ReadAllText(settingsOverrideFile);
-                    isDebugBuild.Value = fileContents == "1" ? true : isDebugBuild.Value;
-                    UnityEngine.Debug.LogFormat("IS_DEBUG_BUILD_FILE in pdp found with contents {0}", fileContents);
-                    UnityEngine.Debug.LogFormat("isDebugBuild set to {0}", isDebugBuild.Value);
+                    isDebugBuild.Value = fileContents == "1";
+                    UnityEngine.Debug.Log($"IS_DEBUG_BUILD_FILE in pdp found with contents {fileContents}");
+                    UnityEngine.Debug.Log($"isDebugBuild set to {isDebugBuild.Value}");
                 }
             }
         }

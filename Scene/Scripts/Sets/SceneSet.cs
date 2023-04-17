@@ -27,11 +27,18 @@ namespace Celeste.Scene
     {
         public SceneType sceneType;
         public string sceneId;
+        public bool isDebugOnly;
 
-        public SceneSetEntry(string sceneId, SceneType sceneType)
+        public SceneSetEntry(string sceneId, SceneType sceneType, bool isDebugOnly)
         {
             this.sceneId = sceneId;
             this.sceneType = sceneType;
+            this.isDebugOnly = isDebugOnly;
+        }
+
+        public bool ShouldLoad(bool isDebug)
+        {
+            return !isDebugOnly || isDebug;
         }
     }
 
@@ -42,7 +49,7 @@ namespace Celeste.Scene
 
         public int NumScenes => scenes.Count;
 
-        private bool ShouldDebug
+        private bool IsDebug
         {
             get
             {
@@ -85,9 +92,9 @@ namespace Celeste.Scene
 
         #endregion
 
-        public void AddScene(string sceneId, SceneType sceneType)
+        public void AddScene(string sceneId, SceneType sceneType, bool isDebugBuild)
         {
-            scenes.Add(new SceneSetEntry(sceneId, sceneType));
+            scenes.Add(new SceneSetEntry(sceneId, sceneType, isDebugBuild));
         }
 
         public string GetSceneId(int index)
@@ -100,7 +107,11 @@ namespace Celeste.Scene
             return scenes.Get(index).sceneType;
         }
 
-        public IEnumerator LoadAsync(LoadSceneMode loadSceneMode, Action<float> onProgressChanged, Action<string> setOutput, Action onLoadComplete)
+        public IEnumerator LoadAsync(
+            LoadSceneMode loadSceneMode, 
+            Action<float> onProgressChanged, 
+            Action<string> setOutput, 
+            Action onLoadComplete)
         {
             List<UnityScene> scenesToUnload = new List<UnityScene>();
             HashSet<string> loadedScenes = new HashSet<string>();
@@ -128,10 +139,11 @@ namespace Celeste.Scene
 
             for (int i = 0, n = scenes.Count; i < n; ++i)
             {
-                string sceneId = GetSceneId(i);
-                SceneType sceneType = GetSceneType(i);
+                var sceneSetScene = scenes[i];
+                string sceneId = sceneSetScene.sceneId;
+                SceneType sceneType = sceneSetScene.sceneType;
 
-                if (!loadedScenes.Contains(sceneId))
+                if (sceneSetScene.ShouldLoad(IsDebug) && !loadedScenes.Contains(sceneId))
                 {
                     setOutput($"Loading {sceneId}");
                     UnityEngine.Debug.Log($"Beginning to load scene {sceneId}.");
@@ -206,7 +218,7 @@ namespace Celeste.Scene
             }
 
             // Debug Actions
-            if (ShouldDebug)
+            if (IsDebug)
             {
                 if (checkForMissingComponents)
                 {
@@ -221,9 +233,11 @@ namespace Celeste.Scene
         {
             for (int i = 0, n = scenes.Count; i < n; ++i)
             {
-                if (string.CompareOrdinal(scenes[i].sceneId, scene.name) == 0)
+                var sceneSetScene = scenes[i];
+
+                if (string.CompareOrdinal(sceneSetScene.sceneId, scene.name) == 0)
                 {
-                    return true;
+                    return sceneSetScene.ShouldLoad(IsDebug);
                 }
             }
 

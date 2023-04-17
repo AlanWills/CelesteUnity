@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c3bf102edeefd42846f83f0bb90bfd, type: 3}
   m_Name: IsDebugBuild
   m_EditorClassIdentifier: 
+  helpText: 
   defaultValue: 1
+  onValueChanged: {fileID: 0}
+  invokeValueChangedSilently: 0
