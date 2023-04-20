@@ -66,7 +66,7 @@ namespace Celeste.Notifications.Record
         {
             if (notification.NotificationChannelEnabled)
             {
-                impl.ScheduleNotification(notification, dateTimeOffset.ToUniversalTime(), intentData);
+                impl.ScheduleNotification(notification, dateTimeOffset.ToLocalTime(), intentData);
             }
         }
 
