@@ -2,6 +2,7 @@
 using Celeste.Core;
 using Celeste.Log;
 using Celeste.Persistence;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -91,5 +92,33 @@ namespace Celeste.LiveOps.Persistence
                 }
             }
         }
+
+        #region Callbacks
+
+        public void OnLiveOpStateChanged(LiveOp liveOp)
+        {
+            // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
+            if (liveOp.State == LiveOpState.Finished && liveOp.IsRecurring)
+            {
+                long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOp.StartTimestamp;
+                long liveOpStartTimestamp = 0;
+
+                if (diffBetweenNowAndStart < liveOp.RepeatsAfter)
+                {
+                    liveOpStartTimestamp = liveOp.StartTimestamp + liveOp.RepeatsAfter;
+                }
+                else
+                {
+                    liveOpStartTimestamp = GameTime.UtcNowTimestamp - (diffBetweenNowAndStart % liveOp.RepeatsAfter);
+                }
+
+                DateTimeOffset debugLiveOpStartTimestamp = GameTime.ToDateTimeOffset(liveOpStartTimestamp);
+                UnityEngine.Debug.Log($"Recurring liveop scheduled for {debugLiveOpStartTimestamp}");
+
+                StartCoroutine(liveOpsRecord.AddLiveOp(liveOp, liveOpStartTimestamp));
+            }
+        }
+
+        #endregion
     }
 }

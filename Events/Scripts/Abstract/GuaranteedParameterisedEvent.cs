@@ -13,10 +13,10 @@ namespace Celeste.Events
         {
             get
             {
-                Debug.Assert(Application.isPlaying, $"Should only be accessing {nameof(BakedEvent)} whilst application is running.");
                 if (bakedEvent == null)
                 {
-                    bakedEvent = ScriptableObject.CreateInstance<TEvent>();
+                    fallbackRuntimeEvent = fallbackRuntimeEvent == null ? ScriptableObject.CreateInstance<TEvent>() : fallbackRuntimeEvent;
+                    return fallbackRuntimeEvent;
                 }
 
                 return bakedEvent;
@@ -24,6 +24,8 @@ namespace Celeste.Events
         }
 
         [SerializeField] private TEvent bakedEvent;
+
+        [NonSerialized] private TEvent fallbackRuntimeEvent;
 
         #endregion
 

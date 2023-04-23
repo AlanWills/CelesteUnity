@@ -40,6 +40,11 @@ namespace Celeste.LiveOps
             return liveOps.Get(index);
         }
 
+        public IEnumerator AddLiveOp(LiveOp liveOp, long startTimestamp)
+        {
+            return AddLiveOp(new LiveOpDTO(liveOp), startTimestamp);
+        }
+
         public IEnumerator AddLiveOp(LiveOpDTO liveOpDTO)
         {
             return AddLiveOp(liveOpDTO, liveOpDTO.startTimestamp);
@@ -51,13 +56,6 @@ namespace Celeste.LiveOps
             long liveOpSubType = liveOpDTO.subType;
             long liveOpStartTimestamp = startTimestamp;
             LiveOpState liveOpState = liveOpDTO.state;
-
-            // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
-            if (liveOpDTO.isRecurring)
-            {
-                long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
-                liveOpStartTimestamp = GameTime.UtcNowTimestamp - (diffBetweenNowAndStart % liveOpDTO.repeatsAfter);
-            }
 
             if (liveOpState == LiveOpState.Unknown)
             {
@@ -120,6 +118,7 @@ namespace Celeste.LiveOps
                 liveOpSubType,
                 liveOpStartTimestamp,
                 liveOpDTO.isRecurring,
+                liveOpDTO.repeatsAfter,
                 liveOpState,
                 liveOpComponents, 
                 timer, 

@@ -2,6 +2,7 @@
 using Celeste.Persistence.Settings;
 using Celeste.Persistence.Snapshots;
 using Celeste.Persistence.Utility;
+using Celeste.Tools.Attributes.GUI;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace Celeste.Persistence
 
         [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private bool loadOnAwake = true;
+        [SerializeField, HideIf(nameof(loadOnAwake))] private bool loadOnStart = false;
 
         private bool saveRequested = false;
         private Semaphore loadingLock = new Semaphore();
@@ -39,6 +41,12 @@ namespace Celeste.Persistence
             {
                 snapshotRecord = PersistenceEditorSettings.GetOrCreateSettings().snapshotRecord;
             }
+
+            if (loadOnAwake && loadOnStart)
+            {
+                UnityEngine.Debug.LogAssertion($"{name} has both {nameof(loadOnAwake)} and {nameof(loadOnStart)} set to true!");
+                loadOnStart = false;
+            }
         }
 #endif
 
@@ -48,6 +56,15 @@ namespace Celeste.Persistence
 
             if (loadOnAwake)
             {
+                Load();
+            }
+        }
+
+        protected virtual void Start()
+        {
+            if (!loadOnAwake && loadOnStart)
+            {
+                // Make sure to only load on start if load on awake is false, otherwise we're going to have a bad time
                 Load();
             }
         }

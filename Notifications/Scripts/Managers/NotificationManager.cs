@@ -20,8 +20,10 @@ namespace Celeste.Notifications.Managers
 
         #region Unity Methods
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (notificationRecord.Initialize())
             {
                 HudLog.LogInfo("Successfully initialized notifications");

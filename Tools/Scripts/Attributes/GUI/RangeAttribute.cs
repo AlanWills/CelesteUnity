@@ -8,17 +8,20 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class MaxAttribute : MultiPropertyAttribute
+    public class RangeAttribute : MultiPropertyAttribute
     {
+        public float Min { get; }
         public float Max { get; }
 
-        public MaxAttribute(int max)
+        public RangeAttribute(int min, int max)
         {
+            Min = min;
             Max = max;
         }
 
-        public MaxAttribute(float max)
+        public RangeAttribute(float min, float max)
         {
+            Min = min;
             Max = max;
         }
 
@@ -32,13 +35,13 @@ namespace Celeste.Tools.Attributes.GUI
         {
             if (property.propertyType == SerializedPropertyType.Integer)
             {
-                int newValue = EditorGUI.DelayedIntField(position, label, property.intValue);
-                property.intValue = Math.Min(newValue, (int)Max);
+                int newValue = EditorGUI.IntSlider(position, label, property.intValue, (int)Min, (int)Max);
+                property.intValue = newValue;
             }
             else if (property.propertyType == SerializedPropertyType.Float)
             {
-                float newValue = EditorGUI.DelayedFloatField(position, label, property.floatValue);
-                property.floatValue = Mathf.Min(newValue, Max);
+                float newValue = EditorGUI.Slider(position, label, property.floatValue, Min, Max);
+                property.floatValue = newValue;
             }
         }
 #endif

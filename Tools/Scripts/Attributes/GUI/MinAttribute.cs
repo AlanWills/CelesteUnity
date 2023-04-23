@@ -10,9 +10,14 @@ namespace Celeste.Tools.Attributes.GUI
     [AttributeUsage(AttributeTargets.Field)]
     public class MinAttribute : MultiPropertyAttribute
     {
-        public int Min { get; }
+        public float Min { get; }
 
         public MinAttribute(int min)
+        {
+            Min = min;
+        }
+
+        public MinAttribute(float min)
         {
             Min = min;
         }
@@ -28,11 +33,11 @@ namespace Celeste.Tools.Attributes.GUI
             if (property.propertyType == SerializedPropertyType.Integer)
             {
                 int newValue = EditorGUI.DelayedIntField(position, label, property.intValue);
-                property.intValue = Math.Max(newValue, Min);
+                property.intValue = Math.Max(newValue, (int)Min);
             }
             else if (property.propertyType == SerializedPropertyType.Float)
             {
-                float newValue = EditorGUI.DelayedFloatField(position, label, property.intValue);
+                float newValue = EditorGUI.DelayedFloatField(position, label, property.floatValue);
                 property.floatValue = Mathf.Max(newValue, Min);
             }
         }

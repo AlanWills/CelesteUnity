@@ -11,13 +11,14 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        private TValueChangedEvent OnValueChangedChangedEvent
+        private TValueChangedEvent OnValueChangedEvent
         {
             get
             {
                 if (onValueChanged == null)
                 {
-                    onValueChanged = CreateInstance<TValueChangedEvent>();
+                    fallbackOnValueChanged = fallbackOnValueChanged == null ? CreateInstance<TValueChangedEvent>() : fallbackOnValueChanged;
+                    return fallbackOnValueChanged;
                 }
 
                 return onValueChanged;
@@ -45,11 +46,11 @@ namespace Celeste.Parameters
 
                     if (invokeValueChangedSilently)
                     {
-                        OnValueChangedChangedEvent.InvokeSilently(oldValue, value);
+                        OnValueChangedEvent.InvokeSilently(oldValue, value);
                     }
                     else
                     {
-                        OnValueChangedChangedEvent.Invoke(oldValue, value);
+                        OnValueChangedEvent.Invoke(oldValue, value);
                     }
                 }
             }
@@ -81,6 +82,8 @@ namespace Celeste.Parameters
         [SerializeField] private TValueChangedEvent onValueChanged;
         [SerializeField, HideIfNull(nameof(onValueChanged))] private bool invokeValueChangedSilently = false;
 
+        [NonSerialized] private TValueChangedEvent fallbackOnValueChanged;
+
         #endregion
 
         #region Unity Methods
@@ -96,17 +99,17 @@ namespace Celeste.Parameters
 
         public void AddValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            OnValueChangedChangedEvent.AddListener(callback);
+            OnValueChangedEvent.AddListener(callback);
         }
 
         public void RemoveValueChangedCallback(UnityAction<ValueChangedArgs<T>> callback)
         {
-            OnValueChangedChangedEvent.RemoveListener(callback);
+            OnValueChangedEvent.RemoveListener(callback);
         }
 
         public void RemoveAllValueChangedCallbacks()
         {
-            OnValueChangedChangedEvent.RemoveAllListeners();
+            OnValueChangedEvent.RemoveAllListeners();
         }
 
         public override string ToString()

@@ -15,6 +15,7 @@ namespace Celeste.LiveOps
             0, 
             0,
             false,
+            -1,
             LiveOpState.Unknown,
             new LiveOpComponents(),
             LiveOpConstants.NO_TIMER,
@@ -33,6 +34,7 @@ namespace Celeste.LiveOps
         public long SubType { get; }
         public long StartTimestamp { get; }
         public bool IsRecurring { get; }
+        public long RepeatsAfter { get; }
         public bool CanSchedule
         {
             get
@@ -87,6 +89,7 @@ namespace Celeste.LiveOps
             long subType, 
             long startTimestamp,
             bool isRecurring,
+            long repeatsAfter,
             LiveOpState liveOpState,
             LiveOpComponents components,
             InterfaceHandle<ILiveOpTimer> timer,
@@ -97,6 +100,7 @@ namespace Celeste.LiveOps
             SubType = subType;
             StartTimestamp = startTimestamp;
             IsRecurring = isRecurring;
+            RepeatsAfter = repeatsAfter;
             State = liveOpState;
             Components = components;
             Timer = timer;

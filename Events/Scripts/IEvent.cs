@@ -23,6 +23,7 @@ namespace Celeste.Events
         void RemoveListener(IEventListener<T> listener);
         void RemoveListener(UnityAction<T> callback);
         void RemoveListener(ICallbackHandle callbackHandle);
+        void RemoveAllListeners();
 
         void Invoke(T argument);
         void InvokeSilently(T argument);

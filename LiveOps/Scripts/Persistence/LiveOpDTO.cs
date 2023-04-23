@@ -34,7 +34,7 @@ namespace Celeste.LiveOps.Persistence
             subType = liveOp.SubType;
             startTimestamp = liveOp.StartTimestamp;
             isRecurring = liveOp.IsRecurring;
-            repeatsAfter = -1;
+            repeatsAfter = liveOp.RepeatsAfter;
             state = liveOp.State;
             components.Capacity = liveOp.NumComponents;
 
