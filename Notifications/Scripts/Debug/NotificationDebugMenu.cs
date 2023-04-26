@@ -54,6 +54,11 @@ namespace Celeste.Notifications.Debug
                 notificationRecord.AddAllNotificationChannels();
             }
 
+            if (GUILayout.Button("Cancel All Notifications"))
+            {
+                notificationRecord.CancelAllNotifications();
+            }
+
             currentNotificationsChannelPage = GUIUtils.ReadOnlyPaginatedList(
                 currentNotificationsChannelPage,
                 NOTIFICATIONS_CHANNEL_PER_PAGE,
@@ -73,6 +78,11 @@ namespace Celeste.Notifications.Debug
                                 notification,
                                 DateTime.Now.AddSeconds(30),
                                 string.Empty);
+                        }
+
+                        if (GUILayout.Button("Cancel"))
+                        {
+                            notificationRecord.CancelNotification(notification);
                         }
                     }
                 });
