@@ -14,10 +14,20 @@ namespace CelesteEditor.Tools
 
         public static void SetAddressableInfo(this Object o, string group, string address)
         {
+            Debug.Assert(o != null, $"Trying to set addressable info on a null object.");
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long localID);
-            AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, aaSettings.FindGroup(group));
-            entry.address = address;
+            
+            AddressableAssetGroup assetGroup = aaSettings.FindGroup(group);
+            Debug.Assert(assetGroup != null, $"Failed to find group {group} when setting addressable info.");
+
+            AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, assetGroup);
+            Debug.Assert(entry != null, $"Failed to create or move entry for object {o.name}.");
+
+            if (entry != null)
+            {
+                entry.address = address;
+            }
         }
 
         public static void SetAddressableInfo(this Object o, string group)

@@ -20,8 +20,12 @@ namespace CelesteEditor.Localisation.Tools
         {
             foreach (var keyPair in localisationKeyCatalogue.Items)
             {
-                keyPair.Value.SetAddressableInfo(group);
-                keyPair.Value.SetAddressableLabel(group, label, true);
+                Debug.Assert(keyPair.Value != null, $"Found a null localisation key in the catalogue {localisationKeyCatalogue.name}");
+                if (keyPair.Value != null)
+                {
+                    keyPair.Value.SetAddressableInfo(group);
+                    keyPair.Value.SetAddressableLabel(group, label, true);
+                }
             }
         }
     }
