@@ -97,26 +97,37 @@ namespace Celeste.Notifications.Impls
                 SmallIcon = notification.SmallIcon,
                 LargeIcon = notification.LargeIcon,
                 IntentData = intentData,
-                RepeatInterval = notification.IsRepeating ? TimeSpan.FromSeconds(notification.RepeatTimeInSeconds) : null
+                RepeatInterval = notification.IsRepeating ? TimeSpan.FromSeconds(notification.RepeatTimeInSeconds) : null,
+                ShowTimestamp = true,
+                Group = notification.NotificationChannelID,
+                Number = notification.Number
             };
 
             int notificationId = notification.ID;
             string notificationChannelId = notification.NotificationChannelID;
             NotificationStatus notificationStatus = GetNotificationStatus(notification);
+            UnityEngine.Debug.Log($"Notification with id has status {notificationStatus} before attempted scheduling.");
 
             if (notificationStatus == NotificationStatus.Scheduled)
             {
                 // Replace the scheduled notification with a new notification.
                 AndroidNotificationCenter.UpdateScheduledNotification(notificationId, androidNotification, notificationChannelId);
+                UnityEngine.Debug.Log($"Notification with id {notificationId} was scheduled and has been updated.");
             }
             else if (notificationStatus == NotificationStatus.Delivered)
             {
                 CancelNotification(notification);
                 SendNotification(androidNotification, notificationChannelId, notificationId);
+                UnityEngine.Debug.Log($"Notification with id {notificationId} was delivered, so has been cancelled and updated.");
             }
             else if (notificationStatus == NotificationStatus.Unknown)
             {
                 SendNotification(androidNotification, notificationChannelId, notificationId);
+                UnityEngine.Debug.Log($"Notification with id {notificationId} had an unknown status and has been resent.");
+            }
+            else if (notificationStatus == NotificationStatus.Unknown)
+            {
+                UnityEngine.Debug.LogError($"Notification with id {notificationId} could not be scheduled due to unknown status.");
             }
         }
 

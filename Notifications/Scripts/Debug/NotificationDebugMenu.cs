@@ -72,7 +72,7 @@ namespace Celeste.Notifications.Debug
                     {
                         GUILayout.Label($"{notification.name} ({notification.ID}) - {notificationStatus}");
 
-                        if (GUILayout.Button("Schedule"))
+                        if (GUILayout.Button("Schedule in 30s"))
                         {
                             notificationRecord.ScheduleNotification(
                                 notification,
