@@ -111,7 +111,9 @@ namespace Celeste.Notifications.Impls
             if (notificationStatus == NotificationStatus.Scheduled)
             {
                 // Replace the scheduled notification with a new notification.
-                AndroidNotificationCenter.UpdateScheduledNotification(notificationId, androidNotification, notificationChannelId);
+                //AndroidNotificationCenter.UpdateScheduledNotification(notificationId, androidNotification, notificationChannelId);
+                CancelNotification(notification);
+                SendNotification(androidNotification, notificationChannelId, notificationId);
                 UnityEngine.Debug.Log($"Notification with id {notificationId} was scheduled and has been updated.");
             }
             else if (notificationStatus == NotificationStatus.Delivered)
