@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Input
 {
@@ -108,6 +109,30 @@ namespace Celeste.Input
                 default:
                     break;
             }
+        }
+
+        public void ReleaseAllMouseButtons()
+        {
+            LeftMouseButton = new MouseButtonState()
+            {
+                wasPressedThisFrame = false,
+                isPressed = false,
+                wasReleasedThisFrame = true,
+            };
+
+            MiddleMouseButton = new MouseButtonState()
+            {
+                wasPressedThisFrame = false,
+                isPressed = false,
+                wasReleasedThisFrame = true,
+            };
+
+            RightMouseButton = new MouseButtonState()
+            {
+                wasPressedThisFrame = false,
+                isPressed = false,
+                wasReleasedThisFrame = true,
+            };
         }
     }
 }

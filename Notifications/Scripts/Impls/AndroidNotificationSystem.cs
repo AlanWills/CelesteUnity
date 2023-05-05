@@ -83,6 +83,7 @@ namespace Celeste.Notifications.Impls
                 Name = notificationChannel.name,
                 Importance = ToAndroidImportance(notificationChannel.Importance),
                 Description = notificationChannel.Description,
+                CanShowBadge = notificationChannel.CanShowBadge
             };
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
         }
@@ -98,7 +99,7 @@ namespace Celeste.Notifications.Impls
                 LargeIcon = notification.LargeIcon,
                 IntentData = intentData,
                 RepeatInterval = notification.IsRepeating ? TimeSpan.FromSeconds(notification.RepeatTimeInSeconds) : null,
-                ShowTimestamp = true,
+                ShowTimestamp = notification.ShowTimestamp,
                 Group = notification.NotificationChannelID,
                 Number = notification.Number
             };
@@ -111,7 +112,6 @@ namespace Celeste.Notifications.Impls
             if (notificationStatus == NotificationStatus.Scheduled)
             {
                 // Replace the scheduled notification with a new notification.
-                //AndroidNotificationCenter.UpdateScheduledNotification(notificationId, androidNotification, notificationChannelId);
                 CancelNotification(notification);
                 SendNotification(androidNotification, notificationChannelId, notificationId);
                 UnityEngine.Debug.Log($"Notification with id {notificationId} was scheduled and has been updated.");

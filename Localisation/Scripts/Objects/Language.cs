@@ -1,4 +1,5 @@
 using Celeste.Localisation.Catalogue;
+using Celeste.Localisation.Pronouns;
 using Celeste.OdinSerializer;
 using System;
 using System.Collections.Generic;
@@ -90,6 +91,7 @@ namespace Celeste.Localisation
         [SerializeField] private bool assertOnFallback = true;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
         [SerializeField] private NumberToLocalisedTextConverter numberToTextConverter;
+        [SerializeField] private PronounFunctor pronounFunctor;
         [SerializeField] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
         [SerializeField] private Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
         [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
@@ -127,6 +129,19 @@ namespace Celeste.Localisation
             }
 
             return numberToTextConverter.Localise(number, this);
+        }
+
+        public string LocaliseAndRemoveAllPronouns(LocalisationKey key)
+        {
+            string localisedText = Localise(key);
+            
+            if (pronounFunctor != null)
+            {
+                localisedText = pronounFunctor.RemoveIndefinitePronouns(localisedText);
+                localisedText = pronounFunctor.RemoveDefinitePronouns(localisedText);
+            }
+
+            return localisedText;
         }
 
         public string Truncate(int number)

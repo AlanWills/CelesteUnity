@@ -43,11 +43,13 @@ namespace Celeste.Notifications.Objects
         public string ID => guid.ToString();
         public NotificationChannelImportance Importance => importance;
         public string Description => description;
+        public bool CanShowBadge => canShowBadge;
 
         [SerializeField] private int guid;
         [SerializeField] private BoolValue enabled;
         [SerializeField] private NotificationChannelImportance importance;
         [SerializeField] private string description;
+        [SerializeField] private bool canShowBadge = true;
 
         #endregion
 

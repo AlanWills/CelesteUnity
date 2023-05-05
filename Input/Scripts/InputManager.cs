@@ -156,16 +156,22 @@ namespace Celeste.Input
             inputState.PointerWorldPosition = touchWorldPosition;
             inputState.HitGameObject = hitGameObject;
 #else
+            Mouse mouse = Mouse.current;
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
 
 #if UNITY_EDITOR
             if (!EditorOnly_MouseOverGameView)
             {
-                // Disable input events when mouse not over the game view
+                // Disable input events when mouse not over the game view and release any held input
+                leftMouseButtonFirstUp.Invoke(mousePosition);
+                middleMouseButtonFirstUp.Invoke(mousePosition);
+                rightMouseButtonFirstUp.Invoke(mousePosition);
+                inputState.ReleaseAllMouseButtons();
+
                 return;
             }
 #endif
-            Mouse mouse = Mouse.current;
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            
             Vector3 mouseWorldPosition = Vector3.zero;
             GameObject hitGameObject = null;
             

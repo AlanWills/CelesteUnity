@@ -9,7 +9,8 @@
         "Celeste.Events",
         "Celeste.DataStructures",
         "Unity.TextMeshPro",
-        "Celeste.Memory"
+        "Celeste.Memory",
+        "Celeste.Logic"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

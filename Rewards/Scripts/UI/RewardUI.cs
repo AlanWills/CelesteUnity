@@ -21,15 +21,20 @@ namespace Celeste.Rewards.UI
             {
                 for (int i = 0, n = reward.NumItems; i < n; ++i)
                 {
-                    GameObject rewardItemUIGameObject = rewardItemUIAllocator.Allocate();
-                    Debug.Assert(rewardItemUIGameObject != null,
-                        $"Failed to allocate UI for item in reward {reward.Items}.  Exceeded max allocator capacity of {rewardItemUIAllocator.Capacity}.");
+                    var rewardItemInfo = reward.GetItem(i);
 
-                    if (rewardItemUIGameObject != null)
+                    if (rewardItemInfo.ShouldAward)
                     {
-                        RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
-                        rewardItemUI.Hookup(reward.GetItem(i));
-                        rewardItemUIGameObject.gameObject.SetActive(true);
+                        GameObject rewardItemUIGameObject = rewardItemUIAllocator.Allocate();
+                        Debug.Assert(rewardItemUIGameObject != null,
+                            $"Failed to allocate UI for item in reward {reward.Items}.  Exceeded max allocator capacity of {rewardItemUIAllocator.Capacity}.");
+
+                        if (rewardItemUIGameObject != null)
+                        {
+                            RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
+                            rewardItemUI.Hookup(rewardItemInfo.rewardItem);
+                            rewardItemUIGameObject.gameObject.SetActive(true);
+                        }
                     }
                 }
             }
