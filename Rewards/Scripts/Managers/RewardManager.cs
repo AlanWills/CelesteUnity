@@ -10,7 +10,7 @@ namespace Celeste.Rewards.Managers
 
         public void OnRequestAwardReward(Reward reward)
         {
-            reward.AwardReward();
+            reward.AwardReward(1);
         }
 
         #endregion

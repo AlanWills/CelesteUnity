@@ -15,7 +15,7 @@ namespace Celeste.Shop.Purchasing
             if (cost.CanAfford)
             {
                 cost.currency.Quantity -= cost.quantity;
-                shopItem.Reward.AwardReward();
+                shopItem.Reward.AwardReward(1);
             }
         }
     }

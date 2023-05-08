@@ -50,6 +50,7 @@ namespace Celeste.UI.Popups
 
         #region Show/Hide
 
+        // Used by popup record, but popups should conventially be triggered via their event, not this call.
         public void Show(IPopupArgs args)
         {
             // Don't add to record with this call
@@ -71,6 +72,7 @@ namespace Celeste.UI.Popups
             }
         }
 
+        //  Used by popup record, but popups should conventially be hidden via a button callback, not this call.
         public void Hide()
         {
             HideInternal(false);

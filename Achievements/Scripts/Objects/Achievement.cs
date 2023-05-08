@@ -135,7 +135,7 @@ namespace Celeste.Achievements.Objects
         {
             if (State == AchievementState.Achieved)
             {
-                reward.AwardReward();
+                reward.AwardReward(1);
                 State = AchievementState.Collected;
             }
         }

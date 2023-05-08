@@ -35,6 +35,10 @@ namespace Celeste.Advertising.Impls
                     onShow = onShow
                 });
             }
+            else
+            {
+                onShow.Invoke(AdWatchResult.Failed_NotReady);
+            }
         }
     }
 }

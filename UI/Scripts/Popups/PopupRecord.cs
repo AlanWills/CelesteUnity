@@ -39,7 +39,7 @@ namespace Celeste.UI.Popups
 
         public void OnPopupHidden(Popup popup)
         {
-            Debug.Assert(currentPopup.IsValid && currentPopup.popup == popup, $"Trying to hide a popup without one currently active.");
+            Debug.Assert(currentPopup.IsValid && currentPopup.popup == popup, $"Trying to hide a popup that isn't currently active.");
             Pop();
         }
 

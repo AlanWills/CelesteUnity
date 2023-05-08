@@ -14,9 +14,10 @@ namespace Celeste.Rewards.Objects
 
         #endregion
 
-        public override void AwardReward()
+        public override void AwardReward(int rewardMulplier)
         {
-            currency.Quantity += Quantity;
+            rewardMulplier = CanBeMultiplied ? rewardMulplier : 1;
+            currency.Quantity += (Quantity * rewardMulplier);
         }
 
         #region Factory Functions

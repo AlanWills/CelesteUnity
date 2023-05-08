@@ -1,6 +1,5 @@
 ﻿using Celeste.Objects;
 using Celeste.Parameters;
-using Celeste.Wallet;
 using UnityEngine;
 
 namespace Celeste.Rewards.Objects
@@ -16,11 +15,13 @@ namespace Celeste.Rewards.Objects
         }
 
         public int Quantity => quantity.Value;
+        public bool CanBeMultiplied => canBeMultiplied;
         
         public abstract Sprite Icon { get; }
 
         [SerializeField] protected int guid;
         [SerializeField] protected IntReference quantity;
+        [SerializeField] private bool canBeMultiplied;
 
         #endregion
 
@@ -43,6 +44,6 @@ namespace Celeste.Rewards.Objects
         {
         }
 
-        public abstract void AwardReward();
+        public abstract void AwardReward(int multiplier);
     }
 }

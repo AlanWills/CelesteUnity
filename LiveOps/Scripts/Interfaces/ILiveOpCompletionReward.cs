@@ -10,6 +10,6 @@ namespace Celeste.LiveOps
         Reward GetCompletionReward(Instance instance, RewardCatalogue rewardCatalogue);
 
         bool HasCompletionRewardBeenAwarded(Instance instance);
-        void AwardCompletionReward(Instance instance, RewardCatalogue rewardCatalogue);
+        void AwardCompletionReward(Instance instance, RewardCatalogue rewardCatalogue, int multiplier);
     }
 }

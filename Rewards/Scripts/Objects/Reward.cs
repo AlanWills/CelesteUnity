@@ -2,6 +2,7 @@
 using Celeste.Objects;
 using Celeste.Tools.Attributes.GUI;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Rewards.Objects
@@ -15,11 +16,11 @@ namespace Celeste.Rewards.Objects
         [ShowIf(nameof(isConditional))] public Condition shouldRewardCondition;
         public RewardItem rewardItem;
 
-        public void AwardReward()
+        public void AwardReward(int multiplier)
         {
             if (ShouldAward)
             {
-                rewardItem.AwardReward();
+                rewardItem.AwardReward(multiplier);
             }
         }
     }
@@ -35,15 +36,33 @@ namespace Celeste.Rewards.Objects
             set => guid = value;
         }
 
+        public IReadOnlyList<RewardItem> AwardableRewards
+        {
+            get
+            {
+                List<RewardItem> rewardItems = new List<RewardItem>();
+
+                foreach (var itemInfo in this)
+                {
+                    if (itemInfo.ShouldAward)
+                    {
+                        rewardItems.Add(itemInfo.rewardItem);
+                    }
+                }
+
+                return rewardItems;
+            }
+        }
+
         [SerializeField] private int guid;
 
         #endregion
         
-        public void AwardReward()
+        public void AwardReward(int multiplier)
         {
             foreach (RewardItemInfo rewardItem in Items)
             {
-                rewardItem.AwardReward();
+                rewardItem.AwardReward(multiplier);
             }
         }
     }

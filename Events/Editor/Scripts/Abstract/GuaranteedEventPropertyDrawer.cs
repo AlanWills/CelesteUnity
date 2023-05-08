@@ -7,6 +7,12 @@ namespace CelesteEditor.Events
     [CustomPropertyDrawer(typeof(GuaranteedEvent))]
     public class GuaranteedEventPropertyDrawer : PropertyDrawer
     {
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            SerializedProperty bakedEventProperty = property.FindPropertyRelative("bakedEvent");
+            return EditorGUI.GetPropertyHeight(bakedEventProperty, label, true);
+        }
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             DrawBakedEvent(position, property, label);
@@ -16,7 +22,8 @@ namespace CelesteEditor.Events
         {
             using (new EditorGUI.PropertyScope(position, label, property))
             {
-                EditorGUILayout.PropertyField(property.FindPropertyRelative("bakedEvent"));
+                SerializedProperty bakedEventProperty = property.FindPropertyRelative("bakedEvent");
+                EditorGUI.PropertyField(position, bakedEventProperty, label, true);
             }
         }
     }

@@ -45,11 +45,11 @@ namespace Celeste.LiveOps.Components
             return rewardData.completionAwardRewarded;
         }
 
-        public void AwardCompletionReward(Instance instance, RewardCatalogue rewardCatalogue)
+        public void AwardCompletionReward(Instance instance, RewardCatalogue rewardCatalogue, int rewardMultiplier)
         {
             UnityEngine.Debug.Assert(!HasCompletionRewardBeenAwarded(instance), $"Completion rewards have already been awarded.");
             Reward reward = GetCompletionReward(instance, rewardCatalogue);
-            reward.AwardReward();
+            reward.AwardReward(rewardMultiplier);
         
             CompletionRewardData rewardData = instance.data as CompletionRewardData;
             rewardData.completionAwardRewarded = true;

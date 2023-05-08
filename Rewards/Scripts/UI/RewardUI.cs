@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Celeste.Memory;
 using Celeste.Rewards.Objects;
 using UnityEngine;
@@ -39,7 +40,26 @@ namespace Celeste.Rewards.UI
                 }
             }
         }
-        
+
+        public void Hookup(IReadOnlyList<RewardItem> rewards)
+        {
+            for (int i = 0, n = rewards.Count; i < n; ++i)
+            {
+                var rewardItem = rewards[i];
+
+                GameObject rewardItemUIGameObject = rewardItemUIAllocator.Allocate();
+                Debug.Assert(rewardItemUIGameObject != null,
+                    $"Failed to allocate UI for reward item {rewardItem.name}.  Exceeded max allocator capacity of {rewardItemUIAllocator.Capacity}.");
+
+                if (rewardItemUIGameObject != null)
+                {
+                    RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
+                    rewardItemUI.Hookup(rewardItem);
+                    rewardItemUIGameObject.gameObject.SetActive(true);
+                }
+            }
+        }
+
         #region Unity Methods
 
         private void OnDisable()
