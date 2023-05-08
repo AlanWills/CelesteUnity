@@ -1,5 +1,5 @@
 ﻿using Celeste.Advertising.UI;
-using Celeste.Events;
+using Celeste.UI.Events;
 using System;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace Celeste.Advertising.Impls
 
         public string GameId => string.Empty;
 
-        [SerializeField] private ShowPopupEvent showEditorAdPopup;
+        [SerializeField] private ShowOverlayEvent showEditorAdOverlay;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace Celeste.Advertising.Impls
         {
             if (adPlacement.IsLoaded)
             {
-                showEditorAdPopup.Invoke(new EditorAdPopupArgs()
+                showEditorAdOverlay.Invoke(new EditorAdOverlayArgs()
                 {
                     onShow = onShow
                 });
