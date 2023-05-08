@@ -41,7 +41,7 @@ namespace Celeste.Rewards.UI
             }
         }
 
-        public void Hookup(IReadOnlyList<RewardItem> rewards)
+        public void Hookup(IReadOnlyList<RewardItem> rewards, int multiplier)
         {
             for (int i = 0, n = rewards.Count; i < n; ++i)
             {
@@ -54,10 +54,15 @@ namespace Celeste.Rewards.UI
                 if (rewardItemUIGameObject != null)
                 {
                     RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
-                    rewardItemUI.Hookup(rewardItem);
+                    rewardItemUI.Hookup(rewardItem, multiplier);
                     rewardItemUIGameObject.gameObject.SetActive(true);
                 }
             }
+        }
+
+        public void Shutdown()
+        {
+            rewardItemUIAllocator.DeallocateAll();
         }
 
         #region Unity Methods
