@@ -62,7 +62,7 @@ namespace CelesteEditor.UnityProject
 
             string assetDatabasePath = Application.dataPath;
             string parentDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(assetDatabasePath, parentDirectory) : assetDatabasePath;
-            Directory.CreateDirectory(parentDirectoryPath);
+            AssetUtility.CreateFolder(parentDirectoryPath);
 
             if (hasRuntimeAssembly)
             {
@@ -141,8 +141,7 @@ namespace CelesteEditor.UnityProject
             IReadOnlyList<string> includePlatforms = null)
         {
             string directoryPath = Path.Combine(parentDirectoryPath, directoryName);
-            Directory.CreateDirectory(directoryPath);
-            Directory.CreateDirectory(Path.Combine(directoryPath, "Scripts"));
+            AssetUtility.CreateFolder(Path.Combine(directoryPath, "Scripts"));
 
             AsmDef assemblyDef = new AsmDef();
             assemblyDef.autoReferenced = true;

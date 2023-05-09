@@ -3,7 +3,6 @@ using Celeste.Debug.Menus;
 using Celeste.LiveOps.Persistence;
 using Celeste.Log;
 using Celeste.Persistence;
-using Celeste.Rewards.Catalogue;
 using System;
 using System.IO;
 using UnityEngine;
@@ -39,6 +38,11 @@ namespace Celeste.LiveOps.Debug
                 }
             }
 
+            if (GUILayout.Button("Remove All Liveops"))
+            {
+                liveOpsRecord.RemoveAllLiveOps();
+            }
+
             for (int i = liveOpsRecord.NumLiveOps - 1; i >= 0; --i)
             {
                 LiveOp liveOp = liveOpsRecord.GetLiveOp(i);
@@ -67,6 +71,11 @@ namespace Celeste.LiveOps.Debug
                     if (GUILayout.Button("Finish", GUILayout.ExpandWidth(false)))
                     {
                         liveOp.Finish();
+                    }
+
+                    if (GUILayout.Button("Remove", GUILayout.ExpandWidth(false)))
+                    {
+                        liveOpsRecord.RemoveLiveOp(i);
                     }
                 }
             }

@@ -40,6 +40,22 @@ namespace Celeste.LiveOps
             return liveOps.Get(index);
         }
 
+        public void RemoveLiveOp(int index)
+        {
+            LiveOp liveOp = liveOps.Get(index);
+            liveOps.RemoveAt(index);
+            HandleScheduleOfFinishedLiveOp(liveOp);
+            save.Invoke();
+        }
+
+        public void RemoveAllLiveOps()
+        {
+            for (int i = liveOps.Count - 1; i >= 0; --i)
+            {
+                RemoveLiveOp(i);
+            }
+        }
+
         public IEnumerator AddLiveOp(LiveOp liveOp, long startTimestamp)
         {
             return AddLiveOp(new LiveOpDTO(liveOp), startTimestamp);
