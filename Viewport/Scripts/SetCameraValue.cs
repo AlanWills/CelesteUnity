@@ -1,9 +1,4 @@
 ﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Viewport
@@ -14,7 +9,7 @@ namespace Celeste.Viewport
     {
         #region Properties and Fields
 
-        [SerializeField] private CameraValue cameraValue = default;
+        public CameraValue cameraValue = default;
 
         #endregion
 

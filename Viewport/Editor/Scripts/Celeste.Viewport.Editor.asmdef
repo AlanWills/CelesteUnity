@@ -1,13 +1,14 @@
 {
-    "name": "Celeste.DataImporters.Editor",
-    "rootNamespace": "CelesteEditor.DataImporters",
+    "name": "Celeste.Viewport.Editor",
+    "rootNamespace": "CelesteEditor.Viewport",
     "references": [
-        "Celeste.Objects",
-        "Celeste.DataImporters",
+        "Celeste.Viewport",
+        "Celeste.Parameters",
+        "Celeste.Events",
+        "Celeste.Input",
         "Celeste.Tools",
-        "Celeste.DataStructures.Editor",
         "Celeste.Tools.Editor",
-        "Unity.EditorCoroutines.Editor"
+        "Unity.InputSystem"
     ],
     "includePlatforms": [
         "Editor"

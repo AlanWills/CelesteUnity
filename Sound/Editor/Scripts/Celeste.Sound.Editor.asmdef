@@ -4,7 +4,8 @@
     "references": [
         "Celeste.Sound",
         "Celeste.Tools",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

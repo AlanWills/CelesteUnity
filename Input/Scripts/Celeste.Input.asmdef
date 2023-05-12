@@ -8,6 +8,8 @@
         "Celeste.DataStructures",
         "Celeste.Persistence",
         "Celeste.Objects",
+        "Celeste.Tools",
+        "Celeste.Tools.Editor",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

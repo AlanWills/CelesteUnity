@@ -60,13 +60,14 @@ namespace CelesteEditor.UnityProject
             bool hasEditorAssembly = parameters.hasEditorAssembly;
             bool hasSceneMenuItem = parameters.hasSceneMenuItem;
 
-            string assetDatabasePath = Application.dataPath;
-            string parentDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(assetDatabasePath, parentDirectory) : assetDatabasePath;
-            AssetUtility.CreateFolder(parentDirectoryPath);
+            if (!string.IsNullOrEmpty(parentDirectory))
+            {
+                AssetUtility.CreateFolder(parentDirectory);
+            }
 
             if (hasRuntimeAssembly)
             {
-                CreateAssembly(parentDirectoryPath, directoryName, assemblyName, assemblyName);
+                CreateAssembly(parentDirectory, directoryName, assemblyName, assemblyName);
             }
 
             if (hasEditorAssembly)
@@ -87,7 +88,7 @@ namespace CelesteEditor.UnityProject
                 }
 
                 string editorScriptsDirectory = CreateAssembly(
-                    Path.Combine(parentDirectoryPath, directoryName),
+                    Path.Combine(parentDirectory, directoryName),
                     "Editor",
                     $"{assemblyName}.Editor",
                     editorAssemblyNamespace,
@@ -140,7 +141,7 @@ namespace CelesteEditor.UnityProject
             IReadOnlyList<string> references = null,
             IReadOnlyList<string> includePlatforms = null)
         {
-            string directoryPath = Path.Combine(parentDirectoryPath, directoryName);
+            string directoryPath = !string.IsNullOrEmpty(parentDirectoryPath) ? Path.Combine(parentDirectoryPath, directoryName) : directoryName;
             AssetUtility.CreateFolder(Path.Combine(directoryPath, "Scripts"));
 
             AsmDef assemblyDef = new AsmDef();
@@ -150,7 +151,7 @@ namespace CelesteEditor.UnityProject
             assemblyDef.references = references != null ? references.ToArray() : null;
             assemblyDef.includePlatforms = includePlatforms != null ? includePlatforms.ToArray() : null;
 
-            string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
+            string scriptsDirectory = Path.Combine(Application.dataPath, directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
             File.WriteAllText(Path.Combine(scriptsDirectory, PLACEHOLDER_SCRIPT_NAME), "");
 

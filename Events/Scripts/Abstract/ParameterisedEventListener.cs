@@ -5,12 +5,12 @@ namespace Celeste.Events
 {
     public class ParameterisedEventListener<T, TEvent, TUnityEvent> : MonoBehaviour, IEventListener<T> 
                                                                       where TEvent : ParameterisedEvent<T>
-                                                                      where TUnityEvent : UnityEvent<T>
+                                                                      where TUnityEvent : UnityEvent<T>, new()
     {
         #region Properties and Fields
 
         public TEvent gameEvent;
-        public TUnityEvent response;
+        public TUnityEvent response = new TUnityEvent();
 
         #endregion
 

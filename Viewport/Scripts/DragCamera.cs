@@ -7,8 +7,10 @@ namespace Celeste.Viewport
     public class DragCamera : MonoBehaviour
     {
         #region Properties and Fields
-        
-        [SerializeField] private Camera cameraToDrag;
+
+        public FloatReference DragSpeed => dragSpeed;
+
+        [SerializeField] private Camera cameraToUse;
         [SerializeField] private Transform transformToMove;
         [SerializeField] private FloatReference dragSpeed;
 
@@ -26,16 +28,16 @@ namespace Celeste.Viewport
             CreateDragSpeedIfNotSet();
         }
 
-        private void OnValidate()
+        public void OnValidate()
         {
-            if (cameraToDrag == null)
+            if (cameraToUse == null)
             {
-                cameraToDrag = GetComponent<Camera>();
+                cameraToUse = GetComponent<Camera>();
             }
 
-            if (transformToMove == null && cameraToDrag != null)
+            if (transformToMove == null && cameraToUse != null)
             {
-                transformToMove = cameraToDrag.transform;
+                transformToMove = cameraToUse.transform;
             }
 
             CreateDragSpeedIfNotSet();
@@ -55,8 +57,8 @@ namespace Celeste.Viewport
         {
             if (dragStarted)
             {
-                Vector3 previousMouseDownWorldPosition = cameraToDrag.ScreenToWorldPoint(previousMouseDownPosition);
-                Vector3 mouseWorldPosition = cameraToDrag.ScreenToWorldPoint(mousePosition);
+                Vector3 previousMouseDownWorldPosition = cameraToUse.ScreenToWorldPoint(previousMouseDownPosition);
+                Vector3 mouseWorldPosition = cameraToUse.ScreenToWorldPoint(mousePosition);
                 Vector2 mouseDelta = mouseWorldPosition - previousMouseDownWorldPosition;
                 mouseDelta *= dragSpeed.Value;
 
@@ -88,8 +90,8 @@ namespace Celeste.Viewport
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
                         Vector2 touchPosition = touch.screenPosition;
-                        Vector3 previousTouchDownWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition - touch.delta);
-                        Vector3 touchWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition);
+                        Vector3 previousTouchDownWorldPosition = cameraToUse.ScreenToWorldPoint(touchPosition - touch.delta);
+                        Vector3 touchWorldPosition = cameraToUse.ScreenToWorldPoint(touchPosition);
                         Vector2 dragAmount = touchWorldPosition - previousTouchDownWorldPosition;
                         float scrollModifier = dragSpeed.Value;
 

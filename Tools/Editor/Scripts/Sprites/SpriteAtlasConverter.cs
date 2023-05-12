@@ -6,7 +6,7 @@ using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace CelesteEditor.ToolsUtils
+namespace CelesteEditor.Tools
 {
     public static class SpriteAtlasConverter
     {

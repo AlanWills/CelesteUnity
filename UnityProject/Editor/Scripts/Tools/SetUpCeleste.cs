@@ -20,6 +20,7 @@ using Celeste.Localisation.Settings;
 using Celeste.LiveOps.Settings;
 using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
+using Celeste.Input.Settings;
 
 namespace CelesteEditor.UnityProject
 {
@@ -431,6 +432,7 @@ namespace CelesteEditor.UnityProject
             PersistenceEditorSettings.GetOrCreateSettings();
             SceneEditorSettings.GetOrCreateSettings();
             SoundEditorSettings.GetOrCreateSettings();
+            InputEditorSettings.GetOrCreateSettings();
         }
 
         #endregion

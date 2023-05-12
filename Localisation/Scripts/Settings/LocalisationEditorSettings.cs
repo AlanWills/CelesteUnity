@@ -23,11 +23,6 @@ namespace Celeste.Localisation.Settings
         {
             return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
         }
-
-        public static UnityEditor.SerializedObject GetSerializedSettings()
-        {
-            return GetSerializedSettings(FOLDER_PATH, FILE_PATH);
-        }
 #endif
     }
 }

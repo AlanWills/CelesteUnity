@@ -30,7 +30,12 @@ namespace CelesteEditor.Tools
                 path = Path.Combine("Assets", path);
             }
 
-            return path;
+            return StripTrailingSlash(EnsureDelimitersCorrect(path));
+        }
+
+        private static string EnsureDelimitersCorrect(string path)
+        {
+            return path.Replace('\\', '/');
         }
 
         #endregion
@@ -88,8 +93,8 @@ namespace CelesteEditor.Tools
         }
 
         /// <summary>
-        /// Creates a folder relative to the project directory.  
-        /// As such, to create an object in Assets/ the path must start with Assets/.
+        /// Creates a folder relative to the Assets directory.  
+        /// If the newFolder path does not already start with Assets/, it will be added.
         /// </summary>
         /// <param name="newFolder"></param>
         public static void CreateFolder(string newFolder)
@@ -100,8 +105,7 @@ namespace CelesteEditor.Tools
                 return;
             }
 
-            // Remove trailing '/'
-            newFolder = StripTrailingSlash(newFolder);
+            newFolder = EnsureRelativeToAssets(newFolder);
 
             int indexOfLastDelimiter =  newFolder.LastIndexOf('/');
             CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
@@ -109,7 +113,7 @@ namespace CelesteEditor.Tools
 
         public static void CreateFolder(string parent, string folderName)
         {
-            parent = StripTrailingSlash(parent);
+            parent = EnsureRelativeToAssets(parent);
 
             // Ensure all folders are created in our hierarchy
             if (!AssetDatabase.IsValidFolder(parent))

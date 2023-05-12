@@ -15,6 +15,7 @@
         "Celeste.Localisation",
         "Celeste.Persistence",
         "Celeste.Sound",
+        "Celeste.Input",
         "Celeste.Persistence.Editor",
         "Unity.Addressables.Editor",
         "Unity.TextMeshPro.Editor"

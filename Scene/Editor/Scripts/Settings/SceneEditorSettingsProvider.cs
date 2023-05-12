@@ -1,72 +1,20 @@
-﻿using System.IO;
+﻿using CelesteEditor.Tools.Settings;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace CelesteEditor.Scene.Settings
 {
-    public class SceneEditorSettingsProvider : SettingsProvider
+    public class SceneEditorSettingsProvider : EditorSettingsProvider<SceneEditorSettings>
     {
-        #region Styles
-
-        private class PlatformSettingStyles
-        {
-            public static GUIContent defaultContextProvider = new GUIContent("Default Context Provider");
-            public static GUIContent defaultLoadContextEvent = new GUIContent("Default Load Context Event");
-
-        }
-
-        #endregion
-
-        #region Properties and Fields
-
-        private SerializedObject sceneEditorSettings;
-        private SerializedProperty defaultContextProviderProperty;
-        private SerializedProperty defaultLoadContextEventProperty;
-
-        #endregion
-
         public SceneEditorSettingsProvider(string path, SettingsScope scope = SettingsScope.Project)
-            : base(path, scope) { }
-
-        public override void OnActivate(string searchContext, VisualElement rootElement)
-        {
-            sceneEditorSettings = SceneEditorSettings.GetSerializedSettings();
-            defaultContextProviderProperty = sceneEditorSettings.FindProperty("defaultContextProvider");
-            defaultLoadContextEventProperty = sceneEditorSettings.FindProperty("defaultLoadContextEvent");
-        }
-
-        public override void OnGUI(string searchContext)
-        {
-            sceneEditorSettings.Update();
-
-            EditorGUILayout.PropertyField(defaultContextProviderProperty);
-            EditorGUILayout.PropertyField(defaultLoadContextEventProperty);
-
-            sceneEditorSettings.ApplyModifiedProperties();
-        }
-
-        #region Settings Provider
-
-        public static bool IsSettingsAvailable()
-        {
-            return true;
-        }
+            : base(SceneEditorSettings.GetOrCreateSettings(), path, scope) { }
 
         [SettingsProvider]
         public static SettingsProvider CreateSceneSettingsProvider()
         {
-            if (IsSettingsAvailable())
+            return new SceneEditorSettingsProvider("Project/Celeste/Scene Settings", SettingsScope.Project)
             {
-                var provider = new SceneEditorSettingsProvider("Project/Celeste/Scene Settings", SettingsScope.Project);
-                provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();
-
-                return provider;
-            }
-
-            return null;
+                keywords = GetSearchKeywordsFromPath(SceneEditorSettings.FILE_PATH)
+            };
         }
-
-        #endregion
     }
 }

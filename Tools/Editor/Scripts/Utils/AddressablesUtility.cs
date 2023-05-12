@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Net;
+using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
@@ -53,6 +56,24 @@ namespace CelesteEditor.Tools
             }
         }
 
+        public static void SetAddressableGroup(this Object o, string group)
+        {
+            Debug.Assert(o != null, $"Trying to set addressable info on a null object.");
+            AddressableAssetEntry assetEntry = GetAddressableInfo(o);
+
+            if (assetEntry != null)
+            {
+                AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
+                AddressableAssetGroup assetGroup = aaSettings.FindGroup(group);
+                Debug.Assert(assetGroup != null, $"Failed to find group {group} when setting addressable group for {o.name}.");
+                aaSettings.MoveEntry(assetEntry, assetGroup);
+            }
+            else
+            {
+                SetAddressableInfo(o, group);
+            }
+        }
+
         public static AddressableAssetEntry GetAddressableInfo(this Object obj)
         {
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -65,6 +86,18 @@ namespace CelesteEditor.Tools
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long _);
             AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, aaSettings.FindGroup(group));
             entry.SetLabel(label, enabled);
+        }
+
+        public static void EnableOnlyAddressableLabel(this Object o, string label)
+        {
+            AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
+            AddressableAssetEntry entry = GetAddressableInfo(o);
+            List<string> labels = aaSettings.GetLabels();
+
+            for (int i = 0, n = labels.Count; i < n; ++i)
+            {
+                entry.SetLabel(labels[i], string.CompareOrdinal(labels[i], label) == 0);
+            }
         }
 
         public static void SetAddressableAddress(this Object o, string address)

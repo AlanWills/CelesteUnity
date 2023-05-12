@@ -9,23 +9,6 @@ namespace CelesteEditor.BuildSystem
 {
     public class AllPlatformSettingsProvider : SettingsProvider
     {
-        #region Styles
-
-        private class PlatformSettingStyles
-        {
-            public static GUIContent iOSDebug = new GUIContent("iOS Debug");
-            public static GUIContent iOSRelease = new GUIContent("iOS Release");
-            public static GUIContent AndroidDebug = new GUIContent("Android Debug");
-            public static GUIContent AndroidReleaseApk = new GUIContent("Android Release Apk");
-            public static GUIContent AndroidReleaseBundle = new GUIContent("Android Release Bundle");
-            public static GUIContent WindowsDebugBundle = new GUIContent("Windows Debug Bundle");
-            public static GUIContent WindowsReleaseBundle = new GUIContent("Windows Release Bundle");
-            public static GUIContent WebGLDebugBundle = new GUIContent("WebGL Debug Bundle");
-            public static GUIContent WebGLReleaseBundle = new GUIContent("WebGL Release Bundle");
-        }
-
-        #endregion
-
         #region Properties and Fields
 
         private SerializedObject allPlatformSettings;
@@ -81,15 +64,13 @@ namespace CelesteEditor.BuildSystem
             {
                 SettingsGUI<iOSSettings>(
                     iOSDebugProperty,
-                    PlatformSettingStyles.iOSDebug,
-                    new GUIContent("Create iOS Debug Settings"),
+                    "iOS Debug",
                     AllPlatformSettings.iOSPlatformSettingsPath,
                     "iOSDebug");
 
                 SettingsGUI<iOSSettings>(
                     iOSReleaseProperty,
-                    PlatformSettingStyles.iOSRelease,
-                    new GUIContent("Create iOS Release Settings"),
+                    "iOS Release",
                     AllPlatformSettings.iOSPlatformSettingsPath,
                     "iOSRelease");
             }
@@ -105,22 +86,19 @@ namespace CelesteEditor.BuildSystem
             {
                 SettingsGUI<AndroidSettings>(
                     androidDebugProperty,
-                    PlatformSettingStyles.AndroidDebug,
-                    new GUIContent("Create Android Debug Settings"),
+                    "Android Debug",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
                     "AndroidDebug");
 
                 SettingsGUI<AndroidSettings>(
                     androidReleaseApkProperty,
-                    PlatformSettingStyles.AndroidReleaseApk,
-                    new GUIContent("Create Android Release Apk Settings"),
+                    "Android Release Apk",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
                     "AndroidReleaseApk");
 
                 SettingsGUI<AndroidSettings>(
                     androidReleaseBundleProperty,
-                    PlatformSettingStyles.AndroidReleaseBundle,
-                    new GUIContent("Create Android Release Bundle Settings"),
+                    "Android Release Bundle",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
                     "AndroidReleaseBundle");
             }
@@ -136,15 +114,13 @@ namespace CelesteEditor.BuildSystem
             {
                 SettingsGUI<WindowsSettings>(
                     windowsDebugProperty,
-                    PlatformSettingStyles.WindowsDebugBundle,
-                    new GUIContent("Create Windows Debug Settings"),
+                    "Windows Debug",
                     AllPlatformSettings.WindowsPlatformSettingsPath,
                     "WindowsDebug");
 
                 SettingsGUI<WindowsSettings>(
                     windowsReleaseProperty,
-                    PlatformSettingStyles.WindowsReleaseBundle,
-                    new GUIContent("Create Windows Release Settings"),
+                    "Windows Release",
                     AllPlatformSettings.WindowsPlatformSettingsPath,
                     "WindowsRelease");
             }
@@ -160,15 +136,13 @@ namespace CelesteEditor.BuildSystem
             {
                 SettingsGUI<WebGLSettings>(
                     webGLDebugProperty,
-                    PlatformSettingStyles.WebGLDebugBundle,
-                    new GUIContent("Create WebGL Debug Settings"),
+                    "WebGL Debug",
                     AllPlatformSettings.WebGLPlatformSettingsPath,
                     "WebGLDebug");
 
                 SettingsGUI<WebGLSettings>(
                     webGLReleaseProperty,
-                    PlatformSettingStyles.WebGLReleaseBundle,
-                    new GUIContent("Create WebGL Release Settings"),
+                    "WebGL Release",
                     AllPlatformSettings.WebGLPlatformSettingsPath,
                     "WebGLRelease");
             }
@@ -176,16 +150,15 @@ namespace CelesteEditor.BuildSystem
 
         private void SettingsGUI<T>(
             SerializedProperty settingsProperty,
-            GUIContent settingsPropertyStyle,
-            GUIContent createSettingsStyle,
+            string settingsPropertyName,
             string folder,
             string name) where T : PlatformSettings
         {
             if (settingsProperty.objectReferenceValue != null)
             {
-                EditorGUILayout.PropertyField(settingsProperty, settingsPropertyStyle);
+                EditorGUILayout.PropertyField(settingsProperty, new GUIContent(settingsPropertyName));
             }
-            else if (GUILayout.Button(createSettingsStyle, GUILayout.ExpandWidth(false)))
+            else if (GUILayout.Button($"Create {settingsPropertyName} Settings", GUILayout.ExpandWidth(false)))
             {
                 CreateSettingsAsset<T>(
                     folder,
@@ -226,7 +199,7 @@ namespace CelesteEditor.BuildSystem
                 var provider = new AllPlatformSettingsProvider("Project/Celeste/All Platform Settings", SettingsScope.Project);
 
                 // Automatically extract all keywords from the Styles.
-                provider.keywords = GetSearchKeywordsFromGUIContentProperties<PlatformSettingStyles>();
+                provider.keywords = GetSearchKeywordsFromPath(AllPlatformSettings.AllPlatformSettingsPath);
                 return provider;
             }
 

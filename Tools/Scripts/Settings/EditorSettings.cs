@@ -20,6 +20,8 @@ namespace Celeste.Tools.Settings
                 UnityEditor.AssetDatabase.SaveAssets();
                 
                 settings.OnCreate();
+                UnityEditor.EditorUtility.SetDirty(settings);
+                UnityEditor.AssetDatabase.SaveAssetIfDirty(settings);
             }
             return settings;
         }
