@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerUsingSubAssets<T> : ScriptableObject, IComponentContainer<T> where T : Component
+    public class ComponentContainerUsingSubAssets<T> : ScriptableObject, IComponentContainerUsingSubAssets<T> where T : Component
     {
         #region Properties and Fields
 

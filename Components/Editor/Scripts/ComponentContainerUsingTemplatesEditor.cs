@@ -34,44 +34,56 @@ namespace CelesteEditor.Components
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Components", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
-
+            
             currentPage = GUIUtils.PaginatedList(
                 currentPage,
                 40,
                 componentTemplatesProperty.arraySize,
                 (i) =>
                 {
-                    GUILayout.Space(10);
+                    GUILayout.Space(16);
 
                     using (var vertical = new EditorGUILayout.VerticalScope())
                     {
-                        var componentTemplate = componentTemplatesProperty.GetArrayElementAtIndex(i);
+                        SerializedProperty componentTemplate = componentTemplatesProperty.GetArrayElementAtIndex(i);
+                        SerializedProperty componentProperty = componentTemplate.FindPropertyRelative("component"); 
+                        var component = componentProperty.objectReferenceValue as Celeste.Components.Component;
 
-                        using (var change = new EditorGUI.ChangeCheckScope())
+                        if (component == null)
                         {
-                            SerializedProperty componentProperty = componentTemplate.FindPropertyRelative("component");
-                            var component = componentProperty.objectReferenceValue;
-                            
-                            EditorGUILayout.PropertyField(componentTemplate, true);
-
-                            if (change.changed &&
-                                component == null && 
-                                componentProperty.objectReferenceValue != null)
+                            using (var change = new EditorGUI.ChangeCheckScope())
                             {
-                                serializedObject.ApplyModifiedProperties();
+                                EditorGUILayout.PropertyField(componentProperty);
 
-                                ComponentData componentData = (componentProperty.objectReferenceValue as TComponent).CreateData();
-                                Container.SetComponentData(i, componentData);
+                                if (change.changed && componentProperty.objectReferenceValue != null)
+                                {
+                                    serializedObject.ApplyModifiedProperties();
 
-                                serializedObject.Update();
+                                    ComponentData componentData = (componentProperty.objectReferenceValue as TComponent).CreateData();
+                                    Container.SetComponentData(i, componentData);
+
+                                    serializedObject.Update();
+                                }
                             }
+                        }
+                        else
+                        {
+                            using (new EditorGUI.DisabledScope(true))
+                            {
+                                EditorGUILayout.PropertyField(componentProperty);
+                            }
+
+                            SerializedProperty componentDataProperty = componentTemplate.FindPropertyRelative("data");
+                            ComponentDataDrawer drawer = ComponentDataDrawers.GetComponentDataDrawer(componentDataProperty, component);
+                            drawer.InspectorGUI();
                         }
                     }
                 },
                 () => GUILayout.Button("+", GUILayout.ExpandWidth(false)),
                 () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
                 () => ++componentTemplatesProperty.arraySize,
-                (i) => Container.RemoveComponent(i));
+                (i) => Container.RemoveComponent(i),
+                GUIUtils.ListLayoutOptions.None);
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -9,5 +9,12 @@ namespace CelesteEditor
         {
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         }
+
+        public static void HorizontalLineWithSpace()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            EditorGUILayout.Space();
+        }
     }
 }

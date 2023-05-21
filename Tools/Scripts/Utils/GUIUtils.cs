@@ -6,6 +6,12 @@ namespace Celeste.Tools
 {
     public static class GUIUtils
     {
+        public enum ListLayoutOptions
+        {
+            None = 0,
+            AutomaticallyVerticalScope = 1
+        }
+
         public static int IntField(int currentInt)
         {
             string currentIntText = currentInt.ToString();
@@ -93,7 +99,8 @@ namespace Celeste.Tools
             Func<bool> drawAddItem,
             Func<bool> drawRemoveItem,
             Action addItem,
-            Action<int> removeItem)
+            Action<int> removeItem,
+            ListLayoutOptions layoutOptions = ListLayoutOptions.AutomaticallyVerticalScope)
         {
             int numPages = Mathf.Max(1, Mathf.CeilToInt((float)numItems / entriesPerPage));
 
@@ -150,7 +157,14 @@ namespace Celeste.Tools
                         removeIndex = i;
                     }
 
-                    using (var vertical = new VerticalScope())
+                    if ((layoutOptions & ListLayoutOptions.AutomaticallyVerticalScope) == ListLayoutOptions.AutomaticallyVerticalScope)
+                    {
+                        using (var vertical = new VerticalScope())
+                        {
+                            drawItem(i);
+                        }
+                    }
+                    else
                     {
                         drawItem(i);
                     }

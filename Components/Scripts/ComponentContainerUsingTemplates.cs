@@ -1,12 +1,11 @@
 ﻿using Celeste.DataStructures;
-using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerUsingTemplates<TComponent> : ScriptableObject, IComponentContainer<TComponent> 
+    public class ComponentContainerUsingTemplates<TComponent> : ScriptableObject, IComponentContainerUsingTemplates<TComponent> 
         where TComponent : Component
     {
         #region Template
@@ -15,7 +14,7 @@ namespace Celeste.Components
         private struct Template
         {
             public TComponent component;
-            [SerializeReference, InlineDataInInspector] public ComponentData data;
+            [SerializeReference] public ComponentData data;
         }
 
         #endregion

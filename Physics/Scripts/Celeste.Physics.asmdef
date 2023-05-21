@@ -1,7 +1,11 @@
 {
     "name": "Celeste.Physics",
     "rootNamespace": "Celeste.Physics",
-    "references": [],
+    "references": [
+        "Celeste.Maths",
+        "Celeste.Input",
+        "Celeste.Parameters"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

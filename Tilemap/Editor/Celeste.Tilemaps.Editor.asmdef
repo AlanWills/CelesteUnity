@@ -1,8 +1,12 @@
 {
     "name": "Celeste.Tilemaps.Editor",
+    "rootNamespace": "CelesteEditor.Tilemaps",
     "references": [
         "Celeste.Tilemaps",
-        "Celeste.Tools.Editor"
+        "Celeste.Components",
+        "Celeste.Components.Editor",
+        "Celeste.Tools.Editor",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

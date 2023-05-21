@@ -3,7 +3,12 @@
     "rootNamespace": "Celeste.Tilemaps",
     "references": [
         "Celeste.Parameters",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Components",
+        "Celeste.DataStructures",
+        "Celeste.Objects",
+        "Celeste.OdinSerializer",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
