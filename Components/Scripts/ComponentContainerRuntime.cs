@@ -19,11 +19,22 @@ namespace Celeste.Components
 
         #endregion
 
-        public void InitializeComponents(IComponentContainer<T> componentContainer)
+        public void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer)
         {
             for (int i = 0, n = componentContainer.NumComponents; i < n; ++i)
             {
                 AddComponent(componentContainer.GetComponent(i));
+            }
+        }
+
+        public void InitializeComponents(IComponentContainerUsingTemplates<T> componentContainer)
+        {
+            for (int i = 0, n = componentContainer.NumComponents; i < n; ++i)
+            {
+                T component = componentContainer.GetComponent(i);
+                ComponentData data = componentContainer.GetComponentData(i);
+                ComponentEvents events = component.CreateEvents();
+                AddComponent(new ComponentHandle<T>(component, data, events));
             }
         }
 

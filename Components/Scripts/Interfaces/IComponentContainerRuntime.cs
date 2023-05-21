@@ -8,7 +8,8 @@ namespace Celeste.Components
 
         int NumComponents { get; }
 
-        void InitializeComponents(IComponentContainer<T> componentContainer);
+        void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer);
+        void InitializeComponents(IComponentContainerUsingTemplates<T> componentContainer);
         ComponentHandle<T> GetComponent(int index);
         void AddComponent(ComponentHandle<T> componentHandle);
         void AddComponent(T component);

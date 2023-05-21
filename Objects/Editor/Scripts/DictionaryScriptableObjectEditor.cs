@@ -80,7 +80,7 @@ namespace CelesteEditor.Objects
             RefreshData();
         }
 
-        private void RefreshData()
+        protected void RefreshData()
         {
             DictionaryScriptableObject<TKey, TValue> dictionary = target as DictionaryScriptableObject<TKey, TValue>;
             

@@ -81,7 +81,7 @@ namespace CelesteEditor.Components
                 },
                 () => GUILayout.Button("+", GUILayout.ExpandWidth(false)),
                 () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
-                () => ++componentTemplatesProperty.arraySize,
+                () => Container.AddEmptyTemplate(),
                 (i) => Container.RemoveComponent(i),
                 GUIUtils.ListLayoutOptions.None);
 

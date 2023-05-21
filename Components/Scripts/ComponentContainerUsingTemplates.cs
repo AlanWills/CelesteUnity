@@ -27,6 +27,14 @@ namespace Celeste.Components
 
         #endregion
 
+        public void AddEmptyTemplate()
+        {
+            componentTemplates.Add(new Template());
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
+
         public TComponent GetComponent(int index)
         {
             return componentTemplates.Get(index).component;

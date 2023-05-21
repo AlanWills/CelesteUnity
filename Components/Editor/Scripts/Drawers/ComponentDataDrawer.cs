@@ -38,6 +38,8 @@ namespace CelesteEditor.Components
             componentObject.Update();
 
             OnInspectorGUI();
+
+            componentObject.ApplyModifiedProperties();
         }
 
         protected virtual void OnInspectorGUI()
@@ -48,16 +50,19 @@ namespace CelesteEditor.Components
         protected void DrawPropertiesExcluding(params string[] properties)
         {
             SerializedProperty p = dataProperty.Copy();
-            p.NextVisible(true);
+            var endProperty = dataProperty.GetEndProperty();
 
-            do
+            if (p.NextVisible(true))
             {
-                if (!properties.Contains(p.name))
+                do
                 {
-                    EditorGUILayout.PropertyField(p);
+                    if (!properties.Contains(p.name))
+                    {
+                        EditorGUILayout.PropertyField(p);
+                    }
                 }
+                while (p.NextVisible(false) && !SerializedProperty.EqualContents(p, endProperty));
             }
-            while (p.NextVisible(true));
         }
     }
 }

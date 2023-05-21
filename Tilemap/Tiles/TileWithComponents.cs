@@ -89,6 +89,11 @@ namespace Celeste.Tilemaps.Tiles
             components.SetComponentData(index, componentData);
         }
 
+        public ComponentData GetComponentData(int index)
+        {
+            return components.GetComponentData(index);
+        }
+
         public TileComponent GetComponent(int index)
         {
             return components.GetComponent(index);
