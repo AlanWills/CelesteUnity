@@ -23,6 +23,11 @@ namespace CelesteEditor.Components
 
         #endregion
 
+        public void SetData(SerializedProperty dataProperty)
+        {
+            this.dataProperty = dataProperty;
+        }
+
         public void Enable(SerializedProperty dataProperty, SerializedObject componentObject)
         {
             this.dataProperty = dataProperty;

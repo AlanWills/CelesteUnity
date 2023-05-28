@@ -4,7 +4,9 @@
     "references": [
         "Celeste.Maths",
         "Celeste.Input",
-        "Celeste.Parameters"
+        "Celeste.Parameters",
+        "Celeste.Tools",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

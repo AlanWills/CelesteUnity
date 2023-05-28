@@ -13,11 +13,20 @@ namespace Celeste.Components
 
         public UnityEvent ComponentDataChanged { get; } = new UnityEvent();
 
+        public int InstanceId { get; }
         public int NumComponents => components.Count;
+        public IComponentContainerController<IComponentContainerRuntime<T>, T> Controller { get; set; }
+
+        private static int sInstanceId;
 
         [NonSerialized] private List<ComponentHandle<T>> components = new List<ComponentHandle<T>>();
 
         #endregion
+
+        public ComponentContainerRuntime()
+        {
+            InstanceId = ++sInstanceId;
+        }
 
         public void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer)
         {
@@ -129,6 +138,17 @@ namespace Celeste.Components
 
             iFace = InterfaceHandle<K>.NULL;
             return false;
+        }
+
+        public IEnumerable<InterfaceHandle<K>> FindComponents<K>() where K : class
+        {
+            foreach (var c in components)
+            {
+                if (c.Is<K>())
+                {
+                    yield return c.AsInterface<K>();
+                }
+            }
         }
     }
 }

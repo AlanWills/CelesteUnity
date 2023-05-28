@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Celeste.Components
+﻿namespace Celeste.Components
 {
     public interface IComponentContainer<T> where T : Component
     {

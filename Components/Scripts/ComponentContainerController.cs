@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerController<TRuntime, TComponent> : MonoBehaviour
+    public class ComponentContainerController<TRuntime, TComponent> : MonoBehaviour, IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>
         where TRuntime : IComponentContainerRuntime<TComponent> 
         where TComponent : Component
     {
         #region Properties and Fields
+
+        IComponentContainerRuntime<TComponent> IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>.Runtime => Runtime;
 
         public TRuntime Runtime { get; private set; }
 
@@ -32,6 +34,7 @@ namespace Celeste.Components
         public void Hookup(TRuntime runtime)
         {
             Runtime = runtime;
+            Runtime.Controller = this;
 
             foreach (var component in componentControllers)
             {

@@ -14,7 +14,6 @@ namespace Celeste.Events
 #endif
 
         private List<UnityActionCallback<T>> gameEventListeners = new List<UnityActionCallback<T>>();
-        private List<UnityActionCallback<T>> cachedListeners = new List<UnityActionCallback<T>>();
 
         #endregion
 
@@ -72,7 +71,7 @@ namespace Celeste.Events
             int gameEventListenersCount = gameEventListeners.Count;
             if (gameEventListenersCount > 0)
             {
-                cachedListeners.Clear();
+                List<UnityActionCallback<T>> cachedListeners = new List<UnityActionCallback<T>>(gameEventListenersCount);
                 cachedListeners.AddRange(gameEventListeners);
 
                 // Cache the gameEventListeners to ensure that if events are unsubscribed from a callback
@@ -82,8 +81,6 @@ namespace Celeste.Events
                     Debug.Assert(cachedListeners[i].Action != null, $"Event {name} has a cached listener which is null.");
                     cachedListeners[i].Action(argument);
                 }
-
-                cachedListeners.Clear();
             }
         }
 

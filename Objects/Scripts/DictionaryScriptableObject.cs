@@ -41,6 +41,11 @@ namespace Celeste.Objects
 
         #endregion
 
+        public bool HasItem(TKey key)
+        {
+            return ItemsImpl.ContainsKey(key);
+        }
+
         public TValue GetItem(TKey key)
         {
             return ItemsImpl.TryGetValue(key, out TValue value) ? value : default;

@@ -1,6 +1,7 @@
 ﻿using Celeste.Input;
 using Celeste.Maths;
 using Celeste.Parameters;
+using Celeste.Tools.Attributes.GUI;
 using System;
 using UnityEngine;
 
@@ -11,9 +12,13 @@ namespace Celeste.Physics.Movement
     {
         #region Properties and Fields
 
+        private float MovementSpeed => movementSpeedParameterised ? movementSpeedParameter.Value : movementSpeed;
+
         [SerializeField] private InputState inputState;
         [SerializeField] private Rigidbody2D bodyToMove;
-        [SerializeField] private FloatReference movementSpeed;
+        [SerializeField] private bool movementSpeedParameterised;
+        [SerializeField, HideIf(nameof(movementSpeedParameterised))] private float movementSpeed = 1;
+        [SerializeField, ShowIf(nameof(movementSpeedParameterised))] private FloatValue movementSpeedParameter;
 
         [NonSerialized] private Vector3 worldPosition;
 
@@ -21,22 +26,9 @@ namespace Celeste.Physics.Movement
 
         #region Unity Methods
 
-        private void OnValidate()
-        {
-#if UNITY_EDITOR
-            if (movementSpeed == null)
-            {
-                movementSpeed = ScriptableObject.CreateInstance<FloatReference>();
-                movementSpeed.name = "MovementSpeed";
-                movementSpeed.IsConstant = true;
-                movementSpeed.Value = 1;
-            }
-#endif
-        }
-
         private void FixedUpdate()
         {
-            float threshold = movementSpeed.Value * Time.fixedDeltaTime;
+            float threshold = MovementSpeed * Time.fixedDeltaTime;
 
             if ((bodyToMove.position - worldPosition.ToVector2()).magnitude < threshold)
             {
@@ -53,7 +45,7 @@ namespace Celeste.Physics.Movement
         {
             worldPosition = inputState.PointerWorldPosition;
             bodyToMove.transform.LookAtWorldPosition2D(worldPosition);
-            bodyToMove.SetLocalForwardVelocity(movementSpeed.Value);
+            bodyToMove.SetLocalForwardVelocity(MovementSpeed);
             enabled = true;
         }
 

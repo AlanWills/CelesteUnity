@@ -7,6 +7,7 @@ namespace Celeste.Components
         UnityEvent ComponentDataChanged { get; }
 
         int NumComponents { get; }
+        IComponentContainerController<IComponentContainerRuntime<T>, T> Controller { get; set; }
 
         void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer);
         void InitializeComponents(IComponentContainerUsingTemplates<T> componentContainer);

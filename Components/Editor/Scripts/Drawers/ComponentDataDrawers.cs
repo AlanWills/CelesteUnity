@@ -43,6 +43,7 @@ namespace CelesteEditor.Components
 
             if (instanceDataDrawers.TryGetValue(dataProperty.managedReferenceValue, out ComponentDataDrawer componentDataDrawer))
             {
+                componentDataDrawer.SetData(dataProperty);
                 return componentDataDrawer;
             }
             else if (componentDataDrawers.TryGetValue(component.GetType(), out Type componentDataDrawerType))
