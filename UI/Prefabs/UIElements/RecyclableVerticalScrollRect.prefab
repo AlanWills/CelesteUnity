@@ -70,7 +70,7 @@ MonoBehaviour:
       m_Calls: []
   IsGrid: 0
   PrototypeCell: {fileID: 0}
-  SelfInitialize: 1
+  SelfInitialize: 0
   Direction: 0
   VerticalDirection: -1
   _portraitModeSegments: 2

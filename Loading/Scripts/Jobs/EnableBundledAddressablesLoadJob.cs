@@ -65,7 +65,7 @@ namespace Celeste.Loading
             }
             else
             {
-                Debug.LogError($"No cached asset bundles found - ignoring custom transform func.");
+                Debug.LogWarning($"No cached asset bundles found - ignoring custom transform func.");
             }
         }
 

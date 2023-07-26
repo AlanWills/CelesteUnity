@@ -74,6 +74,7 @@ namespace CelesteEditor.UnityProject
             {
                 int indexOfFirstDelimiter = assemblyName.IndexOf('.');
                 string editorAssemblyNamespace = indexOfFirstDelimiter >= 0 ? $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}" : $"{assemblyName}Editor";
+                string assemblyDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(parentDirectory, directoryName) : directoryName;
 
                 List<string> referencedAssemblies = new List<string>();
 
@@ -88,7 +89,7 @@ namespace CelesteEditor.UnityProject
                 }
 
                 string editorScriptsDirectory = CreateAssembly(
-                    Path.Combine(parentDirectory, directoryName),
+                    assemblyDirectoryPath,
                     "Editor",
                     $"{assemblyName}.Editor",
                     editorAssemblyNamespace,

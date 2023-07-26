@@ -22,7 +22,7 @@
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
         public const string LOAD_JOBS_FOLDER_PATH = FOLDER_PATH + "Steps/";
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
-        public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemSceneSet";
+        public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemsSceneSet";
         public const string LOAD_JOB_NAME = "BootstrapLoadJob";
         public const string SCENE_NAME = "Bootstrap";
         public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
@@ -47,6 +47,7 @@
     {
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
         public const string LOADING_SCENE_NAME = "Loading";
+        public const string LOADING_SCENE_PATH = "Assets/Celeste/Loading/Scenes/Loading.unity";
         public const string CELESTE_GIT_IGNORE_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitignore.sample";
         public const string CELESTE_GIT_LFS_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitattributes.sample";
     }

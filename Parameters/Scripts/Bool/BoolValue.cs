@@ -10,7 +10,7 @@ namespace Celeste.Parameters
 
         public static bool operator==(BoolValue value, bool b)
         {
-            return value.Value == value;
+            return value.Value == b;
         }
 
         public static bool operator !=(BoolValue value, bool b)

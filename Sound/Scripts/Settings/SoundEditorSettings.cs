@@ -32,10 +32,10 @@ namespace Celeste.Sound.Settings
         {
             base.OnCreate();
 
-            playMusicEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicEvent");
-            playMusicOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicOneShotEvent");
-            playSFXEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXEvent");
-            playSFXOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXOneShotEvent");
+            playMusicEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusic");
+            playMusicOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicOneShot");
+            playSFXEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFX");
+            playSFXOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXOneShot");
         }
 #endif
     }

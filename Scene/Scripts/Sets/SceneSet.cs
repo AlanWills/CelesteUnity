@@ -94,7 +94,18 @@ namespace Celeste.Scene
 
         public void AddScene(string sceneId, SceneType sceneType, bool isDebugBuild)
         {
-            scenes.Add(new SceneSetEntry(sceneId, sceneType, isDebugBuild));
+            if (!scenes.Exists(x => string.CompareOrdinal(x.sceneId, sceneId) == 0))
+            {
+                scenes.Add(new SceneSetEntry(sceneId, sceneType, isDebugBuild));
+            }
+        }
+
+        public void MergeFrom(SceneSet targetSceneSet)
+        {
+            for (int i = 0, n = targetSceneSet.NumScenes; i < n; ++i)
+            {
+                AddSceneEntry(targetSceneSet.GetSceneEntry(i));
+            }
         }
 
         public string GetSceneId(int index)
@@ -105,6 +116,16 @@ namespace Celeste.Scene
         public SceneType GetSceneType(int index)
         {
             return scenes.Get(index).sceneType;
+        }
+
+        private void AddSceneEntry(SceneSetEntry sceneSetEntry)
+        {
+            AddScene(sceneSetEntry.sceneId, sceneSetEntry.sceneType, sceneSetEntry.isDebugOnly);
+        }
+
+        private SceneSetEntry GetSceneEntry(int index)
+        {
+            return scenes.Get(index);
         }
 
         public IEnumerator LoadAsync(

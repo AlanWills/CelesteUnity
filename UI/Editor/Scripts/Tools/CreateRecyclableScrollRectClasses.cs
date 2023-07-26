@@ -7,9 +7,11 @@ namespace CelesteEditor.UI.Tools
     [Serializable]
     public struct CreateRecyclableScrollRectClassesArgs
     {
-        [Tooltip("The path relative to the Assets/ folder of the project.")]
+        [Tooltip("The path relative to the Assets/ folder of the project of the directory to create the script files")]
         public string directoryPath;
+        [Tooltip("The name of the type we will use to generate UI classes to interface with the Recyclable Scroll Rect UI")]
         public string typeName;
+        [Tooltip("The root namespace the classes will be created in.  '.UI' will be automatically appended to this")]
         public string namespaceName;
     }
 

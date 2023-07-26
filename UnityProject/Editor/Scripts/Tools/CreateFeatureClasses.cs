@@ -39,9 +39,10 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(200), ShowIf(nameof(createManager))] public string addManagerMenuPath;
         [LabelWidth(200), ShowIf(nameof(createManager))] public bool isManagerPersistent;
         [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string managerDTOTypeName;
-        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string persistenceMenuItemsName;
-        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string openMenuPath;
-        [LabelWidth(200), ShowIf(nameof(isManagerPersistent))] public string deleteMenuPath;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent)), Tooltip("The name of the script containing the menu items relating to persistence.  Will have 'MenuItems' appended to the name")] 
+        public string persistenceMenuItemsName;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent)), Tooltip("The full menu path of the menu item responsible for opening the save file from within Unity e.g. ProjectName/Save/Open X Save")] public string openMenuPath;
+        [LabelWidth(200), ShowIf(nameof(isManagerPersistent)), Tooltip("The full menu path of the menu item responsible for deleting the save file from within Unity e.g. ProjectName/Save/Delete X Save.")] public string deleteMenuPath;
     }
 
     public static class CreateFeatureClasses

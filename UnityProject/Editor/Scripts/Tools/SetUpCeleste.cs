@@ -310,7 +310,7 @@ namespace CelesteEditor.UnityProject
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(CelesteConstants.LOADING_SCENE_NAME).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
             AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();

@@ -102,6 +102,12 @@ namespace CelesteEditor.Tools
 
         public static void SetAddressableAddress(this Object o, string address)
         {
+            if (o == null)
+            {
+                Debug.LogAssertion($"Failed to set addressable address {address} as a null object was inputted.");
+                return;
+            }
+
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long _);
             AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, aaSettings.DefaultGroup);

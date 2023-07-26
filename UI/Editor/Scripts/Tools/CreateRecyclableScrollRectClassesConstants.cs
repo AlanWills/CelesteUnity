@@ -7,6 +7,7 @@
                                                       "using Celeste.Tools;\n" +
                                                       "using PolyAndCode.UI;\n" +
                                                       "using UnityEngine;\n" +
+                                                      "using {0}.Record;\n" +
                                                       "\n" +
                                                       "namespace {0}.UI\n" +
                                                       "{{\n" +
@@ -74,7 +75,7 @@
         "\n" +
             "\t\t#endregion\n" +
 "\n" +
-            "\t\tpublic {1}UIData({1} item)\n" +
+            "\t\tpublic {1}UIData({1} {2})\n" +
             "\t\t{{\n" +
                 "\t\t\t{1} = {2};\n" +
             "\t\t}}\n" +
