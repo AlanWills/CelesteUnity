@@ -134,5 +134,22 @@ namespace CelesteEditor.Tools
 
             return false;
         }
+
+        public static string GetAddressablesRemoteBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName = profileSettings.GetValueByName(settings.activeProfileId, "Remote.BuildPath");
+
+            return profileSettings.EvaluateString(settings.activeProfileId, propName);
+        }
+
+        public static string GetAddressablesLocalBuildDir()
+        {
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            var propName = profileSettings.GetValueByName(settings.activeProfileId, "Local.BuildPath");
+            return profileSettings.EvaluateString(settings.activeProfileId, propName);
+        }
     }
 }

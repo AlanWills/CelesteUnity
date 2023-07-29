@@ -8,7 +8,6 @@ namespace CelesteEditor.Events.Tools
     [Serializable]
     public struct CreateEventClassesArgs
     {
-        [Tooltip("The path relative to the Assets/ folder of the project.")]
         public string directoryPath;
         public string typeName;
         public string namespaceName;
@@ -17,6 +16,13 @@ namespace CelesteEditor.Events.Tools
         public bool generateValueChangedEventClasses;
         [ShowIf(nameof(generateEventClasses))] public string eventCreateAssetMenuPath;
         [ShowIf(nameof(generateValueChangedEventClasses))] public string valueChangedEventCreateAssetMenuPath;
+
+        public void SetDefaultValues()
+        {
+            directoryPath = "Assets/";
+            generateEventClasses = true;
+            generateValueChangedEventClasses = true;
+        }
     }
 
     public static class CreateEventClasses

@@ -28,20 +28,12 @@ namespace CelesteEditor.UI.Tools
         private void OnEnable()
         {
             args = new CreateRecyclableScrollRectClassesArgs();
-            
-            if (string.IsNullOrEmpty(args.directoryPath))
-            {
-                var selectionInProject = Selection.GetFiltered<Object>(SelectionMode.Assets);
-                if (selectionInProject != null && selectionInProject.Length == 1)
-                {
-                    args.directoryPath = AssetUtility.GetAssetFolderPath(selectionInProject[0]);
+            args.SetDefaultValues();
 
-                    const string assetsPath = "Assets/";
-                    if (args.directoryPath.StartsWith(assetsPath))
-                    {
-                        args.directoryPath = args.directoryPath.Remove(0, assetsPath.Length);
-                    }
-                }
+            var selectionInProject = Selection.GetFiltered<Object>(SelectionMode.Assets);
+            if (selectionInProject != null && selectionInProject.Length == 1)
+            {
+                args.directoryPath = AssetUtility.GetAssetFolderPath(selectionInProject[0]);
             }
         }
 

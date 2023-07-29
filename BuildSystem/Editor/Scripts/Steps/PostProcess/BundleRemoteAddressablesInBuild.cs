@@ -1,5 +1,6 @@
 ﻿using Celeste.BuildSystem;
 using CelesteEditor.Assets.Schemas;
+using CelesteEditor.Tools;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor.AddressableAssets;
@@ -30,25 +31,9 @@ namespace CelesteEditor.BuildSystem.Steps
 
         #region Utility
 
-        private static string GetAddressablesRemoteBuildDir()
-        {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
-            return profileSettings.EvaluateString(settings.activeProfileId, propName);
-        }
-
-        private static string GetAddressablesLocalBuildDir()
-        {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "LocalBuildPath");
-            return profileSettings.EvaluateString(settings.activeProfileId, propName);
-        }
-
         private static CachedAssetBundles CacheRemoteAddressablesBundleList(AddressablesPlayerBuildResult result, HashSet<string> assetBundleNames)
         {
-            var buildRootDir = GetAddressablesRemoteBuildDir();
+            var buildRootDir = AddressablesUtility.GetAddressablesRemoteBuildDir();
             var buildRootDirLen = buildRootDir.Length;
             CachedAssetBundles cachedBundles = new CachedAssetBundles();
 
@@ -69,6 +54,11 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(buildRootDir);
             }
 
+            if (!Directory.Exists(Application.streamingAssetsPath))
+            {
+                Directory.CreateDirectory(Application.streamingAssetsPath);
+            }
+
             var json = JsonUtility.ToJson(cachedBundles);
             File.WriteAllText(Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json"), json);
 
@@ -77,8 +67,8 @@ namespace CelesteEditor.BuildSystem.Steps
 
         private static void BundleRemoteAddressables(CachedAssetBundles cachedAssetBundles)
         {
-            var remoteBuildDir = GetAddressablesRemoteBuildDir();
-            var aaDestDir = GetAddressablesLocalBuildDir();
+            var remoteBuildDir = AddressablesUtility.GetAddressablesRemoteBuildDir();
+            var aaDestDir = AddressablesUtility.GetAddressablesLocalBuildDir();
 
             if (!Directory.Exists(aaDestDir))
             {

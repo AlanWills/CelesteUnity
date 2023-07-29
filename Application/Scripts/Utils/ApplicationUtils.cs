@@ -36,9 +36,16 @@ namespace Celeste.Application
             if (isDebugBuild != null)
             {
                 TextAsset textAsset = Resources.Load<TextAsset>(DebugConstants.IS_DEBUG_BUILD_FILE);
-                isDebugBuild.Value = textAsset != null && textAsset.text == "1";
-                UnityEngine.Debug.Log($"IS_DEBUG_BUILD_FILE file {(textAsset != null ? "found with contents " + textAsset.text : "not found")} ");
-                UnityEngine.Debug.Log($"isDebugBuild set to {isDebugBuild.Value}");
+#if UNITY_EDITOR
+                // In Unity, mandate this file must not be null to override the parameter's default value
+                // This allows us to use the default value as a base, but still easily override this value in the Editor should we wish
+                if (textAsset != null)
+#endif
+                {
+                    isDebugBuild.Value = textAsset != null && textAsset.text == "1";
+                    UnityEngine.Debug.Log($"IS_DEBUG_BUILD_FILE file {(textAsset != null ? "found with contents " + textAsset.text : "not found")} ");
+                    UnityEngine.Debug.Log($"isDebugBuild set to {isDebugBuild.Value}");
+                }
 
                 string settingsOverrideFile = Path.Combine(UnityEngine.Application.persistentDataPath, DebugConstants.IS_DEBUG_BUILD_FILE + ".txt");
                 if (File.Exists(settingsOverrideFile))

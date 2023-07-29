@@ -50,7 +50,8 @@ namespace Celeste.Loading
                 loadSceneSetLoadJob.sceneSet = sceneSet;
                 loadSceneSetLoadJob.loadSceneMode = loadSceneMode;
                 loadSceneSetLoadJob.onContextLoadedEvent = onContextLoadedEvent;
-                loadSceneSetLoadJob.context = context;
+                loadSceneSetLoadJob.useRuntimeContext = true;
+                loadSceneSetLoadJob.runtimeContext = context;
 
                 return loadSceneSetLoadJob;
             }
@@ -63,9 +64,11 @@ namespace Celeste.Loading
         [SerializeField] private SceneSet sceneSet;
         [SerializeField] private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
         [SerializeField] private bool unloadUnusedAssets = true;
-        
-        private OnContextLoadedEvent onContextLoadedEvent;
-        private Context context;
+        [SerializeField] private OnContextLoadedEvent onContextLoadedEvent;
+        [SerializeField] private ContextProvider contextProvider;
+
+        private bool useRuntimeContext;
+        private Context runtimeContext;
 
         #endregion
 
@@ -75,7 +78,8 @@ namespace Celeste.Loading
             { 
                 if (onContextLoadedEvent != null)
                 {
-                    onContextLoadedEvent.Invoke(new OnContextLoadedArgs(context));
+                    Context loadedContext = useRuntimeContext ? runtimeContext : contextProvider != null ? contextProvider.Create() : null;
+                    onContextLoadedEvent.Invoke(new OnContextLoadedArgs(loadedContext));
                 }
             });
 

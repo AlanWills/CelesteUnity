@@ -1,5 +1,5 @@
-﻿using System.IO;
-using UnityEditor.AddressableAssets;
+﻿using CelesteEditor.Tools;
+using System.IO;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Steps
@@ -9,20 +9,12 @@ namespace CelesteEditor.BuildSystem.Steps
     {
         public override void Execute()
         {
-            string buildDir = GetAddressablesRemoteBuildDir();
+            string buildDir = AddressablesUtility.GetAddressablesRemoteBuildDir();
 
             if (Directory.Exists(buildDir))
             {
                 Directory.Delete(buildDir, true);
             }
-        }
-
-        private static string GetAddressablesRemoteBuildDir()
-        {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "RemoteBuildPath");
-            return propName;
         }
     }
 }

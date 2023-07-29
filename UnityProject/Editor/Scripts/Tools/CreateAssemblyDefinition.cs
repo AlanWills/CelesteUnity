@@ -30,17 +30,22 @@ namespace CelesteEditor.UnityProject
     [Serializable]
     public struct CreateAssembliesParameters
     {
-        [Tooltip("The path relative to the Assets/ folder of the project.")]
         public string parentDirectory;
         public string directoryName;
         public string assemblyName;
         public bool hasRuntimeAssembly;
         public bool hasEditorAssembly;
         public bool hasSceneMenuItem;
-        [Tooltip("The path relative to the project folder (must include Assets/).")]
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath;
         [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
         [ShowIf(nameof(hasSceneMenuItem))] public bool createSceneSet;
+
+        public void SetDefaultValues()
+        {
+            parentDirectory = "Assets/";
+            sceneSetPath = "Assets/";
+            createSceneSet = true;
+        }
     }
 
     public static class CreateAssemblyDefinition

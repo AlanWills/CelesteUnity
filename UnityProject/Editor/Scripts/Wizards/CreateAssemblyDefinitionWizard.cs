@@ -24,6 +24,12 @@ namespace CelesteEditor.UnityProject.Wizards
 
         #region Wizard Methods
 
+        private void OnEnable()
+        {
+            parameters = new CreateAssembliesParameters();
+            parameters.SetDefaultValues();
+        }
+
         private void OnWizardCreate()
         {
             Close();

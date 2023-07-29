@@ -28,8 +28,7 @@ namespace CelesteEditor.Events.Tools
         private void OnEnable()
         {
             args = new CreateEventClassesArgs();
-            args.generateEventClasses = true;
-            args.generateValueChangedEventClasses = true;
+            args.SetDefaultValues();
 
             if (string.IsNullOrEmpty(args.directoryPath))
             {

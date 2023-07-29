@@ -95,8 +95,7 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
-        [Tooltip("The directory that build addressables will be outputted to, relative to the project directory.  " +
-            "When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_SOURCE' to allow uploading from a specific location." + STRING_SUBSTITUTION_HELP)]
+        [Tooltip("The directory that built addressables will be outputted to, relative to the project directory." + STRING_SUBSTITUTION_HELP)]
         private string addressablesBuildDirectory;
         public string AddressablesBuildDirectory
         {
@@ -113,10 +112,10 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
-        private string addressablesS3UploadBucket;
+        private string addressablesUploadURL;
         public string AddressablesUploadURL
         {
-            get { return Resolve(addressablesS3UploadBucket); }
+            get { return Resolve(addressablesUploadURL); }
         }
 
         [SerializeField]
@@ -238,8 +237,8 @@ namespace CelesteEditor.BuildSystem
             {
                 AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
                 settings.OverridePlayerVersion = PlayerOverrideVersion;
-                settings.profileSettings.SetValue(settings.activeProfileId, "RemoteBuildPath", AddressablesBuildDirectory);
-                settings.profileSettings.SetValue(settings.activeProfileId, "RemoteLoadPath", AddressablesLoadDirectory);
+                settings.profileSettings.SetValue(settings.activeProfileId, "Remote.BuildPath", AddressablesBuildDirectory);
+                settings.profileSettings.SetValue(settings.activeProfileId, "Remote.LoadPath", AddressablesLoadDirectory);
 
                 if (addressableGroupsInBuild.NumItems > 0)
                 {
