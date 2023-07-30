@@ -15,7 +15,7 @@ namespace Celeste.Notifications.Objects
     }
 
     [CreateAssetMenu(fileName = nameof(NotificationChannel), menuName = "Celeste/Notifications/Notification Channel")]
-    public class NotificationChannel : ScriptableObject, IGuid
+    public class NotificationChannel : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

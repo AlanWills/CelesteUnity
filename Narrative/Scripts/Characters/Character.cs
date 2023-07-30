@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.Characters
 {
-    public class Character : ScriptableObject, IGuid
+    public class Character : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

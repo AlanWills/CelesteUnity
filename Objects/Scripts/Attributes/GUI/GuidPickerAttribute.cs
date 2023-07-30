@@ -46,7 +46,7 @@ namespace Celeste.Objects.Attributes.GUI
             if (string.CompareOrdinal(commandName, "ObjectSelectorUpdated") == 0 ||
                 string.CompareOrdinal(commandName, "ObjectSelectorClosed") == 0)
             {
-                IGuid guid = EditorGUIUtility.GetObjectPickerObject() as IGuid;
+                IIntGuid guid = EditorGUIUtility.GetObjectPickerObject() as IIntGuid;
                 
                 if (guid != null)
                 {

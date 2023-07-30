@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Celeste.BoardGame
 {
     [CreateAssetMenu(fileName = nameof(BoardGameObject), menuName = "Celeste/Board Game/Objects/Board Game Object")]
-    public class BoardGameObject : ComponentContainerUsingSubAssets<BoardGameObjectComponent>, IGuid
+    public class BoardGameObject : ComponentContainerUsingSubAssets<BoardGameObjectComponent>, IIntGuid
     {
         #region Properties and Fields
 

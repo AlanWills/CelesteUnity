@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Celeste.Notifications.Objects
 {
     [CreateAssetMenu(fileName = nameof(Notification), menuName = "Celeste/Notifications/Notification")]
-    public class Notification : ScriptableObject, IGuid
+    public class Notification : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 
-        int IGuid.Guid
+        int IIntGuid.Guid
         {
             get => guid;
             set

@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Celeste.Wallet
 {
     [CreateAssetMenu(fileName = nameof(Currency), menuName = "Celeste/Wallet/Currency")]
-    public class Currency : ScriptableObject, IGuid
+    public class Currency : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

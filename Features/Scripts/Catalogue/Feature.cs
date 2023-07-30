@@ -9,7 +9,7 @@ using UnityEngine.Events;
 namespace Celeste.Features
 {
     [CreateAssetMenu(fileName = nameof(Feature), menuName = "Celeste/Features/Feature")]
-    public class Feature : ScriptableObject, IGuid
+    public class Feature : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

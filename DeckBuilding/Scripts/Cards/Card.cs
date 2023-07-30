@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Celeste.DeckBuilding.Cards
 {
     [CreateAssetMenu(fileName = nameof(Card), menuName = "Celeste/Deck Building/Cards/Card")]
-    public class Card : ComponentContainerUsingSubAssets<CardComponent>, IGuid
+    public class Card : ComponentContainerUsingSubAssets<CardComponent>, IIntGuid
     {
         #region Properties and Fields
 

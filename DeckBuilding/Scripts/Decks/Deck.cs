@@ -13,7 +13,7 @@ using UnityEngine.Events;
 namespace Celeste.DeckBuilding.Decks
 {
     [CreateAssetMenu(fileName = nameof(Deck), menuName = "Celeste/Deck Building/Deck")]
-    public class Deck : ScriptableObject, IGuid
+    public class Deck : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

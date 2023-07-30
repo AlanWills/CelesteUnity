@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CelesteEditor.DataStructures
 {
-    public class IIndexableItemsEditor<TIndexableItem> : Editor where TIndexableItem : ScriptableObject
+    public class IIndexableItemsEditor<TIndexableItem> : Editor where TIndexableItem : Object
     {
         #region Properties and Fields
 
@@ -20,7 +20,7 @@ namespace CelesteEditor.DataStructures
         protected virtual void OnEnable()
         {
             ItemsProperty = serializedObject.FindProperty("items");
-            supportsGuids = typeof(IGuid).IsAssignableFrom(typeof(TIndexableItem));
+            supportsGuids = typeof(IIntGuid).IsAssignableFrom(typeof(TIndexableItem)) || typeof(IGuid).IsAssignableFrom(typeof(TIndexableItem));
         }
 
         public override void OnInspectorGUI()
@@ -106,7 +106,7 @@ namespace CelesteEditor.DataStructures
         {
             if (!supportsGuids)
             {
-                Debug.LogAssertion($"Type {typeof(TIndexableItem).Name} does not implement the {nameof(IGuid)} interface.");
+                Debug.LogAssertion($"Type {typeof(TIndexableItem).Name} does not implement the {nameof(IGuid)} or {nameof(IIntGuid)} interface.");
                 return;
             }
 
@@ -118,8 +118,16 @@ namespace CelesteEditor.DataStructures
                 
                 if (item != null)
                 {
-                    IGuid guid = item as IGuid;
-                    guid.Guid = i + 1;     // 1 index the guids
+                    if (item is IIntGuid)
+                    {
+                        IIntGuid guid = item as IIntGuid;
+                        guid.Guid = i + 1;     // 1 index the guids
+                    }
+                    else if (item is IGuid)
+                    {
+                        IGuid guid = item as IGuid;
+                        guid.Guid = string.IsNullOrEmpty(guid.Guid) ? System.Guid.NewGuid().ToString() : guid.Guid;
+                    }
 
                     EditorUtility.SetDirty(item);
                 }

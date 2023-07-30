@@ -21,7 +21,7 @@ namespace Celeste.Achievements.Objects
     }
 
     [CreateAssetMenu(fileName = nameof(Achievement), menuName = "Celeste/Achievements/Achievement")]
-    public class Achievement : ScriptableObject, IGuid
+    public class Achievement : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

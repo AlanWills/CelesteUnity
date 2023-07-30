@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Rewards.Objects
 {
-    public abstract class RewardItem : ScriptableObject, IGuid, IInitializable
+    public abstract class RewardItem : ScriptableObject, IIntGuid, IInitializable
     {
         #region Properties and Fields
 

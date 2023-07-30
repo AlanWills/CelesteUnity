@@ -11,7 +11,7 @@ namespace CelesteEditor.Objects
         public string ErrorString { get; private set; }
 
         private SerializedProperty itemsProperty;
-        private Dictionary<int, IGuid> guids = new Dictionary<int, IGuid>();
+        private Dictionary<int, IIntGuid> guids = new Dictionary<int, IIntGuid>();
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace CelesteEditor.Objects
 
             for (int i = 0, n = itemsProperty.arraySize; i < n; ++i)
             {
-                IGuid item = itemsProperty.GetArrayElementAtIndex(i).objectReferenceValue as IGuid;
+                IIntGuid item = itemsProperty.GetArrayElementAtIndex(i).objectReferenceValue as IIntGuid;
                 if (item == null)
                 {
                     continue;

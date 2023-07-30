@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Celeste.Inventory
 {
     [CreateAssetMenu(fileName = nameof(InventoryItem), menuName = "Celeste/Inventory/Inventory Item")]
-    public class InventoryItem : ScriptableObject, IGuid
+    public class InventoryItem : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 

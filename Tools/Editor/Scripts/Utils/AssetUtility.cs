@@ -185,7 +185,7 @@ namespace CelesteEditor.Tools
             return indexOfSlash > 0 ? assetPath.Substring(0, indexOfSlash) : assetPath;
         }
 
-        private static void FindAssetsImpl<T>(this Object target, string propertyName, string targetFolder) where T : ScriptableObject
+        private static void FindAssetsImpl<T>(this Object target, string propertyName, string targetFolder) where T : Object
         {
             SerializedObject serializedObject = new SerializedObject(target);
             serializedObject.Update();
@@ -202,12 +202,12 @@ namespace CelesteEditor.Tools
             }
         }
 
-        public static bool FindAssets<T>(this SerializedProperty itemsProperty) where T : ScriptableObject
+        public static bool FindAssets<T>(this SerializedProperty itemsProperty) where T : Object
         {
             return FindAssets<T>(itemsProperty, "");
         }
 
-        public static bool FindAssets<T>(this SerializedProperty itemsProperty, string targetFolder) where T : ScriptableObject
+        public static bool FindAssets<T>(this SerializedProperty itemsProperty, string targetFolder) where T : Object
         {
             bool dirty = false;
             string[] objectGuids;
@@ -243,12 +243,12 @@ namespace CelesteEditor.Tools
             return dirty;
         }
 
-        public static void FindAssets<T>(this Object target, string propertyName) where T : ScriptableObject
+        public static void FindAssets<T>(this Object target, string propertyName) where T : Object
         {
             FindAssetsImpl<T>(target, propertyName, "");
         }
 
-        public static void FindAssets<T>(this Object target, string propertyName, string subDirectoryName) where T : ScriptableObject
+        public static void FindAssets<T>(this Object target, string propertyName, string subDirectoryName) where T : Object
         {
             string targetFolder = GetAssetFolderPath(target);
             if (!string.IsNullOrEmpty(subDirectoryName))

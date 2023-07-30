@@ -1,4 +1,6 @@
-﻿namespace CelesteEditor.Tools.Utils
+﻿using System;
+
+namespace CelesteEditor.Tools.Utils
 {
     public class AssetDatabaseSearchBuilder
     {
@@ -17,7 +19,12 @@
 
         public AssetDatabaseSearchBuilder WithType<T>() where T : UnityEngine.Object
         {
-            typeName = typeof(T).Name;
+            return WithType(typeof(T));
+        }
+
+        public AssetDatabaseSearchBuilder WithType(Type t)
+        {
+            typeName = t.Name;
             return this;
         }
 
