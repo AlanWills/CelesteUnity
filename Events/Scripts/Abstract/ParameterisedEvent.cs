@@ -62,7 +62,7 @@ namespace Celeste.Events
 
         public void Invoke(T argument)
         {
-            Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}");
+            Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}", this);
             InvokeSilently(argument);
         }
 

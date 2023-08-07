@@ -15,7 +15,7 @@ namespace Celeste.Events
 
         public override string ToString()
         {
-            return $"{(oldValue != null ? oldValue.ToString() : "<null>")} - {(newValue != null ? newValue.ToString() : "<null>")}";
+            return $"(Old Value: {(oldValue != null ? oldValue.ToString() : "<null>")}, New Value: {(newValue != null ? newValue.ToString() : "<null>")})";
         }
     }
 
