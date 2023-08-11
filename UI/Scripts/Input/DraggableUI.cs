@@ -15,6 +15,7 @@ namespace Celeste.UI.Input
         [SerializeField] private Canvas parentCanvas;
         [SerializeField] private UnityEvent<Vector3> onEndDrag;
 
+        private Vector2 lastDragPosition;
         private bool isDragging = false;
 
         #endregion
@@ -38,6 +39,11 @@ namespace Celeste.UI.Input
         public void OnBeginDrag(PointerEventData eventData)
         {
             isDragging = eventData.pointerPressRaycast.gameObject == gameObject;
+
+            if (isDragging)
+            {
+                lastDragPosition = eventData.position;
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -45,18 +51,12 @@ namespace Celeste.UI.Input
             if (isDragging)
             {
                 RectTransform parentCanvasRectTransform = parentCanvas.transform as RectTransform;
-                
-                if (parentCanvasRectTransform == transform.parent)
-                {
-                    // For direct children, we just translate
-                    transform.Translate(eventData.delta.ToVector3());
-                }
-                else
-                {
-                    // Whereas for sub-children we must perform this relative calculation
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvasRectTransform, eventData.position, parentCanvas.worldCamera, out Vector2 pos);
-                    transform.position = parentCanvasRectTransform.TransformPoint(pos);
-                }
+
+                // Calculate the drag delta in local space and use that to apply to our transform
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvasRectTransform, lastDragPosition, parentCanvas.worldCamera, out Vector2 lastPosition);
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvasRectTransform, eventData.position, parentCanvas.worldCamera, out Vector2 currentPosition);
+                transform.Translate((currentPosition - lastPosition).ToVector3());
+                lastDragPosition = eventData.position;
             }
         }
 
