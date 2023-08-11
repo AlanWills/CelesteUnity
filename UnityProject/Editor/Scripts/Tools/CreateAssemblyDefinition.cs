@@ -157,7 +157,7 @@ namespace CelesteEditor.UnityProject
             assemblyDef.references = references != null ? references.ToArray() : null;
             assemblyDef.includePlatforms = includePlatforms != null ? includePlatforms.ToArray() : null;
 
-            string scriptsDirectory = Path.Combine(Application.dataPath, directoryPath, "Scripts");
+            string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
             File.WriteAllText(Path.Combine(scriptsDirectory, PLACEHOLDER_SCRIPT_NAME), "");
 
