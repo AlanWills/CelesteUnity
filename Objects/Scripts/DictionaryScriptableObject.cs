@@ -114,7 +114,7 @@ namespace Celeste.Objects
         {
             if (Application.isPlaying && runtimeModifiedItems == null)
             {
-                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized list
+                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized dictionary
                 // to prevent any runtime changes affecting what will be serialized and saved
                 runtimeModifiedItems = new Dictionary<TKey, TValue>(items);
             }
