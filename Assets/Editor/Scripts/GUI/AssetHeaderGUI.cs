@@ -7,11 +7,11 @@ using UnityEngine;
 namespace CelesteEditor.Assets.GUI
 {
     [InitializeOnLoad]
-    internal static class AddressableGroupSelectionGUI
+    internal static class AssetHeaderGUI
     {
         private static GUIContent addressableAssetGroupText;
 
-        static AddressableGroupSelectionGUI()
+        static AssetHeaderGUI()
         {
             addressableAssetGroupText = new GUIContent("Addressable Group");
             Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
@@ -25,6 +25,12 @@ namespace CelesteEditor.Assets.GUI
             }
 
             var target = editor.target;
+
+            if (GUILayout.Button("Export as Json to Clipboard", GUILayout.ExpandWidth(false)))
+            {
+                string json = JsonUtility.ToJson(target);
+                GUIUtility.systemCopyBuffer = json;
+            }
 
             if (target.IsAssetAddressable())
             {

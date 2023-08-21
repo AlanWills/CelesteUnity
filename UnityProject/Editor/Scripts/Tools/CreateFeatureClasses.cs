@@ -43,6 +43,12 @@ namespace CelesteEditor.UnityProject
         public string persistenceMenuItemsName;
         [LabelWidth(200), ShowIf(nameof(isManagerPersistent)), Tooltip("The full menu path of the menu item responsible for opening the save file from within Unity e.g. ProjectName/Save/Open X Save")] public string openMenuPath;
         [LabelWidth(200), ShowIf(nameof(isManagerPersistent)), Tooltip("The full menu path of the menu item responsible for deleting the save file from within Unity e.g. ProjectName/Save/Delete X Save.")] public string deleteMenuPath;
+
+        public void SetDefault()
+        {
+            runtimeScriptsDirectory = "Assets/";
+            editorScriptsDirectory = "Assets/";
+        }
     }
 
     public static class CreateFeatureClasses
