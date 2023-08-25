@@ -9,7 +9,7 @@ namespace Celeste.Advertising.Nodes
     {
         #region Properties and Fields
 
-        [Output] public AdWatchResult adWatchResult;
+        [Output, HideInInspector] public AdWatchResult adWatchResult;
 
         [SerializeField] private AdRecord adRecord;
         [SerializeField] private AdPlacement adPlacement;

@@ -44,6 +44,8 @@ namespace Celeste.Advertising
             }
         }
 
+        public bool IsEnabled => isEnabled;
+
         public bool IsLoaded
         {
             get => isLoaded.Value;
@@ -56,6 +58,7 @@ namespace Celeste.Advertising
         [SerializeField] private string androidPlacementId;
         [SerializeField] private string iOSPlacementId;
         [SerializeField] private AdPlacementType placementType;
+        [SerializeField] private bool isEnabled = true;
         [SerializeField] private BoolValue isLoaded;
 
         #endregion

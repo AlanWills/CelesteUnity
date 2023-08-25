@@ -23,8 +23,10 @@ namespace Celeste.Sound.Settings
         [SerializeField] private BoolValue shuffleMusic;
 
         [Header("Events")]
-        [SerializeField] private AudioClipEvent playMusic;
-        [SerializeField] private AudioClipEvent playMusicOneShot;
+        [SerializeField] private AudioClipEvent playMusicWithRawClip;
+        [SerializeField] private AudioClipSettingsEvent playMusicWithSettings;
+        [SerializeField] private AudioClipEvent playMusicOneShotWithRawClip;
+        [SerializeField] private AudioClipSettingsEvent playMusicOneShotWithSettings;
 
         [Space]
         [SerializeField] private List<AudioClip> musicTracks = new List<AudioClip>();
@@ -36,15 +38,28 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if (playMusic == null)
+            if (playMusicWithRawClip == null)
             {
-                playMusic = SoundEditorSettings.GetOrCreateSettings().playMusicEvent;
+                playMusicWithRawClip = SoundEditorSettings.GetOrCreateSettings().playMusicWithRawClipEvent;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
 
-            if (playMusicOneShot == null)
+            if (playMusicWithSettings == null)
             {
-                playMusicOneShot = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotEvent;
+                playMusicWithSettings = SoundEditorSettings.GetOrCreateSettings().playMusicWithSettingsEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playMusicOneShotWithRawClip == null)
+            {
+                playMusicOneShotWithRawClip = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotWithRawClipEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playMusicOneShotWithSettings == null)
+            {
+                playMusicOneShotWithSettings = SoundEditorSettings.GetOrCreateSettings().playMusicOneShotWithSettingsEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
             }
 #endif
         }
@@ -61,34 +76,54 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlayMusicCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlayMusicWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playMusic.AddListener(callback);
+            playMusicWithRawClip.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlayMusicWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playMusic.RemoveListener(callback);
+            playMusicWithRawClip.RemoveListener(callback);
         }
 
-        public override void AddOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlayMusicWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playMusicOneShot.AddListener(callback);
+            playMusicWithSettings.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlayMusicWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playMusicOneShot.RemoveListener(callback);
+            playMusicWithSettings.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlayMusicOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playMusicOneShotWithRawClip.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlayMusicOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playMusicOneShotWithRawClip.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlayMusicOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playMusicOneShotWithSettings.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlayMusicOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playMusicOneShotWithSettings.RemoveListener(callback);
         }
     }
 }

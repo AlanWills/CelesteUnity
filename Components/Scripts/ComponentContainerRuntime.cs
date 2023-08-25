@@ -14,8 +14,9 @@ namespace Celeste.Components
         public UnityEvent ComponentDataChanged { get; } = new UnityEvent();
 
         public int InstanceId { get; }
-        public int NumComponents => components.Count;
+        public int ParentInstanceId { get; }
         public IComponentContainerController<IComponentContainerRuntime<T>, T> Controller { get; set; }
+        public int NumComponents => components.Count;
 
         private static int sInstanceId;
 
@@ -23,9 +24,14 @@ namespace Celeste.Components
 
         #endregion
 
-        public ComponentContainerRuntime()
+        public ComponentContainerRuntime() : this(0)
+        {
+        }
+
+        public ComponentContainerRuntime(int parentInstanceId)
         {
             InstanceId = ++sInstanceId;
+            ParentInstanceId = parentInstanceId;
         }
 
         public void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer)
@@ -137,6 +143,21 @@ namespace Celeste.Components
             }
 
             iFace = InterfaceHandle<K>.NULL;
+            return false;
+        }
+
+        public bool TryFindComponent<K>(out ComponentHandle<K> component) where K : T
+        {
+            foreach (var c in components)
+            {
+                if (c.Is<K>())
+                {
+                    component = c.AsComponent<K>();
+                    return true;
+                }
+            }
+
+            component = ComponentHandle<K>.NULL;
             return false;
         }
 

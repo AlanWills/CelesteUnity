@@ -5,6 +5,7 @@
         "Celeste.Sound",
         "Celeste.Tools",
         "Celeste.Events",
+        "Celeste.Parameters.Editor",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [

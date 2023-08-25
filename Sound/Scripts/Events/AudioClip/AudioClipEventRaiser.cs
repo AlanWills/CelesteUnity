@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Celeste.Events;
+using UnityEngine;
 
-namespace Celeste.Events
+namespace Celeste.Sound
 {
     [AddComponentMenu("Celeste/Events/Audio/Audio Clip Event Raiser")]
     public class AudioClipEventRaiser : ParameterisedEventRaiser<AudioClip, AudioClipEvent>

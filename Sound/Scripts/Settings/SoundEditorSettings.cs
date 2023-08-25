@@ -1,5 +1,4 @@
-﻿using Celeste.Events;
-using Celeste.Tools.Settings;
+﻿using Celeste.Tools.Settings;
 using UnityEngine;
 #if UNITY_EDITOR
 using CelesteEditor.Tools;
@@ -15,10 +14,15 @@ namespace Celeste.Sound.Settings
         public const string FOLDER_PATH = "Assets/Sound/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "SoundEditorSettings.asset";
 
-        public AudioClipEvent playMusicEvent;
-        public AudioClipEvent playMusicOneShotEvent;
-        public AudioClipEvent playSFXEvent;
-        public AudioClipEvent playSFXOneShotEvent;
+        public AudioClipEvent playMusicWithRawClipEvent;
+        public AudioClipSettingsEvent playMusicWithSettingsEvent;
+        public AudioClipEvent playMusicOneShotWithRawClipEvent;
+        public AudioClipSettingsEvent playMusicOneShotWithSettingsEvent;
+
+        public AudioClipEvent playSFXWithRawClipEvent;
+        public AudioClipSettingsEvent playSFXWithSettingsEvent;
+        public AudioClipEvent playSFXOneShotWithRawClipEvent;
+        public AudioClipSettingsEvent playSFXOneShotWithSettingsEvent;
 
         #endregion
 
@@ -32,10 +36,15 @@ namespace Celeste.Sound.Settings
         {
             base.OnCreate();
 
-            playMusicEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusic");
-            playMusicOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicOneShot");
-            playSFXEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFX");
-            playSFXOneShotEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXOneShot");
+            playMusicWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicWithRawClip");
+            playMusicWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
+            playMusicOneShotWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicOneShotWithRawClip");
+            playMusicOneShotWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlayMusicOneShotWithSettings");
+
+            playSFXWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXWithRawClip");
+            playSFXWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlaySFXWithSettings");
+            playSFXOneShotWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXOneShotWithRawClip");
+            playSFXOneShotWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlaySFXOneShotWithSettings");
         }
 #endif
     }

@@ -72,6 +72,12 @@ namespace Celeste.Components
         {
             return new ComponentHandle<T>(component as T, instance);
         }
+
+        public void MakeNull()
+        {
+            component = null;
+            instance.MakeNull();
+        }
     }
 
     [Serializable]
@@ -108,6 +114,12 @@ namespace Celeste.Components
         public ComponentHandle<K> AsComponent<K>() where K : TComponent
         {
             return new ComponentHandle<K>(component as K, instance);
+        }
+
+        public void MakeNull()
+        {
+            component = null;
+            instance.MakeNull();
         }
     }
 

@@ -23,7 +23,10 @@ namespace Celeste.Advertising.Impls
 
         public void LoadAdPlacement(AdPlacement adPlacement)
         {
-            adPlacement.IsLoaded = true;
+            if (adPlacement.IsEnabled)
+            {
+                adPlacement.IsLoaded = true;
+            }
         }
 
         public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShow)
@@ -37,7 +40,7 @@ namespace Celeste.Advertising.Impls
             }
             else
             {
-                onShow.Invoke(AdWatchResult.Failed_NotReady);
+                onShow.Invoke(AdWatchResult.Failed_NotInitialized);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using Celeste.Assets.AssetReferences;
 using System;
 
-namespace Celeste.Events.AssetReferences
+namespace Celeste.Sound.AssetReferences
 {
     [Serializable]
     public class AudioClipEventAssetReference : CelesteAssetReference<AudioClipEvent>

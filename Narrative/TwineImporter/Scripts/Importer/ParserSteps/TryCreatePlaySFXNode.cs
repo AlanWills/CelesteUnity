@@ -1,6 +1,5 @@
-﻿using Celeste.Events;
-using Celeste.FSM.Nodes.Events;
-using Celeste.Parameters;
+﻿using Celeste.FSM.Nodes.Events;
+using Celeste.Sound;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

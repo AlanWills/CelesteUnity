@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Celeste.Events
+namespace Celeste.Sound
 {
     [Serializable]
     public class AudioClipUnityEvent : UnityEvent<AudioClip> { }

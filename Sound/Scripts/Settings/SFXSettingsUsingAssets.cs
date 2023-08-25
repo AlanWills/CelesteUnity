@@ -1,8 +1,5 @@
 ﻿using Celeste.Events;
-using Celeste.Events.AssetReferences;
 using Celeste.Parameters;
-using Celeste.Parameters.AssetReferences;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,8 +17,10 @@ namespace Celeste.Sound.Settings
         [SerializeField] private BoolValue sfxEnabled;
         
         [Header("Events")]
-        [SerializeField] private AudioClipEvent playSFX;
-        [SerializeField] private AudioClipEvent playSFXOneShot;
+        [SerializeField] private AudioClipEvent playSFXWithRawClip;
+        [SerializeField] private AudioClipSettingsEvent playSFXWithSettings;
+        [SerializeField] private AudioClipEvent playSFXOneShotWithRawClip;
+        [SerializeField] private AudioClipSettingsEvent playSFXOneShotWithSettings;
 
         #endregion
 
@@ -30,15 +29,27 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if (playSFX == null)
+            if (playSFXWithRawClip == null)
             {
-                playSFX = SoundEditorSettings.GetOrCreateSettings().playSFXEvent;
+                playSFXWithRawClip = SoundEditorSettings.GetOrCreateSettings().playSFXWithRawClipEvent;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
 
-            if (playSFXOneShot == null)
+            if (playSFXWithSettings == null)
             {
-                playSFXOneShot = SoundEditorSettings.GetOrCreateSettings().playSFXOneShotEvent;
+                playSFXWithSettings = SoundEditorSettings.GetOrCreateSettings().playSFXWithSettingsEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playSFXOneShotWithRawClip == null)
+            {
+                playSFXOneShotWithRawClip = SoundEditorSettings.GetOrCreateSettings().playSFXOneShotWithRawClipEvent;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (playSFXOneShotWithSettings == null)
+            {
+                playSFXOneShotWithSettings = SoundEditorSettings.GetOrCreateSettings().playSFXOneShotWithSettingsEvent;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
 #endif
@@ -56,34 +67,54 @@ namespace Celeste.Sound.Settings
             yield break;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlaySFXCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlaySFXWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playSFX.AddListener(callback);
+            playSFXWithRawClip.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlaySFXWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playSFX.RemoveListener(callback);
+            playSFXWithRawClip.RemoveListener(callback);
         }
 
-        public override void AddOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlaySFXWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playSFXOneShot.AddListener(callback);
+            playSFXWithSettings.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlaySFXWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playSFXOneShot.RemoveListener(callback);
+            playSFXWithSettings.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlaySFXOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playSFXOneShotWithRawClip.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlaySFXOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playSFXOneShotWithRawClip.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlaySFXOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playSFXOneShotWithSettings.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlaySFXOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playSFXOneShotWithSettings.RemoveListener(callback);
         }
     }
 }

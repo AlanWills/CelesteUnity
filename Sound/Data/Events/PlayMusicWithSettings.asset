@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e0213105ca396847b0847d8de1bab57, type: 3}
-  m_Name: PlayMusicOneShot
+  m_Script: {fileID: 11500000, guid: ed6866225b0dbd546843881159d9caf4, type: 3}
+  m_Name: PlayMusicWithSettings
   m_EditorClassIdentifier: 
+  helpText: 

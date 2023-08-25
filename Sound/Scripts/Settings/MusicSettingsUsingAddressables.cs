@@ -1,8 +1,7 @@
 ﻿using Celeste.Assets.UnityAssetReferences;
 using Celeste.Events;
-using Celeste.Events.AssetReferences;
-using Celeste.Parameters;
 using Celeste.Parameters.AssetReferences;
+using Celeste.Sound.AssetReferences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,8 +25,10 @@ namespace Celeste.Sound.Settings
         [SerializeField] private BoolValueAssetReference shuffleMusic;
 
         [Header("Events")]
-        [SerializeField] private AudioClipEventAssetReference playMusic;
-        [SerializeField] private AudioClipEventAssetReference playMusicOneShot;
+        [SerializeField] private AudioClipEventAssetReference playMusicWithRawClip;
+        [SerializeField] private AudioClipSettingsEventAssetReference playMusicWithSettings;
+        [SerializeField] private AudioClipEventAssetReference playMusicOneShotWithRawClip;
+        [SerializeField] private AudioClipSettingsEventAssetReference playMusicOneShotWithSettings;
 
         [Space]
         [SerializeField] private List<AudioClipAssetReference> musicTracks = new List<AudioClipAssetReference>();
@@ -48,8 +49,8 @@ namespace Celeste.Sound.Settings
         {
             yield return musicEnabled.LoadAssetAsync();
             yield return shuffleMusic.LoadAssetAsync();
-            yield return playMusic.LoadAssetAsync();
-            yield return playMusicOneShot.LoadAssetAsync();
+            yield return playMusicWithRawClip.LoadAssetAsync();
+            yield return playMusicOneShotWithSettings.LoadAssetAsync();
 
             for (int i = 0, n = musicTracks.Count; i < n; ++i)
             {
@@ -73,34 +74,54 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void AddOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void RemoveOnMusicEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             musicEnabled.Asset.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlayMusicCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlayMusicWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playMusic.Asset.AddListener(callback);
+            playMusicWithRawClip.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlayMusicWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playMusic.Asset.RemoveListener(callback);
+            playMusicWithRawClip.Asset.RemoveListener(callback);
         }
 
-        public override void AddOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlayMusicWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playMusicOneShot.Asset.AddListener(callback);
+            playMusicOneShotWithSettings.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlayMusicOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlayMusicWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playMusicOneShot.Asset.RemoveListener(callback);
+            playMusicOneShotWithSettings.Asset.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlayMusicOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playMusicOneShotWithRawClip.Asset.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlayMusicOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playMusicOneShotWithRawClip.Asset.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlayMusicOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playMusicOneShotWithSettings.Asset.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlayMusicOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playMusicOneShotWithSettings.Asset.RemoveListener(callback);
         }
 
         #region Callbacks

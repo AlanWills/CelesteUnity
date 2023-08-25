@@ -1,10 +1,13 @@
 {
-    "name": "Celeste.Events.AssetReferences",
-    "rootNamespace": "Celeste.Events.AssetReferences",
+    "name": "Celeste.Sound.Nodes",
+    "rootNamespace": "Celeste.Sound.Nodes",
     "references": [
-        "Unity.Addressables",
-        "Celeste.Events",
-        "Celeste.Assets"
+        "XNode",
+        "Celeste.FSM",
+        "Celeste.FSM.Nodes",
+        "Celeste.Sound",
+        "Celeste.Parameters",
+        "Celeste.Events"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

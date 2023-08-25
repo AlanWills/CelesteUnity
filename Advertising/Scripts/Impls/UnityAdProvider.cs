@@ -59,15 +59,25 @@ namespace Celeste.Advertising.Impls
         public void LoadAdPlacement(AdPlacement adPlacement)
         {
 #if UNITY_ADS
-            Advertisement.Load(adPlacement.PlacementId, this);
+            if (adPlacement.IsEnabled)
+            {
+                Advertisement.Load(adPlacement.PlacementId, this);
+            }
 #endif
         }
 
-        public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShowSuccessful)
+        public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShow)
         {
 #if UNITY_ADS
-            adPlacement.OnShow += onShowSuccessful;
-            Advertisement.Show(adPlacement.PlacementId, this);
+            if (adPlacement.IsLoaded)
+            {
+                adPlacement.OnShow += onShow;
+                Advertisement.Show(adPlacement.PlacementId, this);
+            }
+            else
+            {
+                onShow.Invoke(AdWatchResult.Failed_NotInitialized);
+            }
 #endif
         }
 

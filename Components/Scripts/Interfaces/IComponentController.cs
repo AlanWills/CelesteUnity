@@ -2,7 +2,7 @@
 {
     public interface IComponentController<T> where T : Component
     {
-        void Hookup(IComponentContainerRuntime<T> container);
+        void Hookup(IComponentContainerRuntime<T> container, IRuntimeAddedContext context);
         void Shutdown();
     }
 }

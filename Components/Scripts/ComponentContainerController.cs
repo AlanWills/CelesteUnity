@@ -31,14 +31,14 @@ namespace Celeste.Components
 
         #endregion
 
-        public void Hookup(TRuntime runtime)
+        public void Hookup(TRuntime runtime, IRuntimeAddedContext context)
         {
             Runtime = runtime;
             Runtime.Controller = this;
 
             foreach (var component in componentControllers)
             {
-                component.GetComponent<IComponentController<TComponent>>().Hookup(runtime);
+                component.GetComponent<IComponentController<TComponent>>().Hookup(runtime, context);
             }
         }
 

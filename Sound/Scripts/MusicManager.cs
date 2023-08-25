@@ -1,17 +1,15 @@
 ﻿using Celeste.Assets;
 using Celeste.Events;
-using Celeste.Parameters;
 using Celeste.Sound.Settings;
 using Celeste.Tools;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Sound
 {
     [AddComponentMenu("Celeste/Sound/Music Manager")]
     [RequireComponent(typeof(AudioSource))]
-    public class MusicManager : MonoBehaviour, IHasAssets
+    public class MusicManager : MonoBehaviour, IHasAssets, IMusicListener
     {
         #region Properties and Fields
 
@@ -24,12 +22,17 @@ namespace Celeste.Sound
 
         #region Unity Methods
 
-        private void Awake()
+        private void OnEnable()
         {
             if (audioSource.playOnAwake)
             {
                 NextTrack();
             }
+        }
+
+        private void OnDisable()
+        {
+            musicSettings.ShutdownListener(this);
         }
 
         private void OnValidate()
@@ -50,9 +53,7 @@ namespace Celeste.Sound
         {
             yield return musicSettings.LoadAssets();
 
-            musicSettings.AddOnMusicEnabledChangedCallback(OnMusicEnabledChanged);
-            musicSettings.AddOnPlayMusicCallback(Play);
-            musicSettings.AddOnPlayMusicOneShotCallback(PlayOneShot);
+            musicSettings.SetupListener(this);
         }
 
         #endregion
@@ -77,7 +78,7 @@ namespace Celeste.Sound
             }
         }
 
-        private void OnMusicEnabledChanged(ValueChangedArgs<bool> args)
+        public void OnMusicEnabledChanged(ValueChangedArgs<bool> args)
         {
             if (args.newValue)
             {
@@ -89,20 +90,42 @@ namespace Celeste.Sound
             }
         }
 
-        private void Play(AudioClip audioClip)
+        public void Play(AudioClip audioClip)
         {
             if (musicSettings.Enabled && audioSource.clip != audioClip)
             {
+                audioSource.volume = 1.0f;
                 audioSource.clip = audioClip;
                 audioSource.Play();
             }
         }
 
-        private void PlayOneShot(AudioClip audioClip)
+        public void Play(AudioClipSettings audioClipSettings)
+        {
+            if (musicSettings.Enabled && audioSource.clip != audioClipSettings.Clip)
+            {
+                audioSource.volume = audioClipSettings.Volume;
+                audioSource.clip = audioClipSettings.Clip;
+                audioSource.Play();
+            }
+        }
+
+        public void PlayOneShot(AudioClip audioClip)
         {
             if (musicSettings.Enabled)
             {
+                audioSource.volume = 1.0f;
                 audioSource.clip = audioClip;
+                audioSource.Play();
+            }
+        }
+
+        public void PlayOneShot(AudioClipSettings audioClipSettings)
+        {
+            if (musicSettings.Enabled)
+            {
+                audioSource.volume = audioClipSettings.Volume;
+                audioSource.clip = audioClipSettings.Clip;
                 audioSource.Play();
             }
         }

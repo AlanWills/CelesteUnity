@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Events;
 using UnityEngine;
 
-namespace Celeste.Events
+namespace Celeste.Sound
 {
     [AddComponentMenu("Celeste/Events/Audio/Audio Clip Event Listener")]
     public class AudioClipEventListener : ParameterisedEventListener<AudioClip, AudioClipEvent, AudioClipUnityEvent>

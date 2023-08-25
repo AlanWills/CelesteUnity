@@ -163,9 +163,9 @@ namespace Celeste.Input
             if (!EditorOnly_MouseOverGameView)
             {
                 // Disable input events when mouse not over the game view and release any held input
-                leftMouseButtonFirstUp.Invoke(mousePosition);
-                middleMouseButtonFirstUp.Invoke(mousePosition);
-                rightMouseButtonFirstUp.Invoke(mousePosition);
+                leftMouseButtonFirstUp.InvokeSilently(mousePosition);
+                middleMouseButtonFirstUp.InvokeSilently(mousePosition);
+                rightMouseButtonFirstUp.InvokeSilently(mousePosition);
                 inputState.ReleaseAllMouseButtons();
 
                 return;
@@ -182,14 +182,17 @@ namespace Celeste.Input
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
                     hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
-                    Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
                 }
 
                 if (hitGameObject == null)
                 {
                     // If we haven't hit any UI, see if we have hit any game objects in the world
                     hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
-                    Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                }
+
+                if (hitGameObject != null)
+                {
+                    Debug.Log($"Hit UI Game Object {hitGameObject.name}.");
                 }
             }
             

@@ -1,7 +1,6 @@
 ﻿using Celeste.Events;
-using Celeste.Events.AssetReferences;
-using Celeste.Parameters;
 using Celeste.Parameters.AssetReferences;
+using Celeste.Sound.AssetReferences;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -20,8 +19,10 @@ namespace Celeste.Sound.Settings
         [SerializeField] private BoolValueAssetReference sfxEnabled;
 
         [Header("Events")]
-        [SerializeField] private AudioClipEventAssetReference playSFX;
-        [SerializeField] private AudioClipEventAssetReference playSFXOneShot;
+        [SerializeField] private AudioClipEventAssetReference playSFXWithRawClip;
+        [SerializeField] private AudioClipSettingsEventAssetReference playSFXWithSettings;
+        [SerializeField] private AudioClipEventAssetReference playSFXOneShotWithRawClip;
+        [SerializeField] private AudioClipSettingsEventAssetReference playSFXOneShotWithSettings;
 
         [NonSerialized] private bool loaded = false;
         [NonSerialized] private bool enabled = false;
@@ -36,8 +37,8 @@ namespace Celeste.Sound.Settings
         public override IEnumerator LoadAssets()
         {
             yield return sfxEnabled.LoadAssetAsync();
-            yield return playSFX.LoadAssetAsync();
-            yield return playSFXOneShot.LoadAssetAsync();
+            yield return playSFXWithRawClip.LoadAssetAsync();
+            yield return playSFXOneShotWithRawClip.LoadAssetAsync();
 
             enabled = sfxEnabled.Asset.Value;
 
@@ -46,34 +47,54 @@ namespace Celeste.Sound.Settings
             loaded = true;
         }
 
-        public override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void AddOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.Asset.AddValueChangedCallback(callback);
         }
 
-        public override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
+        protected override void RemoveOnSFXEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)
         {
             sfxEnabled.Asset.RemoveValueChangedCallback(callback);
         }
 
-        public override void AddOnPlaySFXCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlaySFXWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playSFX.Asset.AddListener(callback);
+            playSFXWithRawClip.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlaySFXWithRawClipCallback(UnityAction<AudioClip> callback)
         {
-            playSFX.Asset.RemoveListener(callback);
+            playSFXWithRawClip.Asset.RemoveListener(callback);
         }
 
-        public override void AddOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void AddOnPlaySFXWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playSFXOneShot.Asset.AddListener(callback);
+            playSFXWithSettings.Asset.AddListener(callback);
         }
 
-        public override void RemoveOnPlaySFXOneShotCallback(UnityAction<AudioClip> callback)
+        protected override void RemoveOnPlaySFXWithSettingsCallback(UnityAction<AudioClipSettings> callback)
         {
-            playSFXOneShot.Asset.RemoveListener(callback);
+            playSFXWithSettings.Asset.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlaySFXOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playSFXOneShotWithRawClip.Asset.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlaySFXOneShotWithRawClipCallback(UnityAction<AudioClip> callback)
+        {
+            playSFXOneShotWithRawClip.Asset.RemoveListener(callback);
+        }
+
+        protected override void AddOnPlaySFXOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playSFXOneShotWithSettings.Asset.AddListener(callback);
+        }
+
+        protected override void RemoveOnPlaySFXOneShotWithSettingsCallback(UnityAction<AudioClipSettings> callback)
+        {
+            playSFXOneShotWithSettings.Asset.RemoveListener(callback);
         }
 
         #region Callbacks

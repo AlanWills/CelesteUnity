@@ -1,5 +1,5 @@
-﻿using Celeste.Events;
-using Celeste.Parameters;
+﻿using Celeste.Parameters;
+using Celeste.Sound;
 using UnityEngine;
 
 namespace Celeste.FSM.Nodes.Events

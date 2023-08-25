@@ -17,5 +17,6 @@ namespace Celeste.Components
         void RemoveComponent(int componentIndex);
         bool HasComponent<K>() where K : class;
         bool TryFindComponent<K>(out InterfaceHandle<K> iFace) where K : class;
+        bool TryFindComponent<K>(out ComponentHandle<K> component) where K : T;
     }
 }
