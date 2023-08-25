@@ -17,7 +17,7 @@ namespace CelesteEditor.Assets
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Tag Assets For Addressable Group")]
+        [MenuItem("Celeste/Tools/Assets/Tag Assets For Addressable Group")]
         public static void ShowTagAssetsForAddressableGroupWizard()
         {
             DisplayWizard<TagAssetsForAddressableGroupWizard>("Tag Assets For Addressable Group", "Close", "Tag");

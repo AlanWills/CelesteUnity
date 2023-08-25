@@ -17,7 +17,7 @@ namespace CelesteEditor.Tools
             return Selection.activeObject.GetType() == typeof(SpriteAtlas);
         }
 
-        [MenuItem("Celeste/Tools/Repack Atlas to Sprite")]
+        [MenuItem("Celeste/Tools/Assets/Repack Atlas to Sprite")]
         public static void RepackAtlasToSprite(MenuCommand command)
         {
             SpriteAtlas atlas = (SpriteAtlas)Selection.activeObject;

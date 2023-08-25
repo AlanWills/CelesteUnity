@@ -14,7 +14,7 @@ namespace CelesteEditor.UnityProject.Wizards
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Create Assembly Definition")]
+        [MenuItem("Celeste/Tools/Code Generation/Create Assembly Definition")]
         public static void ShowCreateAssemblyDefinitionWizard()
         {
             DisplayWizard<CreateAssemblyDefinitionWizard>("Create Assembly Definition", "Close", "Create");

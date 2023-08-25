@@ -16,7 +16,7 @@ namespace CelesteEditor.DeckBuilding.Wizards
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Create Cards From Sprites")]
+        [MenuItem("Celeste/Tools/Asset Generation/Create Cards From Sprites")]
         public static void ShowCreateCardsFromSpritesWizard()
         {
             DisplayWizard<CreateCardsFromSpritesWizard>("Create Cards", "Close", "Create");

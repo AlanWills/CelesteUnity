@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a5ee5b296cd1841818cb20480ec683, type: 3}
+  m_Name: SceneDebugMenu
+  m_EditorClassIdentifier: 
+  displayName: Scene
+  menuPriority: 0
+  isRuntimeHierarchyVisible: {fileID: 11400000, guid: 03d35249eae06644ba5c305e18b6fd9c, type: 2}
+  isRuntimeInspectorVisible: {fileID: 11400000, guid: a97f2e6bfbe2fd34b945ff9d8a8f2e86, type: 2}

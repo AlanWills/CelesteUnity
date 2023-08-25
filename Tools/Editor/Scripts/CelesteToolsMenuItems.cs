@@ -5,8 +5,8 @@ namespace CelesteEditor.Tools
 {
     public static class CelesteToolsMenuItems
     {
-        private const string CLEAR_CACHE_MENU_PATH = "Celeste/Tools/Clear Cache";
-        private const string FIND_MISSING_COMPONENTS_MENU_PATH = "Celeste/Tools/Find Missing Components";
+        private const string CLEAR_CACHE_MENU_PATH = "Celeste/Tools/Assets/Clear Cache";
+        private const string FIND_MISSING_COMPONENTS_MENU_PATH = "Celeste/Tools/Scenes/Find Missing Components";
         private const string DUPLICATE_MENU_PATH = "Assets/Duplicate";
 
         [MenuItem(CLEAR_CACHE_MENU_PATH)]

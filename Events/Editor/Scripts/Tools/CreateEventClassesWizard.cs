@@ -15,7 +15,7 @@ namespace CelesteEditor.Events.Tools
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Create Event Classes")]
+        [MenuItem("Celeste/Tools/Code Generation/Create Event Classes")]
         public static void ShowCreateEventClassesWizard()
         {
             DisplayWizard<CreateEventClassesWizard>("Create Event Classes", "Close", "Create");

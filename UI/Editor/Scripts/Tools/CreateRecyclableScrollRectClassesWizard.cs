@@ -15,7 +15,7 @@ namespace CelesteEditor.UI.Tools
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Create Recyclable Scroll Rect Classes")]
+        [MenuItem("Celeste/Tools/Code Generation/Create Recyclable Scroll Rect Classes")]
         public static void ShowCreateRecyclableScrollRectClassesWizard()
         {
             DisplayWizard<CreateRecyclableScrollRectClassesWizard>("Create Recyclable Scroll Rect Classes", "Close", "Create");

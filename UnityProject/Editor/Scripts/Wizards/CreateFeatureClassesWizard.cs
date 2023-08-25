@@ -14,7 +14,7 @@ namespace CelesteEditor.UnityProject.Wizards
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Create Feature Classes")]
+        [MenuItem("Celeste/Tools/Code Generation/Create Feature Classes")]
         public static void ShowCreateFeatureClassesWizard()
         {
             DisplayWizard<CreateFeatureClassesWizard>("Create Feature Classes", "Close", "Create");
