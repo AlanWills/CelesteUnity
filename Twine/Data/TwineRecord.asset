@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba38e166f6d937f4fa17591bc3f1a53d, type: 3}
+  m_Name: TwineRecord
+  m_EditorClassIdentifier: 
+  onStoryLoaded: {fileID: 11400000, guid: d584483da97d3184c9befbf8485ab661, type: 2}
+  saveTwineStory: {fileID: 11400000, guid: 77073999cf2a6024bb021e3a7445a259, type: 2}
+  save: {fileID: 11400000, guid: 0aeb1ddf3c8c5ee48b82aed37cf32c24, type: 2}

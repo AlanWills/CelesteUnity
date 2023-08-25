@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882e27b153160dd44b37b2f6ab010a75, type: 3}
+  m_Name: TwinePersistenceDebugMenu
+  m_EditorClassIdentifier: 
+  displayName: Twine Persistence
+  twineRecord: {fileID: 11400000, guid: d1da5ab696b63754eb8658234be24ff3, type: 2}
+  saveCurrentTwineStory: {fileID: 11400000, guid: bace2d58191513641a507ae3bfec2639, type: 2}
