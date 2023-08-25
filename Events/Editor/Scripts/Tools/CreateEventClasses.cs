@@ -8,14 +8,14 @@ namespace CelesteEditor.Events.Tools
     [Serializable]
     public struct CreateEventClassesArgs
     {
-        public string directoryPath;
-        public string typeName;
-        public string namespaceName;
-        public string arguments;
-        public bool generateEventClasses;
-        public bool generateValueChangedEventClasses;
-        [ShowIf(nameof(generateEventClasses))] public string eventCreateAssetMenuPath;
-        [ShowIf(nameof(generateValueChangedEventClasses))] public string valueChangedEventCreateAssetMenuPath;
+        [Tooltip("The path of the directory where thescript files will be created")] public string directoryPath;
+        [Tooltip("The name of the event type that will be created.  Appropriate suffixes like 'Event' will be automatically added")] public string typeName;
+        [Tooltip("The full qualified namespace name that the classes will be created in")] public string namespaceName;
+        [Tooltip("The name of the type that corresponds to the typed argument of the event")] public string arguments;
+        [Tooltip("If true, a normal event class, as well as listener and raiser MonoBehaviours will be generated")] public bool generateEventClasses;
+        [Tooltip("If true, a value changed event class, as well as listener and raiser MonoBehaviours will be generated")] public bool generateValueChangedEventClasses;
+        [Tooltip("The full 'Create' menu item path for the normal event class")] [ShowIf(nameof(generateEventClasses))] public string eventCreateAssetMenuPath;
+        [Tooltip("The full 'Create' menu item path for the value changed event class")] [ShowIf(nameof(generateValueChangedEventClasses))] public string valueChangedEventCreateAssetMenuPath;
 
         public void SetDefaultValues()
         {
