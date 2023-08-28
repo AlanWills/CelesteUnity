@@ -9,7 +9,7 @@ namespace CelesteEditor.BuildSystem.Steps
     {
         public override void Execute()
         {
-            string buildDir = AddressablesUtility.GetAddressablesRemoteBuildDir();
+            string buildDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
 
             if (Directory.Exists(buildDir))
             {

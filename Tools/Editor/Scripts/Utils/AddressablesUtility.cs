@@ -10,6 +10,11 @@ namespace CelesteEditor.Tools
 {
     public static class AddressablesUtility
     {
+        public const string REMOTE_BUILD_PATH_VARIABLE = "Remote.BuildPath";
+        public const string REMOTE_LOAD_PATH_VARIABLE = "Remote.LoadPath";
+        public const string LOCAL_BUILD_PATH_VARIABLE = "Local.BuildPath";
+        public const string LOCAL_LOAD_PATH_VARIABLE = "Local.LoadPath";
+
         public static bool IsAssetAddressable(this Object obj)
         {
             return GetAddressableInfo(obj) != null;
@@ -135,20 +140,31 @@ namespace CelesteEditor.Tools
             return false;
         }
 
-        public static string GetAddressablesRemoteBuildDir()
+        public static string GetAddressablesRemoteBuildPath()
         {
-            var settings = AddressableAssetSettingsDefaultObject.Settings;
-            var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "Remote.BuildPath");
-
-            return profileSettings.EvaluateString(settings.activeProfileId, propName);
+            return EvaluateProfileSettingsString(REMOTE_BUILD_PATH_VARIABLE);
         }
 
-        public static string GetAddressablesLocalBuildDir()
+        public static string GetAddressablesRemoteLoadPath()
+        {
+            return EvaluateProfileSettingsString(REMOTE_LOAD_PATH_VARIABLE);
+        }
+
+        public static string GetAddressablesLocalBuildPath()
+        {
+            return EvaluateProfileSettingsString(LOCAL_BUILD_PATH_VARIABLE);
+        }
+
+        public static string GetAddressablesLocalLoadPath()
+        {
+            return EvaluateProfileSettingsString(LOCAL_LOAD_PATH_VARIABLE);
+        }
+
+        private static string EvaluateProfileSettingsString(string variablePath)
         {
             var settings = AddressableAssetSettingsDefaultObject.Settings;
             var profileSettings = settings.profileSettings;
-            var propName = profileSettings.GetValueByName(settings.activeProfileId, "Local.BuildPath");
+            var propName = profileSettings.GetValueByName(settings.activeProfileId, variablePath);
             return profileSettings.EvaluateString(settings.activeProfileId, propName);
         }
     }
