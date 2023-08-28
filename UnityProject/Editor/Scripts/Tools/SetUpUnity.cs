@@ -19,7 +19,9 @@ namespace CelesteEditor.UnityProject
                 new string[]
                 {
                     // To add
-                    "git@github.com:AlanWills/UnityRuntimeInspector.git"
+                    "git@github.com:AlanWills/UnityRuntimeInspector.git",
+                    "git@github.com:AlanWills/UnityNativeShare.git",
+                    "git@github.com:AlanWills/UnityNativeFilePicker.git"
                 },
                 new string[]
                 {
