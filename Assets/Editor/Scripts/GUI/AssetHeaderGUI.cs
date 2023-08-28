@@ -40,7 +40,18 @@ namespace CelesteEditor.Assets.GUI
 
         private static void DrawGroupField(UnityEngine.Object target)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             var targetAddressableInfo = target.GetAddressableInfo();
+
+            if (targetAddressableInfo == null)
+            {
+                return;
+            }
+
             var aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             var groups = aaSettings.groups;
             string[] groupNames = new string[groups.Count];

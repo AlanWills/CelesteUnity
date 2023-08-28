@@ -22,6 +22,11 @@ namespace CelesteEditor.Tools
 
         public static void SetAddressableInfo(this Object o, string group, string address)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             Debug.Assert(o != null, $"Trying to set addressable info on a null object.");
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long localID);
@@ -63,6 +68,11 @@ namespace CelesteEditor.Tools
 
         public static void SetAddressableGroup(this Object o, string group)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             Debug.Assert(o != null, $"Trying to set addressable info on a null object.");
             AddressableAssetEntry assetEntry = GetAddressableInfo(o);
 
@@ -81,12 +91,22 @@ namespace CelesteEditor.Tools
 
         public static AddressableAssetEntry GetAddressableInfo(this Object obj)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return null;
+            }
+
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
             return settings.FindAssetEntry(AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj)));
         }
 
         public static void SetAddressableLabel(this Object o, string group, string label, bool enabled)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long _);
             AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, aaSettings.FindGroup(group));
@@ -95,6 +115,11 @@ namespace CelesteEditor.Tools
 
         public static void EnableOnlyAddressableLabel(this Object o, string label)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AddressableAssetEntry entry = GetAddressableInfo(o);
             List<string> labels = aaSettings.GetLabels();
@@ -107,6 +132,11 @@ namespace CelesteEditor.Tools
 
         public static void SetAddressableAddress(this Object o, string address)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             if (o == null)
             {
                 Debug.LogAssertion($"Failed to set addressable address {address} as a null object was inputted.");
@@ -126,6 +156,11 @@ namespace CelesteEditor.Tools
 
         public static bool AddressableResourceExists<T>(string key)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return false;
+            }
+
             foreach (AddressableAssetGroup group in AddressableAssetSettingsDefaultObject.Settings.groups)
             {
                 foreach (var entry in group.entries)
@@ -162,6 +197,11 @@ namespace CelesteEditor.Tools
 
         private static string EvaluateProfileSettingsString(string variablePath)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return string.Empty;
+            }
+
             var settings = AddressableAssetSettingsDefaultObject.Settings;
             var profileSettings = settings.profileSettings;
             var propName = profileSettings.GetValueByName(settings.activeProfileId, variablePath);
