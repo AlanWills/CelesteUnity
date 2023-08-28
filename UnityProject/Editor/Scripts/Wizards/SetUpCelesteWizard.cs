@@ -14,7 +14,7 @@ namespace CelesteEditor.UnityProject.Wizards
 
         #region Menu Item
 
-        [MenuItem("Celeste/Bootstrap/3) Set Up Celeste", priority = 3)]
+        [MenuItem("Celeste/Bootstrap/2) Set Up Celeste", priority = 2)]
         public static void ShowSetUpProjectWizard()
         {
             DisplayWizard<SetUpCelesteWizard>("Set Up Project", "Set Up");
