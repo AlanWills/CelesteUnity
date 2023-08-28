@@ -1,9 +1,0 @@
-[submodule "RuntimeInspector"]
-	path = RuntimeInspector
-	url = https://github.com/AlanWills/UnityRuntimeInspector
-[submodule "NativeFilePicker"]
-	path = NativeFilePicker
-	url = https://github.com/AlanWills/UnityNativeFilePicker
-[submodule "NativeShare"]
-	path = NativeShare
-	url = https://github.com/AlanWills/UnityNativeShare
