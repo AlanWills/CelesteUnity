@@ -18,6 +18,11 @@ namespace CelesteEditor.BuildSystem.Data
 
         private void OnValidate()
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
             if (useAllCreatedAddressableGroups)
             {
                 foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
@@ -37,6 +42,11 @@ namespace CelesteEditor.BuildSystem.Data
 
         public bool Contains(string groupName)
         {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return false;
+            }
+
             return useAllCreatedAddressableGroups ? 
                 AddressableAssetSettingsDefaultObject.Settings.FindGroup(groupName) != null : 
                 FindItem(x => string.CompareOrdinal(x, groupName) == 0) != null;

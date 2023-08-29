@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using static Celeste.Localisation.Language;
 
 namespace Celeste.Localisation
 {
@@ -213,6 +214,26 @@ namespace Celeste.Localisation
                             UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
                         }
                     }
+                }
+            }
+        }
+
+        public void AddEntries(IReadOnlyList<AudioClip> synthesizationEntries)
+        {
+            for (int i = 0, n = synthesizationEntries.Count; i < n; ++i)
+            {
+                AudioClip audioClip = synthesizationEntries[i];
+
+                if (!speechLookup.ContainsKey(audioClip.name))
+                {
+                    speechLookup.Add(audioClip.name, audioClip);
+#if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(this);
+#endif
+                }
+                else
+                {
+                    UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {audioClip.name}.");
                 }
             }
         }

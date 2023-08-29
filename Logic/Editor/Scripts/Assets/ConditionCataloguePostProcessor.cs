@@ -18,7 +18,14 @@ namespace CelesteEditor.Logic.Assets
 
                 foreach (Condition item in conditionCatalogue.Items)
                 {
-                    existingItems.Add(item);
+                    if (item != null)
+                    {
+                        existingItems.Add(item);
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion($"Detected and stripped out null item from {nameof(ConditionCatalogue)} {conditionCatalogue.name}.");
+                    }
                 }
 
                 foreach (Condition condition in AssetUtility.FindAssets<Condition>("", AssetUtility.GetAssetFolderPath(conditionCatalogue)))
