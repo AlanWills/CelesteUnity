@@ -43,6 +43,11 @@ namespace Celeste.Rewards.UI
 
         public void Hookup(IReadOnlyList<RewardItem> rewards, int multiplier)
         {
+            Hookup(rewards, multiplier, multiplier);
+        }
+
+        public void Hookup(IReadOnlyList<RewardItem> rewards, int baseMultiplier, int bonusMultiplier)
+        {
             for (int i = 0, n = rewards.Count; i < n; ++i)
             {
                 var rewardItem = rewards[i];
@@ -54,7 +59,7 @@ namespace Celeste.Rewards.UI
                 if (rewardItemUIGameObject != null)
                 {
                     RewardItemUI rewardItemUI = rewardItemUIGameObject.GetComponent<RewardItemUI>();
-                    rewardItemUI.Hookup(rewardItem, multiplier);
+                    rewardItemUI.Hookup(rewardItem, baseMultiplier, bonusMultiplier);
                     rewardItemUIGameObject.gameObject.SetActive(true);
                 }
             }

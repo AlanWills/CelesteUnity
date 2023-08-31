@@ -18,17 +18,31 @@ namespace Celeste.Rewards.UI
 
         public void Hookup(RewardItem rewardItem)
         {
-            Hookup(rewardItem, 1);
+            Hookup(rewardItem, 1, 1);
         }
 
         public void Hookup(RewardItem rewardItem, int multiplier)
         {
+            Hookup(rewardItem, multiplier, multiplier);
+        }
+
+        public void Hookup(RewardItem rewardItem, int baseMultiplier, int bonusMultiplier)
+        {
             Debug.Assert(rewardItem != null, $"Null reward inputted into {nameof(RewardUI)}.");
             if (rewardItem != null)
             {
-                multiplier = rewardItem.CanBeMultiplied ? multiplier : 1;
                 rewardIcon.sprite = rewardItem.Icon;
-                rewardQuantity.text = $"x {rewardItem.Quantity * multiplier}";
+
+                if (rewardItem.CanBeMultiplied)
+                {
+                    rewardQuantity.text = bonusMultiplier != 1 ?
+                        $"x <s>{rewardItem.Quantity * baseMultiplier}</s> {rewardItem.Quantity * baseMultiplier * bonusMultiplier}" :
+                        $"x {rewardItem.Quantity * bonusMultiplier}";
+                }
+                else
+                {
+                    rewardQuantity.text = $"x {rewardItem.Quantity}";
+                }
 
                 rewardQuantity.gameObject.SetActive(showQuantity);
             }
