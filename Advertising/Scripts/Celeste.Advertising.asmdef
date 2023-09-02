@@ -10,6 +10,7 @@
         "Celeste.Persistence",
         "Celeste.Logic",
         "Celeste.UI",
+        "Celeste.RemoteConfig",
         "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],

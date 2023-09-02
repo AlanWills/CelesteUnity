@@ -2,6 +2,8 @@
 using Celeste.Events;
 using Celeste.Parameters;
 using Celeste.Persistence;
+using Celeste.RemoteConfig;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Advertising
@@ -16,6 +18,9 @@ namespace Celeste.Advertising
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private BoolValue adTestMode;
         [SerializeField] private AdRecord adRecord;
+        [SerializeField] private RemoteConfigRecord remoteConfigRecord;
+
+        private const string ADS_CONFIG_KEY = "AdsConfig";
 
         #endregion
 
@@ -33,6 +38,8 @@ namespace Celeste.Advertising
                 // We should never be able to allow test mode on release builds, even if the flag is on for some reason
                 adTestMode.Value = false;
             }
+
+            SyncAdsEnabledFromRemoteConfig();
 
             adRecord.Initialize();
         }
@@ -57,12 +64,36 @@ namespace Celeste.Advertising
         }
 
         #endregion
+        
+        private void SyncAdsEnabledFromRemoteConfig()
+        {
+            if (remoteConfigRecord == null)
+            {
+                return;
+            }
+
+            IRemoteConfigDictionary adsConfig = remoteConfigRecord.GetDictionary(ADS_CONFIG_KEY);
+
+            if (adsConfig != null)
+            {
+                for (int i = 0, n = adRecord.NumAdPlacements; i < n; ++i)
+                {
+                    AdPlacement adPlacement = adRecord.GetAdPlacement(i);
+                    adPlacement.IsEnabled = remoteConfigRecord.GetBool(adPlacement.name, adPlacement.IsEnabled);
+                }
+            }
+        }
 
         #region Callbacks
 
         public void OnAdTestModeChanged(ValueChangedArgs<bool> args)
         {
             Save();
+        }
+
+        public void OnRemoteConfigDataChanged()
+        {
+            SyncAdsEnabledFromRemoteConfig();
         }
 
         #endregion

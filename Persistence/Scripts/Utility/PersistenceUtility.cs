@@ -1,5 +1,3 @@
-using Celeste.Log;
-using Celeste.OdinSerializer;
 using Celeste.Tools;
 using FullSerializer;
 using System;

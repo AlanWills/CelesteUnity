@@ -44,11 +44,23 @@ namespace Celeste.Advertising
             }
         }
 
-        public bool IsEnabled => isEnabled;
+        public bool IsEnabled
+        {
+            get
+            {
+                if (!runtimeIsEnabled.HasValue)
+                {
+                    runtimeIsEnabled = isEnabled;
+                }
+
+                return runtimeIsEnabled.Value;
+            }
+            set => runtimeIsEnabled = value;
+        }
 
         public bool IsLoaded
         {
-            get => isLoaded.Value;
+            get => IsEnabled && isLoaded.Value;
             set => isLoaded.Value = value;
         }
 
@@ -60,6 +72,8 @@ namespace Celeste.Advertising
         [SerializeField] private AdPlacementType placementType;
         [SerializeField] private bool isEnabled = true;
         [SerializeField] private BoolValue isLoaded;
+
+        [NonSerialized] private bool? runtimeIsEnabled;
 
         #endregion
 

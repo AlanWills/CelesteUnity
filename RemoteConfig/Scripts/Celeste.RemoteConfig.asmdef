@@ -1,0 +1,24 @@
+{
+    "name": "Celeste.RemoteConfig",
+    "rootNamespace": "Celeste.RemoteConfig",
+    "references": [
+        "Unity.RemoteConfig.Editor.Core",
+        "Unity.Services.RemoteConfig",
+        "Unity.Services.Authentication",
+        "Unity.Services.Core",
+        "Celeste.Persistence",
+        "Celeste.Tools",
+        "Celeste.Parameters",
+        "Celeste.FullSerializer",
+        "Celeste.Events"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

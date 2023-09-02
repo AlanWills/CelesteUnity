@@ -24,8 +24,8 @@ namespace Celeste.Persistence
         protected SnapshotRecord SnapshotRecord => snapshotRecord;
 
         [SerializeField] private SnapshotRecord snapshotRecord;
-        [SerializeField] private bool loadOnAwake = true;
-        [SerializeField, HideIf(nameof(loadOnAwake))] private bool loadOnStart = false;
+        [SerializeField] protected bool loadOnAwake = true;
+        [SerializeField, HideIf(nameof(loadOnAwake))] protected bool loadOnStart = false;
 
         private bool saveRequested = false;
         private Semaphore loadingLock = new Semaphore();
