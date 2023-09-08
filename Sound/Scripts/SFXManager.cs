@@ -87,8 +87,8 @@ namespace Celeste.Sound
         {
             if (sfxSettings.Enabled)
             {
-                audioSource.volume = audioClipSettings.Volume;
-                audioSource.PlayOneShot(audioClipSettings.Clip);
+                audioSource.volume = 1.0f;
+                audioSource.PlayOneShot(audioClipSettings.Clip, audioClipSettings.Volume);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Celeste.RemoteConfig
 
         public void FromJson(string json)
         {
-            if (string.IsNullOrEmpty(json))
+            if (string.IsNullOrEmpty(json) || json == "{}")
             {
                 Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
                 fetchedJson = json;

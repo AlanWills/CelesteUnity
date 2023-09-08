@@ -63,7 +63,7 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
     private void OnDataFetched(ConfigResponse configResponse)
     {
         string configResponseString = RemoteConfigService.Instance.appConfig.config.ToString();
-        Debug.LogError($"RemoteConfigService.Instance.appConfig fetched: {configResponseString}");
+        Debug.Log($"RemoteConfigService.Instance.appConfig fetched: {configResponseString}");
 
         onDataFetched?.Invoke(configResponseString);
     }

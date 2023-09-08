@@ -1,9 +1,6 @@
 ﻿using Celeste.Localisation.Settings;
 using CelesteEditor.Tools.Settings;
-using System.IO;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace CelesteEditor.Localisation.Settings
 {

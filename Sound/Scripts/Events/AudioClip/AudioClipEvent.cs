@@ -9,7 +9,7 @@ namespace Celeste.Sound
     public class AudioClipUnityEvent : UnityEvent<AudioClip> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "AudioClipEvent", menuName = "Celeste/Events/Audio/Audio Clip Event")]
+    [CreateAssetMenu(fileName = nameof(AudioClipEvent), menuName = "Celeste/Events/Audio/Audio Clip Event")]
     public class AudioClipEvent : ParameterisedEvent<AudioClip>
     {
     }

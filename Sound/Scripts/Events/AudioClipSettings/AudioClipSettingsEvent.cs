@@ -13,5 +13,10 @@ namespace Celeste.Sound
     [CreateAssetMenu(fileName = nameof(AudioClipSettingsEvent), menuName = "Celeste/Events/Audio/Audio Clip Settings Event")]
     public class AudioClipSettingsEvent : ParameterisedEvent<AudioClipSettings>
     {
+        public void Invoke(AudioClip audioClip, AudioChannelSettings channelSettings)
+        {
+            AudioClipSettings audioClipSettings = AudioClipSettings.Create(audioClip, channelSettings);
+            Invoke(audioClipSettings);
+        }
     }
 }
