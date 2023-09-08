@@ -9,7 +9,8 @@
         "Celeste.DataStructures",
         "Celeste.Debug",
         "Celeste.Tools",
-        "Celeste.Logic"
+        "Celeste.Logic",
+        "Celeste.RemoteConfig"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

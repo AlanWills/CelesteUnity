@@ -1,4 +1,5 @@
 ﻿using Celeste.Persistence;
+using Celeste.RemoteConfig;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,9 @@ namespace Celeste.Features.Persistence
 
         [SerializeField] private FeatureCatalogue featureCatalogue;
         [SerializeField] private FeatureRecord featureRecord;
+        [SerializeField] private RemoteConfigRecord remoteConfigRecord;
+
+        private const string FEATURES_CONFIG_KEY = "FeaturesConfig";
 
         #endregion
 
@@ -21,6 +25,8 @@ namespace Celeste.Features.Persistence
         protected override void Awake()
         {
             featureRecord.Hookup(featureCatalogue);
+
+            SyncKilledFeaturesFromRemoteConfig();
 
             base.Awake();
         }
@@ -63,6 +69,38 @@ namespace Celeste.Features.Persistence
 
         protected override void SetDefaultValues()
         {
+        }
+
+        #endregion
+
+        private void SyncKilledFeaturesFromRemoteConfig()
+        {
+            if (remoteConfigRecord == null)
+            {
+                return;
+            }
+
+            IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+
+            if (featuresConfig != null)
+            {
+                for (int i = 0, n = featureRecord.NumFeatures; i < n; ++i)
+                {
+                    Feature feature = featureRecord.GetFeature(i);
+                    
+                    if (remoteConfigRecord.GetBool(feature.name, false))
+                    {
+                        feature.Kill();
+                    }
+                }
+            }
+        }
+
+        #region Callbacks
+
+        public void OnRemoteConfigChanged()
+        {
+            SyncKilledFeaturesFromRemoteConfig();
         }
 
         #endregion
