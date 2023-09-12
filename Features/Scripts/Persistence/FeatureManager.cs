@@ -92,6 +92,10 @@ namespace Celeste.Features.Persistence
                     {
                         feature.Kill();
                     }
+                    else
+                    {
+                        feature.Revive();
+                    }
                 }
             }
         }

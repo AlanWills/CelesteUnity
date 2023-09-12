@@ -108,7 +108,10 @@ namespace CelesteEditor.Tools
             newFolder = EnsureRelativeToAssets(newFolder);
 
             int indexOfLastDelimiter =  newFolder.LastIndexOf('/');
-            CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
+            if (indexOfLastDelimiter > 0)
+            {
+                CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
+            }
         }
 
         public static void CreateFolder(string parent, string folderName)

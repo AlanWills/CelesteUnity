@@ -9,72 +9,73 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
-        private TEvent BakedEvent
+        private TEvent EventImpl
         {
             get
             {
-                Debug.Assert(Application.isPlaying, $"Should only be accessing {nameof(BakedEvent)} whilst application is running.");
-                if (bakedEvent == null)
+                if (runtimeEvent == null && Application.isPlaying)
                 {
-                    bakedEvent = ScriptableObject.CreateInstance<TEvent>();
+                    runtimeEvent = bakedEvent ?? ScriptableObject.CreateInstance<TEvent>();
                 }
 
-                return bakedEvent;
+                return runtimeEvent;
             }
         }
 
         [SerializeField] private TEvent bakedEvent;
 
+        [NonSerialized] private TEvent runtimeEvent;
+
         #endregion
 
         public ICallbackHandle AddListener(IEventListener<ValueChangedArgs<TParam>> listener)
         {
-            return BakedEvent.AddListener(listener);
+            return EventImpl.AddListener(listener);
         }
 
         public ICallbackHandle AddListener(UnityAction<ValueChangedArgs<TParam>> unityAction)
         {
-            return BakedEvent.AddListener(unityAction);
+            return EventImpl.AddListener(unityAction);
         }
 
         public void RemoveListener(UnityAction<ValueChangedArgs<TParam>> callback)
         {
-            BakedEvent.RemoveListener(callback);
+            EventImpl.RemoveListener(callback);
         }
 
         public void RemoveListener(IEventListener<ValueChangedArgs<TParam>> listener)
         {
-            BakedEvent.RemoveListener(listener);
+            EventImpl.RemoveListener(listener);
         }
 
         public void RemoveListener(ICallbackHandle callbackHandle)
         {
-            BakedEvent.RemoveListener(callbackHandle);
+            EventImpl.RemoveListener(callbackHandle);
         }
 
         public void RemoveAllListeners()
         {
-            BakedEvent.RemoveAllListeners();
+            EventImpl.RemoveAllListeners();
         }
 
         public void Invoke(TParam oldValue, TParam newValue)
         {
-            BakedEvent.Invoke(new ValueChangedArgs<TParam>(oldValue, newValue));
+            EventImpl.Invoke(new ValueChangedArgs<TParam>(oldValue, newValue));
         }
 
         public void Invoke(ValueChangedArgs<TParam> param)
         {
-            BakedEvent.Invoke(param);
+            EventImpl.Invoke(param);
         }
 
         public void InvokeSilently(TParam oldValue, TParam newValue)
         {
-            BakedEvent.InvokeSilently(new ValueChangedArgs<TParam>(oldValue, newValue));
+            EventImpl.InvokeSilently(new ValueChangedArgs<TParam>(oldValue, newValue));
         }
 
         public void InvokeSilently(ValueChangedArgs<TParam> param)
         {
-            BakedEvent.InvokeSilently(param);
+            EventImpl.InvokeSilently(param);
         }
     }
 }

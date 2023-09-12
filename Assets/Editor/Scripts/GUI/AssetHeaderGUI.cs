@@ -26,10 +26,13 @@ namespace CelesteEditor.Assets.GUI
 
             var target = editor.target;
 
-            if (GUILayout.Button("Export as Json to Clipboard", GUILayout.ExpandWidth(false)))
+            if (target is ScriptableObject)
             {
-                string json = JsonUtility.ToJson(target);
-                GUIUtility.systemCopyBuffer = json;
+                if (GUILayout.Button("Export as Json to Clipboard", GUILayout.ExpandWidth(false)))
+                {
+                    string json = JsonUtility.ToJson(target);
+                    GUIUtility.systemCopyBuffer = json;
+                }
             }
 
             if (target.IsAssetAddressable())

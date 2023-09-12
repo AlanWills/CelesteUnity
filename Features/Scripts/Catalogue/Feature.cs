@@ -30,7 +30,7 @@ namespace Celeste.Features
         public bool IsEnabled
         {
             get { return !IsKilled && isEnabled.Value; }
-            set { isEnabled.Value = !IsKilled && value; }
+            set { isEnabled.Value = value; }
         }
         
         [SerializeField] private int guid;
@@ -64,6 +64,12 @@ namespace Celeste.Features
         {
             IsKilled = true;
             IsEnabled = false;
+        }
+
+        public void Revive()
+        {
+            IsKilled = false;
+            IsEnabled = canEnable?.IsMet ?? false;
         }
 
         public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)

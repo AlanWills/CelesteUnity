@@ -42,17 +42,23 @@ namespace Celeste.Logic
 
         protected override void DoInitialize()
         {
-            for (int i = 0, n = conditions.Count; i < n; i++)
+            if (Application.isPlaying)
             {
-                conditions[i].AddOnIsMetConditionChanged(OnConditionValueChanged);
+                for (int i = 0, n = conditions.Count; i < n; i++)
+                {
+                    conditions[i].AddOnIsMetConditionChanged(OnConditionValueChanged);
+                }
             }
         }
 
         protected override void DoShutdown()
         {
-            for (int i = 0, n = conditions.Count; i < n; i++)
+            if (Application.isPlaying)
             {
-                conditions[i].RemoveOnIsMetConditionChanged(OnConditionValueChanged);
+                for (int i = 0, n = conditions.Count; i < n; i++)
+                {
+                    conditions[i].RemoveOnIsMetConditionChanged(OnConditionValueChanged);
+                }
             }
         }
 
