@@ -10,7 +10,8 @@
         "Celeste.Tools",
         "Celeste.Parameters",
         "Celeste.FullSerializer",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Debug"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

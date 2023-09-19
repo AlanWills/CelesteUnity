@@ -109,6 +109,8 @@ namespace Celeste.LiveOps
 
             Progress.instance.events.ComponentDataChanged.AddListener(OnProgressComponentDataChanged);
             Components.ComponentDataChanged.AddListener(OnDataChanged);
+
+            UnityEngine.Debug.Assert(!isRecurring || repeatsAfter > 0, $"Found a recurring liveop with an invalid repeats after frequency ({type}, {subType}).");
         }
 
         public IEnumerator Load()
@@ -178,17 +180,27 @@ namespace Celeste.LiveOps
 
         public bool Equals(LiveOp other)
         {
-            return EqualityComparer<LiveOpComponents>.Default.Equals(Components, other.Components);
+            return other != null && 
+                Type == other.Type &&
+                SubType == other.SubType &&
+                StartTimestamp == other.StartTimestamp &&
+                EndTimestamp == other.EndTimestamp &&
+                EqualityComparer<LiveOpComponents>.Default.Equals(Components, other.Components);
         }
 
         public override int GetHashCode()
         {
-            return 1596229712 + EqualityComparer<LiveOpComponents>.Default.GetHashCode(Components);
+            return 1596229712 + 
+                Type.GetHashCode() +
+                SubType.GetHashCode() + 
+                StartTimestamp.GetHashCode() + 
+                EndTimestamp.GetHashCode() +
+                EqualityComparer<LiveOpComponents>.Default.GetHashCode(Components);
         }
 
         public static bool operator ==(LiveOp left, LiveOp right)
         {
-            return left.Equals(right);
+            return ((object)left == null && (object)right == null) || left.Equals(right);
         }
 
         public static bool operator !=(LiveOp left, LiveOp right)

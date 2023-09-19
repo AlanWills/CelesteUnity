@@ -154,6 +154,27 @@ namespace Celeste.LiveOps
             }
         }
 
+        public bool TryFindNextScheduledLiveOp<T>(out LiveOp nextScheduledLiveOp) where T : class
+        {
+            LiveOp earliestDailyTasksLiveOp = null;
+
+            for (int i = 0, n = NumLiveOps; i < n; ++i)
+            {
+                LiveOp liveOp = GetLiveOp(i);
+
+                if (liveOp.HasComponent<T>() && liveOp.StartTimestamp > GameTime.UtcNowTimestamp)
+                {
+                    if (earliestDailyTasksLiveOp == null || earliestDailyTasksLiveOp.StartTimestamp > liveOp.StartTimestamp)
+                    {
+                        earliestDailyTasksLiveOp = liveOp;
+                    }
+                }
+            }
+
+            nextScheduledLiveOp = earliestDailyTasksLiveOp;
+            return nextScheduledLiveOp != null;
+        }
+
         #region Scheduling
 
         private void Schedule(LiveOp liveOp)

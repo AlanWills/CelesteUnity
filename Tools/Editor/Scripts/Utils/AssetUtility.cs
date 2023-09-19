@@ -10,7 +10,7 @@ namespace CelesteEditor.Tools
     {
         #region Utils
 
-        private static void EnsureNamed(Object asset)
+        public static void EnsureNamed(Object asset)
         {
             if (string.IsNullOrEmpty(asset.name))
             {
@@ -18,12 +18,12 @@ namespace CelesteEditor.Tools
             }
         }
 
-        private static string StripTrailingSlash(string path)
+        public static string StripTrailingSlash(string path)
         {
             return path.EndsWith("/") ? path.Substring(0, path.Length - 1) : path;
         }
-        
-        private static string EnsureRelativeToAssets(string path)
+
+        public static string EnsureRelativeToAssets(string path)
         {
             if (!path.StartsWith("Assets"))
             {
@@ -33,7 +33,7 @@ namespace CelesteEditor.Tools
             return StripTrailingSlash(EnsureDelimitersCorrect(path));
         }
 
-        private static string EnsureDelimitersCorrect(string path)
+        public static string EnsureDelimitersCorrect(string path)
         {
             return path.Replace('\\', '/');
         }

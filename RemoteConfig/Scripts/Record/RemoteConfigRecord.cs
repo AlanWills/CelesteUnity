@@ -19,7 +19,7 @@ namespace Celeste.RemoteConfig
         {
             if (string.IsNullOrEmpty(json) || json == "{}")
             {
-                Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
+                UnityEngine.Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
                 fetchedJson = json;
                 fetchedData = new fsDataDictionary();
             }
@@ -34,7 +34,7 @@ namespace Celeste.RemoteConfig
                 }
                 else
                 {
-                    Debug.LogError($"Failed to parse non-empty json {fetchedJson} into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
+                    UnityEngine.Debug.LogError($"Failed to parse non-empty json {fetchedJson} into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
                     fetchedJson = json;
                     fetchedData = new fsDataDictionary();
                 }

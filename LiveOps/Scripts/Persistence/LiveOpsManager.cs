@@ -98,7 +98,7 @@ namespace Celeste.LiveOps.Persistence
         public void OnLiveOpStateChanged(LiveOp liveOp)
         {
             // Calculate the latest possible start timestamp in the past based on the liveop start timestamp and the recurrence frequency
-            if (liveOp.State == LiveOpState.Finished && liveOp.IsRecurring)
+            if (liveOp.State == LiveOpState.Finished && liveOp.IsRecurring && liveOp.RepeatsAfter > 0)
             {
                 long diffBetweenNowAndStart = GameTime.UtcNowTimestamp - liveOp.StartTimestamp;
                 long liveOpStartTimestamp = 0;

@@ -49,12 +49,17 @@ namespace Celeste.Loading
 #else
             var url = Path.GetFullPath(bundleCacheFileURL);
 #endif
+            Debug.Log($"Beginning to load bundle cache info at {url}.");
             var loadBundleCacheRequest = UnityWebRequest.Get(url);
             yield return loadBundleCacheRequest.SendWebRequest();
 
             if (!string.IsNullOrEmpty(loadBundleCacheRequest.error))
             {
                 Debug.LogError(loadBundleCacheRequest.error);
+            }
+            else
+            {
+                Debug.Log($"Bundle cache info loaded successfully.");
             }
 
             JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
