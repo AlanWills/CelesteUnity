@@ -83,7 +83,7 @@ namespace Celeste.LiveOps
                 x.SubType == liveOpSubType &&
                 x.StartTimestamp == startTimestamp))
             {
-                UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
+                UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already added to the liveops record and will not be re-added.");
                 yield break;
             }
             else if (liveOpState == LiveOpState.Finished)
