@@ -80,7 +80,8 @@ namespace Celeste.LiveOps
             }
             else if (liveOps.Exists(x =>
                 x.Type == liveOpType &&
-                x.SubType == liveOpSubType))
+                x.SubType == liveOpSubType &&
+                x.StartTimestamp == startTimestamp))
             {
                 UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already running.");
                 yield break;
