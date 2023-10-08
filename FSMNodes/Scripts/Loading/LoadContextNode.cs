@@ -10,6 +10,7 @@ namespace Celeste.FSM.Nodes.Loading
         #region Properties and Fields
 
         public SceneSet sceneSet;
+        public bool showOutputOnLoadingScreen = true;
         public ContextProvider contextProvider;
         public LoadContextEvent loadContextEvent;
         public OnContextLoadedEvent onContextLoadedEvent;
@@ -44,7 +45,7 @@ namespace Celeste.FSM.Nodes.Loading
             Context context = contextProvider.Create();
             if (context != null)
             {
-                LoadContextArgs loadContextArgs = new LoadContextArgs(sceneSet, context, onContextLoadedEvent);
+                LoadContextArgs loadContextArgs = new LoadContextArgs(sceneSet, showOutputOnLoadingScreen, context, onContextLoadedEvent);
                 loadContextEvent.Invoke(loadContextArgs);
             }
         }

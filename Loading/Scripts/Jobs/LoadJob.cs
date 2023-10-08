@@ -6,6 +6,10 @@ namespace Celeste.Loading
 {
     public abstract class LoadJob : ScriptableObject
     {
+        public bool ShowOutputInLoadingScreen => showOutputInLoadingScreen;
+
+        [SerializeField] private bool showOutputInLoadingScreen = true;
+
         public abstract IEnumerator Execute(Action<float> setProgress, Action<string> setOutput);
     }
 }

@@ -9,6 +9,7 @@ namespace Celeste.Scene.Events
         #region Properties and Fields
 
         [SerializeField] private SceneSet sceneSetToLoad;
+        [SerializeField] private bool showOutputOnLoadingScreen = true;
         [SerializeField] private ContextProvider contextProvider;
         [SerializeField] private OnContextLoadedEvent onContextLoaded;
 
@@ -31,7 +32,7 @@ namespace Celeste.Scene.Events
 
         public void Raise()
         {
-            Raise(new LoadContextArgs(sceneSetToLoad, contextProvider.Create(), onContextLoaded));
+            Raise(new LoadContextArgs(sceneSetToLoad, showOutputOnLoadingScreen, contextProvider.Create(), onContextLoaded));
         }
     }
 }

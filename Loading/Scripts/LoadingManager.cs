@@ -28,12 +28,18 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
-            loadingInfo.text = "";
+            loadingInfo.text = "Loading...";
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
                 (progress) => progressBar.value = progress,
-                (s) => { loadingInfo.text = s; },
+                (s) => 
+                {
+                    if (loadContextArgs.showOutputOnLoadingScreen)
+                    {
+                        loadingInfo.text = s;
+                    }
+                },
                 () => { });
 
             if (loadContextArgs.onContextLoaded != null)
@@ -49,11 +55,17 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
-            loadingInfo.text = "";
+            loadingInfo.text = "Loading...";
 
             yield return loadJob.Execute(
                 (progress) => progressBar.value = progress, 
-                (s) => { loadingInfo.text = s; });
+                (s) => 
+                {
+                    if (loadJob.ShowOutputInLoadingScreen)
+                    {
+                        loadingInfo.text = s;
+                    }
+                });
 
             loadingScreenUI.SetActive(false);
             enableInput.Invoke();

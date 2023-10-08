@@ -9,12 +9,14 @@ namespace Celeste.Scene.Events
     public struct LoadContextArgs
     {
         public SceneSet sceneSet;
+        public bool showOutputOnLoadingScreen;
         public Context context;
         public OnContextLoadedEvent onContextLoaded;
 
-        public LoadContextArgs(SceneSet sceneSet, Context context, OnContextLoadedEvent onContextLoaded)
+        public LoadContextArgs(SceneSet sceneSet, bool showOutputOnLoadingScreen, Context context, OnContextLoadedEvent onContextLoaded)
         {
             this.sceneSet = sceneSet;
+            this.showOutputOnLoadingScreen = showOutputOnLoadingScreen;
             this.context = context;
             this.onContextLoaded = onContextLoaded;
         }
