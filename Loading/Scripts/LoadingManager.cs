@@ -28,7 +28,7 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
-            loadingInfo.text = "Loading...";
+            loadingInfo.text = "";
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
@@ -55,7 +55,7 @@ namespace DnD.Core.Loading
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
-            loadingInfo.text = "Loading...";
+            loadingInfo.text = "";
 
             yield return loadJob.Execute(
                 (progress) => progressBar.value = progress, 
