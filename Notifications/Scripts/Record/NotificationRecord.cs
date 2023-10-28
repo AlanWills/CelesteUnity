@@ -64,10 +64,19 @@ namespace Celeste.Notifications.Record
 
         public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
-            if (notification.NotificationChannelEnabled)
+            if (!impl.PermissionsGranted)
             {
-                impl.ScheduleNotification(notification, dateTimeOffset.ToLocalTime(), intentData);
+                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to permissions not granted.");
+                return;
             }
+
+            if (!notification.NotificationChannelEnabled)
+            {
+                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to channel {notification.NotificationChannelID} not being enabled.");
+                return;
+            }
+
+            impl.ScheduleNotification(notification, dateTimeOffset.ToLocalTime(), intentData);
         }
 
         public void CancelNotification(Notification notification)

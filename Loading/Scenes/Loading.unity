@@ -183,6 +183,7 @@ MonoBehaviour:
   loadingScreenUI: {fileID: 973201051}
   progressBar: {fileID: 263588828}
   loadingInfo: {fileID: 1182838159}
+  loadingPercentage: {fileID: 470799042075967935}
   disableInput: {fileID: 11400000, guid: 4df08a0036df31b42bcc5386f44213ae, type: 2}
   enableInput: {fileID: 11400000, guid: 9cd7c5afb04e8b74ca6375f2de930860, type: 2}
 --- !u!114 &456125400
@@ -395,6 +396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasLoading
       objectReference: {fileID: 0}
+    - target: {fileID: 470799041102978853, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 470799041297308360, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -411,6 +416,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 470799041819462245, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -160
+      objectReference: {fileID: 0}
+    - target: {fileID: 470799041819462245, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 7137977504209461460, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
       propertyPath: m_fontSizeBase
       value: 36
@@ -421,3 +434,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+--- !u!114 &470799042075967935 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6160211219801991803, guid: 8c78fcf098a8fc047b96edb38e483b25, type: 3}
+  m_PrefabInstance: {fileID: 470799042075967934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

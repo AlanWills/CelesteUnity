@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -130,7 +128,17 @@ namespace Celeste.Debug.Menus
             if (!debugMenus.Contains(debugMenu))
             {
                 debugMenus.Add(debugMenu);
-                debugMenus.Sort((a, b) => b.MenuPriority - a.MenuPriority);
+                debugMenus.Sort((a, b) =>
+                { 
+                    int priorityDiff = b.MenuPriority - a.MenuPriority;
+
+                    if (priorityDiff != 0)
+                    {
+                        return priorityDiff;
+                    }
+
+                    return string.CompareOrdinal(a.DisplayName, b.DisplayName);
+                });
             }
             else
             {

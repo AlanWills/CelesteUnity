@@ -17,6 +17,7 @@ namespace DnD.Core.Loading
         [SerializeField] private GameObject loadingScreenUI;
         [SerializeField] private Slider progressBar;
         [SerializeField] private TextMeshProUGUI loadingInfo;
+        [SerializeField] private TextMeshProUGUI loadingPercentage;
 
         [Header("Events")]
         [SerializeField] private Celeste.Events.Event disableInput;
@@ -32,7 +33,11 @@ namespace DnD.Core.Loading
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
-                (progress) => progressBar.value = progress,
+                (progress) =>
+                {
+                    progressBar.value = progress;
+                    loadingPercentage.text = $"{Mathf.RoundToInt(progress * 100)}%";
+                },
                 (s) => 
                 {
                     if (loadContextArgs.showOutputOnLoadingScreen)
@@ -58,7 +63,11 @@ namespace DnD.Core.Loading
             loadingInfo.text = "";
 
             yield return loadJob.Execute(
-                (progress) => progressBar.value = progress, 
+                (progress) =>
+                {
+                    progressBar.value = progress;
+                    loadingPercentage.text = $"{Mathf.RoundToInt(progress * 100)}%";
+                },
                 (s) => 
                 {
                     if (loadJob.ShowOutputInLoadingScreen)

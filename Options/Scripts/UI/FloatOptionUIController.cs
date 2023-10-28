@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Celeste.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ namespace Celeste.Options.UI
         [Header("UI Elements")]
         [SerializeField] private TextMeshProUGUI floatOptionLabel;
         [SerializeField] private Slider floatOptionSlider;
+        [SerializeField] private SliderEvents floatOptionSliderEvents;
         [SerializeField] private TextMeshProUGUI floatOptionValue;
 
         #endregion
@@ -27,11 +29,13 @@ namespace Celeste.Options.UI
             floatOptionSlider.value = floatOption.Value;
             floatOptionValue.text = floatOption.Value.ToString();
             floatOptionSlider.onValueChanged.AddListener(OnFloatValueChanged);
+            floatOptionSliderEvents.AddOnEndEditValueCallback(OnFloatValueFinalised);
         }
 
         private void OnDisable()
         {
             floatOptionSlider.onValueChanged.RemoveListener(OnFloatValueChanged);
+            floatOptionSliderEvents.RemoveOnEndEditValueCallback(OnFloatValueFinalised);
         }
 
         #endregion
@@ -40,8 +44,12 @@ namespace Celeste.Options.UI
 
         public void OnFloatValueChanged(float newValue)
         {
+            floatOptionValue.text = newValue.ToString();
+        }
+
+        private void OnFloatValueFinalised(float newValue)
+        {
             floatOption.Value = newValue;
-            floatOptionValue.text = floatOption.Value.ToString();
         }
 
         #endregion

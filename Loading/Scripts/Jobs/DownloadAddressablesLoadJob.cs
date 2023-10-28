@@ -15,11 +15,20 @@ namespace Celeste.Loading
 
         [Tooltip("Download all of the assets marked with this addressable label.  This is not downloading a particular addressable group, but rather all assets with this label.")]
         [SerializeField] private string addressablesLabel;
+        [Tooltip("Should we still attempt to download addressables if no internet connection is detected, or skip the process entirely?")]
+        [SerializeField] private bool skipWithNoInternetConnection = true;
 
         #endregion
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
+            if (skipWithNoInternetConnection && Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                setOutput($"Skipping download of {addressablesLabel} due to no internet connection.");
+                setProgress(1);
+                yield break;
+            }
+
             // Check the download size
             {
                 Debug.Assert(!string.IsNullOrEmpty(addressablesLabel), $"No addressables key set for download job.", this);

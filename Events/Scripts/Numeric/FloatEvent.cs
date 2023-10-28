@@ -9,7 +9,8 @@ namespace Celeste.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(FloatEvent), menuName = "Celeste/Events/Numeric/Float Event")]
-    public class FloatEvent : ParameterisedEvent<float>
-    {
-    }
+    public class FloatEvent : ParameterisedEvent<float> { }
+
+    [Serializable]
+    public class GuaranteedFloatEvent : GuaranteedParameterisedEvent<FloatEvent, float> { }
 }

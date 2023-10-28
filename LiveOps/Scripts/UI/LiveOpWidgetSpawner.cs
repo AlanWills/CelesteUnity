@@ -33,8 +33,8 @@ namespace Celeste.LiveOps.UI
 
         private void TrySpawnWidget(LiveOp liveOp)
         {
-            if (!spawningWidgets.Exists(x => x.Item1 == liveOp) &&
-                !spawnedWidgets.Exists(x => x.Item1 == liveOp) &&
+            if (!spawningWidgets.Exists(x => IsSameTypeAndSubType(x.Item1, liveOp)) &&
+                !spawnedWidgets.Exists(x => IsSameTypeAndSubType(x.Item1, liveOp)) &&
                 liveOp.TryFindComponent<ILiveOpWidget>(out var widget) &&
                 liveOp.TryFindComponent<ILiveOpAssets>(out var assets))
             {
@@ -80,6 +80,11 @@ namespace Celeste.LiveOps.UI
                     spawnedWidgets.RemoveAt(index);
                 }
             }
+        }
+
+        private static bool IsSameTypeAndSubType(LiveOp lhs, LiveOp rhs)
+        {
+            return lhs.Type == rhs.Type && lhs.SubType == rhs.SubType;
         }
 
         #region Callbacks

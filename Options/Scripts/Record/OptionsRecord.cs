@@ -1,6 +1,7 @@
 ﻿using Celeste.Application;
 using Celeste.DataStructures;
 using Celeste.Parameters;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,10 +33,10 @@ namespace Celeste.Options
         [SerializeField] private BoolValue isMobilePlatform;
         [SerializeField] private Events.Event saveOptions;
 
-        private List<BoolOption> boolOptions = new List<BoolOption>();
-        private List<FloatOption> floatOptions = new List<FloatOption>();
-        private List<IntOption> intOptions = new List<IntOption>();
-        private List<StringOption> stringOptions = new List<StringOption>();
+        [NonSerialized] private List<BoolOption> boolOptions = new List<BoolOption>();
+        [NonSerialized] private List<FloatOption> floatOptions = new List<FloatOption>();
+        [NonSerialized] private List<IntOption> intOptions = new List<IntOption>();
+        [NonSerialized] private List<StringOption> stringOptions = new List<StringOption>();
 
         #endregion
 
@@ -43,6 +44,7 @@ namespace Celeste.Options
         {
             boolOption.SetDefaultValue(PlatformForOptions);
             boolOption.AddValueChangedCallback((args) => OnOptionChanged());
+            UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, boolOption.DisplayName) == 0), $"{nameof(BoolOption)} {boolOption.DisplayName} already exists in Options.");
             boolOptions.Add(boolOption);
         }
 
@@ -50,6 +52,7 @@ namespace Celeste.Options
         {
             floatOption.SetDefaultValue(PlatformForOptions);
             floatOption.AddValueChangedCallback((args) => OnOptionChanged());
+            UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, floatOption.DisplayName) == 0), $"{nameof(FloatOption)} {floatOption.DisplayName} already exists in Options.");
             floatOptions.Add(floatOption);
         }
 
@@ -57,6 +60,7 @@ namespace Celeste.Options
         {
             intOption.SetDefaultValue(PlatformForOptions);
             intOption.AddValueChangedCallback((args) => OnOptionChanged());
+            UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, intOption.DisplayName) == 0), $"{nameof(IntOption)} {intOption.DisplayName} already exists in Options.");
             intOptions.Add(intOption);
         }
 
@@ -64,6 +68,7 @@ namespace Celeste.Options
         {
             stringOption.SetDefaultValue(PlatformForOptions);
             stringOption.AddValueChangedCallback((args) => OnOptionChanged());
+            UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, stringOption.DisplayName) == 0), $"{nameof(StringOption)} {stringOption.DisplayName} already exists in Options.");
             stringOptions.Add(stringOption);
         }
 
