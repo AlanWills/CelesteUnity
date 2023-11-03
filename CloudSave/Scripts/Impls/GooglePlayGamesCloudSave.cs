@@ -215,8 +215,8 @@ namespace Celeste.CloudSave
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
             savedGameClient.OpenWithAutomaticConflictResolution(
                 saveGameName,
-                DataSource.ReadCacheOrNetwork,
-                ConflictResolutionStrategy.UseLongestPlaytime,
+                DataSource.ReadNetworkOnly,
+                ConflictResolutionStrategy.UseMostRecentlySaved,
                 (SavedGameRequestStatus status, ISavedGameMetadata metadata) =>
                 {
                     if (status == SavedGameRequestStatus.Success)

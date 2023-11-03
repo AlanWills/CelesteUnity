@@ -19,7 +19,7 @@ namespace Celeste.Persistence.Snapshots
             // Add any snapshots in persistent data
             DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath);
 
-            foreach (FileInfo snapshotFile in directoryInfo.EnumerateFiles(".datasnapshot", SearchOption.AllDirectories))
+            foreach (FileInfo snapshotFile in directoryInfo.EnumerateFiles("*.datasnapshot", SearchOption.AllDirectories))
             {
                 string snapshotText = File.ReadAllText(snapshotFile.FullName);
                 var deserializeResult = PersistenceUtility.Deserialize<DataSnapshot>(snapshotText);
@@ -27,6 +27,8 @@ namespace Celeste.Persistence.Snapshots
 
                 if (!deserializeResult.Item1.Failed)
                 {
+                    string snapshotFileName = snapshotFile.Name;
+                    deserializeResult.Item2.name = snapshotFileName.Remove(snapshotFileName.Length - snapshotFile.Extension.Length);
                     snapshotRecord.RuntimeSnapshots.AddItem(deserializeResult.Item2);
                 }
             }

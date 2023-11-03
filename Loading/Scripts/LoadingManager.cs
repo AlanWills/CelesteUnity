@@ -18,6 +18,7 @@ namespace DnD.Core.Loading
         [SerializeField] private Slider progressBar;
         [SerializeField] private TextMeshProUGUI loadingInfo;
         [SerializeField] private TextMeshProUGUI loadingPercentage;
+        [SerializeField] private string loadingPercentageFormat = "Loading... {0}%";
 
         [Header("Events")]
         [SerializeField] private Celeste.Events.Event disableInput;
@@ -36,7 +37,7 @@ namespace DnD.Core.Loading
                 (progress) =>
                 {
                     progressBar.value = progress;
-                    loadingPercentage.text = $"{Mathf.RoundToInt(progress * 100)}%";
+                    loadingPercentage.text = string.Format(loadingPercentageFormat, Mathf.RoundToInt(progress * 100));
                 },
                 (s) => 
                 {
@@ -66,7 +67,7 @@ namespace DnD.Core.Loading
                 (progress) =>
                 {
                     progressBar.value = progress;
-                    loadingPercentage.text = $"{Mathf.RoundToInt(progress * 100)}%";
+                    loadingPercentage.text = string.Format(loadingPercentageFormat, Mathf.RoundToInt(progress * 100));
                 },
                 (s) => 
                 {

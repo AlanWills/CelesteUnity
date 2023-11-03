@@ -78,15 +78,31 @@ namespace Celeste.LiveOps
                 UnityEngine.Debug.LogAssertion($"Unknown liveop state found.  This is a serious error, so the liveop will probably not be scheduled...");
                 yield break;
             }
-            else if (liveOps.Exists(x =>
+
+            if (liveOps.Exists(x =>
                 x.Type == liveOpType &&
                 x.SubType == liveOpSubType &&
                 x.StartTimestamp == startTimestamp))
             {
-                UnityEngine.Debug.Log($"Live Op with id {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} is already added to the liveops record and will not be re-added.");
+                UnityEngine.Debug.Log($"Live Op with type {liveOpDTO.type} and subtype {liveOpDTO.subType} starting at timestamp {liveOpDTO.startTimestamp} is already added to the liveops record and will not be re-added.");
                 yield break;
             }
-            else if (liveOpState == LiveOpState.Finished)
+
+            if (liveOpDTO.isRecurring)
+            {
+                for (int i = 0, n = NumLiveOps; i < n; ++i)
+                {
+                    LiveOp lo = liveOps[i];
+
+                    if (lo.Type == liveOpDTO.type && lo.SubType == liveOpDTO.subType)
+                    {
+                        UnityEngine.Debug.Log($"Recurring Live Op with type {liveOpDTO.type} and subtype {liveOpDTO.subType} already has a matching liveop added to the liveops record and so will not be added.  Only one instance of a recurring liveop can exist in the record.");
+                        yield break;
+                    }
+                }
+            }
+
+            if (liveOpState == LiveOpState.Finished)
             {
                 UnityEngine.Debug.Log($"Live Op with type {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} has finished, so will not be added.");
 
