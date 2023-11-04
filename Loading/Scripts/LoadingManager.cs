@@ -15,6 +15,7 @@ namespace DnD.Core.Loading
 
         [Header("UI")]
         [SerializeField] private GameObject loadingScreenUI;
+        [SerializeField] private GameObject loadingOverlayUI;
         [SerializeField] private Slider progressBar;
         [SerializeField] private TextMeshProUGUI loadingInfo;
         [SerializeField] private TextMeshProUGUI loadingPercentage;
@@ -34,11 +35,7 @@ namespace DnD.Core.Loading
 
             yield return loadContextArgs.sceneSet.LoadAsync(
                 LoadSceneMode.Single,
-                (progress) =>
-                {
-                    progressBar.value = progress;
-                    loadingPercentage.text = string.Format(loadingPercentageFormat, Mathf.RoundToInt(progress * 100));
-                },
+                SetProgress,
                 (s) => 
                 {
                     if (loadContextArgs.showOutputOnLoadingScreen)
@@ -57,18 +54,14 @@ namespace DnD.Core.Loading
             enableInput.Invoke();
         }
 
-        private IEnumerator ExecuteLoadJob(LoadJob loadJob)
+        private IEnumerator ExecuteLoadJobWithScreen(LoadJob loadJob)
         {
             disableInput.Invoke();
             loadingScreenUI.SetActive(true);
             loadingInfo.text = "";
 
             yield return loadJob.Execute(
-                (progress) =>
-                {
-                    progressBar.value = progress;
-                    loadingPercentage.text = string.Format(loadingPercentageFormat, Mathf.RoundToInt(progress * 100));
-                },
+                SetProgress,
                 (s) => 
                 {
                     if (loadJob.ShowOutputInLoadingScreen)
@@ -81,6 +74,25 @@ namespace DnD.Core.Loading
             enableInput.Invoke();
         }
 
+        private IEnumerator ExecuteLoadJobWithOverlay(LoadJob loadJob)
+        {
+            disableInput.Invoke();
+            loadingOverlayUI.SetActive(true);
+
+            yield return loadJob.Execute(
+                SetProgress,
+                (s) => { });
+
+            loadingOverlayUI.SetActive(false);
+            enableInput.Invoke();
+        }
+
+        private void SetProgress(float progress)
+        {
+            progressBar.value = progress;
+            loadingPercentage.text = string.Format(loadingPercentageFormat, Mathf.RoundToInt(progress * 100));
+        }
+
         #region Callbacks
 
         public void OnLoadContext(LoadContextArgs loadContextArgs)
@@ -88,9 +100,14 @@ namespace DnD.Core.Loading
             StartCoroutine(LoadContext(loadContextArgs));
         }
 
-        public void OnExecuteLoadJob(LoadJob loadJob)
+        public void OnExecuteLoadJobWithScreen(LoadJob loadJob)
         {
-            StartCoroutine(ExecuteLoadJob(loadJob));
+            StartCoroutine(ExecuteLoadJobWithScreen(loadJob));
+        }
+
+        public void OnExecuteLoadJobWithOverlay(LoadJob loadJob)
+        {
+            StartCoroutine(ExecuteLoadJobWithOverlay(loadJob));
         }
 
         #endregion

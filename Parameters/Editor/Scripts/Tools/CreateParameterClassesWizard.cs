@@ -3,22 +3,22 @@ using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Events.Tools
+namespace CelesteEditor.Parameters
 {
-    public class CreateEventClassesWizard : ScriptableWizard
+    public class CreateParameterClassesWizard : ScriptableWizard
     {
         #region Properties and Fields
 
-        [SerializeField, InlineDataInInspector] private CreateEventClassesArgs args;
+        [SerializeField, InlineDataInInspector] private CreateParameterClassesArgs args;
 
         #endregion
 
         #region Menu Item
 
-        [MenuItem("Celeste/Tools/Code Generation/Create Event Classes")]
-        public static void ShowCreateEventClassesWizard()
+        [MenuItem("Celeste/Tools/Code Generation/Create Parameter Classes")]
+        public static void ShowCreateParameterClassesWizard()
         {
-            DisplayWizard<CreateEventClassesWizard>("Create Event Classes", "Close", "Create");
+            DisplayWizard<CreateParameterClassesWizard>("Create Parameter Classes", "Close", "Create");
         }
 
         #endregion
@@ -27,7 +27,7 @@ namespace CelesteEditor.Events.Tools
 
         private void OnEnable()
         {
-            args = new CreateEventClassesArgs();
+            args = new CreateParameterClassesArgs();
             args.SetDefaultValues();
 
             if (string.IsNullOrEmpty(args.directoryPath))
@@ -47,7 +47,7 @@ namespace CelesteEditor.Events.Tools
 
         private void OnWizardOtherButton()
         {
-            CreateEventClasses.Generate(args);
+            CreateParameterClasses.Generate(args);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

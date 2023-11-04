@@ -4,6 +4,7 @@
     "references": [
         "Celeste.Parameters",
         "Celeste.Events",
+        "Celeste.Tools",
         "Celeste.Tools.Editor",
         "Celeste.DataStructures.Editor"
     ],

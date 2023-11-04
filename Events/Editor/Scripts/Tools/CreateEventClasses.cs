@@ -8,7 +8,7 @@ namespace CelesteEditor.Events.Tools
     [Serializable]
     public struct CreateEventClassesArgs
     {
-        [Tooltip("The path of the directory where thescript files will be created")] public string directoryPath;
+        [Tooltip("The path of the directory where the script files will be created relative to the root of the project")] public string directoryPath;
         [Tooltip("The name of the event type that will be created.  Appropriate suffixes like 'Event' will be automatically added")] public string typeName;
         [Tooltip("The full qualified namespace name that the classes will be created in")] public string namespaceName;
         [Tooltip("The name of the type that corresponds to the typed argument of the event")] public string arguments;
@@ -34,8 +34,8 @@ namespace CelesteEditor.Events.Tools
             string namespaceName = args.namespaceName;
             string typeName = args.typeName;
             string arguments = args.arguments;
-            string assetDatabasePath = Application.dataPath;
-            string parentDirectoryPath = !string.IsNullOrEmpty(args.directoryPath) ? Path.Combine(assetDatabasePath, args.directoryPath) : assetDatabasePath;
+            string projectRootPath = Application.dataPath.Remove(0, "Assets/".Length);
+            string parentDirectoryPath = !string.IsNullOrEmpty(args.directoryPath) ? Path.Combine(projectRootPath, args.directoryPath) : projectRootPath;
             Directory.CreateDirectory(parentDirectoryPath);
 
             string capitalisedTypeName = $"{char.ToUpper(typeName[0])}{typeName.Substring(1)}";
