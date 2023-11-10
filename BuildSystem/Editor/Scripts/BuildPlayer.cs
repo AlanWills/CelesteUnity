@@ -2,7 +2,7 @@
 
 namespace CelesteEditor.BuildSystem
 {
-    public static class BuildPlayer
+    public class BuildPlayer
     {
         #region Android
 
