@@ -277,7 +277,7 @@ namespace CelesteEditor.BuildSystem
         {
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = BuildOptions;
-            buildPlayerOptions.locationPathName = Path.Combine(BuildDirectory, OutputName);
+            buildPlayerOptions.locationPathName = AssetUtility.EnsureDelimitersCorrect(Path.Combine(BuildDirectory, OutputName));
             buildPlayerOptions.scenes = EditorBuildSettings.scenes.Select(x => x.path).ToArray();
             buildPlayerOptions.target = BuildTarget;
             buildPlayerOptions.targetGroup = BuildTargetGroup;
