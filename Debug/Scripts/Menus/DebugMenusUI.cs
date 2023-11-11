@@ -25,7 +25,6 @@ namespace Celeste.Debug.Menus
         [SerializeField] private RectTransform debugGuiDrawArea;
         [SerializeField] private float screenWidthDivisor = 600f;
         [SerializeField] private float screenHeightDivisor = 600f;
-        [SerializeField] private float screenOffset = 0;
 
         [NonSerialized] private List<DebugMenu> debugMenus = new List<DebugMenu>();
         [NonSerialized] private Vector2 scrollPosition;

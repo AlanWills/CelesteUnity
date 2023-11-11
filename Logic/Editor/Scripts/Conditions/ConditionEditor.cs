@@ -1,4 +1,5 @@
 ﻿using Celeste.Logic;
+using Celeste.Objects;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,9 +12,9 @@ namespace CelesteEditor.Logic
         {
             serializedObject.Update();
 
-            if (GUILayout.Button("Initialize"))
+            if ((target is IEditorInitializable) && GUILayout.Button("Initialize"))
             {
-                (target as Condition).Initialize();
+                (target as IEditorInitializable).Editor_Initialize();
             }
 
             OnInspectorGUIImpl(serializedObject);

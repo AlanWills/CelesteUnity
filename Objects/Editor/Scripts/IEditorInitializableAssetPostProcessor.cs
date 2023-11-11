@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace CelesteEditor.Objects
 {
-    public class IInitializableAssetPostProcessor : AssetPostprocessor
+    public class IEditorInitializableAssetPostProcessor : AssetPostprocessor
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             for (int i = 0, n = importedAssets != null ? importedAssets.Length : 0; i < n; i++)
             {
-                IInitializable initializable = AssetDatabase.LoadAssetAtPath<ScriptableObject>(importedAssets[i]) as IInitializable;
+                IEditorInitializable initializable = AssetDatabase.LoadAssetAtPath<ScriptableObject>(importedAssets[i]) as IEditorInitializable;
                 
                 if (initializable != null)
                 {
-                    initializable.Initialize();
+                    initializable.Editor_Initialize();
                 }
             }
         }

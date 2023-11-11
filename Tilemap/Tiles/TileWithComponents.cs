@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 namespace Celeste.Tilemaps.Tiles
 {
     [CreateAssetMenu(fileName = nameof(TileWithComponents), menuName = "Celeste/Tiles/Tile With Components")]
-    public class TileWithComponents : TileBase, IComponentContainerUsingTemplates<TileComponent>, IInitializable
+    public class TileWithComponents : TileBase, IComponentContainerUsingTemplates<TileComponent>, IEditorInitializable
     {
         #region Properties and Fields
 
@@ -25,13 +25,13 @@ namespace Celeste.Tilemaps.Tiles
 
         #endregion
 
-        public void Initialize()
+        public void Editor_Initialize()
         {
+#if UNITY_EDITOR
             if (components == null)
             {
                 components = CreateInstance<TileComponents>();
                 components.name = $"{name}_Components";
-#if UNITY_EDITOR
                 UnityEditor.AssetDatabase.AddObjectToAsset(components, this);
 #endif
             }

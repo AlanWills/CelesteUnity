@@ -1,14 +1,15 @@
 ﻿using Celeste.Objects;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Celeste.Parameters.Constraints
 {
     [CreateAssetMenu(fileName = "Int Max Value", menuName = "Celeste/Constraints/Numeric/Int Max Value")]
-    public class IntMaxValueConstraint : IntConstraint, IInitializable
+    public class IntMaxValueConstraint : IntConstraint, IEditorInitializable
     {
         [SerializeField] private IntReference maxValue;
 
-        public void Initialize()
+        public void Editor_Initialize()
         {
 #if UNITY_EDITOR
             if (maxValue == null)

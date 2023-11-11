@@ -4,11 +4,11 @@ using UnityEngine;
 namespace Celeste.Parameters.Constraints
 {
     [CreateAssetMenu(fileName = "Int Min Value", menuName = "Celeste/Constraints/Numeric/Int Min Value")]
-    public class IntMinValueConstraint : IntConstraint, IInitializable
+    public class IntMinValueConstraint : IntConstraint, IEditorInitializable
     {
         [SerializeField] private IntReference minValue;
 
-        public void Initialize()
+        public void Editor_Initialize()
         {
 #if UNITY_EDITOR
             if (minValue == null)

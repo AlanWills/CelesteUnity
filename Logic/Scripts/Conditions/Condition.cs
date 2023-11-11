@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Celeste.Logic
 {
     [Serializable]
-    public abstract class Condition : ScriptableObject, ICopyable<Condition>, IInitializable
+    public abstract class Condition : ScriptableObject, ICopyable<Condition>
     {
         #region Properties and Fields
 

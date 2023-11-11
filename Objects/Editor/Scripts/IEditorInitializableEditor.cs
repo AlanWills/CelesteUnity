@@ -4,20 +4,20 @@ using UnityEngine;
 
 namespace CelesteEditor.Objects
 {
-    public class IInitializableEditor : Editor
+    public class IEditorInitializableEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            DrawIInitializable(target as IInitializable);
+            DrawIInitializable(target as IEditorInitializable);
 
             base.OnInspectorGUI();
         } 
     
-        public static void DrawIInitializable(IInitializable initializable)
+        public static void DrawIInitializable(IEditorInitializable initializable)
         {
             if (GUILayout.Button("Initialize"))
             {
-                initializable.Initialize();
+                initializable.Editor_Initialize();
             }
         }      
     }

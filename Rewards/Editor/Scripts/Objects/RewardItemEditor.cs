@@ -5,7 +5,7 @@ using UnityEditor;
 namespace CelesteEditor.Rewards.Objects
 {
     [CustomEditor(typeof(RewardItem))]
-    public class RewardItemEditor : IInitializableEditor
+    public class RewardItemEditor : IEditorInitializableEditor
     {
     }
 }

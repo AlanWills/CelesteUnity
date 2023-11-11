@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Rewards.Objects
 {
-    public abstract class RewardItem : ScriptableObject, IIntGuid, IInitializable
+    public abstract class RewardItem : ScriptableObject, IIntGuid, IEditorInitializable
     {
         #region Properties and Fields
 
@@ -27,21 +27,24 @@ namespace Celeste.Rewards.Objects
 
         public void Initialize()
         {
+            Editor_Initialize();
+        }
+
+        public void Editor_Initialize()
+        {
             if (quantity == null)
             {
                 quantity = CreateInstance<IntReference>();
                 quantity.name = "RewardQuantity";
                 quantity.hideFlags = HideFlags.HideInHierarchy;
+
 #if UNITY_EDITOR
-                UnityEditor.AssetDatabase.AddObjectToAsset(quantity, this);
+                if (!Application.isPlaying)
+                {
+                    UnityEditor.AssetDatabase.AddObjectToAsset(quantity, this);
+                }
 #endif
             }
-            
-            DoInitialize();
-        }
-
-        protected virtual void DoInitialize()
-        {
         }
 
         public abstract void AwardReward(int multiplier);
