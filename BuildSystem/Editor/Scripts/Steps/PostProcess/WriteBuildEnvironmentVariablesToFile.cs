@@ -14,6 +14,9 @@ namespace CelesteEditor.BuildSystem.Steps
 
         [SerializeField] private string buildEnvironmentVariablesFileName = "BUILD_ENV_VARS.txt";
 
+        [SerializeField] private bool writeBuildDirectoryVariable = true;
+        [SerializeField, ShowIf(nameof(writeBuildDirectoryVariable))] private string buildDirectoryVariableName = "BUILD_DIRECTORY";
+
         [SerializeField] private bool writeBuildLocationVariable = true;
         [SerializeField, ShowIf(nameof(writeBuildLocationVariable))] private string buildLocationVariableName = "BUILD_LOCATION";
 
@@ -21,18 +24,35 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField, ShowIf(nameof(writeVersionVariable))] private string versionVariableName = "BUILD_VERSION";
 
         [SerializeField] private bool writeUploadDirectoryVariable = true;
-        [SerializeField, ShowIf(nameof(writeUploadDirectoryVariable))] private string uploadDirectoryVariableName = "BUILD_GDRIVE_UPLOAD_DIRECTORY";
+        [SerializeField, ShowIf(nameof(writeUploadDirectoryVariable))] private string uploadDirectoryVariableName = "BUILD_UPLOAD_DIRECTORY";
 
         #endregion
 
         public override void Execute(BuildPlayerOptions buildPlayerOptions, BuildReport result, PlatformSettings platformSettings)
         {
             StringBuilder buildInfo = new StringBuilder();
-            buildInfo.Append($"{buildLocationVariableName}={buildPlayerOptions.locationPathName}");
-            buildInfo.AppendLine();
-            buildInfo.Append($"{versionVariableName}={platformSettings.Version}");
-            buildInfo.AppendLine();
-            buildInfo.Append($"{uploadDirectoryVariableName}={platformSettings.BuildUploadURL}");
+            if (writeBuildDirectoryVariable)
+            {
+                buildInfo.Append($"{buildDirectoryVariableName}={platformSettings.BuildDirectory}");
+                buildInfo.AppendLine();
+            }
+
+            if (writeBuildLocationVariable)
+            {
+                buildInfo.Append($"{buildLocationVariableName}={buildPlayerOptions.locationPathName}");
+                buildInfo.AppendLine();
+            }
+
+            if (writeVersionVariable)
+            {
+                buildInfo.Append($"{versionVariableName}={platformSettings.Version}");
+                buildInfo.AppendLine();
+            }
+
+            if (writeUploadDirectoryVariable)
+            {
+                buildInfo.Append($"{uploadDirectoryVariableName}={platformSettings.BuildUploadURL}");
+            }
 
             platformSettings.InjectBuildEnvVars(buildInfo);
 

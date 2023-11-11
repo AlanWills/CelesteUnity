@@ -53,13 +53,13 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         [Tooltip("A URL that can be passed to a build system to allow uploading of the output build.")]
-        private string gDriveBuildUploadDirectory;
+        private string buildUploadURL;
         public string BuildUploadURL
         {
-            get { return Resolve(gDriveBuildUploadDirectory); }
+            get { return Resolve(buildUploadURL); }
             protected set
             {
-                gDriveBuildUploadDirectory = value;
+                buildUploadURL = value;
                 EditorUtility.SetDirty(this);
             }
         }

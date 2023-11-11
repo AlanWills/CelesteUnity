@@ -24,9 +24,17 @@ namespace CelesteEditor.BuildSystem.Steps
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
         {
             StringBuilder locationInfo = new StringBuilder();
-            locationInfo.Append($"{addressablesBuildDirectoryVariableName}={platformSettings.AddressablesBuildDirectory}");
-            locationInfo.AppendLine();
-            locationInfo.Append($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+
+            if (writeAddressablesBuildDirectoryVariable)
+            {
+                locationInfo.Append($"{addressablesBuildDirectoryVariableName}={platformSettings.AddressablesBuildDirectory}");
+                locationInfo.AppendLine();
+            }
+
+            if (writeAddressablesUploadURLVariable)
+            {
+                locationInfo.Append($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+            }
 
             if (!Directory.Exists(platformSettings.AddressablesBuildDirectory))
             {
