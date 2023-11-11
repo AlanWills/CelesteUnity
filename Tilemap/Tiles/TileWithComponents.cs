@@ -33,8 +33,8 @@ namespace Celeste.Tilemaps.Tiles
                 components = CreateInstance<TileComponents>();
                 components.name = $"{name}_Components";
                 UnityEditor.AssetDatabase.AddObjectToAsset(components, this);
-#endif
             }
+#endif
         }
 
         #region TileBase Overrides
