@@ -5,6 +5,7 @@ using Celeste.Persistence.Utility;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Persistence
@@ -13,6 +14,13 @@ namespace Celeste.Persistence
         where TManager : PersistentSceneManager<TManager, TDTO>
         where TDTO : class  // Need for Odin to pick up AOT formatter for serialization
     {
+        private enum SaveState
+        {
+            None,
+            Pending,
+            InProgress
+        }
+
         #region Properties and Fields
 
         string IInterestedInSnapshots.UnpackPath => FileName;
@@ -27,6 +35,7 @@ namespace Celeste.Persistence
         [SerializeField] protected bool loadOnAwake = true;
         [SerializeField, HideIf(nameof(loadOnAwake))] protected bool loadOnStart = false;
 
+        private SaveState currentSaveState = SaveState.None;
         private bool saveRequested = false;
         private Semaphore loadingLock = new Semaphore();
 
@@ -109,10 +118,28 @@ namespace Celeste.Persistence
 
         public void Save()
         {
-            if (!loadingLock.Locked && !saveRequested)
+            if (loadingLock.Locked)
             {
-                StartCoroutine(DoSave());
+                UnityEngine.Debug.LogWarning($"Ignoring save request as loading is in progress.  " +
+                    $"You can use {nameof(DelayedSave)} if you really need to save immediately, but it's likely you're accidentally requesting a save during loading.");
+                return;
             }
+
+            if (currentSaveState == SaveState.InProgress)
+            {
+                // We've already begun the process of saving, so cannot do so again, but we will mark that we should re-save immediately after we are done saving
+                saveRequested = true;
+                return;
+            }
+
+            if (currentSaveState == SaveState.Pending)
+            {
+                // Our save hasn't started, but will do so at the end of the frame, so no need to re-request the save
+                return;
+            }
+
+            // We can begin our save process, so let's do that!
+            StartCoroutine(DoSave());
         }
 
         public void DelayedSave()
@@ -127,11 +154,38 @@ namespace Celeste.Persistence
 
         private IEnumerator DoSave()
         {
-            saveRequested = true;
+            currentSaveState = SaveState.Pending;
 
+            // We wait until the end of frame, just to buy a bit more time
             yield return new WaitForEndOfFrame();
 
-            SaveImpl();
+            currentSaveState = SaveState.Pending;
+
+            Task saveTask = SaveAsync();
+
+            while (!saveTask.IsCompleted)
+            {
+                yield return null;
+            }
+
+            currentSaveState = SaveState.None;
+
+            if (saveTask.IsCompletedSuccessfully)
+            {
+                UnityEngine.Debug.Log($"{name} saved successfully");
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}");
+            }
+
+            if (saveRequested)
+            {
+                // We've marked, whilst this save was occurring, that we wanted to save again.  We will do so now.
+                // Possible optimisation here of checking if the current save is the same as the last save, but that might be overkill
+                saveRequested = false;
+                Save();
+            }
         }
 
         private IEnumerator DoDelayedSave()
@@ -144,13 +198,10 @@ namespace Celeste.Persistence
             yield return DoSave();
         }
 
-        private void SaveImpl()
+        private async Task SaveAsync()
         {
             TDTO serializedInstance = Serialize();
-            PersistenceUtility.Save(FilePath, serializedInstance);
-            HudLog.LogInfo($"{name} saved");
-
-            saveRequested = false;
+            await PersistenceUtility.SaveAsync(FilePath, serializedInstance);
         }
 
         protected virtual void OnSaveStart() { }

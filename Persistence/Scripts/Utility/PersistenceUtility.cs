@@ -2,6 +2,7 @@ using Celeste.Tools;
 using FullSerializer;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Persistence
@@ -63,6 +64,40 @@ namespace Celeste.Persistence
                 {
                     string jsonData = fsJsonPrinter.PrettyJson(data);
                     File.WriteAllText(filePath, jsonData);
+                }
+            }
+#endif
+
+            // Needed to deal with browser async saving
+            WebGLUtils.SyncFiles();
+        }
+
+        public static async Task SaveAsync<T>(string filePath, T persistenceDTO)
+        {
+            // Is async file saving possible in WebGL?
+
+            // Save binary file
+            {
+                // Serialize the data
+                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+
+                if (result.Succeeded)
+                {
+                    string jsonData = fsJsonPrinter.CompressedJson(data);
+                    await File.WriteAllTextAsync(filePath, jsonData);
+                }
+            }
+
+#if UNITY_EDITOR
+            // Save debug human readable file
+            {
+                string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
+                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+
+                if (result.Succeeded)
+                {
+                    string jsonData = fsJsonPrinter.PrettyJson(data);
+                    await File.WriteAllTextAsync(filePath, jsonData);
                 }
             }
 #endif
