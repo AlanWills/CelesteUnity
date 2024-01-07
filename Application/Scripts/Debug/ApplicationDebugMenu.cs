@@ -9,6 +9,8 @@ namespace Celeste.Application.Debug
         protected override void OnDrawMenu()
         {
             GUILayout.Label($"Version: {UnityEngine.Application.version}");
+            GUILayout.Label($"Screen Resolution: {Screen.width} x {Screen.height}");
+            GUILayout.Label($"Screen Save Area: {Screen.safeArea}");
         }
     }
 }

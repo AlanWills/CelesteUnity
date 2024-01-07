@@ -40,6 +40,14 @@ namespace Celeste.Options
 
         #endregion
 
+        public void Initialize()
+        {
+            boolOptions.Clear();
+            floatOptions.Clear();
+            intOptions.Clear();
+            stringOptions.Clear();
+        }
+
         public void AddOption(BoolOption boolOption)
         {
             boolOption.SetDefaultValue(PlatformForOptions);

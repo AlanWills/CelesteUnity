@@ -81,7 +81,7 @@ namespace Celeste.CloudSave
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
                 HudLog.LogWarning("Internet is not reachable, so reading of Cloud Save will be skipped...");
-                onSaveGameReadFailed.Invoke(SaveRequestStatus.TimeoutError);
+                onSaveGameReadFailed?.Invoke(SaveRequestStatus.TimeoutError);
                 yield break;
             }
 

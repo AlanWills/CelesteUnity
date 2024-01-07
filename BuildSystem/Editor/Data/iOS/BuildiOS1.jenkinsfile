@@ -1,0 +1,111 @@
+UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2021.3.22f1/Editor/Unity.exe"
+
+pipeline 
+{
+    agent any
+    stages 
+    {
+        stage('Setup Parameters') 
+        {
+            steps 
+            {
+                script 
+                { 
+                    properties([
+                        buildDiscarder(
+                            logRotator(
+                                artifactDaysToKeepStr: '', 
+                                artifactNumToKeepStr: '', 
+                                numToKeepStr: '1')), 
+                        parameters([
+                            choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'), 
+                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
+                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
+                        ])
+                    ])
+                }
+            }
+        }
+        stage('Build Unity Project')
+        {
+            steps
+            {
+                buildName "iOS-" + CONFIGURATION
+                script
+                {
+                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "iOSPlayer"
+                    projectPath = WORKSPACE.replace('\\', '/')
+                }
+                sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
+                script 
+                {
+                    readProperties(file: "${env.WORKSPACE}/Builds/iOS/${params.CONFIGURATION}/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                }
+                buildName "iOS-" + CONFIGURATION + "-" + env.BUILD_VERSION
+                script 
+                {
+                    readProperties(file: "${env.WORKSPACE}/ServerData/iOS/${params.CONFIGURATION}/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
+                }
+            }
+        }
+        stage('Build iOS Project')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS"
+                }
+            }
+            steps
+            {
+                bat 'call "C:\Users\alawi\iOS Project Builder for Unity\build.cmd" "${env.WORKSPACE}\${env.BUILD_LOCATION}" -xcname "Unity-iPhone" -xcpname "iPhone-target" -xcconf "Release" -archs "arm64" -multicore -autoresolve -strip bitcode -pngcrush -ipa -identity "ios_distribution.cer:celeste_games.key:favouriteprimes111929" -provision "Double_Dutch_App_Store_Provisioning_Profile.mobileprovision"'
+            }
+        }
+        stage('Commit Version')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS"
+                }
+            }
+            steps
+            {
+                sh "git add ."
+                sh 'git commit --allow-empty -m "Built iOS and updating version"'
+                sh "git push --set-upstream origin ${env.GIT_BRANCH}"
+            }
+        }
+        stage('Upload Build')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD
+                }
+            }
+            steps
+            {
+                bat 'call "C:\Users\alawi\iOS Project Builder for Unity\upload.cmd" -v "${env.WORKSPACE}\${env.BUILD_LOCATION}\Packages\DoubleDutch.ipa" -asclogin "alawills@googlemail.com" -ascpassword "dkqo-aiog-high-jtpd" -ascprovider ""'
+            }
+        }
+        stage('Upload Assets')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS
+                }
+            }
+            steps
+            {
+                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.ASSETS_SOURCE}/*"
+                sh "rm -r ${env.ASSETS_SOURCE}"
+            }
+        }
+    }   
+}

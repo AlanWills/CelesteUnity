@@ -9,11 +9,11 @@ namespace CelesteEditor.Assets.GUI
     [InitializeOnLoad]
     internal static class AssetHeaderGUI
     {
-        private static GUIContent addressableAssetGroupText;
+        private static readonly GUIContent s_AddressableAssetGroupText;
 
         static AssetHeaderGUI()
         {
-            addressableAssetGroupText = new GUIContent("Addressable Group");
+            s_AddressableAssetGroupText = new GUIContent("Addressable Group");
             Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
         }
 
@@ -53,6 +53,11 @@ namespace CelesteEditor.Assets.GUI
                 return;
             }
 
+            if (!AssetEditorSettings.GetOrCreateSettings().showAddressableGroupSelection)
+            {
+                return;
+            }
+
             var targetAddressableInfo = target.GetAddressableInfo();
 
             if (targetAddressableInfo == null)
@@ -71,7 +76,7 @@ namespace CelesteEditor.Assets.GUI
             }
 
             int selectedGroupIndex = Array.FindIndex(groupNames, x => string.CompareOrdinal(x, selectedGroupName) == 0);
-            int newSelectedGroupIndex = EditorGUILayout.Popup(addressableAssetGroupText, selectedGroupIndex, groupNames);
+            int newSelectedGroupIndex = EditorGUILayout.Popup(s_AddressableAssetGroupText, selectedGroupIndex, groupNames);
 
             if (selectedGroupIndex != newSelectedGroupIndex)
             {

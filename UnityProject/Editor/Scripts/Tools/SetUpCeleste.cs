@@ -21,6 +21,7 @@ using Celeste.LiveOps.Settings;
 using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
+using UnityEngine.Serialization;
 
 namespace CelesteEditor.UnityProject
 {
@@ -39,6 +40,25 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnAndroid;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOniOS;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnWebGL;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))]
+        [Tooltip("If true, copies of Common template jenkins files will be added to the project for customisation and usage")]
+        public bool useCommonJenkinsFiles;
+        [FormerlySerializedAs("useWindowsBuildJenkinsFile")]
+        [LabelWidth(300), ShowIf(nameof(runsOnWindows))]
+        [Tooltip("If true, copies of Windows template jenkins files will be added to the project for customisation and usage")]
+        public bool useWindowsBuildJenkinsFiles;
+        [FormerlySerializedAs("useAndroidBuildJenkinsFile")]
+        [LabelWidth(300), ShowIf(nameof(runsOnAndroid))]
+        [Tooltip("If true, copies of the Android template jenkins files will be added to the project for customisation and usage")]
+        public bool useAndroidBuildJenkinsFiles;
+        [FormerlySerializedAs("useiOSBuildJenkinsFile")]
+        [LabelWidth(300), ShowIf(nameof(runsOniOS))]
+        [Tooltip("If true, copies of the iOS template jenkins files will be added to the project for customisation and usage")]
+        public bool useiOSBuildJenkinsFiles;
+        [FormerlySerializedAs("useWebGLBuildJenkinsFile")]
+        [LabelWidth(300), ShowIf(nameof(runsOnWebGL))]
+        [Tooltip("If true, copies of the WebGL template jenkins files will be added to the project for customisation and usage")]
+        public bool useWebGLBuildJenkinsFiles;
 
         [Header("Code")]
         [LabelWidth(300)] public string rootNamespaceName;
@@ -66,6 +86,11 @@ namespace CelesteEditor.UnityProject
             runsOnAndroid = true;
             runsOniOS = true;
             runsOnWebGL = true;
+            useCommonJenkinsFiles = true;
+            useWindowsBuildJenkinsFiles = true;
+            useAndroidBuildJenkinsFiles = true;
+            useiOSBuildJenkinsFiles = true;
+            useWebGLBuildJenkinsFiles = true;
 
             usesAddressables = true;
             usesBakedGroupsWithRemoteOverride = true;
@@ -121,6 +146,31 @@ namespace CelesteEditor.UnityProject
             if (parameters.runsOnWebGL)
             {
                 AllPlatformSettings.GetOrCreateSettings().CreateWebGLSettings();
+            }
+
+            if (parameters.useCommonJenkinsFiles)
+            {
+                AssetUtility.CreateFolder(BuildSystemConstants.FOLDER_PATH);
+            }
+
+            if (parameters.useWindowsBuildJenkinsFiles)
+            {
+                
+            }
+
+            if (parameters.useAndroidBuildJenkinsFiles)
+            {
+                
+            }
+
+            if (parameters.useiOSBuildJenkinsFiles)
+            {
+                
+            }
+
+            if (parameters.useWebGLBuildJenkinsFiles)
+            {
+                
             }
         }
 

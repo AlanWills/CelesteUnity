@@ -79,6 +79,8 @@ namespace Celeste.Options
 
         private void AddOptions()
         {
+            optionsRecord.Initialize();
+            
             foreach (var boolOption in optionsSettings.BoolOptions)
             {
                 optionsRecord.AddOption(boolOption);

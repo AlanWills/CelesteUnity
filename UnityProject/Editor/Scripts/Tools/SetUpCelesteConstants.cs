@@ -45,10 +45,27 @@
 
     public static class CelesteConstants
     {
+        public const string CELESTE_ROOT_FOLDER = "Assets/Celeste/";
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
         public const string LOADING_SCENE_NAME = "Loading";
-        public const string LOADING_SCENE_PATH = "Assets/Celeste/Loading/Scenes/Loading.unity";
-        public const string CELESTE_GIT_IGNORE_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitignore.sample";
-        public const string CELESTE_GIT_LFS_FILE_PATH = "Assets/Celeste/UnityProject/Editor/Data/.gitattributes.sample";
+        public const string LOADING_SCENE_PATH = CELESTE_ROOT_FOLDER + "Loading/Scenes/Loading.unity";
+        public const string CELESTE_GIT_IGNORE_FILE_PATH = CELESTE_ROOT_FOLDER + "UnityProject/Editor/Data/.gitignore.sample";
+        public const string CELESTE_GIT_LFS_FILE_PATH = CELESTE_ROOT_FOLDER + "UnityProject/Editor/Data/.gitattributes.sample";
+    }
+
+    public static class BuildSystemConstants
+    {
+        public const string FOLDER_NAME = "BuildSystem/";
+        public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
+        public const string DATA_FOLDER_PATH = FOLDER_PATH + "Edior/Data/";
+        public const string COMMON_JENKINS_BUILD_FILES_FOLDER_PATH = FOLDER_PATH + "Editor/Data/";
+        public const string CELESTE_BUILD_SYSTEM_FOLDER = CelesteConstants.CELESTE_ROOT_FOLDER + "BuildSystem/";
+        public const string CELESTE_BUILD_SYSTEM_EDITOR_FOLDER = CELESTE_BUILD_SYSTEM_FOLDER + "Editor/";
+        public const string CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_FOLDER + "Data/";
+        public const string CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER + "Common/";
+        public const string CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER + "Windows/";
+        public const string CELESTE_ANDROID_JENKINS_BUILD_FILES_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER + "Android/";
+        public const string CELESTE_IOS_JENKINS_BUILD_FILES_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER + "iOS/";
+        public const string CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER + "WebGL/";
     }
 }

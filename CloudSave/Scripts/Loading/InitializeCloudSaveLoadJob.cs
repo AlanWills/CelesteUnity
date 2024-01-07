@@ -35,12 +35,15 @@ namespace Celeste.CloudSave
                 yield return cloudSaveRecord.ReadDefaultSaveGameAsync(
                     (saveDataString) =>
                     {
+                        setOutput("Default Cloud Save Loaded");
                         DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
                         JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
                         dataSnapshot.UnpackItems();
+                    },
+                    (status) =>
+                    {
+                        setOutput($"Cloud Save Not Loaded ({status})");
                     });
-
-                setOutput("Default Cloud Save Loaded");
             }
             else
             {

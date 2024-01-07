@@ -37,6 +37,7 @@ namespace Celeste.Debug.Menus
         private void Awake()
         {
             Visible = false;
+            debugMenus.Clear();
         }
 
         private void OnGUI()
@@ -115,7 +116,7 @@ namespace Celeste.Debug.Menus
 
 #endregion
 
-#region Callbacks
+        #region Callbacks
 
         public void OnToggle()
         {
@@ -153,6 +154,6 @@ namespace Celeste.Debug.Menus
             }
         }
 
-#endregion
+        #endregion
     }
 }
