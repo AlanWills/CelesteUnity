@@ -25,6 +25,9 @@ namespace CelesteEditor.BuildSystem.Data
 
             if (useAllCreatedAddressableGroups)
             {
+                UnityEngine.Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, $"Addressable Settings was null, which is weird because we thinks it exists...");
+                UnityEngine.Debug.Assert(AddressableAssetSettingsDefaultObject.Settings.groups != null, $"Addressable Settings groups were null, which is weird because we thinks it exists...");
+
                 foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
                 {
                     // Don't include the built in data group
