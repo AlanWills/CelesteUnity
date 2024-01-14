@@ -1,4 +1,4 @@
-UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2021.3.22f1/Editor/Unity.exe"
+UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
 
 pipeline 
 {
@@ -93,5 +93,19 @@ pipeline
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }
+		stage('Artifact Build')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
+			}
+		}
+		stage('Artifact Assets')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.ASSETS_DESTINATION}/*.*', onlyIfSuccessful: true
+			}
+		}
     }   
 }

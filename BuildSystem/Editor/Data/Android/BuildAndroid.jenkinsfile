@@ -1,4 +1,4 @@
-UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2021.3.22f1/Editor/Unity.exe"
+UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
 
 pipeline 
 {
@@ -18,7 +18,6 @@ pipeline
                                 artifactNumToKeepStr: '', 
                                 numToKeepStr: '1')), 
                         parameters([
-                            choice(choices: ['Android', 'iOS', 'Windows', 'WebGL',], name: 'PLATFORM'),
                             choice(choices: ['Debug', 'ReleaseApk', 'ReleaseBundle'], name: 'CONFIGURATION'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
@@ -27,20 +26,25 @@ pipeline
                 }
             }
         }
-        stage('Build Assets')
+        stage('Build')
         {
             steps
             {
-                buildName PLATFORM + "-" + CONFIGURATION
+                buildName "Android-" + CONFIGURATION
                 script
                 {
-                    methodToInvoke = "CelesteEditor.BuildSystem.UpdateAssets.Update" + params.CONFIGURATION + "PLATFORM" + "Player"
+                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "AndroidPlayer"
                     projectPath = WORKSPACE.replace('\\', '/')
                 }
                 sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
                 script 
                 {
-                    readProperties(file: "${env.WORKSPACE}/ServerData/${params.PLATFORM}/${params.CONFIGURATION}/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    readProperties(file: "${env.WORKSPACE}/Builds/Android/${params.CONFIGURATION}/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                }
+                buildName "Android-" + CONFIGURATION + "-" + env.BUILD_VERSION
+                script 
+                {
+                    readProperties(file: "${env.WORKSPACE}/ServerData/Android/${params.CONFIGURATION}/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
         }
@@ -56,8 +60,22 @@ pipeline
             steps
             {
                 sh "git add ."
-                sh 'git commit --allow-empty -m "Updating assets"'
+                sh 'git commit --allow-empty -m "Built Android and updating version"'
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
+            }
+        }
+        stage('Upload Build')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD
+                }
+            }
+            steps
+            {
+                googleStorageUpload bucket: "gs://${env.BUILD_UPLOAD_DIRECTORY}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: env.BUILD_LOCATION
             }
         }
         stage('Upload Assets')
@@ -71,9 +89,23 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "{env.ASSETS_SOURCE}/*"
+                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.ASSETS_SOURCE}/*"
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }
+		stage('Artifact Build')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
+			}
+		}
+		stage('Artifact Assets')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.ASSETS_DESTINATION}/*.*', onlyIfSuccessful: true
+			}
+		}
     }   
 }

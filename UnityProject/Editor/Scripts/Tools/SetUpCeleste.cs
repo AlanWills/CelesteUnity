@@ -119,7 +119,7 @@ namespace CelesteEditor.UnityProject
             CreateEditorSettings();
         }
 
-        #region Utility
+        #region Build System
 
         private static void CreateBuildSystemData(SetUpCelesteParameters parameters)
         {
@@ -151,35 +151,32 @@ namespace CelesteEditor.UnityProject
             if (parameters.useCommonJenkinsFiles)
             {
                 AssetUtility.CreateFolder(BuildSystemConstants.FOLDER_PATH);
+
+                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.COMMON_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useWindowsBuildJenkinsFiles)
             {
-                
+                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WINDOWS_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useAndroidBuildJenkinsFiles)
             {
-                
+                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_ANDROID_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.ANDROID_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useiOSBuildJenkinsFiles)
             {
-                
+                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_IOS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.IOS_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useWebGLBuildJenkinsFiles)
             {
-                
+                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
             }
         }
 
-        private static void CreateModules(SetUpCelesteParameters parameters)
-        {
-            CreateEngineSystems(parameters);
-            CreateBootstrap(parameters);
-            CreateStartup(parameters);
-        }
+        #endregion
 
         #region Startup
 
@@ -420,6 +417,38 @@ namespace CelesteEditor.UnityProject
         }
 
         #endregion
+
+        #region Utility
+
+        private static void CopyDirectoryRecursively(string originalDirectory, string newDirectory)
+        {
+            if (Directory.Exists(originalDirectory))
+            {
+                DirectoryInfo originalDirectoryInfo = new DirectoryInfo(originalDirectory);
+                AssetUtility.CreateFolder(newDirectory);
+
+                foreach (FileInfo file in originalDirectoryInfo.GetFiles(originalDirectory))
+                {
+                    File.Copy(file.FullName, Path.Combine(newDirectory, file.Name));
+                }
+
+                foreach (DirectoryInfo directory in originalDirectoryInfo.GetDirectories())
+                {
+                    CopyDirectoryRecursively(directory.FullName, Path.Combine(newDirectory, directory.Name));
+                }
+            }
+            else
+            {
+                Debug.LogError($"Could not find original directory: {originalDirectory} in recursive copy action to {newDirectory}.");
+            }
+        }
+
+        private static void CreateModules(SetUpCelesteParameters parameters)
+        {
+            CreateEngineSystems(parameters);
+            CreateBootstrap(parameters);
+            CreateStartup(parameters);
+        }
 
         private static void CreateProjectData(SetUpCelesteParameters parameters)
         {

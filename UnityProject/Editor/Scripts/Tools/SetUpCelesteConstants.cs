@@ -57,8 +57,12 @@
     {
         public const string FOLDER_NAME = "BuildSystem/";
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
-        public const string DATA_FOLDER_PATH = FOLDER_PATH + "Edior/Data/";
-        public const string COMMON_JENKINS_BUILD_FILES_FOLDER_PATH = FOLDER_PATH + "Editor/Data/";
+        public const string DATA_FOLDER = FOLDER_PATH + "Editor/Data/";
+        public const string COMMON_JENKINS_BUILD_FILES_FOLDER = DATA_FOLDER + "Common/";
+        public const string WINDOWS_JENKINS_BUILD_FILES_FOLDER = DATA_FOLDER + "Windows/";
+        public const string ANDROID_JENKINS_BUILD_FILES_FOLDER = DATA_FOLDER + "Android/";
+        public const string IOS_JENKINS_BUILD_FILES_FOLDER = DATA_FOLDER + "iOS/";
+        public const string WEBGL_JENKINS_BUILD_FILES_FOLDER = DATA_FOLDER + "WebGL/";
         public const string CELESTE_BUILD_SYSTEM_FOLDER = CelesteConstants.CELESTE_ROOT_FOLDER + "BuildSystem/";
         public const string CELESTE_BUILD_SYSTEM_EDITOR_FOLDER = CELESTE_BUILD_SYSTEM_FOLDER + "Editor/";
         public const string CELESTE_BUILD_SYSTEM_EDITOR_DATA_FOLDER = CELESTE_BUILD_SYSTEM_EDITOR_FOLDER + "Data/";
