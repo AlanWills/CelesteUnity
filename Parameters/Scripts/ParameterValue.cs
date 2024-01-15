@@ -90,7 +90,7 @@ namespace Celeste.Parameters
 
         private void OnEnable()
         {
-            Value = defaultValue;
+            value = defaultValue;
         }
 
         #endregion
