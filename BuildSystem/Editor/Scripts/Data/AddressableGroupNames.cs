@@ -18,14 +18,13 @@ namespace CelesteEditor.BuildSystem.Data
 
         private void OnValidate()
         {
-            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists || AddressableAssetSettingsDefaultObject.Settings == null)
             {
                 return;
             }
 
             if (useAllCreatedAddressableGroups)
             {
-                UnityEngine.Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, $"Addressable Settings was null, which is weird because we thinks it exists...");
                 UnityEngine.Debug.Assert(AddressableAssetSettingsDefaultObject.Settings.groups != null, $"Addressable Settings groups were null, which is weird because we thinks it exists...");
 
                 foreach (var group in AddressableAssetSettingsDefaultObject.Settings.groups)
