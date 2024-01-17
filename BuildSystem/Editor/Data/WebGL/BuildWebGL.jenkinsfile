@@ -78,6 +78,20 @@ pipeline
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
         }
+		stage('Artifact Build')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
+			}
+		}
+		stage('Artifact Assets')
+		{
+			steps 
+			{
+				archiveArtifacts artifacts: '${env.ASSETS_SOURCE}/*.*', onlyIfSuccessful: true
+			}
+		}
         stage('Upload Build')
         {
             when
@@ -107,19 +121,5 @@ pipeline
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }
-		stage('Artifact Build')
-		{
-			steps 
-			{
-				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
-			}
-		}
-		stage('Artifact Assets')
-		{
-			steps 
-			{
-				archiveArtifacts artifacts: '${env.ASSETS_DESTINATION}/*.*', onlyIfSuccessful: true
-			}
-		}
     }   
 }
