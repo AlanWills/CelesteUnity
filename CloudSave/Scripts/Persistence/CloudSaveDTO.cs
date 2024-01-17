@@ -6,5 +6,6 @@ namespace Celeste.CloudSave.Persistence
     public class CloudSaveDTO
     {
         public DateTimeOffset playtimeFirstStart;
+        public int implementation;
     }
 }

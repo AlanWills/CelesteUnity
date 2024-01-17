@@ -27,18 +27,19 @@ namespace Celeste.CloudSave
         {
             return new CloudSaveDTO()
             {
-                playtimeFirstStart = cloudSaveRecord.PlaytimeStart
+                playtimeFirstStart = cloudSaveRecord.PlaytimeStart,
+                implementation = (int)cloudSaveRecord.ActiveImplementation
             };
         }
 
         protected override void Deserialize(CloudSaveDTO dto)
         {
-            cloudSaveRecord.PlaytimeStart = dto.playtimeFirstStart;
+            cloudSaveRecord.Initialize(dto.playtimeFirstStart, (Implementation)dto.implementation);
         }
 
         protected override void SetDefaultValues()
         {
-            cloudSaveRecord.PlaytimeStart = DateTimeOffset.UtcNow;
+            cloudSaveRecord.Initialize(DateTimeOffset.UtcNow, Implementation.PlatformAppropriate);
 
             // Save this playtime first start value as soon as it's been set
             // We'll never have to update it once we've first set it so job's a goodun

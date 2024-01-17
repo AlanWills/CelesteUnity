@@ -2,6 +2,7 @@
 using Celeste.Debug.Menus;
 using Celeste.Persistence.Snapshots;
 using Celeste.Scene;
+using Celeste.Tools;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,7 +22,27 @@ namespace Celeste.CloudSave
 
         protected override void OnDrawMenu()
         {
+            GUILayout.Label($"Current Implementation: {cloudSave.ActiveImplementation}");
             GUILayout.Label($"Playtime Start: {cloudSave.PlaytimeStart}");
+
+            using (new GUILayout.HorizontalScope())
+            {
+                using (new GUIEnabledScope(cloudSave.ActiveImplementation != Implementation.Disabled))
+                {
+                    if (GUILayout.Button("Disable"))
+                    {
+                        cloudSave.ActiveImplementation = Implementation.Disabled;
+                    }
+                }
+
+                using (new GUIEnabledScope(cloudSave.ActiveImplementation == Implementation.Disabled))
+                {
+                    if (GUILayout.Button("Enable"))
+                    {
+                        cloudSave.ActiveImplementation = Implementation.PlatformAppropriate;
+                    }
+                }
+            }
 
             if (GUILayout.Button("Authenticate"))
             {

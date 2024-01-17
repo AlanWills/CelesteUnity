@@ -6,33 +6,61 @@ using UnityEngine;
 
 namespace Celeste.CloudSave
 {
+    public enum Implementation
+    {
+        PlatformAppropriate,
+        Disabled,
+    }
+
     [CreateAssetMenu(fileName = nameof(CloudSaveRecord), menuName = "Celeste/Cloud Save/Cloud Save Record")]
     public class CloudSaveRecord : ScriptableObject
     {
         #region Properties and Fields
 
         public bool IsAuthenticated => impl.IsAuthenticated;
-        public DateTimeOffset PlaytimeStart { get; set; }
+        public DateTimeOffset PlaytimeStart { get; private set; }
+        public Implementation ActiveImplementation
+        {
+            get => activeImplementation;
+            set
+            {
+                if (activeImplementation != value)
+                {
+                    activeImplementation = value;
+                    save.Invoke();
+                }
+            }
+        }
 
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private string defaultSaveGameName = "DefaultSaveGame";
+        [SerializeField] private Events.Event save;
 
         [NonSerialized] private ICloudSave impl = new DisabledCloudSave();
+        [NonSerialized] private Implementation activeImplementation = Implementation.Disabled;
 
         #endregion
 
-        #region Unity Methods
-
-        private void OnEnable()
+        public void Initialize(DateTimeOffset playtimeStart, Implementation implementation)
         {
-#if UNITY_EDITOR
-            impl = new DisabledCloudSave();
-#elif UNITY_ANDROID && GOOGLE_PLAY_GAMES
-            impl = new GooglePlayGamesCloudSave();
-#endif
-        }
+            PlaytimeStart = playtimeStart;
+            activeImplementation = implementation;
 
-        #endregion
+            switch (implementation)
+            {
+                case Implementation.Disabled:
+                    impl = new DisabledCloudSave();
+                    break;
+
+                case Implementation.PlatformAppropriate:
+#if UNITY_EDITOR
+                    impl = new DisabledCloudSave();
+#elif UNITY_ANDROID && GOOGLE_PLAY_GAMES
+                    impl = new GooglePlayGamesCloudSave();
+#endif
+                    break;
+            }
+        }
 
         public void Activate()
         {
