@@ -3,6 +3,7 @@ using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace CelesteEditor.Assets.GUI
 {
@@ -26,7 +27,14 @@ namespace CelesteEditor.Assets.GUI
 
             var target = editor.target;
 
-            if (target is ScriptableObject)
+            DrawExportAsJsonField(target);
+            DrawGroupField(target);
+
+        }
+
+        private static void DrawExportAsJsonField(UnityEngine.Object target)
+        {
+            if (target is ScriptableObject && AssetEditorSettings.GetOrCreateSettings().showExportAsJsonForScriptableObjects)
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
@@ -39,11 +47,6 @@ namespace CelesteEditor.Assets.GUI
                     }
                 }
             }
-
-            if (target.IsAssetAddressable())
-            {
-                DrawGroupField(target);
-            }
         }
 
         private static void DrawGroupField(UnityEngine.Object target)
@@ -54,6 +57,11 @@ namespace CelesteEditor.Assets.GUI
             }
 
             if (!AssetEditorSettings.GetOrCreateSettings().showAddressableGroupSelection)
+            {
+                return;
+            }
+
+            if (!target.IsAssetAddressable())
             {
                 return;
             }

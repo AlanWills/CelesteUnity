@@ -12,9 +12,10 @@ namespace CelesteEditor.Assets
         public const string FILE_PATH = FOLDER_PATH + "AssetsEditorSettings.asset";
 
         public bool showAddressableGroupSelection;
+        public bool showExportAsJsonForScriptableObjects = true;
 
         #endregion
-        
+
         public static AssetEditorSettings GetOrCreateSettings()
         {
             return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
