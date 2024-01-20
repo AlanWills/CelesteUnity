@@ -97,7 +97,7 @@ namespace Celeste.Persistence.Debug
                         if (GUILayout.Button("Share", GUILayout.ExpandWidth(false)))
                         {
                             string snapshotString = PersistenceUtility.Serialize(snapshot);
-                            string tempFilePath = Path.Combine(Application.persistentDataPath, "Temp.txt");
+                            string tempFilePath = Path.Combine(Application.persistentDataPath, "SnapshotContents.txt");
                             File.WriteAllText(tempFilePath, snapshotString);
 
                             new NativeShare()
@@ -108,7 +108,7 @@ namespace Celeste.Persistence.Debug
                                         HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}");
                                         File.Delete(tempFilePath);
                                     })
-                                .AddFile(tempFilePath)
+                                .AddFile(tempFilePath, "text/plain")
                                 .Share();
                         }
                     }
