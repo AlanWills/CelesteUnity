@@ -44,9 +44,12 @@ namespace Celeste.CloudSave
                 }
             }
 
-            if (GUILayout.Button("Authenticate"))
+            using (new GUIEnabledScope(!cloudSave.IsAuthenticated))
             {
-                CoroutineManager.Instance.StartCoroutine(cloudSave.AuthenticateAsync());
+                if (GUILayout.Button("Authenticate"))
+                {
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.AuthenticateAsync());
+                }
             }
 
             if (GUILayout.Button("Load Save Game"))

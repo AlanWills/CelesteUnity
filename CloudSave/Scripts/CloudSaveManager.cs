@@ -54,7 +54,7 @@ namespace Celeste.CloudSave
 
         public void RequestWriteCloudSave()
         {
-            if (!savingCloudSave)
+            if (!savingCloudSave && cloudSaveRecord.IsAuthenticated)
             {
                 savingCloudSave = true;
                 DataSnapshot dataSnapshot = SnapshotRecord.CreateDataSnapshot();

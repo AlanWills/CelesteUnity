@@ -60,6 +60,8 @@ namespace Celeste.CloudSave
 #endif
                     break;
             }
+
+            UnityEngine.Debug.Log("Cloud Save Initialized!");
         }
 
         public void Activate()
@@ -145,6 +147,7 @@ namespace Celeste.CloudSave
             bool writeComplete = false;
             HudLog.LogInfo("Beginning to write default cloud save");
 
+            UnityEngine.Debug.Assert(impl != null, $"Impl is null!");
             impl.WriteSaveGame(
                 defaultSaveGameName,
                 saveData,

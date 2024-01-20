@@ -125,6 +125,7 @@ namespace Celeste.CloudSave
                 (game) =>
                 {
                     ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+                    UnityEngine.Debug.Assert(savedGameClient != null, $"Google Play Games saved game client is null!");
 
                     SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
                     builder = builder
@@ -213,6 +214,8 @@ namespace Celeste.CloudSave
             Action<SavedGameRequestStatus> onSaveGameOpenedFailed = null)
         {
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            UnityEngine.Debug.Assert(savedGameClient != null, $"Google Play Games saved game client is null!");
+            
             savedGameClient.OpenWithAutomaticConflictResolution(
                 saveGameName,
                 DataSource.ReadNetworkOnly,
