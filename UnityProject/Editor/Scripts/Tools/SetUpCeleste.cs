@@ -22,6 +22,9 @@ using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
 using UnityEngine.Serialization;
+using NativeFilePickerNamespace;
+using NUnit.Framework;
+using static NativeFilePickerNamespace.NativeFilePickerCustomTypes;
 
 namespace CelesteEditor.UnityProject
 {
@@ -117,6 +120,7 @@ namespace CelesteEditor.UnityProject
             CreateBuildSystemData(parameters);
             CreateModules(parameters);
             CreateEditorSettings();
+            CreateFileShareSettings();
         }
 
         #region Build System
@@ -418,6 +422,49 @@ namespace CelesteEditor.UnityProject
 
         #endregion
 
+        #region Editor Settings
+
+        private static void CreateEditorSettings()
+        {
+            DataImporterEditorSettings.GetOrCreateSettings();
+            DebugEditorSettings.GetOrCreateSettings();
+            LiveOpsEditorSettings.GetOrCreateSettings();
+            LocalisationEditorSettings.GetOrCreateSettings();
+            PersistenceEditorSettings.GetOrCreateSettings();
+            SceneEditorSettings.GetOrCreateSettings();
+            SoundEditorSettings.GetOrCreateSettings();
+            InputEditorSettings.GetOrCreateSettings();
+        }
+
+        #endregion
+
+        #region File Share Settings
+
+        private static void CreateFileShareSettings()
+        {
+            NativeFilePickerCustomTypes nativeFilePickerCustomTypes = GetInstance(true);
+            nativeFilePickerCustomTypes.AddCustomType(
+                new TypeHolder()
+                {
+                    identifier = "com.celestegames.datafile",
+                    description = "Serialized save data",
+                    isExported = true,
+                    conformsTo = new string[] { "public.data" },
+                    extensions = new string[] { "dat" }
+                });
+            nativeFilePickerCustomTypes.AddCustomType(
+                new TypeHolder()
+                {
+                    identifier = "com.celestegames.datasnapshot",
+                    description = "All serialized data within the app compressed into a single shareable file",
+                    isExported = true,
+                    conformsTo = new string[] { "public.data" },
+                    extensions = new string[] { "datasnapshot" }
+                });
+        }
+
+        #endregion
+
         #region Utility
 
         private static void CopyDirectoryRecursively(string originalDirectory, string newDirectory)
@@ -496,22 +543,6 @@ namespace CelesteEditor.UnityProject
                 string packageFullPath = TMP_EditorUtility.packageFullPath;
                 AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
             }
-        }
-
-        #endregion
-
-        #region Editor Settings
-
-        private static void CreateEditorSettings()
-        {
-            DataImporterEditorSettings.GetOrCreateSettings();
-            DebugEditorSettings.GetOrCreateSettings();
-            LiveOpsEditorSettings.GetOrCreateSettings();
-            LocalisationEditorSettings.GetOrCreateSettings();
-            PersistenceEditorSettings.GetOrCreateSettings();
-            SceneEditorSettings.GetOrCreateSettings();
-            SoundEditorSettings.GetOrCreateSettings();
-            InputEditorSettings.GetOrCreateSettings();
         }
 
         #endregion
