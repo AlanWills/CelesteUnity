@@ -37,7 +37,7 @@ namespace Celeste.Persistence.Debug
         {
             if (GUILayout.Button("Try Install"))
             {
-
+                OpenFileAndroid($"/storage/emulated/0/Download/Double-Dutch-0.10.26-Debug.apk");
             }
 
             if (Application.isPlaying)
