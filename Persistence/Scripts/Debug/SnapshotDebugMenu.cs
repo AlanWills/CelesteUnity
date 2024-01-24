@@ -35,6 +35,11 @@ namespace Celeste.Persistence.Debug
 
         protected override void OnDrawMenu()
         {
+            if (GUILayout.Button("Try Install"))
+            {
+
+            }
+
             if (Application.isPlaying)
             {
                 if (GUILayout.Button("Create Data Snapshot"))
@@ -113,6 +118,47 @@ namespace Celeste.Persistence.Debug
                         }
                     }
                 }
+            }
+        }
+
+        private static AndroidJavaObject clazz = new AndroidJavaClass("com.celestegames.doubledutch");
+        private static AndroidJavaObject activity = clazz.GetStatic<AndroidJavaObject>("currentActivity");
+
+        private static void OpenFileAndroid(string url)
+        {
+            using (var intent = new AndroidJavaObject("android.content.Intent"))
+            {
+                //permission to read URI
+                intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION"));
+                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_VIEW"));
+
+                //Get API Android Version
+                var versionClazz = new AndroidJavaClass("android.os.Build$VERSION");
+                var apiLevel = versionClazz.GetStatic<int>("SDK_INT");
+
+                AndroidJavaObject uri;
+                if (24 <= apiLevel)
+                {
+                    //New version, need a fileprovider
+                    var context = activity.Call<AndroidJavaObject>("getApplicationContext");
+                    var fileProvider = new AndroidJavaClass("com.yasirkula.unity.UnitySSContentProvider");
+                    var file = new AndroidJavaObject("java.io.File", url);
+                    uri = fileProvider.CallStatic<AndroidJavaObject>("getUriForFile", context, "com.celestegames.doubledutch", file);
+                }
+                else
+                {
+                    //Old version using uriClass
+                    var uriClazz = new AndroidJavaClass("android.net.Uri");
+                    var file = new AndroidJavaObject("java.io.File", url);
+                    uri = uriClazz.CallStatic<AndroidJavaObject>("fromFile", file);
+                }
+
+                intent.Call<AndroidJavaObject>("setType", "application/vnd.android.package-archive");
+                //set uri
+                intent.Call<AndroidJavaObject>("setData", uri);
+
+                //start activity
+                activity.Call("startActivity", intent);
             }
         }
     }

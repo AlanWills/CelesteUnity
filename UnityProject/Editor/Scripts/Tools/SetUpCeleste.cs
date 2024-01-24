@@ -23,7 +23,6 @@ using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
 using UnityEngine.Serialization;
 using NativeFilePickerNamespace;
-using NUnit.Framework;
 using static NativeFilePickerNamespace.NativeFilePickerCustomTypes;
 
 namespace CelesteEditor.UnityProject
@@ -33,7 +32,13 @@ namespace CelesteEditor.UnityProject
     {
         #region Properties and Fields
 
+        public CelesteConstants CelesteConstants => new CelesteConstants(packagePath);
+        public BuildSystemConstants BuildSystemConstants => new BuildSystemConstants(packagePath);
+
         [Header("Project")]
+        [LabelWidth(300)]
+        [Tooltip("The path to the root of the Celeste package.  This only needs modifying if you've manually cloned the repo into your project.")]
+        public string packagePath;
         [LabelWidth(300)] public bool usePresetGitIgnoreFile;
         [LabelWidth(300)] public bool usePresetGitLFSFile;
 
@@ -46,19 +51,15 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))]
         [Tooltip("If true, copies of Common template jenkins files will be added to the project for customisation and usage")]
         public bool useCommonJenkinsFiles;
-        [FormerlySerializedAs("useWindowsBuildJenkinsFile")]
         [LabelWidth(300), ShowIf(nameof(runsOnWindows))]
         [Tooltip("If true, copies of Windows template jenkins files will be added to the project for customisation and usage")]
         public bool useWindowsBuildJenkinsFiles;
-        [FormerlySerializedAs("useAndroidBuildJenkinsFile")]
         [LabelWidth(300), ShowIf(nameof(runsOnAndroid))]
         [Tooltip("If true, copies of the Android template jenkins files will be added to the project for customisation and usage")]
         public bool useAndroidBuildJenkinsFiles;
-        [FormerlySerializedAs("useiOSBuildJenkinsFile")]
         [LabelWidth(300), ShowIf(nameof(runsOniOS))]
         [Tooltip("If true, copies of the iOS template jenkins files will be added to the project for customisation and usage")]
         public bool useiOSBuildJenkinsFiles;
-        [FormerlySerializedAs("useWebGLBuildJenkinsFile")]
         [LabelWidth(300), ShowIf(nameof(runsOnWebGL))]
         [Tooltip("If true, copies of the WebGL template jenkins files will be added to the project for customisation and usage")]
         public bool useWebGLBuildJenkinsFiles;
@@ -81,6 +82,7 @@ namespace CelesteEditor.UnityProject
 
         public void UseDefaults()
         {
+            packagePath = "Packages/com.celestegames.celeste/";
             usePresetGitIgnoreFile = true;
             usePresetGitLFSFile = true;
 
@@ -156,27 +158,27 @@ namespace CelesteEditor.UnityProject
             {
                 AssetUtility.CreateFolder(BuildSystemConstants.FOLDER_PATH);
 
-                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.COMMON_JENKINS_BUILD_FILES_FOLDER);
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.COMMON_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useWindowsBuildJenkinsFiles)
             {
-                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WINDOWS_JENKINS_BUILD_FILES_FOLDER);
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WINDOWS_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useAndroidBuildJenkinsFiles)
             {
-                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_ANDROID_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.ANDROID_JENKINS_BUILD_FILES_FOLDER);
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_ANDROID_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.ANDROID_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useiOSBuildJenkinsFiles)
             {
-                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_IOS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.IOS_JENKINS_BUILD_FILES_FOLDER);
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_IOS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.IOS_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.useWebGLBuildJenkinsFiles)
             {
-                CopyDirectoryRecursively(BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
             }
         }
 
@@ -311,7 +313,7 @@ namespace CelesteEditor.UnityProject
             {
                 CreateBootstrapFolders();
                 CreateBootstrapLoadJob();
-                CreateBootstrapScene();
+                CreateBootstrapScene(parameters);
                 CreateBootstrapAssemblies(parameters);
             }
         }
@@ -349,7 +351,7 @@ namespace CelesteEditor.UnityProject
             bootstrapLoadJob.MakeAddressable();
         }
 
-        private static void CreateBootstrapScene()
+        private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
         {
             UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             GameObject bootstrapManagerPrefab = AssetUtility.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
@@ -361,7 +363,7 @@ namespace CelesteEditor.UnityProject
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
             AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
@@ -505,7 +507,7 @@ namespace CelesteEditor.UnityProject
             {
                 try
                 {
-                    File.Copy(CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
+                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
                 }
                 catch (Exception ex)
                 {
@@ -518,7 +520,7 @@ namespace CelesteEditor.UnityProject
             {
                 try
                 {
-                    File.Copy(CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
+                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
                 }
                 catch (Exception ex)
                 {
