@@ -121,11 +121,11 @@ namespace Celeste.Persistence.Debug
             }
         }
 
-        private static AndroidJavaObject clazz = new AndroidJavaClass("com.celestegames.doubledutch");
-        private static AndroidJavaObject activity = clazz.GetStatic<AndroidJavaObject>("currentActivity");
-
         private static void OpenFileAndroid(string url)
         {
+            using AndroidJavaObject clazz = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            using AndroidJavaObject activity = clazz.GetStatic<AndroidJavaObject>("currentActivity");
+
             using (var intent = new AndroidJavaObject("android.content.Intent"))
             {
                 //permission to read URI
