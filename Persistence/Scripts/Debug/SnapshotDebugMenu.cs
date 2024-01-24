@@ -141,7 +141,7 @@ namespace Celeste.Persistence.Debug
                 {
                     //New version, need a fileprovider
                     var context = activity.Call<AndroidJavaObject>("getApplicationContext");
-                    var fileProvider = new AndroidJavaClass("com.yasirkula.unity.UnitySSContentProvider");
+                    var fileProvider = new AndroidJavaClass("com.yasirkula.unity.NativeShareContentProvider");
                     var file = new AndroidJavaObject("java.io.File", url);
                     uri = fileProvider.CallStatic<AndroidJavaObject>("getUriForFile", context, "com.celestegames.doubledutch", file);
                 }
