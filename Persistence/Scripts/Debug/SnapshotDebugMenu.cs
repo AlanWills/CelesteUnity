@@ -131,7 +131,7 @@ namespace Celeste.Persistence.Debug
                 //permission to read URI
                 intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION"));
                 intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK"));
-                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_VIEW"));
+                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_INSTALL_PACKAGE"));
 
                 //Get API Android Version
                 var versionClazz = new AndroidJavaClass("android.os.Build$VERSION");
