@@ -123,6 +123,10 @@ namespace Celeste.Persistence.Debug
 
         private static void OpenFileAndroid(string url)
         {
+            string newUrl = Path.Combine(Application.persistentDataPath, Path.GetFileName(url));
+            File.Copy(url, newUrl, true);
+            url = newUrl;
+
             using AndroidJavaObject clazz = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             using AndroidJavaObject activity = clazz.GetStatic<AndroidJavaObject>("currentActivity");
 
@@ -131,7 +135,7 @@ namespace Celeste.Persistence.Debug
                 //permission to read URI
                 intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION"));
                 intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK"));
-                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_INSTALL_PACKAGE"));
+                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_VIEW"));
 
                 //Get API Android Version
                 var versionClazz = new AndroidJavaClass("android.os.Build$VERSION");
