@@ -158,9 +158,7 @@ namespace Celeste.Persistence.Debug
                     uri = uriClazz.CallStatic<AndroidJavaObject>("fromFile", file);
                 }
 
-                intent.Call<AndroidJavaObject>("setType", "application/vnd.android.package-archive");
-                //set uri
-                intent.Call<AndroidJavaObject>("setData", uri);
+                intent.Call<AndroidJavaObject>("setDataAndType", uri, "application/vnd.android.package-archive");
 
                 //start activity
                 activity.Call("startActivity", intent);
