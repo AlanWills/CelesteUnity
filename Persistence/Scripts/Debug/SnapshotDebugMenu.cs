@@ -96,6 +96,7 @@ namespace Celeste.Persistence.Debug
 
                         if (GUILayout.Button("Share", GUILayout.ExpandWidth(false)))
                         {
+#if CELESTE_NATIVE_SHARE
                             string snapshotString = PersistenceUtility.Serialize(snapshot);
                             string tempFilePath = Path.Combine(Application.persistentDataPath, "SnapshotContents.txt");
                             File.WriteAllText(tempFilePath, snapshotString);
@@ -110,6 +111,9 @@ namespace Celeste.Persistence.Debug
                                     })
                                 .AddFile(tempFilePath, "text/plain")
                                 .Share();
+#else
+                            UnityEngine.Debug.LogAssertion($"Sharing snapshots is not supported with the Celeste Native Share package.");
+#endif
                         }
                     }
                 }
