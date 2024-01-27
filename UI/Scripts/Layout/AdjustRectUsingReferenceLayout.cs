@@ -24,7 +24,12 @@ namespace Celeste.UI.Layout
         {
             if (referenceLayout != null)
             {
-                rectTransform.CopyLayoutFrom(referenceLayout.rectTransform);
+#if UNITY_EDITOR
+                if (!UnityEditor.EditorApplication.isUpdating && !UnityEditor.EditorApplication.isCompiling)
+#endif
+                {
+                    rectTransform.CopyLayoutFrom(referenceLayout.rectTransform);
+                }
             }
         }
     }

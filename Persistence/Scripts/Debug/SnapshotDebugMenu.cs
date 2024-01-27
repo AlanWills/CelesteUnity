@@ -35,11 +35,6 @@ namespace Celeste.Persistence.Debug
 
         protected override void OnDrawMenu()
         {
-            if (GUILayout.Button("Try Install"))
-            {
-                OpenFileAndroid($"/storage/emulated/0/Download/Double-Dutch-0.10.26-Debug.apk");
-            }
-
             if (Application.isPlaying)
             {
                 if (GUILayout.Button("Create Data Snapshot"))
@@ -118,50 +113,6 @@ namespace Celeste.Persistence.Debug
                         }
                     }
                 }
-            }
-        }
-
-        private static void OpenFileAndroid(string url)
-        {
-            string newUrl = Path.Combine(Application.persistentDataPath, Path.GetFileName(url));
-            File.Copy(url, newUrl, true);
-            url = newUrl;
-
-            using AndroidJavaObject clazz = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            using AndroidJavaObject activity = clazz.GetStatic<AndroidJavaObject>("currentActivity");
-
-            using (var intent = new AndroidJavaObject("android.content.Intent"))
-            {
-                //permission to read URI
-                intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION"));
-                intent.Call<AndroidJavaObject>("addFlags", intent.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK"));
-                intent.Call<AndroidJavaObject>("setAction", intent.GetStatic<string>("ACTION_VIEW"));
-
-                //Get API Android Version
-                var versionClazz = new AndroidJavaClass("android.os.Build$VERSION");
-                var apiLevel = versionClazz.GetStatic<int>("SDK_INT");
-
-                AndroidJavaObject uri;
-                if (24 <= apiLevel)
-                {
-                    //New version, need a fileprovider
-                    var context = activity.Call<AndroidJavaObject>("getApplicationContext");
-                    var fileProvider = new AndroidJavaClass("com.yasirkula.unity.NativeShareContentProvider");
-                    var file = new AndroidJavaObject("java.io.File", url);
-                    uri = fileProvider.CallStatic<AndroidJavaObject>("getUriForFile", context, "com.celestegames.doubledutch.NativeShareContentProvider", file);
-                }
-                else
-                {
-                    //Old version using uriClass
-                    var uriClazz = new AndroidJavaClass("android.net.Uri");
-                    var file = new AndroidJavaObject("java.io.File", url);
-                    uri = uriClazz.CallStatic<AndroidJavaObject>("fromFile", file);
-                }
-
-                intent.Call<AndroidJavaObject>("setDataAndType", uri, "application/vnd.android.package-archive");
-
-                //start activity
-                activity.Call("startActivity", intent);
             }
         }
     }
