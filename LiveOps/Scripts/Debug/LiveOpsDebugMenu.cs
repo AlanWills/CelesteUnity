@@ -29,12 +29,16 @@ namespace Celeste.LiveOps.Debug
 
                 if (GUILayout.Button($"Share Save"))
                 {
+#if CELESTE_NATIVE_SHARE
                     string liveOpPath = Path.Combine(Application.persistentDataPath, LiveOpsManager.FILE_NAME);
                     new NativeShare()
                         .AddFile(Path.Combine(Application.persistentDataPath, liveOpPath))
                         .SetSubject($"Share Live Ops Save")
                         .SetCallback((result, shareTarget) => HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}"))
                         .Share();
+#else
+                    UnityEngine.Debug.LogAssertion("Sharing files is not possible without Celeste Native Share.");
+#endif
                 }
             }
 

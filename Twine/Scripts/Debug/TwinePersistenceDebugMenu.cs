@@ -26,6 +26,7 @@ namespace Celeste.Twine.Debug
             {
                 if (Button($"Import", ExpandWidth(false)))
                 {
+#if CELESTE_NATIVE_FILE_PICKER
                     string fileType = NativeFilePicker.ConvertExtensionToFileType(TwineStory.FILE_EXTENSION);
                     NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
                     {
@@ -41,6 +42,9 @@ namespace Celeste.Twine.Debug
                     }, new string[] { fileType });
 
                     HudLog.LogInfo($"Permission result: {permission}");
+#else
+                    UnityEngine.Debug.LogAssertion("Cannot import files without Celeste Native File Picker.");
+#endif
                 }
 
                 if (Button($"Save Current", ExpandWidth(false)))
@@ -64,12 +68,16 @@ namespace Celeste.Twine.Debug
 
                     if (Button($"Share", ExpandWidth(false)))
                     {
+#if CELESTE_NATIVE_SHARE
                         string twineStoryPath = twineRecord.GetTwineStoryPath(i);
                         new NativeShare()
                             .AddFile(Path.Combine(Application.persistentDataPath, twineStoryPath))
                             .SetSubject($"Share {twineStoryName}")
                             .SetCallback((result, shareTarget) => HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}"))
                             .Share();
+#else
+                        UnityEngine.Debug.LogAssertion("Cannot share files with Celeste Native Share.");
+#endif
                     }
                 }
             }
@@ -85,6 +93,6 @@ namespace Celeste.Twine.Debug
             }
         }
 
-        #endregion
+#endregion
     }
 }

@@ -32,6 +32,17 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.celestegames.native-share",
+            "expression": "",
+            "define": "CELESTE_NATIVE_SHARE"
+        },
+        {
+            "name": "com.celestegames.native-file-picker",
+            "expression": "",
+            "define": "CELESTE_NATIVE_FILE_PICKER"
+        }
+    ],
     "noEngineReferences": false
 }
