@@ -21,9 +21,6 @@ using Celeste.LiveOps.Settings;
 using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
-using UnityEngine.Serialization;
-using NativeFilePickerNamespace;
-using static NativeFilePickerNamespace.NativeFilePickerCustomTypes;
 
 namespace CelesteEditor.UnityProject
 {
@@ -444,9 +441,10 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateFileShareSettings()
         {
-            NativeFilePickerCustomTypes nativeFilePickerCustomTypes = GetInstance(true);
+#if CELESTE_NATIVE_FILE_PICKER
+            NativeFilePickerNamespace.NativeFilePickerCustomTypes nativeFilePickerCustomTypes = NativeFilePickerNamespace.NativeFilePickerCustomTypes.GetInstance(true);
             nativeFilePickerCustomTypes.AddCustomType(
-                new TypeHolder()
+                new NativeFilePickerNamespace.NativeFilePickerCustomTypes.TypeHolder()
                 {
                     identifier = "com.celestegames.datafile",
                     description = "Serialized save data",
@@ -455,7 +453,7 @@ namespace CelesteEditor.UnityProject
                     extensions = new string[] { "dat" }
                 });
             nativeFilePickerCustomTypes.AddCustomType(
-                new TypeHolder()
+                new NativeFilePickerNamespace.NativeFilePickerCustomTypes.TypeHolder()
                 {
                     identifier = "com.celestegames.datasnapshot",
                     description = "All serialized data within the app compressed into a single shareable file",
@@ -463,6 +461,7 @@ namespace CelesteEditor.UnityProject
                     conformsTo = new string[] { "public.data" },
                     extensions = new string[] { "datasnapshot" }
                 });
+#endif
         }
 
         #endregion
