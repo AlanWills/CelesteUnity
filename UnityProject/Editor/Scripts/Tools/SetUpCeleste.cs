@@ -472,6 +472,7 @@ namespace CelesteEditor.UnityProject
         {
             // In case we're working in the packages folder - we need to be able to appropriately copy the file
             originalDirectory = Path.GetFullPath(originalDirectory);
+            Debug.Log($"Recursively copying from '{originalDirectory}' to {newDirectory}.");
 
             if (Directory.Exists(originalDirectory))
             {
