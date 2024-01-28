@@ -33,7 +33,6 @@ namespace CelesteEditor.UnityProject.Wizards
         private void OnEnable()
         {
             parameters = new CreateAssembliesParameters();
-            parameters.SetDefaultValues();
 
             runtimeDependenciesList = CreateAssemblyDefinitionAssetList(parameters.runtimeAssemblyDependencies, "Runtime Dependencies");
             editorDependenciesList = CreateAssemblyDefinitionAssetList(parameters.editorAssemblyDependencies, "Editor Dependencies");
