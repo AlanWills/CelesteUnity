@@ -87,7 +87,7 @@ namespace CelesteEditor.UnityProject
                 string editorAssemblyNamespace = indexOfFirstDelimiter >= 0 ? $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}" : $"{assemblyName}Editor";
                 string assemblyDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(parentDirectory, directoryName) : directoryName;
 
-                List<string> referencedAssemblies = new List<string>(parameters.editorAssemblyDependencies.Select(x => x.name));
+                List<string> referencedAssemblies = parameters.editorAssemblyDependencies.Count > 0 ? new List<string>(parameters.editorAssemblyDependencies.Select(x => x.name)) : new List<string>();
 
                 if (hasRuntimeAssembly)
                 {
