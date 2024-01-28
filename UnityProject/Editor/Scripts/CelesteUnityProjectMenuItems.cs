@@ -1,6 +1,7 @@
 ﻿using CelesteEditor.Persistence;
 using System.IO;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CelesteEditor.UnityProject
@@ -29,6 +30,18 @@ namespace CelesteEditor.UnityProject
         public static void OpenSaveDataFolderMenuItem()
         {
             PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
+        }
+
+        [MenuItem("Assets/Embed Package", false, 1000000)]
+        private static void EmbedPackageMenuItem()
+        {
+            EmbedPackage.Embed(Selection.activeObject);
+        }
+
+        [MenuItem("Assets/Embed Package", true)]
+        private static bool EmbedPackageValidation()
+        {
+            return EmbedPackage.CanEmbed(Selection.activeObject);
         }
     }
 }
