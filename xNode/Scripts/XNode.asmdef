@@ -2,7 +2,7 @@
     "name": "XNode",
     "rootNamespace": "",
     "references": [
-        "GUID:65c8501d5a500a346b1ea441b3126476"
+        "XNode.Extensions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
