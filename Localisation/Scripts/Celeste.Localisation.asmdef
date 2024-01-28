@@ -14,7 +14,8 @@
         "Celeste.Assets",
         "Celeste.Coroutines",
         "Celeste.OdinSerializer",
-        "Celeste.Web"
+        "Celeste.Web",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

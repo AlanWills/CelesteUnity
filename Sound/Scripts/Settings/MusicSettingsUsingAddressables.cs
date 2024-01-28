@@ -50,6 +50,8 @@ namespace Celeste.Sound.Settings
             yield return musicEnabled.LoadAssetAsync();
             yield return shuffleMusic.LoadAssetAsync();
             yield return playMusicWithRawClip.LoadAssetAsync();
+            yield return playMusicWithSettings.LoadAssetAsync();
+            yield return playMusicOneShotWithRawClip.LoadAssetAsync();
             yield return playMusicOneShotWithSettings.LoadAssetAsync();
 
             for (int i = 0, n = musicTracks.Count; i < n; ++i)

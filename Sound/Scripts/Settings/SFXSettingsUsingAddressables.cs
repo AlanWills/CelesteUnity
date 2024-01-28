@@ -38,7 +38,9 @@ namespace Celeste.Sound.Settings
         {
             yield return sfxEnabled.LoadAssetAsync();
             yield return playSFXWithRawClip.LoadAssetAsync();
+            yield return playSFXWithSettings.LoadAssetAsync();
             yield return playSFXOneShotWithRawClip.LoadAssetAsync();
+            yield return playSFXOneShotWithSettings.LoadAssetAsync();
 
             enabled = sfxEnabled.Asset.Value;
 

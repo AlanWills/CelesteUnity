@@ -11,6 +11,7 @@
         "Celeste.Assets",
         "Celeste.Tools",
         "Celeste.OdinSerializer",
+        "Celeste.Tools.Editor",
         "Unity.Addressables",
         "Unity.ResourceManager"
     ],

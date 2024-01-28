@@ -2,6 +2,9 @@
 using Celeste.Scene.Events;
 using Celeste.Tools.Settings;
 using UnityEngine;
+#if UNITY_EDITOR
+using CelesteEditor.Tools;
+#endif
 
 namespace CelesteEditor.Scene.Settings
 {
@@ -17,14 +20,24 @@ namespace CelesteEditor.Scene.Settings
         public LoadContextEvent defaultLoadContextEvent;
 
         #endregion
-
+        
         #region Editor Only
+
 #if UNITY_EDITOR
         public static SceneEditorSettings GetOrCreateSettings()
         {
             return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
         }
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+
+            defaultContextProvider = AssetUtility.FindAsset<ContextProvider>("DefaultContextProvider");
+            defaultLoadContextEvent = AssetUtility.FindAsset<LoadContextEvent>("LoadContext");
+        }
 #endif
+
         #endregion
     }
 }

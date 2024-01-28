@@ -33,7 +33,7 @@
     "versionDefines": [
         {
             "name": "com.celestegames.native-file-picker",
-            "expression": "",
+            "expression": "0.0.1",
             "define": "CELESTE_NATIVE_FILE_PICKER"
         }
     ],

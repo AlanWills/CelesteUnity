@@ -6,7 +6,8 @@
         "Celeste.Events",
         "Celeste.Parameters",
         "Celeste.Tools",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

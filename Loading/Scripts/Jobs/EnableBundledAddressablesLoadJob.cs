@@ -60,9 +60,8 @@ namespace Celeste.Loading
             else
             {
                 Debug.Log($"Bundle cache info loaded successfully.");
+                JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
             }
-
-            JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
 
             if (cachedAssetBundles != null && cachedAssetBundles.IsValid)
             {

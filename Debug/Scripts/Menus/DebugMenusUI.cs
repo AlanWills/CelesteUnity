@@ -125,6 +125,12 @@ namespace Celeste.Debug.Menus
 
         public void RegisterDebugMenu(DebugMenu debugMenu)
         {
+            if (debugMenu == null)
+            {
+                UnityEngine.Debug.LogAssertion($"Failed to register debug menu, as it was null.");
+                return;
+            }
+
             if (!debugMenus.Contains(debugMenu))
             {
                 debugMenus.Add(debugMenu);
