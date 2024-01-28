@@ -77,7 +77,7 @@ namespace CelesteEditor.UnityProject
 
             if (hasRuntimeAssembly)
             {
-                List<string> referencedAssemblies = new List<string>(parameters.runtimeAssemblyDependencies.Select(x => x.name));
+                List<string> referencedAssemblies = parameters.runtimeAssemblyDependencies.Count > 0 ? new List<string>(parameters.runtimeAssemblyDependencies.Select(x => x.name)) : new List<string>();
                 CreateAssembly(parentDirectory, directoryName, assemblyName, assemblyName, referencedAssemblies);
             }
 
