@@ -479,7 +479,7 @@ namespace CelesteEditor.UnityProject
                 DirectoryInfo originalDirectoryInfo = new DirectoryInfo(originalDirectory);
                 AssetUtility.CreateFolder(newDirectory);
 
-                foreach (FileInfo file in originalDirectoryInfo.GetFiles(originalDirectory))
+                foreach (FileInfo file in originalDirectoryInfo.GetFiles())
                 {
                     File.Copy(file.FullName, Path.Combine(newDirectory, file.Name));
                 }
