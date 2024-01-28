@@ -12,11 +12,8 @@ public static class EmbedPackage
             return false;
         }
 
-        Debug.Log($"Selected object folder found!");
         var path = AssetDatabase.GetAssetPath(selectedObjectFolder);
-        Debug.Log($"Selected object folder path: {path}");
         var folder = Path.GetDirectoryName(path);
-        Debug.Log($"Selected object folder parent folder path: {folder}");
 
         // We only deal with direct folders under Packages/
         return folder == "Packages";
