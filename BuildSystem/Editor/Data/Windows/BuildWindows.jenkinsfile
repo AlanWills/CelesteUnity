@@ -61,6 +61,7 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built Android and updating version"'
+				sh "git lfs push origin ${env.GIT_BRANCH} --all"
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
         }
