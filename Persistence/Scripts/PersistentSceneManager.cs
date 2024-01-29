@@ -61,7 +61,7 @@ namespace Celeste.Persistence
 
         protected virtual void Awake()
         {
-            snapshotRecord.RegisterInterestInSnapshots(this);
+            snapshotRecord?.RegisterInterestInSnapshots(this);
 
             if (loadOnAwake)
             {
@@ -80,7 +80,7 @@ namespace Celeste.Persistence
 
         protected virtual void OnDestroy()
         {
-            snapshotRecord.DeregisterInterestInSnapshots(this);
+            snapshotRecord?.DeregisterInterestInSnapshots(this);
         }
 
         #endregion

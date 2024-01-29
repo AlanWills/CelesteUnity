@@ -35,6 +35,11 @@ namespace Celeste.Twine
             currentStory.OnChanged.AddListener(OnCurrentStoryChanged);
         }
 
+        public void OnTwineStoryCreated(TwineStory twineStory)
+        {
+            OnTwineStoryLoaded(twineStory);
+        }
+
         public void OnSaveCurrentStory()
         {
             UnityEngine.Debug.Assert(currentStory != null, "No current story.  Ignoring SaveCurrentStory...");

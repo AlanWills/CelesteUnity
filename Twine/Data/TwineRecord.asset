@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba38e166f6d937f4fa17591bc3f1a53d, type: 3}
   m_Name: TwineRecord
   m_EditorClassIdentifier: 
+  onStoryCreated: {fileID: 11400000, guid: 0dd7bc7a09ee81943abca3ebb14bf4c4, type: 2}
   onStoryLoaded: {fileID: 11400000, guid: d584483da97d3184c9befbf8485ab661, type: 2}
   saveTwineStory: {fileID: 11400000, guid: 77073999cf2a6024bb021e3a7445a259, type: 2}
   save: {fileID: 11400000, guid: 0aeb1ddf3c8c5ee48b82aed37cf32c24, type: 2}

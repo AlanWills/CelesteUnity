@@ -1,5 +1,4 @@
-﻿using Celeste.DataStructures;
-using Celeste.Events;
+﻿using Celeste.Events;
 using Celeste.Memory;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +46,11 @@ namespace Celeste.Twine.UI
                     CentreOn(twineStory.passages[passagesCount - 1]);
                 }
             }
+        }
+
+        public void OnTwineStoryCreated(TwineStory twineStory)
+        {
+            OnTwineStoryLoaded(twineStory);
         }
 
         public void OnTwineNodeAdded(TwineNode twineNode)

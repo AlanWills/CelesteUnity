@@ -18,6 +18,7 @@ namespace Celeste.Twine
             get { return twineStoryRecords.Count; }
         }
 
+        [SerializeField] private TwineStoryEvent onStoryCreated;
         [SerializeField] private TwineStoryEvent onStoryLoaded;
         [SerializeField] private TwineStoryEvent saveTwineStory;
         [SerializeField] private Events.Event save;
@@ -83,6 +84,7 @@ namespace Celeste.Twine
             twineStory.Initialize();    // Initialize before adding nodes
             twineStory.AddNode("Untitled 1");
 
+            onStoryCreated.Invoke(twineStory);
             saveTwineStory.Invoke(twineStory);
 
             return twineStory;
