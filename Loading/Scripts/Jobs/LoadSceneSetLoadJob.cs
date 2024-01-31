@@ -18,6 +18,7 @@ namespace Celeste.Loading
             private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
             private OnContextLoadedEvent onContextLoadedEvent;
             private Context context;
+            private bool showOutputInLoadingScreen = true;
 
             public Builder WithSceneSet(SceneSet sceneSet)
             {
@@ -43,6 +44,12 @@ namespace Celeste.Loading
                 return this;
             }
 
+            public Builder WithShowOutputOnLoadingScreen(bool showOutputInLoadingScreen)
+            {
+                this.showOutputInLoadingScreen = showOutputInLoadingScreen;
+                return this;
+            }
+
             public LoadSceneSetLoadJob Build()
             {
                 LoadSceneSetLoadJob loadSceneSetLoadJob = CreateInstance<LoadSceneSetLoadJob>();
@@ -52,6 +59,7 @@ namespace Celeste.Loading
                 loadSceneSetLoadJob.onContextLoadedEvent = onContextLoadedEvent;
                 loadSceneSetLoadJob.useRuntimeContext = true;
                 loadSceneSetLoadJob.runtimeContext = context;
+                loadSceneSetLoadJob.showOutputInLoadingScreen = showOutputInLoadingScreen;
 
                 return loadSceneSetLoadJob;
             }

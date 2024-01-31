@@ -1,6 +1,4 @@
-﻿using Celeste.Objects;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Data
@@ -10,15 +8,19 @@ namespace CelesteEditor.BuildSystem.Data
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Add Debug Defaults"))
+            using (new EditorGUILayout.HorizontalScope())
             {
-                ScriptingDefineSymbols scriptingDefineSymbols = target as ScriptingDefineSymbols;
-                scriptingDefineSymbols.AddItem("INDEX_CHECKS");
-                scriptingDefineSymbols.AddItem("NULL_CHECKS");
-                scriptingDefineSymbols.AddItem("COMPONENT_CHECKS");
-                scriptingDefineSymbols.AddItem("DATA_CHECKS");
-                scriptingDefineSymbols.AddItem("KEY_CHECKS");
-                scriptingDefineSymbols.AddItem("ALLOCATOR_CHECKS");
+                if (GUILayout.Button("Add Debug Defaults"))
+                {
+                    ScriptingDefineSymbols scriptingDefineSymbols = target as ScriptingDefineSymbols;
+                    scriptingDefineSymbols.AddDefaultDebugSymbols();
+                }
+
+                if (GUILayout.Button("Add Release Defaults"))
+                {
+                    ScriptingDefineSymbols scriptingDefineSymbols = target as ScriptingDefineSymbols;
+                    scriptingDefineSymbols.AddDefaultReleaseSymbols();
+                }
             }
 
             base.OnInspectorGUI();

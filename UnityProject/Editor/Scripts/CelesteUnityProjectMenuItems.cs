@@ -1,7 +1,6 @@
 ﻿using CelesteEditor.Persistence;
 using System.IO;
 using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CelesteEditor.UnityProject

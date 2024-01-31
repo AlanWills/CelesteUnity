@@ -13,6 +13,7 @@ namespace Celeste.Loading
         public class Builder
         {
             private List<LoadJob> loadJobs = new List<LoadJob>();
+            private bool showOutputInLoadingScreen = true;
 
             public Builder WithLoadJob(LoadJob loadJob)
             {
@@ -24,10 +25,17 @@ namespace Celeste.Loading
                 return this;
             }
 
+            public Builder WithShowOutputInLoadingScreen(bool showOutputInLoadingScreen)
+            {
+                this.showOutputInLoadingScreen = showOutputInLoadingScreen;
+                return this;
+            }
+
             public MultiLoadJob Build()
             {
                 MultiLoadJob multiLoadJob = CreateInstance<MultiLoadJob>();
                 multiLoadJob.name = nameof(MultiLoadJob);
+                multiLoadJob.showOutputInLoadingScreen = showOutputInLoadingScreen;
                 multiLoadJob.loadJobs.AddRange(loadJobs);
 
                 return multiLoadJob;

@@ -8,7 +8,7 @@ namespace Celeste.Loading
     {
         public bool ShowOutputInLoadingScreen => showOutputInLoadingScreen;
 
-        [SerializeField] private bool showOutputInLoadingScreen = true;
+        [SerializeField] protected bool showOutputInLoadingScreen = true;
 
         public abstract IEnumerator Execute(Action<float> setProgress, Action<string> setOutput);
     }

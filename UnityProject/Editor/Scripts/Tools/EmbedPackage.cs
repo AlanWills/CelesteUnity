@@ -13,16 +13,28 @@ public static class EmbedPackage
         }
 
         var path = AssetDatabase.GetAssetPath(selectedObjectFolder);
-        var folder = Path.GetDirectoryName(path);
+        return CanEmbed(path);
+    }
 
-        // We only deal with direct folders under Packages/
-        return folder == "Packages";
+    public static bool CanEmbed(string packagePath)
+    {
+        string parentFolderName = Path.GetDirectoryName(packagePath);
+        return string.CompareOrdinal(parentFolderName, "Packages") == 0;
     }
 
     public static void Embed(Object selectedPackageFolder)
     {
         var packageName = Path.GetFileName(AssetDatabase.GetAssetPath(selectedPackageFolder));
 
+        Debug.Log($"Embedding package '{packageName}' into the project.");
+
+        Client.Embed(packageName);
+        AssetDatabase.Refresh();
+    }
+
+    public static void Embed(string packagePath)
+    {
+        string packageName = Path.GetFileName(packagePath);
         Debug.Log($"Embedding package '{packageName}' into the project.");
 
         Client.Embed(packageName);

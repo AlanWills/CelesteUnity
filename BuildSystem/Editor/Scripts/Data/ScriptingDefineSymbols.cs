@@ -18,5 +18,21 @@ namespace CelesteEditor.BuildSystem.Data
 
             return list.ToArray();
         }
+
+        public void AddDefaultDebugSymbols()
+        {
+            AddItem("INDEX_CHECKS");
+            AddItem("NULL_CHECKS");
+            AddItem("COMPONENT_CHECKS");
+            AddItem("DATA_CHECKS");
+            AddItem("KEY_CHECKS");
+            AddItem("ALLOCATOR_CHECKS");
+            AddItem("ENABLE_INPUT_SYSTEM");
+        }
+
+        public void AddDefaultReleaseSymbols()
+        {
+            AddItem("ENABLE_INPUT_SYSTEM");
+        }
     }
 }

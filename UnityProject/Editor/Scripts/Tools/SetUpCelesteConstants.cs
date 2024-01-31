@@ -65,6 +65,7 @@
         public const string FOLDER_NAME = "BuildSystem/";
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
         public const string EDITOR_FOLDER = FOLDER_PATH + "Editor/";
+        public const string SCRIPTING_DEFINE_SYMBOLS_FOLDER = EDITOR_FOLDER + "ScriptingDefineSymbols/";
         public const string COMMON_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Common/";
         public const string WINDOWS_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Windows/";
         public const string ANDROID_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Android/";

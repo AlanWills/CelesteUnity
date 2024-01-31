@@ -21,6 +21,13 @@ using Celeste.LiveOps.Settings;
 using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
+using UnityEditor.AddressableAssets.Settings;
+using CelesteEditor.Assets;
+using CelesteEditor.Assets.Schemas;
+using CelesteEditor.BuildSystem.Data;
+using CelesteEditor.Scene;
+using System.Collections.Generic;
+using UnityEditor.PackageManager;
 
 namespace CelesteEditor.UnityProject
 {
@@ -36,8 +43,16 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)]
         [Tooltip("The path to the root of the Celeste package.  This only needs modifying if you've manually cloned the repo into your project.")]
         public string packagePath;
+        [LabelWidth(300)]
+        [Tooltip("If true, Celeste will be embedded as a local package rather than referenced as a read-only package.  Useful if you want to edit the source or utilise assets in the package.")]
+        public bool embedCeleste;
         [LabelWidth(300)] public bool usePresetGitIgnoreFile;
         [LabelWidth(300)] public bool usePresetGitLFSFile;
+
+        [Header("Dependencies")]
+        [LabelWidth(300)] public bool useNativeSharePackage;
+        [LabelWidth(300)] public bool useNativeFilePickerPackage;
+        [LabelWidth(300)] public List<string> dependencies;
 
         [Header("Build System")]
         [LabelWidth(300)] public bool needsBuildSystem;
@@ -80,8 +95,14 @@ namespace CelesteEditor.UnityProject
         public void UseDefaults()
         {
             packagePath = "Packages/com.celestegames.celeste/";
+            embedCeleste = true;
+
             usePresetGitIgnoreFile = true;
             usePresetGitLFSFile = true;
+
+            useNativeSharePackage = true;
+            useNativeFilePickerPackage = true;
+            dependencies = new List<string>();
 
             needsBuildSystem = true;
             runsOnWindows = true;
@@ -120,6 +141,42 @@ namespace CelesteEditor.UnityProject
             CreateModules(parameters);
             CreateEditorSettings();
             CreateFileShareSettings();
+
+            Finalise(parameters);
+        }
+
+        private static void Finalise(SetUpCelesteParameters parameters)
+        {
+            if (parameters.embedCeleste)
+            {
+                if (EmbedPackage.CanEmbed(parameters.packagePath))
+                {
+                    EmbedPackage.Embed(parameters.packagePath);
+                }
+                else
+                {
+                    Debug.LogError($"Failed to embed Celeste as a package (package path: {parameters.packagePath})");
+                }
+            }
+            
+            CelesteSceneMenuItems.UpdateScenesInBuild();
+
+            List<string> dependencies = new List<string>(parameters.dependencies);
+
+            if (parameters.useNativeFilePickerPackage)
+            {
+                dependencies.Add("git@github.com:AlanWills/UnityNativeFilePicker.git");
+            }
+
+            if (parameters.useNativeSharePackage)
+            {
+                dependencies.Add("git@github.com:AlanWills/UnityNativeShare.git");
+            }
+
+            if (dependencies.Count > 0)
+            {
+                Client.AddAndRemove(packagesToAdd: dependencies.ToArray());
+            }
         }
 
         #region Build System
@@ -177,6 +234,25 @@ namespace CelesteEditor.UnityProject
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
             }
+
+            // Create Scripting Define Symbols
+            AssetUtility.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+
+            // Debug
+            {
+                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
+                debugScriptingDefineSymbols.name = "DebugScriptingDefineSymbols";
+                debugScriptingDefineSymbols.AddDefaultDebugSymbols();
+                AssetUtility.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+            }
+
+            // Release
+            {
+                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
+                debugScriptingDefineSymbols.name = "ReleaseScriptingDefineSymbols";
+                debugScriptingDefineSymbols.AddDefaultReleaseSymbols();
+                AssetUtility.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+            }
         }
 
         #endregion
@@ -202,7 +278,8 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateStartupLoadJob(SetUpCelesteParameters parameters)
         {
-            var startupLoadJobBuilder = new MultiLoadJob.Builder();
+            var startupLoadJobBuilder = new MultiLoadJob.Builder()
+                .WithShowOutputInLoadingScreen(false);
 
             // Disable fallback assets load job
             {
@@ -227,7 +304,7 @@ namespace CelesteEditor.UnityProject
                     EnableBundledAddressablesLoadJob enableBundledAddressables = ScriptableObject.CreateInstance<EnableBundledAddressablesLoadJob>();
                     enableBundledAddressables.name = StartupConstants.ENABLE_BUNDLED_ADDRESSABLES_LOAD_JOB_NAME;
                     startupLoadJobBuilder.WithLoadJob(enableBundledAddressables);
-                    
+
                     AssetUtility.CreateAssetInFolder(enableBundledAddressables, StartupConstants.LOAD_JOBS_FOLDER_PATH);
                 }
             }
@@ -238,7 +315,8 @@ namespace CelesteEditor.UnityProject
                 Debug.Assert(bootstrapSceneSet != null, $"Could not find bootstrap scene set for load job: {BootstrapConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadBootstrapSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Single)
-                    .WithSceneSet(bootstrapSceneSet);
+                    .WithSceneSet(bootstrapSceneSet)
+                    .WithShowOutputOnLoadingScreen(false);
 
                 LoadSceneSetLoadJob loadBootstrapSceneSet = loadBootstrapSceneSetBuilder.Build();
                 loadBootstrapSceneSet.name = StartupConstants.LOAD_BOOTSTRAP_SCENE_SET_LOAD_JOB_NAME;
@@ -255,7 +333,7 @@ namespace CelesteEditor.UnityProject
         private static void CreateStartupScene()
         {
             UnityEngine.SceneManagement.Scene startupScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            
+
             // Create main camera
             {
                 GameObject cameraGameObject = new GameObject("Main Camera");
@@ -297,7 +375,7 @@ namespace CelesteEditor.UnityProject
             startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
             startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
 
-            CreateAssemblyDefinition.CreateAssemblies(startupAssembly); 
+            CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
         }
 
         #endregion
@@ -323,7 +401,8 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateBootstrapLoadJob()
         {
-            var bootstrapLoadJobBuilder = new MultiLoadJob.Builder();
+            var bootstrapLoadJobBuilder = new MultiLoadJob.Builder()
+                .WithShowOutputInLoadingScreen(false);
 
             // Load engine systems scene set load job
             {
@@ -331,7 +410,8 @@ namespace CelesteEditor.UnityProject
                 Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Additive)
-                    .WithSceneSet(engineSystemsSceneSet);
+                    .WithSceneSet(engineSystemsSceneSet)
+                    .WithShowOutputOnLoadingScreen(false);
 
                 LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
                 loadEngineSystemsSceneSet.name = BootstrapConstants.LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
@@ -343,7 +423,7 @@ namespace CelesteEditor.UnityProject
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
-            
+
             AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
             bootstrapLoadJob.MakeAddressable();
         }
@@ -353,7 +433,7 @@ namespace CelesteEditor.UnityProject
             UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             GameObject bootstrapManagerPrefab = AssetUtility.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
             Debug.Assert(bootstrapManagerPrefab != null, $"Could not find bootstrap manager prefab: {BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME}.");
-            
+
             GameObject bootstrapManagerInstance = PrefabUtility.InstantiatePrefab(bootstrapManagerPrefab, bootstrapScene) as GameObject;
             LoadJob bootstrapLoadJob = AssetUtility.FindAsset<LoadJob>(BootstrapConstants.LOAD_JOB_NAME);
             Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
@@ -367,7 +447,7 @@ namespace CelesteEditor.UnityProject
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
             bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable, false); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable, false);
-            
+
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
             bootstrapSceneSet.MakeAddressable();
         }
@@ -414,7 +494,7 @@ namespace CelesteEditor.UnityProject
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable, false);
-            
+
             AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             engineSystemsSceneSet.MakeAddressable();
         }
@@ -539,17 +619,37 @@ namespace CelesteEditor.UnityProject
             {
                 if (!AddressableAssetSettingsDefaultObject.SettingsExists)
                 {
-                    AddressableAssetSettingsDefaultObject.GetSettings(true);
+                    // Set Settings
+                    AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(true);
+                    settings.BuildRemoteCatalog = true;
+                    settings.BuildAddressablesWithPlayerBuild = AddressableAssetSettings.PlayerBuildOption.DoNotBuildWithPlayer;
+                    settings.MaxConcurrentWebRequests = 50;
+                    settings.OverridePlayerVersion = "res";
+                    settings.ShaderBundleNaming = UnityEditor.AddressableAssets.Build.ShaderBundleNaming.Custom;
+                    settings.ShaderBundleCustomNaming = "alwaysbundle";
+                    bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
+                    Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
+
+                    // Rename default group and add tag
+                    settings.AddLabel("CommonAddressables", false);
+                    settings.DefaultGroup.Name = "CommonAddressables";
+                    settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
+
+                    string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
+                    string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
+
+                    settings.DefaultGroup.SetBuildPath(remoteBuildPath);
+                    settings.DefaultGroup.SetLoadPath(remoteLoadPath);
+                }
+
+                if (parameters.usesTextMeshPro)
+                {
+                    string packageFullPath = TMP_EditorUtility.packageFullPath;
+                    AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
                 }
             }
-
-            if (parameters.usesTextMeshPro)
-            {
-                string packageFullPath = TMP_EditorUtility.packageFullPath;
-                AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
-            }
         }
-
+        
         #endregion
     }
 }

@@ -16,7 +16,10 @@
         "Celeste.Persistence",
         "Celeste.Sound",
         "Celeste.Input",
+        "Celeste.Objects",
         "Celeste.Persistence.Editor",
+        "Celeste.Assets.Editor",
+        "Celeste.Scene.Editor",
         "NativeFilePicker.Editor",
         "Unity.Addressables.Editor",
         "Unity.TextMeshPro.Editor"
