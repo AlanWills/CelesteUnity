@@ -21,6 +21,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.remote-config-runtime",
+            "expression": "0.0.1",
+            "define": "UNITY_REMOTE_CONFIG"
+        }
+    ],
     "noEngineReferences": false
 }
