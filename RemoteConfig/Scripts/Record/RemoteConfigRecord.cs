@@ -1,25 +1,95 @@
-﻿using FullSerializer;
+﻿using Celeste.Parameters;
+using Celeste.RemoteConfig.Persistence;
+using FullSerializer;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.RemoteConfig
 {
+    public enum DataSource
+    {
+        Unity,
+        Disabled,
+    }
+
     [CreateAssetMenu(fileName = nameof(RemoteConfigRecord), menuName = "Celeste/Remote Config/Remote Config Record")]
     public class RemoteConfigRecord : ScriptableObject, IRemoteConfigDictionary
     {
         #region Properties and Fields
 
-        [SerializeField] private Events.Event fetchedDataChanged;
+        public DataSource DataSource
+        {
+            get => dataSource;
+            set
+            {
+                if (dataSource != value)
+                {
+                    impl.RemoveOnDataFetchedCallback(OnDataFetched);
 
-        private string fetchedJson = string.Empty;
-        private fsDataDictionary fetchedData = new fsDataDictionary();
+                    SetDataSourceInternal(value);
+
+                    fetchedJson = string.Empty;
+                    fetchedData = new fsDataDictionary();
+                    fetchedDataChanged.Invoke();
+                    save.Invoke();
+                }
+            }
+        }
+
+        [SerializeField] private BoolValue isDebugBuild;
+        [SerializeField] private string unityProductionEnvironmentID;
+        [SerializeField] private string unityDevelopmentEnvironmentID;
+        [SerializeField] private Events.Event fetchedDataChanged;
+        [SerializeField] private Events.Event save;
+
+        [NonSerialized] private string environmentID;
+        [NonSerialized] private string fetchedJson = string.Empty;
+        [NonSerialized] private fsDataDictionary fetchedData = new fsDataDictionary();
+        [NonSerialized] private IRemoteConfigImpl impl = new DisabledRemoteConfigImpl();
+        [NonSerialized] private DataSource dataSource = DataSource.Disabled;
 
         #endregion
 
-        public void FromJson(string json)
+        public void Initialize(DataSource dataSource)
+        {   
+            SetDataSourceInternal(dataSource);
+        }
+
+        private void SetDataSourceInternal(DataSource dataSource)
+        {
+            this.dataSource = dataSource;
+
+            switch (dataSource)
+            {
+                default:
+                case DataSource.Disabled:
+                    impl = new DisabledRemoteConfigImpl();
+                    environmentID = "";
+                    break;
+
+#if UNITY_REMOTE_CONFIG
+                case DataSource.Unity:
+                    impl = new UnityRemoteConfigImpl();
+                    environmentID = isDebugBuild.Value ? unityDevelopmentEnvironmentID : unityProductionEnvironmentID;
+                    break;
+#endif
+            }
+
+            impl.AddOnDataFetchedCallback(OnDataFetched);
+            UnityEngine.Debug.Log($"Remote Config data source set to '{dataSource}'!");
+        }
+
+        public void Deserialize(RemoteConfigManagerDTO remoteConfigManagerDTO)
+        {
+            DeserializeData(remoteConfigManagerDTO.cachedConfig);
+        }
+
+        private void DeserializeData(string json)
         {
             if (string.IsNullOrEmpty(json) || json == "{}")
             {
-                UnityEngine.Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
+                UnityEngine.Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.");
                 fetchedJson = json;
                 fetchedData = new fsDataDictionary();
             }
@@ -34,13 +104,16 @@ namespace Celeste.RemoteConfig
                 }
                 else
                 {
-                    UnityEngine.Debug.LogError($"Failed to parse non-empty json {fetchedJson} into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(FromJson)}.");
+                    UnityEngine.Debug.LogError($"Failed to parse non-empty json {fetchedJson} into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.");
                     fetchedJson = json;
                     fetchedData = new fsDataDictionary();
                 }
             }
+        }
 
-            fetchedDataChanged.Invoke();
+        public async Task FetchData()
+        {
+            await impl.FetchData(environmentID);
         }
 
         public string ToJson()
@@ -72,5 +145,17 @@ namespace Celeste.RemoteConfig
         {
             return fetchedData.GetFloat(key, defaultValue);
         }
+
+        #region Callbacks
+
+        private void OnDataFetched(string data)
+        {
+            DeserializeData(data);
+            
+            fetchedDataChanged.Invoke();
+            save.Invoke();
+        }
+
+        #endregion
     }
 }

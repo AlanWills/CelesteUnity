@@ -1,7 +1,5 @@
-﻿using Celeste.Parameters;
-using Celeste.Persistence;
+﻿using Celeste.Persistence;
 using Celeste.RemoteConfig.Persistence;
-using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 
 namespace Celeste.RemoteConfig
@@ -14,15 +12,12 @@ namespace Celeste.RemoteConfig
         public const string FILE_NAME = "RemoteConfig.dat";
         protected override string FileName => FILE_NAME;
 
-        private string EnvironmentID => isDebugBuild.Value ? developmentEnvironmentID : productionEnvironmentID;
-
         [SerializeField] private RemoteConfigRecord remoteConfigRecord;
-        [SerializeField] private BoolValue isDebugBuild;
-        [SerializeField] private bool useUnityRemoteConfig;
-        [SerializeField, ShowIf(nameof(useUnityRemoteConfig))] private string productionEnvironmentID;
-        [SerializeField, ShowIf(nameof(useUnityRemoteConfig))] private string developmentEnvironmentID;
-
-        private IRemoteConfigImpl impl = new DisabledRemoteConfigImpl();
+#if UNITY_REMOTE_CONFIG
+        [SerializeField] private DataSource defaultDataSource = DataSource.Unity;
+#else
+        [SerializeField] private DataSource defaultDataSource = DataSource.Disabled;
+#endif
 
         #endregion
 
@@ -30,7 +25,7 @@ namespace Celeste.RemoteConfig
 
         protected override void Deserialize(RemoteConfigManagerDTO dto)
         {
-            remoteConfigRecord.FromJson(dto.cachedConfig);
+            remoteConfigRecord.Initialize((DataSource)dto.dataSource);
         }
 
         protected override RemoteConfigManagerDTO Serialize()
@@ -40,47 +35,7 @@ namespace Celeste.RemoteConfig
 
         protected override void SetDefaultValues()
         {
-        }
-
-        #endregion
-
-        #region Unity Methods
-
-        private void OnValidate()
-        {
-            loadOnAwake = false;
-            loadOnStart = false;
-        }
-
-        protected override void Awake()
-        {
-            Load();
-
-            base.Awake();
-
-            if (useUnityRemoteConfig)
-            {
-                impl = new UnityRemoteConfigImpl();
-            }
-
-            impl.AddOnDataFetchedCallback(OnDataFetched);
-            impl.FetchData(EnvironmentID);
-        }
-
-        protected override void OnDestroy()
-        {
-            impl.RemoveOnDataFetchedCallback(OnDataFetched);
-
-            base.OnDestroy();
-        }
-
-        #endregion
-
-        #region Callbacks
-
-        private void OnDataFetched(string data)
-        {
-            remoteConfigRecord.FromJson(data);
+            remoteConfigRecord.Initialize(defaultDataSource);
         }
 
         #endregion

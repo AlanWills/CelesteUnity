@@ -1,4 +1,5 @@
 ﻿using Celeste.Debug.Menus;
+using Celeste.Tools;
 using System;
 using UnityEngine;
 
@@ -27,6 +28,27 @@ namespace Celeste.RemoteConfig.Debug
             if (GUILayout.Button("Refresh"))
             {
                 remoteConfigJson = remoteConfigRecord.ToJson();
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                using (new GUIEnabledScope(remoteConfigRecord.DataSource != DataSource.Disabled))
+                {
+                    if (GUILayout.Button("Disable"))
+                    {
+                        remoteConfigRecord.DataSource = DataSource.Disabled;
+                        remoteConfigJson = remoteConfigRecord.ToJson();
+                    }
+                }
+
+                using (new GUIEnabledScope(remoteConfigRecord.DataSource != DataSource.Unity))
+                {
+                    if (GUILayout.Button("Unity"))
+                    {
+                        remoteConfigRecord.DataSource = DataSource.Unity;
+                        remoteConfigJson = remoteConfigRecord.ToJson();
+                    }
+                }
             }
 
             GUILayout.Label(remoteConfigJson);

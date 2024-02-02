@@ -11,7 +11,8 @@
         "Celeste.Parameters",
         "Celeste.FullSerializer",
         "Celeste.Events",
-        "Celeste.Debug"
+        "Celeste.Debug",
+        "Celeste.Loading"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

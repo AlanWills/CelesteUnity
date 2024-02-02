@@ -1,3 +1,4 @@
+#if UNITY_REMOTE_CONFIG
 using System.Threading.Tasks;
 using Unity.Services.RemoteConfig;
 using Unity.Services.Authentication;
@@ -70,3 +71,4 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
 
     #endregion
 }
+#endif
