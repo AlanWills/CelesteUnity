@@ -39,8 +39,24 @@
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
         public const string SCENE_NAME = "EngineSystems";
         public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
+        public const string DEBUG_SCENE_NAME = "EngineSystemsDebug";
+        public const string DEBUG_SCENE_PATH = SCENES_FOLDER_PATH + DEBUG_SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "EngineSystemsSceneSet";
         public const string ENGINE_SYSTEMS_PREFAB_NAME = "EngineSystems";
+        public const string ENGINE_SYSTEMS_DEBUG_PREFAB_NAME = "EngineSystems";
+    }
+
+    public static class GameSystemsConstants
+    {
+        public const string FOLDER_NAME = "GameSystems/";
+        public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
+        public const string DATA_FOLDER_PATH = FOLDER_PATH + "Data/";
+        public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
+        public const string SCENE_NAME = "GameSystems";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
+        public const string DEBUG_SCENE_NAME = "GameSystemsDebug";
+        public const string DEBUG_SCENE_PATH = SCENES_FOLDER_PATH + DEBUG_SCENE_NAME + ".unity";
+        public const string SCENE_SET_NAME = "GameSystemsSceneSet";
     }
 
     public struct CelesteConstants

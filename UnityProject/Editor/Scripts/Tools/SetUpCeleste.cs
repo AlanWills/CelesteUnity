@@ -28,6 +28,9 @@ using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Scene;
 using System.Collections.Generic;
 using UnityEditor.PackageManager;
+using UnityEngine.SceneManagement;
+using Celeste.Sound;
+using UnityEditorInternal;
 
 namespace CelesteEditor.UnityProject
 {
@@ -63,16 +66,16 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))]
         [Tooltip("If true, copies of Common template jenkins files will be added to the project for customisation and usage")]
         public bool useCommonJenkinsFiles;
-        [LabelWidth(300), ShowIf(nameof(runsOnWindows))]
+        [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnWindows))]
         [Tooltip("If true, copies of Windows template jenkins files will be added to the project for customisation and usage")]
         public bool useWindowsBuildJenkinsFiles;
-        [LabelWidth(300), ShowIf(nameof(runsOnAndroid))]
+        [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnAndroid))]
         [Tooltip("If true, copies of the Android template jenkins files will be added to the project for customisation and usage")]
         public bool useAndroidBuildJenkinsFiles;
-        [LabelWidth(300), ShowIf(nameof(runsOniOS))]
+        [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOniOS))]
         [Tooltip("If true, copies of the iOS template jenkins files will be added to the project for customisation and usage")]
         public bool useiOSBuildJenkinsFiles;
-        [LabelWidth(300), ShowIf(nameof(runsOnWebGL))]
+        [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnWebGL))]
         [Tooltip("If true, copies of the WebGL template jenkins files will be added to the project for customisation and usage")]
         public bool useWebGLBuildJenkinsFiles;
 
@@ -89,6 +92,7 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool needsStartupScene;
         [LabelWidth(300)] public bool needsBootstrapScene;
         [LabelWidth(300)] public bool needsEngineSystemsScene;
+        [LabelWidth(300)] public bool needsGameSystemsScene;
 
         #endregion
 
@@ -122,6 +126,7 @@ namespace CelesteEditor.UnityProject
             needsStartupScene = true;
             needsBootstrapScene = true;
             needsEngineSystemsScene = true;
+            needsGameSystemsScene = true;
         }
     }
 
@@ -135,11 +140,11 @@ namespace CelesteEditor.UnityProject
 
         public static void Execute(SetUpCelesteParameters parameters)
         {
-            CreateProjectData(parameters);
             CreateAssetData(parameters);
+            CreateEditorSettings(parameters);
+            CreateProjectData(parameters);
             CreateBuildSystemData(parameters);
             CreateModules(parameters);
-            CreateEditorSettings();
             CreateFileShareSettings();
 
             Finalise(parameters);
@@ -176,6 +181,46 @@ namespace CelesteEditor.UnityProject
             if (dependencies.Count > 0)
             {
                 Client.AddAndRemove(packagesToAdd: dependencies.ToArray());
+            }
+        }
+
+
+        private static void CreateModules(SetUpCelesteParameters parameters)
+        {
+            CreateGameSystems(parameters);
+            CreateEngineSystems(parameters);
+            CreateBootstrap(parameters);
+            CreateStartup(parameters);
+        }
+
+        private static void CreateProjectData(SetUpCelesteParameters parameters)
+        {
+            string projectPath = Path.GetDirectoryName(Application.dataPath);
+
+            if (parameters.usePresetGitIgnoreFile)
+            {
+                try
+                {
+                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to create preset git ignore file.  See the log for an exception.");
+                    Debug.LogException(ex);
+                }
+            }
+
+            if (parameters.usePresetGitLFSFile)
+            {
+                try
+                {
+                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to create preset git lfs file.  See the log for an exception.");
+                    Debug.LogException(ex);
+                }
             }
         }
 
@@ -374,6 +419,7 @@ namespace CelesteEditor.UnityProject
             startupAssembly.hasSceneMenuItem = true;
             startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
             startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
+            startupAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
         }
@@ -387,7 +433,7 @@ namespace CelesteEditor.UnityProject
             if (parameters.needsBootstrapScene)
             {
                 CreateBootstrapFolders();
-                CreateBootstrapLoadJob();
+                CreateBootstrapLoadJob(parameters);
                 CreateBootstrapScene(parameters);
                 CreateBootstrapAssemblies(parameters);
             }
@@ -399,7 +445,7 @@ namespace CelesteEditor.UnityProject
             AssetUtility.CreateFolder(BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
-        private static void CreateBootstrapLoadJob()
+        private static void CreateBootstrapLoadJob(SetUpCelesteParameters parameters)
         {
             var bootstrapLoadJobBuilder = new MultiLoadJob.Builder()
                 .WithShowOutputInLoadingScreen(false);
@@ -409,7 +455,7 @@ namespace CelesteEditor.UnityProject
                 SceneSet engineSystemsSceneSet = AssetUtility.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
                 Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
-                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Additive)
+                    .WithLoadSceneMode(LoadSceneMode.Additive)
                     .WithSceneSet(engineSystemsSceneSet)
                     .WithShowOutputOnLoadingScreen(false);
 
@@ -418,14 +464,14 @@ namespace CelesteEditor.UnityProject
                 bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
 
                 AssetUtility.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
-                loadEngineSystemsSceneSet.MakeAddressable();
+                MakeAddressable(parameters, loadEngineSystemsSceneSet);
             }
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
 
             AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
-            bootstrapLoadJob.MakeAddressable();
+            MakeAddressable(parameters, bootstrapLoadJob);
         }
 
         private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
@@ -445,11 +491,11 @@ namespace CelesteEditor.UnityProject
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
-            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, SceneType.Addressable, false); // This must be first
-            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, SceneType.Addressable, false);
+            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
+            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
 
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
-            bootstrapSceneSet.MakeAddressable();
+            MakeAddressable(parameters, bootstrapSceneSet);
         }
 
         private static void CreateBootstrapAssemblies(SetUpCelesteParameters parameters)
@@ -461,6 +507,7 @@ namespace CelesteEditor.UnityProject
             bootstrapAssembly.hasSceneMenuItem = true;
             bootstrapAssembly.sceneSetPath = $"{BootstrapConstants.SCENES_FOLDER_PATH}{BootstrapConstants.SCENE_SET_NAME}.asset";
             bootstrapAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
+            bootstrapAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
         }
@@ -474,7 +521,8 @@ namespace CelesteEditor.UnityProject
             if (parameters.needsEngineSystemsScene)
             {
                 CreateEngineSystemsFolders();
-                CreateEngineSystemsScene();
+                CreateEngineSystemsScenes(parameters);
+                CreateEngineSystemsAssets(parameters);
             }
         }
 
@@ -483,36 +531,161 @@ namespace CelesteEditor.UnityProject
             AssetUtility.CreateFolder(EngineSystemsConstants.SCENES_FOLDER_PATH);
         }
 
-        private static void CreateEngineSystemsScene()
+        private static void CreateEngineSystemsScenes(SetUpCelesteParameters parameters)
         {
-            UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            GameObject engineSystemsPrefab = AssetUtility.FindAsset<GameObject>(EngineSystemsConstants.ENGINE_SYSTEMS_PREFAB_NAME);
-            PrefabUtility.InstantiatePrefab(engineSystemsPrefab, engineSystemsScene);
-            EditorSceneManager.SaveScene(engineSystemsScene, EngineSystemsConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH).SetAddressableAddress(EngineSystemsConstants.SCENE_NAME);
+            // Create Engine Systems Scene
+            {
+                CreateSceneWithPrefab(parameters, EngineSystemsConstants.SCENE_NAME, EngineSystemsConstants.SCENE_PATH, EngineSystemsConstants.ENGINE_SYSTEMS_PREFAB_NAME);
+            }
+
+            // Create Engine Systems Debug Scene
+            {
+                CreateSceneWithPrefab(parameters, EngineSystemsConstants.DEBUG_SCENE_NAME, EngineSystemsConstants.DEBUG_SCENE_PATH, EngineSystemsConstants.ENGINE_SYSTEMS_DEBUG_PREFAB_NAME);
+            }
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
-            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, SceneType.Addressable, false);
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
             AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
-            engineSystemsSceneSet.MakeAddressable();
+            MakeAddressable(parameters, engineSystemsSceneSet);
+        }
+
+        private static void CreateEngineSystemsAssets(SetUpCelesteParameters parameters)
+        {
+            MusicSettings musicSettings = ScriptableObject.CreateInstance<MusicSettingsUsingAssets>();
+            musicSettings.name = "MusicSettings";
+            MakeAddressable(parameters, musicSettings);
+
+            SFXSettings sfxSettings = ScriptableObject.CreateInstance<SFXSettingsUsingAssets>();
+            sfxSettings.name = "SFXSettings";
+            MakeAddressable(parameters, sfxSettings);
+
+            AssetUtility.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
+            AssetUtility.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
+
+            SceneAsset engineSystemsScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH);
+            SceneManager.LoadScene(engineSystemsScene.name, LoadSceneMode.Single);
+
+            // Set Music Settings
+            {
+                MusicManager musicManager = GameObject.FindFirstObjectByType<MusicManager>();
+                Debug.Assert(musicManager, $"Could not find {nameof(MusicManager)} in the Engine Systems scene!  You'll have to assign Music Settings manually...");
+
+                if (musicManager != null)
+                {
+                    musicManager.MusicSettings = musicSettings;
+                }
+            }
+
+            // Set SFX Settings
+            {
+                SFXManager sfxManager = GameObject.FindFirstObjectByType<SFXManager>();
+                Debug.Assert(sfxManager, $"Could not find {nameof(SFXManager)} in the Engine Systems scene!  You'll have to assign SFX Settings manually...");
+
+                if (sfxManager != null)
+                {
+                    sfxManager.SFXSettings = sfxSettings;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Game Systems
+
+        private static void CreateGameSystems(SetUpCelesteParameters parameters)
+        {
+            if (parameters.needsGameSystemsScene)
+            {
+                CreateGameSystemsFolders();
+                CreateGameSystemsScenes(parameters);
+                CreateEngineSystemsAssets(parameters);
+            }
+        }
+
+        private static void CreateGameSystemsFolders()
+        {
+            AssetUtility.CreateFolder(GameSystemsConstants.SCENES_FOLDER_PATH);
+        }
+
+        private static void CreateGameSystemsScenes(SetUpCelesteParameters parameters)
+        {
+            // Create Game Systems Scene
+            {
+                CreateScene(parameters, GameSystemsConstants.SCENE_NAME, GameSystemsConstants.SCENE_PATH);
+            }
+
+            // Create Game Systems Debug Scene
+            {
+                CreateScene(parameters, GameSystemsConstants.DEBUG_SCENE_NAME, GameSystemsConstants.DEBUG_SCENE_PATH);
+            }
+
+            SceneSet gameSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
+            gameSystemsSceneSet.name = GameSystemsConstants.SCENE_SET_NAME;
+            gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
+            gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
+
+            AssetUtility.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
+            MakeAddressable(parameters, gameSystemsSceneSet);
         }
 
         #endregion
 
         #region Editor Settings
 
-        private static void CreateEditorSettings()
+        private static void CreateEditorSettings(SetUpCelesteParameters parameters)
         {
             DataImporterEditorSettings.GetOrCreateSettings();
             DebugEditorSettings.GetOrCreateSettings();
             LiveOpsEditorSettings.GetOrCreateSettings();
-            LocalisationEditorSettings.GetOrCreateSettings();
+
+            {
+                LocalisationEditorSettings localisationEditorSettings = LocalisationEditorSettings.GetOrCreateSettings();
+                MakeAddressable(parameters, localisationEditorSettings.currentLanguageValue);
+            }
+
             PersistenceEditorSettings.GetOrCreateSettings();
-            SceneEditorSettings.GetOrCreateSettings();
-            SoundEditorSettings.GetOrCreateSettings();
-            InputEditorSettings.GetOrCreateSettings();
+
+            {
+                SceneEditorSettings sceneEditorSettings = SceneEditorSettings.GetOrCreateSettings();
+                MakeAddressable(parameters, sceneEditorSettings.defaultContextProvider);
+                MakeAddressable(parameters, sceneEditorSettings.defaultLoadContextEvent);
+            }
+
+            {
+                SoundEditorSettings soundEditorSettings = SoundEditorSettings.GetOrCreateSettings();
+                MakeAddressable(parameters, soundEditorSettings.playMusicWithRawClipEvent);
+                MakeAddressable(parameters, soundEditorSettings.playMusicWithSettingsEvent);
+                MakeAddressable(parameters, soundEditorSettings.playMusicOneShotWithRawClipEvent);
+                MakeAddressable(parameters, soundEditorSettings.playMusicOneShotWithSettingsEvent);
+                MakeAddressable(parameters, soundEditorSettings.playSFXWithRawClipEvent);
+                MakeAddressable(parameters, soundEditorSettings.playSFXWithSettingsEvent);
+                MakeAddressable(parameters, soundEditorSettings.playSFXOneShotWithRawClipEvent);
+                MakeAddressable(parameters, soundEditorSettings.playSFXOneShotWithSettingsEvent);
+            }
+
+            {
+                InputEditorSettings inputEditorSettings = InputEditorSettings.GetOrCreateSettings();
+
+                if (parameters.usesAddressables)
+                {
+                    MakeAddressable(parameters, inputEditorSettings.InputCamera);
+                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonDown);
+                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstDown);
+                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstUp);
+                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonDown);
+                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstDown);
+                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstUp);
+                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonDown);
+                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstDown);
+                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstUp);
+                    MakeAddressable(parameters, inputEditorSettings.SingleTouch);
+                    MakeAddressable(parameters, inputEditorSettings.DoubleTouch);
+                    MakeAddressable(parameters, inputEditorSettings.TripleTouch);
+                }
+            }
         }
 
         #endregion
@@ -575,81 +748,82 @@ namespace CelesteEditor.UnityProject
             }
         }
 
-        private static void CreateModules(SetUpCelesteParameters parameters)
+        private static void CreateScene(SetUpCelesteParameters parameters, string sceneName, string scenePath)
         {
-            CreateEngineSystems(parameters);
-            CreateBootstrap(parameters);
-            CreateStartup(parameters);
+            UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            EditorSceneManager.SaveScene(scene, scenePath);
+
+            SetAddressableAddress(parameters, scenePath, sceneName);
         }
 
-        private static void CreateProjectData(SetUpCelesteParameters parameters)
+        private static void CreateSceneWithPrefab(SetUpCelesteParameters parameters, string sceneName, string scenePath, string scenePrefabName)
         {
-            string projectPath = Path.GetDirectoryName(Application.dataPath);
+            UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            GameObject prefab = AssetUtility.FindAsset<GameObject>(scenePrefabName);
+            PrefabUtility.InstantiatePrefab(prefab, scene);
+            EditorSceneManager.SaveScene(scene, scenePath);
 
-            if (parameters.usePresetGitIgnoreFile)
-            {
-                try
-                {
-                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_IGNORE_FILE_PATH, Path.Combine(projectPath, ".gitignore"));
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"Failed to create preset git ignore file.  See the log for an exception.");
-                    Debug.LogException(ex);
-                }
-            }
-
-            if (parameters.usePresetGitLFSFile)
-            {
-                try
-                {
-                    File.Copy(parameters.CelesteConstants.CELESTE_GIT_LFS_FILE_PATH, Path.Combine(projectPath, ".gitattributes"));
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"Failed to create preset git lfs file.  See the log for an exception.");
-                    Debug.LogException(ex);
-                }
-            }
+            SetAddressableAddress(parameters,scenePath, sceneName);
         }
 
         private static void CreateAssetData(SetUpCelesteParameters parameters)
         {
             if (parameters.usesAddressables)
             {
-                if (!AddressableAssetSettingsDefaultObject.SettingsExists)
-                {
-                    // Set Settings
-                    AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(true);
-                    settings.BuildRemoteCatalog = true;
-                    settings.BuildAddressablesWithPlayerBuild = AddressableAssetSettings.PlayerBuildOption.DoNotBuildWithPlayer;
-                    settings.MaxConcurrentWebRequests = 50;
-                    settings.OverridePlayerVersion = "res";
-                    settings.ShaderBundleNaming = UnityEditor.AddressableAssets.Build.ShaderBundleNaming.Custom;
-                    settings.ShaderBundleCustomNaming = "alwaysbundle";
-                    bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
-                    Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
+                // Set Settings
+                AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.GetSettings(!AddressableAssetSettingsDefaultObject.SettingsExists);
+                settings.BuildRemoteCatalog = true;
+                settings.BuildAddressablesWithPlayerBuild = AddressableAssetSettings.PlayerBuildOption.DoNotBuildWithPlayer;
+                settings.MaxConcurrentWebRequests = 50;
+                settings.OverridePlayerVersion = "res";
+                settings.ShaderBundleNaming = UnityEditor.AddressableAssets.Build.ShaderBundleNaming.Custom;
+                settings.ShaderBundleCustomNaming = "alwaysbundle";
+                bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
+                Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
 
-                    // Rename default group and add tag
-                    settings.AddLabel("CommonAddressables", false);
-                    settings.DefaultGroup.Name = "CommonAddressables";
-                    settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
+                // Rename default group and add tag
+                settings.AddLabel("CommonAddressables", false);
+                settings.DefaultGroup.Name = "CommonAddressables";
+                settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
 
-                    string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
-                    string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
+                string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
+                string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
 
-                    settings.DefaultGroup.SetBuildPath(remoteBuildPath);
-                    settings.DefaultGroup.SetLoadPath(remoteLoadPath);
-                }
+                settings.DefaultGroup.SetBuildPath(remoteBuildPath);
+                settings.DefaultGroup.SetLoadPath(remoteLoadPath);
+            }
 
-                if (parameters.usesTextMeshPro)
-                {
-                    string packageFullPath = TMP_EditorUtility.packageFullPath;
-                    AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
-                }
+            if (parameters.usesTextMeshPro)
+            {
+                string packageFullPath = TMP_EditorUtility.packageFullPath;
+                AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
             }
         }
-        
+
+        private static void MakeAddressable(SetUpCelesteParameters parameters, UnityEngine.Object obj)
+        {
+            if (parameters.usesAddressables)
+            {
+                obj.MakeAddressable();
+            }
+        }
+
+        private static void SetAddressableAddress(SetUpCelesteParameters parameters, UnityEngine.Object obj, string address)
+        {
+            if (parameters.usesAddressables)
+            {
+                obj.SetAddressableAddress(address);
+            }
+        }
+
+        private static void SetAddressableAddress(SetUpCelesteParameters parameters, string assetPath, string address)
+        {
+            if (parameters.usesAddressables)
+            {
+                AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath).SetAddressableAddress(address);
+            }
+        }
+
         #endregion
     }
 }

@@ -13,6 +13,18 @@ namespace Celeste.Sound
     {
         #region Properties and Fields
 
+        public MusicSettings MusicSettings
+        {
+            get => musicSettings;
+            set
+            {
+                musicSettings = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private MusicSettings musicSettings;
 

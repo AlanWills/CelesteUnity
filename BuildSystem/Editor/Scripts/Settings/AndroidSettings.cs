@@ -83,6 +83,45 @@ namespace CelesteEditor.BuildSystem
             get { return keyAliasPassword; }
         }
 
+        [SerializeField]
+        [Tooltip("If true, the permission to access the SD card for writing will be prompted to the user.")]
+        private bool requiresWritePermission;
+        public bool RequiresWritePermission
+        {
+            get => requiresWritePermission;
+            set
+            {
+                requiresWritePermission = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("The minimum Android Sdk version that this build will be able to target.")]
+        private AndroidSdkVersions minSdkVersion;
+        public AndroidSdkVersions MinSdkVersion
+        {
+            get => minSdkVersion;
+            set
+            {
+                minSdkVersion = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("The desired Android Sdk version that this build will be able to target.")]
+        private AndroidSdkVersions targetSdkVersion;
+        public AndroidSdkVersions TargetSdkVersion
+        {
+            get => targetSdkVersion;
+            set
+            {
+                targetSdkVersion = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
+
         #endregion
 
         public override void SetDefaultValues()
@@ -93,12 +132,15 @@ namespace CelesteEditor.BuildSystem
             BuildTargetGroup = BuildTargetGroup.Android;
             ScriptingBackend = ScriptingImplementation.IL2CPP;
             Architecture = AndroidArchitecture.ARMv7;
+            RequiresWritePermission = true;
+            MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
+            TargetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
         }
 
         protected override void ApplyImpl()
         {
             PlayerSettings.Android.bundleVersionCode = Version.Major * 10000 + Version.Minor * 100 + Version.Build;
-            UnityEngine.Debug.Log($"Android version is now: {Version}");
+            Debug.Log($"Android version is now: {Version}");
 
             PlayerSettings.Android.keystorePass = KeystorePassword;
             PlayerSettings.Android.keyaliasName = KeyAliasName;
@@ -108,6 +150,9 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.Android.minifyRelease = MinifyRelease;
             EditorUserBuildSettings.buildAppBundle = BuildAppBundle;
             EditorUserBuildSettings.androidCreateSymbols = BuildSymbols;
+            PlayerSettings.Android.forceSDCardPermission = RequiresWritePermission;
+            PlayerSettings.Android.minSdkVersion = MinSdkVersion;
+            PlayerSettings.Android.targetSdkVersion = TargetSdkVersion;
         }
     }
 }

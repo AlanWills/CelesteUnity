@@ -41,7 +41,7 @@ namespace CelesteEditor.UnityProject
         [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly")] public bool hasSceneMenuItem;
         [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath = "Assets/";
         [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
-        [Tooltip("If true, the scene set asset for this assembly will be created at the specified path in the project")] [ShowIf(nameof(hasSceneMenuItem))] public bool createSceneSet = true;
+        [Tooltip("If true, the scene set asset for this assembly will be created at the specified path in the project")] [ShowIf(nameof(hasSceneMenuItem))] public bool createSceneSet;
     }
 
     public static class CreateAssemblyDefinition

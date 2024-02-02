@@ -20,6 +20,8 @@
         "Celeste.Persistence.Editor",
         "Celeste.Assets.Editor",
         "Celeste.Scene.Editor",
+        "Celeste.Events",
+        "Celeste.Parameters",
         "NativeFilePicker.Editor",
         "Unity.Addressables.Editor",
         "Unity.TextMeshPro.Editor"

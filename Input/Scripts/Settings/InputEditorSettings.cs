@@ -11,7 +11,7 @@ namespace Celeste.Input.Settings
     [CreateAssetMenu(fileName = nameof(InputEditorSettings), menuName = "Celeste/Input/Input Editor Settings")]
     public class InputEditorSettings : EditorSettings<InputEditorSettings>
     {
-#region Properties and Fields
+        #region Properties and Fields
 
         public const string FOLDER_PATH = "Assets/Input/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "InputEditorSettings.asset";
@@ -20,7 +20,7 @@ namespace Celeste.Input.Settings
 
         public Vector2Event LeftMouseButtonFirstDown => leftMouseButtonFirstDownEvent;
         public Vector2Event LeftMouseButtonDown => leftMouseButtonDownEvent;
-        public Vector2Event LeftMouseButtonUpDown => leftMouseButtonFirstUpEvent;
+        public Vector2Event LeftMouseButtonFirstUp => leftMouseButtonFirstUpEvent;
 
         public Vector2Event MiddleMouseButtonFirstDown => middleMouseButtonFirstDownEvent;
         public Vector2Event MiddleMouseButtonDown => middleMouseButtonDownEvent;
@@ -28,7 +28,7 @@ namespace Celeste.Input.Settings
 
         public Vector2Event RightMouseButtonFirstDown => rightMouseButtonFirstDownEvent;
         public Vector2Event RightMouseButtonDown => rightMouseButtonDownEvent;
-        public Vector2Event RightMouseButtonUpDown => rightMouseButtonFirstUpEvent;
+        public Vector2Event RightMouseButtonFirstUp => rightMouseButtonFirstUpEvent;
 
         public TouchEvent SingleTouch => singleTouchEvent;
         public MultiTouchEvent DoubleTouch => doubleTouchEvent;

@@ -13,6 +13,18 @@ namespace Celeste.Sound
     {
         #region Properties and Fields
 
+        public SFXSettings SFXSettings
+        {
+            get => sfxSettings;
+            set
+            {
+                sfxSettings = value;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
+        }
+
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private SFXSettings sfxSettings;
 
