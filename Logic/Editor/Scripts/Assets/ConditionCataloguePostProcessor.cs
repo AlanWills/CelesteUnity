@@ -16,8 +16,10 @@ namespace CelesteEditor.Logic.Assets
             {
                 existingItems.Clear();
 
-                foreach (Condition item in conditionCatalogue.Items)
+                for (int i = 0, n =  conditionCatalogue.Items.Count;  i < n; ++i)
                 {
+                    Condition item = conditionCatalogue.GetItem(i);
+
                     if (item != null)
                     {
                         existingItems.Add(item);
@@ -25,6 +27,7 @@ namespace CelesteEditor.Logic.Assets
                     else
                     {
                         UnityEngine.Debug.LogAssertion($"Detected and stripped out null item from {nameof(ConditionCatalogue)} {conditionCatalogue.name}.");
+                        conditionCatalogue.RemoveItemAt(i);
                     }
                 }
 

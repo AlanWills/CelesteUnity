@@ -1,5 +1,4 @@
-﻿using Celeste.Narrative.Characters;
-using Celeste.Narrative.UI;
+﻿using Celeste.Narrative.UI;
 using UnityEngine;
 
 namespace Celeste.Narrative

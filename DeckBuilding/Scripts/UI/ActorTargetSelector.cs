@@ -50,7 +50,7 @@ namespace Celeste.DeckBuilding.UI
                 targetingLineTransform.sizeDelta = new Vector2(10, diffToTarget.magnitude / targetingLineTransform.lossyScale.y);
                 targetingLineTransform.SetPositionAndRotation(currentPosition + diffToTarget * 0.5f, Quaternion.AngleAxis(Vector2.SignedAngle(Vector3.up, diffToTarget), Vector3.forward));
 
-                if (inputState.LeftMouseButton.wasPressedThisFrame)
+                if (inputState.LeftMouseButton.wasFirstDownThisFrame)
                 {
                     // Find target first - maybe keep a list of valid targets as they're added to the UI?
                     ActorUIController target = availableTargetsUI.FindCardActorUI(x => x.IsMouseOver);
@@ -59,7 +59,7 @@ namespace Celeste.DeckBuilding.UI
                         AttackActorWithPendingActor(target.Card);
                     }
                 }
-                else if (inputState.RightMouseButton.wasPressedThisFrame)
+                else if (inputState.RightMouseButton.wasFirstDownThisFrame)
                 {
                     CancelAttack();
                 }

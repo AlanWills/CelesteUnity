@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Celeste.Narrative.UI
 {
-    public class NameEntryPopupController : MonoBehaviour, IPopupController
+    public class NameEntryPopupController : BasePopupController
     {
         #region Properties and Fields
 
@@ -20,7 +20,7 @@ namespace Celeste.Narrative.UI
 
         #region IPopupController
 
-        public void OnShow(IPopupArgs args)
+        public override void OnShow(IPopupArgs args)
         {
             popupArgs = args as NameEntryPopupArgs;
             UnityEngine.Debug.Assert(popupArgs != null, $"No {nameof(NameEntryPopupArgs)} passed to popup {name}.");
@@ -33,13 +33,7 @@ namespace Celeste.Narrative.UI
             ValidateName(inputField.text);
         }
 
-        public void OnHide()
-        {
-        }
-
-        public void OnClosePressed() { }
-
-        public void OnConfirmPressed()
+        public override void OnConfirmPressed()
         {
             if (popupArgs != null)
             {

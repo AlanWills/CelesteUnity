@@ -3,7 +3,6 @@ using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace CelesteEditor.Assets.GUI
 {
@@ -34,11 +33,29 @@ namespace CelesteEditor.Assets.GUI
 
         private static void DrawExportAsJsonField(UnityEngine.Object target)
         {
-            if (target is ScriptableObject && AssetEditorSettings.GetOrCreateSettings().showExportAsJsonForScriptableObjects)
+            bool hasSpaceBeenDrawn = false;
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                using (new EditorGUILayout.HorizontalScope())
+                if (AssetEditorSettings.GetOrCreateSettings().showCopyGuidForObjects)
                 {
                     EditorGUILayout.Space();
+                    hasSpaceBeenDrawn = true;
+
+                    if (GUILayout.Button("Copy GUID to Clipboard", GUILayout.ExpandWidth(false)))
+                    {
+                        AssetDatabase.TryGetGUIDAndLocalFileIdentifier(target, out string guid, out long _);
+                        GUIUtility.systemCopyBuffer = guid;
+                    }
+                }
+
+                if (target is ScriptableObject && AssetEditorSettings.GetOrCreateSettings().showExportAsJsonForScriptableObjects)
+                {
+                    if (!hasSpaceBeenDrawn)
+                    {
+                        EditorGUILayout.Space();
+                        hasSpaceBeenDrawn = true;
+                    }
 
                     if (GUILayout.Button("Export as Json to Clipboard", GUILayout.ExpandWidth(false)))
                     {

@@ -24,6 +24,23 @@ namespace Celeste.Narrative.UI
             narrativeRuntime.OnNodeEnter.AddListener(OnNodeEnter);
             narrativeRuntime.OnNodeUpdate.AddListener(OnNodeUpdate);
             narrativeRuntime.OnNodeExit.AddListener(OnNodeExit);
+
+            if (narrativeRuntime.CurrentNode != null)
+            {
+                OnNodeEnter(narrativeRuntime.CurrentNode);
+            }
+        }
+
+        public void OnNarrativeEnd(NarrativeRuntime narrativeRuntime)
+        {
+            for (int i = 0, n = narrativeViews.Length; i < n; ++i)
+            {
+                narrativeViews[i].gameObject.SetActive(false);
+            }
+
+            narrativeRuntime.OnNodeEnter.RemoveListener(OnNodeEnter);
+            narrativeRuntime.OnNodeUpdate.RemoveListener(OnNodeUpdate);
+            narrativeRuntime.OnNodeExit.RemoveListener(OnNodeExit);
         }
 
         private void OnNodeEnter(FSMNode fsmNode)

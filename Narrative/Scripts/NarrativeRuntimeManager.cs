@@ -13,7 +13,7 @@ namespace Celeste.Narrative
 
         [SerializeField] private ChapterRecordValue currentChapterRecord;
         [SerializeField] private NarrativeRuntimeEvent narrativeBegunEvent;
-        [SerializeField] private Celeste.Events.Event narrativeFinishedEvent;
+        [SerializeField] private NarrativeRuntimeEvent narrativeFinishedEvent;
 
         private NarrativeRuntime currentRuntime;
 
@@ -58,7 +58,7 @@ namespace Celeste.Narrative
 
         private void OnNarrativeFinished()
         {
-            narrativeFinishedEvent.Invoke();
+            narrativeFinishedEvent.Invoke(currentRuntime);
         }
 
         #endregion

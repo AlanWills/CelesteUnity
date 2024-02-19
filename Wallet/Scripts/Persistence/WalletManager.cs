@@ -31,6 +31,8 @@ namespace Celeste.Wallet
 
         protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             walletRecord.Shutdown();
         }
 

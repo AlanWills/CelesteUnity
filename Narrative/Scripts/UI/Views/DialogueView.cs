@@ -1,7 +1,6 @@
 ﻿using Celeste.FSM;
 using Celeste.Tools;
-using Celeste.Utils;
-using System;
+using Celeste.Tools.Attributes.GUI;
 using TMPro;
 using UnityEngine;
 
@@ -12,9 +11,9 @@ namespace Celeste.Narrative.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private RectTransform dialogueTransform;
         [SerializeField] private TextMeshProUGUI dialogueText;
-        [SerializeField] private Animator dialogueAnimator;
+        [SerializeField] private bool hasAnimator;
+        [SerializeField, ShowIf(nameof(hasAnimator))] private Animator dialogueAnimator;
         [SerializeField] private DialogueTypeStyle[] dialogueTypeStyles;
 
         #endregion
@@ -42,7 +41,7 @@ namespace Celeste.Narrative.UI
 
         public override bool IsValidForNode(FSMNode fsmNode)
         {
-            return fsmNode is IDialogueNode && !string.IsNullOrEmpty((fsmNode as IDialogueNode).RawDialogue);
+            return fsmNode is IDialogueNode && !string.IsNullOrEmpty((fsmNode as IDialogueNode).Dialogue);
         }
 
         public override void OnNodeEnter(FSMNode fsmNode)
@@ -52,7 +51,10 @@ namespace Celeste.Narrative.UI
 
             SetDialogueTypeStyle(dialogueNode.DialogueType);
 
-            dialogueAnimator.SetTrigger("Show");
+            if (hasAnimator)
+            {
+                dialogueAnimator.SetTrigger("Show");
+            }
         }
 
         public override void OnNodeUpdate(FSMNode fsmNode) { }

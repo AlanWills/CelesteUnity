@@ -68,6 +68,7 @@ namespace Celeste.UI.Popups
             
             if (popupController != null)
             {
+                popupController.RequestToClosePopup = OnCloseButtonPressed;
                 popupController.OnShow(args);
             }
         }
@@ -99,6 +100,7 @@ namespace Celeste.UI.Popups
             if (popupController != null)
             {
                 popupController.OnHide();
+                popupController.RequestToClosePopup = null;
             }
 
             if (onHidePopup != null)

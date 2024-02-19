@@ -1,5 +1,4 @@
-﻿using Celeste.FSM;
-using Celeste.Narrative;
+﻿using Celeste.Narrative;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -18,7 +17,9 @@ namespace CelesteEditor.FSM
             EditorGUI.BeginChangeCheck();
 
             NarrativeRuntime narrativeRuntime = target as NarrativeRuntime;
-            narrativeRuntime.graph = EditorGUILayout.ObjectField(narrativeRuntime.graph, typeof(NarrativeGraph), false) as NarrativeGraph;
+            narrativeRuntime.graph = EditorGUILayout.ObjectField("Graph", narrativeRuntime.graph, typeof(NarrativeGraph), false) as NarrativeGraph;
+
+            DrawPropertiesExcluding(serializedObject, nameof(narrativeRuntime.graph), "m_Script");
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -30,9 +31,12 @@ namespace CelesteEditor.FSM
                 NodeEditorWindow.Open(narrativeRuntime.graph);
             }
 
-            CelesteEditorGUILayout.HorizontalLine();
+            if (Application.isPlaying)
+            {
+                CelesteEditorGUILayout.HorizontalLine();
 
-            EditorGUILayout.LabelField($"Current Node: {(narrativeRuntime.CurrentNode != null ? narrativeRuntime.CurrentNode.name : "null")}");
+                EditorGUILayout.LabelField($"Current Node: {(narrativeRuntime.CurrentNode != null ? narrativeRuntime.CurrentNode.name : "null")}");
+            }
 
             serializedObject.ApplyModifiedProperties();
         }

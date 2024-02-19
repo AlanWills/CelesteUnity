@@ -120,7 +120,7 @@ namespace Celeste.Persistence
         {
             if (loadingLock.Locked)
             {
-                UnityEngine.Debug.LogError($"Ignoring save request as loading is in progress.  " +
+                UnityEngine.Debug.LogError($"{name} is ignoring a save request as loading is in progress.  " +
                     $"You can use {nameof(DelayedSave)} if you really need to save immediately, but it's likely you're accidentally requesting a save during loading.");
                 return;
             }

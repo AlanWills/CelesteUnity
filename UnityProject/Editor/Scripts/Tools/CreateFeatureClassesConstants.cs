@@ -1,8 +1,4 @@
-﻿using Celeste.Persistence;
-using CelesteEditor.Persistence;
-using UnityEditor;
-
-namespace CelesteEditor.UnityProject
+﻿namespace CelesteEditor.UnityProject
 {
     public static class CreateFeatureClassesConstants
     {
@@ -110,6 +106,7 @@ namespace CelesteEditor.UnityProject
             "using UnityEditor;\n" +
             "using Celeste.Persistence;\n" +
             "using CelesteEditor.Persistence;\n" +
+            "using {5}.Managers;\n" +
             "\n" +
             "namespace {0}.Persistence\n" +
             "{{\n" +

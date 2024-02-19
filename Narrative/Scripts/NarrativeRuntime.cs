@@ -1,6 +1,4 @@
 ﻿using Celeste.FSM;
-using Celeste.FSM.Nodes;
-using Celeste.Narrative.Persistence;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -47,6 +45,8 @@ namespace Celeste.Narrative
             set { startNode = value; }
         }
 
+        [SerializeField] private bool startAutomatically = true;
+
         private FSMRuntimeEngine runtimeEngine;
 
         #endregion
@@ -70,12 +70,27 @@ namespace Celeste.Narrative
             return runtime;
         }
 
+        public static NarrativeRuntime Create(
+            GameObject gameObject,
+            NarrativeGraph narrativeGraph)
+        {
+            gameObject.name = nameof(NarrativeRuntime);
+
+            NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
+            runtime.graph = narrativeGraph;
+
+            narrativeGraph.Runtime = runtime;
+
+            return runtime;
+        }
+
         #endregion
 
-        #region Unity Methods
-
-        private void Start()
+        public void StartNarrative()
         {
+            currentNode = null;
+            enabled = true;
+
             if (graph != null)
             {
                 graph.Runtime = this;
@@ -84,22 +99,37 @@ namespace Celeste.Narrative
                 runtimeEngine.Start(StartNode);
             }
 
-            if (CurrentNode != null)
+            if (CurrentNode == null)
             {
-                UnityEngine.Debug.LogFormat("Spooling up FSM with starting node {0}", CurrentNode.name);
+                StopNarrative();
             }
-            else
+        }
+
+        public void StopNarrative()
+        {
+            enabled = false;
+            runtimeEngine = null;
+            currentNode = null;
+        }
+
+        #region Unity Methods
+
+        private void Start()
+        {
+            if (startAutomatically == false)
             {
-                enabled = false;
+                return;
             }
+
+            StartNarrative();
         }
 
         private void Update()
         {
-            if (runtimeEngine.Update() == null)
+            if (runtimeEngine != null && runtimeEngine.Update() == null)
             {
                 OnNarrativeFinished.Invoke();
-                enabled = false;
+                StopNarrative();
             }
         }
 

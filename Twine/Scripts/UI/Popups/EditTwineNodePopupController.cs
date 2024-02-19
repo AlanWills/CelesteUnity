@@ -1,16 +1,14 @@
 ﻿using Celeste.DataStructures;
 using Celeste.Events;
 using Celeste.UI;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static Celeste.Twine.UI.EditTwineNodePopupController;
 
 namespace Celeste.Twine.UI
 {
     [AddComponentMenu("Celeste/Twine/UI/Edit Twine Node Popup Controller")]
-    public class EditTwineNodePopupController : MonoBehaviour, IPopupController
+    public class EditTwineNodePopupController : BasePopupController
     {
         #region Args Class
 
@@ -41,7 +39,7 @@ namespace Celeste.Twine.UI
 
         #region IPopupController
 
-        public void OnShow(IPopupArgs args)
+        public override void OnShow(IPopupArgs args)
         {
             EditTwineNodePopupArgs editTwineNodePopupArgs = (EditTwineNodePopupArgs)args;
             twineNode = editTwineNodePopupArgs.twineNode;
@@ -56,7 +54,7 @@ namespace Celeste.Twine.UI
             followLinkUIManager.Hookup(twineNode.Links);
         }
 
-        public void OnHide()
+        public override void OnHide()
         {
             twineNode = null;
             originalNodeName = "";
@@ -65,11 +63,7 @@ namespace Celeste.Twine.UI
             originalNodeLinks.Clear();
         }
 
-        public void OnConfirmPressed()
-        {
-        }
-
-        public void OnClosePressed()
+        public override void OnClosePressed()
         {
             // Revert the changes to the node
             twineNode.UpdateData(originalNodeName, originalNodeText, originalNodeTags, originalNodeLinks);

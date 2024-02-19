@@ -66,6 +66,17 @@ namespace Celeste.Objects
             }
         }
 
+        public void RemoveItemAt(int itemIndex)
+        {
+            if (itemIndex >= 0 && itemIndex < ItemsImpl.Count)
+            {
+                using (ChangeBlock changeBlock = new ChangeBlock(this))
+                {
+                    ItemsImpl.RemoveAt(itemIndex);
+                }
+            }
+        }
+
         public bool ContainsItem(T item)
         {
             return ItemsImpl.Contains(item);

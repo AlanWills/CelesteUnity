@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.UI.Popups
 {
-    public class StringEntryPopupController : MonoBehaviour, IPopupController
+    public class StringEntryPopupController : BasePopupController
     {
         #region Properties and Fields
 
@@ -17,7 +17,7 @@ namespace Celeste.UI.Popups
 
         #region IPopupController
 
-        public void OnShow(IPopupArgs args) 
+        public override void OnShow(IPopupArgs args) 
         {
             StringEntryPopupArgs stringEntryPopupArgs = args as StringEntryPopupArgs;
             Debug.Assert(stringEntryPopupArgs != null, $"No {nameof(StringEntryPopupArgs)} passed to popup {name}.");
@@ -29,13 +29,7 @@ namespace Celeste.UI.Popups
             }
         }
 
-        public void OnHide()
-        {
-        }
-
-        public void OnClosePressed() { }
-
-        public void OnConfirmPressed() 
+        public override void OnConfirmPressed() 
         {
             if (nameValue != null)
             {

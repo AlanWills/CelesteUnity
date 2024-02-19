@@ -1,15 +1,7 @@
-﻿using Celeste.FSM;
-using Celeste.Narrative;
+﻿using Celeste.Narrative;
 using CelesteEditor.FSM.Nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
-using XNodeEditor;
-using static XNodeEditor.NodeEditor;
 
 namespace CelesteEditor.Narrative
 {
@@ -22,14 +14,7 @@ namespace CelesteEditor.Narrative
         {
             serializedObject.Update();
 
-            DialogueNode dialogueNode = target as DialogueNode;
-
             DrawDefaultPortPair();
-            
-            dialogueNode.RawDialogue = EditorGUILayout.TextArea(dialogueNode.RawDialogue, GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * 2));
-
-            EditorGUILayout.Space();
-
             DrawDialogueNodeValues();
 
             serializedObject.ApplyModifiedProperties();
@@ -37,7 +22,7 @@ namespace CelesteEditor.Narrative
 
         private void DrawDialogueNodeValues()
         {
-            string[] excludes = { "m_Script", "graph", "position", "ports", "dialogue" };
+            string[] excludes = { "m_Script", "graph", "position", "ports" };
             DrawNodeProperties(serializedObject, excludes);
         }
 

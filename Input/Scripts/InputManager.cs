@@ -1,5 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -113,27 +114,9 @@ namespace Celeste.Input
 
             if (numTouches == 1)
             {
-                touchPosition = touches[0].screenPosition;
-                singleTouchEvent.InvokeSilently(touches[0]);
-
-                if (raycastCamera.Value != null)
-                {
-                    touchWorldPosition = raycastCamera.Value.ScreenToWorldPoint(touchPosition);
-
-                    if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
-                    {
-                        hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
-                        Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
-                    }
-
-                    if (hitGameObject == null)
-                    {
-                        // If we haven't hit any UI, see if we have hit any game objects in the world
-                        hitGameObject = Raycast(new Vector2(touchWorldPosition.x, touchWorldPosition.y));
-                        Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
-                    }
-                }
-                
+                ValueTuple<Vector3, GameObject> hitObject = CalculateHitObject(touchPosition);
+                touchWorldPosition = hitObject.Item1;
+                hitGameObject = hitObject.Item2;
             }
             else if (numTouches == 2)
             {
@@ -154,7 +137,7 @@ namespace Celeste.Input
 
             inputState.PointerPosition = touchPosition;
             inputState.PointerWorldPosition = touchWorldPosition;
-            inputState.HitGameObject = hitGameObject;
+            inputState.PointerOverObject(hitGameObject, numTouches);
 #else
             Mouse mouse = Mouse.current;
             Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -166,43 +149,19 @@ namespace Celeste.Input
                 leftMouseButtonFirstUp.InvokeSilently(mousePosition);
                 middleMouseButtonFirstUp.InvokeSilently(mousePosition);
                 rightMouseButtonFirstUp.InvokeSilently(mousePosition);
-                inputState.ReleaseAllMouseButtons();
+                inputState.ReleaseInput();
 
                 return;
             }
 #endif
-            
-            Vector3 mouseWorldPosition = Vector3.zero;
-            GameObject hitGameObject = null;
-            
-            if (raycastCamera.Value != null)
-            {
-                mouseWorldPosition = raycastCamera.Value.ScreenToWorldPoint(mousePosition);
-
-                if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
-                {
-                    hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
-                }
-
-                if (hitGameObject == null)
-                {
-                    // If we haven't hit any UI, see if we have hit any game objects in the world
-                    hitGameObject = Raycast(new Vector2(mouseWorldPosition.x, mouseWorldPosition.y));
-                }
-
-                if (hitGameObject != null)
-                {
-                    Debug.Log($"Hit UI Game Object {hitGameObject.name}.");
-                }
-            }
-            
+            ValueTuple<Vector3, GameObject> hitObject = CalculateHitObject(mousePosition);
             inputState.PointerPosition = mousePosition;
-            inputState.PointerWorldPosition = mouseWorldPosition;
-            inputState.HitGameObject = hitGameObject;
+            inputState.PointerWorldPosition = hitObject.Item1;
+            inputState.PointerOverObject(hitObject.Item2, mouse.leftButton.isPressed);
 
             CheckMouseButton(
-                mousePosition, 
-                hitGameObject, 
+                mousePosition,
+                hitObject.Item2, 
                 mouse.leftButton,
                 MouseButton.Left,
                 leftMouseButtonFirstDown, 
@@ -212,7 +171,7 @@ namespace Celeste.Input
 
             CheckMouseButton(
                 mousePosition,
-                hitGameObject,
+                hitObject.Item2,
                 mouse.rightButton,
                 MouseButton.Right,
                 rightMouseButtonFirstDown, 
@@ -222,7 +181,7 @@ namespace Celeste.Input
 
             CheckMouseButton(
                 mousePosition, 
-                hitGameObject, 
+                hitObject.Item2, 
                 mouse.middleButton,
                 MouseButton.Middle,
                 middleMouseButtonFirstDown, 
@@ -244,6 +203,35 @@ namespace Celeste.Input
 
 #region Utility Functions
 
+        private ValueTuple<Vector3, GameObject> CalculateHitObject(Vector2 pointerPosition)
+        {
+            Vector3 pointerWorldPosition = Vector3.zero;
+            GameObject hitGameObject = null;
+
+            if (raycastCamera.Value != null)
+            {
+                if (raycastCamera.Value != null)
+                {
+                    pointerWorldPosition = raycastCamera.Value.ScreenToWorldPoint(pointerPosition);
+
+                    if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
+                    {
+                        hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
+                        Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                    }
+
+                    if (hitGameObject == null)
+                    {
+                        // If we haven't hit any UI, see if we have hit any game objects in the world
+                        hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
+                        Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
+                    }
+                }
+            }
+
+            return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
+        }
+
         private void CheckMouseButton(
             Vector2 mousePosition,
             GameObject hitGameObject,
@@ -261,14 +249,14 @@ namespace Celeste.Input
                 return;
             }
 
-            MouseButtonState mouseButtonState = new MouseButtonState()
+            PointerState mouseButtonState = new PointerState()
             {
-                wasPressedThisFrame = buttonControl.wasPressedThisFrame,
-                isPressed = buttonControl.isPressed,
-                wasReleasedThisFrame= buttonControl.wasReleasedThisFrame,
+                wasFirstDownThisFrame = buttonControl.wasPressedThisFrame,
+                isDown = buttonControl.isPressed,
+                wasFirstUpThisFrame= buttonControl.wasReleasedThisFrame,
             };
         
-            if (mouseButtonState.wasPressedThisFrame)
+            if (mouseButtonState.wasFirstDownThisFrame)
             {
                 mouseButtonFirstDown.InvokeSilently(mousePosition);
                 
@@ -282,12 +270,12 @@ namespace Celeste.Input
                 }
             }
 
-            if (mouseButtonState.isPressed)
+            if (mouseButtonState.isDown)
             {
                 mouseButtonDown.InvokeSilently(mousePosition);
             }
 
-            if (mouseButtonState.wasReleasedThisFrame)
+            if (mouseButtonState.wasFirstUpThisFrame)
             {
                 mouseButtonFirstUpEvent.InvokeSilently(mousePosition);
             }

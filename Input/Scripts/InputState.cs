@@ -1,16 +1,15 @@
 ﻿using Celeste.Events;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 namespace Celeste.Input
 {
     [Serializable]
-    public struct MouseButtonState
+    public struct PointerState
     {
-        public bool wasPressedThisFrame;
-        public bool isPressed;
-        public bool wasReleasedThisFrame;
+        public bool wasFirstDownThisFrame;
+        public bool isDown;
+        public bool wasFirstUpThisFrame;
     }
 
     [Serializable]
@@ -29,42 +28,11 @@ namespace Celeste.Input
         public Vector2 PointerPosition { get; set; }
         public Vector3 PointerWorldPosition { get; set; }
 
-        [NonSerialized] private GameObject hitGameObject;
-        public GameObject HitGameObject
-        {
-            get => hitGameObject;
-            set
-            {
-                if (hitGameObject != value)
-                {
-                    if (hitGameObject != null)
-                    {
-                        hitGameObject.SendMessage(onMouseExitMessage, SendMessageOptions.DontRequireReceiver);
-                        pointerExitedGameObjectEvent.Invoke(hitGameObject);
-                    }
-
-                    hitGameObject = value;
-
-                    if (hitGameObject != null)
-                    {
-                        hitGameObject.SendMessage(onMouseEnterMessage, this, SendMessageOptions.DontRequireReceiver);
-                        pointerEnteredGameObjectEvent.Invoke(hitGameObject);
-                    }
-                }
-                else if (hitGameObject != null)
-                {
-                    hitGameObject.SendMessage(onMouseOverMessage, this, SendMessageOptions.DontRequireReceiver);
-                }
-            }
-        }
-
-        public MouseButtonState LeftMouseButton { get; set; }
-        public MouseButtonState MiddleMouseButton { get; set; }
-        public MouseButtonState RightMouseButton { get; set; }
-
-        [SerializeField] private string onMouseEnterMessage = "OnMouseEnterCollider";
-        [SerializeField] private string onMouseOverMessage = "OnMouseOverCollider";
-        [SerializeField] private string onMouseExitMessage = "OnMouseExitCollider";
+        public GameObject HitGameObject { get; private set; }
+        public PointerState PointerState { get; private set; }
+        public PointerState LeftMouseButton { get; private set; }
+        public PointerState MiddleMouseButton { get; private set; }
+        public PointerState RightMouseButton { get; private set; }
 
         [Header("Events")]
         [SerializeField] private GameObjectEvent pointerEnteredGameObjectEvent;
@@ -72,25 +40,71 @@ namespace Celeste.Input
 
         #endregion
 
-        public MouseButtonState GetMouseButton(MouseButton mouseButton)
+        public void PointerOverObject(GameObject hitGameObject, int numTouches)
         {
-            switch (mouseButton)
+            PointerOverObject(hitGameObject, numTouches == 1);
+        }
+
+        public void PointerOverObject(GameObject newHitGameObject, bool isDownThisFrame)
+        {
+            GameObject oldHitGameObject = HitGameObject;
+            PointerState oldPointerState = PointerState;
+            PointerState newPointerState = new PointerState()
             {
-                case MouseButton.Left:
-                    return LeftMouseButton;
+                wasFirstDownThisFrame = !oldPointerState.isDown && isDownThisFrame,
+                isDown = isDownThisFrame,
+                wasFirstUpThisFrame = oldPointerState.isDown && !isDownThisFrame
+            };
 
-                case MouseButton.Middle:
-                    return MiddleMouseButton;
+            // Update the state first, but don't fire events
+            PointerState = newPointerState;
+            HitGameObject = newHitGameObject;
 
-                case MouseButton.Right:
-                    return RightMouseButton;
+            // Now take care of figuring out which events we need to fire
 
-                default:
-                    return new MouseButtonState();
+            IInputHandler currentInputHandler = oldHitGameObject != null ? oldHitGameObject.GetComponent<IInputHandler>() : null;
+            IInputHandler newInputHandler = newHitGameObject != null ? newHitGameObject.GetComponent<IInputHandler>() : null;
+
+            if (oldHitGameObject != newHitGameObject)
+            {
+                if (oldHitGameObject != null)
+                {
+                    currentInputHandler?.OnPointerExit(this);
+                    pointerExitedGameObjectEvent.Invoke(oldHitGameObject);
+                }
+
+                if (newHitGameObject != null)
+                {
+                    newInputHandler?.OnPointerEnter(this);
+                    pointerEnteredGameObjectEvent.Invoke(newHitGameObject);
+                }
+            }
+            else if (oldHitGameObject != null)
+            {
+                currentInputHandler?.OnPointerOver(this);
+            }
+
+            // If the pointer is over something, we should tell it if we've pressed it or not
+            if (newHitGameObject != null)
+            {
+                if (newPointerState.wasFirstDownThisFrame)
+                {
+                    newInputHandler?.OnPointerFirstDown(this);
+                }
+
+                if (newPointerState.isDown)
+                {
+                    newInputHandler?.OnPointerDown(this);
+                }
+
+                if (newPointerState.wasFirstUpThisFrame)
+                {
+                    newInputHandler?.OnPointerFirstUp(this);
+                }
             }
         }
 
-        public void SetMouseButton(MouseButton mouseButton, MouseButtonState mouseButtonState)
+        public void SetMouseButton(MouseButton mouseButton, PointerState mouseButtonState)
         {
             switch (mouseButton)
             {
@@ -111,28 +125,30 @@ namespace Celeste.Input
             }
         }
 
-        public void ReleaseAllMouseButtons()
+        public void ReleaseInput()
         {
-            LeftMouseButton = new MouseButtonState()
+            LeftMouseButton = new PointerState()
             {
-                wasPressedThisFrame = false,
-                isPressed = false,
-                wasReleasedThisFrame = true,
+                wasFirstDownThisFrame = false,
+                isDown = false,
+                wasFirstUpThisFrame = true,
             };
 
-            MiddleMouseButton = new MouseButtonState()
+            MiddleMouseButton = new PointerState()
             {
-                wasPressedThisFrame = false,
-                isPressed = false,
-                wasReleasedThisFrame = true,
+                wasFirstDownThisFrame = false,
+                isDown = false,
+                wasFirstUpThisFrame = true,
             };
 
-            RightMouseButton = new MouseButtonState()
+            RightMouseButton = new PointerState()
             {
-                wasPressedThisFrame = false,
-                isPressed = false,
-                wasReleasedThisFrame = true,
+                wasFirstDownThisFrame = false,
+                isDown = false,
+                wasFirstUpThisFrame = true,
             };
+
+            PointerState = LeftMouseButton;
         }
     }
 }

@@ -183,7 +183,8 @@ namespace CelesteEditor.UnityProject
                                 parameters.persistenceMenuItemsName,
                                 parameters.openMenuPath,
                                 parameters.deleteMenuPath,
-                                parameters.managerTypeName);
+                                parameters.managerTypeName,
+                                parameters.runtimeNamespaceName);
                         File.WriteAllText(dtoScriptPath, dtoScriptContents);
                     }
                 }

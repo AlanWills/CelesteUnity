@@ -1,5 +1,4 @@
 ﻿using Celeste.DataStructures;
-using Celeste.Objects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,13 +34,23 @@ namespace Celeste.Persistence.Snapshots
 
         public void RegisterInterestInSnapshots(IInterestedInSnapshots interested)
         {
-            UnityEngine.Debug.Assert(!interestedInSnapshots.Contains(interested), $"{interested.name} already registered interest in snapshots.");
+            if (interestedInSnapshots.Contains(interested))
+            {
+                UnityEngine.Debug.LogAssertion($"{interested.name} already registered interest in snapshots.");
+                return;
+            }
+
             interestedInSnapshots.Add(interested);
         }
 
         public void DeregisterInterestInSnapshots(IInterestedInSnapshots interested)
         {
-            UnityEngine.Debug.Assert(interestedInSnapshots.Contains(interested), $"{interested.name} has not registered interest in snapshots.");
+            if (!interestedInSnapshots.Contains(interested))
+            {
+                UnityEngine.Debug.LogAssertion($"{interested.name} has not registered interest in snapshots.");
+                return;
+            }
+
             interestedInSnapshots.Remove(interested);
         }
 

@@ -1,6 +1,5 @@
 ﻿using Celeste.Tools.Attributes.GUI;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 

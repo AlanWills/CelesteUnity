@@ -18,6 +18,11 @@ public static class EmbedPackage
 
     public static bool CanEmbed(string packagePath)
     {
+        if (string.IsNullOrEmpty(packagePath))
+        {
+            return false;
+        }
+
         string parentFolderName = Path.GetDirectoryName(packagePath);
         return string.CompareOrdinal(parentFolderName, "Packages") == 0;
     }

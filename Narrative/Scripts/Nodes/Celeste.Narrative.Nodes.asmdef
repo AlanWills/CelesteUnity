@@ -11,8 +11,10 @@
         "Celeste.Scene",
         "Celeste.Parameters",
         "Celeste.Logic",
-        "XNode.Extensions",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.Localisation",
+        "Celeste.Tools",
+        "XNode.Extensions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

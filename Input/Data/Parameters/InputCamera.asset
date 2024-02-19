@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3d789e017b0d1428c228d1114f629c, type: 3}
   m_Name: InputCamera
   m_EditorClassIdentifier: 
+  helpText: 
   defaultValue: {fileID: 0}
+  onValueChanged: {fileID: 0}
+  invokeValueChangedSilently: 0

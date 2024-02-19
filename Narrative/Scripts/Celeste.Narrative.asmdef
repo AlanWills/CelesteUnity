@@ -20,6 +20,7 @@
         "Celeste.Debug",
         "Celeste.Twine",
         "Celeste.Assets",
+        "Celeste.Input",
         "XNode.Extensions",
         "Unity.Addressables",
         "Unity.ResourceManager"
