@@ -126,13 +126,13 @@ namespace Celeste.Narrative
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
             if (isLocalised && currentLanguage == null)
             {
                 currentLanguage = LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
-#if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
-#endif
             }
+#endif
         }
 
         protected override void Init()
