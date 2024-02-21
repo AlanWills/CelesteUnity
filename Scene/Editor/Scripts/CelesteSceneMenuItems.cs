@@ -8,7 +8,7 @@ namespace CelesteEditor.Scene
 {
     public static class CelesteSceneMenuItems
     {
-        [MenuItem("Celeste/Tools/Assets/Update Scenes In Build")]
+        [MenuItem("Celeste/Tools/Scenes/Update Scenes In Build")]
         public static void UpdateScenesInBuild()
         {
             HashSet<string> loadedScenes = new HashSet<string>();

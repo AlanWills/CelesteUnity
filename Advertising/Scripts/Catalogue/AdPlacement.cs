@@ -15,6 +15,7 @@ namespace Celeste.Advertising
 
     public enum AdWatchResult
     {
+        None,
         Completed,
         Skipped,
         Failed_NotInitialized,

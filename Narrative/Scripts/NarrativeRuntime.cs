@@ -13,10 +13,10 @@ namespace Celeste.Narrative
 
         ILinearRuntimeRecord ILinearRuntime<FSMNode>.Record => Record;
 
-        public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
-        public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
-        public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
-        public UnityEvent OnNarrativeFinished { get; } = new UnityEvent();
+        public FSMNodeUnityEvent OnNodeEnter => onNodeEnter;
+        public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
+        public FSMNodeUnityEvent OnNodeExit => onNodeExit;
+        public UnityEvent OnNarrativeFinished => onNarrativeFinished;
 
         public ChapterRecord Record { get; set; }
 
@@ -46,6 +46,10 @@ namespace Celeste.Narrative
         }
 
         [SerializeField] private bool startAutomatically = true;
+        [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
+        [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
+        [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
+        [SerializeField] private UnityEvent onNarrativeFinished = new UnityEvent();
 
         private FSMRuntimeEngine runtimeEngine;
 

@@ -12,8 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b7c35d468b38a4296a6ccfb5a689a2, type: 3}
   m_Name: InputState
   m_EditorClassIdentifier: 
-  onMouseEnterMessage: OnMouseEnterCollider
-  onMouseOverMessage: OnMouseOverCollider
-  onMouseExitMessage: OnMouseExitCollider
+  pointerMoved: {fileID: 11400000, guid: 563148fb673d6dc4dafd34d657d1bf33, type: 2}
   pointerEnteredGameObjectEvent: {fileID: 11400000, guid: 18d131f46cfdfc042b3309fedecc35a4, type: 2}
   pointerExitedGameObjectEvent: {fileID: 11400000, guid: ab881b82897d13e4586a10be2790acdb, type: 2}
+  pointerFirstDownOnGameObjectEvent: {fileID: 11400000, guid: f59c51073e82ad949b34c187ab55a647, type: 2}
+  pointerDownOnGameObjectEvent: {fileID: 11400000, guid: 9fc8dee37cc7b27458e53bfb36eaf47d, type: 2}
+  pointerFirstUpFromGameObjectEvent: {fileID: 11400000, guid: cdb6bf82ba654934790475d0c0e2d81b, type: 2}
+  singleTouchEvent: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
+  doubleTouchEvent: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
+  tripleTouchEvent: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
+  mouseScrolled: {fileID: 11400000, guid: f8e41487b26e73a4a8c520f166a1d589, type: 2}
+  leftMouseButtonFirstDown: {fileID: 11400000, guid: 3e0f99d77fe7e284b98c11650a91e607, type: 2}
+  leftMouseButtonDown: {fileID: 11400000, guid: 80d21d9030dfeee4ab10e4c4d0c06dc2, type: 2}
+  leftMouseButtonFirstUp: {fileID: 11400000, guid: 1d0dd8082f5d9f14cae4daf109e914b0, type: 2}
+  middleMouseButtonFirstDown: {fileID: 11400000, guid: 7ed9008c9f02d0a468e3b188c757ef49, type: 2}
+  middleMouseButtonDown: {fileID: 11400000, guid: a70d2ad7caf24ba4c8d6bd16fd4f8958, type: 2}
+  middleMouseButtonFirstUp: {fileID: 11400000, guid: a3aa7b1cee5289041a03094b573b5bf5, type: 2}
+  rightMouseButtonFirstDown: {fileID: 11400000, guid: 13b1cee57fbb72f44a516ef604d57345, type: 2}
+  rightMouseButtonDown: {fileID: 11400000, guid: 15b9eca4d3a0b3044923f2861faa7254, type: 2}
+  rightMouseButtonFirstUp: {fileID: 11400000, guid: 5a819ea16b858ac49b37e65c28d077b0, type: 2}
+  gameObjectLeftClicked: {fileID: 11400000, guid: 3d2bbbcfeec825142a3344fe962761b5, type: 2}
+  gameObjectMiddleClicked: {fileID: 11400000, guid: 74f2db1510282b341a73c9fd67e77aa9, type: 2}
+  gameObjectRightClicked: {fileID: 11400000, guid: bc1369bb8eb49fb46838fcde447aed29, type: 2}

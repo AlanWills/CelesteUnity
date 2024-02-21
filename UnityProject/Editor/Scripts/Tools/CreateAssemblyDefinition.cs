@@ -35,13 +35,13 @@ namespace CelesteEditor.UnityProject
         [Tooltip("The name of the assembly's directory that sub directories and files will be created in")] public string directoryName;
         [Tooltip("The name of the assembly project as it will appear in the code solution in your IDE")] public string assemblyName;
         [Tooltip("If true, a code project for runtime script files will be created")] public bool hasRuntimeAssembly;
-        [Tooltip("The dependencies to automatically add to the runtime assembly")] [ShowIf(nameof(hasRuntimeAssembly)), HideInInspector] public List<AssemblyDefinitionAsset> runtimeAssemblyDependencies = new List<AssemblyDefinitionAsset>();
+        [Tooltip("The dependencies to automatically add to the runtime assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> runtimeAssemblyDependencies = new List<AssemblyDefinitionAsset>();
         [Tooltip("If true, a code project for editor script files will be created")] public bool hasEditorAssembly;
-        [Tooltip("The dependencies to automatically add to the editor assembly")][ShowIf(nameof(hasEditorAssembly)), HideInInspector] public List<AssemblyDefinitionAsset> editorAssemblyDependencies = new List<AssemblyDefinitionAsset>();
-        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly")] public bool hasSceneMenuItem;
-        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIf(nameof(hasSceneMenuItem))] public string sceneSetPath = "Assets/";
-        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIf(nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
-        [Tooltip("If true, the scene set asset for this assembly will be created at the specified path in the project")] [ShowIf(nameof(hasSceneMenuItem))] public bool createSceneSet;
+        [Tooltip("The dependencies to automatically add to the editor assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> editorAssemblyDependencies = new List<AssemblyDefinitionAsset>();
+        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly"), ShowIf(nameof(hasEditorAssembly))] public bool hasSceneMenuItem;
+        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public string sceneSetPath = "Assets/";
+        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
+        [Tooltip("If true, the scene set asset for this assembly will be created at the specified path in the project")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public bool createSceneSet;
     }
 
     public static class CreateAssemblyDefinition
