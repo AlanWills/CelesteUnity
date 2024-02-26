@@ -149,7 +149,7 @@ namespace Celeste.Input
             if (PointerPosition != position)
             {
                 PointerPosition = position;
-                pointerMoved.Invoke(position);
+                pointerMoved.InvokeSilently(position);
             }
 
             if (PointerWorldPosition != worldPosition)

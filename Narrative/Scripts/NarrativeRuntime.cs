@@ -130,7 +130,7 @@ namespace Celeste.Narrative
 
         private void Update()
         {
-            if (runtimeEngine != null && runtimeEngine.Update() == null)
+            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
             {
                 OnNarrativeFinished.Invoke();
                 StopNarrative();

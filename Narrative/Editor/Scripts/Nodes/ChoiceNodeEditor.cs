@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
+using static UnityEditor.EditorGUI;
 using static UnityEditor.EditorGUILayout;
 
 namespace CelesteEditor.Narrative
@@ -18,7 +19,6 @@ namespace CelesteEditor.Narrative
         #region Properties and Fields
 
         private int selectedEventType = 0;
-        private List<Choice> choicesToRemove = new List<Choice>();
 
         #endregion
 
@@ -32,15 +32,15 @@ namespace CelesteEditor.Narrative
 
             NodeEditorGUILayout.PortField(choiceNode.GetInputPort(FSMNode.DEFAULT_INPUT_PORT_NAME));
 
-            choiceNode.RawDialogue = EditorGUILayout.TextArea(choiceNode.RawDialogue, GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * 2));
+            choiceNode.RawDialogue = TextArea(choiceNode.RawDialogue, GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * 2));
 
-            EditorGUILayout.Space();
+            Space();
 
             DrawChoiceNodeValues();
 
-            using (EditorGUILayout.HorizontalScope horizontalScope = new EditorGUILayout.HorizontalScope())
+            using (new HorizontalScope())
             {
-                selectedEventType = EditorGUILayout.Popup(selectedEventType, ChoicesConstants.ChoiceDisplayNames.ToArray());
+                selectedEventType = Popup(selectedEventType, ChoicesConstants.ChoiceDisplayNames.ToArray());
 
                 if (GUILayout.Button("Add", GUILayout.ExpandWidth(false)))
                 {
@@ -55,26 +55,35 @@ namespace CelesteEditor.Narrative
             {
                 Choice choice = choiceNode.GetChoice(i);
 
-                EditorGUILayout.Separator();
+                Separator();
                 
-                using (HorizontalScope horizontal = new HorizontalScope())
+                using (new HorizontalScope())
                 {
-                    if (GUILayout.Button("-", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                    if (i > 0 && GUILayout.Button("^", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
                     {
-                        choicesToRemove.Add(choice);
+                        choiceNode.MoveChoice(i, i - 1);
+                        continue;
                     }
 
-                    EditorGUILayout.LabelField(choice.name);
+                    if (i < n - 1 && GUILayout.Button("V", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                    {
+                        choiceNode.MoveChoice(i, i + 1);
+                        continue;
+                    }
+
+                    if (GUILayout.Button("-", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                    {
+                        choiceNode.RemoveChoice(choice);
+                        --i;
+                        --n;
+                        continue;
+                    }
+
+                    LabelField(choice.name);
                     Rect rect = GUILayoutUtility.GetLastRect();
                     NodeEditorGUILayout.PortField(rect.position + new Vector2(rect.width, 0), choiceNode.GetOutputPort(choice.name));
                 }
             }
-
-            foreach (Choice choice in choicesToRemove)
-            {
-                choiceNode.RemoveChoice(choice);
-            }
-            choicesToRemove.Clear();
 
             serializedObject.ApplyModifiedProperties();
         }

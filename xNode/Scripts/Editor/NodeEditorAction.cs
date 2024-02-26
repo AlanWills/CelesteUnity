@@ -468,12 +468,17 @@ namespace XNodeEditor {
                         XNode.NodePort outputPort = port.direction == XNode.NodePort.IO.Output ? port : port.GetConnection(c);
 
                         XNode.Node newNodeIn, newNodeOut;
-                        if (substitutes.TryGetValue(inputPort.node, out newNodeIn) && substitutes.TryGetValue(outputPort.node, out newNodeOut)) {
+                        if (inputPort != null && substitutes.TryGetValue(inputPort.node, out newNodeIn)) {
                             newNodeIn.UpdatePorts();
-                            newNodeOut.UpdatePorts();
                             inputPort = newNodeIn.GetInputPort(inputPort.fieldName);
+                        }
+                        
+                        if (outputPort != null && substitutes.TryGetValue(outputPort.node, out newNodeOut))
+                        {
+                            newNodeOut.UpdatePorts();
                             outputPort = newNodeOut.GetOutputPort(outputPort.fieldName);
                         }
+
                         if (!inputPort.IsConnectedTo(outputPort)) inputPort.Connect(outputPort);
                     }
                 }

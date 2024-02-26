@@ -79,6 +79,21 @@ namespace Celeste
             }
         }
 
+        private static GUIStyle wrappedTextArea;
+        public static GUIStyle WrappedTextArea
+        {
+            get
+            {
+                if (wrappedTextArea == null)
+                {
+                    wrappedTextArea = new GUIStyle(GUI.skin.textArea);
+                    wrappedTextArea.wordWrap = true;
+                }
+
+                return wrappedTextArea;
+            }
+        }
+
         #endregion
 
         public static GUIStyle New(this GUIStyle guiStyle)

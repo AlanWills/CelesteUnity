@@ -1,15 +1,15 @@
 using Celeste.DataStructures;
 using Celeste.FSM;
-using Celeste.Localisation;
 using Celeste.Localisation.Parameters;
+using Celeste.Localisation;
 using Celeste.Localisation.Settings;
 using Celeste.Narrative.Characters;
-using Celeste.Narrative.Tokens;
+using Celeste.Narrative.Nodes;
 using Celeste.Narrative.UI;
 using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using XNode.Attributes;
+using Celeste.Narrative.Tokens;
 
 namespace Celeste.Narrative
 {
@@ -79,7 +79,7 @@ namespace Celeste.Narrative
 
         public UIPosition UIPosition
         {
-            get { return uiPosition; }
+            get => uiPosition;
             set
             {
                 if (uiPosition != value)
@@ -107,18 +107,18 @@ namespace Celeste.Narrative
             }
         }
 
-        [SerializeField, HideIf(nameof(isLocalised)), TextRegion(2)] private string dialogue;
-        [SerializeField, ShowIf(nameof(isLocalised)), LocalisationPreview] private LocalisationKey localisationKey;
-        [SerializeField] private bool isLocalised;
-        [SerializeField] private DialogueType dialogueType = DialogueType.Speech;
-        [SerializeField, NodeEnum] private UIPosition uiPosition;
-        [SerializeField, HideInNodeEditor] private Object[] dialogueTokens;
-        [SerializeField] private Character character;
-        [SerializeField, ShowIf(nameof(isLocalised))] private LanguageValue currentLanguage;
+        [HideIf(nameof(isLocalised)), TextRegion(2)] public string dialogue;
+        [ShowIf(nameof(isLocalised)), LocalisationPreview] public LocalisationKey localisationKey;
+        public bool isLocalised;
+        public DialogueType dialogueType;
+        [NodeEnum] public UIPosition uiPosition;
+        [HideInNodeEditor] public Object[] dialogueTokens;
+        public Character character;
+        [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;
 
-        [System.NonSerialized] private string tokenizedDialogue;
-        [System.NonSerialized] private bool hasBeenLocalised = false;
-        [System.NonSerialized] private bool isRead = false;
+        [System.NonSerialized] public string tokenizedDialogue;
+        [System.NonSerialized] public bool hasBeenLocalised;
+        [System.NonSerialized] public bool isRead;
 
         #endregion
 
@@ -150,10 +150,10 @@ namespace Celeste.Narrative
         {
             base.OnEnter();
 
-            UnityEngine.Debug.Assert(!isLocalised || currentLanguage != null, $"Current Language has not been set in Dialogue node {name}.");
-            UnityEngine.Debug.Assert(!isLocalised || localisationKey != null, $"Localisation Key has not been set in Dialogue node {name}.");
+            UnityEngine.Debug.Assert(!isLocalised || currentLanguage != null, $"Current Language has not been set.");
+            UnityEngine.Debug.Assert(!isLocalised || localisationKey != null, $"Localisation Key has not been set.");
 
-            if (isLocalised && 
+            if (isLocalised &&
                 currentLanguage != null &&
                 localisationKey != null)
             {
