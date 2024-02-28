@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
-    [CreateAssetMenu(fileName = nameof(Stage), menuName = "Celeste/Deck Building/Stage")]
+    [CreateAssetMenu(fileName = nameof(Stage), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Stage", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class Stage : ScriptableObject
     {
         #region Properties and Fields

@@ -14,7 +14,7 @@ namespace Celeste.Events
 	public class BoardGameShutdownUnityEvent : UnityEvent<BoardGameShutdownArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(BoardGameShutdownEvent), menuName = "Celeste/Events/Board Game/Board Game Shutdown")]
+	[CreateAssetMenu(fileName = nameof(BoardGameShutdownEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Board Game/Board Game Shutdown", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class BoardGameShutdownEvent : ParameterisedEvent<BoardGameShutdownArgs>
 	{
 	}

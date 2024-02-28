@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace Celeste.Achievements.Debug
 {
-    [CreateAssetMenu(fileName = nameof(AchievementsDebugMenu), menuName = "Celeste/Achievements/Debug/Achievements Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(AchievementsDebugMenu),
+        menuName = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM + "Debug/Achievements Debug Menu",
+        order = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM_PRIORITY)]
     public class AchievementsDebugMenu : DebugMenu
     {
         #region Properties and Fields

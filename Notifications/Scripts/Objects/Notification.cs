@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Notifications.Objects
 {
-    [CreateAssetMenu(fileName = nameof(Notification), menuName = "Celeste/Notifications/Notification")]
+    [CreateAssetMenu(fileName = nameof(Notification), menuName = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM + "Notification", order = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM_PRIORITY)]
     public class Notification : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

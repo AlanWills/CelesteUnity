@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.DataImporters",
     "references": [
         "Celeste.Objects",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

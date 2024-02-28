@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(IntValue), menuName = "Celeste/Parameters/Numeric/Int/Int Value")]
+    [CreateAssetMenu(fileName = nameof(IntValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Int/Int Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class IntValue : ParameterValue<int, IntValueChangedEvent>
     {
         #region Properties and Fields

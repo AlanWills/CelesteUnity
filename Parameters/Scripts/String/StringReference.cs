@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Celeste.Parameters
 {
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(StringReference), menuName = "Celeste/Parameters/String/String Reference")]
+    [CreateAssetMenu(fileName = nameof(StringReference), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "String/String Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class StringReference : ParameterReference<string, StringValue, StringReference>
     {
         #region Operators

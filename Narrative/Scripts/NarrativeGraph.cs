@@ -4,7 +4,7 @@ using XNode.Attributes;
 
 namespace Celeste.Narrative
 {
-    [CreateAssetMenu(fileName = "NarrativeGraph", menuName = "Celeste/Narrative/Narrative Graph")]
+    [CreateAssetMenu(fileName = "NarrativeGraph", menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Narrative Graph", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class NarrativeGraph : FSMGraph
     {
         [NodeGraphShortcut(KeyCode.T, EventModifiers.Shift)]

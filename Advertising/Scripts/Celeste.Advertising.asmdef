@@ -11,6 +11,7 @@
         "Celeste.Logic",
         "Celeste.UI",
         "Celeste.RemoteConfig",
+        "Celeste.UnityProject",
         "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],

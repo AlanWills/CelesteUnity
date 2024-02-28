@@ -18,6 +18,7 @@
         "Celeste.Assets",
         "Celeste.Debug",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Celeste.Sound",
         "Celeste.Sound.Nodes",
         "Unity.Addressables",

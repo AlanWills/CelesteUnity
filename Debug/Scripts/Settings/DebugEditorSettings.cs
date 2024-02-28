@@ -7,7 +7,10 @@ using CelesteEditor.Tools;
 
 namespace Celeste.Debug.Settings
 {
-    [CreateAssetMenu(fileName = nameof(DebugEditorSettings), menuName = "Celeste/Debug/Debug Editor Settings")]
+    [CreateAssetMenu(
+        fileName = nameof(DebugEditorSettings), 
+        menuName = CelesteMenuItemConstants.DEBUG_MENU_ITEM + "Debug Editor Settings",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class DebugEditorSettings : EditorSettings<DebugEditorSettings>
     {
         #region Properties and Fields

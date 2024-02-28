@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps.Settings
 {
-    [CreateAssetMenu(fileName = nameof(LiveOpsEditorSettings), menuName = "Celeste/Live Ops/Live Ops Editor Settings")]
+    [CreateAssetMenu(fileName = nameof(LiveOpsEditorSettings), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Live Ops Editor Settings", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class LiveOpsEditorSettings : EditorSettings<LiveOpsEditorSettings>
     {
         #region Properties and Fields

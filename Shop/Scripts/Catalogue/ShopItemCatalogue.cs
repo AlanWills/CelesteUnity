@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Shop.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(ShopItemCatalogue), menuName = "Celeste/Shop/Shop Item Catalogue")]
+    [CreateAssetMenu(fileName = nameof(ShopItemCatalogue), order = CelesteMenuItemConstants.SHOP_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SHOP_MENU_ITEM + "Shop Item Catalogue")]
     public class ShopItemCatalogue : ListScriptableObject<ShopItem>
     {
         public ShopItem FindByGuid(int guid)

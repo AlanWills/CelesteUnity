@@ -1,9 +1,13 @@
-﻿using UnityEditor;
+﻿using Celeste;
+using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(AppVersion), menuName = "Celeste/Build System/App Version")]
+    [CreateAssetMenu(
+        fileName = nameof(AppVersion), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "App Version",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class AppVersion : ScriptableObject
     {
         #region Properties and Fields

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.LocationServices
 {
-    [CreateAssetMenu(fileName = nameof(LocationServicesRecord), menuName = "Celeste/Location Services/Location Services Record")]
+    [CreateAssetMenu(fileName = nameof(LocationServicesRecord), menuName = CelesteMenuItemConstants.LOCATIONSERVICES_MENU_ITEM + "Location Services Record", order = CelesteMenuItemConstants.LOCATIONSERVICES_MENU_ITEM_PRIORITY)]
     public class LocationServicesRecord : ScriptableObject
     {
         #region Properties and Fields

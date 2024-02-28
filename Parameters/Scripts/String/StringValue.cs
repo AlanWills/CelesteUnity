@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Celeste.Parameters
 {
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(StringValue), menuName = "Celeste/Parameters/String/String Value")]
+    [CreateAssetMenu(fileName = nameof(StringValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "String/String Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class StringValue : ParameterValue<string, StringValueChangedEvent>
     {
         #region Operators

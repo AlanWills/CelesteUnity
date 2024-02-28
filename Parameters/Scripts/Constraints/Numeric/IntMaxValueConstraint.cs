@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters.Constraints
 {
-    [CreateAssetMenu(fileName = "Int Max Value", menuName = "Celeste/Constraints/Numeric/Int Max Value")]
+    [CreateAssetMenu(fileName = "Int Max Value", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Constraints/Int Max Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class IntMaxValueConstraint : IntConstraint, IEditorInitializable
     {
         [SerializeField] private IntReference maxValue;

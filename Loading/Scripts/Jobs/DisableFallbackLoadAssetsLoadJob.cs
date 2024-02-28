@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(DisableFallbackLoadAssetsLoadJob), menuName = "Celeste/Loading/Load Jobs/Disable Fallback Load Assets")]
+    [CreateAssetMenu(fileName = nameof(DisableFallbackLoadAssetsLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Disable Fallback Load Assets", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class DisableFallbackLoadAssetsLoadJob : LoadJob
     {
         #region Properties and Fields

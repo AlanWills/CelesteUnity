@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(Vector3IntValue), menuName = "Celeste/Parameters/Vector/Vector3Int Value")]
+    [CreateAssetMenu(fileName = nameof(Vector3IntValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Vector/Vector3Int Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class Vector3IntValue : ParameterValue<Vector3Int, Vector3IntValueChangedEvent>
     {
         #region Operators

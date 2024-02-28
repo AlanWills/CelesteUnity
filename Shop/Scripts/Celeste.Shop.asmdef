@@ -8,6 +8,7 @@
         "Celeste.Wallet",
         "Celeste.Tools",
         "Celeste.Localisation",
+        "Celeste.UnityProject",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

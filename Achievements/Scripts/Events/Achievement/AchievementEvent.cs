@@ -10,7 +10,7 @@ namespace Celeste.Achievements.Events
 	public class AchievementUnityEvent : UnityEvent<Achievement> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(AchievementEvent), menuName = "Celeste/Events/Achievements/Achievement")]
+	[CreateAssetMenu(fileName = nameof(AchievementEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Achievements/Achievement", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class AchievementEvent : ParameterisedEvent<Achievement> { }
 	
 	[Serializable]

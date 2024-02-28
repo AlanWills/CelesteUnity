@@ -5,6 +5,7 @@
         "Unity.Addressables.Editor",
         "Celeste.Assets",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [

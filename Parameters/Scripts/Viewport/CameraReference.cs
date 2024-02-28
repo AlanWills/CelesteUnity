@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "New CameraReference", menuName = "Celeste/Parameters/Viewport/Camera Reference")]
+    [CreateAssetMenu(fileName = "New CameraReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Viewport/Camera Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class CameraReference : ParameterReference<Camera, CameraValue, CameraReference>
     {
     }

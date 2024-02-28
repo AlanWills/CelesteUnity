@@ -1,15 +1,13 @@
 ﻿using Celeste.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using XNode;
 
 namespace Celeste.DS
 {
-    [CreateAssetMenu(fileName = "DataGraph", menuName = "Celeste/DS/Data Graph")]
+    [CreateAssetMenu(
+        fileName = "DataGraph", 
+        menuName = CelesteMenuItemConstants.DS_MENU_ITEM + "Data Graph",
+        order = CelesteMenuItemConstants.DS_MENU_ITEM_PRIORITY)]
     public class DataGraph : NodeGraph
     {
         #region Data Updating

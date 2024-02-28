@@ -1,11 +1,15 @@
-﻿using System.IO;
+﻿using Celeste;
+using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = "WindowsSettings", menuName = "Celeste/Build System/Windows Settings")]
+    [CreateAssetMenu(
+        fileName = "WindowsSettings", 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Windows Settings",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class WindowsSettings : PlatformSettings
     {
         #region Properties and Fields

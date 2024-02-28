@@ -25,7 +25,7 @@ namespace Celeste.Narrative.Tokens
 
     #endregion
 
-    [CreateAssetMenu(fileName = nameof(LocaTokens), menuName = "Celeste/Narrative/Tokens/Loca Tokens")]
+    [CreateAssetMenu(fileName = nameof(LocaTokens), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Tokens/Loca Tokens", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class LocaTokens : ListScriptableObject<LocaToken>
     {
         #region Properties and Fields

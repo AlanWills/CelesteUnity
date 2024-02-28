@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Options.Debug
 {
-    [CreateAssetMenu(fileName = nameof(OptionsDebugMenu), menuName = "Celeste/Options/Debug/Options Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(OptionsDebugMenu), menuName = CelesteMenuItemConstants.OPTIONS_MENU_ITEM + "Debug/Options Debug Menu", order = CelesteMenuItemConstants.OPTIONS_MENU_ITEM_PRIORITY)]
     public class OptionsDebugMenu : DebugMenu
     {
         #region Properties and Fields

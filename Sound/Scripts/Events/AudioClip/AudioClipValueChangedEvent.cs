@@ -8,7 +8,7 @@ namespace Celeste.Events
 	public class AudioClipValueChangedUnityEvent : ValueChangedUnityEvent<AudioClip> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(AudioClipValueChangedEvent), menuName = "Celeste/Events/Audio/Audio Clip Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(AudioClipValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Audio/Audio Clip Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class AudioClipValueChangedEvent : ParameterisedValueChangedEvent<AudioClip>
 	{
 	}

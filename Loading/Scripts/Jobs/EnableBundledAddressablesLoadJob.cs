@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(EnableBundledAddressablesLoadJob), menuName = "Celeste/Loading/Load Jobs/Enable Bundled Addressables")]
+    [CreateAssetMenu(fileName = nameof(EnableBundledAddressablesLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Enable Bundled Addressables", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class EnableBundledAddressablesLoadJob : LoadJob
     {
         #region Properties and Fields

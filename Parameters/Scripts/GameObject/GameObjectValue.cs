@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(GameObjectValue), menuName = "Celeste/Parameters/Game Object/GameObject Value")]
+    [CreateAssetMenu(fileName = nameof(GameObjectValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Game Object/GameObject Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class GameObjectValue : ParameterValue<GameObject, GameObjectValueChangedEvent>
     {
     }

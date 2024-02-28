@@ -20,6 +20,7 @@
         "Celeste.Components",
         "Celeste.UI",
         "Celeste.Input",
+        "Celeste.UnityProject",
         "Unity.TextMeshPro",
         "XNode"
     ],

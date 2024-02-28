@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.Advertising.Impls
 {
-    [CreateAssetMenu(fileName = nameof(EditorAdProvider), menuName = "Celeste/Advertising/Providers/Editor Ad Provider")]
+    [CreateAssetMenu(
+        fileName = nameof(EditorAdProvider), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Providers/Editor Ad Provider",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class EditorAdProvider : ScriptableObject, IAdProvider
     {
         #region Properties and Fields

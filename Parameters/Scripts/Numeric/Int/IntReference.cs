@@ -2,7 +2,7 @@
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(IntReference), menuName = "Celeste/Parameters/Numeric/Int/Int Reference")]
+    [CreateAssetMenu(fileName = nameof(IntReference), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Int/Int Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class IntReference : ParameterReference<int, IntValue, IntReference>
     {
         #region Operators

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = "IntValueCondition", menuName = "Celeste/Logic/Int Value Condition")]
+    [CreateAssetMenu(fileName = "IntValueCondition", menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Int Value Condition", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     [DisplayName("Int")]
     public class IntValueCondition : ParameterizedValueCondition<int, IntValue, IntReference>
     {

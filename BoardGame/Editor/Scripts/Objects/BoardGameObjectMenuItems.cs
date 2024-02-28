@@ -1,4 +1,5 @@
-﻿using Celeste.BoardGame;
+﻿using Celeste;
+using Celeste.BoardGame;
 using Celeste.BoardGame.Components;
 using CelesteEditor.Tools;
 using System;
@@ -9,14 +10,14 @@ namespace CelesteEditor.BoardGame.Objects
 {
     public static class BoardGameObjectMenuItems
     {
-        [MenuItem("Assets/Create/Celeste/Board Game/Preset Objects/Prefab Actor", validate = true)]
+        [MenuItem("Assets/Create/" + CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Preset Objects/Prefab Actor", validate = true, priority = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
         public static bool ValidateCreatePrefabActorBoardGameObjectMenuItem()
         {
             return Selection.objects != null &&
                    Array.Exists(Selection.objects, x => x is GameObject && !(x as GameObject).scene.IsValid());
         }
 
-        [MenuItem("Assets/Create/Celeste/Board Game/Preset Objects/Prefab Actor", validate = false)]
+        [MenuItem("Assets/Create/" + CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Preset Objects/Prefab Actor", validate = false, priority = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
         public static void CreatePrefabActorBoardGameObjectMenuItem()
         {
             for (int i = 0, n = Selection.objects.Length; i < n; i++)

@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Cards
 {
-    [CreateAssetMenu(fileName = nameof(Card), menuName = "Celeste/Deck Building/Cards/Card")]
+    [CreateAssetMenu(
+        fileName = nameof(Card), 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Cards/Card",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class Card : ComponentContainerUsingSubAssets<CardComponent>, IIntGuid
     {
         #region Properties and Fields

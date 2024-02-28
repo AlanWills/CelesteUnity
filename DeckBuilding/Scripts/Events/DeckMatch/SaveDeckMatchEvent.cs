@@ -26,6 +26,6 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public class SaveDeckMatchUnityEvent : UnityEvent<SaveDeckMatchArgs> { }
 
-    [CreateAssetMenu(fileName = nameof(SaveDeckMatchEvent), menuName = "Celeste/Events/Deck Building/Save Deck Match Event")]
+    [CreateAssetMenu(fileName = nameof(SaveDeckMatchEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Deck Building/Save Deck Match Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class SaveDeckMatchEvent : ParameterisedEvent<SaveDeckMatchArgs> { }
 }

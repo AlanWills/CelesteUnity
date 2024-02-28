@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Celeste.BoardGame.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(BoardGameObjectCatalogue), menuName = "Celeste/Board Game/Catalogue/Board Game Object Catalogue")]
+    [CreateAssetMenu(
+        fileName = nameof(BoardGameObjectCatalogue), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Catalogue/Board Game Object Catalogue",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class BoardGameObjectCatalogue : ListScriptableObject<BoardGameObject>
     {
         public BoardGameObject FindByGuid(int guid)

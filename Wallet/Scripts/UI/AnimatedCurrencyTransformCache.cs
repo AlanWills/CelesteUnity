@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Wallet.UI
 {
-    [CreateAssetMenu(fileName = nameof(AnimatedCurrencyTransformCache), menuName = "Celeste/Wallet/UI/Animated Currency Transform Cache")]
+    [CreateAssetMenu(fileName = nameof(AnimatedCurrencyTransformCache), order = CelesteMenuItemConstants.WALLET_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.WALLET_MENU_ITEM + "UI/Animated Currency Transform Cache")]
     public class AnimatedCurrencyTransformCache : ScriptableObject
     {
         #region Properties and Fields

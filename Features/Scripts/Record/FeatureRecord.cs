@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Features
 {
-    [CreateAssetMenu(fileName = nameof(FeatureRecord), menuName = "Celeste/Features/Feature Record")]
+    [CreateAssetMenu(fileName = nameof(FeatureRecord), menuName = CelesteMenuItemConstants.FEATURES_MENU_ITEM + "Feature Record", order = CelesteMenuItemConstants.FEATURES_MENU_ITEM_PRIORITY)]
     public class FeatureRecord : ScriptableObject
     {
         #region Properties and Fields

@@ -17,7 +17,7 @@ namespace Celeste.UI.Skin
         public TMP_FontAsset fontAsset;
     }
 
-    [CreateAssetMenu(fileName = nameof(UISkin), menuName = "Celeste/UI/Skin/UI Skin")]
+    [CreateAssetMenu(fileName = nameof(UISkin), order = CelesteMenuItemConstants.UI_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.UI_MENU_ITEM + "Skin/UI Skin")]
     public class UISkin : ScriptableObject
     {
         #region Properties and Fields

@@ -7,6 +7,7 @@
         "Celeste.Parameters",
         "Celeste.Tools",
         "Celeste.Objects",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

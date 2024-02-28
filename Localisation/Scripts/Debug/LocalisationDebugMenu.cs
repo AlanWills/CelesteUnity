@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation.Debug
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationDebugMenu), menuName = "Celeste/Localisation/Localisation Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(LocalisationDebugMenu), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Debug Menu", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationDebugMenu : DebugMenu
     {
         #region Properties and Fields

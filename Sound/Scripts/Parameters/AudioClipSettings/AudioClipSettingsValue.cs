@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(AudioClipSettingsValue), menuName = "Celeste/Parameters/Audio/Audio Clip Settings Value")]
+    [CreateAssetMenu(fileName = nameof(AudioClipSettingsValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Audio/Audio Clip Settings Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class AudioClipSettingsValue : ParameterValue<AudioClipSettings, AudioClipSettingsValueChangedEvent>
     {
     }

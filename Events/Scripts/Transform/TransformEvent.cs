@@ -12,7 +12,7 @@ namespace Celeste.Events
     public class TransformUnityEvent : UnityEvent<Transform> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "TransformEvent", menuName = "Celeste/Events/Transform Event")]
+    [CreateAssetMenu(fileName = "TransformEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Transform Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class TransformEvent : ParameterisedEvent<Transform>
     {
     }

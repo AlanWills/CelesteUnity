@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Narrative.Backgrounds.Settings
 {
-    [CreateAssetMenu(fileName = nameof(BackgroundSettingsUsingAddressables), menuName = "Celeste/Narrative/Backgrounds/Background Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(BackgroundSettingsUsingAddressables), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Backgrounds/Background Settings Using Addressables", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class BackgroundSettingsUsingAddressables : BackgroundSettings
     {
         #region Properties and Fields

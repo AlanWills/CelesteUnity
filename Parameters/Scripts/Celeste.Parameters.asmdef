@@ -6,6 +6,7 @@
         "Celeste.Events",
         "Celeste.Constraints",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

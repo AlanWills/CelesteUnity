@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(BoolValue), menuName = "Celeste/Parameters/Bool/Bool Value")]
+    [CreateAssetMenu(fileName = nameof(BoolValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Bool/Bool Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class BoolValue : ParameterValue<bool, BoolValueChangedEvent>
     {
         #region Operators

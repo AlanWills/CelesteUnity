@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace Celeste.Web.DataImporters
 {
-    [CreateAssetMenu(fileName = nameof(GoogleSheetDataImporter), menuName = "Celeste/Data Importers/Google Sheet Data Importer")]
+    [CreateAssetMenu(
+        fileName = nameof(GoogleSheetDataImporter), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Google Sheet Data Importer",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class GoogleSheetDataImporter : DataImporter
     {
         #region Properties and Fields

@@ -4,7 +4,7 @@ using XNode;
 
 namespace Celeste.Advertising.Nodes
 {
-    [CreateNodeMenu("Celeste/Advertising/Show Ad Placement")]
+    [CreateNodeMenu(CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Show Ad Placement")]
     public class ShowAdPlacementFSMNode : FSMNode
     {
         #region Properties and Fields

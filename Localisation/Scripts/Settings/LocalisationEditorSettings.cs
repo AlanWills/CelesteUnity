@@ -8,7 +8,7 @@ using CelesteEditor.Tools;
 
 namespace Celeste.Localisation.Settings
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationEditorSettings), menuName = "Celeste/Localisation/Localisation Editor Settings")]
+    [CreateAssetMenu(fileName = nameof(LocalisationEditorSettings), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Editor Settings", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationEditorSettings : EditorSettings<LocalisationEditorSettings>
     {
         #region Properties and Fields

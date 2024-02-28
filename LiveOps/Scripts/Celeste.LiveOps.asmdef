@@ -17,6 +17,7 @@
         "Celeste.Rewards",
         "Celeste.Features",
         "Celeste.Log",
+        "Celeste.UnityProject",
         "Unity.Addressables",
         "Unity.ResourceManager",
         "Unity.TextMeshPro",

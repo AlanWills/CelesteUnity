@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Celeste.Application.Debug
 {
-    [CreateAssetMenu(fileName = nameof(ApplicationDebugMenu), menuName = "Celeste/Application/Debug/Application Debug Menu")]
+    [CreateAssetMenu(
+        fileName = nameof(ApplicationDebugMenu), 
+        menuName = CelesteMenuItemConstants.APPLICATION_MENU_ITEM + "Debug/Application Debug Menu",
+        order = CelesteMenuItemConstants.APPLICATION_MENU_ITEM_PRIORITY)]
     public class ApplicationDebugMenu : DebugMenu
     {
         protected override void OnDrawMenu()

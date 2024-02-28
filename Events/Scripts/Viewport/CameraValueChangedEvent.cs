@@ -8,7 +8,7 @@ namespace Celeste.Events
 	public class CameraValueChangedUnityEvent : ValueChangedUnityEvent<Camera> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(CameraValueChangedEvent), menuName = "Celeste/Events/Viewport/Camera Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(CameraValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Viewport/Camera Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class CameraValueChangedEvent : ParameterisedValueChangedEvent<Camera>
 	{
 	}

@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 namespace Celeste.Tilemaps.Tiles
 {
-    [CreateAssetMenu(fileName = nameof(TileWithComponents), menuName = "Celeste/Tiles/Tile With Components")]
+    [CreateAssetMenu(fileName = nameof(TileWithComponents), order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Tile With Components")]
     public class TileWithComponents : TileBase, IComponentContainerUsingTemplates<TileComponent>, IEditorInitializable
     {
         #region Properties and Fields

@@ -2,7 +2,7 @@
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(FloatReference), menuName = "Celeste/Parameters/Numeric/Float/Float Reference")]
+    [CreateAssetMenu(fileName = nameof(FloatReference), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Float/Float Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class FloatReference : ParameterReference<float, FloatValue, FloatReference>
     {
         #region Operators

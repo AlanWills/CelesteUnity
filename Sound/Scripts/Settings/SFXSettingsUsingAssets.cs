@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(SFXSettingsUsingAssets), menuName = "Celeste/Sound/SFX Settings Using Assets")]
+    [CreateAssetMenu(fileName = nameof(SFXSettingsUsingAssets), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "SFX Settings Using Assets")]
     public class SFXSettingsUsingAssets : SFXSettings
     {
         #region Properties and Fields

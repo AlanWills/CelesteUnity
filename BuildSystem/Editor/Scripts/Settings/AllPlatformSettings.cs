@@ -1,11 +1,15 @@
-﻿using Celeste.Tools.Settings;
+﻿using Celeste;
+using Celeste.Tools.Settings;
 using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(AllPlatformSettings), menuName = "Celeste/Build System/All Platform Settings")]
+    [CreateAssetMenu(
+        fileName = nameof(AllPlatformSettings), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "All Platform Settings",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class AllPlatformSettings : EditorSettings<AllPlatformSettings>
     {
         #region Properties and Fields

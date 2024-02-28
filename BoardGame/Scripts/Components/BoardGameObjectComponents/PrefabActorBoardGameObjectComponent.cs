@@ -7,7 +7,10 @@ using UnityEngine;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Prefab Actor")]
-    [CreateAssetMenu(fileName = nameof(PrefabActorBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Prefab Actor")]
+    [CreateAssetMenu(
+        fileName = nameof(PrefabActorBoardGameObjectComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Object Components/Prefab Actor",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class PrefabActorBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectActor
     {
         #region Save Data

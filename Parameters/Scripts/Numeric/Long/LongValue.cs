@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(LongValue), menuName = "Celeste/Parameters/Numeric/Long Value")]
+    [CreateAssetMenu(fileName = nameof(LongValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Long Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class LongValue : ParameterValue<long, LongValueChangedEvent>
     {
         #region Operators

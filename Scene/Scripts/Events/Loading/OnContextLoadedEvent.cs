@@ -20,7 +20,7 @@ namespace Celeste.Scene.Events
     public class OnContextLoadedUnityEvent : UnityEvent<OnContextLoadedArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "OnContextLoadedEvent", menuName = "Celeste/Events/Loading/On Context Loaded Event")]
+    [CreateAssetMenu(fileName = "OnContextLoadedEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Loading/On Context Loaded Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class OnContextLoadedEvent : ParameterisedEvent<OnContextLoadedArgs> 
     { 
         public void Invoke(Context context)

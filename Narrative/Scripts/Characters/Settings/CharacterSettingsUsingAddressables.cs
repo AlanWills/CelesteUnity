@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.Characters.Settings
 {
-    [CreateAssetMenu(fileName = nameof(CharacterSettingsUsingAddressables), menuName = "Celeste/Narrative/Characters/Character Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(CharacterSettingsUsingAddressables), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Characters/Character Settings Using Addressables", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class CharacterSettingsUsingAddressables : CharacterSettings
     {
         #region Properties and Fields

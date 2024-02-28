@@ -8,7 +8,7 @@ namespace Celeste.Localisation
 	public class LanguageValueChangedUnityEvent : ValueChangedUnityEvent<Language> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(LanguageValueChangedEvent), menuName = "Celeste/Events/Localisation/Language Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(LanguageValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Localisation/Language Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class LanguageValueChangedEvent : ParameterisedValueChangedEvent<Language>
 	{
 	}

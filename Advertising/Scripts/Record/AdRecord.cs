@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace Celeste.Advertising
 {
-    [CreateAssetMenu(fileName = nameof(AdRecord), menuName = "Celeste/Advertising/Ad Record")]
+    [CreateAssetMenu(
+        fileName = nameof(AdRecord), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Ad Record",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class AdRecord : ScriptableObject
     {
         #region Properties and Fields

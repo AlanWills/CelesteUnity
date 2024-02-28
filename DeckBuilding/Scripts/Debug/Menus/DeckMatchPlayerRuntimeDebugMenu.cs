@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Debug.Menus
 {
-    [CreateAssetMenu(fileName = nameof(DeckMatchPlayerRuntimeDebugMenu), menuName = "Celeste/Deck Building/Debug/Deck Match Player Runtime Debug Menu")]
+    [CreateAssetMenu(
+        fileName = nameof(DeckMatchPlayerRuntimeDebugMenu), 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Debug/Deck Match Player Runtime Debug Menu",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class DeckMatchPlayerRuntimeDebugMenu : DebugMenu
     {
         #region Properties and Fields

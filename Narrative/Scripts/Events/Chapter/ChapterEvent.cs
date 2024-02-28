@@ -13,7 +13,7 @@ namespace Celeste.Events
     public class ChapterUnityEvent : UnityEvent<Chapter> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "ChapterEvent", menuName = "Celeste/Events/Chapter Event")]
+    [CreateAssetMenu(fileName = "ChapterEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Chapter Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class ChapterEvent : ParameterisedEvent<Chapter>
     {
     }

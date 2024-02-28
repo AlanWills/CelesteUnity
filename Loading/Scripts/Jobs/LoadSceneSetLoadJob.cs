@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(LoadSceneSetLoadJob), menuName = "Celeste/Loading/Load Jobs/Load Scene Set")]
+    [CreateAssetMenu(fileName = nameof(LoadSceneSetLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Load Scene Set", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class LoadSceneSetLoadJob : LoadJob
     {
         #region Builder

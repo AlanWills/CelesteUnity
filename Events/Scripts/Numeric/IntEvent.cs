@@ -12,7 +12,7 @@ namespace Celeste.Events
     public class IntUnityEvent : UnityEvent<int> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "IntEvent", menuName = "Celeste/Events/Int Event")]
+    [CreateAssetMenu(fileName = "IntEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Int Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class IntEvent : ParameterisedEvent<int>
     {
     }

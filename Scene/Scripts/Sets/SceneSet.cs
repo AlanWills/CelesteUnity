@@ -42,7 +42,7 @@ namespace Celeste.Scene
         }
     }
 
-    [CreateAssetMenu(fileName = nameof(SceneSet), menuName = "Celeste/Scene/Scene Set")]
+    [CreateAssetMenu(fileName = nameof(SceneSet), order = CelesteMenuItemConstants.SCENE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SCENE_MENU_ITEM + "Scene Set")]
     public class SceneSet : ScriptableObject
     {
         #region Properties and Fields

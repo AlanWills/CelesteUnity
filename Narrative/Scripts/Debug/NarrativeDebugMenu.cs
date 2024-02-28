@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.Debug
 {
-    [CreateAssetMenu(fileName = nameof(NarrativeDebugMenu), menuName = "Celeste/Narrative/Debug/Narrative Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(NarrativeDebugMenu), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Debug/Narrative Debug Menu", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class NarrativeDebugMenu : DebugMenu, IHasAssets
     {
         #region Properties and Fields

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation
 {
-    [CreateAssetMenu(fileName = nameof(Verb), menuName = "Celeste/Localisation/Verb")]
+    [CreateAssetMenu(fileName = nameof(Verb), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Verb", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class Verb : ScriptableObject
     {
         #region Properties and Fields

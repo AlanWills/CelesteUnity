@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationKeyCatalogue), menuName = "Celeste/Localisation/Localisation Key Catalogue")]
+    [CreateAssetMenu(fileName = nameof(LocalisationKeyCatalogue), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Key Catalogue", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationKeyCatalogue : DictionaryScriptableObject<string, LocalisationKey>
     {
     }

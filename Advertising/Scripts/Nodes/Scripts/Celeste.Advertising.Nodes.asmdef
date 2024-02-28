@@ -6,6 +6,7 @@
         "Celeste.FSM",
         "Celeste.Logic",
         "Celeste.Events",
+        "Celeste.UnityProject",
         "XNode"
     ],
     "includePlatforms": [],

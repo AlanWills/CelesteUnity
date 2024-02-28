@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters.Constraints
 {
-    [CreateAssetMenu(fileName = "Int Min Value", menuName = "Celeste/Constraints/Numeric/Int Min Value")]
+    [CreateAssetMenu(fileName = "Int Min Value", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Constraints/Int Min Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class IntMinValueConstraint : IntConstraint, IEditorInitializable
     {
         [SerializeField] private IntReference minValue;

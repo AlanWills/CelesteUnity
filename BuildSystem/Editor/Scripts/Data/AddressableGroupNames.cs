@@ -1,11 +1,15 @@
-﻿using Celeste.Objects;
+﻿using Celeste;
+using Celeste.Objects;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Data
 {
-    [CreateAssetMenu(fileName = nameof(AddressableGroupNames), menuName = "Celeste/Build System/Addressable Group Names")]
+    [CreateAssetMenu(
+        fileName = nameof(AddressableGroupNames), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Addressable Group Names",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class AddressableGroupNames : ListScriptableObject<string>
     {
         #region Properties and Fields

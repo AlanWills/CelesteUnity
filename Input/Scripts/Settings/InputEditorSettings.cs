@@ -8,7 +8,7 @@ using CelesteEditor.Tools;
 
 namespace Celeste.Input.Settings
 {
-    [CreateAssetMenu(fileName = nameof(InputEditorSettings), menuName = "Celeste/Input/Input Editor Settings")]
+    [CreateAssetMenu(fileName = nameof(InputEditorSettings), menuName = CelesteMenuItemConstants.INPUT_MENU_ITEM + "Input Editor Settings", order = CelesteMenuItemConstants.INPUT_MENU_ITEM_PRIORITY)]
     public class InputEditorSettings : EditorSettings<InputEditorSettings>
     {
         #region Properties and Fields

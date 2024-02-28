@@ -7,7 +7,7 @@ using XNode;
 
 namespace Celeste.FSM
 {
-    [CreateAssetMenu(fileName = "FSMGraph", menuName = "Celeste/FSM/FSM Graph")]
+    [CreateAssetMenu(fileName = "FSMGraph", menuName = CelesteMenuItemConstants.FSM_MENU_ITEM + "FSM Graph", order = CelesteMenuItemConstants.FSM_MENU_ITEM_PRIORITY)]
     public class FSMGraph : NodeGraph, IParameterContainer, IFSMGraph
     {
         #region Properties and Fields

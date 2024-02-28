@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Logic
 {
-    [CreateAssetMenu(fileName = "CurrentArmour", menuName = "Celeste/Deck Building/Requirements/Current Armour")]
+    [CreateAssetMenu(
+        fileName = "CurrentArmour", 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Requirements/Current Armour",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class CurrentArmourEffectRequirement : EffectRequirement
     {
         [SerializeField] private ConditionOperator conditionOperator;

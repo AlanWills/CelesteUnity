@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = "LongValueCondition", menuName = "Celeste/Logic/Long Value Condition")]
+    [CreateAssetMenu(fileName = "LongValueCondition", menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Long Value Condition", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     [DisplayName("Long")]
     public class LongValueCondition : ParameterizedValueCondition<long, LongValue, LongReference>
     {

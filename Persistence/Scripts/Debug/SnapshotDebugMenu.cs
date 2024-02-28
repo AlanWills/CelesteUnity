@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Persistence.Debug
 {
-    [CreateAssetMenu(fileName = nameof(SnapshotDebugMenu), menuName = "Celeste/Persistence/Debug/Snapshot Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(SnapshotDebugMenu), order = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM + "Debug/Snapshot Debug Menu")]
     public class SnapshotDebugMenu : DebugMenu
     {
         #region Properties and Fields

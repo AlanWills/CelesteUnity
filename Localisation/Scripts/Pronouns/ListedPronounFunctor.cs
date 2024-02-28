@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation.Pronouns
 {
-    [CreateAssetMenu(fileName = nameof(ListedPronounFunctor), menuName = "Celeste/Localisation/Pronouns/Listed Pronoun Functor")]
+    [CreateAssetMenu(fileName = nameof(ListedPronounFunctor), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Pronouns/Listed Pronoun Functor", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class ListedPronounFunctor : PronounFunctor
     {
         #region Properties and Fields

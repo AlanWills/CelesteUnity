@@ -25,7 +25,7 @@ namespace Celeste.Rewards.Objects
         }
     }
 
-    [CreateAssetMenu(fileName = nameof(Reward), menuName = "Celeste/Rewards/Reward")]
+    [CreateAssetMenu(fileName = nameof(Reward), order = CelesteMenuItemConstants.REWARDS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REWARDS_MENU_ITEM + "Reward")]
     public class Reward : ListScriptableObject<RewardItemInfo>, IIntGuid
     {
         #region Properties and Fields

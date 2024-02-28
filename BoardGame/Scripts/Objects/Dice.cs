@@ -9,7 +9,10 @@ using UnityEngine;
 
 namespace Celeste.BoardGame.Objects
 {
-    [CreateAssetMenu(fileName = nameof(Dice), menuName = "Celeste/Board Game/Objects/Dice")]
+    [CreateAssetMenu(
+        fileName = nameof(Dice), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Objects/Dice",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class Dice : ScriptableObject
     {
         #region Properties and Fields

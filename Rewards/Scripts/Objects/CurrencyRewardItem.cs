@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Rewards.Objects
 {
-    [CreateAssetMenu(fileName = nameof(CurrencyRewardItem), menuName = "Celeste/Rewards/Currency Reward Item")]
+    [CreateAssetMenu(fileName = nameof(CurrencyRewardItem), order = CelesteMenuItemConstants.REWARDS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REWARDS_MENU_ITEM + "Currency Reward Item")]
     public class CurrencyRewardItem : RewardItem
     {
         #region Properties and Fields

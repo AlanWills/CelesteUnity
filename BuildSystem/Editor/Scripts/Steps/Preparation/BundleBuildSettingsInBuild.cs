@@ -1,11 +1,15 @@
-﻿using Celeste.BuildSystem;
+﻿using Celeste;
+using Celeste.BuildSystem;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Steps
 {
-    [CreateAssetMenu(fileName = nameof(BundleBuildSettingsInBuild), menuName = "Celeste/Build System/Build Preparation/Bundle Build Settings In Build")]
+    [CreateAssetMenu(
+        fileName = nameof(BundleBuildSettingsInBuild), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Build Preparation/Bundle Build Settings In Build",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class BundleBuildSettingsInBuild : BuildPreparationStep
     {
         public override void Execute(BuildPlayerOptions buildPlayerOptions, PlatformSettings platformSettings)

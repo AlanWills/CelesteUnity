@@ -11,7 +11,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(MusicSettingsUsingAddressables), menuName = "Celeste/Sound/Music Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(MusicSettingsUsingAddressables), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "Music Settings Using Addressables")]
     public class MusicSettingsUsingAddressables : MusicSettings
     {
         #region Properties and Fields

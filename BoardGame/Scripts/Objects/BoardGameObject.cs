@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.BoardGame
 {
-    [CreateAssetMenu(fileName = nameof(BoardGameObject), menuName = "Celeste/Board Game/Objects/Board Game Object")]
+    [CreateAssetMenu(
+        fileName = nameof(BoardGameObject),
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Objects/Board Game Object",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class BoardGameObject : ComponentContainerUsingSubAssets<BoardGameObjectComponent>, IIntGuid
     {
         #region Properties and Fields

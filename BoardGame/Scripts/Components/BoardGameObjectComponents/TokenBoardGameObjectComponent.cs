@@ -9,7 +9,10 @@ using UnityEngine.Events;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Token")]
-    [CreateAssetMenu(fileName = nameof(TokenBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Token")]
+    [CreateAssetMenu(
+        fileName = nameof(TokenBoardGameObjectComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Object Components/Token",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class TokenBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectToken, IBoardGameObjectTooltip
     {
         #region Save Data

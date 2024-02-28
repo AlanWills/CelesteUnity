@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Persistence.Snapshots
 {
-    [CreateAssetMenu(fileName = nameof(SnapshotRecord), menuName = "Celeste/Persistence/Snapshots/Snapshot Record")]
+    [CreateAssetMenu(fileName = nameof(SnapshotRecord), order = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM + "Snapshots/Snapshot Record")]
     public class SnapshotRecord : ScriptableObject
     {
         #region Properties and Fields

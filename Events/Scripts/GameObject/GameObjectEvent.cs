@@ -12,7 +12,7 @@ namespace Celeste.Events
     public class GameObjectUnityEvent : UnityEvent<GameObject> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "GameObjectEvent", menuName = "Celeste/Events/GameObject Event")]
+    [CreateAssetMenu(fileName = "GameObjectEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "GameObject Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class GameObjectEvent : ParameterisedEvent<GameObject>
     {
     }

@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.Advertising.Debug
 {
-    [CreateAssetMenu(fileName = nameof(AdsDebugMenu), menuName = "Celeste/Advertising/Debug/Ads Debug Menu")]
+    [CreateAssetMenu(
+        fileName = nameof(AdsDebugMenu), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Debug/Ads Debug Menu",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class AdsDebugMenu : DebugMenu
     {
         #region Properties and Fields

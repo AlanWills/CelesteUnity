@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters.Rendering
 {
-    [CreateAssetMenu(fileName = "SpriteReference", menuName = "Celeste/Parameters/Rendering/Sprite Reference")]
+    [CreateAssetMenu(fileName = "SpriteReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Rendering/Sprite Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class SpriteReference : ParameterReference<Sprite, SpriteValue, SpriteReference>
     {
     }

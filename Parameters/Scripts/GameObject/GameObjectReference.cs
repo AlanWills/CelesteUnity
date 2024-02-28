@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "GameObjectReference", menuName = "Celeste/Parameters/Game Object/GameObject Reference")]
+    [CreateAssetMenu(fileName = "GameObjectReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Game Object/GameObject Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class GameObjectReference : ParameterReference<GameObject, GameObjectValue, GameObjectReference>
     {
     }

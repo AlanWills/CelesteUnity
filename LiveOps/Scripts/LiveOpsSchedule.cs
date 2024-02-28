@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps
 {
-    [CreateAssetMenu(fileName = nameof(LiveOpsSchedule), menuName = "Celeste/Live Ops/Live Ops Schedule")]
+    [CreateAssetMenu(fileName = nameof(LiveOpsSchedule), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Live Ops Schedule", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class LiveOpsSchedule : ListScriptableObject<LiveOpDTO>
     {
         #region Properties and Fields

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreateScriptNode), menuName = "Celeste/Twine/Parser Steps/Try Create Dialogue Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateScriptNode), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Dialogue Node")]
     public class TryCreateDialogueNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields

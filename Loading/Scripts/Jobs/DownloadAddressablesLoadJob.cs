@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(DownloadAddressablesLoadJob), menuName = "Celeste/Loading/Load Jobs/Download Addressables")]
+    [CreateAssetMenu(fileName = nameof(DownloadAddressablesLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Download Addressables", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class DownloadAddressablesLoadJob : LoadJob
     {
         #region Properties and Fields

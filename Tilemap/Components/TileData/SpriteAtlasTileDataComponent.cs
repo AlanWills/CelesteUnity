@@ -6,7 +6,7 @@ using UnityEngine.U2D;
 
 namespace Celeste.Tilemaps.Components
 {
-    [CreateAssetMenu(fileName = nameof(SpriteAtlasTileDataComponent), menuName = "Celeste/Tiles/Components/Sprite Atlas Tile Data Component")]
+    [CreateAssetMenu(fileName = nameof(SpriteAtlasTileDataComponent), order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Components/Sprite Atlas Tile Data Component")]
     public class SpriteAtlasTileDataComponent : TileComponent, ITileDataComponent
     {
         #region Save Data

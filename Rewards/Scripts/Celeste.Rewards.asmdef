@@ -10,7 +10,8 @@
         "Celeste.DataStructures",
         "Unity.TextMeshPro",
         "Celeste.Memory",
-        "Celeste.Logic"
+        "Celeste.Logic",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

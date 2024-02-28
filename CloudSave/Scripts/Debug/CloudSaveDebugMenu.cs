@@ -9,7 +9,10 @@ using UnityEngine.SceneManagement;
 
 namespace Celeste.CloudSave
 {
-    [CreateAssetMenu(fileName = nameof(CloudSaveDebugMenu), menuName = "Celeste/Cloud Save/Debug/Cloud Save Debug Menu")]
+    [CreateAssetMenu(
+        fileName = nameof(CloudSaveDebugMenu), 
+        menuName = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM + "Debug/Cloud Save Debug Menu",
+        order = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM_PRIORITY)]
     public class CloudSaveDebugMenu : DebugMenu
     {
         #region Properties and Fields

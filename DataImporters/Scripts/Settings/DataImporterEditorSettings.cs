@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Celeste.DataImporters.Settings
 {
-    [CreateAssetMenu(fileName = nameof(DataImporterEditorSettings), menuName = "Celeste/Data Importers/Data Importer Editor Settings")]
+    [CreateAssetMenu(
+        fileName = nameof(DataImporterEditorSettings), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Data Importer Editor Settings",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class DataImporterEditorSettings : EditorSettings<DataImporterEditorSettings>
     {
         #region Properties and Fields

@@ -5,7 +5,8 @@
         "Unity.TextMeshPro",
         "Celeste.Tools",
         "Celeste.Scene",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

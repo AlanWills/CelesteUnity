@@ -8,7 +8,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Scene.Debug
 {
-    [CreateAssetMenu(fileName = nameof(SceneSetDebugMenu), menuName = "Celeste/Scene/Debug/Scene Set Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(SceneSetDebugMenu), order = CelesteMenuItemConstants.SCENE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SCENE_MENU_ITEM + "Debug/Scene Set Debug Menu")]
     public class SceneSetDebugMenu : DebugMenu
     {
         #region Properties and Fields

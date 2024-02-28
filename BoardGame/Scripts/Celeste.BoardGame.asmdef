@@ -15,6 +15,7 @@
         "Celeste.UI",
         "Celeste.Debug",
         "Celeste.Input",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

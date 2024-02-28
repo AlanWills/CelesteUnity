@@ -6,7 +6,7 @@ using CelesteEditor.Tools;
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(SoundEditorSettings), menuName = "Celeste/Sound/Sound Editor Settings")]
+    [CreateAssetMenu(fileName = nameof(SoundEditorSettings), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "Sound Editor Settings")]
     public class SoundEditorSettings : EditorSettings<SoundEditorSettings>
     {
         #region Properties and Fields

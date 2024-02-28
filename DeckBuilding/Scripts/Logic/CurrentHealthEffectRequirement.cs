@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Logic
 {
-    [CreateAssetMenu(fileName = "CurrentHealth", menuName = "Celeste/Deck Building/Requirements/Current Health")]
+    [CreateAssetMenu(
+        fileName = "CurrentHealth", 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Requirements/Current Health",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class CurrentHealthEffectRequirement : EffectRequirement
     {
         [SerializeField] private ConditionOperator conditionOperator;

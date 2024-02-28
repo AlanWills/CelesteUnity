@@ -6,7 +6,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Twine.Debug
 {
-    [CreateAssetMenu(fileName = nameof(TwinePersistenceDebugMenu), menuName = "Celeste/Twine/Debug/Twine Persistence Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(TwinePersistenceDebugMenu), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Debug/Twine Persistence Debug Menu")]
     public class TwinePersistenceDebugMenu : DebugMenu
     {
         #region Properties and Fields

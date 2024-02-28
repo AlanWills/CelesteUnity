@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Celeste.Events
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "Event", menuName = "Celeste/Events/Event")]
+    [CreateAssetMenu(fileName = "Event", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class Event : ScriptableObject, IEvent
     {
         #region Properties and Fields

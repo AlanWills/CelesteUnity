@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Log
 {
-    [CreateAssetMenu(menuName = "Celeste/Log/Debug/Console Hud Log")]
+    [CreateAssetMenu(menuName = CelesteMenuItemConstants.LOG_MENU_ITEM + "Debug/Console Hud Log", order = CelesteMenuItemConstants.LOG_MENU_ITEM_PRIORITY)]
     public class ConsoleHudLog : DebugCommand
     {
         public override bool Execute(List<string> parameters, StringBuilder output)

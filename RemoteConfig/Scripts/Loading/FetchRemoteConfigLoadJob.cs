@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.RemoteConfig
 {
-    [CreateAssetMenu(fileName = nameof(FetchRemoteConfigLoadJob), menuName = "Celeste/Remote Config/Loading/Fetch Remote Config")]
+    [CreateAssetMenu(fileName = nameof(FetchRemoteConfigLoadJob), order = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM + "Loading/Fetch Remote Config")]
     public class FetchRemoteConfigLoadJob : LoadJob
     {
         #region Properties and Fields

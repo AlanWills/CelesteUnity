@@ -9,6 +9,7 @@
         "Celeste.Persistence",
         "Celeste.Objects",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor",
         "Unity.InputSystem"
     ],

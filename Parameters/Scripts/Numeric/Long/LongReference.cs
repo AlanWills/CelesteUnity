@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "LongReference", menuName = "Celeste/Parameters/Numeric/Long Reference")]
+    [CreateAssetMenu(fileName = "LongReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Long Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class LongReference : ParameterReference<long, LongValue, LongReference>
     {
         #region Operators

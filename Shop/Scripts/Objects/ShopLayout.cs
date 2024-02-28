@@ -20,7 +20,7 @@ namespace Celeste.Shop
         public GameObject shopItemPrefab;
     }
     
-    [CreateAssetMenu(fileName = nameof(ShopLayout), menuName = "Celeste/Shop/Shop Layout")]
+    [CreateAssetMenu(fileName = nameof(ShopLayout), order = CelesteMenuItemConstants.SHOP_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SHOP_MENU_ITEM + "Shop Layout")]
     public class ShopLayout : ScriptableObject
     {
         #region Properties and Fields

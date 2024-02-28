@@ -9,10 +9,14 @@ using static Celeste.Localisation.Language;
 using Celeste.Localisation.Catalogue;
 using Celeste.Web.ImportSteps;
 using System.IO;
+using Celeste;
 
 namespace CelesteEditor.Localisation.Tools
 {
-    [CreateAssetMenu(fileName = nameof(CreateLocalisationKeysAndCategories), menuName = "Celeste/Data Importers/Create Localisation Keys And Categories")]
+    [CreateAssetMenu(
+        fileName = nameof(CreateLocalisationKeysAndCategories), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Create Localisation Keys And Categories",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class CreateLocalisationKeysAndCategories : GoogleSheetReceivedImportStep
     {
         #region Properties and Fields

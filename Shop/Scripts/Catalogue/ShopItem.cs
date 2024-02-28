@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Celeste.Shop.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(ShopItem), menuName = "Celeste/Shop/Shop Item")]
+    [CreateAssetMenu(fileName = nameof(ShopItem), order = CelesteMenuItemConstants.SHOP_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SHOP_MENU_ITEM + "Shop Item")]
     public class ShopItem : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

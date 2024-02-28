@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Options.Settings
 {
-    [CreateAssetMenu(fileName = nameof(OptionsSettingsUsingAssets), menuName = "Celeste/Options/Settings/Using Assets")]
+    [CreateAssetMenu(fileName = nameof(OptionsSettingsUsingAssets), menuName = CelesteMenuItemConstants.OPTIONS_MENU_ITEM + "Settings/Using Assets", order = CelesteMenuItemConstants.OPTIONS_MENU_ITEM_PRIORITY)]
     public class OptionsSettingsUsingAssets : OptionsSettings
     {
         #region Properties and Fields

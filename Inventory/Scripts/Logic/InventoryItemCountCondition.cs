@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Inventory.Logic
 {
-    [CreateAssetMenu(fileName = nameof(InventoryItemCountCondition), menuName = "Celeste/Inventory/Logic/Inventory Item Count Condition")]
+    [CreateAssetMenu(fileName = nameof(InventoryItemCountCondition), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Logic/Inventory Item Count Condition", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
     public class InventoryItemCountCondition : Condition
     {
         #region Properties and Fields

@@ -13,7 +13,7 @@ namespace Celeste.RemoteConfig
         Disabled,
     }
 
-    [CreateAssetMenu(fileName = nameof(RemoteConfigRecord), menuName = "Celeste/Remote Config/Remote Config Record")]
+    [CreateAssetMenu(fileName = nameof(RemoteConfigRecord), order = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM + "Remote Config Record")]
     public class RemoteConfigRecord : ScriptableObject, IRemoteConfigDictionary
     {
         #region Properties and Fields

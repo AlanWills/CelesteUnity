@@ -15,7 +15,7 @@ namespace Celeste.Events
 	public class BoardGameLoadedUnityEvent : UnityEvent<BoardGameLoadedArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(BoardGameLoadedEvent), menuName = "Celeste/Events/Board Game/Board Game Loaded")]
+	[CreateAssetMenu(fileName = nameof(BoardGameLoadedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Board Game/Board Game Loaded", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class BoardGameLoadedEvent : ParameterisedEvent<BoardGameLoadedArgs>
 	{
 	}

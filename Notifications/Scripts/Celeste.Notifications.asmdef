@@ -13,7 +13,8 @@
         "Celeste.Log",
         "Celeste.Coroutines",
         "Celeste.Parameters",
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

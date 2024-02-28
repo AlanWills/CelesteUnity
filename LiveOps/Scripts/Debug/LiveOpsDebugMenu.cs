@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps.Debug
 {
-    [CreateAssetMenu(fileName = nameof(LiveOpsDebugMenu), menuName = "Celeste/Live Ops/Debug/Live Ops Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(LiveOpsDebugMenu), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Debug/Live Ops Debug Menu", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class LiveOpsDebugMenu : DebugMenu
     {
         #region Properties and Fields

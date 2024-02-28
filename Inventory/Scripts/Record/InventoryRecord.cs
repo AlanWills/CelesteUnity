@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Inventory
 {
-    [CreateAssetMenu(fileName = nameof(InventoryRecord), menuName = "Celeste/Inventory/Inventory Record")]
+    [CreateAssetMenu(fileName = nameof(InventoryRecord), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Inventory Record", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
     public class InventoryRecord : ScriptableObject
     {
         #region Properties and Fields

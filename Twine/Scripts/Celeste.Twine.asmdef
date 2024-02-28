@@ -21,6 +21,7 @@
         "Celeste.Loading",
         "Celeste.Assets",
         "Celeste.Scene",
+        "Celeste.UnityProject",
         "RecyclableScrollRect",
         "NativeFilePicker.Runtime",
         "NativeShare.Runtime"

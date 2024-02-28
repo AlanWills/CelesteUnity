@@ -8,7 +8,7 @@ namespace Celeste.Events
 	public class UIntValueChangedUnityEvent : ValueChangedUnityEvent<uint> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(UIntValueChangedEvent), menuName = "Celeste/Events/Numeric/UInt Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(UIntValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Numeric/UInt Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class UIntValueChangedEvent : ParameterisedValueChangedEvent<uint>
 	{
 	}

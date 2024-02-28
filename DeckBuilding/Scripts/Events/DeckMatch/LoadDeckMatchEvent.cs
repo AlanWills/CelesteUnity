@@ -26,6 +26,6 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public class LoadDeckMatchUnityEvent : UnityEvent<LoadDeckMatchArgs> { }
 
-    [CreateAssetMenu(fileName = nameof(LoadDeckMatchEvent), menuName = "Celeste/Events/Deck Building/Load Deck Match Event")]
+    [CreateAssetMenu(fileName = nameof(LoadDeckMatchEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Deck Building/Load Deck Match Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class LoadDeckMatchEvent : ParameterisedEvent<LoadDeckMatchArgs> { }
 }

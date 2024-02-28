@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
-    [CreateAssetMenu(fileName = nameof(AvailableResources), menuName = "Celeste/Deck Building/Available Resources")]
+    [CreateAssetMenu(fileName = nameof(AvailableResources), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Available Resources", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class AvailableResources : ScriptableObject
     {
         #region Properties and Fields

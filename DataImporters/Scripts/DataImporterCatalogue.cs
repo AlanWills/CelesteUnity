@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.DataImporters
 {
-    [CreateAssetMenu(fileName = nameof(DataImporterCatalogue), menuName = "Celeste/Data Importers/Data Importer Catalogue")]
+    [CreateAssetMenu(
+        fileName = nameof(DataImporterCatalogue), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Data Importer Catalogue",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class DataImporterCatalogue : ArrayScriptableObject<DataImporter>
     {
         public IEnumerator ImportAll(

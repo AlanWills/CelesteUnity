@@ -10,7 +10,7 @@ namespace Celeste.Persistence.Snapshots
     // This can be useful when baking save files into a game - the individual files can be organised in the file system
     // and then this snapshot will reference their locations and write their data at runtime.
     // Different snapshots can also reference the same file, allowing efficiencies with overall snapshot file sizes.
-    [CreateAssetMenu(fileName = nameof(FileSnapshot), menuName = "Celeste/Persistence/Snapshots/File Snapshot")]
+    [CreateAssetMenu(fileName = nameof(FileSnapshot), order = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM + "Snapshots/File Snapshot")]
     public class FileSnapshot : Snapshot
     {
         #region Utility Classes

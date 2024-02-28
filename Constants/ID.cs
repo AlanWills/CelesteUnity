@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Celeste.Constants
 {
-    [CreateAssetMenu(fileName = nameof(ID), menuName = "Celeste/Constants/ID")]
+    [CreateAssetMenu(
+        fileName = nameof(ID), 
+        menuName = CelesteMenuItemConstants.CONSTANTS_MENU_ITEM + "ID",
+        order = CelesteMenuItemConstants.CONSTANTS_MENU_ITEM_PRIORITY)]
     public class ID : ScriptableObject, IEquatable<ID>, IEquatable<int>
     {
         public bool Equals(ID other)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation.Settings
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationSettingsUsingAddressables), menuName = "Celeste/Localisation/Localisation Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(LocalisationSettingsUsingAddressables), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Settings Using Addressables", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationSettingsUsingAddressables : LocalisationSettings
     {
         #region Properties and Fields

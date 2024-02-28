@@ -21,7 +21,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         }
     }
 
-    [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), menuName = "Celeste/Twine/Parser Steps/Try Create Set Parameter Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateSetParameterNode), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Set Parameter Node")]
     public class TryCreateSetParameterNode : TwineNodeParserStep, IUsesKeys
     {
         #region Properties and Fields

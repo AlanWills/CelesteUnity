@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 namespace Celeste.Tilemaps
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "New Complex Animated Tile", menuName = "Celeste/Tiles/Complex Animated Tile")]
+    [CreateAssetMenu(fileName = "New Complex Animated Tile", order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Complex Animated Tile")]
     public class ComplexAnimatedTile : TileBase
     {
         protected class ComplexAnimatedTileInstance

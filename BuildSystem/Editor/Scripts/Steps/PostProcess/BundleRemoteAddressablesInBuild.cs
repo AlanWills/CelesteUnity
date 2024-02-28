@@ -1,4 +1,5 @@
-﻿using Celeste.BuildSystem;
+﻿using Celeste;
+using Celeste.BuildSystem;
 using CelesteEditor.Assets.Schemas;
 using CelesteEditor.Tools;
 using System.Collections.Generic;
@@ -9,7 +10,10 @@ using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Steps
 {
-    [CreateAssetMenu(fileName = nameof(BundleRemoteAddressablesInBuild), menuName = "Celeste/Build System/Asset Post Process/Bundle Remote Addressables In Build")]
+    [CreateAssetMenu(
+        fileName = nameof(BundleRemoteAddressablesInBuild), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Asset Post Process/Bundle Remote Addressables In Build",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class BundleRemoteAddressablesInBuild : AssetPostProcessStep
     {
         #region Properties and Fields

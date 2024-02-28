@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.UI.Popups
 {
-    [CreateAssetMenu(fileName = nameof(PopupRecord), menuName = "Celeste/UI/Popups/Popup Record")]
+    [CreateAssetMenu(fileName = nameof(PopupRecord), order = CelesteMenuItemConstants.UI_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.UI_MENU_ITEM + "Popups/Popup Record")]
     public class PopupRecord : ScriptableObject
     {
         #region Structs

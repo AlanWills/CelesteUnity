@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps
 {
-    [CreateAssetMenu(fileName = nameof(LiveOpsRecord), menuName = "Celeste/Live Ops/Live Ops Record")]
+    [CreateAssetMenu(fileName = nameof(LiveOpsRecord), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Live Ops Record", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class LiveOpsRecord : ScriptableObject
     {
         #region Properties and Fields

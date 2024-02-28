@@ -1,5 +1,4 @@
-﻿using Celeste.Events;
-using Celeste.UI;
+﻿using Celeste.UI;
 using Celeste.UI.Events;
 using System;
 using UnityEngine;

@@ -12,7 +12,8 @@
         "Celeste.Scene",
         "Celeste.Memory",
         "Celeste.Tools",
-        "Celeste.Localisation"
+        "Celeste.Localisation",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

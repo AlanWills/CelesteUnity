@@ -10,6 +10,7 @@
         "Celeste.Assets",
         "Celeste.Assets.UnityAssetReferences",
         "Celeste.Events",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

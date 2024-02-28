@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace Celeste.CloudSave
 {
-    [CreateAssetMenu(fileName = nameof(InitializeCloudSaveLoadJob), menuName = "Celeste/Cloud Save/Loading/Initialize Cloud Save")]
+    [CreateAssetMenu(
+        fileName = nameof(InitializeCloudSaveLoadJob), 
+        menuName = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM + "Loading/Initialize Cloud Save",
+        order = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM_PRIORITY)]
     public class InitializeCloudSaveLoadJob : LoadJob
     {
         #region Properties and Fields

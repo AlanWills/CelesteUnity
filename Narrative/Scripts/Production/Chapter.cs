@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    [CreateAssetMenu(fileName = "Chapter", menuName = "Celeste/Narrative/Production/Chapter")]
+    [CreateAssetMenu(fileName = "Chapter", menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Production/Chapter", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class Chapter : ScriptableObject
     {
         #region Properties and Fields

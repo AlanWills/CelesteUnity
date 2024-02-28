@@ -6,7 +6,8 @@
         "Celeste.Parameters",
         "Celeste.Events",
         "Celeste.Objects",
-        "Celeste.Debug"
+        "Celeste.Debug",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

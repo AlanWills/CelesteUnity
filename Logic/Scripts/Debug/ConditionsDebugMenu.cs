@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Logic.Debug
 {
-    [CreateAssetMenu(fileName = nameof(ConditionsDebugMenu), menuName = "Celeste/Logic/Debug/Conditions Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(ConditionsDebugMenu), menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Debug/Conditions Debug Menu", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     public class ConditionsDebugMenu : DebugMenu
     {
         #region Properties and Fields

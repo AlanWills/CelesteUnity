@@ -55,7 +55,7 @@ namespace Celeste.Events
     public class ShowTooltipUnityEvent : UnityEvent<TooltipArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(ShowTooltipEvent), menuName = "Celeste/Events/UI/Show Tooltip Event")]
+    [CreateAssetMenu(fileName = nameof(ShowTooltipEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "UI/Show Tooltip Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class ShowTooltipEvent : ParameterisedEvent<TooltipArgs> 
     {
     }

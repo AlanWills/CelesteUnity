@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Core
 {
-    [CreateAssetMenu(fileName = nameof(Timer), menuName = "Celeste/Time/Timer")]
+    [CreateAssetMenu(fileName = nameof(Timer), menuName = CelesteMenuItemConstants.CORE_MENU_ITEM + "Timer", order = CelesteMenuItemConstants.CORE_MENU_ITEM_PRIORITY)]
     public class Timer : ScriptableObject
     {
         #region Properties and Fields

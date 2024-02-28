@@ -27,7 +27,7 @@ namespace Celeste.Wallet.Events
     public class CurrencyChangedUnityEvent : UnityEvent<CurrencyChangedArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(CurrencyChangedEvent), menuName = "Celeste/Events/Wallet/Currency Changed Event")]
+    [CreateAssetMenu(fileName = nameof(CurrencyChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Wallet/Currency Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class CurrencyChangedEvent : ParameterisedEvent<CurrencyChangedArgs>
     {
     }

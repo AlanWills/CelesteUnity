@@ -2,13 +2,15 @@
 using Celeste.Scene.Events;
 using Celeste.Tools.Settings;
 using UnityEngine;
+using Celeste;
+
 #if UNITY_EDITOR
 using CelesteEditor.Tools;
 #endif
 
 namespace CelesteEditor.Scene.Settings
 {
-    [CreateAssetMenu(fileName = nameof(SceneEditorSettings), menuName = "Celeste/Scene/Scene Editor Settings")]
+    [CreateAssetMenu(fileName = nameof(SceneEditorSettings), order = CelesteMenuItemConstants.SCENE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SCENE_MENU_ITEM + "Scene Editor Settings")]
     public class SceneEditorSettings : EditorSettings<SceneEditorSettings>
     {
         #region Properties and Fields

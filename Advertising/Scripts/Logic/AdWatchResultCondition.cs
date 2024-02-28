@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = nameof(AdWatchResultCondition), menuName = "Celeste/Advertising/Logic/Ad Watch Result Condition")]
+    [CreateAssetMenu(
+        fileName = nameof(AdWatchResultCondition), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Logic/Ad Watch Result Condition",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class AdWatchResultCondition : Condition
     {
         #region Properties and Fields

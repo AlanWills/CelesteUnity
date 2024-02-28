@@ -11,7 +11,7 @@ namespace Celeste.Log.DataStructures
         public string callstack;
     }
 
-    [CreateAssetMenu(fileName = nameof(HudLogMessageList), menuName = "Celeste/Log/Hud Log Message List")]
+    [CreateAssetMenu(fileName = nameof(HudLogMessageList), menuName = CelesteMenuItemConstants.LOG_MENU_ITEM + "Hud Log Message List", order = CelesteMenuItemConstants.LOG_MENU_ITEM_PRIORITY)]
     public class HudLogMessageList : ListScriptableObject<HudLogMessage>
     {
     }

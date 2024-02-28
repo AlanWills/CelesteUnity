@@ -15,6 +15,7 @@
         "Celeste.Coroutines",
         "Celeste.OdinSerializer",
         "Celeste.Web",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],

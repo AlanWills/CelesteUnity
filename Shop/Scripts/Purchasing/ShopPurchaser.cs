@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Shop.Purchasing
 {
-    [CreateAssetMenu(fileName = nameof(ShopPurchaser), menuName = "Celeste/Shop/Shop Purchaser")]
+    [CreateAssetMenu(fileName = nameof(ShopPurchaser), order = CelesteMenuItemConstants.SHOP_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SHOP_MENU_ITEM + "Shop Purchaser")]
     public class ShopPurchaser : ScriptableObject
     {
         public void Purchase(ShopItem shopItem)

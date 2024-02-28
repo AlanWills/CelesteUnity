@@ -17,7 +17,7 @@ namespace Celeste.DeckBuilding.Events
 	public class DrawCardsFromDeckUnityEvent : UnityEvent<DrawCardsFromDeckArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(DrawCardsFromDeckEvent), menuName = "Celeste/Events/Deck Building/Draw Cards From Deck")]
+	[CreateAssetMenu(fileName = nameof(DrawCardsFromDeckEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Deck Building/Draw Cards From Deck", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class DrawCardsFromDeckEvent : ParameterisedEvent<DrawCardsFromDeckArgs>
 	{
 	}

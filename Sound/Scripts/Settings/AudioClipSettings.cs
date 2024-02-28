@@ -2,7 +2,7 @@
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(AudioClipSettings), menuName = "Celeste/Sound/Audio Clip Settings")]
+    [CreateAssetMenu(fileName = nameof(AudioClipSettings), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "Audio Clip Settings")]
     public class AudioClipSettings : ScriptableObject
     {
         #region Properties and Fields

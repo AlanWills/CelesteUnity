@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Logic.Settings
 {
-    [CreateAssetMenu(fileName = nameof(ConditionSettingsUsingBakedAssets), menuName = "Celeste/Logic/Settings/Baked Assets")]
+    [CreateAssetMenu(fileName = nameof(ConditionSettingsUsingBakedAssets), menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Settings/Baked Assets", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     public class ConditionSettingsUsingBakedAssets : ConditionSettings
     {
         #region Properties and Fields

@@ -9,7 +9,7 @@ namespace Celeste.Persistence.Snapshots
     // A more heavyweight snapshot where all data is embedded and baked into this snapshot.
     // This is simpler to use out of the box as all data is contained within it, but could represent a larger overall size.
     // Generally though, this is the more recommended approach, especially when delivering save data over the air.
-    [CreateAssetMenu(fileName = nameof(DataSnapshot), menuName = "Celeste/Persistence/Snapshots/Data Snapshot")]
+    [CreateAssetMenu(fileName = nameof(DataSnapshot), order = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.PERSISTENCE_MENU_ITEM + "Snapshots/Data Snapshot")]
     public class DataSnapshot : Snapshot
     {
         #region Utility Classes

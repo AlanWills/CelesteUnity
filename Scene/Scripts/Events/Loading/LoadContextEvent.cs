@@ -34,6 +34,6 @@ namespace Celeste.Scene.Events
     public class LoadContextUnityEvent : UnityEvent<LoadContextArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "LoadContextEvent", menuName = "Celeste/Events/Loading/Load Context Event")]
+    [CreateAssetMenu(fileName = "LoadContextEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Loading/Load Context Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class LoadContextEvent : ParameterisedEvent<LoadContextArgs> { }
 }

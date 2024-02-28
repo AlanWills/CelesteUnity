@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Inventory.Settings
 {
-    [CreateAssetMenu(fileName = nameof(InventorySettingsUsingAddressables), menuName = "Celeste/Inventory/Inventory Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(InventorySettingsUsingAddressables), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Inventory Settings Using Addressables", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
     public class InventorySettingsUsingAddressables : InventorySettings
     {
         #region Properties and Fields

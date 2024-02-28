@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Features.Debug
 {
-    [CreateAssetMenu(fileName = nameof(FeatureDebugMenu), menuName = "Celeste/Features/Debug/Feature Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(FeatureDebugMenu), menuName = CelesteMenuItemConstants.FEATURES_MENU_ITEM + "Debug/Feature Debug Menu", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class FeatureDebugMenu : DebugMenu
     {
         #region Properties and Fields

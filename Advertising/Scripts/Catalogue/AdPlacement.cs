@@ -28,7 +28,10 @@ namespace Celeste.Advertising
         Unknown,
     }
 
-    [CreateAssetMenu(fileName = nameof(AdPlacement), menuName = "Celeste/Advertising/Ad Placement")]
+    [CreateAssetMenu(
+        fileName = nameof(AdPlacement), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Ad Placement",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class AdPlacement : ScriptableObject
     {
         #region Properties and Fields

@@ -12,7 +12,8 @@
         "Celeste.Assets",
         "Celeste.Coroutines",
         "Celeste.Parameters",
-        "Celeste.BuildSystem"
+        "Celeste.BuildSystem",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

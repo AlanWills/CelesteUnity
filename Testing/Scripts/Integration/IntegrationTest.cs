@@ -26,7 +26,7 @@ namespace Celeste.Testing
         Assertion = 1 << 4
     }
 
-    [CreateAssetMenu(fileName = "IntegrationTest", menuName = "Celeste/Testing/Integration Test")]
+    [CreateAssetMenu(fileName = "IntegrationTest", order = CelesteMenuItemConstants.TESTING_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TESTING_MENU_ITEM + "Integration Test")]
     public class IntegrationTest : ScriptableObject
     {
         #region Properties and Fields

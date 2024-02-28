@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Twine
 {
-    [CreateAssetMenu(fileName = nameof(TwineRecord), menuName = "Celeste/Twine/Twine Record")]
+    [CreateAssetMenu(fileName = nameof(TwineRecord), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Twine Record")]
     public class TwineRecord : ScriptableObject
     {
         #region Properties and Fields

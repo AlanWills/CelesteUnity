@@ -2,7 +2,7 @@
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(BoolReference), menuName = "Celeste/Parameters/Bool/Bool Reference")]
+    [CreateAssetMenu(fileName = nameof(BoolReference), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Bool/Bool Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class BoolReference : ParameterReference<bool, BoolValue, BoolReference>
     {
         #region Operators

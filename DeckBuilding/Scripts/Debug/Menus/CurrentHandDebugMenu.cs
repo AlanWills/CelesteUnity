@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Debug
 {
-    [CreateAssetMenu(fileName = nameof(CurrentHandDebugMenu), menuName = "Celeste/Deck Building/Debug/Current Hand Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(CurrentHandDebugMenu), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Debug/Current Hand Debug Menu", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class CurrentHandDebugMenu : DebugMenu
     {
         #region Properties and Fields

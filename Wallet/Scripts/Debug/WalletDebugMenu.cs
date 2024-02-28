@@ -5,7 +5,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Wallet.Debug
 {
-    [CreateAssetMenu(fileName = nameof(WalletDebugMenu), menuName = "Celeste/Wallet/Debug/Wallet Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(WalletDebugMenu), order = CelesteMenuItemConstants.WALLET_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.WALLET_MENU_ITEM + "Debug/Wallet Debug Menu")]
     public class WalletDebugMenu : DebugMenu
     {
         #region Properties and Fields

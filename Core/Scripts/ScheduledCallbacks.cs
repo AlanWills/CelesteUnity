@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.Core
 {
-    [CreateAssetMenu(fileName = nameof(ScheduledCallbacks), menuName = "Celeste/Core/Scheduled Callbacks")]
+    [CreateAssetMenu(
+        fileName = nameof(ScheduledCallbacks), 
+        menuName = CelesteMenuItemConstants.CORE_MENU_ITEM + "Scheduled Callbacks",
+        order = CelesteMenuItemConstants.CORE_MENU_ITEM_PRIORITY)]
     public class ScheduledCallbacks : ScriptableObject
     {
         #region Properties and Fields

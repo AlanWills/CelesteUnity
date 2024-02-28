@@ -6,7 +6,10 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Match
 {
-    [CreateAssetMenu(fileName = nameof(DeckMatch), menuName = "Celeste/Deck Building/Match/Deck Match")]
+    [CreateAssetMenu(
+        fileName = nameof(DeckMatch), 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Match/Deck Match",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class DeckMatch : ScriptableObject
     {
         #region Properties and Fields

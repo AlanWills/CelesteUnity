@@ -2,7 +2,7 @@
 
 namespace Celeste.Localisation
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationKey), menuName = "Celeste/Localisation/Localisation Key")]
+    [CreateAssetMenu(fileName = nameof(LocalisationKey), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Key", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationKey : ScriptableObject
     {
         #region Properties and Fields

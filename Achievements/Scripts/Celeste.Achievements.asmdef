@@ -12,6 +12,7 @@
         "RecyclableScrollRect",
         "Celeste.Tools",
         "Celeste.Parameters",
+        "Celeste.UnityProject",
         "Unity.TextMeshPro",
         "Celeste.Debug"
     ],

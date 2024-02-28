@@ -12,6 +12,7 @@
         "Celeste.FSM",
         "Celeste.FSM.Nodes",
         "Celeste.Assets",
+        "Celeste.UnityProject",
         "RecyclableScrollRect",
         "Unity.TextMeshPro",
         "Unity.Addressables",

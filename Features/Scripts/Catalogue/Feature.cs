@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Features
 {
-    [CreateAssetMenu(fileName = nameof(Feature), menuName = "Celeste/Features/Feature")]
+    [CreateAssetMenu(fileName = nameof(Feature), menuName = CelesteMenuItemConstants.FEATURES_MENU_ITEM + "Feature", order = CelesteMenuItemConstants.FEATURES_MENU_ITEM_PRIORITY)]
     public class Feature : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

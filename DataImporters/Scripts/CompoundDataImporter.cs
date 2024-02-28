@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.DataImporters
 {
-    [CreateAssetMenu(fileName = nameof(CompoundDataImporter), menuName = "Celeste/Data Importers/Compound Data Importer")]
+    [CreateAssetMenu(
+        fileName = nameof(CompoundDataImporter), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Compound Data Importer",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class CompoundDataImporter : DataImporter
     {
         #region Properties and Fields

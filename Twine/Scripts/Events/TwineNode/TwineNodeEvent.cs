@@ -9,7 +9,7 @@ namespace Celeste.Events
     public class TwineNodeUnityEvent : UnityEvent<TwineNode> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(TwineNodeEvent), menuName = "Celeste/Events/Twine/Twine Node Event")]
+    [CreateAssetMenu(fileName = nameof(TwineNodeEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Twine/Twine Node Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class TwineNodeEvent : ParameterisedEvent<TwineNode>
     {
     }

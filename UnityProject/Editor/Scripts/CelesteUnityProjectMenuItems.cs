@@ -31,6 +31,12 @@ namespace CelesteEditor.UnityProject
             PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
         }
 
+        [MenuItem("Celeste/Tools/Generate Menu Items")]
+        public static void GenerateMenuItemsMenuItem()
+        {
+            GenerateMenuItems.Execute();
+        }
+
         [MenuItem("Assets/Embed Package", false, 1000000)]
         private static void EmbedPackageMenuItem()
         {

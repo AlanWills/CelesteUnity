@@ -14,7 +14,7 @@ namespace Celeste.UI.Events
 	public class ShowOverlayEventUnity : UnityEvent<IOverlayArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(ShowOverlayEvent), menuName = "Celeste/Events/UI/Show Overlay Event")]
+	[CreateAssetMenu(fileName = nameof(ShowOverlayEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "UI/Show Overlay Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class ShowOverlayEvent : ParameterisedEvent<IOverlayArgs> { }
 	
 	[Serializable]

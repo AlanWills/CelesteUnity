@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 namespace Celeste.Tilemaps.WaveFunctionCollapse
 {
-    [CreateAssetMenu(fileName = "TilemapSolver", menuName = "Celeste/Tilemaps/Wave Function Collapse/Tilemap Solver")]
+    [CreateAssetMenu(fileName = "TilemapSolver", order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Wave Function Collapse/Tilemap Solver")]
     public class TilemapSolver : ScriptableObject
     {
         #region Properties and Fields

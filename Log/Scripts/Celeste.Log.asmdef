@@ -6,6 +6,7 @@
         "Celeste.Debug",
         "Celeste.Memory",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

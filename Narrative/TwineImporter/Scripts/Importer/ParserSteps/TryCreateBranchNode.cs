@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = nameof(TryCreateBranchNode), menuName = "Celeste/Twine/Parser Steps/Try Create Branch Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateBranchNode), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Branch Node")]
     public class TryCreateBranchNode : TwineNodeParserStep, IUsesTags
     {
         #region Properties and Fields

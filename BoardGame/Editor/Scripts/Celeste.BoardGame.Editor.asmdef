@@ -5,6 +5,7 @@
         "Celeste.BoardGame",
         "Celeste.Components",
         "Celeste.Events",
+        "Celeste.UnityProject",
         "Celeste.Components.Editor",
         "Celeste.Tools.Editor",
         "Celeste.DataStructures.Editor",

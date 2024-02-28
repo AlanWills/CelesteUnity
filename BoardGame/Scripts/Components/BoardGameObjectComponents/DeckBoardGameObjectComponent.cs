@@ -12,7 +12,10 @@ using UnityEngine;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Deck")]
-    [CreateAssetMenu(fileName = nameof(DeckBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Deck")]
+    [CreateAssetMenu(
+        fileName = nameof(DeckBoardGameObjectComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Object Components/Deck",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class DeckBoardGameObjectComponent : BoardGameObjectComponent
     {
         #region Save Data

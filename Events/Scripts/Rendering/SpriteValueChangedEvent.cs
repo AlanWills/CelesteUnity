@@ -8,7 +8,7 @@ namespace Celeste.Events
 	public class SpriteValueChangedUnityEvent : ValueChangedUnityEvent<Sprite> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(SpriteValueChangedEvent), menuName = "Celeste/Events/Rendering/Sprite Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(SpriteValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Rendering/Sprite Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class SpriteValueChangedEvent : ParameterisedValueChangedEvent<Sprite>
 	{
 	}

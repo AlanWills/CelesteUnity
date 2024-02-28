@@ -6,7 +6,10 @@ using UnityEngine;
 namespace Celeste.Advertising.Nodes.Conditions
 {
     [DisplayName("Ad Placement Loaded")]
-    [CreateAssetMenu(fileName = nameof(AdPlacementLoadedCondition), menuName = "Celeste/Advertising/Logic/Ad Placement Loaded Condition")]
+    [CreateAssetMenu(
+        fileName = nameof(AdPlacementLoadedCondition), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Logic/Ad Placement Loaded Condition",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class AdPlacementLoadedCondition : Condition
     {
         #region Properties and Fields

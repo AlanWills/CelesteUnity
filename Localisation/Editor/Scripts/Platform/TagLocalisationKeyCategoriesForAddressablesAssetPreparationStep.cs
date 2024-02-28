@@ -1,11 +1,12 @@
-﻿using Celeste.Localisation;
+﻿using Celeste;
+using Celeste.Localisation;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.Tools;
 using UnityEngine;
 
 namespace CelesteEditor.Localisation.Platform
 {
-    [CreateAssetMenu(fileName = nameof(TagLocalisationKeyCategoriesForAddressablesAssetPreparationStep), menuName = "Celeste/Localisation/Asset Preparation/Tag Localisation Key Categories For Addressables")]
+    [CreateAssetMenu(fileName = nameof(TagLocalisationKeyCategoriesForAddressablesAssetPreparationStep), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Asset Preparation/Tag Localisation Key Categories For Addressables", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class TagLocalisationKeyCategoriesForAddressablesAssetPreparationStep : AssetPreparationStep
     {
         [SerializeField] private string group;

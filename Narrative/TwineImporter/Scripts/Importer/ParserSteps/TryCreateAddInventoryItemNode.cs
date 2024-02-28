@@ -27,7 +27,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
     #endregion
 
 
-    [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), menuName = "Celeste/Twine/Parser Steps/Try Create Add Inventory Item Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreateAddInventoryItemNode), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Add Inventory Item Node")]
     public class TryCreateAddInventoryItemNode : TwineNodeParserStep, IUsesKeys
     {
         #region Properties and Fields

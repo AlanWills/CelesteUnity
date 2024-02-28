@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.Debug
 {
-    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettingsDebugMenu), menuName = "Celeste/Twine/Debug/Twine Story Importer Settings Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettingsDebugMenu), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Debug/Twine Story Importer Settings Debug Menu")]
     public class TwineStoryImporterSettingsDebugMenu : DebugMenu, IHasAssets
     {
         #region Properties and Fields

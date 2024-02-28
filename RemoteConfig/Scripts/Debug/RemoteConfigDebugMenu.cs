@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.RemoteConfig.Debug
 {
-    [CreateAssetMenu(fileName = nameof(RemoteConfigDebugMenu), menuName = "Celeste/Remote Config/Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(RemoteConfigDebugMenu), order = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM + "Debug Menu")]
     public class RemoteConfigDebugMenu : DebugMenu
     {
         #region Properties and Fields

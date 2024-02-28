@@ -4,7 +4,7 @@ using Celeste.Notifications.Objects;
 
 namespace Celeste.Notifications.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(NotificationCatalogue), menuName = "Celeste/Notifications/Notification Catalogue")]
+    [CreateAssetMenu(fileName = nameof(NotificationCatalogue), menuName = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM + "Notification Catalogue", order = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM_PRIORITY)]
     public class NotificationCatalogue : ListScriptableObject<Notification>
     {
     }

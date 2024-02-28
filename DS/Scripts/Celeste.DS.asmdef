@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.DS",
     "references": [
         "XNode",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

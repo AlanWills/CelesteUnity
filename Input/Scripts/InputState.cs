@@ -25,7 +25,7 @@ namespace Celeste.Input
         Right,
     }
 
-    [CreateAssetMenu(fileName = nameof(InputState), menuName = "Celeste/Input/Input State")]
+    [CreateAssetMenu(fileName = nameof(InputState), menuName = CelesteMenuItemConstants.INPUT_MENU_ITEM + "Input State", order = CelesteMenuItemConstants.INPUT_MENU_ITEM_PRIORITY)]
     public class InputState : ScriptableObject
     {
         #region Properties and Fields

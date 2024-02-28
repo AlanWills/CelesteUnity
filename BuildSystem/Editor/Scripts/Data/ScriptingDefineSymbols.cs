@@ -1,10 +1,14 @@
-﻿using Celeste.Objects;
+﻿using Celeste;
+using Celeste.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Data
 {
-    [CreateAssetMenu(fileName = nameof(ScriptingDefineSymbols), menuName = "Celeste/Build System/Scripting Define Symbols")]
+    [CreateAssetMenu(
+        fileName = nameof(ScriptingDefineSymbols), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Scripting Define Symbols",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class ScriptingDefineSymbols : ListScriptableObject<string>
     {
         public string[] ToArray()

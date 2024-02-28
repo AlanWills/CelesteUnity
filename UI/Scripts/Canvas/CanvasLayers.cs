@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.UI
 {
-    [CreateAssetMenu(fileName = nameof(CanvasLayers), menuName = "Celeste/UI/Canvas/Canvas Layers")]
+    [CreateAssetMenu(fileName = nameof(CanvasLayers), order = CelesteMenuItemConstants.UI_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.UI_MENU_ITEM + "Canvas/Canvas Layers")]
     public class CanvasLayers : ListScriptableObject<CanvasLayer>
     {
         #region Properties and Fields

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation
 {
-    [CreateAssetMenu(fileName = nameof(EnglishNumberToLocalisedTextConverter), menuName = "Celeste/Localisation/Number To Text/English")]
+    [CreateAssetMenu(fileName = nameof(EnglishNumberToLocalisedTextConverter), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Number To Text/English", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class EnglishNumberToLocalisedTextConverter : NumberToLocalisedTextConverter
     {
         #region Properties and Fields

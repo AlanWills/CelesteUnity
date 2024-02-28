@@ -9,7 +9,7 @@ namespace Celeste.Events
     public class TilemapUnityEvent : UnityEvent<Tilemap> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(TilemapEvent), menuName = "Celeste/Events/Tilemap/Tilemap Event")]
+    [CreateAssetMenu(fileName = nameof(TilemapEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Tilemap/Tilemap Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class TilemapEvent : ParameterisedEvent<Tilemap>
     {
     }

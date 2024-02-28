@@ -9,7 +9,7 @@ using UnityEngine.Tilemaps;
 
 namespace Celeste.Tilemaps.WaveFunctionCollapse
 {
-    [CreateAssetMenu(fileName = "TileDescription", menuName = "Celeste/Tilemaps/Wave Function Collapse/Tile Description")]
+    [CreateAssetMenu(fileName = "TileDescription", order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Wave Function Collapse/Tile Description")]
     public class TileDescription : ScriptableObject
     {
         #region Serialized Fields

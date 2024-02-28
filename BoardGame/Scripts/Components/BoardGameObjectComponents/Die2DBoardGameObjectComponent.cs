@@ -13,7 +13,10 @@ using UnityEngine.Events;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("2D Die")]
-    [CreateAssetMenu(fileName = nameof(Die2DBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Die 2D")]
+    [CreateAssetMenu(
+        fileName = nameof(Die2DBoardGameObjectComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Object Components/Die 2D",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class Die2DBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectDie2D, IBoardGameObjectTooltip
     {
         #region Save Data

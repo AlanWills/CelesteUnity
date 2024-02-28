@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(MusicSettingsUsingAssets), menuName = "Celeste/Sound/Music Settings Using Assets")]
+    [CreateAssetMenu(fileName = nameof(MusicSettingsUsingAssets), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "Music Settings Using Assets")]
     public class MusicSettingsUsingAssets : MusicSettings
     {
         #region Properties and Fields

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "AudioClipReference", menuName = "Celeste/Parameters/Audio/AudioClip Reference")]
+    [CreateAssetMenu(fileName = "AudioClipReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Audio/AudioClip Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class AudioClipReference : ParameterReference<AudioClip, AudioClipValue, AudioClipReference>
     {
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Results
 {
-    [CreateAssetMenu(fileName = nameof(SelectedActorsDefeated), menuName = "Celeste/Deck Building/Results/Selected Actors Defeated")]
+    [CreateAssetMenu(fileName = nameof(SelectedActorsDefeated), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Results/Selected Actors Defeated", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class SelectedActorsDefeated : LoseCondition
     {
         #region Properties and Fields

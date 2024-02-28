@@ -7,7 +7,7 @@ using Component = Celeste.Components.Component;
 
 namespace Celeste.LiveOps
 {
-    [CreateAssetMenu(fileName = nameof(LiveOpTemplate), menuName = "Celeste/Live Ops/Live Op Template")]
+    [CreateAssetMenu(fileName = nameof(LiveOpTemplate), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Live Op Template", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class LiveOpTemplate : ScriptableObject
     {
         #region Properties and Fields

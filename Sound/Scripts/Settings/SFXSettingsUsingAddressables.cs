@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Sound.Settings
 {
-    [CreateAssetMenu(fileName = nameof(SFXSettingsUsingAddressables), menuName = "Celeste/Sound/SFX Settings Using Addressables")]
+    [CreateAssetMenu(fileName = nameof(SFXSettingsUsingAddressables), order = CelesteMenuItemConstants.SOUND_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SOUND_MENU_ITEM + "SFX Settings Using Addressables")]
     public class SFXSettingsUsingAddressables : SFXSettings
     {
         #region Properties and Fields

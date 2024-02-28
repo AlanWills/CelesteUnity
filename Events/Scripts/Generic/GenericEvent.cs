@@ -10,7 +10,7 @@ namespace Celeste.Events
 	public class GenericUnityEvent : UnityEvent<IEventArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(GenericEvent), menuName = "Celeste/Events/Generic/Generic Event")]
+	[CreateAssetMenu(fileName = nameof(GenericEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Generic/Generic Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class GenericEvent : ParameterisedEvent<IEventArgs> { }
 	
 	[Serializable]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation
 {
-    [CreateAssetMenu(fileName = nameof(LocalisationKeyCategory), menuName = "Celeste/Localisation/Localisation Key Category")]
+    [CreateAssetMenu(fileName = nameof(LocalisationKeyCategory), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Localisation Key Category", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LocalisationKeyCategory : ScriptableObject
     {
         #region Properties and Fields

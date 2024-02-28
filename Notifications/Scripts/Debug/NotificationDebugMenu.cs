@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Notifications.Debug
 {
-    [CreateAssetMenu(fileName = nameof(NotificationDebugMenu), menuName = "Celeste/Notifications/Debug/Notification Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(NotificationDebugMenu), menuName = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM + "Debug/Notification Debug Menu", order = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM_PRIORITY)]
     public class NotificationDebugMenu : DebugMenu
     {
         #region Properties and Fields

@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.Web",
     "references": [
         "Celeste.DataStructures",
-        "Celeste.DataImporters"
+        "Celeste.DataImporters",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

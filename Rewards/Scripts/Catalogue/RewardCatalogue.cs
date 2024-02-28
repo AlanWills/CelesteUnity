@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Rewards.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(RewardCatalogue), menuName = "Celeste/Rewards/Reward Catalogue")]
+    [CreateAssetMenu(fileName = nameof(RewardCatalogue), order = CelesteMenuItemConstants.REWARDS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REWARDS_MENU_ITEM + "Reward Catalogue")]
     public class RewardCatalogue : ListScriptableObject<Reward>
     {
         public Reward FindByGuid(int guid)

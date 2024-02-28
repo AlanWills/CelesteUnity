@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = "InVector3IntArrayCondition", menuName = "Celeste/Logic/In Vector3 Int Array Condition")]
+    [CreateAssetMenu(fileName = "InVector3IntArrayCondition", menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "In Vector3 Int Array Condition", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     [DisplayName("In Vector3 Int Array")]
     public class InVector3IntArrayCondition : Condition
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Twine.UI
 {
-    [CreateAssetMenu(fileName = nameof(FollowLinkUISettings), menuName = "Celeste/Twine/UI/Follow Link UI Settings")]
+    [CreateAssetMenu(fileName = nameof(FollowLinkUISettings), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "UI/Follow Link UI Settings")]
     public class FollowLinkUISettings : ScriptableObject
     {
         [Header("Validation")]

@@ -1,9 +1,13 @@
-﻿using UnityEditor;
+﻿using Celeste;
+using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = nameof(WebGLSettings), menuName = "Celeste/Build System/WebGL Settings")]
+    [CreateAssetMenu(
+        fileName = nameof(WebGLSettings), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "WebGL Settings",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class WebGLSettings : PlatformSettings
     {
         #region Properties and Fields

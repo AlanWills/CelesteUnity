@@ -14,7 +14,7 @@ namespace Celeste.Narrative.Events
     public class NarrativeRuntimeUnityEvent : UnityEvent<NarrativeRuntime> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "NarrativeRuntimeEvent", menuName = "Celeste/Events/Narrative/Narrative Runtime Event")]
+    [CreateAssetMenu(fileName = "NarrativeRuntimeEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Narrative/Narrative Runtime Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class NarrativeRuntimeEvent : ParameterisedEvent<NarrativeRuntime>
     {
     }

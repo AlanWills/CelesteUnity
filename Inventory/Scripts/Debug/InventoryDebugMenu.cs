@@ -7,7 +7,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Inventory.Debug
 {
-    [CreateAssetMenu(fileName = nameof(InventoryDebugMenu), menuName = "Celeste/Inventory/Debug/Inventory Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(InventoryDebugMenu), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Debug/Inventory Debug Menu", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
     public class InventoryDebugMenu : DebugMenu, IHasAssets
     {
         #region Properties and Fields

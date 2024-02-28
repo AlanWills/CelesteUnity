@@ -1,12 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
 namespace Celeste.BT
 {
-    [CreateAssetMenu(fileName = "BTGraph", menuName = "Celeste/BT/BT Graph")]
+    [CreateAssetMenu(
+        fileName = "BTGraph", 
+        menuName = CelesteMenuItemConstants.BT_MENU_ITEM + "BT Graph",
+        order = CelesteMenuItemConstants.BT_MENU_ITEM_PRIORITY)]
     public class BTGraph : NodeGraph
     {
         #region Properties and Fields

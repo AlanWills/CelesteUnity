@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 namespace Celeste.Tilemaps
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "New Simple Animated Tile", menuName = "Celeste/Tiles/Simple Animated Tile")]
+    [CreateAssetMenu(fileName = "New Simple Animated Tile", order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Simple Animated Tile")]
     public class SimpleAnimatedTile : TileBase
     {
         public Sprite[] animatedSprites;

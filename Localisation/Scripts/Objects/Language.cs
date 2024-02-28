@@ -9,7 +9,7 @@ using static Celeste.Localisation.Language;
 
 namespace Celeste.Localisation
 {
-    [CreateAssetMenu(fileName = nameof(Language), menuName = "Celeste/Localisation/Language")]
+    [CreateAssetMenu(fileName = nameof(Language), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Language", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class Language : SerializedScriptableObject
     {
         #region LocalisationEntry

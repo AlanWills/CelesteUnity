@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Celeste.LocationServices
 {
-    [CreateAssetMenu(fileName = nameof(LocationServicesDebugMenu), menuName = "Celeste/Location Services/Location Services Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(LocationServicesDebugMenu), menuName = CelesteMenuItemConstants.LOCATIONSERVICES_MENU_ITEM + "Location Services Debug Menu", order = CelesteMenuItemConstants.LOCATIONSERVICES_MENU_ITEM_PRIORITY)]
     public class LocationServicesDebugMenu : DebugMenu
     {
         #region Properties and Fields

@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 namespace Celeste.Tilemaps
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "New Rotating Tile", menuName = "Celeste/Tiles/Rotating Tile")]
+    [CreateAssetMenu(fileName = "New Rotating Tile", order = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TILEMAPS_MENU_ITEM + "Rotating Tile")]
     public class RotatingTile : TileBase
     {
         protected class RotatingTileInstance

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Options
 {
-    [CreateAssetMenu(fileName = nameof(OptionsRecord), menuName = "Celeste/Options/Record")]
+    [CreateAssetMenu(fileName = nameof(OptionsRecord), menuName = CelesteMenuItemConstants.OPTIONS_MENU_ITEM + "Record", order = CelesteMenuItemConstants.OPTIONS_MENU_ITEM_PRIORITY)]
     public class OptionsRecord : ScriptableObject
     {
         #region Properties and Fields

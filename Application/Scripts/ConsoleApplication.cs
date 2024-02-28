@@ -1,14 +1,13 @@
 ﻿using Celeste.Debug.Commands;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Application
 {
-    [CreateAssetMenu(menuName = "Celeste/Application/Debug/Console Application")]
+    [CreateAssetMenu(
+        menuName = CelesteMenuItemConstants.APPLICATION_MENU_ITEM + "Debug/Console Application",
+        order = CelesteMenuItemConstants.APPLICATION_MENU_ITEM_PRIORITY)]
     public class ConsoleApplication : DebugCommand
     {
         public override bool Execute(List<string> parameters, StringBuilder output)

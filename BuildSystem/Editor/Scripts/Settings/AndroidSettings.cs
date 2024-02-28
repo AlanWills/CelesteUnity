@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Celeste;
+using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem
 {
-    [CreateAssetMenu(fileName = "AndroidSettings", menuName = "Celeste/Build System/Android Settings")]
+    [CreateAssetMenu(
+        fileName = "AndroidSettings", 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Android Settings",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class AndroidSettings : PlatformSettings
     {
         #region Properties and Fields

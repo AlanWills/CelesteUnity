@@ -7,7 +7,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Log
 {
-    [CreateAssetMenu(fileName = nameof(HudLogDebugMenu), menuName = "Celeste/Log/Debug/Hud Log Debug Menu")]
+    [CreateAssetMenu(fileName = nameof(HudLogDebugMenu), menuName = CelesteMenuItemConstants.LOG_MENU_ITEM + "Debug/Hud Log Debug Menu", order = CelesteMenuItemConstants.LOG_MENU_ITEM_PRIORITY)]
     public class HudLogDebugMenu : DebugMenu
     {
         #region Properties and Fields

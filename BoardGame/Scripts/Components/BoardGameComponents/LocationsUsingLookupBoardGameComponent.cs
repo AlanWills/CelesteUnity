@@ -6,7 +6,10 @@ using UnityEngine;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Locations Using Lookup")]
-    [CreateAssetMenu(fileName = nameof(LocationsUsingLookupBoardGameComponent), menuName = "Celeste/Board Game/Board Game Components/Locations Using Lookup")]
+    [CreateAssetMenu(
+        fileName = nameof(LocationsUsingLookupBoardGameComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Components/Locations Using Lookup",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class LocationsUsingLookupBoardGameComponent : BoardGameComponent, IBoardGameLocations
     {
         #region Properties and Fields

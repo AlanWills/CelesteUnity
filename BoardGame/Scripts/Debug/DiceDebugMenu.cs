@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Celeste.BoardGame.Debug
 {
-    [CreateAssetMenu(fileName = nameof(DiceDebugMenu), menuName = "Celeste/Board Game/Debug/Dice Debug Menu")]
+    [CreateAssetMenu(
+        fileName = nameof(DiceDebugMenu), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Debug/Dice Debug Menu",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class DiceDebugMenu : DebugMenu
     {
         #region Properties and Fields

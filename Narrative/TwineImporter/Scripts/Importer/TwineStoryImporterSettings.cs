@@ -8,7 +8,7 @@ using Celeste.Twine;
 
 namespace Celeste.Narrative.TwineImporter
 {
-    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettings), menuName = "Celeste/Twine/Twine Story Importer Settings")]
+    [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettings), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Twine Story Importer Settings")]
     public class TwineStoryImporterSettings : ScriptableObject
     {
         #region Properties and Fields

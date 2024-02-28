@@ -10,7 +10,7 @@ namespace Celeste.Rewards.Events
 	public class RewardUnityEvent : UnityEvent<Reward> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(RewardEvent), menuName = "Celeste/Events/Rewards/Reward Event")]
+	[CreateAssetMenu(fileName = nameof(RewardEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Rewards/Reward Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class RewardEvent : ParameterisedEvent<Reward> { }
 	
 	[Serializable]

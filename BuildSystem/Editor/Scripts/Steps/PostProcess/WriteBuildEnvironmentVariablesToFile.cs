@@ -1,4 +1,5 @@
-﻿using Celeste.Tools.Attributes.GUI;
+﻿using Celeste;
+using Celeste.Tools.Attributes.GUI;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -7,7 +8,10 @@ using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Steps
 {
-    [CreateAssetMenu(fileName = nameof(WriteBuildEnvironmentVariablesToFile), menuName = "Celeste/Build System/Build Post Process/Write Build Environment Variables To File")]
+    [CreateAssetMenu(
+        fileName = nameof(WriteBuildEnvironmentVariablesToFile), 
+        menuName = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM + "Build Post Process/Write Build Environment Variables To File",
+        order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class WriteBuildEnvironmentVariablesToFile : BuildPostProcessStep
     {
         #region Properties and Fields

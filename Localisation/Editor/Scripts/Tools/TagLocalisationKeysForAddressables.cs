@@ -1,11 +1,15 @@
-﻿using Celeste.DataImporters.ImportSteps;
+﻿using Celeste;
+using Celeste.DataImporters.ImportSteps;
 using Celeste.Localisation.Catalogue;
 using CelesteEditor.Tools;
 using UnityEngine;
 
 namespace CelesteEditor.Localisation.Tools
 {
-    [CreateAssetMenu(fileName = nameof(TagLocalisationKeysForAddressables), menuName = "Celeste/Data Importers/Tag Localisation Keys For Addressables")]
+    [CreateAssetMenu(
+        fileName = nameof(TagLocalisationKeysForAddressables), 
+        menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Tag Localisation Keys For Addressables",
+        order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
     public class TagLocalisationKeysForAddressables : ImportStep
     {
         #region Properties and Fields

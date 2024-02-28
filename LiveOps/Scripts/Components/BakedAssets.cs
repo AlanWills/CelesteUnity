@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps.Components
 {
-    [CreateAssetMenu(fileName = nameof(BakedAssets), menuName = "Celeste/Live Ops/Assets/Baked")]
+    [CreateAssetMenu(fileName = nameof(BakedAssets), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Assets/Baked", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class BakedAssets : Celeste.Components.Component, ILiveOpAssets
     {
         #region Baked Asset

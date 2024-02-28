@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = nameof(CompoundCondition), menuName = "Celeste/Logic/Compound Condition")]
+    [CreateAssetMenu(fileName = nameof(CompoundCondition), menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Compound Condition", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     [DisplayName("Compound")]
     public class CompoundCondition : Condition
     {

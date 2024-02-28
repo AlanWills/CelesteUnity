@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace Celeste.Achievements.Logic
 {
-    [CreateAssetMenu(fileName = nameof(AchievementsStateCondition), menuName = "Celeste/Achievements/Logic/Achievements State Condition")]
+    [CreateAssetMenu(
+        fileName = nameof(AchievementsStateCondition), 
+        menuName = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM + "Logic/Achievements State Condition", 
+        order = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM_PRIORITY)]
     public class AchievementsStateCondition : Condition
     {
         #region Properties and Fields

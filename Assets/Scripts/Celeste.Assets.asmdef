@@ -5,7 +5,8 @@
         "Unity.ResourceManager",
         "Unity.Addressables",
         "Celeste.Debug",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

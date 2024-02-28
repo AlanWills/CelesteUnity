@@ -12,7 +12,8 @@
         "Celeste.FullSerializer",
         "Celeste.Events",
         "Celeste.Debug",
-        "Celeste.Loading"
+        "Celeste.Loading",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

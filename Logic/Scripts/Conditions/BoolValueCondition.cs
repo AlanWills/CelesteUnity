@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Logic
 {
-    [CreateAssetMenu(fileName = "BoolValueCondition", menuName = "Celeste/Logic/Bool Value Condition")]
+    [CreateAssetMenu(fileName = "BoolValueCondition", menuName = CelesteMenuItemConstants.LOGIC_MENU_ITEM + "Bool Value Condition", order = CelesteMenuItemConstants.LOGIC_MENU_ITEM_PRIORITY)]
     [DisplayName("Bool")]
     public class BoolValueCondition : ParameterizedValueCondition<bool, BoolValue, BoolReference>
     {

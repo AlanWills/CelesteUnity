@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = nameof(UIntValue), menuName = "Celeste/Parameters/Numeric/UInt Value")]
+    [CreateAssetMenu(fileName = nameof(UIntValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/UInt Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class UIntValue : ParameterValue<uint, UIntValueChangedEvent>
     {
         #region Operators

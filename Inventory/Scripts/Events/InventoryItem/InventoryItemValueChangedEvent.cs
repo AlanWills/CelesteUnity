@@ -9,7 +9,7 @@ namespace Celeste.Events
 	public class InventoryItemValueChangedUnityEvent : ValueChangedUnityEvent<InventoryItem> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(InventoryItemValueChangedEvent), menuName = "Celeste/Events/InventoryItem/Inventory Item Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(InventoryItemValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "InventoryItem/Inventory Item Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class InventoryItemValueChangedEvent : ParameterisedValueChangedEvent<InventoryItem>
 	{
 	}

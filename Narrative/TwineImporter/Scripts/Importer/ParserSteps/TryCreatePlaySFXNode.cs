@@ -25,7 +25,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
     #endregion
 
-    [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), menuName = "Celeste/Twine/Parser Steps/Try Create Play SFX Node")]
+    [CreateAssetMenu(fileName = nameof(TryCreatePlaySFXNode), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Play SFX Node")]
     public class TryCreatePlaySFXNode : TwineNodeParserStep, IUsesKeys
     {
         #region Properties and Fields

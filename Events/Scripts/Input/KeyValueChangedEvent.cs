@@ -9,7 +9,7 @@ namespace Celeste.Events
 	public class KeyValueChangedUnityEvent : ValueChangedUnityEvent<Key> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(KeyValueChangedEvent), menuName = "Celeste/Events/Input/Key Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(KeyValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Input/Key Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class KeyValueChangedEvent : ParameterisedValueChangedEvent<Key>
 	{
 	}

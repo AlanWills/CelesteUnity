@@ -2,6 +2,7 @@
     "name": "Celeste.Events",
     "rootNamespace": "Celeste.Events",
     "references": [
+        "Celeste.UnityProject",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

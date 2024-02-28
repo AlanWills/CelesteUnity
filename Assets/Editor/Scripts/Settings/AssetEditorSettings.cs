@@ -1,9 +1,13 @@
-﻿using Celeste.Tools.Settings;
+﻿using Celeste;
+using Celeste.Tools.Settings;
 using UnityEngine;
 
 namespace CelesteEditor.Assets
 {
-    [CreateAssetMenu(fileName = nameof(AssetEditorSettings), menuName = "Celeste/Assets/Asset Editor Settings")]
+    [CreateAssetMenu(
+        fileName = nameof(AssetEditorSettings), 
+        menuName = CelesteMenuItemConstants.ASSETS_MENU_ITEM + "Asset Editor Settings",
+        order = CelesteMenuItemConstants.ASSETS_MENU_ITEM_PRIORITY)]
     public class AssetEditorSettings : EditorSettings<AssetEditorSettings>
     {
         #region Properties and Fields

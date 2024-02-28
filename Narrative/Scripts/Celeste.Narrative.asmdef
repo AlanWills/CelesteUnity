@@ -21,6 +21,7 @@
         "Celeste.Twine",
         "Celeste.Assets",
         "Celeste.Input",
+        "Celeste.UnityProject",
         "XNode.Extensions",
         "Unity.Addressables",
         "Unity.ResourceManager"

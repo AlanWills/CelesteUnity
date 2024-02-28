@@ -3,7 +3,10 @@ using UnityEngine;
 
 namespace Celeste.Debug.Menus
 {
-    [CreateAssetMenu(fileName = nameof(DebugMenus), menuName = "Celeste/Debug/Debug Menus")]
+    [CreateAssetMenu(
+        fileName = nameof(DebugMenus), 
+        menuName = CelesteMenuItemConstants.DEBUG_MENU_ITEM + "Debug Menus", 
+        order = CelesteMenuItemConstants.DEBUG_MENU_ITEM_PRIORITY)]
     public class DebugMenus : ListScriptableObject<DebugMenu>
     {
         #region Properties and Fields

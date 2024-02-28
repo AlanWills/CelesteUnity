@@ -3,6 +3,7 @@
     "rootNamespace": "Celeste.LocationServices",
     "references": [
         "Celeste.Debug",
+        "Celeste.UnityProject",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

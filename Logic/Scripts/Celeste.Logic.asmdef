@@ -8,7 +8,8 @@
         "Celeste.DataStructures",
         "Celeste.Events",
         "Celeste.Debug",
-        "Celeste.Tools"
+        "Celeste.Tools",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

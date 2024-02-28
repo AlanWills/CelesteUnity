@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding
 {
-    [CreateAssetMenu(fileName = nameof(CurrentHand), menuName = "Celeste/Deck Building/Current Hand")]
+    [CreateAssetMenu(fileName = nameof(CurrentHand), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Current Hand", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class CurrentHand : ScriptableObject
     {
         #region Properties and Fields

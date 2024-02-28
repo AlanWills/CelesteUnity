@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
-    [CreateAssetMenu(fileName = nameof(DeckBuildingRecord), menuName = "Celeste/Deck Building/Deck Building Record")]
+    [CreateAssetMenu(fileName = nameof(DeckBuildingRecord), menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Deck Building Record", order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class DeckBuildingRecord : ScriptableObject
     {
         #region Properties and Fields

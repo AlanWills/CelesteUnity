@@ -26,7 +26,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
     #endregion
 
-    [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", menuName = "Celeste/Twine/Parser Steps/Try Create Set Background Node")]
+    [CreateAssetMenu(fileName = "TryCreateSetBackgroundNode", order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Create Set Background Node")]
     public class TryCreateSetBackgroundNode : TwineNodeParserStep, IUsesKeys
     {
         #region Properties and Fields

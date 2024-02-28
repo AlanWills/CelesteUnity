@@ -12,6 +12,7 @@
         "Celeste.Parameters",
         "Celeste.Objects",
         "Celeste.OdinSerializer",
+        "Celeste.UnityProject",
         "Celeste.Parameters.Editor",
         "Celeste.BuildSystem.Editor"
     ],

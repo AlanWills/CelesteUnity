@@ -7,7 +7,10 @@ using UnityEngine.Advertisements;
 
 namespace Celeste.Advertising.Impls
 {
-    [CreateAssetMenu(fileName = nameof(UnityAdProvider), menuName = "Celeste/Advertising/Providers/Unity Ad Provider")]
+    [CreateAssetMenu(
+        fileName = nameof(UnityAdProvider), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Providers/Unity Ad Provider",
+        order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
     public class UnityAdProvider : ScriptableObject, IAdProvider
 #if UNITY_ADS
         , IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener

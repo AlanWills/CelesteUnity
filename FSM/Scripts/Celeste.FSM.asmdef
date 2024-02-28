@@ -6,6 +6,7 @@
         "Celeste.Objects",
         "Celeste.Events",
         "Celeste.Parameters",
+        "Celeste.UnityProject",
         "XNode.Extensions"
     ],
     "includePlatforms": [],

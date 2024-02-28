@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(MultiLoadJob), menuName = "Celeste/Loading/Load Jobs/Multi")]
+    [CreateAssetMenu(fileName = nameof(MultiLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Multi", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class MultiLoadJob : LoadJob
     {
         #region Builder

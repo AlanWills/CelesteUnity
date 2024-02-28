@@ -28,7 +28,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
     #endregion
 
-    [CreateAssetMenu(fileName = "TryAddCharacterInfo", menuName = "Celeste/Twine/Parser Steps/Try Add Character Info")]
+    [CreateAssetMenu(fileName = "TryAddCharacterInfo", order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Try Add Character Info")]
     public class TryAddCharacterInfo : TwineNodeParserStep, IUsesTags, IUsesKeys
     {
         #region Properties and Fields

@@ -9,6 +9,6 @@ namespace Celeste.Events
     public class UISkinUnityEvent : UnityEvent<UISkin> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(UISkinEvent), menuName = "Celeste/Events/UI/UI Skin Event")]
+    [CreateAssetMenu(fileName = nameof(UISkinEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "UI/UI Skin Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class UISkinEvent : ParameterisedEvent<UISkin> { }
 }

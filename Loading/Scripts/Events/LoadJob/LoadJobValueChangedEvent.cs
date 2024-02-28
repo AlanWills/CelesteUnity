@@ -9,7 +9,7 @@ namespace Celeste.Events
 	public class LoadJobValueChangedUnityEvent : ValueChangedUnityEvent<LoadJob> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(LoadJobValueChangedEvent), menuName = "Celeste/Events/Loading/Load Job Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(LoadJobValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Loading/Load Job Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class LoadJobValueChangedEvent : ParameterisedValueChangedEvent<LoadJob>
 	{
 	}

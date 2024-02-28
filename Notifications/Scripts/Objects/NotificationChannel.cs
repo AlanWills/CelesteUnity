@@ -14,7 +14,7 @@ namespace Celeste.Notifications.Objects
         High = 4
     }
 
-    [CreateAssetMenu(fileName = nameof(NotificationChannel), menuName = "Celeste/Notifications/Notification Channel")]
+    [CreateAssetMenu(fileName = nameof(NotificationChannel), menuName = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM + "Notification Channel", order = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM_PRIORITY)]
     public class NotificationChannel : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

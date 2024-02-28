@@ -10,7 +10,8 @@
         "Celeste.Debug",
         "Celeste.Tools",
         "Celeste.Logic",
-        "Celeste.RemoteConfig"
+        "Celeste.RemoteConfig",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

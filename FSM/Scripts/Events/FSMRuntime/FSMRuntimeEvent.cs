@@ -13,7 +13,7 @@ namespace Celeste.Events
     public class FSMRuntimeUnityEvent : UnityEvent<FSMRuntime> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = "FSMRuntimeEvent", menuName = "Celeste/Events/FSM/FSM Runtime Event")]
+    [CreateAssetMenu(fileName = "FSMRuntimeEvent", menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "FSM/FSM Runtime Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class FSMRuntimeEvent : ParameterisedEvent<FSMRuntime>
     {
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Inventory
 {
-    [CreateAssetMenu(fileName = nameof(InventoryItemCatalogue), menuName = "Celeste/Inventory/Inventory Item Catalogue")]
+    [CreateAssetMenu(fileName = nameof(InventoryItemCatalogue), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Inventory Item Catalogue", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
     public class InventoryItemCatalogue : ArrayScriptableObject<InventoryItem>
     {
         public InventoryItem[] startingItems;

@@ -12,7 +12,10 @@ namespace Celeste.CloudSave
         Disabled,
     }
 
-    [CreateAssetMenu(fileName = nameof(CloudSaveRecord), menuName = "Celeste/Cloud Save/Cloud Save Record")]
+    [CreateAssetMenu(
+        fileName = nameof(CloudSaveRecord), 
+        menuName = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM + "Cloud Save Record",
+        order = CelesteMenuItemConstants.CLOUDSAVE_MENU_ITEM_PRIORITY)]
     public class CloudSaveRecord : ScriptableObject
     {
         #region Properties and Fields

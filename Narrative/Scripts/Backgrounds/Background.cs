@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.Backgrounds
 {
-    [CreateAssetMenu(fileName = nameof(Background), menuName = "Celeste/Narrative/Backgrounds/Background")]
+    [CreateAssetMenu(fileName = nameof(Background), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Backgrounds/Background", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class Background : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.LiveOps
 {
-    [CreateAssetMenu(fileName = nameof(WidgetFromPrefabAsset), menuName = "Celeste/Live Ops/Widget/From Prefab Asset")]
+    [CreateAssetMenu(fileName = nameof(WidgetFromPrefabAsset), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Widget/From Prefab Asset", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
     public class WidgetFromPrefabAsset : Celeste.Components.Component, ILiveOpWidget
     {
         #region Save Data

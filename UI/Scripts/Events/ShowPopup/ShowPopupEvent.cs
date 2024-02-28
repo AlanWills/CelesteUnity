@@ -13,7 +13,7 @@ namespace Celeste.Events
     public class ShowPopupUnityEvent : UnityEvent<IPopupArgs> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(ShowPopupEvent), menuName = "Celeste/Events/UI/Show Popup Event")]
+    [CreateAssetMenu(fileName = nameof(ShowPopupEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "UI/Show Popup Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class ShowPopupEvent : ParameterisedEvent<IPopupArgs> 
     {
         public void InvokeNoArgs()

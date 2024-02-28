@@ -10,6 +10,7 @@
         "Celeste.FSM.Nodes",
         "Celeste.FSM.Nodes.Editor",
         "Celeste.Tools",
+        "Celeste.UnityProject",
         "Celeste.Tools.Editor",
         "XNode",
         "XNodeEditor"

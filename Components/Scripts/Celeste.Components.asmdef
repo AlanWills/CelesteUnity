@@ -5,7 +5,8 @@
         "Celeste.Objects",
         "Celeste.Tools",
         "Celeste.OdinSerializer",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

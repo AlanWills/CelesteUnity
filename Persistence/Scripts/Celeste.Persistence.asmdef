@@ -9,6 +9,7 @@
         "Celeste.FullSerializer",
         "Celeste.Debug",
         "Celeste.DataStructures",
+        "Celeste.UnityProject",
         "NativeShare.Runtime"
     ],
     "includePlatforms": [],

@@ -19,7 +19,7 @@ namespace Celeste.BoardGame.Events
 	public class MoveBoardGameObjectUnityEvent : UnityEvent<MoveBoardGameObjectArgs> { }
 	
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(MoveBoardGameObjectEvent), menuName = "Celeste/Events/Board Game/Move Board Game Object Event")]
+	[CreateAssetMenu(fileName = nameof(MoveBoardGameObjectEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Board Game/Move Board Game Object Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class MoveBoardGameObjectEvent : ParameterisedEvent<MoveBoardGameObjectArgs> { }
 	
 	[Serializable]

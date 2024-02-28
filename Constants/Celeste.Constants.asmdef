@@ -3,7 +3,8 @@
     "rootNamespace": "Celeste.Constants",
     "references": 
     [
-        "Celeste.Events"
+        "Celeste.Events",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

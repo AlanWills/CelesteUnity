@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    [CreateAssetMenu(fileName = nameof(NarrativeRecord), menuName = "Celeste/Narrative/Narrative Record")]
+    [CreateAssetMenu(fileName = nameof(NarrativeRecord), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Narrative Record", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class NarrativeRecord : ScriptableObject
     {
         #region Properties and Fields

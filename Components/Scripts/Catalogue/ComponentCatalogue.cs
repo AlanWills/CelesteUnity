@@ -32,6 +32,9 @@ namespace Celeste.Components.Catalogue
         }
     }
 
-    [CreateAssetMenu(fileName = nameof(ComponentCatalogue), menuName = "Celeste/Components/Component Catalogue")]
+    [CreateAssetMenu(
+        fileName = nameof(ComponentCatalogue), 
+        menuName = CelesteMenuItemConstants.COMPONENTS_MENU_ITEM + "Component Catalogue",
+        order = CelesteMenuItemConstants.COMPONENTS_MENU_ITEM_PRIORITY)]
     public class ComponentCatalogue : ComponentCatalogue<Component> { }
 }

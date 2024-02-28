@@ -8,7 +8,7 @@ namespace Celeste.Events
     public class TouchUnityEvent : UnityEvent<UnityEngine.InputSystem.EnhancedTouch.Touch> { }
 
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(TouchEvent), menuName = "Celeste/Events/Input/Touch Event")]
+    [CreateAssetMenu(fileName = nameof(TouchEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Input/Touch Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class TouchEvent : ParameterisedEvent<UnityEngine.InputSystem.EnhancedTouch.Touch>
     {
     }

@@ -9,7 +9,7 @@ namespace Celeste.Events
 	public class BackgroundValueChangedUnityEvent : ValueChangedUnityEvent<Background> { }
 
 	[Serializable]
-	[CreateAssetMenu(fileName = nameof(BackgroundValueChangedEvent), menuName = "Celeste/Events/Narrative/Background Value Changed Event")]
+	[CreateAssetMenu(fileName = nameof(BackgroundValueChangedEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Narrative/Background Value Changed Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
 	public class BackgroundValueChangedEvent : ParameterisedValueChangedEvent<Background>
 	{
 	}

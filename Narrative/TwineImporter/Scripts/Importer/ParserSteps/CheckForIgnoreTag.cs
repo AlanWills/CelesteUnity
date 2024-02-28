@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.ParserSteps
 {
-    [CreateAssetMenu(fileName = "CheckForIgnoreTag", menuName = "Celeste/Twine/Parser Steps/Check For Ignore Tag")]
+    [CreateAssetMenu(fileName = "CheckForIgnoreTag", order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Parser Steps/Check For Ignore Tag")]
     public class CheckForIgnoreTag : TwineNodeParserStep
     {
         #region Analyse

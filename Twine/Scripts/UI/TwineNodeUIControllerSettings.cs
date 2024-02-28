@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Twine.UI
 {
-    [CreateAssetMenu(fileName = nameof(TwineNodeUIControllerSettings), menuName = "Celeste/Twine/UI/Twine Node UI Controller Settings")]
+    [CreateAssetMenu(fileName = nameof(TwineNodeUIControllerSettings), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "UI/Twine Node UI Controller Settings")]
     public class TwineNodeUIControllerSettings : ScriptableObject
     {
         [Header("Validation")]

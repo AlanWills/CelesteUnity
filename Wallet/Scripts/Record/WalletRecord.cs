@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Celeste.Wallet
 {
-    [CreateAssetMenu(fileName = nameof(WalletRecord), menuName = "Celeste/Wallet/Wallet Record")]
+    [CreateAssetMenu(fileName = nameof(WalletRecord), order = CelesteMenuItemConstants.WALLET_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.WALLET_MENU_ITEM + "Wallet Record")]
     public class WalletRecord : ScriptableObject
     {
         #region Properties and Fields

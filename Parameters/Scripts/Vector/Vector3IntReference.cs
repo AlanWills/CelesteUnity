@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "Vector3IntReference", menuName = "Celeste/Parameters/Vector/Vector3Int Reference")]
+    [CreateAssetMenu(fileName = "Vector3IntReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Vector/Vector3Int Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class Vector3IntReference : ParameterReference<Vector3Int, Vector3IntValue, Vector3IntReference>
     {
         #region Operators

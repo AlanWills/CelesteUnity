@@ -14,7 +14,10 @@ namespace Celeste.Achievements.Objects
         public int collectedAchievements;
     }
     
-    [CreateAssetMenu(fileName = nameof(AchievementRecord), menuName = "Celeste/Achievements/Achievement Record")]
+    [CreateAssetMenu(
+        fileName = nameof(AchievementRecord), 
+        menuName = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM + "Achievement Record", 
+        order = CelesteMenuItemConstants.ACHIEVEMENTS_MENU_ITEM_PRIORITY)]
     public class AchievementRecord : ScriptableObject
     {
         #region Properties and Fields

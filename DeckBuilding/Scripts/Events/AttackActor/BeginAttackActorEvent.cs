@@ -16,6 +16,6 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public class BeginAttackActorUnityEvent : UnityEvent<BeginAttackActorArgs> { }
 
-    [CreateAssetMenu(fileName = nameof(BeginAttackActorEvent), menuName = "Celeste/Events/Deck Building/Begin Attack Actor")]
+    [CreateAssetMenu(fileName = nameof(BeginAttackActorEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Deck Building/Begin Attack Actor", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class BeginAttackActorEvent : ParameterisedEvent<BeginAttackActorArgs> { }
 }

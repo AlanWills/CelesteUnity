@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Celeste.Parameters
 {
-    [CreateAssetMenu(fileName = "UIntReference", menuName = "Celeste/Parameters/Numeric/UInt Reference")]
+    [CreateAssetMenu(fileName = "UIntReference", menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/UInt Reference", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class UIntReference : ParameterReference<uint, UIntValue, UIntReference>
     {
         #region Operators

@@ -12,7 +12,10 @@ using UnityEngine.Events;
 
 namespace Celeste.DeckBuilding.Decks
 {
-    [CreateAssetMenu(fileName = nameof(Deck), menuName = "Celeste/Deck Building/Deck")]
+    [CreateAssetMenu(
+        fileName = nameof(Deck), 
+        menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Deck",
+        order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
     public class Deck : ScriptableObject, IIntGuid
     {
         #region Properties and Fields

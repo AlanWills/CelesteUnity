@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celeste.Localisation.Catalogue
 {
-    [CreateAssetMenu(fileName = nameof(LanguageCatalogue), menuName = "Celeste/Localisation/Language Catalogue")]
+    [CreateAssetMenu(fileName = nameof(LanguageCatalogue), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Language Catalogue", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class LanguageCatalogue : ArrayScriptableObject<Language>
     {
         public Language FindLanguageForTwoLetterCountryCode(string countryCode)

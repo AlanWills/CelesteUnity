@@ -7,7 +7,10 @@ using UnityEngine;
 namespace Celeste.BoardGame.Components
 {
     [DisplayName("Tooltip")]
-    [CreateAssetMenu(fileName = nameof(TooltipBoardGameObjectComponent), menuName = "Celeste/Board Game/Board Game Object Components/Tooltip")]
+    [CreateAssetMenu(
+        fileName = nameof(TooltipBoardGameObjectComponent), 
+        menuName = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM + "Board Game Object Components/Tooltip",
+        order = CelesteMenuItemConstants.BOARDGAME_MENU_ITEM_PRIORITY)]
     public class TooltipBoardGameObjectComponent : BoardGameObjectComponent, IBoardGameObjectTooltip
     {
         #region Properties and Fields

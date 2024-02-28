@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Celeste.Loading
 {
-    [CreateAssetMenu(fileName = nameof(LoadContentCatalogueLoadJob), menuName = "Celeste/Loading/Load Jobs/Load Content Catalogue")]
+    [CreateAssetMenu(fileName = nameof(LoadContentCatalogueLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Load Content Catalogue", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class LoadContentCatalogueLoadJob : LoadJob
     {
         #region Properties and Fields
