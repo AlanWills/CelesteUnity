@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using XNode;
 
 namespace Celeste.FSM
@@ -9,9 +10,10 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
-        public FSMNodeUnityEvent OnNodeEnter { get; } = new FSMNodeUnityEvent();
-        public FSMNodeUnityEvent OnNodeUpdate { get; } = new FSMNodeUnityEvent();
-        public FSMNodeUnityEvent OnNodeExit { get; } = new FSMNodeUnityEvent();
+        public FSMNodeUnityEvent OnNodeEnter => onNodeEnter;
+        public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
+        public FSMNodeUnityEvent OnNodeExit => onNodeExit;
+        public UnityEvent OnFinished => onFinished;
 
         public ILinearRuntimeRecord Record { get; } = new FSMRecord();
 
@@ -25,17 +27,22 @@ namespace Celeste.FSM
             set { startNode = value; }
         }
 
-        [SerializeField]
-        private bool lateUpdate = false;
+        [SerializeField] private bool startAutomatically = true;
+        [SerializeField] private bool lateUpdate = false;
+        [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
+        [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
+        [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
+        [SerializeField] private UnityEvent onFinished = new UnityEvent();
 
         private FSMRuntimeEngine runtimeEngine;
 
         #endregion
 
-        #region Unity Methods
-
-        private void Start()
+        public void StartFSM()
         {
+            CurrentNode = null;
+            enabled = true;
+
             if (graph != null)
             {
                 graph.Runtime = this;
@@ -44,21 +51,45 @@ namespace Celeste.FSM
                 runtimeEngine.Start(StartNode);
             }
 
-            if (CurrentNode != null)
+            if (CurrentNode == null)
             {
-                Debug.Log($"Spooling up FSM {graph.name} with starting node {CurrentNode.name}");
+                StopFSM();
             }
-            else 
+        }
+
+        public void StopFSM()
+        {
+            enabled = false;
+            runtimeEngine = null;
+            CurrentNode = null;
+        }
+
+        private void UpdateFSM()
+        {
+            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
             {
-                enabled = false;
+                OnFinished.Invoke();
+                StopFSM();
             }
+        }
+
+        #region Unity Methods
+
+        private void Start()
+        {
+            if (startAutomatically == false)
+            {
+                return;
+            }
+
+            StartFSM();
         }
 
         private void Update()
         {
             if (!lateUpdate)
             {
-                runtimeEngine.Update();
+                UpdateFSM();
             }
         }
 
@@ -66,7 +97,7 @@ namespace Celeste.FSM
         {
             if (lateUpdate)
             {
-                runtimeEngine.Update();
+                UpdateFSM();
             }
         }
 

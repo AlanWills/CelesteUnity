@@ -110,8 +110,8 @@ namespace Celeste.Narrative
         [HideIf(nameof(isLocalised)), TextRegion(2)] public string dialogue;
         [ShowIf(nameof(isLocalised)), LocalisationPreview] public LocalisationKey localisationKey;
         public bool isLocalised;
-        public DialogueType dialogueType;
-        [NodeEnum] public UIPosition uiPosition;
+        public DialogueType dialogueType = DialogueType.Speech;
+        [NodeEnum] public UIPosition uiPosition = UIPosition.Left;
         [HideInNodeEditor] public Object[] dialogueTokens;
         public Character character;
         [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;

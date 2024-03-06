@@ -29,6 +29,7 @@ namespace XNode {
         public virtual Node CopyNode(Node original) {
             Node.graphHotfix = this;
             Node node = ScriptableObject.Instantiate(original);
+            node.name = original.name;
             node.graph = this;
             node.ClearConnections();
             nodes.Add(node);

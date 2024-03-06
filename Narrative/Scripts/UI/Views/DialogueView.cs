@@ -1,6 +1,8 @@
 ﻿using Celeste.FSM;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +17,7 @@ namespace Celeste.Narrative.UI
         [SerializeField] private bool hasAnimator;
         [SerializeField, ShowIf(nameof(hasAnimator))] private Animator dialogueAnimator;
         [SerializeField] private DialogueTypeStyle[] dialogueTypeStyles;
+        [SerializeField] private List<UIPosition> supportedUIPositions = new List<UIPosition>();
 
         #endregion
 
@@ -33,6 +36,16 @@ namespace Celeste.Narrative.UI
                     new DialogueTypeStyle() { dialogueType = DialogueType.Action, format = "<b>{0}</b>" }
                 };
             }
+
+            if (supportedUIPositions == null || supportedUIPositions.Count == 0)
+            {
+                supportedUIPositions = supportedUIPositions ?? new List<UIPosition>();
+
+                foreach (var enumValue in Enum.GetValues(typeof(UIPosition)))
+                {
+                    supportedUIPositions.Add((UIPosition)enumValue);
+                }
+            }
         }
 
         #endregion
@@ -41,7 +54,9 @@ namespace Celeste.Narrative.UI
 
         public override bool IsValidForNode(FSMNode fsmNode)
         {
-            return fsmNode is IDialogueNode && !string.IsNullOrEmpty((fsmNode as IDialogueNode).Dialogue);
+            return fsmNode is IDialogueNode && 
+                !string.IsNullOrEmpty((fsmNode as IDialogueNode).Dialogue) &&
+                supportedUIPositions.Contains((fsmNode as IDialogueNode).UIPosition);
         }
 
         public override void OnNodeEnter(FSMNode fsmNode)

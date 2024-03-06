@@ -74,6 +74,7 @@ namespace Celeste.FSM
         public override void RemoveNode(Node node)
         {
             FSMNode fsmNode = node as FSMNode;
+            startNode = startNode == fsmNode ? null : startNode;
             fsmNode.RemoveFromGraph();
 
             base.RemoveNode(node);

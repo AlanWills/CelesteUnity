@@ -1,20 +1,30 @@
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Persistence
 {
     public static class PersistenceMenuItemUtility
     {
-        public static void OpenExplorerAt(string filePath)
+        public static void OpenWithDefaultApp(string filePath)
         {
             if (!Application.isBatchMode)
             {
-                System.Diagnostics.Process.Start("explorer.exe", filePath.Replace('/', '\\'));
+#if UNITY_EDITOR_WIN
+                filePath = filePath.Replace('/', '\\');
+#endif
+                EditorUtility.OpenWithDefaultApp(filePath);
             }
         }
 
         public static void OpenExplorerAtPersistentData()
         {
-            OpenExplorerAt(Application.persistentDataPath);
+            OpenWithDefaultApp(Application.persistentDataPath);
+        }
+
+        public static void OpenPersistentFile(string fileName)
+        {
+            OpenWithDefaultApp(Path.Combine(Application.persistentDataPath, fileName));
         }
     }
 }

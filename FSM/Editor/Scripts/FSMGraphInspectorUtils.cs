@@ -39,7 +39,8 @@ namespace CelesteEditor.FSM
                 {
                     foreach (var node in fsmGraph.nodes)
                     {
-                        graph.CopyNode(node);
+                        var copiedNode = graph.CopyNode(node);
+                        AssetDatabase.AddObjectToAsset(copiedNode, graph);
                         EditorUtility.SetDirty(graph);
                     }
                 }

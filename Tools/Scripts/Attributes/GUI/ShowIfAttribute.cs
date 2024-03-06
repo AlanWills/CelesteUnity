@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 #endif
 
@@ -19,11 +17,6 @@ namespace Celeste.Tools.Attributes.GUI
         public override bool IsVisible(SerializedProperty property)
         {
             return IsConditionallyEnabled(property);
-        }
-
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            return EditorGUI.GetPropertyHeight(property, label, true);
         }
 
         private bool IsConditionallyEnabled(SerializedProperty property)

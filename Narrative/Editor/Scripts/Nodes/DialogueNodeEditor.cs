@@ -1,7 +1,5 @@
 ﻿using Celeste.Narrative;
 using CelesteEditor.FSM.Nodes;
-using UnityEditor;
-using UnityEngine;
 
 namespace CelesteEditor.Narrative
 {

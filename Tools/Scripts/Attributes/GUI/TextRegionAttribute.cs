@@ -1,4 +1,10 @@
 using UnityEngine;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+using System;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,7 +35,8 @@ namespace Celeste.Tools.Attributes.GUI
 #if UNITY_EDITOR
         public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            float wrappedTextHeight = CelesteGUIStyles.WrappedTextArea.CalcSize(EditorGUIUtility.TrTempContent(property.stringValue)).y;
+            GUIContent tempContent = EditorGUIUtility.TrTempContent(property.stringValue);
+            float wrappedTextHeight = CelesteGUIStyles.WrappedTextArea.CalcSize(tempContent).y;
             return Mathf.Max(MinHeight, wrappedTextHeight);
         }
 
