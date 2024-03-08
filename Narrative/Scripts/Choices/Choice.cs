@@ -3,11 +3,6 @@ using Celeste.Logic;
 using Celeste.Objects;
 using Celeste.Tools.Attributes.GUI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Narrative.Choices

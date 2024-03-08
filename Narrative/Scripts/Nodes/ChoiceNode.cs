@@ -158,11 +158,16 @@ namespace Celeste.Narrative
 
             ChoiceNode choiceNode = original as ChoiceNode;
 
+            // The references to the original node's choice will have been copied so we have to clear them and re-add our clones
+            choices.Clear();
+
             for (int i = 0; i < choiceNode.NumChoices; ++i)
             {
                 Choice originalChoice = choiceNode.GetChoice(i);
-                Choice newChoice = AddChoice(originalChoice.name, originalChoice.GetType());
+                Choice newChoice = Instantiate(originalChoice);
+                newChoice.name = originalChoice.name;
                 newChoice.CopyFrom(originalChoice);
+                choices.Add(newChoice);
             }
         }
 

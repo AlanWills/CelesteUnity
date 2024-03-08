@@ -1,10 +1,4 @@
-﻿using Celeste.Objects;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using UnityEngine;
 
 namespace Celeste.Narrative.Choices
@@ -43,11 +37,15 @@ namespace Celeste.Narrative.Choices
 
         #endregion
 
-        public override void CopyFrom(Choice original)
+        private void OnValidate()
         {
-            base.CopyFrom(original);
-
-            displayText = (original as TextChoice).displayText;
+#if UNITY_EDITOR
+            if (string.IsNullOrEmpty(displayText))
+            {
+                displayText = ID;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+#endif
         }
     }
 }

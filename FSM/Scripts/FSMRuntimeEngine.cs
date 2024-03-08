@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using XNode;
+﻿using UnityEngine;
 
 namespace Celeste.FSM
 {
@@ -23,11 +21,11 @@ namespace Celeste.FSM
             }
         }
 
-        private ILinearRuntime<FSMNode> runtime;
+        private ILinearRuntime runtime;
 
         #endregion
 
-        public FSMRuntimeEngine(ILinearRuntime<FSMNode> runtime)
+        public FSMRuntimeEngine(ILinearRuntime runtime)
         {
             this.runtime = runtime;
         }

@@ -6,7 +6,7 @@ using XNode;
 namespace Celeste.FSM
 {
     [AddComponentMenu("Celeste/FSM/FSM Runtime")]
-    public class FSMRuntime : SceneGraph<FSMGraph>, ILinearRuntime<FSMNode>
+    public class FSMRuntime : SceneGraph<FSMGraph>, ILinearRuntime
     {
         #region Properties and Fields
 
@@ -27,18 +27,18 @@ namespace Celeste.FSM
             set { startNode = value; }
         }
 
-        [SerializeField] private bool startAutomatically = true;
-        [SerializeField] private bool lateUpdate = false;
         [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
         [SerializeField] private UnityEvent onFinished = new UnityEvent();
+        [SerializeField] private bool startAutomatically = true;
+        [SerializeField] private bool lateUpdate = false;
 
         private FSMRuntimeEngine runtimeEngine;
 
         #endregion
 
-        public void StartFSM()
+        public void Run()
         {
             CurrentNode = null;
             enabled = true;
@@ -53,11 +53,11 @@ namespace Celeste.FSM
 
             if (CurrentNode == null)
             {
-                StopFSM();
+                Stop();
             }
         }
 
-        public void StopFSM()
+        public void Stop()
         {
             enabled = false;
             runtimeEngine = null;
@@ -69,7 +69,7 @@ namespace Celeste.FSM
             if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
             {
                 OnFinished.Invoke();
-                StopFSM();
+                Stop();
             }
         }
 
@@ -82,7 +82,7 @@ namespace Celeste.FSM
                 return;
             }
 
-            StartFSM();
+            Run();
         }
 
         private void Update()

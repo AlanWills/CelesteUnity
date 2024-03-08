@@ -7,11 +7,11 @@ using XNode;
 namespace Celeste.Narrative
 {
     [AddComponentMenu("Celeste/Narrative/Narrative Runtime")]
-    public class NarrativeRuntime : SceneGraph<NarrativeGraph>, ILinearRuntime<FSMNode>
+    public class NarrativeRuntime : SceneGraph<NarrativeGraph>, ILinearRuntime
     {
         #region Properties and Fields
 
-        ILinearRuntimeRecord ILinearRuntime<FSMNode>.Record => Record;
+        ILinearRuntimeRecord ILinearRuntime.Record => Record;
 
         public FSMNodeUnityEvent OnNodeEnter => onNodeEnter;
         public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
@@ -45,11 +45,12 @@ namespace Celeste.Narrative
             set { startNode = value; }
         }
 
-        [SerializeField] private bool startAutomatically = true;
         [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
         [SerializeField] private UnityEvent onNarrativeFinished = new UnityEvent();
+        [SerializeField] private bool startAutomatically = true;
+        [SerializeField] private bool lateUpdate = false;
 
         private FSMRuntimeEngine runtimeEngine;
 
@@ -90,7 +91,7 @@ namespace Celeste.Narrative
 
         #endregion
 
-        public void StartNarrative()
+        public void Run()
         {
             currentNode = null;
             enabled = true;
@@ -105,15 +106,24 @@ namespace Celeste.Narrative
 
             if (CurrentNode == null)
             {
-                StopNarrative();
+                Stop();
             }
         }
 
-        public void StopNarrative()
+        public void Stop()
         {
             enabled = false;
             runtimeEngine = null;
             currentNode = null;
+        }
+
+        private void UpdateFSM()
+        {
+            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
+            {
+                OnNarrativeFinished.Invoke();
+                Stop();
+            }
         }
 
         #region Unity Methods
@@ -125,15 +135,22 @@ namespace Celeste.Narrative
                 return;
             }
 
-            StartNarrative();
+            Run();
         }
 
         private void Update()
         {
-            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
+            if (!lateUpdate)
             {
-                OnNarrativeFinished.Invoke();
-                StopNarrative();
+                UpdateFSM();
+            }
+        }
+
+        private void LateUpdate()
+        {
+            if (lateUpdate)
+            {
+                UpdateFSM();
             }
         }
 

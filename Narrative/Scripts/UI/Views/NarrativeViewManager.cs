@@ -14,7 +14,7 @@ namespace Celeste.Narrative.UI
 
         #region Callbacks
 
-        public void OnNarrativeBegin(NarrativeRuntime narrativeRuntime)
+        public void OnNarrativeBegin(ILinearRuntime narrativeRuntime)
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
@@ -31,7 +31,7 @@ namespace Celeste.Narrative.UI
             }
         }
 
-        public void OnNarrativeEnd(NarrativeRuntime narrativeRuntime)
+        public void OnNarrativeEnd(ILinearRuntime narrativeRuntime)
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {

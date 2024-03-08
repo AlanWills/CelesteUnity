@@ -57,7 +57,7 @@ namespace Celeste.FSM
                     readablePathBuilder.Append(parentGraph.name);
 
                     // If our parent graph is actually contained within a linear runtime, we hop the boundary and continue
-                    if (parentGraph.ParentFSMGraph is ILinearRuntime<FSMNode>)
+                    if (parentGraph.ParentFSMGraph is ILinearRuntime)
                     {
                         fsmNode = parentGraph.ParentFSMGraph as FSMNode;
                         guidPathBuilder.Append('.');

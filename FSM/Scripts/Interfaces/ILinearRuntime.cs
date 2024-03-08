@@ -1,16 +1,18 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using XNode;
 
 namespace Celeste.FSM
 {
-    public interface ILinearRuntime<TNode>
+    public interface ILinearRuntime
     {
         public FSMNodeUnityEvent OnNodeEnter { get; }
         public FSMNodeUnityEvent OnNodeUpdate { get; }
         public FSMNodeUnityEvent OnNodeExit { get; }
 
-        TNode StartNode { get; }
-        TNode CurrentNode { get; set; }
+        FSMNode StartNode { get; }
+        FSMNode CurrentNode { get; set; }
         ILinearRuntimeRecord Record { get; }
+
+        void Run();
+        void Stop();
     }
 }

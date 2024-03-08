@@ -31,7 +31,7 @@ namespace Celeste.FSM
             }
         }
 
-        public ILinearRuntime<FSMNode> Runtime { get; set; }
+        public ILinearRuntime Runtime { get; set; }
 
         public FSMNode startNode;
         public FSMNode finishNode;

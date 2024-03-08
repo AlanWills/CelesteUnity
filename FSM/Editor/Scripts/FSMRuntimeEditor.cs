@@ -1,14 +1,17 @@
 ﻿using Celeste;
 using Celeste.FSM;
-using Celeste.FSM.Nodes;
 using UnityEditor;
 using UnityEngine;
+using XNode;
 using XNodeEditor;
 
 namespace CelesteEditor.FSM
 {
     [CustomEditor(typeof(FSMRuntime))]
-    public class FSMRuntimeEditor : SceneGraphEditor
+    public class FSMRuntimeEditor : ILinearRuntimeEditor<FSMGraph> { }
+
+    public class ILinearRuntimeEditor<TGraph> : SceneGraphEditor 
+        where TGraph : FSMGraph 
     {
         #region GUI
 
@@ -18,36 +21,40 @@ namespace CelesteEditor.FSM
 
             EditorGUI.BeginChangeCheck();
 
-            FSMRuntime fsmRuntime = (target as FSMRuntime);
-            fsmRuntime.graph = EditorGUILayout.ObjectField(fsmRuntime.graph, typeof(FSMGraph), false) as FSMGraph;
+            ILinearRuntime runtime = target as ILinearRuntime;
+            SceneGraph<TGraph> sceneGraph = target as SceneGraph<TGraph>;
+            sceneGraph.graph = EditorGUILayout.ObjectField(sceneGraph.graph, typeof(TGraph), false) as TGraph;
+
+            DrawPropertiesExcluding(serializedObject, nameof(sceneGraph.graph), "m_Script");
 
             if (EditorGUI.EndChangeCheck())
             {
-                EditorUtility.SetDirty(fsmRuntime);
+                EditorUtility.SetDirty(target);
             }
 
-            if (fsmRuntime.graph != null && GUILayout.Button("Open graph", GUILayout.Height(40)))
+            if (sceneGraph.graph != null && GUILayout.Button("Open graph", GUILayout.Height(40)))
             {
-                NodeEditorWindow.Open(fsmRuntime.graph);
+                NodeEditorWindow.Open(sceneGraph.graph);
             }
 
-            CelesteEditorGUILayout.HorizontalLine();
-
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("lateUpdate"));
-            EditorGUILayout.LabelField($"Current Node: {CurrentNodePath(fsmRuntime)}", GUI.skin.label.New().EnableWrapping());
+            if (Application.isPlaying)
+            {
+                CelesteEditorGUILayout.HorizontalLine();
+                EditorGUILayout.LabelField($"Current Node: {CurrentNodePath(runtime)}", GUI.skin.label.New().EnableWrapping());
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
 
         #endregion
 
-        private string CurrentNodePath(ILinearRuntime<FSMNode> fsmRuntime)
+        private string CurrentNodePath(ILinearRuntime fsmRuntime)
         {
             FSMNode currentNode = fsmRuntime.CurrentNode;
 
-            while (currentNode is ILinearRuntime<FSMNode>)
+            while (currentNode is ILinearRuntime)
             {
-                currentNode = (currentNode as ILinearRuntime<FSMNode>).CurrentNode;
+                currentNode = (currentNode as ILinearRuntime).CurrentNode;
             }
 
             return new FSMGraphNodePath(currentNode).ReadablePath;

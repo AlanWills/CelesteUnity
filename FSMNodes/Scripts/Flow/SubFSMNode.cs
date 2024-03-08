@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.FSM.Nodes
 {
     [CreateNodeMenu("Celeste/Flow/Sub FSM")]
-    public class SubFSMNode : FSMNode, ILinearRuntime<FSMNode>, IFSMGraph
+    public class SubFSMNode : FSMNode, ILinearRuntime, IFSMGraph
     {
         #region Properties and Fields
 
@@ -27,7 +25,7 @@ namespace Celeste.FSM.Nodes
                 }
             }
         }
-        ILinearRuntimeRecord ILinearRuntime<FSMNode>.Record => FSMGraph.Runtime.Record;
+        ILinearRuntimeRecord ILinearRuntime.Record => FSMGraph.Runtime.Record;
 
         [NonSerialized] private FSMNode currentNode;
         public FSMNode CurrentNode 
@@ -53,7 +51,7 @@ namespace Celeste.FSM.Nodes
         public FSMGraph subFSM;
 
         [NonSerialized] private FSMGraph runtimeSubFSMGraph;
-        [NonSerialized] private ILinearRuntime<FSMNode> fsmRuntime;
+        [NonSerialized] private ILinearRuntime fsmRuntime;
         [NonSerialized] private FSMRuntimeEngine runtimeEngine;
 
         #endregion
@@ -72,12 +70,7 @@ namespace Celeste.FSM.Nodes
 
             fsmRuntime = FSMGraph.Runtime;
 
-            OnNodeEnter.AddListener(fsmRuntime.OnNodeEnter.Invoke);
-            OnNodeUpdate.AddListener(fsmRuntime.OnNodeUpdate.Invoke);
-            OnNodeExit.AddListener(fsmRuntime.OnNodeExit.Invoke);
-
-            runtimeEngine = new FSMRuntimeEngine(this);
-            runtimeEngine.Start(runtimeSubFSMGraph.startNode);
+            Run();
         }
 
         protected override FSMNode OnUpdate()
@@ -91,6 +84,23 @@ namespace Celeste.FSM.Nodes
         {
             base.OnExit();
 
+            Stop();
+        }
+
+        #endregion
+
+        public void Run()
+        {
+            OnNodeEnter.AddListener(fsmRuntime.OnNodeEnter.Invoke);
+            OnNodeUpdate.AddListener(fsmRuntime.OnNodeUpdate.Invoke);
+            OnNodeExit.AddListener(fsmRuntime.OnNodeExit.Invoke);
+
+            runtimeEngine = new FSMRuntimeEngine(this);
+            runtimeEngine.Start(runtimeSubFSMGraph.startNode);
+        }
+
+        public void Stop()
+        {
             OnNodeEnter.RemoveListener(fsmRuntime.OnNodeEnter.Invoke);
             OnNodeUpdate.RemoveListener(fsmRuntime.OnNodeUpdate.Invoke);
             OnNodeExit.RemoveListener(fsmRuntime.OnNodeExit.Invoke);
@@ -100,8 +110,6 @@ namespace Celeste.FSM.Nodes
             currentNode = null;
             startNode = null;
         }
-
-        #endregion
 
         public FSMNode FindNode(string nodeGuid)
         {

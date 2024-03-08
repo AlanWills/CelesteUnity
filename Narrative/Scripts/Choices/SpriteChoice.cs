@@ -23,12 +23,5 @@ namespace Celeste.Narrative.Choices
         [SerializeField] private Sprite sprite;
 
         #endregion
-
-        public override void CopyFrom(Choice original)
-        {
-            base.CopyFrom(original);
-
-            sprite = (original as SpriteChoice).sprite;
-        }
     }
 }
