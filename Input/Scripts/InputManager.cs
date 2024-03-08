@@ -8,6 +8,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.UI;
 
+// DO NOT DELETE THIS, IT IS NEEDED
+using UnityEngine.InputSystem.EnhancedTouch;
+
 namespace Celeste.Input
 {
     [AddComponentMenu("Celeste/Input/Input Manager")]
