@@ -40,8 +40,11 @@ namespace CelesteEditor.BuildSystem.Steps
         {
             var buildRootDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
             var buildRootDirLen = buildRootDir.Length;
-            CachedAssetBundles cachedBundles = new CachedAssetBundles();
-            cachedBundles.cacheLocation = AddressablesUtility.GetAddressablesLocalLoadPath();
+            string cacheLocation = AddressablesUtility.GetAddressablesLocalBuildPath();
+            CachedAssetBundles cachedBundles = new CachedAssetBundles
+            {
+                cacheLocation = cacheLocation
+            };
 
             foreach (var assetBundleName in assetBundleNames)
             {
@@ -60,13 +63,13 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(buildRootDir);
             }
 
-            if (!Directory.Exists(Application.streamingAssetsPath))
+            if (!Directory.Exists(cacheLocation))
             {
-                Directory.CreateDirectory(Application.streamingAssetsPath);
+                Directory.CreateDirectory(cacheLocation);
             }
 
             var json = JsonUtility.ToJson(cachedBundles);
-            File.WriteAllText(Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json"), json);
+            File.WriteAllText(Path.Combine(cacheLocation, "CachedAssetBundles.json"), json);
 
             return cachedBundles;
         }
@@ -74,18 +77,17 @@ namespace CelesteEditor.BuildSystem.Steps
         private static void BundleRemoteAddressables(CachedAssetBundles cachedAssetBundles)
         {
             var remoteBuildDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
-            var aaDestDir = AddressablesUtility.GetAddressablesLocalBuildPath();
 
-            if (!Directory.Exists(aaDestDir))
+            if (!Directory.Exists(cachedAssetBundles.cacheLocation))
             {
-                Directory.CreateDirectory(aaDestDir);
+                Directory.CreateDirectory(cachedAssetBundles.cacheLocation);
             }
 
             // Copy bundles to aa folder
             foreach (string relativeBundlePath in cachedAssetBundles.cachedBundleList)
             {
                 var srcFile = Path.Combine(remoteBuildDir, relativeBundlePath);
-                var destFile = Path.Combine(aaDestDir, relativeBundlePath);
+                var destFile = Path.Combine(cachedAssetBundles.cacheLocation, relativeBundlePath);
                 File.Copy(srcFile, destFile, true);
             }
         }

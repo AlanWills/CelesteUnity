@@ -1,4 +1,5 @@
 ﻿using Celeste.BuildSystem;
+using CelesteEditor.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,8 +24,12 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            // Get bundle list file from StreamingAsset
-            var bundleCacheFileURL = Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json");
+            foreach (var file in Directory.GetFiles(Application.streamingAssetsPath, "*", SearchOption.AllDirectories))
+            {
+                Debug.Log($"Found file: {file} in {Application.streamingAssetsPath}.");
+            }
+
+            var bundleCacheFileURL = GetCachedAssetBundlesPath();
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
             var url = bundleCacheFileURL;
 #else
@@ -75,6 +80,15 @@ namespace Celeste.Loading
             }
 
             return location.InternalId;
+        }
+
+        private static string GetCachedAssetBundlesPath()
+        {
+#if UNITY_EDITOR
+            return Path.Combine(AddressablesUtility.GetAddressablesLocalBuildPath(), "CachedAssetBundles.json");
+#else
+            return Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json");
+#endif
         }
 
         private static string GetAddressablesLocalLoadPath(CachedAssetBundles cachedAssetBundles)
