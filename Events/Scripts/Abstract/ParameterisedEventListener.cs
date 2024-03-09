@@ -10,6 +10,7 @@ namespace Celeste.Events
         #region Properties and Fields
 
         public TEvent gameEvent;
+        public bool logAddAndRemoveListener = false;
         public TUnityEvent response = new TUnityEvent();
 
         #endregion
@@ -18,12 +19,22 @@ namespace Celeste.Events
 
         private void OnEnable()
         {
+            if (logAddAndRemoveListener)
+            {
+                Debug.Log($"{name} is adding a listener to event {(gameEvent != null ? gameEvent.name : "null")}.");
+            }
+
             Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
             gameEvent.AddListener(this);
         }
 
         private void OnDisable()
         {
+            if (logAddAndRemoveListener)
+            {
+                Debug.Log($"{name} is removing a listener to event {(gameEvent != null ? gameEvent.name : "null")}.");
+            }
+
             Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
             gameEvent.RemoveListener(this);
         }
