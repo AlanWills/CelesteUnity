@@ -22,7 +22,7 @@ namespace CelesteEditor.FSM
             EditorGUI.BeginChangeCheck();
 
             ILinearRuntime runtime = target as ILinearRuntime;
-            SceneGraph<TGraph> sceneGraph = target as SceneGraph<TGraph>;
+            SceneGraph sceneGraph = target as SceneGraph;
             sceneGraph.graph = EditorGUILayout.ObjectField(sceneGraph.graph, typeof(TGraph), false) as TGraph;
 
             DrawPropertiesExcluding(serializedObject, nameof(sceneGraph.graph), "m_Script");

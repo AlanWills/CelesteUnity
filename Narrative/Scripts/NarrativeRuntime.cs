@@ -57,6 +57,7 @@ namespace Celeste.Narrative
 
         public void OnNarrativeContextLoaded(OnContextLoadedArgs args)
         {
+            UnityEngine.Debug.Log($"On Narrative Context Loaded received from {name}.");
             NarrativeContext narrativeContext = args.context as NarrativeContext;
             SetupGraphAtRuntime(narrativeContext.chapterRecord.Chapter.NarrativeGraph);
             Run();

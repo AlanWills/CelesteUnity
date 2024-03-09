@@ -48,6 +48,7 @@ namespace Celeste.FSM
 
             if (graph != null)
             {
+                Debug.Log($"Running Runtime Engine with graph {graph.name} on Runtime {name}.");
                 graph.Runtime = this;
                 OnRun.Invoke(this);
 
