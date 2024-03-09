@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.Initialization;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -101,7 +102,7 @@ namespace Celeste.Loading
 #if UNITY_EDITOR
             return CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath();
 #else
-            return Addressables.RuntimePath;
+            return AddressablesRuntimeProperties.EvaluateProperty("Local.LoadPath");
 #endif
         }
 
