@@ -13,7 +13,8 @@
         "Celeste.Coroutines",
         "Celeste.Parameters",
         "Celeste.BuildSystem",
-        "Celeste.UnityProject"
+        "Celeste.UnityProject",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

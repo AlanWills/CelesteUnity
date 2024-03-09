@@ -80,11 +80,21 @@ namespace Celeste.Loading
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
-                    return $"{Addressables.RuntimePath}/{ToBuildPlatformString(RuntimePlatform)}/{fileName}";
+                    string localLoadPath = GetAddressablesLocalLoadPath();
+                    return $"{localLoadPath}/{fileName}";
                 }
             }
 
             return location.InternalId;
+        }
+
+        private static string GetAddressablesLocalLoadPath()
+        {
+#if UNITY_EDITOR
+            return CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath();
+#else
+            return Addressables.RuntimePath;
+#endif
         }
 
         private static string ToBuildPlatformString(RuntimePlatform runtimePlatform)

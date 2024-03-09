@@ -58,14 +58,6 @@ namespace CelesteEditor.BuildSystem
                 {
                     platformSettings.BuildAssets();
                 }
-
-                using (new GUIEnabledScope(Directory.Exists(platformSettings.AddressablesBuildDirectory)))
-                {
-                    if (GUILayout.Button("Copy Built Assets To Unity Folder"))
-                    {
-                        platformSettings.CopyBuiltAddressablesToUnityLibraryFolder();
-                    }
-                }
             }
 
             using (var horizontal = new EditorGUILayout.HorizontalScope())

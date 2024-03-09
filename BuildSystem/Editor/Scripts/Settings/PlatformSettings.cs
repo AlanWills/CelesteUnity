@@ -342,24 +342,6 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        public void CopyBuiltAddressablesToUnityLibraryFolder()
-        {
-            string editorRuntimePath = Path.Combine(Addressables.RuntimePath, BuildTarget.ToString());
-            if (!Directory.Exists(AddressablesBuildDirectory))
-            {
-                Debug.Log($"No built addressables found in directory: {AddressablesBuildDirectory}.  Unable to copy to: {editorRuntimePath}.");
-                return;
-            }
-
-            Directory.CreateDirectory(editorRuntimePath);
-
-            foreach (string file in Directory.GetFiles(AddressablesBuildDirectory))
-            {
-                string filePath = Path.Combine(editorRuntimePath, Path.GetFileName(file));
-                File.Copy(file, filePath, true);
-            }
-        }
-
         private void PostProcessAssetsForBuild(AddressablesPlayerBuildResult result)
         {
             foreach (AssetPostProcessStep assetPostProcessStep in buildAssetsPostProcessSteps)
@@ -369,9 +351,6 @@ namespace CelesteEditor.BuildSystem
                     assetPostProcessStep.Execute(result, this);
                 }
             }
-
-            // Copy the files to the UnityEditor runtime path in case we're debugging in the Editor using the option to use existing groups
-            CopyBuiltAddressablesToUnityLibraryFolder();
         }
 
         private void PostProcessAssetsForUpdate(AddressablesPlayerBuildResult result)
