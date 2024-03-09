@@ -41,6 +41,7 @@ namespace CelesteEditor.BuildSystem.Steps
             var buildRootDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
             var buildRootDirLen = buildRootDir.Length;
             CachedAssetBundles cachedBundles = new CachedAssetBundles();
+            cachedBundles.cacheLocation = AddressablesUtility.GetAddressablesLocalLoadPath();
 
             foreach (var assetBundleName in assetBundleNames)
             {
@@ -87,8 +88,6 @@ namespace CelesteEditor.BuildSystem.Steps
                 var destFile = Path.Combine(aaDestDir, relativeBundlePath);
                 File.Copy(srcFile, destFile, true);
             }
-
-            AddressablesRuntimeProperties.SetPropertyValue("Local.LoadPath", AddressablesUtility.GetAddressablesLocalLoadPath());
         }
 
         private HashSet<string> GetBundledAssetBundleNames()

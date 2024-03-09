@@ -97,12 +97,12 @@ namespace Celeste.Loading
             return location.InternalId;
         }
 
-        private static string GetAddressablesLocalLoadPath()
+        private string GetAddressablesLocalLoadPath()
         {
+            return AddressablesRuntimeProperties.EvaluateString(cachedAssetBundles.cacheLocation);
 #if UNITY_EDITOR
             return CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath();
 #else
-            return AddressablesRuntimeProperties.EvaluateProperty("Local.LoadPath");
 #endif
         }
 
