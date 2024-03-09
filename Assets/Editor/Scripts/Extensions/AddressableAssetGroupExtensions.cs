@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
@@ -38,7 +39,7 @@ namespace CelesteEditor.Assets
             {
                 var loadPathName = bundledAssets.LoadPath.GetName(addressableSettings);
                 addressableSettings.profileSettings.SetValue(addressableSettings.activeProfileId, loadPathName, loadPath);
-                bundledAssets.BuildPath.SetVariableByName(addressableSettings, loadPathName);
+                bundledAssets.LoadPath.SetVariableByName(addressableSettings, loadPathName);
             }
         }
     }

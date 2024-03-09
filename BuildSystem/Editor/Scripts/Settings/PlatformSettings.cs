@@ -16,6 +16,7 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
+using UnityEngine.AddressableAssets;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -341,6 +342,24 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        public void CopyBuiltAddressablesToUnityLibraryFolder()
+        {
+            string editorRuntimePath = Path.Combine(Addressables.RuntimePath, BuildTarget.ToString());
+            if (!Directory.Exists(AddressablesBuildDirectory))
+            {
+                Debug.Log($"No built addressables found in directory: {AddressablesBuildDirectory}.  Unable to copy to: {editorRuntimePath}.");
+                return;
+            }
+
+            Directory.CreateDirectory(editorRuntimePath);
+
+            foreach (string file in Directory.GetFiles(AddressablesBuildDirectory))
+            {
+                string filePath = Path.Combine(editorRuntimePath, Path.GetFileName(file));
+                File.Copy(file, filePath, true);
+            }
+        }
+
         private void PostProcessAssetsForBuild(AddressablesPlayerBuildResult result)
         {
             foreach (AssetPostProcessStep assetPostProcessStep in buildAssetsPostProcessSteps)
@@ -350,6 +369,9 @@ namespace CelesteEditor.BuildSystem
                     assetPostProcessStep.Execute(result, this);
                 }
             }
+
+            // Copy the files to the UnityEditor runtime path in case we're debugging in the Editor using the option to use existing groups
+            CopyBuiltAddressablesToUnityLibraryFolder();
         }
 
         private void PostProcessAssetsForUpdate(AddressablesPlayerBuildResult result)
@@ -431,7 +453,9 @@ namespace CelesteEditor.BuildSystem
 
         private string Resolve(string stringWithPossibleVersionCodes)
         {
-            return stringWithPossibleVersionCodes.
+            return string.IsNullOrEmpty(stringWithPossibleVersionCodes) ? 
+                stringWithPossibleVersionCodes :
+                stringWithPossibleVersionCodes.
                     Replace("{version}", Version.ToString()).
                     Replace("{major}", Version.Major.ToString()).
                     Replace("{minor}", Version.Minor.ToString()).

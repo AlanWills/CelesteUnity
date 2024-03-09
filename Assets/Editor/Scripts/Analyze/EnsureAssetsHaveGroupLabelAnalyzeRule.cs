@@ -75,7 +75,15 @@ namespace CelesteEditor.Assets.Analyze
         {
             foreach (var assetEntryToFix in Analyze(settings))
             {
-                assetEntryToFix.SetLabel(assetEntryToFix.parentGroup.Name, true);
+                string labelName = assetEntryToFix.parentGroup.Name;
+                
+                if (!settings.GetLabels().Contains(labelName))
+                {
+                    // Make sure we actually add our label to the settings when setting it on assets, otherwise the Addressables system will not recognise it
+                    settings.AddLabel(labelName, false);
+                }
+                
+                assetEntryToFix.SetLabel(labelName, true);
             }
 
             ClearAnalysis();
