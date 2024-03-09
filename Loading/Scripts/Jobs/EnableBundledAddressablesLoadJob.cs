@@ -65,6 +65,14 @@ namespace Celeste.Loading
 
             if (cachedAssetBundles != null && cachedAssetBundles.IsValid)
             {
+                string addressablesLocalLoadPath = GetAddressablesLocalLoadPath();
+                Debug.Log($"Addressables Local Load Path is: {addressablesLocalLoadPath}");
+
+                foreach (var file in Directory.GetFiles(addressablesLocalLoadPath))
+                {
+                    Debug.Log($"Found file: {file} in Addressables Local Load Path.");
+                }
+
                 Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
             }
             else
