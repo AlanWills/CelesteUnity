@@ -49,6 +49,21 @@ namespace Celeste.Scene
 
         public int NumScenes => scenes.Count;
 
+        public bool HasCustomDebugBuildValue
+        {
+            get => hasCustomDebugBuildValue;
+            set
+            {
+                if (hasCustomDebugBuildValue != value)
+                {
+                    hasCustomDebugBuildValue = value;
+#if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(this);
+#endif
+                }
+            }
+        }
+
         private bool IsDebug
         {
             get

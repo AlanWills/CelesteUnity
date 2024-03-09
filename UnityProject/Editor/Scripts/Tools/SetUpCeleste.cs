@@ -326,13 +326,6 @@ namespace CelesteEditor.UnityProject
             var startupLoadJobBuilder = new MultiLoadJob.Builder()
                 .WithShowOutputInLoadingScreen(false);
 
-            // Disable fallback assets load job
-            {
-                var disableFallbackAssets = AssetUtility.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
-                Debug.Assert(disableFallbackAssets != null, $"Could not find disable fallback load assets load job: {CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME}.");
-                startupLoadJobBuilder.WithLoadJob(disableFallbackAssets);
-            }
-
             if (parameters.usesAddressables && parameters.usesBakedGroupsWithRemoteOverride)
             {
                 // Load content catalogue load job
@@ -359,7 +352,7 @@ namespace CelesteEditor.UnityProject
                 SceneSet bootstrapSceneSet = AssetUtility.FindAsset<SceneSet>(BootstrapConstants.SCENE_SET_NAME);
                 Debug.Assert(bootstrapSceneSet != null, $"Could not find bootstrap scene set for load job: {BootstrapConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadBootstrapSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
-                    .WithLoadSceneMode(UnityEngine.SceneManagement.LoadSceneMode.Single)
+                    .WithLoadSceneMode(LoadSceneMode.Single)
                     .WithSceneSet(bootstrapSceneSet)
                     .WithShowOutputOnLoadingScreen(false);
 
@@ -450,6 +443,14 @@ namespace CelesteEditor.UnityProject
             var bootstrapLoadJobBuilder = new MultiLoadJob.Builder()
                 .WithShowOutputInLoadingScreen(false);
 
+            // Disable fallback assets load job
+            {
+                var disableFallbackAssets = AssetUtility.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
+                Debug.Assert(disableFallbackAssets != null, $"Could not find disable fallback load assets load job: {CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME}.");
+                bootstrapLoadJobBuilder.WithLoadJob(disableFallbackAssets);
+                disableFallbackAssets.MakeAddressable();
+            }
+
             // Load engine systems scene set load job
             {
                 SceneSet engineSystemsSceneSet = AssetUtility.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
@@ -493,6 +494,7 @@ namespace CelesteEditor.UnityProject
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
             bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
+            bootstrapSceneSet.HasCustomDebugBuildValue = false;
 
             AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, bootstrapSceneSet);
