@@ -10,10 +10,11 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
+        public UnityEvent<ILinearRuntime> OnRun => onRun;
+        public UnityEvent<ILinearRuntime> OnStop => onStop;
         public FSMNodeUnityEvent OnNodeEnter => onNodeEnter;
         public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
         public FSMNodeUnityEvent OnNodeExit => onNodeExit;
-        public UnityEvent OnFinished => onFinished;
 
         public ILinearRuntimeRecord Record { get; } = new FSMRecord();
 
@@ -27,10 +28,11 @@ namespace Celeste.FSM
             set { startNode = value; }
         }
 
+        [SerializeField] private UnityEvent<ILinearRuntime> onRun = new UnityEvent<ILinearRuntime>();
+        [SerializeField] private UnityEvent<ILinearRuntime> onStop = new UnityEvent<ILinearRuntime>();
         [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
-        [SerializeField] private UnityEvent onFinished = new UnityEvent();
         [SerializeField] private bool startAutomatically = true;
         [SerializeField] private bool lateUpdate = false;
 
@@ -46,6 +48,7 @@ namespace Celeste.FSM
             if (graph != null)
             {
                 graph.Runtime = this;
+                OnRun.Invoke(this);
 
                 runtimeEngine = new FSMRuntimeEngine(this);
                 runtimeEngine.Start(StartNode);
@@ -59,6 +62,8 @@ namespace Celeste.FSM
 
         public void Stop()
         {
+            OnStop.Invoke(this);
+            
             enabled = false;
             runtimeEngine = null;
             CurrentNode = null;
@@ -66,10 +71,18 @@ namespace Celeste.FSM
 
         private void UpdateFSM()
         {
-            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
+            if (runtimeEngine == null)
             {
-                OnFinished.Invoke();
+                return;
+            }
+
+            if (CurrentNode == null)
+            {
                 Stop();
+            }
+            else
+            {
+                CurrentNode = runtimeEngine.Update();
             }
         }
 

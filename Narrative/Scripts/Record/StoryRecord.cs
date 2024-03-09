@@ -10,20 +10,9 @@ namespace Celeste.Narrative
 
         public Story Story { get; }
         
-        public string StoryName
-        {
-            get { return Story.StoryName; }
-        }
-
-        public string StoryDescription
-        {
-            get { return Story.StoryDescription; }
-        }
-
-        public Sprite StoryThumbnail
-        {
-            get { return Story.StoryThumbnail; }
-        }
+        public string StoryName => Story.StoryName;
+        public string StoryDescription => Story.StoryDescription;
+        public Sprite StoryThumbnail => Story.StoryThumbnail;
 
         public int ChaptersComplete
         {
@@ -42,15 +31,8 @@ namespace Celeste.Narrative
             }
         }
 
-        public int ChaptersInStory
-        {
-            get { return Story.NumChapters; }
-        }
-
-        public int NumChapterRecords
-        {
-            get { return chapterRecords.Count; }
-        }
+        public int ChaptersInStory => Story.NumChapters;
+        public int NumChapterRecords => chapterRecords.Count;
 
         private List<ChapterRecord> chapterRecords = new List<ChapterRecord>();
 

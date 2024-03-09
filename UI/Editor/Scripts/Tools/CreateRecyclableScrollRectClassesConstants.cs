@@ -18,7 +18,7 @@
             "\t\t[SerializeField] private RecyclableScrollRect scrollRect;\n" +
             "\t\t[SerializeField] private {1}Record {2}Record;\n" +
 "\n" +
-            "\t\tprivate List<{1}UIData> {2}CellData = new List<{1}UIData>();\n" +
+            "\t\t[NonSerialized] private List<{1}UIData> {2}CellData = new List<{1}UIData>();\n" +
 "\n" +
             "\t\t#endregion\n" +
 "\n" +
@@ -38,7 +38,9 @@
 "\n" +
             "\t\tprivate void SetUpUI()\n" +
             "\t\t{{\n" +
-                "\t\t\tfor (int i = 0, n = {2}Record.Num{1}s; i < n; ++i)\n"+
+                "\t\t\t{2}CellData.Clear();\n" +
+                "\t\t\t\n" +
+                "\t\t\tfor (int i = 0, n = {2}Record.Num{1}s; i < n; ++i)\n" +
                 "\t\t\t{{\n" +
                     "\t\t\t\t{1} {2} = {2}Record.Get{1}(i);\n" +
                     "\t\t\t\t{2}CellData.Add(new {1}UIData({2}));\n" +

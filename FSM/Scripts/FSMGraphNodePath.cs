@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 
 namespace Celeste.FSM
@@ -21,21 +20,25 @@ namespace Celeste.FSM
         {
             Node = null;
             GuidPath = guidPath;
+            ReadablePath = string.Empty;
 
-            string[] subPaths = GuidPath.Split('.');
-            StringBuilder readablePath = new StringBuilder(64);
-
-            for (int i = subPaths != null ? subPaths.Length : 0; i > 0; --i)
+            if (!string.IsNullOrEmpty(guidPath))
             {
-                Node = graph.FindNode(subPaths[i - 1]);
-                graph = Node as IFSMGraph;
+                StringBuilder readablePath = new StringBuilder(64);
+                string[] subPaths = GuidPath.Split('.', StringSplitOptions.RemoveEmptyEntries);
 
-                readablePath.Append(Node.name);
-                readablePath.Append(".");
+                for (int i = subPaths != null ? subPaths.Length : 0; i > 0; --i)
+                {
+                    Node = graph.FindNode(subPaths[i - 1]);
+                    graph = Node as IFSMGraph;
+
+                    readablePath.Append(Node.name);
+                    readablePath.Append(".");
+                }
+
+                readablePath.Append(Node.FSMGraph.name);
+                ReadablePath = readablePath.ToString();
             }
-
-            readablePath.Append(Node.FSMGraph.name);
-            ReadablePath = readablePath.ToString();
         }
 
         public FSMGraphNodePath(FSMNode fsmNode)

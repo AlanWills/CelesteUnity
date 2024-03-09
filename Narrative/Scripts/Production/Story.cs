@@ -1,12 +1,12 @@
 ﻿using Celeste.DataStructures;
-using System;
+using Celeste.Objects;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Narrative
 {
     [CreateAssetMenu(fileName = "Story", menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Production/Story", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
-    public class Story : ScriptableObject
+    public class Story : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 
@@ -51,10 +51,8 @@ namespace Celeste.Narrative
             get { return storyThumbnail; }
         }
 
-        public int NumChapters 
-        {
-            get { return chapters.Count; }
-        }
+        public int NumChapters => chapters.Count;
+        public IReadOnlyList<Chapter> Chapters => chapters;
 
         [SerializeField] private int guid;
         [SerializeField] private string storyName;

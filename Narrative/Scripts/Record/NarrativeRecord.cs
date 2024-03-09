@@ -10,10 +10,7 @@ namespace Celeste.Narrative
     {
         #region Properties and Fields
 
-        public int NumStoryRecords 
-        { 
-            get { return storyRecords.Count; } 
-        }
+        public int NumStoryRecords  => storyRecords.Count;
 
         public int LastPlayedStoryGuid { get; set; }
         public int LastPlayedChapterGuid { get; set; }
@@ -21,6 +18,19 @@ namespace Celeste.Narrative
         [NonSerialized] private List<StoryRecord> storyRecords = new List<StoryRecord>();
 
         #endregion
+
+        public void Initialize(StoryCatalogue storyCatalogue)
+        {
+            foreach (Story story in storyCatalogue)
+            {
+                AddStoryRecord(story);
+
+                foreach (Chapter chapter in story.Chapters)
+                {
+                    FindOrAddChapterRecord(story, chapter);
+                }
+            }
+        }
 
         public StoryRecord GetStoryRecord(int index)
         {

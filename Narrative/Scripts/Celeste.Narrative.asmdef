@@ -22,6 +22,7 @@
         "Celeste.Assets",
         "Celeste.Input",
         "Celeste.UnityProject",
+        "RecyclableScrollRect",
         "XNode.Extensions",
         "Unity.Addressables",
         "Unity.ResourceManager"

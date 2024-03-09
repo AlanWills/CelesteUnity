@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets;
+using Celeste.FSM;
 using Celeste.Narrative.Assets;
 using Celeste.Narrative.Persistence;
 using Celeste.Persistence;
@@ -13,10 +14,7 @@ namespace Celeste.Narrative
         #region Properties and Fields
 
         public static readonly string FILE_NAME = "Narrative.dat";
-        protected override string FileName
-        {
-            get { return FILE_NAME; }
-        }
+        protected override string FileName => FILE_NAME;
 
         [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
@@ -34,6 +32,8 @@ namespace Celeste.Narrative
         {
             yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
 
+            narrativeRecord.Initialize(storyCatalogue.Asset);
+
             Load();
         }
 
@@ -50,14 +50,14 @@ namespace Celeste.Narrative
             {
                 Story story = storyCatalogue.Asset.FindByGuid(storyDTO.guid);
                 UnityEngine.Debug.Assert(story != null, $"Could not find story with guid {storyDTO.guid}.");
-                StoryRecord storyRecord = narrativeRecord.AddStoryRecord(story);
+                StoryRecord storyRecord = narrativeRecord.FindOrAddStoryRecord(story);
 
                 foreach (ChapterDTO chapterDTO in storyDTO.chapters)
                 {
                     Chapter chapter = story.FindChapter(chapterDTO.guid);
                     UnityEngine.Debug.Assert(chapter != null, $"Could not find Chapter with guid {chapterDTO.guid} in story {story.name}.");
-                    ChapterRecord chapterRecord = storyRecord.AddChapterRecord(chapter, chapterDTO.currentNodePath);
-
+                    ChapterRecord chapterRecord = storyRecord.FindOrAddChapterRecord(chapter);
+                    chapterRecord.CurrentNodePath = new FSMGraphNodePath(chapter.NarrativeGraph, chapterDTO.currentNodePath);
                     chapterRecord.CurrentBackgroundGuid = chapterDTO.currentBackgroundGuid;
 
                     foreach (CharacterDTO characterDTO in chapterDTO.characters)

@@ -1,4 +1,5 @@
-﻿using Celeste.Narrative.Events;
+﻿using Celeste.FSM;
+using Celeste.Narrative.Events;
 using Celeste.Narrative.Loading;
 using Celeste.Narrative.Parameters;
 using Celeste.Scene.Events;
@@ -27,7 +28,7 @@ namespace Celeste.Narrative
             GameObject gameObject = new GameObject();
             gameObject.transform.SetParent(transform);
             currentRuntime = NarrativeRuntime.Create(gameObject, chapterRecord);
-            currentRuntime.OnNarrativeFinished.AddListener(OnNarrativeFinished);
+            currentRuntime.OnStop.AddListener(OnNarrativeFinished);
 
             narrativeBegunEvent.Invoke(currentRuntime);
         }
@@ -56,7 +57,7 @@ namespace Celeste.Narrative
             }
         }
 
-        private void OnNarrativeFinished()
+        private void OnNarrativeFinished(ILinearRuntime linearRuntime)
         {
             narrativeFinishedEvent.Invoke(currentRuntime);
         }

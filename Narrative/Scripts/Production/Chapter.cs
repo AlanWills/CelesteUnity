@@ -2,6 +2,7 @@
 using Celeste.FSM;
 using Celeste.FSM.Nodes;
 using Celeste.Narrative.Characters;
+using Celeste.Objects;
 using Celeste.Parameters;
 using Celeste.Twine;
 using System;
@@ -11,7 +12,7 @@ using UnityEngine;
 namespace Celeste.Narrative
 {
     [CreateAssetMenu(fileName = "Chapter", menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Production/Chapter", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
-    public class Chapter : ScriptableObject
+    public class Chapter : ScriptableObject, IIntGuid
     {
         #region Properties and Fields
 
@@ -126,7 +127,7 @@ namespace Celeste.Narrative
 
 #endregion
 
-#region Characters
+        #region Characters
 
         public Character GetCharacter(int index)
         {
@@ -140,7 +141,7 @@ namespace Celeste.Narrative
 
 #endregion
 
-#region String Values
+        #region String Values
 
         public StringValue GetStringValue(int index)
         {
@@ -154,7 +155,7 @@ namespace Celeste.Narrative
 
 #endregion
 
-#region Bool Values
+        #region Bool Values
 
         public BoolValue GetBoolValue(int index)
         {
@@ -168,7 +169,7 @@ namespace Celeste.Narrative
 
 #endregion
 
-#region Utility Functions
+        #region Utility Functions
 
         public void FindCharacters()
         {

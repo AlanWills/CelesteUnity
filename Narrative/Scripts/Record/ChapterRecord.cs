@@ -20,30 +20,11 @@ namespace Celeste.Narrative
         public int CurrentBackgroundGuid { get; set; }
         public float Progress { get; private set; }
 
-        public string ChapterName
-        {
-            get { return Chapter.ChapterName; }
-        }
-
-        public string ChapterDescription
-        {
-            get { return Chapter.ChapterDescription; }
-        }
-
-        public Sprite ChapterThumbnail
-        {
-            get { return Chapter.ChapterThumbnail; }
-        }
-
-        public int NumCharacterRecords
-        {
-            get { return characterRecords.Count; }
-        }
-
-        public int NumValueRecords
-        {
-            get { return valueRecords.Count; }
-        }
+        public string ChapterName => Chapter.ChapterName;
+        public string ChapterDescription => Chapter.ChapterDescription;
+        public Sprite ChapterThumbnail => Chapter.ChapterThumbnail;
+        public int NumCharacterRecords => characterRecords.Count;
+        public int NumValueRecords => valueRecords.Count;
 
         private List<CharacterRecord> characterRecords = new List<CharacterRecord>();
         private List<ValueRecord> valueRecords = new List<ValueRecord>();

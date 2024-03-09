@@ -1,4 +1,6 @@
 ﻿using Celeste.FSM;
+using Celeste.Narrative.Loading;
+using Celeste.Scene.Events;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,10 +15,11 @@ namespace Celeste.Narrative
 
         ILinearRuntimeRecord ILinearRuntime.Record => Record;
 
+        public UnityEvent<ILinearRuntime> OnRun => onRun;
+        public UnityEvent<ILinearRuntime> OnStop => onStop;
         public FSMNodeUnityEvent OnNodeEnter => onNodeEnter;
         public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
         public FSMNodeUnityEvent OnNodeExit => onNodeExit;
-        public UnityEvent OnNarrativeFinished => onNarrativeFinished;
 
         public ChapterRecord Record { get; set; }
 
@@ -45,10 +48,11 @@ namespace Celeste.Narrative
             set { startNode = value; }
         }
 
+        [SerializeField] private UnityEvent<ILinearRuntime> onRun = new UnityEvent<ILinearRuntime>();
+        [SerializeField] private UnityEvent<ILinearRuntime> onStop = new UnityEvent<ILinearRuntime>();
         [SerializeField] private FSMNodeUnityEvent onNodeEnter = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeUpdate = new FSMNodeUnityEvent();
         [SerializeField] private FSMNodeUnityEvent onNodeExit = new FSMNodeUnityEvent();
-        [SerializeField] private UnityEvent onNarrativeFinished = new UnityEvent();
         [SerializeField] private bool startAutomatically = true;
         [SerializeField] private bool lateUpdate = false;
 
@@ -66,12 +70,8 @@ namespace Celeste.Narrative
 
             NarrativeGraph narrativeGraph = chapterRecord.Chapter.NarrativeGraph;
             NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
-            runtime.graph = narrativeGraph;
-            runtime.Record = chapterRecord;
-            runtime.StartNode = chapterRecord.CurrentNodePath.Node;
+            runtime.SetupGraphAtRuntime(chapterRecord);
 
-            narrativeGraph.Runtime = runtime;
-            
             return runtime;
         }
 
@@ -82,9 +82,7 @@ namespace Celeste.Narrative
             gameObject.name = nameof(NarrativeRuntime);
 
             NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
-            runtime.graph = narrativeGraph;
-
-            narrativeGraph.Runtime = runtime;
+            runtime.SetupGraphAtRuntime(narrativeGraph);
 
             return runtime;
         }
@@ -99,6 +97,7 @@ namespace Celeste.Narrative
             if (graph != null)
             {
                 graph.Runtime = this;
+                OnRun.Invoke(this);
 
                 runtimeEngine = new FSMRuntimeEngine(this);
                 runtimeEngine.Start(StartNode);
@@ -112,6 +111,8 @@ namespace Celeste.Narrative
 
         public void Stop()
         {
+            OnStop.Invoke(this);
+
             enabled = false;
             runtimeEngine = null;
             currentNode = null;
@@ -119,11 +120,33 @@ namespace Celeste.Narrative
 
         private void UpdateFSM()
         {
-            if (runtimeEngine != null && runtimeEngine.Update() == graph.finishNode)
+            if (runtimeEngine == null)
             {
-                OnNarrativeFinished.Invoke();
+                return;
+            }    
+
+            if (CurrentNode == null)
+            {
                 Stop();
             }
+            else
+            {
+                CurrentNode = runtimeEngine.Update();
+            }
+        }
+
+        private void SetupGraphAtRuntime(NarrativeGraph narrativeGraph)
+        {
+            graph = narrativeGraph;
+            graph.Runtime = this;
+        }
+
+        private void SetupGraphAtRuntime(ChapterRecord chapter)
+        {
+            graph = chapter.Chapter.NarrativeGraph;
+            graph.Runtime = this;
+            Record = chapter;
+            StartNode = chapter.CurrentNodePath.Node;
         }
 
         #region Unity Methods
@@ -152,6 +175,17 @@ namespace Celeste.Narrative
             {
                 UpdateFSM();
             }
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        public void OnNarrativeContextLoaded(OnContextLoadedArgs args)
+        {
+            NarrativeContext narrativeContext = args.context as NarrativeContext;
+            SetupGraphAtRuntime(narrativeContext.chapterRecord.Chapter.NarrativeGraph);
+            Run();
         }
 
         #endregion
