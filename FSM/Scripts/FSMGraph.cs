@@ -19,7 +19,6 @@ namespace Celeste.FSM
         }
 
         FSMNode IFSMGraph.StartNode => startNode;
-        FSMNode IFSMGraph.FinishNode => finishNode;
         IEnumerable<FSMNode> IFSMGraph.Nodes
         {
             get
@@ -34,8 +33,7 @@ namespace Celeste.FSM
         public ILinearRuntime Runtime { get; set; }
 
         public FSMNode startNode;
-        public FSMNode finishNode;
-
+        
 #if UNITY_EDITOR
         [SerializeField]
         private List<ScriptableObject> parameters = new List<ScriptableObject>();
@@ -55,7 +53,6 @@ namespace Celeste.FSM
             }
 
             graph.startNode = graph.FindNode(startNode.Guid);
-            graph.finishNode = graph.FindNode(finishNode.Guid);
 
             return graph;
         }
@@ -102,7 +99,6 @@ namespace Celeste.FSM
         {
             nodes.Clear();
             startNode = null;
-            finishNode = null;
 
 #if UNITY_EDITOR
             var objects = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(UnityEditor.AssetDatabase.GetAssetPath(this));

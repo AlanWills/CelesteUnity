@@ -27,7 +27,7 @@ namespace CelesteEditor.FSM.Nodes
             {
                 return START_NODE_COLOUR;
             }
-            else if (fsmGraph.finishNode == target)
+            else if (fsmGraph is IProgressFSMGraph progressGraph && progressGraph.FinishNode == target)
             {
                 return FINISH_NODE_COLOUR;
             }

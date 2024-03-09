@@ -92,8 +92,8 @@ namespace Celeste.Narrative
 
         public void OnNarrativeBegun(NarrativeRuntime narrativeRuntime)
         {
-            narrativeRecord.LastPlayedStoryGuid = narrativeRuntime.Record.StoryRecord.Story.Guid;
-            narrativeRecord.LastPlayedChapterGuid = narrativeRuntime.Record.Chapter.Guid;
+            narrativeRecord.LastPlayedStoryGuid = narrativeRuntime.ChapterRecord.StoryRecord.Story.Guid;
+            narrativeRecord.LastPlayedChapterGuid = narrativeRuntime.ChapterRecord.Chapter.Guid;
         }
 
         #endregion

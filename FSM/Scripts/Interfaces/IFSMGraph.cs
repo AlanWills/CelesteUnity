@@ -8,7 +8,6 @@ namespace Celeste.FSM
         IFSMGraph ParentFSMGraph { get; }
 
         FSMNode StartNode { get; }
-        FSMNode FinishNode { get; }
         IEnumerable<FSMNode> Nodes { get; }
 
         FSMNode FindNode(string nodeGuid);

@@ -177,11 +177,13 @@ namespace Celeste.FSM
         [ContextMenu("Set As Finish")]
         public void SetAsFinish()
         {
-            (graph as FSMGraph).finishNode = this;
-
+            if (graph is IProgressFSMGraph progressGraph)
+            {
+                progressGraph.FinishNode = this;
 #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(graph);
+                UnityEditor.EditorUtility.SetDirty(graph);
 #endif
+            }
         }
 
         #endregion

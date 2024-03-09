@@ -66,31 +66,13 @@ namespace Celeste.Narrative
         {
             NarrativeGraph narrativeGraph = Chapter.NarrativeGraph;
             
-            if (narrativeGraph == null || narrativeGraph.finishNode == null)
+            if (narrativeGraph == null)
             {
-                UnityEngine.Debug.Log("Unable to calculate progress due to misconfigured narrative graph.");
+                UnityEngine.Debug.Log("Unable to calculate progress due to missing narrative graph.");
                 return;
             }
 
-            if (CurrentNodePath.Node == null)
-            {
-                Progress = 0;
-                return;
-            }
-            else if (narrativeGraph.finishNode == CurrentNodePath.Node)
-            {
-                Progress = 1;
-                return;
-            }
-
-            var currentNode = CurrentNodePath.Node;
-
-            // As distance to end gets smaller, the top part -> 0 and 'progress' -> 1
-            float progress = 1 - ((float)narrativeGraph.CalculateShortestDistance(currentNode, narrativeGraph.finishNode)
-                                  / narrativeGraph.CalculateShortestDistance(narrativeGraph.startNode, narrativeGraph.finishNode));
-
-            // Only finishing at the finish node can be progress of 1 (routes through the graph will vary and we always use the shortest to calculate progress)
-            Progress = Mathf.Min(progress, 0.99f);
+            Progress = narrativeGraph.CalculateProgress(CurrentNodePath.Node);
         }
 
         public void ResetProgress()
@@ -101,7 +83,7 @@ namespace Celeste.Narrative
 
         public void Complete()
         {
-            CurrentNodePath = new FSMGraphNodePath(Chapter.NarrativeGraph.finishNode);
+            CurrentNodePath = new FSMGraphNodePath(Chapter.NarrativeGraph.FinishNode);
             Progress = 1;
         }
 

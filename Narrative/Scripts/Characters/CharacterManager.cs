@@ -17,7 +17,7 @@ namespace Celeste.Narrative.Characters
         public void OnNarrativeBegin(NarrativeRuntime narrativeRuntime)
         {
             // Go through each character and resolve any customisations
-            ChapterRecord chapterRecord = narrativeRuntime.Record;
+            ChapterRecord chapterRecord = narrativeRuntime.ChapterRecord;
 
             for (int i = 0, n = chapterRecord.NumCharacterRecords; i < n; ++i)
             {

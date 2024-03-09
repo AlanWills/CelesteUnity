@@ -14,7 +14,6 @@ namespace Celeste.FSM.Nodes
 
         IFSMGraph IFSMGraph.ParentFSMGraph => FSMGraph;
         FSMNode IFSMGraph.StartNode => StartNode;
-        FSMNode IFSMGraph.FinishNode => null;
         IEnumerable<FSMNode> IFSMGraph.Nodes
         {
             get

@@ -16,7 +16,7 @@ namespace Celeste.FSM
         public FSMNodeUnityEvent OnNodeUpdate => onNodeUpdate;
         public FSMNodeUnityEvent OnNodeExit => onNodeExit;
 
-        public ILinearRuntimeRecord Record { get; } = new FSMRecord();
+        ILinearRuntimeRecord ILinearRuntime.Record => record;
 
         public FSMNode CurrentNode { get; set; }
 
@@ -36,6 +36,7 @@ namespace Celeste.FSM
         [SerializeField] private bool startAutomatically = true;
         [SerializeField] private bool lateUpdate = false;
 
+        protected ILinearRuntimeRecord record;
         private FSMRuntimeEngine runtimeEngine;
 
         #endregion

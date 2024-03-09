@@ -5,6 +5,32 @@ namespace Celeste.FSM.Utils
 {
     public static class PathUtils
     {
+        public static float CalculateProgress(this IProgressFSMGraph progressGraph, FSMNode node)
+        {
+            if (progressGraph == null || progressGraph.FinishNode == null)
+            {
+                Debug.Log("Unable to calculate progress due to misconfigured progress graph.");
+                return 0;
+            }
+
+            if (node == null)
+            {
+                Debug.Log("Unable to calculate progress due to no inputted node.");
+                return 0;
+            }
+            else if (progressGraph.FinishNode == node)
+            {
+                return 1;
+            }
+
+            // As distance to end gets smaller, the top part -> 0 and 'progress' -> 1
+            float progress = 1 - ((float)CalculateShortestDistance(progressGraph, node, progressGraph.FinishNode)
+                                  / CalculateShortestDistance(progressGraph, progressGraph.StartNode, progressGraph.FinishNode));
+
+            // Only finishing at the finish node can be progress of 1 (routes through the graph will vary and we always use the shortest to calculate progress)
+            return Mathf.Min(progress, 0.99f);
+        }
+
         public static int CalculateShortestDistance(
             this IFSMGraph nodeGraph,
             FSMNode start,
