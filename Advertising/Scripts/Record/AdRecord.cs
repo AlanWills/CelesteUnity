@@ -27,9 +27,7 @@ namespace Celeste.Advertising
         [SerializeField] private AdPlacementCatalogue adPlacements;
 
         [Header("Providers")]
-#if UNITY_EDITOR
         [SerializeField] private EditorAdProvider editorAdProvider;
-#endif
 #if UNITY_ADS
         [SerializeField] private UnityAdProvider unityAdProvider;
 #endif
@@ -62,7 +60,9 @@ namespace Celeste.Advertising
             {
                 impl = disabledAdProvider;
             }
-            
+
+            UnityEngine.Debug.Assert(impl != null, $"No impl is set on {nameof(AdRecord)}.");
+            UnityEngine.Debug.Assert(adPlacements != null, $"No {nameof(AdPlacementCatalogue)} is set on {nameof(AdRecord)}.");
             impl.Initialize(adPlacements, LoadAllAdPlacements, null);
         }
 

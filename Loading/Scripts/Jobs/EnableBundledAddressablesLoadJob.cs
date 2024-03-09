@@ -17,26 +17,6 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
-        private RuntimePlatform RuntimePlatform
-        {
-            get
-            {
-#if UNITY_EDITOR
-    #if UNITY_ANDROID
-                return RuntimePlatform.Android;
-    #elif UNITY_IOS
-                return RuntimePlatform.IPhonePlayer;
-    #elif UNITY_STANDALONE_OSX
-                return RuntimePlatform.OSXPlayer;
-    #elif UNITY_STANDALONE_WIN
-                return RuntimePlatform.WindowsPlayer;
-    #endif
-#else
-                return Application.platform;
-#endif
-            }
-        }
-
         private CachedAssetBundles cachedAssetBundles = new CachedAssetBundles();
 
         #endregion
@@ -66,7 +46,7 @@ namespace Celeste.Loading
 
             if (cachedAssetBundles != null && cachedAssetBundles.IsValid)
             {
-                string addressablesLocalLoadPath = GetAddressablesLocalLoadPath();
+                string addressablesLocalLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
                 Debug.Log($"Addressables Local Load Path is: {addressablesLocalLoadPath}");
 
                 foreach (var file in Directory.GetFiles(addressablesLocalLoadPath))
@@ -89,7 +69,7 @@ namespace Celeste.Loading
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
-                    string localLoadPath = GetAddressablesLocalLoadPath();
+                    string localLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
                     return $"{localLoadPath}/{fileName}";
                 }
             }
@@ -97,35 +77,9 @@ namespace Celeste.Loading
             return location.InternalId;
         }
 
-        private string GetAddressablesLocalLoadPath()
+        private static string GetAddressablesLocalLoadPath(CachedAssetBundles cachedAssetBundles)
         {
             return AddressablesRuntimeProperties.EvaluateString(cachedAssetBundles.cacheLocation);
-#if UNITY_EDITOR
-            return CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath();
-#else
-#endif
-        }
-
-        private static string ToBuildPlatformString(RuntimePlatform runtimePlatform)
-        {
-            switch (runtimePlatform)
-            {
-                case RuntimePlatform.IPhonePlayer:
-                    return "iOS";
-
-                case RuntimePlatform.Android:
-                    return "Android";
-
-                case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
-                    return "StandaloneWindows64";
-
-                case RuntimePlatform.WebGLPlayer:
-                    return "WebGL";
-
-                default:
-                    return "Unknown";
-            }
         }
     }
 }

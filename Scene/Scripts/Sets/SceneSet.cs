@@ -53,7 +53,7 @@ namespace Celeste.Scene
         {
             get
             {
-                if (isDebugBuild != null)
+                if (hasCustomDebugBuildValue && isDebugBuild != null)
                 {
                     return isDebugBuild.Value;
                 }
@@ -68,8 +68,9 @@ namespace Celeste.Scene
         [SerializeField] private bool unloadResourcesOnLoad = true;
 
         [Header("Debug Settings")]
-        [SerializeField] private BoolValue isDebugBuild;
-        [SerializeField, HideIfNull(nameof(isDebugBuild))] private bool checkForMissingComponents = true;
+        [SerializeField] private bool hasCustomDebugBuildValue = true;
+        [SerializeField, ShowIf(nameof(hasCustomDebugBuildValue))] private BoolValue isDebugBuild;
+        [SerializeField] private bool checkForMissingComponents = true;
 
         #endregion
 
@@ -78,12 +79,23 @@ namespace Celeste.Scene
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if (isDebugBuild == null)
+            if (hasCustomDebugBuildValue)
             {
-                isDebugBuild = DebugEditorSettings.GetOrCreateSettings().isDebugBuildValue;
+                if (isDebugBuild == null)
+                {
+                    isDebugBuild = DebugEditorSettings.GetOrCreateSettings().isDebugBuildValue;
 
+                    if (isDebugBuild != null)
+                    {
+                        UnityEditor.EditorUtility.SetDirty(this);
+                    }
+                }
+            }
+            else
+            {
                 if (isDebugBuild != null)
                 {
+                    isDebugBuild = null;
                     UnityEditor.EditorUtility.SetDirty(this);
                 }
             }
