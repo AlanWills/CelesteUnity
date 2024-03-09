@@ -7,6 +7,7 @@ using System.IO;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
+using UnityEngine.AddressableAssets.Initialization;
 
 namespace CelesteEditor.BuildSystem.Steps
 {
@@ -86,6 +87,8 @@ namespace CelesteEditor.BuildSystem.Steps
                 var destFile = Path.Combine(aaDestDir, relativeBundlePath);
                 File.Copy(srcFile, destFile, true);
             }
+
+            AddressablesRuntimeProperties.SetPropertyValue("Local.LoadPath", AddressablesUtility.GetAddressablesLocalLoadPath());
         }
 
         private HashSet<string> GetBundledAssetBundleNames()
