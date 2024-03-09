@@ -23,11 +23,6 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            foreach (var file in Directory.GetFiles(Application.streamingAssetsPath, "*", SearchOption.AllDirectories))
-            {
-                Debug.Log($"Found file: {file} in {Application.streamingAssetsPath}.");
-            }
-
             var bundleCacheFileURL = GetCachedAssetBundlesPath();
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
             var url = bundleCacheFileURL;
@@ -52,11 +47,6 @@ namespace Celeste.Loading
             {
                 string addressablesLocalLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
                 Debug.Log($"Addressables Local Load Path is: {addressablesLocalLoadPath}");
-
-                foreach (var file in Directory.GetFiles(addressablesLocalLoadPath))
-                {
-                    Debug.Log($"Found file: {file} in Addressables Local Load Path.");
-                }
 
                 Addressables.InternalIdTransformFunc = Addressables_InternalIdTransformFunc;
             }
