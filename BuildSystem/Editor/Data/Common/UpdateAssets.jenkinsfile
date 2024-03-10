@@ -20,7 +20,6 @@ pipeline
                         parameters([
                             choice(choices: ['Android', 'iOS', 'Windows', 'WebGL',], name: 'PLATFORM'),
                             choice(choices: ['Debug', 'ReleaseApk', 'ReleaseBundle'], name: 'CONFIGURATION'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
                         ])
                     ])
@@ -34,7 +33,7 @@ pipeline
                 buildName PLATFORM + "-" + CONFIGURATION
                 script
                 {
-                    methodToInvoke = "CelesteEditor.BuildSystem.UpdateAssets.Update" + params.CONFIGURATION + "PLATFORM" + "Player"
+                    methodToInvoke = "CelesteEditor.BuildSystem.UpdateAssets.Update" + params.CONFIGURATION + params.PLATFORM + "Player"
                     projectPath = WORKSPACE.replace('\\', '/')
                 }
                 sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
