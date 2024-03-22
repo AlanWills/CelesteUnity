@@ -1,6 +1,6 @@
 ﻿namespace Celeste.Tools
 {
-    public static class WebGLUtils
+    public static class WebGLExtensions
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]

@@ -52,7 +52,7 @@ namespace CelesteEditor.Localisation.Catalogue
 
             EditorGUILayout.Space();
 
-            currentPage = GUIUtils.ReadOnlyPaginatedList(
+            currentPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentPage,
                 ENTRIES_PER_PAGE,
                 localisationEntries.Count,

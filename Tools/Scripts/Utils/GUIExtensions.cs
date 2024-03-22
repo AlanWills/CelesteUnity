@@ -4,7 +4,7 @@ using static UnityEngine.GUILayout;
 
 namespace Celeste.Tools
 {
-    public static class GUIUtils
+    public static class GUIExtensions
     {
         public enum ListLayoutOptions
         {
@@ -12,10 +12,20 @@ namespace Celeste.Tools
             AutomaticallyVerticalScope = 1
         }
 
-        public static int IntField(int currentInt)
+        public static uint UIntField(string label, uint currentValue)
+        {
+            return (uint)Mathf.Max(0, IntField(label, (int)currentValue));
+        }
+
+        public static uint UIntField(uint currentValue)
+        {
+            return UIntField(string.Empty, currentValue);
+        }
+
+        public static int IntField(string label, int currentInt)
         {
             string currentIntText = currentInt.ToString();
-            currentIntText = TextField(currentIntText);
+            currentIntText = TextField(label, currentIntText);
 
             if (GUI.changed)
             {
@@ -26,6 +36,11 @@ namespace Celeste.Tools
             }
 
             return currentInt;
+        }
+
+        public static int IntField(int currentInt)
+        {
+            return IntField(string.Empty, currentInt);
         }
 
         public static int PlusMinusField(string label, int currentInt)

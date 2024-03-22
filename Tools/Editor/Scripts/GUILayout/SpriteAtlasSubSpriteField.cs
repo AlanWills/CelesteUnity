@@ -52,7 +52,7 @@ namespace CelesteEditor
             int currentPage = selection.currentPage;
             int currentIndex = selection.selectedIndex;
 
-            currentPage = GUIUtils.ReadOnlyPaginatedList(
+            currentPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentPage,
                 entriesPerPage,
                 namesProperty.arraySize,

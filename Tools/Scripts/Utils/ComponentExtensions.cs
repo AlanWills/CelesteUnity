@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Celeste.Tools
 {
-    public static class ComponentUtils
+    public static class ComponentExtensions
     {
         public static void TryGet<T>(this Component monoBehaviour, ref T component) where T : Component
         {

@@ -14,7 +14,7 @@ namespace Celeste.Assets.Debug
         {
             if (GUILayout.Button("Clear Cache"))
             {
-                CachingUtility.ClearCache();
+                CachingExtensions.ClearCache();
             }
         }
     }

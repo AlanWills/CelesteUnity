@@ -69,7 +69,7 @@ namespace Celeste.Persistence
 #endif
 
             // Needed to deal with browser async saving
-            WebGLUtils.SyncFiles();
+            WebGLExtensions.SyncFiles();
         }
 
         public static async Task SaveAsync<T>(string filePath, T persistenceDTO)
@@ -103,7 +103,7 @@ namespace Celeste.Persistence
 #endif
 
             // Needed to deal with browser async saving
-            WebGLUtils.SyncFiles();
+            WebGLExtensions.SyncFiles();
         }
 
         #endregion

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Celeste.Tools
 {
-    public static class SceneUtility
+    public static class SceneExtensions
     {
         public static void FindMissingComponentsInLoadedScenes()
         {

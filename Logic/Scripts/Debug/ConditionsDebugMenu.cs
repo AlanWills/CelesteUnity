@@ -20,7 +20,7 @@ namespace Celeste.Logic.Debug
 
         protected override void OnDrawMenu()
         {
-            GUIUtils.ReadOnlyPaginatedList(
+            GUIExtensions.ReadOnlyPaginatedList(
                 currentPage,
                 conditionsPerPage,
                 conditionCatalogue.NumItems,

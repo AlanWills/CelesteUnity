@@ -41,7 +41,7 @@ namespace CelesteEditor.Objects
             {
                 DrawPropertiesExcluding(serializedObject, "m_Script");
 
-                currentPage = GUIUtils.PaginatedList(
+                currentPage = GUIExtensions.PaginatedList(
                     currentPage,
                     ENTRIES_PER_PAGE,
                     data.Count,

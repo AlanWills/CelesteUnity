@@ -2,7 +2,7 @@
 
 namespace Celeste.Tools
 {
-    public static class CachingUtility
+    public static class CachingExtensions
     {
         public static void ClearCache()
         {

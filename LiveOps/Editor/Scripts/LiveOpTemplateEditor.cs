@@ -84,7 +84,7 @@ namespace CelesteEditor.LiveOps
 
                 DrawValidationGUI();
 
-                currentPage = GUIUtils.PaginatedList(
+                currentPage = GUIExtensions.PaginatedList(
                     currentPage,
                     40,
                     componentsProperty.arraySize,
@@ -117,7 +117,7 @@ namespace CelesteEditor.LiveOps
                 {
                     DrawValidationGUI();
 
-                    currentPage = GUIUtils.ReadOnlyPaginatedList(
+                    currentPage = GUIExtensions.ReadOnlyPaginatedList(
                         currentPage,
                         40,
                         componentsDataProperty.arraySize,

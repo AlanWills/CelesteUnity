@@ -37,7 +37,7 @@ namespace Celeste.Log
 
             if (logMessages != null)
             {
-                currentPage = GUIUtils.ReadOnlyPaginatedList(
+                currentPage = GUIExtensions.ReadOnlyPaginatedList(
                     currentPage,
                     ENTRIES_PER_PAGE,
                     logMessages.NumItems,

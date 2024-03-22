@@ -35,7 +35,7 @@ namespace CelesteEditor.Components
             EditorGUILayout.LabelField("Components", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
             
-            currentPage = GUIUtils.PaginatedList(
+            currentPage = GUIExtensions.PaginatedList(
                 currentPage,
                 40,
                 componentTemplatesProperty.arraySize,
@@ -83,7 +83,7 @@ namespace CelesteEditor.Components
                 () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
                 () => Container.AddEmptyTemplate(),
                 (i) => Container.RemoveComponent(i),
-                GUIUtils.ListLayoutOptions.None);
+                GUIExtensions.ListLayoutOptions.None);
 
             serializedObject.ApplyModifiedProperties();
         }

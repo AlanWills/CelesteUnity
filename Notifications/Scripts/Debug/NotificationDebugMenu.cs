@@ -59,7 +59,7 @@ namespace Celeste.Notifications.Debug
                 notificationRecord.CancelAllNotifications();
             }
 
-            currentNotificationsChannelPage = GUIUtils.ReadOnlyPaginatedList(
+            currentNotificationsChannelPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentNotificationsChannelPage,
                 NOTIFICATIONS_CHANNEL_PER_PAGE,
                 notificationCatalogue.NumItems,
@@ -87,7 +87,7 @@ namespace Celeste.Notifications.Debug
                     }
                 });
 
-            currentNotificationsPage = GUIUtils.ReadOnlyPaginatedList(
+            currentNotificationsPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentNotificationsPage,
                 NOTIFICATIONS_PER_PAGE,
                 notificationChannelCatalogue.NumItems,

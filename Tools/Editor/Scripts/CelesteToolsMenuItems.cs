@@ -12,13 +12,13 @@ namespace CelesteEditor.Tools
         [MenuItem(CLEAR_CACHE_MENU_PATH)]
         public static void ClearCacheMenuItem()
         {
-            CachingUtility.ClearCache();
+            CachingExtensions.ClearCache();
         }
 
         [MenuItem(FIND_MISSING_COMPONENTS_MENU_PATH)]
         public static void FindMissingComponentsInLoadedScenesMenuItem()
         {
-            SceneUtility.FindMissingComponentsInLoadedScenes();
+            SceneExtensions.FindMissingComponentsInLoadedScenes();
         }
 
         [MenuItem(DUPLICATE_MENU_PATH, true)]

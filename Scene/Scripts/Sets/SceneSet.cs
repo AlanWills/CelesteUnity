@@ -270,7 +270,7 @@ namespace Celeste.Scene
             {
                 if (checkForMissingComponents)
                 {
-                    Tools.SceneUtility.FindMissingComponentsInLoadedScenes();
+                    Tools.SceneExtensions.FindMissingComponentsInLoadedScenes();
                 }
             }
 

@@ -33,7 +33,7 @@ namespace Celeste.Options.Debug
                 GUILayout.Label("Bool Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
                 GUILayout.Space(5);
 
-                boolOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                boolOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
                     boolOptionsCurrentPage,
                     ENTRIES_PER_PAGE,
                     options.NumBoolOptions,
@@ -50,7 +50,7 @@ namespace Celeste.Options.Debug
                 GUILayout.Label("Int Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
                 GUILayout.Space(5);
 
-                intOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                intOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
                     intOptionsCurrentPage,
                     ENTRIES_PER_PAGE,
                     options.NumIntOptions,
@@ -67,7 +67,7 @@ namespace Celeste.Options.Debug
                 GUILayout.Label("Float Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
                 GUILayout.Space(5);
 
-                floatOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                floatOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
                     floatOptionsCurrentPage,
                     ENTRIES_PER_PAGE,
                     options.NumFloatOptions,
@@ -84,7 +84,7 @@ namespace Celeste.Options.Debug
                 GUILayout.Label("String Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
                 GUILayout.Space(5);
 
-                stringOptionsCurrentPage = GUIUtils.ReadOnlyPaginatedList(
+                stringOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
                     stringOptionsCurrentPage,
                     ENTRIES_PER_PAGE,
                     options.NumStringOptions,

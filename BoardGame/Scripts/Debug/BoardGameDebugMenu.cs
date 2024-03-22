@@ -34,7 +34,7 @@ namespace Celeste.BoardGame.Debug
         {
             using (new GUILayout.HorizontalScope())
             {
-                addBoardGameObjectArgs.boardGameObjectGuid = GUIUtils.IntField(addBoardGameObjectArgs.boardGameObjectGuid);
+                addBoardGameObjectArgs.boardGameObjectGuid = GUIExtensions.IntField(addBoardGameObjectArgs.boardGameObjectGuid);
                 addBoardGameObjectArgs.location = GUILayout.TextField(addBoardGameObjectArgs.location);
 
                 if (GUILayout.Button("Add", GUILayout.ExpandWidth(false)))
@@ -46,7 +46,7 @@ namespace Celeste.BoardGame.Debug
 
             using (new GUILayout.HorizontalScope())
             {
-                moveBoardGameObjectArgs.boardGameObjectRuntimeInstanceId = GUIUtils.IntField(moveBoardGameObjectArgs.boardGameObjectRuntimeInstanceId);
+                moveBoardGameObjectArgs.boardGameObjectRuntimeInstanceId = GUIExtensions.IntField(moveBoardGameObjectArgs.boardGameObjectRuntimeInstanceId);
                 moveBoardGameObjectArgs.newLocation = GUILayout.TextField(moveBoardGameObjectArgs.newLocation);
 
                 if (GUILayout.Button("Move", GUILayout.ExpandWidth(false)))
@@ -58,7 +58,7 @@ namespace Celeste.BoardGame.Debug
 
             if (currentBoardGameRuntime != null)
             {
-                currentPage = GUIUtils.ReadOnlyPaginatedList(
+                currentPage = GUIExtensions.ReadOnlyPaginatedList(
                     currentPage,
                     entriesPerPage,
                     currentBoardGameRuntime.NumBoardGameObjectRuntimes,
