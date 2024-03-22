@@ -568,7 +568,7 @@ namespace CelesteEditor.UnityProject
             AssetUtility.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
 
             SceneAsset engineSystemsScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH);
-            SceneManager.LoadScene(engineSystemsScene.name, LoadSceneMode.Single);
+            EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
 
             // Set Music Settings
             {
@@ -603,7 +603,6 @@ namespace CelesteEditor.UnityProject
             {
                 CreateGameSystemsFolders();
                 CreateGameSystemsScenes(parameters);
-                CreateEngineSystemsAssets(parameters);
             }
         }
 
@@ -764,6 +763,7 @@ namespace CelesteEditor.UnityProject
             GameObject prefab = AssetUtility.FindAsset<GameObject>(scenePrefabName);
             PrefabUtility.InstantiatePrefab(prefab, scene);
             EditorSceneManager.SaveScene(scene, scenePath);
+            AssetDatabase.Refresh();
 
             SetAddressableAddress(parameters,scenePath, sceneName);
         }
