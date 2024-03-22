@@ -102,7 +102,7 @@ namespace Celeste.Testing
             StopCurrentTestExecution();
         }
 
-        private void TryStopCurrentTests()
+        public void TryStopCurrentTests()
         {
             StopCurrentTestExecution();
 
