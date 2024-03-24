@@ -1,4 +1,5 @@
 ﻿using Celeste.Events;
+using Celeste.Parameters;
 using UnityEngine;
 
 namespace Celeste.Sound
@@ -15,6 +16,11 @@ namespace Celeste.Sound
         public void RaiseWithPreset()
         {
             Raise(presetAudioClip);
+        }
+
+        public void Raise(AudioClipValue audioClipValue)
+        {
+            Raise(audioClipValue.Value);
         }
     }
 }
