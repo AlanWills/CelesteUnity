@@ -5,11 +5,11 @@
         public const string EDITOR_CONSTANTS = 
             "namespace {0}\n" +
             "{{\n" +
-            "   public static class {1}EditorConstants\n" +
-            "   {{\n" +
-            "       public const string SCENE_SET_PATH = \"{2}\";\n" +
-            "       public const string SCENE_MENU_ITEM = \"{3}\";\n" +
-            "   }}\n" +
+            "    public static class {1}EditorConstants\n" +
+            "    {{\n" +
+            "        public const string SCENE_SET_PATH = \"{2}\";\n" +
+            "        public const string SCENE_MENU_ITEM = \"{3}\";\n" +
+            "    }}\n" +
             "}}";
 
         public const string MENU_ITEMS =
@@ -18,14 +18,14 @@
             "\n\n" +
             "namespace {0}\n" +
             "{{\n" +
-            "   public static class MenuItems\n" +
-            "   {{\n" +
-            "       [MenuItem({1}EditorConstants.SCENE_MENU_ITEM)]\n" +
-            "       public static void Load{1}MenuItem()\n" +
-            "       {{\n" +
-            "           LoadSceneSetMenuItem({1}EditorConstants.SCENE_SET_PATH);\n" +
-            "       }}\n" +
-            "   }}\n" +
+            "    public static class MenuItems\n" +
+            "    {{\n" +
+            "        [MenuItem({1}EditorConstants.SCENE_MENU_ITEM)]\n" +
+            "        public static void Load{1}MenuItem()\n" +
+            "        {{\n" +
+            "            LoadSceneSetMenuItem({1}EditorConstants.SCENE_SET_PATH);\n" +
+            "        }}\n" +
+            "    }}\n" +
             "}}";
     }
 }

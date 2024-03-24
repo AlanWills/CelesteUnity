@@ -20,7 +20,7 @@
     {
         public const string FOLDER_NAME = "Bootstrap/";
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
-        public const string LOAD_JOBS_FOLDER_PATH = FOLDER_PATH + "Steps/";
+        public const string LOAD_JOBS_FOLDER_PATH = FOLDER_PATH + "Jobs/";
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
         public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemsSceneSet";
         public const string LOAD_JOB_NAME = "BootstrapLoadJob";
@@ -43,7 +43,7 @@
         public const string DEBUG_SCENE_PATH = SCENES_FOLDER_PATH + DEBUG_SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "EngineSystemsSceneSet";
         public const string ENGINE_SYSTEMS_PREFAB_NAME = "EngineSystems";
-        public const string ENGINE_SYSTEMS_DEBUG_PREFAB_NAME = "EngineSystems";
+        public const string ENGINE_SYSTEMS_DEBUG_PREFAB_NAME = "EngineSystemsDebug";
     }
 
     public static class GameSystemsConstants

@@ -24,8 +24,13 @@ namespace Celeste.Tools
 
         public static int IntField(string label, int currentInt)
         {
+            if (!string.IsNullOrEmpty(label))
+            {
+                Label(label);
+            }
+
             string currentIntText = currentInt.ToString();
-            currentIntText = TextField(label, currentIntText);
+            currentIntText = TextField(currentIntText);
 
             if (GUI.changed)
             {
