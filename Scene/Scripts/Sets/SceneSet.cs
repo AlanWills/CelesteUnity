@@ -6,6 +6,7 @@ using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -254,9 +255,7 @@ namespace Celeste.Scene
                 onProgressChanged.Invoke(progress);
             }
 
-#if UNITY_EDITOR
             EditorOnly_SortScenes();
-#endif
 
             if (unloadResourcesOnLoad)
             {
@@ -298,9 +297,10 @@ namespace Celeste.Scene
             yield return new WaitUntil(() => handle.LoadAssetsCount <= 0);
         }
 
-#if UNITY_EDITOR
+        [Conditional("UNITY_EDITOR")]
         public void EditorOnly_SortScenes()
         {
+#if UNITY_EDITOR
             List<UnityScene> unityScenes = new List<UnityScene>(SceneManager.sceneCount);
             for (int i = 0, n = SceneManager.sceneCount; i < n; ++i)
             {
@@ -317,7 +317,7 @@ namespace Celeste.Scene
                     UnityEditor.SceneManagement.EditorSceneManager.MoveSceneBefore(first, second);
                 }
             }
-        }
 #endif
+        }
     }
 }

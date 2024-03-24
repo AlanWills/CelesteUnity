@@ -26,11 +26,12 @@ namespace Celeste.Tools
         {
             if (!string.IsNullOrEmpty(label))
             {
-                Label(label);
+                Label(label, MaxWidth(150));
+                FlexibleSpace();
             }
 
             string currentIntText = currentInt.ToString();
-            currentIntText = TextField(currentIntText);
+            currentIntText = TextField(currentIntText, MinWidth(40));
 
             if (GUI.changed)
             {

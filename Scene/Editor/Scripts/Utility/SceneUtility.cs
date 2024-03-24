@@ -1,8 +1,8 @@
 ﻿using Celeste.Scene;
 using CelesteEditor.Tools;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,24 +12,53 @@ namespace CelesteEditor.Scene
 {
     public static class SceneUtility
     {
-        public static Dictionary<string, string> CreateScenePathLookup()
+        public struct SceneInfo : IEquatable<SceneInfo>
         {
-            Dictionary<string, string> scenePathLookup = new Dictionary<string, string>();
+            public string name;
+            public bool isAddressable;
+
+            public bool Equals(SceneInfo other)
+            {
+                return string.CompareOrdinal(name, other.name) == 0 && isAddressable && other.isAddressable;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is SceneInfo sceneInfoObj)
+                {
+                    return Equals(sceneInfoObj);
+                }
+
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return name.GetHashCode() + isAddressable.GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return base.ToString();
+            }
+        }
+
+        public static Dictionary<SceneInfo, string> CreateScenePathLookup()
+        {
+            Dictionary<SceneInfo, string> scenePathLookup = new Dictionary<SceneInfo, string>();
 
             foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}"))
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(sceneGuid);
                 SceneAsset unityScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);
+                SceneInfo sceneInfo = new SceneInfo()
+                {
+                    name = unityScene.name,
+                    isAddressable = unityScene.IsAssetAddressable()
+                };
 
-                if (unityScene.IsAssetAddressable())
-                {
-                    AddressableAssetEntry unitySceneAddressableInfo = unityScene.GetAddressableInfo();
-                    scenePathLookup[unityScene.name] = assetPath;
-                }
-                else
-                {
-                    scenePathLookup[unityScene.name] = assetPath;
-                }
+                UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(sceneInfo), $"Scene Collision!!!!  Detected duplicate scenes with name '{sceneInfo.name}' and addressable state '{sceneInfo.isAddressable}'.");
+                scenePathLookup[sceneInfo] = assetPath;
             }
 
             return scenePathLookup;
@@ -58,7 +87,7 @@ namespace CelesteEditor.Scene
             }
 
             HashSet<string> loadedScenes = new HashSet<string>();
-            Dictionary<string, string> scenePathLookup = CreateScenePathLookup();
+            Dictionary<SceneInfo, string> scenePathLookup = CreateScenePathLookup();
 
             List<UnityScene> scenesToUnload = new List<UnityScene>();
             for (int i = SceneManager.sceneCount; i > 0; --i)
@@ -76,12 +105,16 @@ namespace CelesteEditor.Scene
 
             for (int i = 0, n = sceneSet.NumScenes; i < n; ++i)
             {
-                string sceneId = sceneSet.GetSceneId(i);
-
-                if (!loadedScenes.Contains(sceneId))
+                SceneInfo sceneInfo = new SceneInfo()
                 {
-                    UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(sceneId), $"Could not find scene {sceneId} in lookup.");
-                    EditorSceneManager.OpenScene(scenePathLookup[sceneId], OpenSceneMode.Additive);
+                    name = sceneSet.GetSceneId(i),
+                    isAddressable = sceneSet.GetSceneType(i) == SceneType.Addressable
+                };
+
+                if (!loadedScenes.Contains(sceneInfo.name))
+                {
+                    UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(sceneInfo), $"Could not find scene {sceneInfo.name} in lookup.");
+                    EditorSceneManager.OpenScene(scenePathLookup[sceneInfo], OpenSceneMode.Additive);
                 }
             }
 

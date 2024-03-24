@@ -14,7 +14,7 @@ namespace CelesteEditor.Scene
             HashSet<string> loadedScenes = new HashSet<string>();
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
             Dictionary<string, EditorBuildSettingsScene> newScenes = new Dictionary<string, EditorBuildSettingsScene>();
-            Dictionary<string, string> scenePathLookup = SceneUtility.CreateScenePathLookup();
+            Dictionary<SceneUtility.SceneInfo, string> scenePathLookup = SceneUtility.CreateScenePathLookup();
 
             foreach (var scene in scenes)
             {
@@ -30,10 +30,11 @@ namespace CelesteEditor.Scene
                 {
                     string sceneId = sceneSet.GetSceneId(i);
                     SceneType sceneType = sceneSet.GetSceneType(i);
+                    SceneUtility.SceneInfo sceneInfo = new SceneUtility.SceneInfo() { name = sceneId, isAddressable = sceneType == SceneType.Addressable };
 
                     if (sceneType == SceneType.Baked)
                     {
-                        string scenePath = scenePathLookup[sceneId];
+                        string scenePath = scenePathLookup[sceneInfo];
 
                         if (!newScenes.ContainsKey(scenePath))
                         {
@@ -44,8 +45,8 @@ namespace CelesteEditor.Scene
                     {
                         // Also handle the case where the address has the file path at the end
                         // We don't want to support that at runtime, but we do want to find it so we can fix it
-                        if (scenePathLookup.TryGetValue(sceneId, out string scenePath) ||
-                            scenePathLookup.TryGetValue($"{sceneId}.unity", out scenePath))
+                        if (scenePathLookup.TryGetValue(sceneInfo, out string scenePath) ||
+                            scenePathLookup.TryGetValue(new SceneUtility.SceneInfo() { name = $"{sceneInfo.name}.unity", isAddressable = sceneInfo.isAddressable }, out scenePath))
                         {
                             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
                             sceneAsset.SetAddressableAddress(sceneId);
