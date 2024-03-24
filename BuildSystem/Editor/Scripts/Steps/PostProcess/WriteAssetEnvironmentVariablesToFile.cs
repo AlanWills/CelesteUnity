@@ -45,7 +45,9 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(platformSettings.AddressablesBuildDirectory);
             }
 
-            File.WriteAllText(Path.Combine(new DirectoryInfo(platformSettings.AddressablesBuildDirectory).Parent.FullName, assetEnvironmentVariablesFileName), locationInfo.ToString());
+            string parentDirectory = new DirectoryInfo(platformSettings.AddressablesBuildDirectory).Parent.FullName;
+            Directory.CreateDirectory(parentDirectory);
+            File.WriteAllText(Path.Combine(parentDirectory, assetEnvironmentVariablesFileName), locationInfo.ToString());
         }
     }
 }

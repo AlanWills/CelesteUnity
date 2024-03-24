@@ -158,29 +158,21 @@ namespace CelesteEditor.BuildSystem
             {
                 EditorGUILayout.PropertyField(settingsProperty, new GUIContent(settingsPropertyName));
             }
-            else if (GUILayout.Button($"Create {settingsPropertyName} Settings", GUILayout.ExpandWidth(false)))
+            else if (GUILayout.Button($"Find Or Create {settingsPropertyName} Settings", GUILayout.ExpandWidth(false)))
             {
-                CreateSettingsAsset<T>(
+                FindOrCreateSettingsAsset<T>(
                     folder,
                     name,
                     settingsProperty);
             }
         }
 
-        private void CreateSettingsAsset<T>(
+        private void FindOrCreateSettingsAsset<T>(
             string folder,
             string settingsName,
             SerializedProperty settingsProperty) where T : PlatformSettings
         {
-            AssetUtility.CreateFolder(folder);
-
-            T settings = ScriptableObject.CreateInstance<T>();
-            settings.name = settingsName;
-            settings.SetDefaultValues();
-
-            AssetUtility.CreateAssetInFolderAndSave(settings, folder);
-
-            settingsProperty.objectReferenceValue = AllPlatformSettings.GetOrCreateSettings().CreateSettingsAsset<T>(folder, settingsName);
+            settingsProperty.objectReferenceValue = AllPlatformSettings.FindOrCreatePlatformSettingsAsset<T>(folder, settingsName);
         }
 
         #region Settings Provider

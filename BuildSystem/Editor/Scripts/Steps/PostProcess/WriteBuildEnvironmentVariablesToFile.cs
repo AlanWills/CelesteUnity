@@ -60,6 +60,7 @@ namespace CelesteEditor.BuildSystem.Steps
 
             platformSettings.InjectBuildEnvVars(buildInfo);
 
+            Directory.CreateDirectory(platformSettings.BuildDirectory);
             File.WriteAllText(Path.Combine(platformSettings.BuildDirectory, $"{buildEnvironmentVariablesFileName}"), buildInfo.ToString());
         }
     }
