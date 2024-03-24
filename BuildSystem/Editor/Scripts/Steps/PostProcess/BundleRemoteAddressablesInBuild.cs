@@ -80,6 +80,7 @@ namespace CelesteEditor.BuildSystem.Steps
 
             if (!Directory.Exists(cachedAssetBundles.cacheLocation))
             {
+                Debug.Log($"Creating cached asset bundle location: {cachedAssetBundles.cacheLocation}.");
                 Directory.CreateDirectory(cachedAssetBundles.cacheLocation);
             }
 
@@ -88,6 +89,7 @@ namespace CelesteEditor.BuildSystem.Steps
             {
                 var srcFile = Path.Combine(remoteBuildDir, relativeBundlePath);
                 var destFile = Path.Combine(cachedAssetBundles.cacheLocation, relativeBundlePath);
+                Debug.Log($"Moving source addressable asset bundle '{srcFile}' to '{destFile}'.");
                 File.Copy(srcFile, destFile, true);
             }
         }
