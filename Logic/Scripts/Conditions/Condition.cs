@@ -1,13 +1,15 @@
 ﻿using Celeste.Events;
 using Celeste.Objects;
+using Celeste.Tools;
 using System;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Celeste.Logic
 {
     [Serializable]
-    public abstract class Condition : ScriptableObject, ICopyable<Condition>
+    public abstract class Condition : ScriptableObject, ICopyable<Condition>, IEditorInitializable
     {
         #region Properties and Fields
 
@@ -98,11 +100,20 @@ namespace Celeste.Logic
             asset.name = name;
             asset.hideFlags = HideFlags.HideInHierarchy;
 
-#if UNITY_EDITOR
-            UnityEditor.AssetDatabase.AddObjectToAsset(asset, this);
-#endif
+            EditorOnly.AddObjectToMainAsset(asset, this);
 
             return asset;
+        }
+
+        public void Editor_Initialize()
+        {
+            DoEditorInitialize();
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        protected virtual void DoEditorInitialize() 
+        {
+            DoInitialize();
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CelesteEditor.Logic
 {
     [CustomEditor(typeof(Condition), true, isFallback = true)]
-    public class ConditionEditor : Editor
+    public class ConditionEditor : IEditorInitializableEditor
     {
         public override void OnInspectorGUI()
         {
