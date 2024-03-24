@@ -24,24 +24,27 @@ namespace Celeste.Tools
 
         public static int IntField(string label, int currentInt)
         {
-            if (!string.IsNullOrEmpty(label))
+            using (new HorizontalScope())
             {
-                Label(label, MaxWidth(150));
-                FlexibleSpace();
-            }
-
-            string currentIntText = currentInt.ToString();
-            currentIntText = TextField(currentIntText, MinWidth(40));
-
-            if (GUI.changed)
-            {
-                if (int.TryParse(currentIntText, out int newInt))
+                if (!string.IsNullOrEmpty(label))
                 {
-                    currentInt = newInt;
+                    Label(label, MaxWidth(150));
+                    FlexibleSpace();
                 }
-            }
 
-            return currentInt;
+                string currentIntText = currentInt.ToString();
+                currentIntText = TextField(currentIntText, MinWidth(40));
+
+                if (GUI.changed)
+                {
+                    if (int.TryParse(currentIntText, out int newInt))
+                    {
+                        currentInt = newInt;
+                    }
+                }
+
+                return currentInt;
+            }
         }
 
         public static int IntField(int currentInt)

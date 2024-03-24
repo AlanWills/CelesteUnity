@@ -19,7 +19,7 @@ namespace CelesteEditor.Scene
 
             public bool Equals(SceneInfo other)
             {
-                return string.CompareOrdinal(name, other.name) == 0 && isAddressable && other.isAddressable;
+                return string.CompareOrdinal(name, other.name) == 0 && isAddressable == other.isAddressable;
             }
 
             public override bool Equals(object obj)
@@ -39,7 +39,7 @@ namespace CelesteEditor.Scene
 
             public override string ToString()
             {
-                return base.ToString();
+                return $"{name} {isAddressable}";
             }
         }
 
@@ -57,7 +57,7 @@ namespace CelesteEditor.Scene
                     isAddressable = unityScene.IsAssetAddressable()
                 };
 
-                UnityEngine.Debug.Assert(scenePathLookup.ContainsKey(sceneInfo), $"Scene Collision!!!!  Detected duplicate scenes with name '{sceneInfo.name}' and addressable state '{sceneInfo.isAddressable}'.");
+                UnityEngine.Debug.Assert(!scenePathLookup.ContainsKey(sceneInfo), $"Scene Collision!!!!  Detected duplicate scenes with info '{sceneInfo}'.");
                 scenePathLookup[sceneInfo] = assetPath;
             }
 
