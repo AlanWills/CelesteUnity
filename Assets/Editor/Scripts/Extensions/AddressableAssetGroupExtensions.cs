@@ -1,3 +1,4 @@
+using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
@@ -19,27 +20,23 @@ namespace CelesteEditor.Assets
             return false;
         }
 
-        public static void SetBuildPath(this AddressableAssetGroup group, string buildPath)
+        public static void SetBuildPath(this AddressableAssetGroup group, string buildPathId)
         {
             var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
             
             if (group.TryGetSchema<BundledAssetGroupSchema>(out var bundledAssets))
             {
-                var buildPathName = bundledAssets.BuildPath.GetName(addressableSettings);
-                addressableSettings.profileSettings.SetValue(addressableSettings.activeProfileId, buildPathName, buildPath);
-                bundledAssets.BuildPath.SetVariableByName(addressableSettings, buildPathName);
+                bundledAssets.BuildPath.SetVariableById(addressableSettings, buildPathId);
             }
         }
 
-        public static void SetLoadPath(this AddressableAssetGroup group, string loadPath)
+        public static void SetLoadPath(this AddressableAssetGroup group, string loadPathId)
         {
             var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
 
             if (group.TryGetSchema<BundledAssetGroupSchema>(out var bundledAssets))
             {
-                var loadPathName = bundledAssets.LoadPath.GetName(addressableSettings);
-                addressableSettings.profileSettings.SetValue(addressableSettings.activeProfileId, loadPathName, loadPath);
-                bundledAssets.LoadPath.SetVariableByName(addressableSettings, loadPathName);
+                bundledAssets.LoadPath.SetVariableById(addressableSettings, loadPathId);
             }
         }
     }

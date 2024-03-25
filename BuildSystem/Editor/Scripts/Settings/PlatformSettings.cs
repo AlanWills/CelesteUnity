@@ -98,26 +98,31 @@ namespace CelesteEditor.BuildSystem
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The directory that built addressables will be outputted to, relative to the project directory." + STRING_SUBSTITUTION_HELP)]
         private string addressablesBuildDirectory;
-        public string AddressablesBuildDirectory
-        {
-            get { return Resolve(addressablesBuildDirectory); }
-        }
+        public string AddressablesBuildDirectory => Resolve(addressablesBuildDirectory);
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The remote load path for the addressables e.g. an S3 bucket." + STRING_SUBSTITUTION_HELP)]
         private string addressablesLoadDirectory;
-        public string AddressablesLoadDirectory
-        {
-            get { return Resolve(addressablesLoadDirectory); }
-        }
+        public string AddressablesLoadDirectory => Resolve(addressablesLoadDirectory);
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesUploadURL;
-        public string AddressablesUploadURL
-        {
-            get { return Resolve(addressablesUploadURL); }
-        }
+        public string AddressablesUploadURL => Resolve(addressablesUploadURL);
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("Enable advanced addressables settings.  Warning, most users will not need to edit these values.")]
+        private bool advancedAddressablesSettings;
+
+        [SerializeField, ShowIfAll(nameof(addressablesEnabled), nameof(advancedAddressablesSettings))]
+        [Tooltip("The build path for local addressables that Unity uses to copy built addressable groups to Streaming Assets when building a player." + STRING_SUBSTITUTION_HELP)]
+        private string localAddressablesBuildPath = "[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]";
+        public string LocalAddressablesBuildPath => Resolve(localAddressablesBuildPath);
+
+        [SerializeField, ShowIfAll(nameof(addressablesEnabled), nameof(advancedAddressablesSettings))]
+        [Tooltip("The load path that Unity uses at runtime to load local addressable groups it has bundled with the app." + STRING_SUBSTITUTION_HELP)]
+        private string localAddressablesLoadPath = "{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]";
+        public string LocalAddressablesLoadPath => Resolve(localAddressablesLoadPath);
 
         [SerializeField]
         private BuildTarget buildTarget;
@@ -156,10 +161,7 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.StrictMode;
-        public BuildOptions BuildOptions
-        {
-            get { return buildOptions; }
-        }
+        public BuildOptions BuildOptions => buildOptions;
 
         [Header("Build Player")]
         [SerializeField]
@@ -242,8 +244,8 @@ namespace CelesteEditor.BuildSystem
                 settings.OverridePlayerVersion = PlayerOverrideVersion;
                 AddressablesUtility.SetAddressablesRemoteBuildPath(AddressablesBuildDirectory);
                 AddressablesUtility.SetAddressablesRemoteLoadPath(AddressablesLoadDirectory);
-                AddressablesUtility.SetAddressablesLocalBuildPath("[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]");
-                AddressablesUtility.SetAddressablesLocalLoadPath("{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]");
+                AddressablesUtility.SetAddressablesLocalBuildPath(LocalAddressablesBuildPath);
+                AddressablesUtility.SetAddressablesLocalLoadPath(LocalAddressablesLoadPath);
 
                 if (addressableGroupsInBuild.NumItems > 0)
                 {
@@ -298,6 +300,8 @@ namespace CelesteEditor.BuildSystem
 
         public void BuildPlayer(BuildPlayerOptions buildPlayerOptions)
         {
+            LogUtility.Clear();
+
             Switch();
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
 
@@ -371,6 +375,8 @@ namespace CelesteEditor.BuildSystem
 
         public void BuildAssets()
         {
+            LogUtility.Clear();
+            
             Switch();
             PrepareAssetsForBuild();
 
@@ -383,6 +389,8 @@ namespace CelesteEditor.BuildSystem
 
         public bool UpdateAssets()
         {
+            LogUtility.Clear();
+            
             Switch();
             PrepareAssetsForUpdate();
 

@@ -52,11 +52,8 @@ namespace CelesteEditor.Assets.Analyze
 
         protected override void FixIssue(AddressableAssetGroup addressableAssetGroup)
         {
-            string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
-            string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
-
-            addressableAssetGroup.SetBuildPath(remoteBuildPath);
-            addressableAssetGroup.SetLoadPath(remoteLoadPath);
+            addressableAssetGroup.SetBuildPath(AddressablesUtility.REMOTE_BUILD_PATH_VARIABLE);
+            addressableAssetGroup.SetLoadPath(AddressablesUtility.REMOTE_LOAD_PATH_VARIABLE);
         }
     }
 }
