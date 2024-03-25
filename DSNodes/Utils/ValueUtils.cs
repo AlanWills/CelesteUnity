@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XNode;
 
 namespace Celeste.DSNodes
@@ -20,7 +16,7 @@ namespace Celeste.DSNodes
             object obj = port.GetInputValue();
             if (obj != null && obj.IsNumber())
             {
-                return (float)obj;
+                return Convert.ToSingle(obj);
             }
 
             return defaultValue;
