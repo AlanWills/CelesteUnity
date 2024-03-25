@@ -79,18 +79,19 @@ namespace CelesteEditor.BuildSystem.Steps
         private static void BundleRemoteAddressables(CachedAssetBundles cachedAssetBundles)
         {
             var remoteBuildDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
+            var localBuildDir = AddressablesUtility.GetAddressablesLocalBuildPath();
 
-            if (!Directory.Exists(cachedAssetBundles.cacheLocation))
+            if (!Directory.Exists(localBuildDir))
             {
-                Debug.Log($"Creating cached asset bundle location: {cachedAssetBundles.cacheLocation}.");
-                Directory.CreateDirectory(cachedAssetBundles.cacheLocation);
+                Debug.Log($"Creating cached asset bundle location: {localBuildDir}.");
+                Directory.CreateDirectory(localBuildDir);
             }
 
-            // Copy bundles to aa folder
+            // Copy bundles to Unity's local addressables build folder
             foreach (string relativeBundlePath in cachedAssetBundles.cachedBundleList)
             {
                 var srcFile = Path.Combine(remoteBuildDir, relativeBundlePath);
-                var destFile = Path.Combine(cachedAssetBundles.cacheLocation, relativeBundlePath);
+                var destFile = Path.Combine(localBuildDir, relativeBundlePath);
                 Debug.Log($"Moving source addressable asset bundle '{srcFile}' to '{destFile}'.");
                 File.Copy(srcFile, destFile, true);
             }
