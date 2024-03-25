@@ -40,10 +40,12 @@ namespace CelesteEditor.BuildSystem.Steps
         {
             var buildRootDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
             var buildRootDirLen = buildRootDir.Length;
-            string cacheLocation = AddressablesUtility.GetAddressablesLocalBuildPath();
+            string localBuildPath = AddressablesUtility.GetAddressablesLocalBuildPath();
+            string localLoadPath = AddressablesUtility.GetAddressablesLocalLoadPath();
+            
             CachedAssetBundles cachedBundles = new CachedAssetBundles
             {
-                cacheLocation = cacheLocation
+                cacheLocation = localLoadPath
             };
 
             foreach (var assetBundleName in assetBundleNames)
@@ -63,13 +65,13 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(buildRootDir);
             }
 
-            if (!Directory.Exists(cacheLocation))
+            if (!Directory.Exists(localBuildPath))
             {
-                Directory.CreateDirectory(cacheLocation);
+                Directory.CreateDirectory(localBuildPath);
             }
 
             var json = JsonUtility.ToJson(cachedBundles);
-            File.WriteAllText(Path.Combine(cacheLocation, "CachedAssetBundles.json"), json);
+            File.WriteAllText(Path.Combine(localBuildPath, "CachedAssetBundles.json"), json);
 
             return cachedBundles;
         }

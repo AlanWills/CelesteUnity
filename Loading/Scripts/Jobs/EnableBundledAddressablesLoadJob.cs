@@ -79,7 +79,8 @@ namespace Celeste.Loading
             // we have to redirect where we get the CachedAssetBundles info from
             return Path.Combine(CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath(), "CachedAssetBundles.json");
 #else
-            return Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json");
+            return Path.Combine(Addressables.RuntimePath, "CachedAssetBundles.json");
+            //return Path.Combine(Application.streamingAssetsPath, "CachedAssetBundles.json");
 #endif
         }
 
