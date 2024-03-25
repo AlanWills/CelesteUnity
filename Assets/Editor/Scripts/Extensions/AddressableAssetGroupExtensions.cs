@@ -1,5 +1,3 @@
-using CelesteEditor.Tools;
-using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
@@ -20,23 +18,25 @@ namespace CelesteEditor.Assets
             return false;
         }
 
-        public static void SetBuildPath(this AddressableAssetGroup group, string buildPathId)
+        public static void SetBuildPath(this AddressableAssetGroup group, string buildPathVariableName)
         {
             var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
             
             if (group.TryGetSchema<BundledAssetGroupSchema>(out var bundledAssets))
             {
-                bundledAssets.BuildPath.SetVariableById(addressableSettings, buildPathId);
+                bool setCorrectly = bundledAssets.BuildPath.SetVariableByName(addressableSettings, buildPathVariableName);
+                UnityEngine.Debug.Assert(setCorrectly, $"Could not set Build Path using variable with name '{buildPathVariableName}'.  Check the warnings for more details from Unity Addressables.");
             }
         }
 
-        public static void SetLoadPath(this AddressableAssetGroup group, string loadPathId)
+        public static void SetLoadPath(this AddressableAssetGroup group, string loadPathVariableName)
         {
             var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
 
             if (group.TryGetSchema<BundledAssetGroupSchema>(out var bundledAssets))
             {
-                bundledAssets.LoadPath.SetVariableById(addressableSettings, loadPathId);
+                bool setCorrectly = bundledAssets.LoadPath.SetVariableByName(addressableSettings, loadPathVariableName);
+                UnityEngine.Debug.Assert(setCorrectly, $"Could not set Load Path using variable with name '{loadPathVariableName}'.  Check the warnings for more details from Unity Addressables.");
             }
         }
     }
