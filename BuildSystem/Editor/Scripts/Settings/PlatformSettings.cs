@@ -219,6 +219,8 @@ namespace CelesteEditor.BuildSystem
 
         public void Apply()
         {
+            Debug.Log($"Applying {name}'s settings.");
+
             if (addressablesEnabled)
             {
                 SetAddressableAssetSettings();
@@ -238,8 +240,10 @@ namespace CelesteEditor.BuildSystem
             {
                 AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
                 settings.OverridePlayerVersion = PlayerOverrideVersion;
-                settings.profileSettings.SetValue(settings.activeProfileId, "Remote.BuildPath", AddressablesBuildDirectory);
-                settings.profileSettings.SetValue(settings.activeProfileId, "Remote.LoadPath", AddressablesLoadDirectory);
+                AddressablesUtility.SetAddressablesRemoteBuildPath(AddressablesBuildDirectory);
+                AddressablesUtility.SetAddressablesRemoteLoadPath(AddressablesLoadDirectory);
+                AddressablesUtility.SetAddressablesLocalBuildPath("[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]");
+                AddressablesUtility.SetAddressablesLocalLoadPath("{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]");
 
                 if (addressableGroupsInBuild.NumItems > 0)
                 {
@@ -266,6 +270,7 @@ namespace CelesteEditor.BuildSystem
 
         public void Switch()
         {
+            Debug.Log($"Switching Active Editor Build Target to {BuildTargetGroup} - {BuildTarget}.");
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup, BuildTarget);
             Apply();
         }

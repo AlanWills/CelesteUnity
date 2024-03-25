@@ -180,9 +180,19 @@ namespace CelesteEditor.Tools
             return EvaluateProfileSettingsString(REMOTE_BUILD_PATH_VARIABLE);
         }
 
+        public static void SetAddressablesRemoteBuildPath(string remoteBuildPath)
+        {
+            SetProfileSettingsString(REMOTE_BUILD_PATH_VARIABLE, remoteBuildPath);
+        }
+
         public static string GetAddressablesRemoteLoadPath()
         {
             return EvaluateProfileSettingsString(REMOTE_LOAD_PATH_VARIABLE);
+        }
+
+        public static void SetAddressablesRemoteLoadPath(string remoteLoadPath)
+        {
+            SetProfileSettingsString(REMOTE_LOAD_PATH_VARIABLE, remoteLoadPath);
         }
 
         public static string GetAddressablesLocalBuildPath()
@@ -190,9 +200,19 @@ namespace CelesteEditor.Tools
             return EvaluateProfileSettingsString(LOCAL_BUILD_PATH_VARIABLE);
         }
 
+        public static void SetAddressablesLocalBuildPath(string localBuildPath)
+        {
+            SetProfileSettingsString(LOCAL_BUILD_PATH_VARIABLE, localBuildPath);
+        }
+
         public static string GetAddressablesLocalLoadPath()
         {
             return EvaluateProfileSettingsString(LOCAL_LOAD_PATH_VARIABLE);
+        }
+
+        public static void SetAddressablesLocalLoadPath(string localLoadPath)
+        {
+            SetProfileSettingsString(LOCAL_LOAD_PATH_VARIABLE, localLoadPath);
         }
 
         private static string EvaluateProfileSettingsString(string variablePath)
@@ -206,6 +226,18 @@ namespace CelesteEditor.Tools
             var profileSettings = settings.profileSettings;
             var propName = profileSettings.GetValueByName(settings.activeProfileId, variablePath);
             return profileSettings.EvaluateString(settings.activeProfileId, propName);
+        }
+
+        private static void SetProfileSettingsString(string variablePath, string variableValue)
+        {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                return;
+            }
+
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            var profileSettings = settings.profileSettings;
+            profileSettings.SetValue(settings.activeProfileId, variablePath, variableValue);
         }
     }
 }
