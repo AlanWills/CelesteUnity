@@ -26,7 +26,7 @@ namespace Celeste.FSM.Nodes
         #region Properties and Fields
 
         [Input, SerializeField] private string inputValue;
-        [Input, SerializeField] private string outputValue;
+        [Output, SerializeField] private string outputValue;
 
         [SerializeField] private List<ForwarderValue> forwardedValues = new List<ForwarderValue>();
 
