@@ -1,12 +1,7 @@
-﻿using Celeste.Assets;
-using Celeste.Coroutines;
-using Celeste.Parameters;
-using Celeste.Scene;
-using Celeste.Scene.Events;
+﻿using Celeste.Parameters;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Celeste.Loading
 {

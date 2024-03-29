@@ -87,6 +87,17 @@ namespace DnD.Core.Loading
             enableInput.Invoke();
         }
 
+        private IEnumerator ExecuteLoadJobSilently(LoadJob loadJob)
+        {
+            disableInput.Invoke();
+
+            yield return loadJob.Execute(
+                SetProgress,
+                (s) => { });
+
+            enableInput.Invoke();
+        }
+
         private void SetProgress(float progress)
         {
             progressBar.value = progress;
@@ -108,6 +119,11 @@ namespace DnD.Core.Loading
         public void OnExecuteLoadJobWithOverlay(LoadJob loadJob)
         {
             StartCoroutine(ExecuteLoadJobWithOverlay(loadJob));
+        }
+
+        public void OnExecuteLoadJobSilently(LoadJob loadJob)
+        {
+            StartCoroutine(ExecuteLoadJobSilently(loadJob));
         }
 
         #endregion

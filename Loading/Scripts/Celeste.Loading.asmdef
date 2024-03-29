@@ -12,6 +12,7 @@
         "Celeste.Assets",
         "Celeste.Coroutines",
         "Celeste.Parameters",
+        "Celeste.Tools",
         "Celeste.BuildSystem",
         "Celeste.UnityProject",
         "Celeste.Tools.Editor"

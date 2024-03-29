@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 456125400}
   - component: {fileID: 456125401}
   - component: {fileID: 456125402}
+  - component: {fileID: 456125403}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: 4267ee0495522b748b2932da05a16789, type: 2}
+  logAddAndRemoveListener: 0
   response:
     m_PersistentCalls:
       m_Calls:
@@ -230,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: e1ad3c596fdd9ab459e8ccb8682786ef, type: 2}
+  logAddAndRemoveListener: 0
   response:
     m_PersistentCalls:
       m_Calls:
@@ -258,12 +261,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: d741abe51cde02a42837ddd5a95b1a2f, type: 2}
+  logAddAndRemoveListener: 0
   response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 456125399}
         m_TargetAssemblyTypeName: DnD.Core.Loading.LoadingManager, Celeste.Loading
         m_MethodName: OnExecuteLoadJobWithOverlay
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &456125403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456125397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57bd70e483e96e44993763311354dbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: aa8053b538b3b594e8d0938f58ca2f5a, type: 2}
+  logAddAndRemoveListener: 0
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 456125399}
+        m_TargetAssemblyTypeName: DnD.Core.Loading.LoadingManager, Celeste.Loading
+        m_MethodName: OnExecuteLoadJobSilently
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
