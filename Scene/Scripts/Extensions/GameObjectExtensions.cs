@@ -29,6 +29,11 @@ namespace Celeste.Utils
 
         public static GameObject FindGameObject(string[] splitName, FindConstraint findConstraint)
         {
+            if (splitName == null || splitName.Length == 0)
+            {
+                return null;
+            }
+
             GameObject gameObject = GameObject.Find(splitName[0]);
 
             if (gameObject != null && FindConstraintMet(gameObject, findConstraint))
@@ -47,7 +52,7 @@ namespace Celeste.Utils
             for (int i = 0; i < transform.childCount; ++i)
             {
                 Transform child = transform.GetChild(i);
-                if (child.name == childName && FindConstraintMet(child.gameObject, findConstraint))
+                if (string.CompareOrdinal(child.name, childName) == 0 && FindConstraintMet(child.gameObject, findConstraint))
                 {
                     return child.gameObject;
                 }

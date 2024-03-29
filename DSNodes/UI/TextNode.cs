@@ -58,10 +58,14 @@ namespace Celeste.DS.Nodes.UI
                 if (gameObject != null)
                 {
                     text = gameObject.GetComponent<Text>();
+                    Debug.Assert(text != null, $"Could not find Text component on Game Object {gameObject.name} in node {name} in {graph.name}.");
+                }
+                else
+                {
+                    Debug.Assert(text != null, $"Could not find Text component or Game Object in {name} in {graph.name}.");
                 }
             }
 
-            Debug.AssertFormat(text != null, "Could not find Text component in {0} in {1}", name, graph.name);
             return text;
         }
 

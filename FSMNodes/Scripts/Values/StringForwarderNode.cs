@@ -47,8 +47,13 @@ namespace Celeste.FSM.Nodes
                 string.CompareOrdinal(x.input, inputStringValue) == 0 ||
                 (x.inputValue != null && string.CompareOrdinal(x.inputValue.Value, inputStringValue) == 0));
 
-            var forwardedValue = forwardedValues[foundIndex];
-            return forwardedValue.outputValue != null ? forwardedValue.outputValue.Value : forwardedValue.output;
+            if (foundIndex >= 0)
+            {
+                var forwardedValue = forwardedValues[foundIndex];
+                return forwardedValue.outputValue != null ? forwardedValue.outputValue.Value : forwardedValue.output;
+            }
+
+            return base.GetValue(port);
         }
 
         #endregion

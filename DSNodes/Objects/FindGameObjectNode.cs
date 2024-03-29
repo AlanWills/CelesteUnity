@@ -34,12 +34,12 @@ namespace Celeste.DS.Nodes.Objects
                 string _childName = GetInputValue(nameof(gameObjectName), gameObjectName);
                 if (gameObjectCache == null || !gameObjectCache.TryFindItem(_childName, out foundGameObject))
                 {
-                    string[] splitChildName = _childName.Split('.');
+                    string[] splitChildName = _childName?.Split('.');
                     foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
                 }
             }
 
-            Debug.AssertFormat(foundGameObject != null, "Could not find child '{0}'", gameObjectName);
+            Debug.Assert(foundGameObject != null, $"Could not find child '{gameObjectName}'");
             return foundGameObject;
         }
 
