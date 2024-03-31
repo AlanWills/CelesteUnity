@@ -29,17 +29,26 @@ namespace Celeste.DS.Nodes.Objects
 
         public override object GetValue(NodePort port)
         {
-            if (!cache || foundGameObject == null)
+            if (cache && foundGameObject != null)
             {
-                string _childName = GetInputValue(nameof(gameObjectName), gameObjectName);
-                if (gameObjectCache == null || !gameObjectCache.TryFindItem(_childName, out foundGameObject))
-                {
-                    string[] splitChildName = _childName?.Split('.');
-                    foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
-                }
+                return foundGameObject;
             }
 
-            Debug.Assert(foundGameObject != null, $"Could not find child '{gameObjectName}'");
+            string _childName = GetInputValue(nameof(gameObjectName), gameObjectName);
+            if (gameObjectCache != null && gameObjectCache.TryFindItem(_childName, out foundGameObject))
+            {
+                return foundGameObject;
+            }
+
+            string[] splitChildName = _childName?.Split('.');
+            foundGameObject = GameObjectExtensions.FindGameObject(splitChildName, findConstraint);
+
+            if (foundGameObject != null)
+            {
+                return foundGameObject;
+            }
+
+            Debug.LogAssertion($"Could not find child '{gameObjectName}'.");
             return foundGameObject;
         }
 

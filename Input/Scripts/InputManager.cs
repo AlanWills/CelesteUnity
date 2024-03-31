@@ -132,22 +132,19 @@ namespace Celeste.Input
 
             if (raycastCamera.Value != null)
             {
-                if (raycastCamera.Value != null)
+                pointerWorldPosition = raycastCamera.Value.ScreenToWorldPoint(pointerPosition);
+
+                if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
-                    pointerWorldPosition = raycastCamera.Value.ScreenToWorldPoint(pointerPosition);
+                    hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
+                    Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                }
 
-                    if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
-                    {
-                        hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
-                        Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
-                    }
-
-                    if (hitGameObject == null)
-                    {
-                        // If we haven't hit any UI, see if we have hit any game objects in the world
-                        hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
-                        Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}");
-                    }
+                if (hitGameObject == null)
+                {
+                    // If we haven't hit any UI, see if we have hit any game objects in the world
+                    hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
+                    Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
                 }
             }
 
