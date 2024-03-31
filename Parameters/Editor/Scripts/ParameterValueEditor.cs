@@ -1,5 +1,4 @@
-﻿using Celeste.Parameters;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Parameters

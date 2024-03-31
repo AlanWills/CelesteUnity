@@ -78,7 +78,7 @@ namespace Celeste.Events
                 // we can handle that and don't fall over
                 for (int i = 0; i < gameEventListenersCount; ++i)
                 {
-                    Debug.Assert(cachedListeners[i].Action != null, $"Event {name} has a cached listener which is null.");
+                    Debug.Assert(cachedListeners[i].Action != null, $"Event {name} has a cached listener which is null.", this);
                     cachedListeners[i].Action(argument);
                 }
             }
