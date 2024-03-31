@@ -15,13 +15,15 @@ namespace Celeste.Parameters
         {
             get
             {
-                if (onValueChanged == null)
+                if (onValueChanged == null && fallbackOnValueChanged == null)
                 {
-                    fallbackOnValueChanged = fallbackOnValueChanged == null ? CreateInstance<TValueChangedEvent>() : fallbackOnValueChanged;
-                    return fallbackOnValueChanged;
+                    // Fallback events are always invoked silently to prevent useless log spam from unnamed events
+                    fallbackOnValueChanged = CreateInstance<TValueChangedEvent>();
+                    fallbackOnValueChanged.name = $"{name}_OnValueChanged_Fallback";
+                    invokeValueChangedSilently = true;
                 }
 
-                return onValueChanged;
+                return onValueChanged ?? fallbackOnValueChanged;
             }
         }
 
