@@ -74,9 +74,19 @@ namespace Celeste.FSM
             AddInputPort(DEFAULT_INPUT_PORT_NAME, connectionType);
         }
 
+        protected void RemoveDefaultInputPort()
+        {
+            RemoveDynamicPort(DEFAULT_INPUT_PORT_NAME);
+        }
+
         protected void AddDefaultOutputPort(ConnectionType connectionType = ConnectionType.Override)
         {
             AddOutputPort(DEFAULT_OUTPUT_PORT_NAME, connectionType);
+        }
+
+        protected void RemoveDefaultOutputPort()
+        {
+            RemoveDynamicPort(DEFAULT_OUTPUT_PORT_NAME);
         }
 
         public void AddInputPort(string portName, ConnectionType connectionType = ConnectionType.Multiple)
