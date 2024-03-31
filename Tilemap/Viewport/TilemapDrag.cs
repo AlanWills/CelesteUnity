@@ -1,9 +1,4 @@
 ﻿using Celeste.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.Tilemaps
@@ -14,18 +9,14 @@ namespace Celeste.Tilemaps
     {
         #region Properties and Fields
 
-        [SerializeField]
-        private TilemapValue tilemap;
-        
-        [SerializeField]
-        private FloatValue dragSpeed;
+        [SerializeField] private TilemapValue tilemap;
+        [SerializeField] private FloatValue dragSpeed;
 
         private Camera cameraToDrag;
-
         private float timeSinceFingerDown = 0;
         private const float DRAG_THRESHOLD = 0.1f;
         private bool mouseDownLastFrame = false;
-        private Vector3 previousMouseDownPosition = new Vector3();
+        private Vector2 previousMouseDownPosition = new Vector2();
 
         #endregion
 
@@ -40,7 +31,7 @@ namespace Celeste.Tilemaps
 
         #region Utility Functions
 
-        public void DragUsingMouse(Vector3 mousePosition)
+        public void DragUsingMouse(Vector2 mousePosition)
         {
             if (mouseDownLastFrame)
             {

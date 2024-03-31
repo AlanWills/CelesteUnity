@@ -1,7 +1,7 @@
 {
   "name": "com.celestegames.celeste",
   "displayName": "Celeste",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A framework for the quick development of games in Unity.",
   "unity": "2019.1",
   "dependencies": {

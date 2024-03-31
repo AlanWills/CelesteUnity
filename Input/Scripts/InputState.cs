@@ -33,7 +33,12 @@ namespace Celeste.Input
         public Vector2 PointerPosition { get; private set; }
         public Vector3 PointerWorldPosition { get; private set; }
         public PointerState PointerState { get; private set; }
+        public Vector2 PreviousPointerPosition { get; private set; }
+        public Vector3 PreviousPointerWorldPosition { get; private set; }
+        public PointerState PreviousPointerState { get; private set; }
+
         public GameObject HitGameObject { get; private set; }
+        public GameObject PreviousHitGameObject { get; private set; }
 
         public int NumTouches => Touches.Count;
         public ReadOnlyArray<Touch> Touches { get; private set; }
@@ -146,6 +151,9 @@ namespace Celeste.Input
 
         public void UpdatePointerPosition(Vector2 position, Vector3 worldPosition)
         {
+            PreviousPointerPosition = PointerPosition;
+            PreviousPointerWorldPosition = PointerWorldPosition;
+
             if (PointerPosition != position)
             {
                 PointerPosition = position;
@@ -160,30 +168,28 @@ namespace Celeste.Input
 
         public void UpdatePointerOverObject(GameObject newHitGameObject, bool isDownThisFrame)
         {
-            GameObject oldHitGameObject = HitGameObject;
-            PointerState oldPointerState = PointerState;
-            PointerState newPointerState = new PointerState()
-            {
-                wasFirstDownThisFrame = !oldPointerState.isDown && isDownThisFrame,
-                isDown = isDownThisFrame,
-                wasFirstUpThisFrame = oldPointerState.isDown && !isDownThisFrame
-            };
-
             // Update the state first, but don't fire events
-            PointerState = newPointerState;
+            PreviousHitGameObject = HitGameObject;
+            PreviousPointerState = PointerState;
+            PointerState = new PointerState()
+            {
+                wasFirstDownThisFrame = !PreviousPointerState.isDown && isDownThisFrame,
+                isDown = isDownThisFrame,
+                wasFirstUpThisFrame = PreviousPointerState.isDown && !isDownThisFrame
+            };
             HitGameObject = newHitGameObject;
 
             // Now take care of figuring out which events we need to fire
 
-            IInputHandler currentInputHandler = oldHitGameObject != null ? oldHitGameObject.GetComponent<IInputHandler>() : null;
+            IInputHandler currentInputHandler = PreviousHitGameObject != null ? PreviousHitGameObject.GetComponent<IInputHandler>() : null;
             IInputHandler newInputHandler = newHitGameObject != null ? newHitGameObject.GetComponent<IInputHandler>() : null;
 
-            if (oldHitGameObject != newHitGameObject)
+            if (PreviousHitGameObject != newHitGameObject)
             {
-                if (oldHitGameObject != null)
+                if (PreviousHitGameObject != null)
                 {
                     currentInputHandler?.OnPointerExit(this);
-                    pointerExitedGameObjectEvent.Invoke(oldHitGameObject);
+                    pointerExitedGameObjectEvent.Invoke(PreviousHitGameObject);
                 }
 
                 if (newHitGameObject != null)
@@ -192,7 +198,7 @@ namespace Celeste.Input
                     pointerEnteredGameObjectEvent.Invoke(newHitGameObject);
                 }
             }
-            else if (oldHitGameObject != null)
+            else if (PreviousHitGameObject != null)
             {
                 currentInputHandler?.OnPointerOver(this);
             }
@@ -200,19 +206,19 @@ namespace Celeste.Input
             // If the pointer is over something, we should tell it if we've pressed it or not
             if (newHitGameObject != null)
             {
-                if (newPointerState.wasFirstDownThisFrame)
+                if (PointerState.wasFirstDownThisFrame)
                 {
                     newInputHandler?.OnPointerFirstDown(this);
                     pointerFirstDownOnGameObjectEvent?.Invoke(newHitGameObject);
                 }
 
-                if (newPointerState.isDown)
+                if (PointerState.isDown)
                 {
                     newInputHandler?.OnPointerDown(this);
                     pointerDownOnGameObjectEvent?.Invoke(newHitGameObject);
                 }
 
-                if (newPointerState.wasFirstUpThisFrame)
+                if (PointerState.wasFirstUpThisFrame)
                 {
                     newInputHandler?.OnPointerFirstUp(this);
                     pointerFirstUpFromGameObjectEvent?.Invoke(newHitGameObject);
@@ -299,6 +305,7 @@ namespace Celeste.Input
 
         public void ReleaseInput()
         {
+            PreviousPointerState = PointerState;
             PointerState = new PointerState()
             {
                 wasFirstDownThisFrame = false,
@@ -307,14 +314,12 @@ namespace Celeste.Input
             };
 
             UpdateMouseButtonState(MouseButton.Left, PointerState);
-            
             UpdateMouseButtonState(MouseButton.Middle, new PointerState()
             {
                 wasFirstDownThisFrame = false,
                 isDown = false,
                 wasFirstUpThisFrame = true,
             });
-
             UpdateMouseButtonState(MouseButton.Right, new PointerState()
             {
                 wasFirstDownThisFrame = false,
