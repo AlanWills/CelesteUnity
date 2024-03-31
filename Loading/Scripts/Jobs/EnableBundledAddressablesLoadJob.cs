@@ -57,7 +57,7 @@ namespace Celeste.Loading
             }
             else
             {
-                Debug.Log($"Bundle cache info loaded successfully.");
+                Debug.Log($"Bundled cache info loaded successfully {loadBundleCacheRequest.downloadHandler.text}.");
                 JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
             }
 
@@ -78,11 +78,17 @@ namespace Celeste.Loading
         {
             if (location.Data is AssetBundleRequestOptions)
             {
+                Debug.Log($"Addressables Asset Bundle {location.PrimaryKey} load attempt using cached asset bundles.");
+                
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
                     var fileName = Path.GetFileName(location.PrimaryKey);
                     string localLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
                     return $"{localLoadPath}/{fileName}";
+                }
+                else
+                {
+                    Debug.LogError($"Failed to load {location.PrimaryKey} from our asset bundle cache.");
                 }
             }
 
