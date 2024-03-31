@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Celeste.Input
 {
-    [AddComponentMenu("Celeste/Input/Input Listener")]
+    [AddComponentMenu("Celeste/Input/Click Input Listener")]
     [RequireComponent(typeof(Collider2D))]
-    public class InputListener : MonoBehaviour, IEventListener<GameObjectClickEventArgs>
+    public class ClickInputListener : MonoBehaviour, IEventListener<GameObjectClickEventArgs>
     {
         #region Properties and Fields
 

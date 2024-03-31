@@ -59,7 +59,7 @@ namespace Celeste.FSM.Nodes.Input
                 currentTime += Time.deltaTime;
 
                 GameObject gameObject = gameObjectPath.GameObject;
-                if (gameObject != null && gameObject.GetComponent<InputListener>() != null && gameObject.GetComponent<InputListener>().enabled)
+                if (gameObject != null && gameObject.GetComponent<ClickInputListener>() != null && gameObject.GetComponent<ClickInputListener>().enabled)
                 {
                     Vector3 inputCentre = gameObject.GetComponent<Collider2D>().bounds.center;
                     GameObject closestGameObject = GetClosestGameObject(inputCentre);
