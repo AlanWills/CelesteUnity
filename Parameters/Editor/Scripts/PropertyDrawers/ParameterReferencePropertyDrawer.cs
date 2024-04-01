@@ -5,6 +5,8 @@ namespace CelesteEditor.PropertyDrawers.Parameters
 {
     public abstract class ParameterReferencePropertyDrawer : PropertyDrawer
     {
+        private const float TOGGLE_VALUE_SPACING = 4;
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
@@ -31,7 +33,8 @@ namespace CelesteEditor.PropertyDrawers.Parameters
                         }
                     }
 
-                    Rect valueRect = new Rect(constantToggleRect.x + 20, constantToggleRect.y, initialPosition.width - constantToggleRect.x, initialPosition.height);
+                    float gap = constantToggleRect.width + TOGGLE_VALUE_SPACING;
+                    Rect valueRect = new Rect(constantToggleRect.x + gap, constantToggleRect.y, initialPosition.width - gap, initialPosition.height);
                     if (isConstantProperty.boolValue)
                     {
                         EditorGUI.PropertyField(valueRect, serializedReference.FindProperty("constantValue"), GUIContent.none);
