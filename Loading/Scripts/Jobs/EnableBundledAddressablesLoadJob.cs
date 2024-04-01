@@ -90,7 +90,7 @@ namespace Celeste.Loading
                 else if (fuzzyNameMatching)
                 {
                     string primaryKeyWithoutExtension = RemoveExtension(location.PrimaryKey);
-                    var cachedBundle = cachedAssetBundles.cachedBundleList.Find(x => string.CompareOrdinal(RemoveExtension(x), primaryKeyWithoutExtension) == 0);
+                    var cachedBundle = cachedAssetBundles.cachedBundleList.Find(x => primaryKeyWithoutExtension.StartsWith(RemoveExtension(x), StringComparison.Ordinal));
 
                     if (!string.IsNullOrEmpty(cachedBundle))
                     {
