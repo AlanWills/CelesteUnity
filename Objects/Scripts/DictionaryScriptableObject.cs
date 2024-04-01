@@ -102,12 +102,12 @@ namespace Celeste.Objects
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return ((IEnumerable<KeyValuePair<TKey, TValue>>)items).GetEnumerator();
+            return ((IEnumerable<KeyValuePair<TKey, TValue>>)ItemsImpl).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)items).GetEnumerator();
+            return ((IEnumerable)ItemsImpl).GetEnumerator();
         }
 
         private void OnPreModify()
@@ -116,7 +116,7 @@ namespace Celeste.Objects
             {
                 // We've wanted to modify items for the first time at runtime so we create a copy of our serialized dictionary
                 // to prevent any runtime changes affecting what will be serialized and saved
-                runtimeModifiedItems = new Dictionary<TKey, TValue>(items);
+                runtimeModifiedItems = items != null ? new Dictionary<TKey, TValue>(items) : new Dictionary<TKey, TValue>();
             }
         }
 
