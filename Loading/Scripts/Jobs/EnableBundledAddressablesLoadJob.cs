@@ -54,10 +54,10 @@ namespace Celeste.Loading
             RuntimePlatform platform = Application.platform;
             Debug.Log($"Attempting to load cached asset bundle info for platform '{platform}'.");
 
-            var entry = runtimePlatformDirectoryLookup.Find(x => x.Item1 == platform);
-            Debug.Assert(!string.IsNullOrEmpty(entry.Item2), $"Failed to find a pre-specified addressables sub-folder for platform '{platform}'.");
+            var entry = runtimePlatformDirectoryLookup.Find(x => x.platform == platform);
+            Debug.Assert(!string.IsNullOrEmpty(entry.directory), $"Failed to find a pre-specified addressables sub-folder for platform '{platform}'.");
 
-            string subFolder = string.IsNullOrEmpty(entry.Item2) ? platform.ToString() : entry.Item2;
+            string subFolder = string.IsNullOrEmpty(entry.directory) ? platform.ToString() : entry.directory;
             Debug.Log($"Using addressables sub-folder '{subFolder}'.");
 
             var bundleCacheFileURL = GetCachedAssetBundlesPath(subFolder);
