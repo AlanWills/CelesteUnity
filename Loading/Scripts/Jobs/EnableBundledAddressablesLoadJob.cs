@@ -9,7 +9,6 @@ using UnityEngine.AddressableAssets.Initialization;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using static UnityEditor.FilePathAttribute;
 
 namespace Celeste.Loading
 {
