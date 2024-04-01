@@ -32,9 +32,19 @@ namespace Celeste.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
-            if (loadingDelay != null)
+            if (loadingDelay == null)
             {
-                yield return new WaitForSeconds(loadingDelay.Value);
+                setProgress(1);
+                yield break;
+            }
+
+            float accumulator = 0;
+            while (accumulator < loadingDelay.Value)
+            {
+                yield return null;
+
+                accumulator += Time.deltaTime;
+                setProgress?.Invoke(accumulator / loadingDelay.Value);
             }
         }
     }
