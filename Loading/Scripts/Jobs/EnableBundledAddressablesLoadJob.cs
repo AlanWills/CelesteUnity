@@ -15,16 +15,34 @@ namespace Celeste.Loading
     [CreateAssetMenu(fileName = nameof(EnableBundledAddressablesLoadJob), menuName = CelesteMenuItemConstants.LOADING_MENU_ITEM + "Load Jobs/Enable Bundled Addressables", order = CelesteMenuItemConstants.LOADING_MENU_ITEM_PRIORITY)]
     public class EnableBundledAddressablesLoadJob : LoadJob
     {
+        #region Runtime Platform Directory
+
+        [Serializable]
+        private struct RuntimePlatformDirectory
+        {
+            public RuntimePlatform platform;
+            public string directory;
+
+            public RuntimePlatformDirectory(RuntimePlatform platform, string directory)
+            {
+                this.platform = platform;
+                this.directory = directory;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         [Tooltip("If enabled, we will attempt to match a cached asset bundle against only the start of a requested bundle.  This can be useful if a requested bundle has a hash appended, but you have just cached the name.")]
         [SerializeField] private bool fuzzyNameMatching = true;
-        [SerializeField] private List<ValueTuple<RuntimePlatform, string>> runtimePlatformDirectoryLookup = new List<ValueTuple<RuntimePlatform, string>>()
+        [SerializeField] private List<RuntimePlatformDirectory> runtimePlatformDirectoryLookup = new List<RuntimePlatformDirectory>()
         {
-            new ValueTuple<RuntimePlatform, string>(RuntimePlatform.Android, "Android"),
-            new ValueTuple<RuntimePlatform, string>(RuntimePlatform.IPhonePlayer, "iOS"),
-            new ValueTuple<RuntimePlatform, string>(RuntimePlatform.WebGLPlayer, "WebGL"),
-            new ValueTuple<RuntimePlatform, string>(RuntimePlatform.WindowsPlayer, "StandaloneWindows64"),
+            new RuntimePlatformDirectory(RuntimePlatform.Android, "Android"),
+            new RuntimePlatformDirectory(RuntimePlatform.IPhonePlayer, "iOS"),
+            new RuntimePlatformDirectory(RuntimePlatform.WebGLPlayer, "WebGL"),
+            new RuntimePlatformDirectory(RuntimePlatform.WindowsPlayer, "StandaloneWindows64"),
+            new RuntimePlatformDirectory(RuntimePlatform.WindowsEditor, "StandaloneWindows64"),
         };
 
         private CachedAssetBundles cachedAssetBundles = new CachedAssetBundles();
