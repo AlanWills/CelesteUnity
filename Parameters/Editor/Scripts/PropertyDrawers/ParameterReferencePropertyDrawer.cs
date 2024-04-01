@@ -11,7 +11,6 @@ namespace CelesteEditor.PropertyDrawers.Parameters
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            Rect initialPosition = position;
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
             if (property.objectReferenceValue != null)
@@ -22,7 +21,7 @@ namespace CelesteEditor.PropertyDrawers.Parameters
                 SerializedProperty isConstantProperty = serializedReference.FindProperty("isConstant");
                 if (isConstantProperty != null)
                 {
-                    Rect constantToggleRect = new Rect(position.x, position.y, 16, initialPosition.height);
+                    Rect constantToggleRect = new Rect(position.x, position.y, 16, position.height);
                     using (EditorGUI.ChangeCheckScope changeScope = new EditorGUI.ChangeCheckScope())
                     {
                         isConstantProperty.boolValue = EditorGUI.Toggle(constantToggleRect, isConstantProperty.boolValue, EditorStyles.radioButton);
@@ -34,7 +33,7 @@ namespace CelesteEditor.PropertyDrawers.Parameters
                     }
 
                     float gap = constantToggleRect.width + TOGGLE_VALUE_SPACING;
-                    Rect valueRect = new Rect(constantToggleRect.x + gap, constantToggleRect.y, initialPosition.width - gap, initialPosition.height);
+                    Rect valueRect = new Rect(constantToggleRect.x + gap, constantToggleRect.y, position.width - gap, position.height);
                     if (isConstantProperty.boolValue)
                     {
                         EditorGUI.PropertyField(valueRect, serializedReference.FindProperty("constantValue"), GUIContent.none);
