@@ -9,6 +9,7 @@ using UnityEngine.AddressableAssets.Initialization;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using static UnityEditor.FilePathAttribute;
 
 namespace Celeste.Loading
 {
@@ -17,6 +18,8 @@ namespace Celeste.Loading
     {
         #region Properties and Fields
 
+        [Tooltip("If enabled, we will attempt to match a cached asset bundle against only the start of a requested bundle.  This can be useful if a requested bundle has a hash appended, but you have just cached the name.")]
+        [SerializeField] private bool fuzzyNameMatching = true;
         [SerializeField] private List<ValueTuple<RuntimePlatform, string>> runtimePlatformDirectoryLookup = new List<ValueTuple<RuntimePlatform, string>>()
         {
             new ValueTuple<RuntimePlatform, string>(RuntimePlatform.Android, "Android"),
@@ -82,17 +85,31 @@ namespace Celeste.Loading
                 
                 if (cachedAssetBundles.cachedBundleList.Contains(location.PrimaryKey))
                 {
-                    var fileName = Path.GetFileName(location.PrimaryKey);
                     string localLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
-                    return $"{localLoadPath}/{fileName}";
+                    return $"{localLoadPath}/{location.PrimaryKey}";
                 }
-                else
+                else if (fuzzyNameMatching)
                 {
-                    Debug.LogError($"Failed to load {location.PrimaryKey} from our asset bundle cache.");
+                    string primaryKeyWithoutExtension = RemoveExtension(location.PrimaryKey);
+                    var cachedBundle = cachedAssetBundles.cachedBundleList.Find(x => string.CompareOrdinal(RemoveExtension(x), primaryKeyWithoutExtension) == 0);
+
+                    if (!string.IsNullOrEmpty(cachedBundle))
+                    {
+                        string localLoadPath = GetAddressablesLocalLoadPath(cachedAssetBundles);
+                        return $"{localLoadPath}/{cachedBundle}";
+                    }
                 }
+
+                Debug.LogError($"Failed to load {location.PrimaryKey} from our asset bundle cache (fuzzy matching? {fuzzyNameMatching}).");
             }
 
             return location.InternalId;
+        }
+
+        private static string RemoveExtension(string path)
+        {
+            int indexOfFileExtension = path.IndexOf('.');
+            return indexOfFileExtension >= 0 ? path.Substring(0, indexOfFileExtension) : path;
         }
 
         private static string GetCachedAssetBundlesPath(string addressablesRuntimePathSubFolder)
