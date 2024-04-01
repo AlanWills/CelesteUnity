@@ -20,7 +20,7 @@ namespace CelesteEditor.Input
         {
             if (GUILayout.Button("Find KeyCode Values", GUILayout.ExpandWidth(false)))
             {
-                AssetUtility.FindAssets<KeyCodeValue>(target, "keyCodes");
+                EditorOnly.FindAssets<KeyCodeValue>(target, "keyCodes");
             }
 
             EditorGUILayout.Space();

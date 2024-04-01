@@ -427,7 +427,7 @@ namespace CelesteEditor.Narrative.TwineImporter
 
         private bool TryFind<T>(string name, string directory, out T asset) where T : Object
         {
-            asset = AssetUtility.FindAsset<T>(name, directory);
+            asset = EditorOnly.FindAsset<T>(name, directory);
             return asset != null;
         }
 

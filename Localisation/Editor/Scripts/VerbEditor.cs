@@ -15,7 +15,7 @@ namespace CelesteEditor.Localisation
         {
             if (GUILayout.Button("Create Missing Localisation Keys"))
             {
-                string targetDirectory = AssetUtility.GetAssetFolderPath(target);
+                string targetDirectory = EditorOnly.GetAssetFolderPath(target);
                 Type verbType = typeof(Verb);
                 Type localisationKeyType = typeof(LocalisationKey);
 

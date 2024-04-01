@@ -68,23 +68,23 @@ namespace Celeste.Input.Settings
         {
             base.OnCreate();
 
-            inputCameraValue = AssetUtility.FindAsset<CameraValue>("InputCamera");
+            inputCameraValue = EditorOnly.FindAsset<CameraValue>("InputCamera");
 
-            leftMouseButtonFirstDownEvent = AssetUtility.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
-            leftMouseButtonDownEvent = AssetUtility.FindAsset<Vector2Event>("LeftMouseButtonDown");
-            leftMouseButtonFirstUpEvent = AssetUtility.FindAsset<Vector2Event>("LeftMouseButtonFirstUp");
+            leftMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
+            leftMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonDown");
+            leftMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstUp");
 
-            middleMouseButtonFirstDownEvent = AssetUtility.FindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
-            middleMouseButtonDownEvent = AssetUtility.FindAsset<Vector2Event>("MiddleMouseButtonDown");
-            middleMouseButtonFirstUpEvent = AssetUtility.FindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
+            middleMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
+            middleMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonDown");
+            middleMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
 
-            rightMouseButtonFirstDownEvent = AssetUtility.FindAsset<Vector2Event>("RightMouseButtonFirstDown");
-            rightMouseButtonDownEvent = AssetUtility.FindAsset<Vector2Event>("RightMouseButtonDown");
-            rightMouseButtonFirstUpEvent = AssetUtility.FindAsset<Vector2Event>("RightMouseButtonFirstUp");
+            rightMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstDown");
+            rightMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonDown");
+            rightMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstUp");
 
-            singleTouchEvent = AssetUtility.FindAsset<TouchEvent>("SingleTouch");
-            doubleTouchEvent = AssetUtility.FindAsset<MultiTouchEvent>("DoubleTouch");
-            tripleTouchEvent = AssetUtility.FindAsset<MultiTouchEvent>("TripleTouch");
+            singleTouchEvent = EditorOnly.FindAsset<TouchEvent>("SingleTouch");
+            doubleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("DoubleTouch");
+            tripleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("TripleTouch");
         }
 #endif
     }

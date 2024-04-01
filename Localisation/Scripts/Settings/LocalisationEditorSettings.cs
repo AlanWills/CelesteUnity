@@ -33,7 +33,7 @@ namespace Celeste.Localisation.Settings
 
             if (currentLanguageValue == null)
             {
-                currentLanguageValue = AssetUtility.FindAsset<LanguageValue>("CurrentLanguage");
+                currentLanguageValue = EditorOnly.FindAsset<LanguageValue>("CurrentLanguage");
             }
         }
 #endif

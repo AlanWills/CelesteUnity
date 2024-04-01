@@ -13,8 +13,8 @@ namespace CelesteEditor.Narrative.Characters
         [MenuItem("Assets/Create/Celeste/Narrative/Characters/Character")]
         public static void CreateCharacterMenuItem()
         {
-            Character character = Character.Create(nameof(Character), AssetUtility.GetSelectionObjectPath());
-            AssetUtility.SelectAsset(character);
+            Character character = Character.Create(nameof(Character), EditorOnly.GetSelectionObjectPath());
+            EditorOnly.SelectAsset(character);
         }
 
         #endregion

@@ -14,9 +14,9 @@ namespace CelesteEditor.Logic.Validation
         public bool Validate(StringBuilder output)
         {
             bool succeeded = true;
-            List<ConditionCatalogue> conditionCatalogues = AssetUtility.FindAssets<ConditionCatalogue>();
+            List<ConditionCatalogue> conditionCatalogues = EditorOnly.FindAssets<ConditionCatalogue>();
 
-            foreach (Condition condition in AssetUtility.FindAssets<Condition>())
+            foreach (Condition condition in EditorOnly.FindAssets<Condition>())
             {
                 if (!conditionCatalogues.Exists(x => x.ContainsItem(condition)))
                 {

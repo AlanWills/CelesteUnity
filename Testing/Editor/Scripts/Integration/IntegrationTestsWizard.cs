@@ -31,7 +31,7 @@ namespace CelesteEditor.Testing
 
         private void OnEnable()
         {
-            mIntegrationTestsCatalogue = AssetUtility.FindAsset<IntegrationTestsCatalogue>();
+            mIntegrationTestsCatalogue = EditorOnly.FindAsset<IntegrationTestsCatalogue>();
 
             RefreshGUI();
         }

@@ -104,32 +104,32 @@ namespace CelesteEditor.BuildSystem
 
         private AppVersion CreateVersionAsset(string folder, string versionName)
         {
-            AssetUtility.CreateFolder(folder);
+            EditorOnly.CreateFolder(folder);
 
             AppVersion appVersion = CreateInstance<AppVersion>();
             appVersion.name = versionName;
 
-            AssetUtility.CreateAssetInFolderAndSave(appVersion, folder);
+            EditorOnly.CreateAssetInFolderAndSave(appVersion, folder);
 
             return appVersion;
         }
 
         public static T FindOrCreatePlatformSettingsAsset<T>(string folder, string settingsName) where T : PlatformSettings
         {
-            T existingSettings = AssetUtility.FindAsset<T>(settingsName, folder);
+            T existingSettings = EditorOnly.FindAsset<T>(settingsName, folder);
             
             if (existingSettings  != null)
             {
                 return existingSettings;
             }
 
-            AssetUtility.CreateFolder(folder);
+            EditorOnly.CreateFolder(folder);
 
             T settings = CreateInstance<T>();
             settings.name = settingsName;
             settings.SetDefaultValues();
 
-            AssetUtility.CreateAssetInFolderAndSave(settings, folder);
+            EditorOnly.CreateAssetInFolderAndSave(settings, folder);
 
             return settings;
         }

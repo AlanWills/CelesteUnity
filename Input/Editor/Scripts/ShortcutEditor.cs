@@ -18,7 +18,7 @@ namespace CelesteEditor.Input
             shortcut.name = "New Shortcut";
 
             // Create the asset first, so it will be persistent when we create the sub assets
-            AssetUtility.CreateAssetInFolderAndSave(shortcut, AssetUtility.GetSelectionObjectPath());
+            EditorOnly.CreateAssetInFolderAndSave(shortcut, EditorOnly.GetSelectionObjectPath());
 
             shortcut.key = CreateInstance<KeyReference>();
             shortcut.key.name = "KeyCodeReference";

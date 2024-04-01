@@ -6,12 +6,12 @@ namespace Celeste.Tools
     public partial class EditorOnly
     {
         [Conditional("UNITY_EDITOR")]
-        public static void AddObjectToMainAsset(Object objectToAdd, Object assetObject)
+        public static void AddObjectToAsset(Object objectToAdd, Object assetObject)
         {
 #if UNITY_EDITOR
-            string assetPath = UnityEditor.AssetDatabase.GetAssetPath(assetObject);
-            UnityEditor.AssetDatabase.AddObjectToAsset(objectToAdd, assetPath);
+            UnityEditor.AssetDatabase.AddObjectToAsset(objectToAdd, assetObject);
             UnityEditor.EditorUtility.SetDirty(assetObject);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(assetObject);
 #endif
         }
 

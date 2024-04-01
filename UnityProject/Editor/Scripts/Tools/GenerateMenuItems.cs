@@ -27,7 +27,7 @@ namespace CelesteEditor.UnityProject
             outputFile.AppendLine("    public static class CelesteMenuItemConstants");
             outputFile.AppendLine("    {");
 
-            var assemblyDefinitions = AssetUtility.FindAssets<AssemblyDefinitionAsset>();
+            var assemblyDefinitions = EditorOnly.FindAssets<AssemblyDefinitionAsset>();
             assemblyDefinitions.RemoveAll(x => !x.name.StartsWith("Celeste.") || x.name.Count(c => c == '.') > 1);
             assemblyDefinitions.Sort((a, b) => string.Compare(a.name, b.name));
             

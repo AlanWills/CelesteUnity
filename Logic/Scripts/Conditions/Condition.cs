@@ -100,7 +100,7 @@ namespace Celeste.Logic
             asset.name = name;
             asset.hideFlags = HideFlags.HideInHierarchy;
 
-            EditorOnly.AddObjectToMainAsset(asset, this);
+            EditorOnly.AddObjectToAsset(asset, this);
 
             return asset;
         }

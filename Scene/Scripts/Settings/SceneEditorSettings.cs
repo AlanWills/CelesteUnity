@@ -35,8 +35,8 @@ namespace CelesteEditor.Scene.Settings
         {
             base.OnCreate();
 
-            defaultContextProvider = AssetUtility.FindAsset<ContextProvider>("DefaultContextProvider");
-            defaultLoadContextEvent = AssetUtility.FindAsset<LoadContextEvent>("LoadContext");
+            defaultContextProvider = EditorOnly.FindAsset<ContextProvider>("DefaultContextProvider");
+            defaultLoadContextEvent = EditorOnly.FindAsset<LoadContextEvent>("LoadContext");
         }
 #endif
 

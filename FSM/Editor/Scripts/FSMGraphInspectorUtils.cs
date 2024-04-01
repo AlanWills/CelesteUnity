@@ -22,12 +22,12 @@ namespace CelesteEditor.FSM
 
                 if (GUILayout.Button("Apply Hide Flags"))
                 {
-                    AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
+                    EditorOnly.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
                 }
 
                 if (GUILayout.Button("Remove Hide Flags"))
                 {
-                    AssetUtility.RemoveHideFlags(graph, HideFlags.HideInHierarchy);
+                    EditorOnly.RemoveHideFlags(graph, HideFlags.HideInHierarchy);
                 }
             }
 

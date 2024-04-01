@@ -36,15 +36,15 @@ namespace Celeste.Sound.Settings
         {
             base.OnCreate();
 
-            playMusicWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicWithRawClip");
-            playMusicWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
-            playMusicOneShotWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlayMusicOneShotWithRawClip");
-            playMusicOneShotWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlayMusicOneShotWithSettings");
+            playMusicWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlayMusicWithRawClip");
+            playMusicWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
+            playMusicOneShotWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlayMusicOneShotWithRawClip");
+            playMusicOneShotWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlayMusicOneShotWithSettings");
 
-            playSFXWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXWithRawClip");
-            playSFXWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlaySFXWithSettings");
-            playSFXOneShotWithRawClipEvent = AssetUtility.FindAsset<AudioClipEvent>("PlaySFXOneShotWithRawClip");
-            playSFXOneShotWithSettingsEvent = AssetUtility.FindAsset<AudioClipSettingsEvent>("PlaySFXOneShotWithSettings");
+            playSFXWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlaySFXWithRawClip");
+            playSFXWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlaySFXWithSettings");
+            playSFXOneShotWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlaySFXOneShotWithRawClip");
+            playSFXOneShotWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlaySFXOneShotWithSettings");
         }
 #endif
     }

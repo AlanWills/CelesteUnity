@@ -89,7 +89,7 @@ namespace CelesteEditor.Assets
                     string assetPath = AssetDatabase.GetAssetPath(currentObject);
                     if (AssetDatabase.IsValidFolder(assetPath))
                     {
-                        selectedObjects.AddRange(AssetUtility.FindAssets<Object>(string.Empty, assetPath));
+                        selectedObjects.AddRange(EditorOnly.FindAssets<Object>(string.Empty, assetPath));
                     }
                 }
 

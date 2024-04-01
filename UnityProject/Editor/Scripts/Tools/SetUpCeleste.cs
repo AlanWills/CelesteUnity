@@ -255,7 +255,7 @@ namespace CelesteEditor.UnityProject
 
             if (parameters.useCommonJenkinsFiles)
             {
-                AssetUtility.CreateFolder(BuildSystemConstants.FOLDER_PATH);
+                EditorOnly.CreateFolder(BuildSystemConstants.FOLDER_PATH);
 
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.COMMON_JENKINS_BUILD_FILES_FOLDER);
             }
@@ -281,14 +281,14 @@ namespace CelesteEditor.UnityProject
             }
 
             // Create Scripting Define Symbols
-            AssetUtility.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+            EditorOnly.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
 
             // Debug
             {
                 ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
                 debugScriptingDefineSymbols.name = "DebugScriptingDefineSymbols";
                 debugScriptingDefineSymbols.AddDefaultDebugSymbols();
-                AssetUtility.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
             }
 
             // Release
@@ -296,7 +296,7 @@ namespace CelesteEditor.UnityProject
                 ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
                 debugScriptingDefineSymbols.name = "ReleaseScriptingDefineSymbols";
                 debugScriptingDefineSymbols.AddDefaultReleaseSymbols();
-                AssetUtility.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
             }
         }
 
@@ -317,8 +317,8 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateStartupFolders()
         {
-            AssetUtility.CreateFolder(StartupConstants.SCENES_FOLDER_PATH);
-            AssetUtility.CreateFolder(StartupConstants.LOAD_JOBS_FOLDER_PATH);
+            EditorOnly.CreateFolder(StartupConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateFolder(StartupConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
         private static void CreateStartupLoadJob(SetUpCelesteParameters parameters)
@@ -334,7 +334,7 @@ namespace CelesteEditor.UnityProject
                     loadContentCatalogue.name = StartupConstants.LOAD_CONTENT_CATALOGUE_LOAD_JOB_NAME;
                     startupLoadJobBuilder.WithLoadJob(loadContentCatalogue);
 
-                    AssetUtility.CreateAssetInFolder(loadContentCatalogue, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                    EditorOnly.CreateAssetInFolder(loadContentCatalogue, StartupConstants.LOAD_JOBS_FOLDER_PATH);
                 }
 
                 // Enable bundled addressables load job
@@ -343,13 +343,13 @@ namespace CelesteEditor.UnityProject
                     enableBundledAddressables.name = StartupConstants.ENABLE_BUNDLED_ADDRESSABLES_LOAD_JOB_NAME;
                     startupLoadJobBuilder.WithLoadJob(enableBundledAddressables);
 
-                    AssetUtility.CreateAssetInFolder(enableBundledAddressables, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                    EditorOnly.CreateAssetInFolder(enableBundledAddressables, StartupConstants.LOAD_JOBS_FOLDER_PATH);
                 }
             }
 
             // Load bootstrap scene set load job
             {
-                SceneSet bootstrapSceneSet = AssetUtility.FindAsset<SceneSet>(BootstrapConstants.SCENE_SET_NAME);
+                SceneSet bootstrapSceneSet = EditorOnly.FindAsset<SceneSet>(BootstrapConstants.SCENE_SET_NAME);
                 Debug.Assert(bootstrapSceneSet != null, $"Could not find bootstrap scene set for load job: {BootstrapConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadBootstrapSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(LoadSceneMode.Single)
@@ -360,12 +360,12 @@ namespace CelesteEditor.UnityProject
                 loadBootstrapSceneSet.name = StartupConstants.LOAD_BOOTSTRAP_SCENE_SET_LOAD_JOB_NAME;
                 startupLoadJobBuilder.WithLoadJob(loadBootstrapSceneSet);
 
-                AssetUtility.CreateAssetInFolder(loadBootstrapSceneSet, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                EditorOnly.CreateAssetInFolder(loadBootstrapSceneSet, StartupConstants.LOAD_JOBS_FOLDER_PATH);
             }
 
             LoadJob startupLoadJob = startupLoadJobBuilder.Build();
             startupLoadJob.name = StartupConstants.LOAD_JOB_NAME;
-            AssetUtility.CreateAssetInFolder(startupLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(startupLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
         private static void CreateStartupScene()
@@ -385,7 +385,7 @@ namespace CelesteEditor.UnityProject
             {
                 GameObject startupLoadGameObject = new GameObject(nameof(StartupLoad));
                 StartupLoad startupLoad = startupLoadGameObject.AddComponent<StartupLoad>();
-                LoadJob startupLoadJob = AssetUtility.FindAsset<LoadJob>(StartupConstants.LOAD_JOB_NAME);
+                LoadJob startupLoadJob = EditorOnly.FindAsset<LoadJob>(StartupConstants.LOAD_JOB_NAME);
                 Debug.Assert(startupLoadJob != null, $"Could not find startup load job: {StartupConstants.LOAD_JOB_NAME}.  It will have to be set after it is created.");
                 startupLoad.StartupLoadJob = startupLoadJob;
             }
@@ -395,7 +395,7 @@ namespace CelesteEditor.UnityProject
             SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
             sceneSet.name = StartupConstants.SCENE_SET_NAME;
             sceneSet.AddScene(StartupConstants.SCENE_NAME, SceneType.Baked, false);
-            AssetUtility.CreateAssetInFolder(sceneSet, StartupConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(sceneSet, StartupConstants.SCENES_FOLDER_PATH);
 
             EditorBuildSettings.scenes = new EditorBuildSettingsScene[]
             {
@@ -434,8 +434,8 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateBootstrapFolders()
         {
-            AssetUtility.CreateFolder(BootstrapConstants.SCENES_FOLDER_PATH);
-            AssetUtility.CreateFolder(BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+            EditorOnly.CreateFolder(BootstrapConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateFolder(BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
         private static void CreateBootstrapLoadJob(SetUpCelesteParameters parameters)
@@ -445,7 +445,7 @@ namespace CelesteEditor.UnityProject
 
             // Disable fallback assets load job
             {
-                var disableFallbackAssets = AssetUtility.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
+                var disableFallbackAssets = EditorOnly.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
                 Debug.Assert(disableFallbackAssets != null, $"Could not find disable fallback load assets load job: {CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME}.");
                 bootstrapLoadJobBuilder.WithLoadJob(disableFallbackAssets);
                 disableFallbackAssets.MakeAddressable();
@@ -453,7 +453,7 @@ namespace CelesteEditor.UnityProject
 
             // Load engine systems scene set load job
             {
-                SceneSet engineSystemsSceneSet = AssetUtility.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
+                SceneSet engineSystemsSceneSet = EditorOnly.FindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
                 Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(LoadSceneMode.Additive)
@@ -464,25 +464,25 @@ namespace CelesteEditor.UnityProject
                 loadEngineSystemsSceneSet.name = BootstrapConstants.LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
                 bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
 
-                AssetUtility.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+                EditorOnly.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
                 MakeAddressable(parameters, loadEngineSystemsSceneSet);
             }
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
 
-            AssetUtility.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
             MakeAddressable(parameters, bootstrapLoadJob);
         }
 
         private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
         {
             UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            GameObject bootstrapManagerPrefab = AssetUtility.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
+            GameObject bootstrapManagerPrefab = EditorOnly.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
             Debug.Assert(bootstrapManagerPrefab != null, $"Could not find bootstrap manager prefab: {BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME}.");
 
             GameObject bootstrapManagerInstance = PrefabUtility.InstantiatePrefab(bootstrapManagerPrefab, bootstrapScene) as GameObject;
-            LoadJob bootstrapLoadJob = AssetUtility.FindAsset<LoadJob>(BootstrapConstants.LOAD_JOB_NAME);
+            LoadJob bootstrapLoadJob = EditorOnly.FindAsset<LoadJob>(BootstrapConstants.LOAD_JOB_NAME);
             Debug.Assert(bootstrapLoadJob != null, $"Could not find bootstrap load job: {BootstrapConstants.LOAD_JOB_NAME}.  It will have to be set manually after it is created.");
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
@@ -496,7 +496,7 @@ namespace CelesteEditor.UnityProject
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
 
-            AssetUtility.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, bootstrapSceneSet);
         }
 
@@ -530,7 +530,7 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateEngineSystemsFolders()
         {
-            AssetUtility.CreateFolder(EngineSystemsConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateFolder(EngineSystemsConstants.SCENES_FOLDER_PATH);
         }
 
         private static void CreateEngineSystemsScenes(SetUpCelesteParameters parameters)
@@ -550,7 +550,7 @@ namespace CelesteEditor.UnityProject
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
-            AssetUtility.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, engineSystemsSceneSet);
         }
 
@@ -564,8 +564,8 @@ namespace CelesteEditor.UnityProject
             sfxSettings.name = "SFXSettings";
             MakeAddressable(parameters, sfxSettings);
 
-            AssetUtility.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
-            AssetUtility.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
 
             SceneAsset engineSystemsScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH);
             EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
@@ -608,7 +608,7 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateGameSystemsFolders()
         {
-            AssetUtility.CreateFolder(GameSystemsConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateFolder(GameSystemsConstants.SCENES_FOLDER_PATH);
         }
 
         private static void CreateGameSystemsScenes(SetUpCelesteParameters parameters)
@@ -628,7 +628,7 @@ namespace CelesteEditor.UnityProject
             gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
-            AssetUtility.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, gameSystemsSceneSet);
         }
 
@@ -731,7 +731,7 @@ namespace CelesteEditor.UnityProject
             if (Directory.Exists(originalDirectory))
             {
                 DirectoryInfo originalDirectoryInfo = new DirectoryInfo(originalDirectory);
-                AssetUtility.CreateFolder(newDirectory);
+                EditorOnly.CreateFolder(newDirectory);
 
                 foreach (FileInfo file in originalDirectoryInfo.GetFiles())
                 {
@@ -760,7 +760,7 @@ namespace CelesteEditor.UnityProject
         private static void CreateSceneWithPrefab(SetUpCelesteParameters parameters, string sceneName, string scenePath, string scenePrefabName)
         {
             UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            GameObject prefab = AssetUtility.FindAsset<GameObject>(scenePrefabName);
+            GameObject prefab = EditorOnly.FindAsset<GameObject>(scenePrefabName);
             PrefabUtility.InstantiatePrefab(prefab, scene);
             EditorSceneManager.SaveScene(scene, scenePath);
             AssetDatabase.Refresh();

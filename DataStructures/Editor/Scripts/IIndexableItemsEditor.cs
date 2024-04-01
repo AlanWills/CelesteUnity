@@ -34,12 +34,12 @@ namespace CelesteEditor.DataStructures
 
             if (GUILayout.Button("Find All"))
             {
-                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>());
+                AddMissingItemsWithoutReordering(EditorOnly.FindAssets<TIndexableItem>());
             }
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
-                AddMissingItemsWithoutReordering(AssetUtility.FindAssets<TIndexableItem>("", AssetUtility.GetAssetFolderPath(target)));
+                AddMissingItemsWithoutReordering(EditorOnly.FindAssets<TIndexableItem>("", EditorOnly.GetAssetFolderPath(target)));
             }
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())

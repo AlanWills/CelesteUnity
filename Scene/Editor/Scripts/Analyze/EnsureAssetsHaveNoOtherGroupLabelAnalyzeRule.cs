@@ -47,7 +47,7 @@ namespace CelesteEditor.Scene.Analyze
         {
             List<SceneAsset> scenesToFix = new List<SceneAsset>();
 
-            foreach (SceneSet sceneSet in AssetUtility.FindAssets<SceneSet>())
+            foreach (SceneSet sceneSet in EditorOnly.FindAssets<SceneSet>())
             {
                 for (int i = 0, n = sceneSet.NumScenes; i < n; ++i)
                 {

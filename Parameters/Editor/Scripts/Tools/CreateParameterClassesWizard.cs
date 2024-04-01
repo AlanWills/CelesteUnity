@@ -35,7 +35,7 @@ namespace CelesteEditor.Parameters
                 var selectionInProject = Selection.GetFiltered<Object>(SelectionMode.Assets);
                 if (selectionInProject != null && selectionInProject.Length == 1)
                 {
-                    args.directoryPath = AssetUtility.GetAssetFolderPath(selectionInProject[0]);
+                    args.directoryPath = EditorOnly.GetAssetFolderPath(selectionInProject[0]);
                 }
             }
         }

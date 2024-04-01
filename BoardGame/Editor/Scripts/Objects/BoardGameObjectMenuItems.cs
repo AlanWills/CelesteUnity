@@ -31,12 +31,12 @@ namespace CelesteEditor.BoardGame.Objects
                     continue;
                 }
 
-                string prefabFolder = AssetUtility.GetAssetFolderPath(prefab);
+                string prefabFolder = EditorOnly.GetAssetFolderPath(prefab);
 
                 BoardGameObject boardGameObject = ScriptableObject.CreateInstance<BoardGameObject>();
                 boardGameObject.name = $"{prefab.name}BoardGameObject";
 
-                AssetUtility.CreateAssetInFolderAndSave(boardGameObject, prefabFolder);
+                EditorOnly.CreateAssetInFolderAndSave(boardGameObject, prefabFolder);
 
                 PrefabActorBoardGameObjectComponent prefabActor = boardGameObject.CreateComponent<PrefabActorBoardGameObjectComponent>();
                 prefabActor.Prefab = prefab;

@@ -201,7 +201,7 @@ namespace Celeste.Narrative
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                CelesteEditor.Tools.AssetUtility.AddObjectToAsset(choice, graph);
+                CelesteEditor.Tools.EditorOnly.AddObjectToAsset(choice, graph);
             }
 #endif
             AddOutputPort(name);

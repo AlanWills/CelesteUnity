@@ -23,8 +23,10 @@ namespace Celeste.Loading
                 loadingDelay = CreateInstance<FloatReference>();
                 loadingDelay.IsConstant = true;
                 loadingDelay.Value = 2f;
+                loadingDelay.hideFlags = HideFlags.HideInHierarchy;
+                loadingDelay.name = $"{name}_LoadingDelayReference";
 
-                EditorOnly.AddObjectToMainAsset(loadingDelay, this);
+                EditorOnly.AddObjectToAsset(loadingDelay, this);
             }
         }
 

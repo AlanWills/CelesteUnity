@@ -62,7 +62,7 @@ namespace CelesteEditor.FSM
 
             if (GUILayout.Button("Apply Hide Flags"))
             {
-                AssetUtility.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
+                EditorOnly.ApplyHideFlags(graph, HideFlags.HideInHierarchy);
             }
 
             if (GUILayout.Button("Remove Null Nodes"))

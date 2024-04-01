@@ -19,7 +19,7 @@ namespace CelesteEditor.DeckBuilding.Utils
 
         public static List<Card> CreateCards(CreateCardsFromSpritesParameters args)
         {
-            AssetUtility.CreateFolder(args.outputFolder);
+            EditorOnly.CreateFolder(args.outputFolder);
 
             List<Card> cards = new List<Card>();
 

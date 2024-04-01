@@ -14,7 +14,7 @@ namespace CelesteEditor.Localisation.Platform
 
         public override void Execute()
         {
-            foreach (LocalisationKeyCategory localisationKeyCategory in AssetUtility.FindAssets<LocalisationKeyCategory>())
+            foreach (LocalisationKeyCategory localisationKeyCategory in EditorOnly.FindAssets<LocalisationKeyCategory>())
             {
                 localisationKeyCategory.SetAddressableInfo(group);
                 localisationKeyCategory.SetAddressableLabel(group, label, true);

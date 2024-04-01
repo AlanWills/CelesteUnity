@@ -90,7 +90,7 @@ namespace CelesteEditor.Localisation.Tools
                         localisationKeyCatalogue.AddItem(keyString, localisationKey);
 
                         string directory = $"{localisationKeysDirectory}/{categoryString}";
-                        AssetUtility.CreateAssetInFolder(localisationKey, directory);
+                        EditorOnly.CreateAssetInFolder(localisationKey, directory);
                     }
 
                     LocalisationKeyCategory localisationKeyCategory = localisationKeyCategoryCatalogue.FindByCategoryName(categoryString);
@@ -103,7 +103,7 @@ namespace CelesteEditor.Localisation.Tools
 
                         localisationKeyCategoryCatalogue.AddItem(localisationKeyCategory);
 
-                        AssetUtility.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
+                        EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
                     }
 
                     if (!speechLookup.TryGetValue(localisationKey.Key, out AudioClip audioClip))
@@ -130,7 +130,7 @@ namespace CelesteEditor.Localisation.Tools
 
             if (Directory.Exists(audioDirectory))
             {
-                foreach (AudioClip audioClip in AssetUtility.FindAssets<AudioClip>("", audioDirectory))
+                foreach (AudioClip audioClip in EditorOnly.FindAssets<AudioClip>("", audioDirectory))
                 {
                     speechLookup.Add(audioClip.name, audioClip);
                 }

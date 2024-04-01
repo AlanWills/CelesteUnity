@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Tools
 {
-    public static class AssetUtility
+    public static class EditorOnly
     {
         #region Utils
 

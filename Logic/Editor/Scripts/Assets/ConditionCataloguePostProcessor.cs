@@ -12,7 +12,7 @@ namespace CelesteEditor.Logic.Assets
         {
             HashSet<Condition> existingItems = new HashSet<Condition>();
 
-            foreach (ConditionCatalogue conditionCatalogue in AssetUtility.FindAssets<ConditionCatalogue>())
+            foreach (ConditionCatalogue conditionCatalogue in EditorOnly.FindAssets<ConditionCatalogue>())
             {
                 existingItems.Clear();
 
@@ -31,7 +31,7 @@ namespace CelesteEditor.Logic.Assets
                     }
                 }
 
-                foreach (Condition condition in AssetUtility.FindAssets<Condition>("", AssetUtility.GetAssetFolderPath(conditionCatalogue)))
+                foreach (Condition condition in EditorOnly.FindAssets<Condition>("", EditorOnly.GetAssetFolderPath(conditionCatalogue)))
                 {
                     if (!existingItems.Contains(condition))
                     {

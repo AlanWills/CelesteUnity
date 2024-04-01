@@ -63,7 +63,7 @@ namespace CelesteEditor.UnityProject
 
             if (!string.IsNullOrEmpty(parentDirectory))
             {
-                AssetUtility.CreateFolder(parentDirectory);
+                EditorOnly.CreateFolder(parentDirectory);
             }
 
             if (hasRuntimeAssembly)
@@ -121,7 +121,7 @@ namespace CelesteEditor.UnityProject
                     {
                         SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
                         sceneSet.name = $"{directoryName}SceneSet";
-                        AssetUtility.CreateAsset(sceneSet, parameters.sceneSetPath);
+                        EditorOnly.CreateAsset(sceneSet, parameters.sceneSetPath);
                     }
 
                     // We've created actual scripts so we can delete the placeholder script now
@@ -145,7 +145,7 @@ namespace CelesteEditor.UnityProject
             IReadOnlyList<string> includePlatforms = null)
         {
             string directoryPath = !string.IsNullOrEmpty(parentDirectoryPath) ? Path.Combine(parentDirectoryPath, directoryName) : directoryName;
-            AssetUtility.CreateFolder(Path.Combine(directoryPath, "Scripts"));
+            EditorOnly.CreateFolder(Path.Combine(directoryPath, "Scripts"));
 
             AsmDef assemblyDef = new AsmDef();
             assemblyDef.autoReferenced = true;

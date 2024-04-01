@@ -17,7 +17,7 @@ namespace CelesteEditor.Input
 
             if (GUILayout.Button("Find Shortcuts"))
             {
-                AssetUtility.FindAssets<Shortcut>(target, "shortcuts");
+                EditorOnly.FindAssets<Shortcut>(target, "shortcuts");
             }
 
             DrawPropertiesExcluding(serializedObject, "m_Script");

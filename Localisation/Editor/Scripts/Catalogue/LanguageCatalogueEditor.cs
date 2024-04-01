@@ -16,7 +16,7 @@ namespace CelesteEditor.Localisation.Catalogue
             {
                 LanguageCatalogue languageCatalogue = target as LanguageCatalogue;
 
-                foreach (LocalisationKey localisationKey in AssetUtility.FindAssets<LocalisationKey>())
+                foreach (LocalisationKey localisationKey in EditorOnly.FindAssets<LocalisationKey>())
                 {
                     bool used = false;
 

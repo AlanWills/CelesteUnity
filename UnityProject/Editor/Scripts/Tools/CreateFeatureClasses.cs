@@ -69,7 +69,7 @@ namespace CelesteEditor.UnityProject
             if (parameters.createObject)
             {
                 string objectsFolderPath = $"{parameters.runtimeScriptsDirectory}/Objects";
-                AssetUtility.CreateFolder(objectsFolderPath);
+                EditorOnly.CreateFolder(objectsFolderPath);
 
                 string objectScriptPath = $"{objectsFolderPath}/{parameters.objectTypeName}.cs";
                 string objectScriptContents = string.Format(
@@ -88,7 +88,7 @@ namespace CelesteEditor.UnityProject
                 // Catalogue
                 {
                     string catalogueFolderPath = $"{parameters.runtimeScriptsDirectory}/Catalogue";
-                    AssetUtility.CreateFolder(catalogueFolderPath);
+                    EditorOnly.CreateFolder(catalogueFolderPath);
 
                     string catalogueScriptPath = $"{catalogueFolderPath}/{parameters.catalogueTypeName}.cs";
                     string catalogueScriptContents = string.Format(
@@ -103,7 +103,7 @@ namespace CelesteEditor.UnityProject
                 // Catalogue Editor
                 {
                     string catalogueEditorFolderPath = $"{parameters.editorScriptsDirectory}/Catalogue";
-                    AssetUtility.CreateFolder(catalogueEditorFolderPath);
+                    EditorOnly.CreateFolder(catalogueEditorFolderPath);
 
                     string catalogueEditorScriptPath = $"{catalogueEditorFolderPath}/{parameters.catalogueTypeName}Editor.cs";
                     string catalogueEditorScriptContents = string.Format(
@@ -122,7 +122,7 @@ namespace CelesteEditor.UnityProject
             if (parameters.createRecord)
             {
                 string recordFolderPath = $"{parameters.runtimeScriptsDirectory}/Record";
-                AssetUtility.CreateFolder(recordFolderPath);
+                EditorOnly.CreateFolder(recordFolderPath);
 
                 string recordScriptPath = $"{recordFolderPath}/{parameters.recordTypeName}.cs";
                 string recordScriptContents = string.Format(
@@ -141,7 +141,7 @@ namespace CelesteEditor.UnityProject
                 // Create Manager
                 {
                     string managerFolderPath = $"{parameters.runtimeScriptsDirectory}/Managers";
-                    AssetUtility.CreateFolder(managerFolderPath);
+                    EditorOnly.CreateFolder(managerFolderPath);
 
                     string managerScriptPath = $"{managerFolderPath}/{parameters.managerTypeName}.cs";
                     string managerScriptContents = parameters.isManagerPersistent ?
@@ -164,7 +164,7 @@ namespace CelesteEditor.UnityProject
                     // Create DTO
                     {
                         string dtoFolderPath = $"{parameters.runtimeScriptsDirectory}/Persistence";
-                        AssetUtility.CreateFolder(dtoFolderPath);
+                        EditorOnly.CreateFolder(dtoFolderPath);
 
                         string dtoScriptPath = $"{dtoFolderPath}/{parameters.managerDTOTypeName}.cs";
                         string dtoScriptContents = string.Format(

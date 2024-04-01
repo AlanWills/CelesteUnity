@@ -13,7 +13,7 @@ namespace CelesteEditor.Scene.Debug
         {
             if (GUILayout.Button("Find All"))
             {
-                AssetUtility.FindAssets<SceneSet>(target, "sceneSets");
+                EditorOnly.FindAssets<SceneSet>(target, "sceneSets");
             }
 
             base.OnInspectorGUI();

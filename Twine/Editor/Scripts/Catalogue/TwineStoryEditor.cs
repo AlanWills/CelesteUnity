@@ -17,7 +17,7 @@ namespace CelesteEditor.Twine.Database
             Object selectionObject = Selection.activeObject;
             if (selectionObject != null)
             {
-                string folder = AssetUtility.GetAssetFolderPath(selectionObject);
+                string folder = EditorOnly.GetAssetFolderPath(selectionObject);
                 string path = Path.Combine(folder, $"{nameof(TwineStory)}.{TwineStory.FILE_EXTENSION}");
                 File.WriteAllText(path, "");
 

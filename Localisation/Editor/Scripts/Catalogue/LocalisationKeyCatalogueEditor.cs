@@ -20,7 +20,7 @@ namespace CelesteEditor.Localisation.Catalogue
             {
                 Dictionary<string, LocalisationKey> newLookup = new Dictionary<string, LocalisationKey>();
 
-                foreach (var localisationKey in AssetUtility.FindAssets<LocalisationKey>())
+                foreach (var localisationKey in EditorOnly.FindAssets<LocalisationKey>())
                 {
                     newLookup.Add(localisationKey.Key, localisationKey);
                 }

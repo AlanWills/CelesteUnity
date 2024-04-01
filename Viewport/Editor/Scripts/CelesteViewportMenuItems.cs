@@ -29,7 +29,7 @@ namespace CelesteEditor.Viewport
             DragCamera dragCamera = gameObject.AddComponent<DragCamera>();
             dragCamera.OnValidate();
 
-            FloatValue dragSpeedValue = AssetUtility.FindAsset<FloatValue>("CameraPanSpeedValue");
+            FloatValue dragSpeedValue = EditorOnly.FindAsset<FloatValue>("CameraPanSpeedValue");
             
             if (dragSpeedValue != null)
             {

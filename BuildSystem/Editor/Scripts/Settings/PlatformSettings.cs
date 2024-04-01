@@ -228,7 +228,7 @@ namespace CelesteEditor.BuildSystem
                 SetAddressableAssetSettings();
             }
 
-            AssetUtility.CreateFolder("Assets/Resources");
+            EditorOnly.CreateFolder("Assets/Resources");
             File.WriteAllText($"Assets/Resources/{DebugConstants.IS_DEBUG_BUILD_FILE}.txt", isDebugBuild ? "1" : "0");
 
             ApplyImpl();
@@ -285,7 +285,7 @@ namespace CelesteEditor.BuildSystem
         {
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = BuildOptions;
-            buildPlayerOptions.locationPathName = AssetUtility.EnsureDelimitersCorrect(Path.Combine(BuildDirectory, OutputName));
+            buildPlayerOptions.locationPathName = EditorOnly.EnsureDelimitersCorrect(Path.Combine(BuildDirectory, OutputName));
             buildPlayerOptions.scenes = EditorBuildSettings.scenes.Select(x => x.path).ToArray();
             buildPlayerOptions.target = BuildTarget;
             buildPlayerOptions.targetGroup = BuildTargetGroup;
