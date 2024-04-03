@@ -106,7 +106,7 @@ namespace CelesteEditor.BuildSystem.Steps
 
             if (settings.MonoScriptBundleNaming == MonoScriptBundleNaming.Custom)
             {
-                bundledAssetBundleNames.Add($"{settings.MonoScriptBundleNaming}_monoscripts");
+                bundledAssetBundleNames.Add($"{settings.MonoScriptBundleCustomNaming}_monoscripts");
             }
             else if (settings.MonoScriptBundleNaming != MonoScriptBundleNaming.Disabled)
             {
