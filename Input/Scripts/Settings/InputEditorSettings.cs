@@ -17,6 +17,7 @@ namespace Celeste.Input.Settings
         public const string FILE_PATH = FOLDER_PATH + "InputEditorSettings.asset";
 
         public CameraValue InputCamera => inputCameraValue;
+        public CameraEvent SetInputCamera => setInputCameraEvent;
 
         public Vector2Event LeftMouseButtonFirstDown => leftMouseButtonFirstDownEvent;
         public Vector2Event LeftMouseButtonDown => leftMouseButtonDownEvent;
@@ -35,6 +36,7 @@ namespace Celeste.Input.Settings
         public MultiTouchEvent TripleTouch => tripleTouchEvent;
 
         [SerializeField] private CameraValue inputCameraValue;
+        [SerializeField] private CameraEvent setInputCameraEvent;
 
         [Header("Left Mouse Button Events")]
         [SerializeField] private Vector2Event leftMouseButtonFirstDownEvent;
@@ -69,6 +71,7 @@ namespace Celeste.Input.Settings
             base.OnCreate();
 
             inputCameraValue = EditorOnly.FindAsset<CameraValue>("InputCamera");
+            setInputCameraEvent = EditorOnly.FindAsset<CameraEvent>("SetInputCamera");
 
             leftMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
             leftMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonDown");

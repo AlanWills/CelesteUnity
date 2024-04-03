@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6377833681284458528}
   - component: {fileID: 281798092191948978}
   - component: {fileID: 5373444767435126170}
+  - component: {fileID: 5781091272669905465}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -26,6 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6377833681284458529}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,7 +35,6 @@ Transform:
   m_Children:
   - {fileID: 8694743908019457936}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6377833681284458528
 MonoBehaviour:
@@ -51,23 +52,6 @@ MonoBehaviour:
   inputState: {fileID: 11400000, guid: 8294e469dc48dcd48bef4ac737260cf9, type: 2}
   eventSystem: {fileID: 6381089565103586265}
   uiInputModule: {fileID: 1193864485043714465}
-  leftMouseButtonFirstDown: {fileID: 11400000, guid: 3e0f99d77fe7e284b98c11650a91e607, type: 2}
-  leftMouseButtonDown: {fileID: 11400000, guid: 80d21d9030dfeee4ab10e4c4d0c06dc2, type: 2}
-  leftMouseButtonFirstUp: {fileID: 11400000, guid: 1d0dd8082f5d9f14cae4daf109e914b0, type: 2}
-  middleMouseButtonFirstDown: {fileID: 11400000, guid: 7ed9008c9f02d0a468e3b188c757ef49, type: 2}
-  middleMouseButtonDown: {fileID: 11400000, guid: a70d2ad7caf24ba4c8d6bd16fd4f8958, type: 2}
-  middleMouseButtonFirstUp: {fileID: 11400000, guid: a3aa7b1cee5289041a03094b573b5bf5, type: 2}
-  rightMouseButtonFirstDown: {fileID: 11400000, guid: 13b1cee57fbb72f44a516ef604d57345, type: 2}
-  rightMouseButtonDown: {fileID: 11400000, guid: 15b9eca4d3a0b3044923f2861faa7254, type: 2}
-  rightMouseButtonFirstUp: {fileID: 11400000, guid: 5a819ea16b858ac49b37e65c28d077b0, type: 2}
-  mouseScrolled: {fileID: 11400000, guid: f8e41487b26e73a4a8c520f166a1d589, type: 2}
-  mouseMoved: {fileID: 11400000, guid: 563148fb673d6dc4dafd34d657d1bf33, type: 2}
-  singleTouchEvent: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
-  doubleTouchEvent: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
-  tripleTouchEvent: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
-  gameObjectLeftClicked: {fileID: 11400000, guid: 3d2bbbcfeec825142a3344fe962761b5, type: 2}
-  gameObjectMiddleClicked: {fileID: 11400000, guid: 74f2db1510282b341a73c9fd67e77aa9, type: 2}
-  gameObjectRightClicked: {fileID: 11400000, guid: bc1369bb8eb49fb46838fcde447aed29, type: 2}
 --- !u!114 &281798092191948978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: 9cd7c5afb04e8b74ca6375f2de930860, type: 2}
+  logAddAndRemoveListener: 0
   response:
     m_PersistentCalls:
       m_Calls:
@@ -109,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: 4df08a0036df31b42bcc5386f44213ae, type: 2}
+  logAddAndRemoveListener: 0
   response:
     m_PersistentCalls:
       m_Calls:
@@ -116,6 +102,35 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5781091272669905465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377833681284458529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94086d6499e2bf84ba815db27b7d9520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 89488db37115b5f4ca554e745deb3518, type: 2}
+  logAddAndRemoveListener: 0
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6377833681284458528}
+        m_TargetAssemblyTypeName: Celeste.Input.InputManager, Celeste.Input
+        m_MethodName: SetInputCamera
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -149,13 +164,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6692587780514202931}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6377833681284458535}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6381089565103586265
 MonoBehaviour:

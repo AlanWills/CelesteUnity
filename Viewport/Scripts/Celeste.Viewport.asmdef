@@ -4,6 +4,8 @@
     "references": [
         "Celeste.Parameters",
         "Celeste.Events",
+        "Celeste.Tools",
+        "Celeste.Input",
         "Unity.InputSystem"
     ],
     "includePlatforms": [],

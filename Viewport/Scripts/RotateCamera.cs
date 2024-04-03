@@ -53,12 +53,12 @@ namespace Celeste.Viewport
         {
             float deltaRotation = 0;
 
-            if (Input.GetKey(rotateAntiClockwiseKey.Value))
+            if (UnityEngine.Input.GetKey(rotateAntiClockwiseKey.Value))
             {
                 deltaRotation += Time.deltaTime * rotateSpeed.Value;
             }
 
-            if (Input.GetKey(rotateClockwiseKey.Value))
+            if (UnityEngine.Input.GetKey(rotateClockwiseKey.Value))
             {
                 deltaRotation -= Time.deltaTime * rotateSpeed.Value;
             }

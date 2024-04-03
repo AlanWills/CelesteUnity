@@ -1,8 +1,5 @@
-﻿using Celeste.Parameters;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Celeste.Debug.Settings;
+using Celeste.Parameters;
 using UnityEngine;
 
 namespace Celeste.Debug
@@ -12,12 +9,19 @@ namespace Celeste.Debug
     {
         #region Properties and Fields
 
-        [SerializeField]
-        private BoolValue isDebugBuild;
+        [SerializeField] private BoolValue isDebugBuild;
 
         #endregion
 
         #region Unity Methods
+
+        private void OnValidate()
+        {
+            if (isDebugBuild == null)
+            {
+                isDebugBuild = DebugEditorSettings.GetOrCreateSettings().isDebugBuildValue;
+            }
+        }
 
         private void Awake()
         {

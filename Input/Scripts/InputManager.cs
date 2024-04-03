@@ -171,5 +171,14 @@ namespace Celeste.Input
         }
 
         #endregion
+
+        #region Callbacks
+
+        public void SetInputCamera(Camera camera)
+        {
+            raycastCamera.Value = camera;
+        }
+
+        #endregion
     }
 }
