@@ -26,6 +26,7 @@ namespace Celeste.Viewport
 
         #region Unity Methods
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             this.TryGet(ref _camera);
@@ -36,6 +37,7 @@ namespace Celeste.Viewport
                 setInputCamera = InputEditorSettings.GetOrCreateSettings().SetInputCamera;
             }
         }
+#endif
 
         private void Awake()
         {

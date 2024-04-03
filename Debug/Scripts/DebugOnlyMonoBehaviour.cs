@@ -15,6 +15,7 @@ namespace Celeste.Debug
 
         #region Unity Methods
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             if (isDebugBuild == null)
@@ -22,6 +23,7 @@ namespace Celeste.Debug
                 isDebugBuild = DebugEditorSettings.GetOrCreateSettings().isDebugBuildValue;
             }
         }
+#endif
 
         private void Awake()
         {
