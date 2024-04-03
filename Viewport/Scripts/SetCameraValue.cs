@@ -31,10 +31,22 @@ namespace Celeste.Viewport
         {
             this.TryGet(ref _camera);
 
-            if (cameraValue == null)
+            if (cameraValue == null && useParameter)
             {
                 cameraValue = InputEditorSettings.GetOrCreateSettings().InputCamera;
+            }
+            else if (cameraValue != null && !useParameter)
+            {
+                cameraValue = null;
+            }
+
+            if (setInputCamera == null && !useParameter)
+            {
                 setInputCamera = InputEditorSettings.GetOrCreateSettings().SetInputCamera;
+            }
+            else if (setInputCamera != null && useParameter)
+            {
+                setInputCamera = null;
             }
         }
 #endif
