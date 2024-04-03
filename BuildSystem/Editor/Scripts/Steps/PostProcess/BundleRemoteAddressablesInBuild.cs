@@ -7,7 +7,6 @@ using System.IO;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
-using UnityEngine.AddressableAssets.Initialization;
 
 namespace CelesteEditor.BuildSystem.Steps
 {
@@ -17,12 +16,6 @@ namespace CelesteEditor.BuildSystem.Steps
         order = CelesteMenuItemConstants.BUILDSYSTEM_MENU_ITEM_PRIORITY)]
     public class BundleRemoteAddressablesInBuild : AssetPostProcessStep
     {
-        #region Properties and Fields
-
-        [SerializeField] private string unityBuiltInShadersPrefix = "alwaysbundle";
-
-        #endregion
-
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
         {
             HashSet<string> bundledNames = GetBundledAssetBundleNames();
@@ -99,11 +92,26 @@ namespace CelesteEditor.BuildSystem.Steps
 
         private HashSet<string> GetBundledAssetBundleNames()
         {
-            HashSet<string> bundledAssetBundleNames = new HashSet<string>()
-            {
-                $"{unityBuiltInShadersPrefix}_unitybuiltinshaders"
-            };
+            HashSet<string> bundledAssetBundleNames = new HashSet<string>();
             var settings = AddressableAssetSettingsDefaultObject.Settings;
+            
+            if (settings.ShaderBundleNaming == ShaderBundleNaming.Custom)
+            {
+                bundledAssetBundleNames.Add($"{settings.ShaderBundleCustomNaming}_unitybuiltinshaders");
+            }
+            else
+            {
+                Debug.LogWarning($"Shader Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+            }
+
+            if (settings.MonoScriptBundleNaming == MonoScriptBundleNaming.Custom)
+            {
+                bundledAssetBundleNames.Add($"{settings.MonoScriptBundleNaming}_monoscripts");
+            }
+            else if (settings.MonoScriptBundleNaming != MonoScriptBundleNaming.Disabled)
+            {
+                Debug.LogWarning($"Mono Script Bundle Naming is enabled, but not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+            }
 
             foreach (var group in settings.groups)
             {
