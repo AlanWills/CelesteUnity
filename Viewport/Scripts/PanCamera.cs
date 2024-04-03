@@ -76,26 +76,26 @@ namespace Celeste.Viewport
             float width = topRight.x - bottomLeft.x;
             float height = topRight.y - bottomLeft.y;
 
-            Vector2 viewportCoords = cameraToPan.ScreenToViewportPoint(Input.mousePosition);
+            Vector2 viewportCoords = cameraToPan.ScreenToViewportPoint(UnityEngine.Input.mousePosition);
             Vector2 deltaPan = new Vector2();
             float deltaS = speed.Value * Time.deltaTime;
 
-            if (Input.GetKey(leftKey.Value) || (0 <= viewportCoords.x && viewportCoords.x <= edgeOffset.x))
+            if (UnityEngine.Input.GetKey(leftKey.Value) || (0 <= viewportCoords.x && viewportCoords.x <= edgeOffset.x))
             {
                 deltaPan.x -= deltaS * width;
             }
 
-            if (Input.GetKey(upKey.Value) || ((1 - edgeOffset.y) <= viewportCoords.y) && viewportCoords.y <= 1)
+            if (UnityEngine.Input.GetKey(upKey.Value) || ((1 - edgeOffset.y) <= viewportCoords.y) && viewportCoords.y <= 1)
             {
                 deltaPan.y += deltaS * height;
             }
 
-            if (Input.GetKey(rightKey.Value) || ((1 - edgeOffset.x) <= viewportCoords.x) && (viewportCoords.y <= 1))
+            if (UnityEngine.Input.GetKey(rightKey.Value) || ((1 - edgeOffset.x) <= viewportCoords.x) && (viewportCoords.y <= 1))
             {
                 deltaPan.x += deltaS * width;
             }
 
-            if (Input.GetKey(downKey.Value) || (0 <= viewportCoords.y && viewportCoords.y <= edgeOffset.y))
+            if (UnityEngine.Input.GetKey(downKey.Value) || (0 <= viewportCoords.y && viewportCoords.y <= edgeOffset.y))
             {
                 deltaPan.y -= deltaS * height;
             }
