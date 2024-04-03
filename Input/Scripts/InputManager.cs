@@ -24,9 +24,9 @@ namespace Celeste.Input
         {
             get
             {
-                if (raycastCamera.Value != null)
+                if (RaycastCamera != null)
                 {
-                    Vector2 viewportCoords = raycastCamera.Value.ScreenToViewportPoint(Mouse.current.position.ReadValue());
+                    Vector2 viewportCoords = RaycastCamera.ScreenToViewportPoint(Mouse.current.position.ReadValue());
                     return viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1;
                 }
 
@@ -35,6 +35,7 @@ namespace Celeste.Input
         }
 
 #endif
+        private Camera RaycastCamera => raycastCamera.Value ?? Camera.main;
 
         [SerializeField] private CameraValue raycastCamera = default;
         [SerializeField] private InputState inputState;
@@ -130,9 +131,9 @@ namespace Celeste.Input
             Vector3 pointerWorldPosition = Vector3.zero;
             GameObject hitGameObject = null;
 
-            if (raycastCamera.Value != null)
+            if (RaycastCamera != null)
             {
-                pointerWorldPosition = raycastCamera.Value.ScreenToWorldPoint(pointerPosition);
+                pointerWorldPosition = RaycastCamera.ScreenToWorldPoint(pointerPosition);
 
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
