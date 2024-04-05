@@ -104,13 +104,13 @@ namespace Celeste.Persistence
                     }
                     else
                     {
-                        UnityEngine.Debug.Log($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                        HudLog.LogError($"Error deserializing data in {persistentFilePath}.  Using default values.");
                         SetDefaultValues();
                     }
                 }
                 else
                 {
-                    UnityEngine.Debug.LogFormat($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
+                    UnityEngine.Debug.Log($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
                     SetDefaultValues();
                 }
             }
@@ -120,7 +120,7 @@ namespace Celeste.Persistence
         {
             if (loadingLock.Locked)
             {
-                UnityEngine.Debug.LogError($"{name} is ignoring a save request as loading is in progress.  " +
+                HudLog.LogError($"{name} is ignoring a save request as loading is in progress.  " +
                     $"You can use {nameof(DelayedSave)} if you really need to save immediately, but it's likely you're accidentally requesting a save during loading.");
                 return;
             }
@@ -172,11 +172,11 @@ namespace Celeste.Persistence
 
             if (saveTask.IsCompletedSuccessfully)
             {
-                UnityEngine.Debug.Log($"{name} saved successfully");
+                HudLog.LogInfo($"{name} saved successfully");
             }
             else
             {
-                UnityEngine.Debug.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}");
+                HudLog.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}");
             }
 
             if (saveRequested)
