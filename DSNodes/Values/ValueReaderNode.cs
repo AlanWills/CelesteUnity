@@ -1,7 +1,5 @@
 ﻿using Celeste.Parameters;
 using System;
-using Celeste.Tools.Attributes.GUI;
-using UnityEditor;
 using UnityEngine;
 using XNode;
 
@@ -22,6 +20,13 @@ namespace Celeste.DS.Nodes.Values
 
         public override object GetValue(NodePort port)
         {
+            TValue valueParameter = GetInputValue(nameof(value), value);
+            if (valueParameter == null)
+            {
+                Debug.LogAssertion($"Could not find value parameter for ValueReaderNode {name} in DataGraph {graph.name}.  Default value was null? {value == null}.");
+                return default;
+            }
+
             T v = GetInputValue(nameof(value), value).Value;
 
             if (string.CompareOrdinal(port.fieldName, nameof(output)) == 0)
@@ -29,9 +34,9 @@ namespace Celeste.DS.Nodes.Values
                 return v;
             }
             
-            if (string.CompareOrdinal(port.fieldName, nameof(outputAsString)) == 0)
+            if (string.CompareOrdinal(port.fieldName, nameof(outputAsString)) == 0 && v != null)
             {
-                return v != null ? v.ToString() : null;
+                return v.ToString();
             }
 
             return default;
