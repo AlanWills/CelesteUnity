@@ -35,12 +35,14 @@ namespace Celeste.Input
         }
 
 #endif
-        private Camera RaycastCamera => raycastCamera.Value ?? Camera.main;
+        private Camera RaycastCamera => raycastCamera.Value ?? fallbackMainCamera;
 
         [SerializeField] private CameraValue raycastCamera = default;
         [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
         [SerializeField] private InputSystemUIInputModule uiInputModule;
+
+        [NonSerialized] private Camera fallbackMainCamera;
 
         #endregion
 
@@ -60,6 +62,8 @@ namespace Celeste.Input
 
         private void OnEnable()
         {
+            fallbackMainCamera = null;
+
 #if UNITY_ANDROID || UNITY_IOS
             if (!EnhancedTouchSupport.enabled)
             {
@@ -80,21 +84,29 @@ namespace Celeste.Input
 
         private void Update()
         {
+            if (raycastCamera.Value == null)
+            {
+                Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.");
+                fallbackMainCamera = Camera.main; 
+            }
+
 #if UNITY_ANDROID || UNITY_IOS
             GameObject hitGameObject = null;
             var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
             int numTouches = touches.Count;
-            Vector3 touchPosition = Vector3.zero;
-            Vector3 touchWorldPosition = Vector3.zero;
 
-            if (numTouches == 1)
+            if (numTouches > 0)
             {
+                // Only update pointer state if we've actually touched down, otherwise leave it as it was the last time we touched the screen
+                // The hit game object and touches logic in the InputState should flag to other systems we've not hit anything
+                Vector3 touchPosition = touches[0].screenPosition;
                 ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(touchPosition);
-                touchWorldPosition = hitObject.Item1;
+                Vector3 touchWorldPosition = hitObject.Item1;
                 hitGameObject = hitObject.Item2;
-            }
 
-            inputState.UpdatePointerPosition(touchPosition, touchWorldPosition);
+                inputState.UpdatePointerPosition(touchPosition, touchWorldPosition);
+            }
+            
             inputState.UpdatePointerOverObject(hitGameObject, numTouches == 1);
             inputState.UpdateTouches(touches);
 #else
