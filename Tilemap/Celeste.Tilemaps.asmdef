@@ -9,7 +9,8 @@
         "Celeste.Objects",
         "Celeste.OdinSerializer",
         "Celeste.Tools",
-        "Celeste.UnityProject"
+        "Celeste.UnityProject",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -51,7 +51,7 @@ namespace Celeste.Tilemaps
             mouseDownLastFrame = false;
         }
 
-        public void DragUsingTouch(Touch touch)
+        public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
         {
             switch (touch.phase)
             {
