@@ -55,20 +55,20 @@ namespace Celeste.Tilemaps
         {
             switch (touch.phase)
             {
-                case TouchPhase.Began:
+                case UnityEngine.InputSystem.TouchPhase.Began:
                     timeSinceFingerDown = 0;
                     break;
 
-                case TouchPhase.Stationary:
+                case UnityEngine.InputSystem.TouchPhase.Stationary:
                     timeSinceFingerDown += Time.deltaTime;
                     break;
 
-                case TouchPhase.Moved:
+                case UnityEngine.InputSystem.TouchPhase.Moved:
                     timeSinceFingerDown += Time.deltaTime;
 
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
-                        Vector2 dragAmount = -touch.deltaPosition;
+                        Vector2 dragAmount = -touch.delta;
                         float scrollModifier = dragSpeed.Value * Time.deltaTime * cameraToDrag.orthographicSize;
 
                         transform.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
