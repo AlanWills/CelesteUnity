@@ -21,7 +21,7 @@ namespace Celeste.Logic
                 if (isMet != value)
                 {
                     isMet = value;
-                    
+
                     if (Application.isPlaying)
                     {
                         onIsMetChanged.Invoke(new ValueChangedArgs<bool>(!value, value));
@@ -57,7 +57,13 @@ namespace Celeste.Logic
             }
         }
 
-        protected bool Check()
+        public void SetVariable(object arg)
+        {
+            DoSetVariable(arg);
+            Check();
+        }
+
+        public bool Check()
         {
             IsMet = DoCheck();
             return IsMet;
@@ -66,7 +72,7 @@ namespace Celeste.Logic
         protected virtual void DoInitialize() { }
         protected virtual void DoShutdown() { }
         protected abstract bool DoCheck();
-        public abstract void SetVariable(object arg);
+        protected abstract void DoSetVariable(object arg);
 
         #region ICopyable
 
@@ -111,7 +117,7 @@ namespace Celeste.Logic
         }
 
         [Conditional("UNITY_EDITOR")]
-        protected virtual void DoEditorInitialize() 
+        protected virtual void DoEditorInitialize()
         {
             DoInitialize();
         }

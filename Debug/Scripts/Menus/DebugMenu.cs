@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Celeste.Tools;
+using System;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -34,9 +35,7 @@ namespace Celeste.Debug.Menus
             set
             {
                 menuPriority = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -51,7 +50,8 @@ namespace Celeste.Debug.Menus
         {
             if (string.IsNullOrWhiteSpace(displayName))
             {
-                displayName = name;
+                displayName = name.Replace("DebugMenu", string.Empty);
+                EditorOnly.SetDirty(this);
             }
         }
 

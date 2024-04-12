@@ -35,7 +35,7 @@ namespace Celeste.Logic
             conditions.AddRange(compoundCondition.conditions);
         }
 
-        public override void SetVariable(object arg)
+        protected override void DoSetVariable(object arg)
         {
             // No-op
         }

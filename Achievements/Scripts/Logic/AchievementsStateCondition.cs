@@ -44,7 +44,7 @@ namespace Celeste.Achievements.Logic
             return true;
         }
 
-        public override void SetVariable(object arg)
+        protected override void DoSetVariable(object arg)
         {
             if (needsAchievedAchievements)
             {

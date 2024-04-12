@@ -26,7 +26,7 @@ namespace Celeste.Logic
             target = adWatchResultCondition.target;
         }
 
-        public override void SetVariable(object arg)
+        protected override void DoSetVariable(object arg)
         {
             target = (AdWatchResult)arg;
         }
