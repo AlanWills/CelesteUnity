@@ -1,10 +1,11 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
 #endif
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class ShowIfAttribute : MultiPropertyAttribute
+    public class ShowIfAttribute : MultiPropertyAttribute, IVisibilityAttribute//, IGetHeightAttribute
     {
         public string PropertyName { get; private set; }
 
@@ -14,9 +15,14 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
+        public bool IsVisible(SerializedProperty property)
         {
             return IsConditionallyEnabled(property);
+        }
+
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return GetDefaultPropertyHeight(property, label);
         }
 
         private bool IsConditionallyEnabled(SerializedProperty property)

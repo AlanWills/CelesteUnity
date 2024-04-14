@@ -47,7 +47,7 @@ namespace CelesteEditor.Scene
         {
             Dictionary<SceneInfo, string> scenePathLookup = new Dictionary<SceneInfo, string>();
 
-            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}"))
+            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}", new string[] { "Assets" }))
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(sceneGuid);
                 SceneAsset unityScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);
@@ -68,7 +68,7 @@ namespace CelesteEditor.Scene
         {
             Dictionary<string, SceneAsset> scenePathLookup = new Dictionary<string, SceneAsset>();
 
-            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}"))
+            foreach (string sceneGuid in AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}", new string[] { "Assets" }))
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(sceneGuid);
                 SceneAsset unityScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(assetPath);

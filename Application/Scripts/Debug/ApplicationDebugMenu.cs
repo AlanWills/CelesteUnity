@@ -13,7 +13,7 @@ namespace Celeste.Application.Debug
         {
             GUILayout.Label($"Version: {UnityEngine.Application.version}");
             GUILayout.Label($"Screen Resolution: {Screen.width} x {Screen.height}");
-            GUILayout.Label($"Screen Save Area: {Screen.safeArea}");
+            GUILayout.Label($"Screen Safe Area: {Screen.safeArea}");
         }
     }
 }

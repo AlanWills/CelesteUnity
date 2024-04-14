@@ -7,20 +7,15 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class JsonAttribute : MultiPropertyAttribute
+    public class JsonAttribute : MultiPropertyAttribute, IGetHeightAttribute, IGUIAttribute
     {
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
-        {
-            return true;
-        }
-
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return UnityEngine.GUI.skin.label.CalcSize(new GUIContent(property.stringValue)).y;
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUIContent buttonContent = new GUIContent("Prettify");
             Rect buttonPosition = new Rect(position);
@@ -38,6 +33,8 @@ namespace Celeste.Tools.Attributes.GUI
             textAreaPosition.x = position.x + buttonPosition.width;
 
             property.stringValue = EditorGUI.TextArea(textAreaPosition, property.stringValue);
+
+            return position;
         }
 #endif
     }

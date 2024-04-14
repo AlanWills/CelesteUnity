@@ -7,7 +7,7 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
-    public class ColourAttribute : MultiPropertyAttribute
+    public class ColourAttribute : MultiPropertyAttribute, IPreGUIAttribute, IPostGUIAttribute
     {
         #region Properties and Fields
 
@@ -28,15 +28,17 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override void OnPreGUI(Rect position, SerializedProperty property)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
             oldGuiColour = UnityEngine.GUI.color;
             UnityEngine.GUI.color = Colour;
+            return position;
         }
 
-        public override void OnPostGUI(Rect position, SerializedProperty property)
+        public Rect OnPostGUI(Rect position, SerializedProperty property)
         {
             UnityEngine.GUI.color = oldGuiColour;
+            return position;
         }
 #endif
     }

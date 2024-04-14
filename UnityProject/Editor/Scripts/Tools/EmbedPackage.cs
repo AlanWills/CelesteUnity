@@ -32,7 +32,7 @@ public static class EmbedPackage
         var packageName = Path.GetFileName(AssetDatabase.GetAssetPath(selectedPackageFolder));
 
         Debug.Log($"Embedding package '{packageName}' into the project.");
-
+        
         Client.Embed(packageName);
         AssetDatabase.Refresh();
     }

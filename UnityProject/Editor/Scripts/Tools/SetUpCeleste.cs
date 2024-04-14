@@ -92,6 +92,7 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool needsStartupScene;
         [LabelWidth(300)] public bool needsBootstrapScene;
         [LabelWidth(300)] public bool needsEngineSystemsScene;
+        [LabelWidth(300)] public bool needsLoadingScene;
         [LabelWidth(300)] public bool needsGameSystemsScene;
 
         #endregion
@@ -126,6 +127,7 @@ namespace CelesteEditor.UnityProject
             needsStartupScene = true;
             needsBootstrapScene = true;
             needsEngineSystemsScene = true;
+            needsLoadingScene = true;
             needsGameSystemsScene = true;
         }
     }
@@ -187,6 +189,7 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateModules(SetUpCelesteParameters parameters)
         {
+            CreateLoading(parameters);
             CreateGameSystems(parameters);
             CreateEngineSystems(parameters);
             CreateBootstrap(parameters);
@@ -487,12 +490,12 @@ namespace CelesteEditor.UnityProject
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(CelesteConstants.LOADING_SCENE_NAME);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(LoadingConstants.SCENE_NAME);
             AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
-            bootstrapSceneSet.AddScene(CelesteConstants.LOADING_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
+            bootstrapSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
 
@@ -547,6 +550,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
+            engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
@@ -591,6 +595,33 @@ namespace CelesteEditor.UnityProject
                     sfxManager.SFXSettings = sfxSettings;
                 }
             }
+        }
+
+        #endregion
+
+        #region Game Systems
+
+        private static void CreateLoading(SetUpCelesteParameters parameters)
+        {
+            if (parameters.needsLoadingScene)
+            {
+                CreateLoadingFolders();
+                CreateLoadingScenes(parameters);
+            }
+        }
+
+        private static void CreateLoadingFolders()
+        {
+            EditorOnly.CreateFolder(LoadingConstants.SCENES_FOLDER_PATH);
+        }
+
+        private static void CreateLoadingScenes(SetUpCelesteParameters parameters)
+        {
+            bool copySuccessful = AssetDatabase.CopyAsset(parameters.CelesteConstants.LOADING_SCENE_PATH, LoadingConstants.SCENES_FOLDER_PATH);
+            Debug.Assert(copySuccessful, $"Failed to copy Celeste Loading scene from '{parameters.CelesteConstants.LOADING_SCENE_PATH}' to '{LoadingConstants.SCENES_FOLDER_PATH}'.");
+
+            AssetDatabase.Refresh();
+            SetAddressableAddress(parameters, LoadingConstants.SCENES_FOLDER_PATH, LoadingConstants.SCENE_NAME);
         }
 
         #endregion
@@ -780,6 +811,8 @@ namespace CelesteEditor.UnityProject
                 settings.OverridePlayerVersion = "res";
                 settings.ShaderBundleNaming = UnityEditor.AddressableAssets.Build.ShaderBundleNaming.Custom;
                 settings.ShaderBundleCustomNaming = "alwaysbundle";
+                settings.MonoScriptBundleNaming = UnityEditor.AddressableAssets.Build.MonoScriptBundleNaming.Custom;
+                settings.MonoScriptBundleCustomNaming = "alwaysbundle";
                 bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
                 Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
 

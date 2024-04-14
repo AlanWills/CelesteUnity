@@ -21,7 +21,7 @@ namespace Celeste.DS.Nodes.Objects
         [SerializeField] private FindConstraint findConstraint = FindConstraint.ActiveInHierarchy;
         [SerializeField] private bool cache = true;
 
-        private GameObject foundGameObject;
+        [NonSerialized] private GameObject foundGameObject;
 
         #endregion
 

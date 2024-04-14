@@ -8,7 +8,7 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [AttributeUsage(AttributeTargets.Field)]
-    public class MinAttribute : MultiPropertyAttribute
+    public class MinAttribute : MultiPropertyAttribute, IGUIAttribute
     {
         public float Min { get; }
 
@@ -23,12 +23,7 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            return GetDefaultPropertyHeight(property, label);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property.propertyType == SerializedPropertyType.Integer)
             {
@@ -40,6 +35,8 @@ namespace Celeste.Tools.Attributes.GUI
                 float newValue = EditorGUI.DelayedFloatField(position, label, property.floatValue);
                 property.floatValue = Mathf.Max(newValue, Min);
             }
+
+            return position;
         }
 #endif
     }

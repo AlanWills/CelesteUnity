@@ -6,26 +6,19 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class ReadOnlyAtRuntimeAttribute : MultiPropertyAttribute
+    public class ReadOnlyAtRuntimeAttribute : MultiPropertyAttribute, IPreGUIAttribute, IPostGUIAttribute
     {
 #if UNITY_EDITOR
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
-            return GetDefaultPropertyHeight(property, label);
-        }
-
-        public override void OnPreGUI(Rect position, SerializedProperty property)
-        {
-            base.OnPreGUI(position, property);
-
             UnityEngine.GUI.enabled = !Application.isPlaying;
+            return position;
         }
 
-        public override void OnPostGUI(Rect position, SerializedProperty property)
+        public Rect OnPostGUI(Rect position, SerializedProperty property)
         {
-            base.OnPostGUI(position, property);
-
             UnityEngine.GUI.enabled = true;
+            return position;
         }
 #endif
     }

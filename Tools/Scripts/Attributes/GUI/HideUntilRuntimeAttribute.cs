@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class HideUntilRuntimeAttribute : MultiPropertyAttribute
+    public class HideUntilRuntimeAttribute : MultiPropertyAttribute, IVisibilityAttribute
     {
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
+        public bool IsVisible(SerializedProperty property)
         {
             return Application.isPlaying;
         }

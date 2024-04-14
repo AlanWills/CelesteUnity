@@ -7,7 +7,7 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
-    public class LabelOverrideAttribute : MultiPropertyAttribute
+    public class LabelOverrideAttribute : MultiPropertyAttribute, IGUIAttribute
     {
         #region Properties and Fields
 
@@ -21,14 +21,10 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            return GetDefaultPropertyHeight(property, Label);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.PropertyField(position, property, Label, true);
+            return position;
         }
 #endif
     }

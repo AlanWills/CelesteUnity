@@ -1,5 +1,7 @@
 using UnityEngine;
 using Celeste.Tools.Attributes.GUI;
+using Celeste.Tools;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -7,13 +9,13 @@ using UnityEditor;
 
 namespace Celeste.Localisation
 {
-    public class LocalisationPreviewAttribute : MultiPropertyAttribute
+    public class LocalisationPreviewAttribute : MultiPropertyAttribute, IGetHeightAttribute, IGUIAttribute
     {
 #if UNITY_EDITOR
         private const float spacing = 5;
         private const int textAreaLineHeights = 2;
 
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float propertyHeight = EditorGUIUtility.singleLineHeight;
             LocalisationKey localisationKey = property.objectReferenceValue as LocalisationKey;
@@ -27,7 +29,7 @@ namespace Celeste.Localisation
             return propertyHeight;
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             LocalisationKey localisationKey = property.objectReferenceValue as LocalisationKey;
             Rect localisationKeyPosition = new Rect(position);
@@ -51,6 +53,8 @@ namespace Celeste.Localisation
             GUIContent localisationKeyLabel = EditorGUIUtility.TrTempContent(property.displayName);
             localisationKeyLabel.tooltip = localisationKey?.Fallback ?? string.Empty;
             property.objectReferenceValue = EditorGUI.ObjectField(localisationKeyPosition, localisationKeyLabel, property.objectReferenceValue, typeof(LocalisationKey), false);
+
+            return position;
         }
 
         private float GetPreviewTextHeight(string text, out bool maxSizeReached)

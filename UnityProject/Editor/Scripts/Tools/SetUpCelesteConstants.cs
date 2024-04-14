@@ -59,10 +59,18 @@
         public const string SCENE_SET_NAME = "GameSystemsSceneSet";
     }
 
+    public class LoadingConstants
+    {
+        public const string FOLDER_NAME = "Loading/";
+        public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
+        public const string SCENE_NAME = "Loading";
+        public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
+    }
+
     public struct CelesteConstants
     {
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
-        public const string LOADING_SCENE_NAME = "Loading";
         
         public readonly string LOADING_SCENE_PATH;
         public readonly string CELESTE_GIT_IGNORE_FILE_PATH;

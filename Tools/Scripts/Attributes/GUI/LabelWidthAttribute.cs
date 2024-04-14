@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class LabelWidthAttribute : MultiPropertyAttribute
+    public class LabelWidthAttribute : MultiPropertyAttribute, IPreGUIAttribute, IPostGUIAttribute
     {
         private float LabelWidth { get; set; }
 
@@ -16,14 +16,16 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override void OnPreGUI(Rect position, SerializedProperty property)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
             EditorGUIUtility.labelWidth = LabelWidth;
+            return position;
         }
 
-        public override void OnPostGUI(Rect position, SerializedProperty property)
+        public Rect OnPostGUI(Rect position, SerializedProperty property)
         {
             EditorGUIUtility.labelWidth = 0;
+            return position;
         }
 #endif
     }

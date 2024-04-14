@@ -1,6 +1,5 @@
 ﻿using Celeste.Constants;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +15,7 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
-using UnityEngine.AddressableAssets;
+using System.Collections.Generic;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -24,14 +23,14 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.";
+        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.  {build_target} will be replaced with the value of the 'BuildTarget' variable.  {build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable.";
 
         [SerializeField]
         [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
         private AppVersion version;
         public AppVersion Version
         {
-            get { return version; }
+            get => version;
             set
             {
                 version = value;
@@ -44,7 +43,7 @@ namespace CelesteEditor.BuildSystem
         private string buildDirectory;
         public string BuildDirectory
         {
-            get { return Resolve(buildDirectory); }
+            get => Resolve(buildDirectory);
             protected set
             {
                 buildDirectory = value;
@@ -57,7 +56,7 @@ namespace CelesteEditor.BuildSystem
         private string buildUploadURL;
         public string BuildUploadURL
         {
-            get { return Resolve(buildUploadURL); }
+            get => Resolve(buildUploadURL);
             protected set
             {
                 buildUploadURL = value;
@@ -70,7 +69,7 @@ namespace CelesteEditor.BuildSystem
         private string outputName;
         public string OutputName
         {
-            get { return Resolve(outputName); }
+            get => Resolve(outputName);
             protected set
             {
                 outputName = value;
@@ -87,7 +86,7 @@ namespace CelesteEditor.BuildSystem
         private string playerOverrideVersion;
         public string PlayerOverrideVersion
         {
-            get { return Resolve(playerOverrideVersion); }
+            get => Resolve(playerOverrideVersion);
             protected set
             {
                 playerOverrideVersion = value;
@@ -128,7 +127,7 @@ namespace CelesteEditor.BuildSystem
         private BuildTarget buildTarget;
         public BuildTarget BuildTarget
         {
-            get { return buildTarget; }
+            get => buildTarget;
             protected set
             {
                 buildTarget = value;
@@ -140,7 +139,7 @@ namespace CelesteEditor.BuildSystem
         private BuildTargetGroup buildTargetGroup;
         public BuildTargetGroup BuildTargetGroup
         {
-            get { return buildTargetGroup; }
+            get => buildTargetGroup;
             protected set
             {
                 buildTargetGroup = value;
@@ -180,7 +179,7 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("Any custom scripting steps that should be run after creating a build.  Useful for creating extra metadata or custom build pipelines.")]
         private BuildPostProcessSteps buildPostProcessSteps;
 
-        [Header("Build Assets")]
+        [Title("Build Assets")]
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Any custom scripting steps that should be run before building assets.  Useful for automated asset tooling.")]
         private AssetPreparationSteps buildAssetsPreparationSteps;
@@ -189,7 +188,7 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("Any custom scripting steps that should be run after building assets.  Useful for automated asset tooling.")]
         private AssetPostProcessSteps buildAssetsPostProcessSteps;
 
-        [Header("Update Assets")]
+        [Title("Update Assets")]
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Any custom scripting steps that should be run before updating assets.  Useful for automated asset tooling.")]
         private AssetPreparationSteps updateAssetsPreparationSteps;
@@ -451,7 +450,9 @@ namespace CelesteEditor.BuildSystem
                     Replace("{version}", Version.ToString()).
                     Replace("{major}", Version.Major.ToString()).
                     Replace("{minor}", Version.Minor.ToString()).
-                    Replace("{build}", Version.Build.ToString());
+                    Replace("{build}", Version.Build.ToString()).
+                    Replace("{build_target}", BuildTarget.ToString()).
+                    Replace("{build_target_group}", BuildTargetGroup.ToString());
         }
 
         #endregion

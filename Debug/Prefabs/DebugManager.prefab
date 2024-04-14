@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 42659240208492339, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -94
       objectReference: {fileID: 0}
     - target: {fileID: 42659240208492339, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -426,7 +426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 42659240208492339, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 42659240208492339, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -443,6 +443,10 @@ PrefabInstance:
     - target: {fileID: 2429227998520132883, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_Name
       value: DebugMenusUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480866751154039309, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -79
       objectReference: {fileID: 0}
     - target: {fileID: 6837858142176434700, guid: 9a57a8a1c5eb21e4f82bff6c3b6843a6, type: 3}
       propertyPath: m_fontSize

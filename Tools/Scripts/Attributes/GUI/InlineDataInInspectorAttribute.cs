@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class InlineDataInInspectorAttribute : MultiPropertyAttribute
+    public class InlineDataInInspectorAttribute : MultiPropertyAttribute, IGetHeightAttribute, IGUIAttribute
     {
 #if UNITY_EDITOR
         #region Properties and Fields
@@ -19,7 +19,7 @@ namespace Celeste.Tools.Attributes.GUI
 
         #endregion
 
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float propertyHeight = TOP_SPACING + CelesteGUIStyles.BoldLabel.CalcSize(label).y + TITLE_SPACING;
 
@@ -33,7 +33,7 @@ namespace Celeste.Tools.Attributes.GUI
             return propertyHeight;
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             Rect drawRect = new Rect(position);
             drawRect.y += TOP_SPACING;
@@ -55,6 +55,7 @@ namespace Celeste.Tools.Attributes.GUI
             }
 
             --EditorGUI.indentLevel;
+            return position;
         }
 
         private IEnumerable<SerializedProperty> VisibleChildren(SerializedProperty property)

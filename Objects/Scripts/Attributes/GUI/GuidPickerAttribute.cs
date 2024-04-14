@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using Celeste.Tools.Attributes.GUI;
+using Celeste.Tools;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +10,7 @@ using UnityEditor;
 
 namespace Celeste.Objects.Attributes.GUI
 {
-    public class GuidPickerAttribute : MultiPropertyAttribute
+    public class GuidPickerAttribute : MultiPropertyAttribute, IGUIAttribute
     {
         public Type Type { get; }
 
@@ -18,12 +20,7 @@ namespace Celeste.Objects.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
-        {
-            return true;
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             Rect guidPosition = new Rect(position);
             guidPosition.width -= 80;
@@ -53,6 +50,8 @@ namespace Celeste.Objects.Attributes.GUI
                     property.intValue = guid.Guid;
                 }
             }
+
+            return position;
         }
 #endif
     }

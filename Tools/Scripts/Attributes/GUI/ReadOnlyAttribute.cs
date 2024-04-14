@@ -6,21 +6,19 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class ReadOnlyAttribute : MultiPropertyAttribute
+    public class ReadOnlyAttribute : MultiPropertyAttribute, IPreGUIAttribute, IPostGUIAttribute
     {
 #if UNITY_EDITOR
-        public override void OnPreGUI(Rect position, SerializedProperty property)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
-            base.OnPreGUI(position, property);
-
             UnityEngine.GUI.enabled = false;
+            return position;
         }
 
-        public override void OnPostGUI(Rect position, SerializedProperty property)
+        public Rect OnPostGUI(Rect position, SerializedProperty property)
         {
-            base.OnPostGUI(position, property);
-
             UnityEngine.GUI.enabled = true;
+            return position;
         }
 #endif
     }

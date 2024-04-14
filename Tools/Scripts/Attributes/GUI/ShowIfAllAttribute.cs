@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class ShowIfAllAttribute : MultiPropertyAttribute
+    public class ShowIfAllAttribute : MultiPropertyAttribute, IVisibilityAttribute, IGetHeightAttribute
     {
         private List<string> propertyNames = new List<string>();
 
@@ -17,14 +17,14 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
+        public bool IsVisible(SerializedProperty property)
         {
             return IsConditionallyEnabled(property);
         }
 
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return GetDefaultPropertyHeight(property, label);
         }
 
         private bool IsConditionallyEnabled(SerializedProperty property)

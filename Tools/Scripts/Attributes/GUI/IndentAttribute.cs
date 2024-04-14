@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,17 +7,19 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
-    public class IndentAttribute : MultiPropertyAttribute
+    public class IndentAttribute : MultiPropertyAttribute, IPreGUIAttribute, IPostGUIAttribute
     {
 #if UNITY_EDITOR
-        public override void OnPreGUI(Rect position, SerializedProperty property)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
             EditorGUI.indentLevel++;
+            return position;
         }
 
-        public override void OnPostGUI(Rect position, SerializedProperty property)
+        public Rect OnPostGUI(Rect position, SerializedProperty property)
         {
             EditorGUI.indentLevel--;
+            return position;
         }
 #endif
     }

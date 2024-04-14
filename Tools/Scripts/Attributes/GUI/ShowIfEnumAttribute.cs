@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class ShowIfEnumAttribute : MultiPropertyAttribute
+    public class ShowIfEnumAttribute : MultiPropertyAttribute, IVisibilityAttribute, IGetHeightAttribute
     {
         public string PropertyName { get; private set; }
         public int Value { get; private set; }
@@ -18,14 +18,14 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
+        public bool IsVisible(SerializedProperty property)
         {
             return IsConditionallyEnabled(property);
         }
 
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            return GetDefaultPropertyHeight(property, label);
         }
 
         private bool IsConditionallyEnabled(SerializedProperty property)

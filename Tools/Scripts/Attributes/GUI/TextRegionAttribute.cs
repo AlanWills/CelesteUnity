@@ -12,7 +12,7 @@ using UnityEditor;
 
 namespace Celeste.Tools.Attributes.GUI
 {
-    public class TextRegionAttribute : MultiPropertyAttribute
+    public class TextRegionAttribute : MultiPropertyAttribute, IGetHeightAttribute, IGUIAttribute
     {
         public float MinHeight { get; }
 
@@ -33,16 +33,17 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
+        public float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             GUIContent tempContent = EditorGUIUtility.TrTempContent(property.stringValue);
             float wrappedTextHeight = CelesteGUIStyles.WrappedTextArea.CalcSize(tempContent).y;
             return Mathf.Max(MinHeight, wrappedTextHeight);
         }
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             property.stringValue = EditorGUI.TextArea(position, property.stringValue, CelesteGUIStyles.WrappedTextArea);
+            return position;
         }
 #endif
     }

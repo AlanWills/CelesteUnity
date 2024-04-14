@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Reflection;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace Celeste.Tools.Attributes.GUI
         Error
     }
 
-    public class HelpBoxAttribute : MultiPropertyAttribute
+    public class HelpBoxAttribute : MultiPropertyAttribute, IAdjustHeightAttribute, IPreGUIAttribute
     {
         public string HelpText { get; }
         public HelpBoxMessageType MessageType { get; }
@@ -61,29 +60,24 @@ namespace Celeste.Tools.Attributes.GUI
         }
 
 #if UNITY_EDITOR
-        public override bool IsVisible(SerializedProperty property)
+        public float AdjustPropertyHeight(SerializedProperty property, GUIContent label, float height)
         {
-            return true;
+            float delta = ShowHelpBox(property) ? HelpBoxHeight : 0;
+            return height + delta;
         }
 
-        public override float? GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float helpBoxHeight = ShowHelpBox(property) ? HelpBoxHeight : 0;
-            return GetDefaultPropertyHeight(property, label) + helpBoxHeight;
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public Rect OnPreGUI(Rect position, SerializedProperty property)
         {
             if (ShowHelpBox(property))
             {
                 float helpBoxHeight = HelpBoxHeight;
-                
+
                 if (helpBoxHeight > 0)
                 {
                     Rect helpBoxRect = new Rect(position);
                     helpBoxRect.y += HELP_BOX_PRE_PADDING;
                     helpBoxRect.height = helpBoxHeight - HELP_BOX_PRE_PADDING - HELP_BOX_POST_PADDING;
-                    
+
                     EditorGUI.HelpBox(helpBoxRect, HelpText, GetMessageType());
 
                     position.y += helpBoxHeight;
@@ -91,7 +85,7 @@ namespace Celeste.Tools.Attributes.GUI
                 }
             }
 
-            base.OnGUI(position, property, label);
+            return position;
         }
 
         private MessageType GetMessageType()

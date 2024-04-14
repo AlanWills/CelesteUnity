@@ -8,25 +8,33 @@ using UnityEditor;
 namespace Celeste.Tools.Attributes.GUI
 {
     [System.AttributeUsage(System.AttributeTargets.Field)]
-    public abstract class MultiPropertyAttribute : PropertyAttribute
+    public abstract class MultiPropertyAttribute : PropertyAttribute, IOrderableAttribute
     {
-#if UNITY_EDITOR
-        public List<MultiPropertyAttribute> stored = null;
+        public static bool s_disableRecursion;
 
-        public virtual void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        public bool attributesCached = false;
+        public List<IAdjustHeightAttribute> adjustHeightAttributes = null;
+        public List<IGetHeightAttribute> getHeightAttributes = null;
+        public List<IGUIAttribute> guiAttributes = null;
+        public List<IPostGUIAttribute> postGUIAttributes = null;
+        public List<IPreGUIAttribute> preGUIAttributes = null;
+        public List<IVisibilityAttribute> visibilityAttributes = null;
+
+#if UNITY_EDITOR
+        public static float GetDefaultPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            EditorGUI.PropertyField(position, property, label, true);
+            s_disableRecursion = true;
+            float propertyHeight = EditorGUI.GetPropertyHeight(property, label, true);
+            s_disableRecursion = false;
+
+            return propertyHeight;
         }
 
-        public virtual void OnPreGUI(Rect position, SerializedProperty property) { }
-        public virtual void OnPostGUI(Rect position, SerializedProperty property) { }
-
-        public virtual bool IsVisible(SerializedProperty property) { return true; }
-        public virtual float? GetPropertyHeight(SerializedProperty property, GUIContent label) { return null; }
-
-        protected float GetDefaultPropertyHeight(SerializedProperty property, GUIContent label)
+        public static void DrawDefaultProperty(Rect position, SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property, label, true);
+            s_disableRecursion = true;
+            EditorGUI.PropertyField(position, property, label, true);
+            s_disableRecursion = false;
         }
 #endif
     }
