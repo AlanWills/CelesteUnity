@@ -1,6 +1,6 @@
 using Celeste;
+using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.Tools;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace CelesteEditor.Assets
     {
         #region Properties and Fields
 
-        [SerializeField] private string groupName;
+        [SerializeField, AddressableGroup] private string groupName;
 
         #endregion
 
