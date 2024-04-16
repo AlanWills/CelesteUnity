@@ -11,8 +11,5 @@ namespace Celeste.FSM
         FSMNode StartNode { get; }
         FSMNode CurrentNode { get; set; }
         ILinearRuntimeRecord Record { get; }
-
-        void Run();
-        void Stop();
     }
 }

@@ -18,6 +18,18 @@ namespace CelesteEditor.Logic
                 (target as IEditorInitializable).Editor_Initialize();
             }
 
+            Condition condition = target as Condition;
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField($"Is Condition Met?", condition.IsMet.ToString());
+
+                if (GUILayout.Button("Check"))
+                {
+                    condition.Check();
+                }
+            }
+
             OnInspectorGUIImpl(serializedObject);
 
             serializedObject.ApplyModifiedProperties();
