@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
-using UnityEditor.AddressableAssets;
 #if UNITY_EDITOR
+using UnityEditor.AddressableAssets;
 using UnityEditor;
 #endif
 

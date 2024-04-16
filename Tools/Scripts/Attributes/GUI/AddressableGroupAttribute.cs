@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System;
-using UnityEditor.AddressableAssets;
 using System.Linq;
-
 #if UNITY_EDITOR
+using UnityEditor.AddressableAssets;
 using UnityEditor;
 #endif
 
