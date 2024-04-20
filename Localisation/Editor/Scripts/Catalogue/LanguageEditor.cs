@@ -1,8 +1,11 @@
 ﻿using Celeste.Localisation;
+using Celeste.Localisation.Catalogue;
 using Celeste.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace CelesteEditor.Localisation.Catalogue
 {
@@ -13,6 +16,7 @@ namespace CelesteEditor.Localisation.Catalogue
 
         private int currentPage = 0;
         private List<(string, string)> localisationEntries = new List<(string, string)>();
+        private SerializedProperty localisationKeyCatalogueProperty;
 
         private const int ENTRIES_PER_PAGE = 40;
 
@@ -34,6 +38,8 @@ namespace CelesteEditor.Localisation.Catalogue
             {
                 return string.Compare(a.Item1, b.Item1);
             });
+
+            localisationKeyCatalogueProperty = serializedObject.FindProperty("localisationKeyCatalogue");
         }
 
         public override void OnInspectorGUI()
@@ -43,6 +49,21 @@ namespace CelesteEditor.Localisation.Catalogue
             EditorGUILayout.LabelField("Num Keys", $"{language.NumLocalisationKeys}");
             EditorGUILayout.LabelField("Num Categories", $"{language.NumLocalisationKeyCategories}");
             EditorGUILayout.LabelField("Num Speech", $"{language.NumLocalisationSpeech}");
+
+            using (new GUIEnabledScope(localisationKeyCatalogueProperty.objectReferenceValue != null))
+            {
+                if (GUILayout.Button("Add Entries From Localisation Key Catalogue"))
+                {
+                    LocalisationKeyCatalogue localisationKeyCatalogue = localisationKeyCatalogueProperty.objectReferenceValue as LocalisationKeyCatalogue;
+
+                    language.ClearEntries();
+                    language.AddEntries(localisationKeyCatalogue.Items.Values.Select(x => new Language.LocalisationEntry()
+                    {
+                        key = x,
+                        localisedText = x.Fallback
+                    }).ToList());
+                }
+            }
 
             serializedObject.Update();
 

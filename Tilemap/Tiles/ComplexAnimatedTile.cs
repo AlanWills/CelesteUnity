@@ -96,10 +96,8 @@ namespace Celeste.Tilemaps
                 return;
             }
 
-            ComplexAnimatedTileInstance instance;
-            if (!instances.TryGetValue(position, out instance))
+            if (!instances.TryGetValue(position, out ComplexAnimatedTileInstance instance))
             {
-                Debug.LogAssertionFormat("No instance found for position {0} and animated tile {1}", position, name);
                 return;
             }
 

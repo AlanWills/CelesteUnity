@@ -1,8 +1,6 @@
 ﻿using Celeste.Objects;
-using Celeste.Rewards.Catalogue;
 using Celeste.Shop.Purchasing;
 using Celeste.Tools.Attributes.GUI;
-using System.Collections.Generic;
 using Celeste.Localisation;
 using Celeste.Rewards.Objects;
 using UnityEngine;
