@@ -15,7 +15,6 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
-using System.Collections.Generic;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -297,6 +296,14 @@ namespace CelesteEditor.BuildSystem
             BuildPlayer(GenerateBuildPlayerOptions());
         }
 
+        public void PrepareForBuild(BuildPlayerOptions buildPlayerOptions)
+        {
+            foreach (BuildPreparationStep buildPreparationStep in buildPreparationSteps)
+            {
+                buildPreparationStep.Execute(buildPlayerOptions, this);
+            }
+        }
+
         public void BuildPlayer(BuildPlayerOptions buildPlayerOptions)
         {
             LogUtility.Clear();
@@ -306,10 +313,7 @@ namespace CelesteEditor.BuildSystem
 
             Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
 
-            foreach (BuildPreparationStep buildPreparationStep in buildPreparationSteps)
-            {
-                buildPreparationStep.Execute(buildPlayerOptions, this);
-            }
+            PrepareForBuild(buildPlayerOptions);
 
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             bool success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
