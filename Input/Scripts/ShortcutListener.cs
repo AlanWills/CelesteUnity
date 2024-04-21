@@ -1,10 +1,4 @@
 ﻿using Celeste.Events;
-using Celeste.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,13 +18,13 @@ namespace Celeste.Input
 
         private void OnEnable()
         {
-            Debug.Assert(shortcut != null, string.Format("{0} has a null shortcut on listener {1}", name, GetType().Name));
+            UnityEngine.Debug.Assert(shortcut != null, $"{name} has a null shortcut on listener {GetType().Name},");
             shortcut.fired.AddListener(this);
         }
 
         private void OnDisable()
         {
-            Debug.Assert(shortcut != null, string.Format("{0} has a null shortcut on listener {1}", name, GetType().Name));
+            UnityEngine.Debug.Assert(shortcut != null, $"{name} has a null shortcut on listener {GetType().Name},");
             shortcut.fired.RemoveListener(this);
         }
 

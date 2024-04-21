@@ -40,41 +40,141 @@ namespace Celeste.Options
 
         #endregion
 
-        public void Initialize()
+        public void Initialize(
+            IEnumerable<BoolOption> boolOptions,
+            IEnumerable<FloatOption> floatOptions,
+            IEnumerable<IntOption> intOptions,
+            IEnumerable<StringOption> stringOptions)
         {
-            boolOptions.Clear();
-            floatOptions.Clear();
-            intOptions.Clear();
-            stringOptions.Clear();
+            this.boolOptions.Clear();
+            this.floatOptions.Clear();
+            this.intOptions.Clear();
+            this.stringOptions.Clear();
+
+            foreach (BoolOption boolOption in boolOptions)
+            {
+                AddOption(boolOption);
+            }
+
+            foreach (FloatOption floatOption in floatOptions)
+            {
+                AddOption(floatOption);
+            }
+
+            foreach (IntOption intOption in intOptions)
+            {
+                AddOption(intOption);
+            }
+
+            foreach (StringOption stringOption in stringOptions)
+            {
+                AddOption(stringOption);
+            }
+        }
+
+        public void Initialize(
+            IEnumerable<BoolOption> boolOptions,
+            IReadOnlyDictionary<string, bool> boolOptionValues,
+            IEnumerable<FloatOption> floatOptions,
+            IReadOnlyDictionary<string, float> floatOptionValues,
+            IEnumerable<IntOption> intOptions,
+            IReadOnlyDictionary<string, int> intOptionValues,
+            IEnumerable<StringOption> stringOptions,
+            IReadOnlyDictionary<string, string> stringOptionValues)
+        {
+            this.boolOptions.Clear();
+            this.floatOptions.Clear();
+            this.intOptions.Clear();
+            this.stringOptions.Clear();
+
+            foreach (BoolOption boolOption in boolOptions)
+            {
+                if (!boolOptionValues.TryGetValue(boolOption.name, out bool value))
+                {
+                    value = boolOption.GetDefaultValue(PlatformForOptions);
+                }
+                
+                AddOptionImpl(boolOption, value);
+            }
+
+            foreach (FloatOption floatOption in floatOptions)
+            {
+                if (!floatOptionValues.TryGetValue(floatOption.name, out float value))
+                {
+                    value = floatOption.GetDefaultValue(PlatformForOptions);
+                }
+
+                AddOptionImpl(floatOption, value);
+            }
+
+            foreach (IntOption intOption in intOptions)
+            {
+                if (!intOptionValues.TryGetValue(intOption.name, out int value))
+                {
+                    value = intOption.GetDefaultValue(PlatformForOptions);
+                }
+
+                AddOptionImpl(intOption, value);
+            }
+
+            foreach (StringOption stringOption in stringOptions)
+            {
+                if (!stringOptionValues.TryGetValue(stringOption.name, out string value))
+                {
+                    value = stringOption.GetDefaultValue(PlatformForOptions);
+                }
+
+                AddOptionImpl(stringOption, value);
+            }
         }
 
         public void AddOption(BoolOption boolOption)
         {
-            boolOption.SetDefaultValue(PlatformForOptions);
+            AddOptionImpl(boolOption, boolOption.GetDefaultValue(PlatformForOptions));
+        }
+
+        public void AddOption(FloatOption floatOption)
+        {
+            AddOptionImpl(floatOption, floatOption.GetDefaultValue(PlatformForOptions));
+        }
+
+        public void AddOption(IntOption intOption)
+        {
+            AddOptionImpl(intOption, intOption.GetDefaultValue(PlatformForOptions));
+        }
+
+        public void AddOption(StringOption stringOption)
+        {
+            AddOptionImpl(stringOption, stringOption.GetDefaultValue(PlatformForOptions));
+        }
+
+        private void AddOptionImpl(BoolOption boolOption, bool startingValue)
+        {
+            boolOption.Value = startingValue;
             boolOption.AddValueChangedCallback((args) => OnOptionChanged());
             UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, boolOption.DisplayName) == 0), $"{nameof(BoolOption)} {boolOption.DisplayName} already exists in Options.");
             boolOptions.Add(boolOption);
         }
 
-        public void AddOption(FloatOption floatOption)
+        private void AddOptionImpl(FloatOption floatOption, float startingValue)
         {
-            floatOption.SetDefaultValue(PlatformForOptions);
+            floatOption.Value = startingValue;
             floatOption.AddValueChangedCallback((args) => OnOptionChanged());
             UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, floatOption.DisplayName) == 0), $"{nameof(FloatOption)} {floatOption.DisplayName} already exists in Options.");
             floatOptions.Add(floatOption);
         }
 
-        public void AddOption(IntOption intOption)
+        private void AddOptionImpl(IntOption intOption, int startingValue)
         {
-            intOption.SetDefaultValue(PlatformForOptions);
+            intOption.Value = startingValue;
             intOption.AddValueChangedCallback((args) => OnOptionChanged());
             UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, intOption.DisplayName) == 0), $"{nameof(IntOption)} {intOption.DisplayName} already exists in Options.");
             intOptions.Add(intOption);
         }
 
-        public void AddOption(StringOption stringOption)
+        private void AddOptionImpl(StringOption stringOption, string startingValue)
         {
-            stringOption.SetDefaultValue(PlatformForOptions);
+            stringOption.Value = startingValue;
             stringOption.AddValueChangedCallback((args) => OnOptionChanged());
             UnityEngine.Debug.Assert(!boolOptions.Exists(x => string.CompareOrdinal(x.DisplayName, stringOption.DisplayName) == 0), $"{nameof(StringOption)} {stringOption.DisplayName} already exists in Options.");
             stringOptions.Add(stringOption);

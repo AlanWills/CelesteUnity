@@ -3,8 +3,9 @@ using Celeste.Options.Internals;
 using Celeste.Options.Settings;
 using Celeste.Persistence;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static Celeste.Options.Internals.OptionStructs;
 
 namespace Celeste.Options
 {
@@ -47,27 +48,11 @@ namespace Celeste.Options
 
         protected override void Deserialize(OptionsManagerDTO optionsManagerDTO) 
         {
-            AddOptions();
-
-            foreach (BoolOptionDTO boolOption in optionsManagerDTO.boolOptions)
-            {
-                optionsRecord.SetOption(boolOption.name, boolOption.value);
-            }
-
-            foreach (IntOptionDTO intOption in optionsManagerDTO.intOptions)
-            {
-                optionsRecord.SetOption(intOption.name, intOption.value);
-            }
-
-            foreach (FloatOptionDTO floatOption in optionsManagerDTO.floatOptions)
-            {
-                optionsRecord.SetOption(floatOption.name, floatOption.value);
-            }
-
-            foreach (StringOptionDTO stringOption in optionsManagerDTO.stringOptions)
-            {
-                optionsRecord.SetOption(stringOption.name, stringOption.value);
-            }
+            AddOptions(
+                optionsManagerDTO.boolOptions.ToDictionary(x => x.name, x => x.value),
+                optionsManagerDTO.floatOptions.ToDictionary(x => x.name, x => x.value),
+                optionsManagerDTO.intOptions.ToDictionary(x => x.name, x => x.value),
+                optionsManagerDTO.stringOptions.ToDictionary(x => x.name, x => x.value));
         }
 
         protected override void SetDefaultValues() 
@@ -79,27 +64,28 @@ namespace Celeste.Options
 
         private void AddOptions()
         {
-            optionsRecord.Initialize();
-            
-            foreach (var boolOption in optionsSettings.BoolOptions)
-            {
-                optionsRecord.AddOption(boolOption);
-            }
+            optionsRecord.Initialize(
+                optionsSettings.BoolOptions, 
+                optionsSettings.FloatOptions, 
+                optionsSettings.IntOptions, 
+                optionsSettings.StringOptions);
+        }
 
-            foreach (var floatOption in optionsSettings.FloatOptions)
-            {
-                optionsRecord.AddOption(floatOption);
-            }
-
-            foreach (var intOption in optionsSettings.IntOptions)
-            {
-                optionsRecord.AddOption(intOption);
-            }
-
-            foreach (var stringOption in optionsSettings.StringOptions)
-            {
-                optionsRecord.AddOption(stringOption);
-            }
+        private void AddOptions(
+            IReadOnlyDictionary<string, bool> boolOptionValues,
+            IReadOnlyDictionary<string, float> floatOptionValues,
+            IReadOnlyDictionary<string, int> intOptionValues,
+            IReadOnlyDictionary<string, string> stringOptionValues)
+        {
+            optionsRecord.Initialize(
+                optionsSettings.BoolOptions,
+                boolOptionValues,
+                optionsSettings.FloatOptions,
+                floatOptionValues,
+                optionsSettings.IntOptions,
+                intOptionValues,
+                optionsSettings.StringOptions,
+                stringOptionValues);
         }
     }
 }

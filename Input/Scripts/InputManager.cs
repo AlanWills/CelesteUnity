@@ -86,7 +86,7 @@ namespace Celeste.Input
         {
             if (raycastCamera.Value == null)
             {
-                Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.");
+                UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.");
                 fallbackMainCamera = Camera.main; 
             }
 
@@ -150,14 +150,14 @@ namespace Celeste.Input
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
                     hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
-                    Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                    UnityEngine.Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
                 }
 
                 if (hitGameObject == null)
                 {
                     // If we haven't hit any UI, see if we have hit any game objects in the world
                     hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
-                    Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                    UnityEngine.Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
                 }
             }
 

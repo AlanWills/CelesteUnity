@@ -44,7 +44,7 @@ namespace Celeste.Input
             {
                 KeyBinding keyBinding = keybindingsManagerDTO.keyCodes[i];
                 KeyCodeValue keyCodeValue = keyCodes.Find(x => x.name == keyBinding.name);
-                Debug.AssertFormat(keyCodeValue != null, "Unable to find key code {0}", keyBinding.name);
+                UnityEngine.Debug.Assert(keyCodeValue != null, $"Unable to find key code {keyBinding.name}.");
 
                 if (keyCodeValue != null)
                 {

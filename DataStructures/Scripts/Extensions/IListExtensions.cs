@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,11 +32,11 @@ namespace Celeste.DataStructures
 
         public static T GetRandomEntry<T>(this IReadOnlyList<T> list)
         {
-            int index = Random.Range(0, list.Count);
+            int index = UnityEngine.Random.Range(0, list.Count);
             return Get(list, index);
         }
 
-        public static Dictionary<string, T> ToNameLookup<T>(this IList<T> list) where T : Object
+        public static Dictionary<string, T> ToNameLookup<T>(this IList<T> list) where T : UnityEngine.Object
         {
             Dictionary<string, T> lookup = new Dictionary<string, T>(list.Count);
 
@@ -56,12 +57,32 @@ namespace Celeste.DataStructures
             return lookup;
         }
 
-        public static void Shuffle<T>(this IList<T> list)
+        public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>(
+            this IReadOnlyList<T> list,
+            Func<T, TKey> keyFunctor,
+            Func<T, TValue> valueFunctor)
         {
-            list.Shuffle(Random.Range);
+            Dictionary<TKey, TValue> dictionary = new Dictionary<TKey, TValue>(list.Count);
+
+            for (int i = 0, n = list.Count; i < n; ++i)
+            {
+                TKey key = keyFunctor(list[i]);
+                TValue value = valueFunctor(list[i]);
+#if KEY_CHECKS
+                Debug.Assert(!dictionary.ContainsKey(key), $"List contains two elements with the same key: {key}.  The old value {dictionary[key]} will be overwritten with the new value {dictionary[key]}.");
+#endif
+                dictionary[key] = value;
+            }
+
+            return dictionary;
         }
 
-        public static void Shuffle<T>(this IList<T> list, System.Func<int, int, int> rangeFunc)
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            list.Shuffle(UnityEngine.Random.Range);
+        }
+
+        public static void Shuffle<T>(this IList<T> list, Func<int, int, int> rangeFunc)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -72,7 +93,7 @@ namespace Celeste.DataStructures
             }
         }
 
-        public static bool Exists<T>(this IReadOnlyList<T> list, System.Predicate<T> predicate)
+        public static bool Exists<T>(this IReadOnlyList<T> list, Predicate<T> predicate)
         {
             for (int i = 0; i < list.Count; i++)
             {

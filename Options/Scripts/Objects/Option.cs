@@ -33,6 +33,12 @@ namespace Celeste.Options
 
         #endregion
 
+        public T GetDefaultValue(ApplicationPlatform platform)
+        {
+            int defaultValueIndex = platformDefaultValues.FindIndex(x => x.platform == platform);
+            return defaultValueIndex >= 0 ? platformDefaultValues[defaultValueIndex].value : value.DefaultValue;
+        }
+
         public void SetDefaultValue(ApplicationPlatform platform)
         {
             int defaultValueIndex = platformDefaultValues.FindIndex(x => x.platform == platform);
