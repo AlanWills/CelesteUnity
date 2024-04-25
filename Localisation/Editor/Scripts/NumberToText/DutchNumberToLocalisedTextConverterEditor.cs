@@ -1,11 +1,5 @@
-﻿using Celeste;
-using Celeste.Localisation;
-using Celeste.Tools;
-using CelesteEditor.Tools;
-using System;
-using System.Collections.Generic;
+﻿using Celeste.Localisation;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace CelesteEditor.Localisation
@@ -17,19 +11,7 @@ namespace CelesteEditor.Localisation
 
         private DutchNumberToLocalisedTextConverter Converter => target as DutchNumberToLocalisedTextConverter;
 
-        private List<ValueTuple<int, LocalisationKey>> specialCasesLookup = new List<(int, LocalisationKey)>();
-        private ReorderableList specialCasesReorderableList;
-
         #endregion
-
-        private void OnEnable()
-        {
-            RefreshSpecialCaseLookup();
-
-            specialCasesReorderableList = new ReorderableList(specialCasesLookup, typeof(ValueTuple<int, LocalisationKey>));
-            specialCasesReorderableList.drawHeaderCallback += DrawHeaderCallback;
-            specialCasesReorderableList.drawElementCallback += DrawElementCallback;
-    }
 
         public override void OnInspectorGUI()
         {
@@ -91,8 +73,6 @@ namespace CelesteEditor.Localisation
                     Converter.SetSpecialCase(17, CelesteEditor.Tools.EditorOnly.FindAsset<LocalisationKey>("Seventeen"));
                     Converter.SetSpecialCase(18, CelesteEditor.Tools.EditorOnly.FindAsset<LocalisationKey>("Eighteen"));
                     Converter.SetSpecialCase(19, CelesteEditor.Tools.EditorOnly.FindAsset<LocalisationKey>("Nineteen"));
-
-                    RefreshSpecialCaseLookup();
                 }
 
                 // Thousand Powers
@@ -109,43 +89,6 @@ namespace CelesteEditor.Localisation
             serializedObject.ApplyModifiedProperties();
 
             base.OnInspectorGUI();
-
-            serializedObject.Update();
-            
-            specialCasesReorderableList.DoLayoutList();
-
-            serializedObject.ApplyModifiedProperties();
         }
-
-        private void RefreshSpecialCaseLookup()
-        {
-            specialCasesLookup.Clear();
-
-            foreach (var specialCase in Converter.SpecialCases)
-            {
-                specialCasesLookup.Add(new ValueTuple<int, LocalisationKey>(specialCase.Key, specialCase.Value));
-            }
-        }
-
-        #region Callbacks
-
-        private void DrawHeaderCallback(Rect rect)
-        {
-            EditorGUI.LabelField(rect, "Special Cases", CelesteGUIStyles.BoldLabel);
-        }
-
-        private void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            var specialCaseElement = specialCasesLookup[index];
-            var newLocalisationKey = EditorGUI.ObjectField(rect, new GUIContent(specialCaseElement.Item1.ToString()), specialCaseElement.Item2, typeof(LocalisationKey), false);
-
-            if (newLocalisationKey != specialCaseElement.Item2)
-            {
-                specialCasesLookup[index] = new ValueTuple<int, LocalisationKey>(specialCaseElement.Item1, newLocalisationKey as LocalisationKey);
-                Converter.SetSpecialCase(specialCaseElement.Item1, newLocalisationKey as LocalisationKey);
-            }
-        }
-
-        #endregion
     }
 }

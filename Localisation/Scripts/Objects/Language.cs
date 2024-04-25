@@ -1,6 +1,5 @@
 using Celeste.Localisation.Catalogue;
 using Celeste.Localisation.Pronouns;
-using Celeste.OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +8,7 @@ using UnityEngine;
 namespace Celeste.Localisation
 {
     [CreateAssetMenu(fileName = nameof(Language), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Language", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
-    public class Language : SerializedScriptableObject
+    public class Language : ScriptableObject, ISerializationCallbackReceiver
     {
         #region LocalisationEntry
 
@@ -25,6 +24,38 @@ namespace Celeste.Localisation
                 this.key = key;
                 this.localisedText = localisedText;
                 this.synthesizedSpeech = synthesizedSpeech;
+            }
+        }
+
+        #endregion
+
+        #region Serialized Data
+
+        [Serializable]
+        private struct LocalisationData
+        {
+            public string key;
+            public string localisedText;
+            public AudioClip synthesizedSpeech;
+
+            public LocalisationData(string key, string localisedText, AudioClip synthesizedSpeech)
+            {
+                this.key = key;
+                this.localisedText = localisedText;
+                this.synthesizedSpeech = synthesizedSpeech;
+            }
+        }
+
+        [Serializable]
+        private struct LocalisationCategoryData
+        {
+            public LocalisationKeyCategory category;
+            public List<LocalisationKey> keys;
+
+            public LocalisationCategoryData(LocalisationKeyCategory category, List<LocalisationKey> keys)
+            {
+                this.category = category;
+                this.keys = new List<LocalisationKey>(keys);
             }
         }
 
@@ -92,9 +123,12 @@ namespace Celeste.Localisation
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
         [SerializeField] private NumberToLocalisedTextConverter numberToTextConverter;
         [SerializeField] private PronounFunctor pronounFunctor;
-        [SerializeField] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
-        [SerializeField] private Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
-        [SerializeField] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
+        [SerializeField] private List<LocalisationData> localisation = new List<LocalisationData>();
+        [SerializeField] private List<LocalisationCategoryData> categories = new List<LocalisationCategoryData>();
+
+        [NonSerialized] private Dictionary<string, string> localisationLookup = new Dictionary<string, string>();
+        [NonSerialized] private Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
+        [NonSerialized] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
 
         #endregion
 
@@ -288,5 +322,57 @@ namespace Celeste.Localisation
         {
             return new ReadOnlyCollection<LocalisationKey>(categoryLookup.TryGetValue(category, out List<LocalisationKey> value) ? value : new List<LocalisationKey>());
         }
+
+        #region ISerializationCallbackReceiver
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            localisation.Clear();
+            categories.Clear();
+
+            foreach (var keyValuePair in localisationLookup)
+            {
+                speechLookup.TryGetValue(keyValuePair.Key, out AudioClip audioClip);
+                localisation.Add(new LocalisationData(keyValuePair.Key, keyValuePair.Value, audioClip));
+            }
+
+            foreach (var keyValuePair in categoryLookup)
+            {
+                categories.Add(new LocalisationCategoryData(keyValuePair.Key, keyValuePair.Value));
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            localisationLookup.Clear();
+            speechLookup.Clear();
+            categoryLookup.Clear();
+
+            foreach (LocalisationData localisationData in localisation)
+            {
+#if KEY_CHECKS
+                UnityEngine.Debug.Assert(!localisationLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in localised text lookup in language {name}.");
+#endif
+                localisationLookup[localisationData.key] = localisationData.localisedText;
+
+                if (localisationData.synthesizedSpeech != null)
+                {
+#if KEY_CHECKS
+                    UnityEngine.Debug.Assert(!speechLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in speech lookup in language {name}.");
+#endif
+                    speechLookup[localisationData.key] = localisationData.synthesizedSpeech;
+                }
+            }
+
+            foreach (LocalisationCategoryData localisationCategoryData in categories)
+            {
+#if KEY_CHECKS
+                UnityEngine.Debug.Assert(!categoryLookup.ContainsKey(localisationCategoryData.category), $"Duplicated category {localisationCategoryData.category} found in category lookup in language {name}.");
+#endif
+                categoryLookup[localisationCategoryData.category] = localisationCategoryData.keys;
+            }
+        }
+
+#endregion
     }
 }

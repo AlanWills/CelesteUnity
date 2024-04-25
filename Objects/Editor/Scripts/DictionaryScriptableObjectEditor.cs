@@ -1,6 +1,5 @@
 using Celeste.Objects;
 using Celeste.Tools;
-using CelesteEditor.Tools;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;

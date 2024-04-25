@@ -1,12 +1,29 @@
-﻿using Celeste.OdinSerializer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Localisation
 {
-    public abstract class NumberToLocalisedTextConverter : SerializedScriptableObject
+    public abstract class NumberToLocalisedTextConverter : ScriptableObject
     {
+        #region Special Case
+
+        public struct SpecialCase
+        {
+            public bool IsValid => number != default && localisationKey != null;
+
+            public int number;
+            public LocalisationKey localisationKey;
+
+            public SpecialCase(int number, LocalisationKey localisationKey)
+            {
+                this.number = number;
+                this.localisationKey = localisationKey;
+            }
+        }
+
+        #endregion
+
         #region Properties and Fields
 
         [SerializeField] private List<LocalisationKey> numericalSuffixes = new List<LocalisationKey>();

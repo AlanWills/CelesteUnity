@@ -1,12 +1,11 @@
-﻿using Celeste.OdinSerializer;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Objects
 {
-    public class DictionaryScriptableObject<TKey, TValue> : SerializedScriptableObject, IEnumerable<KeyValuePair<TKey, TValue>>
+    public class DictionaryScriptableObject<TKey, TValue> : ScriptableObject, IEnumerable<KeyValuePair<TKey, TValue>>, ISerializationCallbackReceiver
     {
         #region Change Block
 
@@ -28,16 +27,26 @@ namespace Celeste.Objects
 
         #endregion
 
+        #region Item
+
+        [Serializable]
+        private struct Item
+        {
+            public TKey key;
+            public TValue value;
+        }
+
+        #endregion
+
         #region Properties and Fields
 
-        public int NumItems { get { return ItemsImpl.Count; } }
-        public IReadOnlyDictionary<TKey, TValue> Items => ItemsImpl;
+        public int NumItems => ItemsImpl.Count;
+        public IReadOnlyDictionary<TKey, TValue> Items => itemsDictionary;
+        private Dictionary<TKey, TValue> ItemsImpl => itemsDictionary;
 
-        private Dictionary<TKey, TValue> ItemsImpl => runtimeModifiedItems != null ? runtimeModifiedItems : items;
+        [SerializeField] private List<Item> items = new List<Item>();
 
-        [SerializeField] private Dictionary<TKey, TValue> items = new Dictionary<TKey, TValue>();
-
-        [NonSerialized] private Dictionary<TKey, TValue> runtimeModifiedItems;
+        [NonSerialized] private Dictionary<TKey, TValue> itemsDictionary = new Dictionary<TKey, TValue>();
 
         #endregion
 
@@ -112,12 +121,6 @@ namespace Celeste.Objects
 
         private void OnPreModify()
         {
-            if (Application.isPlaying && runtimeModifiedItems == null)
-            {
-                // We've wanted to modify items for the first time at runtime so we create a copy of our serialized dictionary
-                // to prevent any runtime changes affecting what will be serialized and saved
-                runtimeModifiedItems = items != null ? new Dictionary<TKey, TValue>(items) : new Dictionary<TKey, TValue>();
-            }
         }
 
         private void OnPostModify()
@@ -129,5 +132,33 @@ namespace Celeste.Objects
             }
 #endif
         }
+
+        #region ISerializationCallbackReceiver
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            items.Clear();
+
+            foreach (var keyValuePair in itemsDictionary)
+            {
+                items.Add(new Item() { key = keyValuePair.Key, value = keyValuePair.Value });
+            }
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            itemsDictionary.Clear();
+            itemsDictionary.EnsureCapacity(items.Count);
+
+            foreach (var item in items)
+            {
+#if KEY_CHECKS
+                UnityEngine.Debug.Assert(!itemsDictionary.ContainsKey(item.key), $"{name} already contains an item with key {item.key}.  The old value {itemsDictionary[item.key]} will be replaced with {item.value}.");
+#endif
+                itemsDictionary[item.key] = item.value;
+            }
+        }
+
+        #endregion
     }
 }

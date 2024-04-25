@@ -9,14 +9,12 @@ namespace Celeste.Localisation
     {
         #region Properties and Fields
 
-        public IReadOnlyDictionary<int, LocalisationKey> SpecialCases => specialCases;
-
         [SerializeField] private LocalisationKey and;
         [SerializeField] private LocalisationKey negative;
         [SerializeField] private List<LocalisationKey> zeroToNine = new List<LocalisationKey>();
         [SerializeField] private List<LocalisationKey> tenToNinety = new List<LocalisationKey>();
         [SerializeField] private List<LocalisationKey> powersOfTen = new List<LocalisationKey>();
-        [SerializeField] private Dictionary<int, LocalisationKey> specialCases = new Dictionary<int, LocalisationKey>();
+        [SerializeField] private List<SpecialCase> specialCases = new List<SpecialCase>();
 
         private const int TEN = 10;
         private const int ONE_HUNDRED = 100;
@@ -31,9 +29,10 @@ namespace Celeste.Localisation
             int absValue = Math.Abs(number);
             int sign = Math.Sign(number);
 
-            if (specialCases.TryGetValue(absValue, out LocalisationKey localisationKey))
+            SpecialCase specialCase = specialCases.Find(x => x.number == absValue);
+            if (specialCase.IsValid)
             {
-                string specialCaseString = targetLanguage.Localise(localisationKey);
+                string specialCaseString = targetLanguage.Localise(specialCase.localisationKey);
                 return SignedNumberString(sign, specialCaseString, targetLanguage);
             }
             else if (absValue < TEN)
@@ -77,13 +76,13 @@ namespace Celeste.Localisation
         public void SetSpecialCase(int number, LocalisationKey localisationKey)
         {
             UnityEngine.Debug.Assert(localisationKey, $"Inputting null localisation key for number {number}.");
-            if (!specialCases.ContainsKey(number))
+            if (!specialCases.Exists(x => x.number == number))
             {
-                specialCases.Add(number, localisationKey);
+                specialCases.Add(new SpecialCase(number, localisationKey));
             }
             else
             {
-                specialCases[number] = localisationKey;
+                specialCases[number] = new SpecialCase(number, localisationKey);
             }
 
 #if UNITY_EDITOR
