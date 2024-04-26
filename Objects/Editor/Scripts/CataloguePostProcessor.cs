@@ -70,6 +70,7 @@ namespace CelesteEditor.Objects
         private static void ImportAssetsInDirectoriesAndSubDirectories(TCatalogue catalogue, HashSet<TAsset> existingItems)
         {
             string catalogueFolder = EditorOnly.GetAssetFolderPath(catalogue);
+            List<TAsset> assetsToRemove = new List<TAsset>();
 
             foreach (TAsset asset in existingItems)
             {
@@ -78,8 +79,13 @@ namespace CelesteEditor.Objects
                 if (!assetFolder.StartsWith(catalogueFolder))
                 {
                     // This is not a valid item as it is not located in the same folder structure, so ensure it is removed
-                    existingItems.Remove(asset);
+                    assetsToRemove.Add(asset);
                 }
+            }
+
+            foreach (TAsset asset in assetsToRemove)
+            {
+                existingItems.Remove(asset);
             }
 
             foreach (TAsset asset in EditorOnly.FindAssets<TAsset>("", EditorOnly.GetAssetFolderPath(catalogue)))
@@ -94,6 +100,7 @@ namespace CelesteEditor.Objects
         private static void ImportAssetsInDirectoryOnly(TCatalogue catalogue, HashSet<TAsset> existingItems)
         {
             string catalogueFolder = EditorOnly.GetAssetFolderPath(catalogue);
+            List<TAsset> assetsToRemove = new List<TAsset>();
 
             foreach (TAsset asset in existingItems)
             {
@@ -102,8 +109,13 @@ namespace CelesteEditor.Objects
                 if (string.CompareOrdinal(assetFolder, catalogueFolder) != 0)
                 {
                     // This is not a valid item as it has a different folder path, so ensure it is removed
-                    existingItems.Remove(asset);
+                    assetsToRemove.Add(asset);
                 }
+            }
+
+            foreach (TAsset asset in assetsToRemove)
+            {
+                existingItems.Remove(asset);
             }
 
             foreach (TAsset asset in EditorOnly.FindAssets<TAsset>("", catalogueFolder))
