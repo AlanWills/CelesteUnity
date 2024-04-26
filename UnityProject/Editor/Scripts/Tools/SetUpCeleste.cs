@@ -33,6 +33,7 @@ using Celeste.Sound;
 using Celeste.Tools;
 using CelesteEditor.BuildSystem.Steps;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
+using System.Security.Cryptography;
 
 namespace CelesteEditor.UnityProject
 {
@@ -392,7 +393,7 @@ namespace CelesteEditor.UnityProject
             {
                 CreateStartupFolders();
                 CreateStartupLoadJob(parameters);
-                CreateStartupScene();
+                CreateStartupScene(parameters);
                 CreateStartupAssemblies(parameters);
             }
         }
@@ -460,7 +461,7 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateAssetInFolder(startupLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
-        private static void CreateStartupScene()
+        private static void CreateStartupScene(SetUpCelesteParameters parameters)
         {
             UnityEngine.SceneManagement.Scene startupScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -486,6 +487,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
             sceneSet.name = StartupConstants.SCENE_SET_NAME;
+            sceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
             sceneSet.AddScene(StartupConstants.SCENE_NAME, SceneType.Baked, false);
             EditorOnly.CreateAssetInFolder(sceneSet, StartupConstants.SCENES_FOLDER_PATH);
 
@@ -501,10 +503,6 @@ namespace CelesteEditor.UnityProject
             startupAssembly.hasEditorAssembly = true;
             startupAssembly.assemblyName = $"{parameters.rootNamespaceName}.{StartupConstants.NAMESPACE_NAME}";
             startupAssembly.directoryName = StartupConstants.FOLDER_NAME;
-            startupAssembly.hasSceneSet = true;
-            startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
-            startupAssembly.sceneSetMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
-            startupAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
         }
@@ -595,6 +593,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
+            bootstrapSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
             bootstrapSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
@@ -608,10 +607,6 @@ namespace CelesteEditor.UnityProject
             bootstrapAssembly.hasEditorAssembly = true;
             bootstrapAssembly.assemblyName = $"{parameters.rootNamespaceName}.{BootstrapConstants.NAMESPACE_NAME}";
             bootstrapAssembly.directoryName = BootstrapConstants.FOLDER_NAME;
-            bootstrapAssembly.hasSceneSet = true;
-            bootstrapAssembly.sceneSetPath = $"{BootstrapConstants.SCENES_FOLDER_PATH}{BootstrapConstants.SCENE_SET_NAME}.asset";
-            bootstrapAssembly.sceneSetMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
-            bootstrapAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
         }
@@ -649,6 +644,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
+            engineSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {EngineSystemsConstants.SCENE_NAME}";
             engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
@@ -755,6 +751,7 @@ namespace CelesteEditor.UnityProject
 
             SceneSet gameSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             gameSystemsSceneSet.name = GameSystemsConstants.SCENE_SET_NAME;
+            gameSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {GameSystemsConstants.SCENE_NAME}";
             gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
             gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 

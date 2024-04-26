@@ -38,9 +38,9 @@ namespace CelesteEditor.UnityProject
         [Tooltip("The dependencies to automatically add to the runtime assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> runtimeAssemblyDependencies = new List<AssemblyDefinitionAsset>();
         [Tooltip("If true, a code project for editor script files will be created")] public bool hasEditorAssembly;
         [Tooltip("The dependencies to automatically add to the editor assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> editorAssemblyDependencies = new List<AssemblyDefinitionAsset>();
-        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly"), ShowIf(nameof(hasEditorAssembly))] public bool hasSceneSet;
-        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneSet))] public string sceneSetPath = "Assets/";
-        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneSet))] public string sceneSetMenuItemPath;
+        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly")] public bool createSceneSet;
+        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIf(nameof(createSceneSet))] public string sceneSetAssetPath = "Assets/";
+        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIf(nameof(createSceneSet))] public string sceneSetMenuItemPath;
     }
 
     public static class CreateAssemblyDefinition
@@ -58,7 +58,7 @@ namespace CelesteEditor.UnityProject
             string assemblyName = parameters.assemblyName;
             bool hasRuntimeAssembly = parameters.hasRuntimeAssembly;
             bool hasEditorAssembly = parameters.hasEditorAssembly;
-            bool hasSceneMenuItem = parameters.hasSceneSet;
+            bool hasSceneMenuItem = parameters.createSceneSet;
 
             if (!string.IsNullOrEmpty(parentDirectory))
             {
@@ -94,14 +94,15 @@ namespace CelesteEditor.UnityProject
             }
 
             // Create the scene set asset if we want to
-            if (hasSceneMenuItem)
+            if (parameters.createSceneSet)
             {
                 SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
                 sceneSet.name = $"{directoryName}SceneSet";
                 sceneSet.MenuItemPath = parameters.sceneSetMenuItemPath;
 
-                EditorOnly.CreateAsset(sceneSet, parameters.sceneSetPath);
+                EditorOnly.CreateAsset(sceneSet, parameters.sceneSetAssetPath);
             }
+
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
