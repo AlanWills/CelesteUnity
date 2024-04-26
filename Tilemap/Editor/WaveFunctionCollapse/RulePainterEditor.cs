@@ -79,7 +79,7 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
 
             if (GUILayout.Button("Check Symmetric Rules", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 RulePainter.tilemapSolver.CheckSymmetricRules();
             }
 

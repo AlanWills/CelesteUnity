@@ -1,5 +1,5 @@
 ﻿using Celeste.FSM;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;

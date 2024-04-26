@@ -3,13 +3,13 @@ using UnityEngine;
 using Celeste.Web;
 using System.Collections.Generic;
 using Celeste.Localisation;
-using CelesteEditor.Tools;
 using CelesteEditor.Localisation.Utility;
 using static Celeste.Localisation.Language;
 using Celeste.Localisation.Catalogue;
 using Celeste.Web.ImportSteps;
 using System.IO;
 using Celeste;
+using Celeste.Tools;
 
 namespace CelesteEditor.Localisation.Tools
 {

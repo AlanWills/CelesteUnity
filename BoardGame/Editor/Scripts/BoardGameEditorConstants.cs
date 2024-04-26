@@ -18,8 +18,8 @@ namespace CelesteEditor.BoardGame
 
         static BoardGameEditorConstants()
         {
-            TypeUtils.LoadTypes<BoardGameComponent>(ref AllBoardGameComponentTypes, ref AllBoardGameComponentDisplayNames);
-            TypeUtils.LoadTypes<BoardGameObjectComponent>(ref AllBoardGameObjectComponentTypes, ref AllBoardGameObjectComponentDisplayNames);
+            TypeExtensions.LoadTypes<BoardGameComponent>(ref AllBoardGameComponentTypes, ref AllBoardGameComponentDisplayNames);
+            TypeExtensions.LoadTypes<BoardGameObjectComponent>(ref AllBoardGameObjectComponentTypes, ref AllBoardGameObjectComponentDisplayNames);
         }
     }
 }

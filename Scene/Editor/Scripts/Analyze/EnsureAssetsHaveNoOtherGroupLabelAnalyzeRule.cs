@@ -1,4 +1,5 @@
 ﻿using Celeste.Scene;
+using Celeste.Tools;
 using CelesteEditor.Tools;
 using System.Collections.Generic;
 using UnityEditor;
@@ -55,7 +56,7 @@ namespace CelesteEditor.Scene.Analyze
                     {
                         if (sceneLookup.TryGetValue(sceneSet.GetSceneId(i), out SceneAsset scene))
                         {
-                            var addressableInfo = AddressablesUtility.GetAddressableInfo(scene);
+                            var addressableInfo = AddressablesExtensions.GetAddressableInfo(scene);
 
                             if (addressableInfo == null || string.CompareOrdinal(addressableInfo.address, scene.name) != 0)
                             {

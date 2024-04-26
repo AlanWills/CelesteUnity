@@ -1,15 +1,13 @@
-﻿using CelesteEditor.Tools.Utils;
+﻿using Celeste.Tools.Utils;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 
-namespace CelesteEditor.Tools
+namespace Celeste.Tools
 {
     public static class EditorOnly
     {
-        #region Utils
-
         public static void EnsureNamed(Object asset)
         {
             if (string.IsNullOrEmpty(asset.name))
@@ -38,58 +36,111 @@ namespace CelesteEditor.Tools
             return path.Replace('\\', '/');
         }
 
-        #endregion
-
-        public static void AddObjectToAsset(Object objectToAdd, Object assetObject)
+        [Conditional("UNITY_EDITOR")]
+        public static void AddObjectToAsset(this Object objectToAdd, Object assetObject)
         {
-            AssetDatabase.AddObjectToAsset(objectToAdd, assetObject);
-            EditorUtility.SetDirty(assetObject);
+#if UNITY_EDITOR
+            UnityEditor.AssetDatabase.AddObjectToAsset(objectToAdd, assetObject);
+            UnityEditor.EditorUtility.SetDirty(assetObject);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(assetObject);
+#endif
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public static void RemoveObjectFromAsset(Object objectToRemove, bool destroyAsset)
+        {
+#if UNITY_EDITOR
+            UnityEditor.AssetDatabase.RemoveObjectFromAsset(objectToRemove);
+
+            if (destroyAsset)
+            {
+                Object.DestroyImmediate(objectToRemove, true);
+            }
+#endif
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public static void SetDirty(Object objectToSetDirty)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(objectToSetDirty);
+#endif
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public static void SaveAsset(Object objectToSave)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(objectToSave);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(objectToSave);
+            UnityEditor.AssetDatabase.Refresh();
+#endif
         }
 
         public static bool AssetExists(string name, string parentFolder)
         {
+#if UNITY_EDITOR
             parentFolder = EnsureRelativeToAssets(parentFolder);
             return AssetExists(Path.Combine(parentFolder, $"{name}.asset"));
+#else
+            return false;
+#endif
         }
 
         public static bool AssetExists(string assetPath)
         {
+#if UNITY_EDITOR
             assetPath = EnsureRelativeToAssets(assetPath);
-            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(assetPath, AssetPathToGUIDOptions.OnlyExistingAssets));
+            return !string.IsNullOrEmpty(UnityEditor.AssetDatabase.AssetPathToGUID(assetPath, UnityEditor.AssetPathToGUIDOptions.OnlyExistingAssets));
+#else
+            return false;
+#endif
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void CreateAsset(Object asset, string assetPath)
         {
+#if UNITY_EDITOR
             int indexOfLastDelimiter = assetPath.LastIndexOf('/');
             string parentFolder = assetPath.Substring(0, indexOfLastDelimiter);
-            
+
             CreateFolder(parentFolder);
             EnsureNamed(asset);
 
-            string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(assetPath);
-            AssetDatabase.CreateAsset(asset, assetPathAndName);
+            string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(assetPath);
+            UnityEditor.AssetDatabase.CreateAsset(asset, assetPathAndName);
+#endif
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void CreateAssetInFolder(Object asset, string parentFolder)
         {
+#if UNITY_EDITOR
             EnsureNamed(asset);
             CreateAsset(asset, $"{parentFolder}/{asset.name}.asset");
+#endif
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void CreateAssetInFolderAndSave(Object asset, string parentFolder)
-		{
+        {
+#if UNITY_EDITOR
             CreateAssetInFolder(asset, parentFolder);
 
-			AssetDatabase.SaveAssetIfDirty(asset);
-			AssetDatabase.Refresh();
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(asset);
+            UnityEditor.AssetDatabase.Refresh();
 
-			SelectAsset(asset);
-		}
+            SelectAsset(asset);
+#endif
+        }
 
+        [Conditional("UNITY_EDITOR")]
         public static void SelectAsset(Object o)
         {
-            Selection.activeObject = o;
-            EditorUtility.FocusProjectWindow();
+#if UNITY_EDITOR
+            UnityEditor.Selection.activeObject = o;
+            UnityEditor.EditorUtility.FocusProjectWindow();
+#endif
         }
 
         /// <summary>
@@ -97,185 +148,131 @@ namespace CelesteEditor.Tools
         /// If the newFolder path does not already start with Assets/, it will be added.
         /// </summary>
         /// <param name="newFolder"></param>
+        [Conditional("UNITY_EDITOR")]
         public static void CreateFolder(string newFolder)
         {
+#if UNITY_EDITOR
             if (string.IsNullOrEmpty(newFolder))
             {
-                Debug.LogAssertion($"Cannot enter empty string into {nameof(CreateFolder)}.");
+                UnityEngine.Debug.LogAssertion($"Cannot enter empty string into {nameof(CreateFolder)}.");
                 return;
             }
 
             newFolder = EnsureRelativeToAssets(newFolder);
 
-            int indexOfLastDelimiter =  newFolder.LastIndexOf('/');
+            int indexOfLastDelimiter = newFolder.LastIndexOf('/');
             if (indexOfLastDelimiter > 0)
             {
                 CreateFolder(newFolder.Substring(0, indexOfLastDelimiter), newFolder.Substring(indexOfLastDelimiter + 1));
             }
+#endif
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void CreateFolder(string parent, string folderName)
         {
+#if UNITY_EDITOR
             parent = EnsureRelativeToAssets(parent);
 
             // Ensure all folders are created in our hierarchy
-            if (!AssetDatabase.IsValidFolder(parent))
+            if (!UnityEditor.AssetDatabase.IsValidFolder(parent))
             {
                 CreateFolder(parent);
             }
 
             folderName = StripTrailingSlash(folderName);
 
-            if (!AssetDatabase.IsValidFolder(Path.Combine(parent, folderName)))
+            if (!UnityEditor.AssetDatabase.IsValidFolder(Path.Combine(parent, folderName)))
             {
-                string folderGuid = AssetDatabase.CreateFolder(parent, folderName);
-                Debug.Assert(!string.IsNullOrEmpty(folderGuid), $"Failed to create folder {folderName} in parent folder {parent}.");
+                string folderGuid = UnityEditor.AssetDatabase.CreateFolder(parent, folderName);
+                UnityEngine.Debug.Assert(!string.IsNullOrEmpty(folderGuid), $"Failed to create folder {folderName} in parent folder {parent}.");
 
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                UnityEditor.AssetDatabase.SaveAssets();
+                UnityEditor.AssetDatabase.Refresh();
             }
+#endif
         }
 
-		public static void ApplyHideFlags(Object obj, HideFlags hideFlags)
+        [Conditional("UNITY_EDITOR")]
+        public static void ApplyHideFlags(this Object obj, HideFlags hideFlags)
         {
-            foreach (Object o in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(obj)))
+#if UNITY_EDITOR
+            foreach (Object o in UnityEditor.AssetDatabase.LoadAllAssetsAtPath(UnityEditor.AssetDatabase.GetAssetPath(obj)))
             {
-                if (o != null && !AssetDatabase.IsMainAsset(o))
+                if (o != null && !UnityEditor.AssetDatabase.IsMainAsset(o))
                 {
                     o.hideFlags = hideFlags;
-                    EditorUtility.SetDirty(o);
-                    EditorUtility.SetDirty(obj);
+                    UnityEditor.EditorUtility.SetDirty(o);
+                    UnityEditor.EditorUtility.SetDirty(obj);
                 }
             }
 
-            AssetDatabase.SaveAssets();
+            UnityEditor.AssetDatabase.SaveAssets();
+#endif
         }
 
-        public static void RemoveHideFlags(Object obj, HideFlags hideFlags)
+        [Conditional("UNITY_EDITOR")]
+        public static void RemoveHideFlags(this Object obj, HideFlags hideFlags)
         {
-            foreach (Object o in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(obj)))
+#if UNITY_EDITOR
+            foreach (Object o in UnityEditor.AssetDatabase.LoadAllAssetsAtPath(UnityEditor.AssetDatabase.GetAssetPath(obj)))
             {
-                if (o != null && !AssetDatabase.IsMainAsset(o))
+                if (o != null && !UnityEditor.AssetDatabase.IsMainAsset(o))
                 {
                     o.hideFlags &= ~hideFlags;
-                    EditorUtility.SetDirty(o);
-                    EditorUtility.SetDirty(obj);
+                    UnityEditor.EditorUtility.SetDirty(o);
+                    UnityEditor.EditorUtility.SetDirty(obj);
                 }
             }
 
-            AssetDatabase.SaveAssets();
+            UnityEditor.AssetDatabase.SaveAssets();
+#endif
         }
 
         public static string GetSelectionObjectPath()
         {
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if (path == "")
+#if UNITY_EDITOR
+            string path = UnityEditor.AssetDatabase.GetAssetPath(UnityEditor.Selection.activeObject);
+            if (string.IsNullOrEmpty(path))
             {
                 path = "Assets";
             }
-            else if (Path.GetExtension(path) != "")
+            else if (Path.GetExtension(path) != string.Empty)
             {
-                path = path.Replace(Path.GetFileName(AssetDatabase.GetAssetPath(Selection.activeObject)), "");
+                path = path.Replace(Path.GetFileName(UnityEditor.AssetDatabase.GetAssetPath(UnityEditor.Selection.activeObject)), string.Empty);
             }
 
             return path;
+#else
+            return string.Empty;
+#endif
         }
 
         public static string GetAssetFolderPath(Object obj)
         {
-            string assetPath = AssetDatabase.GetAssetPath(obj);
+#if UNITY_EDITOR
+            string assetPath = UnityEditor.AssetDatabase.GetAssetPath(obj);
             int indexOfSlash = assetPath.LastIndexOf('/');
             return indexOfSlash > 0 ? assetPath.Substring(0, indexOfSlash) : assetPath;
-        }
-
-        private static void FindAssetsImpl<T>(this Object target, string propertyName, string targetFolder) where T : Object
-        {
-            SerializedObject serializedObject = new SerializedObject(target);
-            serializedObject.Update();
-
-            SerializedProperty objectsProperty = serializedObject.FindProperty(propertyName);
-
-            bool dirty = FindAssets<T>(objectsProperty, targetFolder);
-
-            serializedObject.ApplyModifiedProperties();
-
-            if (dirty)
-            {
-                EditorUtility.SetDirty(target);
-            }
-        }
-
-        public static bool FindAssets<T>(this SerializedProperty itemsProperty) where T : Object
-        {
-            return FindAssets<T>(itemsProperty, "");
-        }
-
-        public static bool FindAssets<T>(this SerializedProperty itemsProperty, string targetFolder) where T : Object
-        {
-            bool dirty = false;
-            string[] objectGuids;
-
-            if (!string.IsNullOrEmpty(targetFolder))
-            {
-                objectGuids = AssetDatabase.FindAssets("t:" + typeof(T).Name, new string[] { targetFolder });
-            }
-            else
-            {
-                objectGuids = AssetDatabase.FindAssets("t:" + typeof(T).Name);
-            }
-
-            if (itemsProperty.arraySize != objectGuids.Length)
-            {
-                itemsProperty.arraySize = objectGuids.Length;
-            }
-
-            for (int i = 0; i < objectGuids.Length; ++i)
-            {
-                string objectPath = AssetDatabase.GUIDToAssetPath(objectGuids[i]);
-                T asset = AssetDatabase.LoadAssetAtPath<T>(objectPath);
-
-                SerializedProperty arrayElement = itemsProperty.GetArrayElementAtIndex(i);
-
-                if (asset != arrayElement.objectReferenceValue)
-                {
-                    arrayElement.objectReferenceValue = asset;
-                    dirty = true;
-                }
-            }
-
-            return dirty;
-        }
-
-        public static void FindAssets<T>(this Object target, string propertyName) where T : Object
-        {
-            FindAssetsImpl<T>(target, propertyName, "");
-        }
-
-        public static void FindAssets<T>(this Object target, string propertyName, string subDirectoryName) where T : Object
-        {
-            string targetFolder = GetAssetFolderPath(target);
-            if (!string.IsNullOrEmpty(subDirectoryName))
-            {
-                targetFolder = $"{targetFolder}/{subDirectoryName}";
-                targetFolder = StripTrailingSlash(targetFolder);
-            }
-
-            FindAssetsImpl<T>(target, propertyName, targetFolder);
+#else
+            return string.Empty;
+#endif
         }
 
         public static List<T> FindAssets<T>(string name, string directory) where T : Object
         {
+#if UNITY_EDITOR
             if (!string.IsNullOrEmpty(directory))
             {
                 string assetSearchString = new AssetDatabaseSearchBuilder().
                     WithAssetName(name).
                     WithType<T>().
                     Build();
-                
+
                 List<T> assets = new List<T>();
-                foreach (string guid in AssetDatabase.FindAssets(assetSearchString, new string[] { directory }))
+                foreach (string guid in UnityEditor.AssetDatabase.FindAssets(assetSearchString, new string[] { directory }))
                 {
-                    T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                    T asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid));
                     assets.Add(asset);
                 }
 
@@ -285,39 +282,50 @@ namespace CelesteEditor.Tools
             {
                 return FindAssets<T>(name);
             }
+#else
+            return new List<T>();
+#endif
         }
 
         public static List<T> FindAssets<T>() where T : Object
         {
+#if UNITY_EDITOR
             string assetSearchString = new AssetDatabaseSearchBuilder().
                        WithType<T>().
                        Build();
 
             List<T> assets = new List<T>();
-            foreach (string guid in AssetDatabase.FindAssets(assetSearchString))
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets(assetSearchString))
             {
-                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                T asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid));
                 assets.Add(asset);
             }
 
             return assets;
+#else
+            return new List<T>();
+#endif
         }
 
         public static List<T> FindAssets<T>(string name) where T : Object
         {
+#if UNITY_EDITOR
             string assetSearchString = new AssetDatabaseSearchBuilder().
                        WithAssetName(name).
                        WithType<T>().
                        Build();
 
             List<T> assets = new List<T>();
-            foreach (string guid in AssetDatabase.FindAssets(assetSearchString))
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets(assetSearchString))
             {
-                T asset = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
+                T asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(UnityEditor.AssetDatabase.GUIDToAssetPath(guid));
                 assets.Add(asset);
             }
 
             return assets;
+#else
+            return new List<T>();
+#endif
         }
 
         public static T FindAsset<T>() where T : Object
@@ -332,8 +340,9 @@ namespace CelesteEditor.Tools
 
         public static T FindAsset<T>(string name, string directory) where T : Object
         {
+#if UNITY_EDITOR
             List<T> assets = FindAssets<T>(name, directory);
-            
+
             if (string.IsNullOrEmpty(name) && assets.Count == 1)
             {
                 return assets[0];
@@ -348,7 +357,8 @@ namespace CelesteEditor.Tools
                 }
             }
 
-            Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.  Found: {assets.Count}.");
+            UnityEngine.Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.  Found: {assets.Count}.");
+#endif
             return default;
         }
     }

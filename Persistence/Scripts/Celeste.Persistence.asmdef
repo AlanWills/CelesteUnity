@@ -5,7 +5,6 @@
         "Celeste.Log",
         "Celeste.Objects",
         "Celeste.Tools",
-        "Celeste.OdinSerializer",
         "Celeste.FullSerializer",
         "Celeste.Debug",
         "Celeste.DataStructures",

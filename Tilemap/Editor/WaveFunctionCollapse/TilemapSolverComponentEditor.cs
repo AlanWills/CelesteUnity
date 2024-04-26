@@ -54,7 +54,7 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
             location = EditorGUILayout.Vector2IntField("Location", location);
             if (GUILayout.Button("Analyse", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.Analyse(location);
             }
 
@@ -64,34 +64,34 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
 
             if (GUILayout.Button("Reset", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.ResetTilemap();
                 EditorUtility.SetDirty(tilemapSolverComponent);
             }
 
             if (GUILayout.Button("Set Up From Tilemap", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.SetUpFromTilemap();
             }
 
             if (GUILayout.Button("Solve", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.Solve();
                 EditorUtility.SetDirty(tilemapSolverComponent);
             }
 
             if (GUILayout.Button("Solve Step", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.SolveStep();
                 EditorUtility.SetDirty(tilemapSolverComponent);
             }
 
             if (GUILayout.Button("Show Collapsed", GUILayout.ExpandWidth(false)))
             {
-                LogUtility.Clear();
+                LogExtensions.Clear();
                 tilemapSolverComponent.collapsedTilemap.ClearAllTiles();
 
                 for (int row = 0; row < tilemapSolverComponent.tilemapSolver.Solution.Count; ++row)

@@ -5,7 +5,6 @@
         "Celeste.LiveOps",
         "Celeste.Components",
         "Celeste.Objects",
-        "Celeste.OdinSerializer",
         "Celeste.Tools",
         "Celeste.Persistence",
         "Celeste.Tools.Editor",

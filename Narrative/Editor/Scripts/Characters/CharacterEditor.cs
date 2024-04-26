@@ -1,5 +1,5 @@
 ﻿using Celeste.Narrative.Characters;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
 

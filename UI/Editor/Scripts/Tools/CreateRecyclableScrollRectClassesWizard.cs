@@ -1,5 +1,5 @@
-﻿using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Tools;
+﻿using Celeste.Tools;
+using Celeste.Tools.Attributes.GUI;
 using UnityEditor;
 using UnityEngine;
 

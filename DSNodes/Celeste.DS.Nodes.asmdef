@@ -10,7 +10,6 @@
         "Celeste.Input",
         "Celeste.Scene",
         "Celeste.Objects",
-        "Celeste.OdinSerializer",
         "Celeste.Tools"
     ],
     "includePlatforms": [],

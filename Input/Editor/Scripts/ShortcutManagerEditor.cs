@@ -1,8 +1,5 @@
 using Celeste.Input;
-using Celeste.Parameters.Input;
 using CelesteEditor.Tools;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +14,7 @@ namespace CelesteEditor.Input
 
             if (GUILayout.Button("Find Shortcuts"))
             {
-                EditorOnly.FindAssets<Shortcut>(target, "shortcuts");
+                AssetDatabaseExtensions.FindAssets<Shortcut>(target, "shortcuts");
             }
 
             DrawPropertiesExcluding(serializedObject, "m_Script");

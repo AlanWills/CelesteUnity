@@ -2,8 +2,8 @@
     "name": "Celeste.DataStructures.Editor",
     "rootNamespace": "CelesteEditor.DataStructures",
     "references": [
-        "GUID:199ca8e340b41e54499a729dca53137b",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
+        "Celeste.DataStructures",
+        "Celeste.Tools",
         "Celeste.Objects"
     ],
     "includePlatforms": [

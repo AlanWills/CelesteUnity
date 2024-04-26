@@ -1,6 +1,6 @@
 using Celeste.Input;
 using Celeste.Parameters.Input;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
 

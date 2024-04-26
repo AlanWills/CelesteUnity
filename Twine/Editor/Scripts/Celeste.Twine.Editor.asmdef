@@ -6,7 +6,7 @@
         "Celeste.Persistence",
         "Celeste.DataStructures.Editor",
         "Celeste.Persistence.Editor",
-        "Celeste.Tools.Editor"
+        "Celeste.Tools"
     ],
     "includePlatforms": [
         "Editor"

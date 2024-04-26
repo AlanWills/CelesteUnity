@@ -1,6 +1,6 @@
 ﻿using Celeste;
+using Celeste.Tools;
 using Celeste.Tools.Settings;
-using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 

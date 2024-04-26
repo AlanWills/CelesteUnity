@@ -19,10 +19,9 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        public override void SetDefaultValues()
+        protected override void SetPlatformDefaultValues()
         {
-            BuildDirectory = "Builds/Windows/{version}";
-            OutputName = "Build-{version}.exe";
+            OutputName = "Build-{version}-{environment}.exe";
             BuildTarget = BuildTarget.StandaloneWindows64;
             BuildTargetGroup = BuildTargetGroup.Standalone;
         }
@@ -46,11 +45,11 @@ namespace CelesteEditor.BuildSystem
             if (buildFolder.FullName.StartsWith(rootFolder.FullName))
             {
                 // +1 for getting rid of \\ too
-                stringBuilder.AppendFormat("BUILD_DIRECTORY={0}", buildFolder.FullName.Substring(rootFolder.FullName.Length + 1));
+                stringBuilder.Append($"BUILD_DIRECTORY={buildFolder.FullName.Substring(rootFolder.FullName.Length + 1)}");
             }
             else
             {
-                stringBuilder.AppendFormat("BUILD_DIRECTORY={0}", buildFolder.FullName);
+                stringBuilder.Append($"BUILD_DIRECTORY={buildFolder.FullName}");
             }
         }
     }

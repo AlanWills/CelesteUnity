@@ -1,10 +1,9 @@
 ﻿using Celeste.Events;
 using Celeste.Input.Settings;
 using Celeste.Parameters;
+using Celeste.Tools;
 using Celeste.Viewport;
-using CelesteEditor.Tools;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEditor.Events;
 using UnityEngine;
 

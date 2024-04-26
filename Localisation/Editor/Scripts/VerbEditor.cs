@@ -1,5 +1,5 @@
 ﻿using Celeste.Localisation;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using System;
 using System.IO;
 using System.Reflection;

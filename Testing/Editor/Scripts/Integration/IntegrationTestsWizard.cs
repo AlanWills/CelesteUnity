@@ -1,5 +1,5 @@
 ﻿using Celeste.Testing;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;

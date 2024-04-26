@@ -1,6 +1,6 @@
 using Celeste.DataStructures;
 using Celeste.Objects;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;

@@ -1,6 +1,6 @@
 ﻿using Celeste.Scene;
+using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
-using CelesteEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;

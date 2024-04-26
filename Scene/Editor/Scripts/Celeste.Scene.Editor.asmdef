@@ -6,7 +6,6 @@
         "Celeste.Persistence",
         "Celeste.Tools",
         "Celeste.Objects",
-        "Celeste.OdinSerializer",
         "Celeste.Tools.Editor",
         "Celeste.Objects.Editor",
         "Unity.Addressables.Editor"

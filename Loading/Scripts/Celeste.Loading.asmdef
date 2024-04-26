@@ -14,6 +14,7 @@
         "Celeste.Parameters",
         "Celeste.Tools",
         "Celeste.BuildSystem",
+        "Celeste.Persistence",
         "Celeste.UnityProject",
         "Celeste.Tools.Editor"
     ],

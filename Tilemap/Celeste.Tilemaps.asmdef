@@ -7,7 +7,6 @@
         "Celeste.Components",
         "Celeste.DataStructures",
         "Celeste.Objects",
-        "Celeste.OdinSerializer",
         "Celeste.Tools",
         "Celeste.UnityProject",
         "Unity.InputSystem"

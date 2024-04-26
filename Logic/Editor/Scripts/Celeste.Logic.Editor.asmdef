@@ -4,6 +4,7 @@
     "references": [
         "Celeste.Logic",
         "Celeste.Parameters",
+        "Celeste.Tools",
         "Celeste.Tools.Editor",
         "Celeste.Parameters.Editor",
         "Celeste.DataStructures.Editor",

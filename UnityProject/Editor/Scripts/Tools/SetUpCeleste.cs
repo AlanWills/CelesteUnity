@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using UnityEditor.PackageManager;
 using UnityEngine.SceneManagement;
 using Celeste.Sound;
-using UnityEditorInternal;
+using Celeste.Tools;
 
 namespace CelesteEditor.UnityProject
 {
@@ -821,8 +821,8 @@ namespace CelesteEditor.UnityProject
                 settings.DefaultGroup.Name = "CommonAddressables";
                 settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
 
-                string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
-                string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
+                string remoteBuildPath = AddressablesExtensions.GetAddressablesRemoteBuildPath();
+                string remoteLoadPath = AddressablesExtensions.GetAddressablesRemoteLoadPath();
 
                 settings.DefaultGroup.SetBuildPath(remoteBuildPath);
                 settings.DefaultGroup.SetLoadPath(remoteLoadPath);

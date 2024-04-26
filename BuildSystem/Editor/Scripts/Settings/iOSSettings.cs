@@ -26,10 +26,9 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        public override void SetDefaultValues()
+        protected override void SetPlatformDefaultValues()
         {
-            BuildDirectory = "Builds/iOS";
-            OutputName = "Build-{version}";
+            OutputName = "Build-{version}-{environment}";
             BuildTarget = BuildTarget.iOS;
             BuildTargetGroup = BuildTargetGroup.iOS;
             RunInXCodeAs = XcodeBuildConfig.Release;
@@ -41,7 +40,7 @@ namespace CelesteEditor.BuildSystem
 
             PlayerSettings.stripEngineCode = false;
             PlayerSettings.iOS.buildNumber = Version.ToString();
-            UnityEngine.Debug.LogFormat("iOS version is now: {0}", PlayerSettings.iOS.buildNumber);
+            UnityEngine.Debug.Log($"iOS version is now: {PlayerSettings.iOS.buildNumber}.");
         }
     }
 }

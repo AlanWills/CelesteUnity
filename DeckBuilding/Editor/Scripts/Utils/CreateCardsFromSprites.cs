@@ -1,4 +1,5 @@
 ﻿using Celeste.DeckBuilding.Cards;
+using Celeste.Tools;
 using CelesteEditor.Tools;
 using System;
 using System.Collections.Generic;

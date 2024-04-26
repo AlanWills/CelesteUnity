@@ -1,5 +1,5 @@
-﻿using Celeste.Twine;
-using CelesteEditor.Tools;
+﻿using Celeste.Tools;
+using Celeste.Twine;
 using System.IO;
 using UnityEditor;
 using UnityEngine;

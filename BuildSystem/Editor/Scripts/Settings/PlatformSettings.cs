@@ -15,6 +15,7 @@ using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
+using Celeste.Tools;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -22,7 +23,7 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.  {build_target} will be replaced with the value of the 'BuildTarget' variable.  {build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable.";
+        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.  {build_target} will be replaced with the value of the 'BuildTarget' variable.  {build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable.  {environment} will be replaced with 'Debug' or 'Release' if the 'IsDebugBuild' variable is true or false respectively.";
 
         [SerializeField]
         [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
@@ -79,6 +80,18 @@ namespace CelesteEditor.BuildSystem
         [SerializeField]
         [Tooltip("If enabled, addressable specific pipelines will run in the build pipeline.")]
         private bool addressablesEnabled = false;
+        public bool AddressablesEnabled
+        {
+            get => addressablesEnabled;
+            protected set
+            {
+                if (addressablesEnabled != value)
+                {
+                    addressablesEnabled = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("A custom string that will be appended to the end of the remote addressables catalogue name in place of the Unity-generated hash." + STRING_SUBSTITUTION_HELP)]
@@ -96,17 +109,50 @@ namespace CelesteEditor.BuildSystem
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The directory that built addressables will be outputted to, relative to the project directory." + STRING_SUBSTITUTION_HELP)]
         private string addressablesBuildDirectory;
-        public string AddressablesBuildDirectory => Resolve(addressablesBuildDirectory);
+        public string AddressablesBuildDirectory
+        {
+            get => Resolve(addressablesBuildDirectory);
+            set
+            {
+                if (string.CompareOrdinal(addressablesBuildDirectory, value) == 0)
+                {
+                    addressablesBuildDirectory = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("The remote load path for the addressables e.g. an S3 bucket." + STRING_SUBSTITUTION_HELP)]
         private string addressablesLoadDirectory;
-        public string AddressablesLoadDirectory => Resolve(addressablesLoadDirectory);
+        public string AddressablesLoadDirectory
+        {
+            get => Resolve(addressablesLoadDirectory);
+            protected set
+            {
+                if (string.CompareOrdinal(addressablesLoadDirectory, value) == 0)
+                {
+                    addressablesLoadDirectory = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
         private string addressablesUploadURL;
-        public string AddressablesUploadURL => Resolve(addressablesUploadURL);
+        public string AddressablesUploadURL
+        {
+            get => Resolve(addressablesUploadURL);
+            protected set
+            {
+                if (string.CompareOrdinal(addressablesUploadURL, value) == 0)
+                {
+                    addressablesUploadURL = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Enable advanced addressables settings.  Warning, most users will not need to edit these values.")]
@@ -158,7 +204,7 @@ namespace CelesteEditor.BuildSystem
         private bool waitForManagedDebugger = false;
 
         [SerializeField]
-        private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.AllowDebugging | BuildOptions.StrictMode;
+        private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.StrictMode;
         public BuildOptions BuildOptions => buildOptions;
 
         [Header("Build Player")]
@@ -198,7 +244,20 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        public abstract void SetDefaultValues();
+        public void SetDefaultValues()
+        {
+            BuildDirectory = "Builds/{build_target}/{environment}";
+            BuildUploadURL = "celeste-games/";
+            AddressablesEnabled = true;
+            PlayerOverrideVersion = "resources";
+            AddressablesBuildDirectory = "ServerData/{build_target}/{environment}/{major}.{minor}";
+            AddressablesLoadDirectory = "https://storage.googleapis.com/celeste-games/ServerData/{build_target}/{environment}/{major}.{minor}";
+            AddressablesUploadURL = "celeste-games/";
+
+            SetPlatformDefaultValues();
+        }
+
+        protected abstract void SetPlatformDefaultValues();
 
         #region Platform Setup Methods
 
@@ -240,10 +299,10 @@ namespace CelesteEditor.BuildSystem
             {
                 AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
                 settings.OverridePlayerVersion = PlayerOverrideVersion;
-                AddressablesUtility.SetAddressablesRemoteBuildPath(AddressablesBuildDirectory);
-                AddressablesUtility.SetAddressablesRemoteLoadPath(AddressablesLoadDirectory);
-                AddressablesUtility.SetAddressablesLocalBuildPath(LocalAddressablesBuildPath);
-                AddressablesUtility.SetAddressablesLocalLoadPath(LocalAddressablesLoadPath);
+                AddressablesExtensions.SetAddressablesRemoteBuildPath(AddressablesBuildDirectory);
+                AddressablesExtensions.SetAddressablesRemoteLoadPath(AddressablesLoadDirectory);
+                AddressablesExtensions.SetAddressablesLocalBuildPath(LocalAddressablesBuildPath);
+                AddressablesExtensions.SetAddressablesLocalLoadPath(LocalAddressablesLoadPath);
 
                 if (addressableGroupsInBuild.NumItems > 0)
                 {
@@ -306,7 +365,7 @@ namespace CelesteEditor.BuildSystem
 
         public void BuildPlayer(BuildPlayerOptions buildPlayerOptions)
         {
-            LogUtility.Clear();
+            LogExtensions.Clear();
 
             Switch();
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
@@ -378,7 +437,7 @@ namespace CelesteEditor.BuildSystem
 
         public void BuildAssets()
         {
-            LogUtility.Clear();
+            LogExtensions.Clear();
             
             Switch();
             PrepareAssetsForBuild();
@@ -392,7 +451,7 @@ namespace CelesteEditor.BuildSystem
 
         public bool UpdateAssets()
         {
-            LogUtility.Clear();
+            LogExtensions.Clear();
             
             Switch();
             PrepareAssetsForUpdate();
@@ -456,7 +515,8 @@ namespace CelesteEditor.BuildSystem
                     Replace("{minor}", Version.Minor.ToString()).
                     Replace("{build}", Version.Build.ToString()).
                     Replace("{build_target}", BuildTarget.ToString()).
-                    Replace("{build_target_group}", BuildTargetGroup.ToString());
+                    Replace("{build_target_group}", BuildTargetGroup.ToString()).
+                    Replace("{environment}", isDebugBuild ? "Debug" : "Release");
         }
 
         #endregion

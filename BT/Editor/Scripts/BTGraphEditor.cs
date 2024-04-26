@@ -1,11 +1,7 @@
 ﻿using Celeste.BT;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using CelesteEditor.Validation.GUIs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using XNode;

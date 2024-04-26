@@ -8,7 +8,6 @@
         "Celeste.Persistence",
         "Celeste.Events",
         "Celeste.Objects",
-        "Celeste.OdinSerializer",
         "Celeste.Debug",
         "Celeste.Core",
         "Celeste.Assets",

@@ -1,4 +1,5 @@
 using Celeste;
+using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.Tools;
 using System.Collections.Generic;

@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
@@ -8,7 +6,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Tools
 {
-    public static class AddressablesUtility
+    public static class AddressablesExtensions
     {
         public const string REMOTE_BUILD_PATH_VARIABLE = "Remote.BuildPath";
         public const string REMOTE_LOAD_PATH_VARIABLE = "Remote.LoadPath";

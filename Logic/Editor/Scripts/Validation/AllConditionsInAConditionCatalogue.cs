@@ -1,6 +1,6 @@
 ﻿using Celeste.Logic;
 using Celeste.Logic.Catalogue;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using CelesteEditor.Validation;
 using System.Collections.Generic;
 using System.Text;

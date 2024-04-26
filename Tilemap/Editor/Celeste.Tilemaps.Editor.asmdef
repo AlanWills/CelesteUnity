@@ -4,6 +4,7 @@
     "references": [
         "Celeste.Tilemaps",
         "Celeste.Components",
+        "Celeste.Tools",
         "Celeste.Components.Editor",
         "Celeste.Tools.Editor",
         "Celeste.Objects.Editor"

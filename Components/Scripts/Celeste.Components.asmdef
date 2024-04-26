@@ -4,7 +4,6 @@
     "references": [
         "Celeste.Objects",
         "Celeste.Tools",
-        "Celeste.OdinSerializer",
         "Celeste.DataStructures",
         "Celeste.UnityProject"
     ],

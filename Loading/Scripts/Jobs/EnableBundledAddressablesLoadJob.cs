@@ -135,7 +135,7 @@ namespace Celeste.Loading
             // Need to do this to support using built addressables in Unity
             // Since stuff only gets copied to StreamingAssets during buildtime (plus it would be messy for source control)
             // we have to redirect where we get the CachedAssetBundles info from
-            return Path.Combine(CelesteEditor.Tools.AddressablesUtility.GetAddressablesLocalBuildPath(), "CachedAssetBundles.json");
+            return Path.Combine(CelesteEditor.Tools.AddressablesExtensions.GetAddressablesLocalBuildPath(), "CachedAssetBundles.json");
 #else
             return Path.Combine(Addressables.RuntimePath, addressablesRuntimePathSubFolder, "CachedAssetBundles.json");
 #endif

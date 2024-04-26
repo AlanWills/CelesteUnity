@@ -15,7 +15,7 @@ namespace CelesteEditor.DeckBuilding.Cards
 
         static CardEditorConstants()
         {
-            TypeUtils.LoadTypes<CardComponent>(ref AllCardComponentTypes, ref AllCardComponentDisplayNames);
+            TypeExtensions.LoadTypes<CardComponent>(ref AllCardComponentTypes, ref AllCardComponentDisplayNames);
         }
     }
 }

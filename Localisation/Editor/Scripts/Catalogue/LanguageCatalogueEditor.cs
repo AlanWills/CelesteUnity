@@ -1,7 +1,7 @@
 ﻿using Celeste.Localisation;
 using Celeste.Localisation.Catalogue;
+using Celeste.Tools;
 using CelesteEditor.DataStructures;
-using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 

@@ -31,10 +31,10 @@ namespace CelesteEditor.BuildSystem.Steps
 
         private static CachedAssetBundles CacheRemoteAddressablesBundleList(AddressablesPlayerBuildResult result, HashSet<string> assetBundleNames)
         {
-            var buildRootDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
+            var buildRootDir = AddressablesExtensions.GetAddressablesRemoteBuildPath();
             var buildRootDirLen = buildRootDir.Length;
-            string localBuildPath = AddressablesUtility.GetAddressablesLocalBuildPath();
-            string localLoadPath = AddressablesUtility.GetAddressablesLocalLoadPath();
+            string localBuildPath = AddressablesExtensions.GetAddressablesLocalBuildPath();
+            string localLoadPath = AddressablesExtensions.GetAddressablesLocalLoadPath();
             
             CachedAssetBundles cachedBundles = new CachedAssetBundles
             {
@@ -71,8 +71,8 @@ namespace CelesteEditor.BuildSystem.Steps
 
         private static void BundleRemoteAddressables(CachedAssetBundles cachedAssetBundles)
         {
-            var remoteBuildDir = AddressablesUtility.GetAddressablesRemoteBuildPath();
-            var localBuildDir = AddressablesUtility.GetAddressablesLocalBuildPath();
+            var remoteBuildDir = AddressablesExtensions.GetAddressablesRemoteBuildPath();
+            var localBuildDir = AddressablesExtensions.GetAddressablesLocalBuildPath();
 
             if (!Directory.Exists(localBuildDir))
             {

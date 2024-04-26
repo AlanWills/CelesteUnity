@@ -1,0 +1,18 @@
+{
+    "name": "Celeste.Application.Editor",
+    "rootNamespace": "CelesteEditor.Application",
+    "references": [
+        "Celeste.Application"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

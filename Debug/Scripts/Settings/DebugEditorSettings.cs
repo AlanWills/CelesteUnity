@@ -1,9 +1,7 @@
 ﻿using Celeste.Parameters;
 using Celeste.Tools.Settings;
 using UnityEngine;
-#if UNITY_EDITOR
-using CelesteEditor.Tools;
-#endif
+using Celeste.Tools;
 
 namespace Celeste.Debug.Settings
 {

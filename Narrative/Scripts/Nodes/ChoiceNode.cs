@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode.Attributes;
 using Celeste.Narrative.Tokens;
+using Celeste.Tools;
 
 namespace Celeste.Narrative
 {
@@ -198,12 +199,11 @@ namespace Celeste.Narrative
             choice.ID = name;
             choices.Add(choice);
 
-#if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                CelesteEditor.Tools.EditorOnly.AddObjectToAsset(choice, graph);
+                EditorOnly.AddObjectToAsset(choice, graph);
             }
-#endif
+
             AddOutputPort(name);
 
             return choice;

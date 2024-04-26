@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using Celeste.FSM;
 using Celeste.Narrative.Choices;
+using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,9 +81,11 @@ namespace Celeste.Narrative
             choice.ID = name;
             choices.Add(choice);
 
-#if UNITY_EDITOR
-            CelesteEditor.Tools.EditorOnly.AddObjectToAsset(choice, graph);
-#endif
+            if (!Application.isPlaying)
+            {
+                EditorOnly.AddObjectToAsset(choice, graph);
+            }
+
             AddOutputPort(name);
 
             return choice;

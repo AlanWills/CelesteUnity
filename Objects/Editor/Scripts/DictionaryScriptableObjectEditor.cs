@@ -33,7 +33,7 @@ namespace CelesteEditor.Objects
 
             if (GUILayout.Button("Find All In Folder Recursive"))
             {
-                FindAssets(Tools.EditorOnly.GetAssetFolderPath(target));
+                FindAssets(EditorOnly.GetAssetFolderPath(target));
             }
 
             using (var changeCheck = new EditorGUI.ChangeCheckScope())
@@ -70,7 +70,7 @@ namespace CelesteEditor.Objects
             DictionaryScriptableObject<TKey, TValue> dictionary = target as DictionaryScriptableObject<TKey, TValue>;
             dictionary.Clear();
 
-            foreach (TValue value in Tools.EditorOnly.FindAssets<TValue>(string.Empty, directory))
+            foreach (TValue value in EditorOnly.FindAssets<TValue>(string.Empty, directory))
             {
                 TKey key = GetKey(value);
                 dictionary.AddItem(key, value);

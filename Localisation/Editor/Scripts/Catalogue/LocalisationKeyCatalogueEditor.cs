@@ -1,6 +1,6 @@
 ﻿using Celeste.Localisation;
 using Celeste.Localisation.Catalogue;
-using CelesteEditor.Tools;
+using Celeste.Tools;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;

@@ -1,11 +1,6 @@
 ﻿using Celeste.Input;
 using Celeste.Parameters.Input;
 using CelesteEditor.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +15,7 @@ namespace CelesteEditor.Input
         {
             if (GUILayout.Button("Find KeyCode Values", GUILayout.ExpandWidth(false)))
             {
-                EditorOnly.FindAssets<KeyCodeValue>(target, "keyCodes");
+                AssetDatabaseExtensions.FindAssets<KeyCodeValue>(target, "keyCodes");
             }
 
             EditorGUILayout.Space();

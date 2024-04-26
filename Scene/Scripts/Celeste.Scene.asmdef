@@ -10,7 +10,6 @@
         "Celeste.Objects",
         "Celeste.Assets",
         "Celeste.Tools",
-        "Celeste.OdinSerializer",
         "Celeste.UnityProject",
         "Celeste.Tools.Editor",
         "Unity.Addressables",

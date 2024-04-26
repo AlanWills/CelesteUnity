@@ -45,7 +45,7 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        public override void SetDefaultValues()
+        protected override void SetPlatformDefaultValues()
         {
         }
 

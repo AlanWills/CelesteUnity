@@ -3,7 +3,6 @@
     "rootNamespace": "Celeste.Objects",
     "references": [
         "Celeste.DataStructures",
-        "Celeste.OdinSerializer",
         "Celeste.Tools",
         "Celeste.UnityProject"
     ],

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CelesteEditor.Tools.Utils
+namespace Celeste.Tools.Utils
 {
     public class AssetDatabaseSearchBuilder
     {

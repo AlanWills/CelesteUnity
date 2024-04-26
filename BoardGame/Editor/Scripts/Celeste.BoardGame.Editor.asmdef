@@ -6,6 +6,7 @@
         "Celeste.Components",
         "Celeste.Events",
         "Celeste.UnityProject",
+        "Celeste.Tools",
         "Celeste.Components.Editor",
         "Celeste.Tools.Editor",
         "Celeste.DataStructures.Editor",

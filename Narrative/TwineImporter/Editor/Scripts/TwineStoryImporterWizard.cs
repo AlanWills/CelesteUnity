@@ -13,6 +13,7 @@ using Celeste;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.TwineImporter.ParserSteps;
 using Celeste.Narrative.Backgrounds;
+using Celeste.Tools;
 
 namespace CelesteEditor.Narrative.TwineImporter
 {
@@ -90,7 +91,7 @@ namespace CelesteEditor.Narrative.TwineImporter
         private void OnWizardOtherButton()
         {
             // Clear the log before we start
-            LogUtility.Clear();
+            LogExtensions.Clear();
 
             TwineStoryImporter.Import(
                 twineStory, 

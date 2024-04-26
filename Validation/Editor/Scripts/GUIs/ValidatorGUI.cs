@@ -32,7 +32,7 @@ namespace CelesteEditor.Validation.GUIs
             {
                 if (GUILayout.Button("Check All", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
 
                     foreach (ValidationConditionGUI gui in validationConditionGUIs)
                     {
@@ -42,7 +42,7 @@ namespace CelesteEditor.Validation.GUIs
 
                 if (GUILayout.Button("Fix All", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
 
                     foreach (ValidationConditionGUI gui in validationConditionGUIs)
                     {
@@ -60,7 +60,7 @@ namespace CelesteEditor.Validation.GUIs
 
                 if (GUILayout.Button("Clear Log", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
                 }
             }
 
@@ -103,7 +103,7 @@ namespace CelesteEditor.Validation.GUIs
             {
                 if (GUILayout.Button("Check All", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
 
                     foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
                     {
@@ -113,7 +113,7 @@ namespace CelesteEditor.Validation.GUIs
 
                 if (GUILayout.Button("Fix All", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
 
                     foreach (ValidationConditionGUI<T> gui in validationConditionGUIs)
                     {
@@ -131,7 +131,7 @@ namespace CelesteEditor.Validation.GUIs
 
                 if (GUILayout.Button("Clear Log", GUILayout.ExpandWidth(false)))
                 {
-                    LogUtility.Clear();
+                    LogExtensions.Clear();
                 }
             }
 

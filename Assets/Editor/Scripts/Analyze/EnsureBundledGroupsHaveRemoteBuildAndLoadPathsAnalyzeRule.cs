@@ -26,8 +26,8 @@ namespace CelesteEditor.Assets.Analyze
         protected override bool ViolatesRule(AddressableAssetGroup addressableAssetGroup)
         {
             var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
-            string remoteBuildPath = AddressablesUtility.GetAddressablesRemoteBuildPath();
-            string remoteLoadPath = AddressablesUtility.GetAddressablesRemoteLoadPath();
+            string remoteBuildPath = AddressablesExtensions.GetAddressablesRemoteBuildPath();
+            string remoteLoadPath = AddressablesExtensions.GetAddressablesRemoteLoadPath();
 
             if (addressableAssetGroup.TryGetSchema<BundledGroupSchema>(out var bundledGroup) &&
                 addressableAssetGroup.TryGetSchema<BundledAssetGroupSchema>(out var bundledAssets) &&
@@ -52,8 +52,8 @@ namespace CelesteEditor.Assets.Analyze
 
         protected override void FixIssue(AddressableAssetGroup addressableAssetGroup)
         {
-            addressableAssetGroup.SetBuildPath(AddressablesUtility.REMOTE_BUILD_PATH_VARIABLE);
-            addressableAssetGroup.SetLoadPath(AddressablesUtility.REMOTE_LOAD_PATH_VARIABLE);
+            addressableAssetGroup.SetBuildPath(AddressablesExtensions.REMOTE_BUILD_PATH_VARIABLE);
+            addressableAssetGroup.SetLoadPath(AddressablesExtensions.REMOTE_LOAD_PATH_VARIABLE);
         }
     }
 }

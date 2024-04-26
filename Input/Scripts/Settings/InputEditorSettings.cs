@@ -2,9 +2,7 @@
 using Celeste.Tools.Settings;
 using UnityEngine;
 using Celeste.Parameters;
-#if UNITY_EDITOR
-using CelesteEditor.Tools;
-#endif
+using Celeste.Tools;
 
 namespace Celeste.Input.Settings
 {
