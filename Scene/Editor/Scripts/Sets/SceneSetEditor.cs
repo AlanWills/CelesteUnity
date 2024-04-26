@@ -77,10 +77,12 @@ namespace CelesteEditor.Scene
             using (var changeCheck = new ChangeCheckScope())
             {
                 string oldMenuItemPath = menuItemPathProperty.stringValue;
-                EditorGUILayout.DelayedTextField(menuItemPathProperty);
+                string newMenuItemPath = EditorGUILayout.DelayedTextField("Menu Item Path", oldMenuItemPath);
 
                 if (changeCheck.changed)
                 {
+                    (target as SceneSet).MenuItemPath = newMenuItemPath;
+
                     if (Unity.Menu.HasMenuItem(oldMenuItemPath))
                     {
                         Unity.Menu.RemoveMenuItem(oldMenuItemPath);
