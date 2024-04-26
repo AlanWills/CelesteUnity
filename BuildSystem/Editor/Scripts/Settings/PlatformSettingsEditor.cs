@@ -22,9 +22,14 @@ namespace CelesteEditor.BuildSystem
 
             using (var horizontal = new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Set Default Values"))
+                if (GUILayout.Button("Set Default Debug Values"))
                 {
-                    platformSettings.SetDefaultValues();
+                    platformSettings.SetDefaultValues(true);
+                }
+
+                if (GUILayout.Button("Set Default Release Values"))
+                {
+                    platformSettings.SetDefaultValues(false);
                 }
             }
 

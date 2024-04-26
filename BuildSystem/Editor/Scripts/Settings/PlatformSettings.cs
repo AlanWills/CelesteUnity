@@ -114,7 +114,7 @@ namespace CelesteEditor.BuildSystem
             get => Resolve(addressablesBuildDirectory);
             set
             {
-                if (string.CompareOrdinal(addressablesBuildDirectory, value) == 0)
+                if (string.CompareOrdinal(addressablesBuildDirectory, value) != 0)
                 {
                     addressablesBuildDirectory = value;
                     EditorUtility.SetDirty(this);
@@ -130,7 +130,7 @@ namespace CelesteEditor.BuildSystem
             get => Resolve(addressablesLoadDirectory);
             protected set
             {
-                if (string.CompareOrdinal(addressablesLoadDirectory, value) == 0)
+                if (string.CompareOrdinal(addressablesLoadDirectory, value) != 0)
                 {
                     addressablesLoadDirectory = value;
                     EditorUtility.SetDirty(this);
@@ -146,7 +146,7 @@ namespace CelesteEditor.BuildSystem
             get => Resolve(addressablesUploadURL);
             protected set
             {
-                if (string.CompareOrdinal(addressablesUploadURL, value) == 0)
+                if (string.CompareOrdinal(addressablesUploadURL, value) != 0)
                 {
                     addressablesUploadURL = value;
                     EditorUtility.SetDirty(this);
@@ -244,7 +244,7 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        public void SetDefaultValues()
+        public void SetDefaultValues(bool isDebugConfig)
         {
             BuildDirectory = "Builds/{build_target}/{environment}";
             BuildUploadURL = "celeste-games/";
@@ -253,11 +253,25 @@ namespace CelesteEditor.BuildSystem
             AddressablesBuildDirectory = "ServerData/{build_target}/{environment}/{major}.{minor}";
             AddressablesLoadDirectory = "https://storage.googleapis.com/celeste-games/ServerData/{build_target}/{environment}/{major}.{minor}";
             AddressablesUploadURL = "celeste-games/";
+            development = isDebugConfig;
+            isDebugBuild = isDebugConfig;
+            buildOptions = isDebugConfig ? BuildOptions.Development | BuildOptions.StrictMode : BuildOptions.None;
 
-            SetPlatformDefaultValues();
+            scriptingDefineSymbols = EditorOnly.FindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
+            addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
+            buildPreparationSteps = EditorOnly.FindAsset<BuildPreparationSteps>();
+            buildPostProcessSteps = EditorOnly.FindAsset<BuildPostProcessSteps>();
+            buildAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
+            buildAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForBuild");
+            updateAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
+            updateAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForUpdate");
+
+            SetPlatformDefaultValues(isDebugConfig);
+            
+            EditorUtility.SetDirty(this);
         }
 
-        protected abstract void SetPlatformDefaultValues();
+        protected abstract void SetPlatformDefaultValues(bool isDebugConfig);
 
         #region Platform Setup Methods
 

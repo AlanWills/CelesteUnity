@@ -8,6 +8,7 @@
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
         public const string LOAD_CONTENT_CATALOGUE_LOAD_JOB_NAME = "LoadContentCatalogue";
         public const string ENABLE_BUNDLED_ADDRESSABLES_LOAD_JOB_NAME = "EnableBundledAddressables";
+        public const string DOWNLOAD_BOOTSTRAP_ADDRESSABLES_LOAD_JOB_NAME = "DownloadBootstrapAddressables";
         public const string LOAD_BOOTSTRAP_SCENE_SET_LOAD_JOB_NAME = "LoadBootstrapSceneSet";
         public const string LOAD_JOB_NAME = "StartupLoadJob";
         public const string SCENE_NAME = "Startup";
@@ -18,10 +19,12 @@
 
     public static class BootstrapConstants
     {
+        public const string ADDRESSABLES_GROUP_NAME = "BootstrapAddressables";
         public const string FOLDER_NAME = "Bootstrap/";
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
         public const string LOAD_JOBS_FOLDER_PATH = FOLDER_PATH + "Jobs/";
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
+        public const string DOWNLOAD_COMMON_ADDRESSABLES_LOAD_JOB_NAME = "DownloadCommonAddressables";
         public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemsSceneSet";
         public const string LOAD_JOB_NAME = "BootstrapLoadJob";
         public const string SCENE_NAME = "Bootstrap";
@@ -70,6 +73,7 @@
 
     public struct CelesteConstants
     {
+        public const string COMMON_ADDRESSABLES_GROUP_NAME = "CommonAddressables";
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
         
         public readonly string LOADING_SCENE_PATH;
@@ -89,6 +93,10 @@
         public const string FOLDER_NAME = "BuildSystem/";
         public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
         public const string EDITOR_FOLDER = FOLDER_PATH + "Editor/";
+        public const string BUILD_PREPARATION_STEPS_FOLDER = EDITOR_FOLDER + "BuildPreparationSteps/";
+        public const string BUILD_POST_PROCESS_STEPS_FOLDER = EDITOR_FOLDER + "BuildPostProcessSteps/";
+        public const string ASSET_PREPARATION_STEPS_FOLDER = EDITOR_FOLDER + "AssetPreparationSteps/";
+        public const string ASSET_POST_PROCESS_STEPS_FOLDER = EDITOR_FOLDER + "AssetPostProcessSteps/";
         public const string SCRIPTING_DEFINE_SYMBOLS_FOLDER = EDITOR_FOLDER + "ScriptingDefineSymbols/";
         public const string COMMON_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Common/";
         public const string WINDOWS_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Windows/";

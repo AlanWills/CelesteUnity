@@ -26,7 +26,7 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
-        protected override void SetPlatformDefaultValues()
+        protected override void SetPlatformDefaultValues(bool isDebugConfig)
         {
             OutputName = "Build-{version}-{environment}";
             BuildTarget = BuildTarget.iOS;

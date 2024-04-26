@@ -46,8 +46,8 @@ namespace CelesteEditor.BuildSystem
         {
             allPlatformSettings.Update();
 
-            DrawiOSSettings();
             DrawAndroidSettings();
+            DrawiOSSettings();
             DrawWindowsSettings();
             DrawWebGLSettings();
 
@@ -66,13 +66,15 @@ namespace CelesteEditor.BuildSystem
                     iOSDebugProperty,
                     "iOS Debug",
                     AllPlatformSettings.iOSPlatformSettingsPath,
-                    "iOSDebug");
+                    "iOSDebug",
+                    true);
 
                 SettingsGUI<iOSSettings>(
                     iOSReleaseProperty,
                     "iOS Release",
                     AllPlatformSettings.iOSPlatformSettingsPath,
-                    "iOSRelease");
+                    "iOSRelease",
+                    false);
             }
         }
 
@@ -88,19 +90,22 @@ namespace CelesteEditor.BuildSystem
                     androidDebugProperty,
                     "Android Debug",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidDebug");
+                    "AndroidDebug",
+                    true);
 
                 SettingsGUI<AndroidSettings>(
                     androidReleaseApkProperty,
                     "Android Release Apk",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidReleaseApk");
+                    "AndroidReleaseApk",
+                    false);
 
                 SettingsGUI<AndroidSettings>(
                     androidReleaseBundleProperty,
                     "Android Release Bundle",
                     AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidReleaseBundle");
+                    "AndroidReleaseBundle",
+                    false);
             }
         }
 
@@ -116,13 +121,15 @@ namespace CelesteEditor.BuildSystem
                     windowsDebugProperty,
                     "Windows Debug",
                     AllPlatformSettings.WindowsPlatformSettingsPath,
-                    "WindowsDebug");
+                    "WindowsDebug",
+                    true);
 
                 SettingsGUI<WindowsSettings>(
                     windowsReleaseProperty,
                     "Windows Release",
                     AllPlatformSettings.WindowsPlatformSettingsPath,
-                    "WindowsRelease");
+                    "WindowsRelease",
+                    false);
             }
         }
 
@@ -138,13 +145,15 @@ namespace CelesteEditor.BuildSystem
                     webGLDebugProperty,
                     "WebGL Debug",
                     AllPlatformSettings.WebGLPlatformSettingsPath,
-                    "WebGLDebug");
+                    "WebGLDebug",
+                    true);
 
                 SettingsGUI<WebGLSettings>(
                     webGLReleaseProperty,
                     "WebGL Release",
                     AllPlatformSettings.WebGLPlatformSettingsPath,
-                    "WebGLRelease");
+                    "WebGLRelease",
+                    false);
             }
         }
 
@@ -152,7 +161,8 @@ namespace CelesteEditor.BuildSystem
             SerializedProperty settingsProperty,
             string settingsPropertyName,
             string folder,
-            string name) where T : PlatformSettings
+            string name,
+            bool isDebugConfig) where T : PlatformSettings
         {
             if (settingsProperty.objectReferenceValue != null)
             {
@@ -163,16 +173,18 @@ namespace CelesteEditor.BuildSystem
                 FindOrCreateSettingsAsset<T>(
                     folder,
                     name,
-                    settingsProperty);
+                    settingsProperty,
+                    isDebugConfig);
             }
         }
 
         private void FindOrCreateSettingsAsset<T>(
             string folder,
             string settingsName,
-            SerializedProperty settingsProperty) where T : PlatformSettings
+            SerializedProperty settingsProperty,
+            bool isDebugConfig) where T : PlatformSettings
         {
-            settingsProperty.objectReferenceValue = AllPlatformSettings.FindOrCreatePlatformSettingsAsset<T>(folder, settingsName);
+            settingsProperty.objectReferenceValue = AllPlatformSettings.FindOrCreatePlatformSettingsAsset<T>(folder, settingsName, isDebugConfig);
         }
 
         #region Settings Provider

@@ -58,8 +58,8 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateWindowsSettings()
         {
-            m_windowsDebug = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsDebug");
-            m_windowsRelease = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsRelease");
+            m_windowsDebug = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsDebug", true);
+            m_windowsRelease = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(WindowsPlatformSettingsPath, "WindowsAppVersion");
@@ -69,9 +69,9 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateAndroidSettings()
         {
-            m_androidDebug = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidDebug");
-            m_androidReleaseApk = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseApk");
-            m_androidReleaseBundle = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseBundle");
+            m_androidDebug = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidDebug", true);
+            m_androidReleaseApk = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseApk", false);
+            m_androidReleaseBundle = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseBundle", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(AndroidPlatformSettingsPath, "AndroidAppVersion");
@@ -82,8 +82,8 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateiOSSettings()
         {
-            m_iOSDebug = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSDebug");
-            m_iOSRelease = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSRelease");
+            m_iOSDebug = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSDebug", true);
+            m_iOSRelease = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(iOSPlatformSettingsPath, "iOSAppVersion");
@@ -93,8 +93,8 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateWebGLSettings()
         {
-            m_webGLDebug = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLDebug");
-            m_webGLRelease = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLRelease");
+            m_webGLDebug = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLDebug", true);
+            m_webGLRelease = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(WebGLPlatformSettingsPath, "WebGLAppVersion");
@@ -114,7 +114,7 @@ namespace CelesteEditor.BuildSystem
             return appVersion;
         }
 
-        public static T FindOrCreatePlatformSettingsAsset<T>(string folder, string settingsName) where T : PlatformSettings
+        public static T FindOrCreatePlatformSettingsAsset<T>(string folder, string settingsName, bool isDebugConfig) where T : PlatformSettings
         {
             T existingSettings = EditorOnly.FindAsset<T>(settingsName, folder);
             
@@ -127,7 +127,7 @@ namespace CelesteEditor.BuildSystem
 
             T settings = CreateInstance<T>();
             settings.name = settingsName;
-            settings.SetDefaultValues();
+            settings.SetDefaultValues(isDebugConfig);
 
             EditorOnly.CreateAssetInFolderAndSave(settings, folder);
 

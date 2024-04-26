@@ -1,5 +1,6 @@
 ﻿using Celeste;
 using Celeste.Objects;
+using Celeste.Tools;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEngine;
@@ -13,6 +14,24 @@ namespace CelesteEditor.BuildSystem.Data
     public class AddressableGroupNames : ListScriptableObject<string>
     {
         #region Properties and Fields
+
+        public bool UseAllCreatedAddressableGroups
+        {
+            get => useAllCreatedAddressableGroups;
+            set
+            {
+                if (useAllCreatedAddressableGroups != value)
+                {
+                    useAllCreatedAddressableGroups = value;
+                    EditorOnly.SetDirty(this);
+
+                    if (useAllCreatedAddressableGroups)
+                    {
+                        ClearItems();
+                    }
+                }
+            }
+        }
 
         [SerializeField] private bool useAllCreatedAddressableGroups = true;
 

@@ -152,6 +152,12 @@ namespace CelesteEditor.Tools
             SetAddressableAddress(o, AssetDatabase.GetAssetPath(o));
         }
 
+        public static void MakeAddressable(this Object o, string groupName)
+        {
+            MakeAddressable(o);
+            SetAddressableGroup(o, groupName);
+        }
+
         public static bool AddressableResourceExists<T>(string key)
         {
             if (!AddressableAssetSettingsDefaultObject.SettingsExists)

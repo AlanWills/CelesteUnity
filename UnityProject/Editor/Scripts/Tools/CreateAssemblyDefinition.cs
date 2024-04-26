@@ -38,10 +38,9 @@ namespace CelesteEditor.UnityProject
         [Tooltip("The dependencies to automatically add to the runtime assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> runtimeAssemblyDependencies = new List<AssemblyDefinitionAsset>();
         [Tooltip("If true, a code project for editor script files will be created")] public bool hasEditorAssembly;
         [Tooltip("The dependencies to automatically add to the editor assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> editorAssemblyDependencies = new List<AssemblyDefinitionAsset>();
-        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly"), ShowIf(nameof(hasEditorAssembly))] public bool hasSceneMenuItem;
-        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public string sceneSetPath = "Assets/";
-        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public string sceneMenuItemPath;
-        [Tooltip("If true, the scene set asset for this assembly will be created at the specified path in the project")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneMenuItem))] public bool createSceneSet;
+        [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly"), ShowIf(nameof(hasEditorAssembly))] public bool hasSceneSet;
+        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneSet))] public string sceneSetPath = "Assets/";
+        [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIfAll(nameof(hasEditorAssembly), nameof(hasSceneSet))] public string sceneSetMenuItemPath;
     }
 
     public static class CreateAssemblyDefinition
@@ -59,7 +58,7 @@ namespace CelesteEditor.UnityProject
             string assemblyName = parameters.assemblyName;
             bool hasRuntimeAssembly = parameters.hasRuntimeAssembly;
             bool hasEditorAssembly = parameters.hasEditorAssembly;
-            bool hasSceneMenuItem = parameters.hasSceneMenuItem;
+            bool hasSceneMenuItem = parameters.hasSceneSet;
 
             if (!string.IsNullOrEmpty(parentDirectory))
             {
@@ -85,11 +84,6 @@ namespace CelesteEditor.UnityProject
                     referencedAssemblies.Add(assemblyName);
                 }
 
-                if (hasSceneMenuItem)
-                {
-                    referencedAssemblies.Add("Celeste.Scene.Editor");
-                }
-
                 string editorScriptsDirectory = CreateAssembly(
                     assemblyDirectoryPath,
                     "Editor",
@@ -97,39 +91,16 @@ namespace CelesteEditor.UnityProject
                     editorAssemblyNamespace,
                     referencedAssemblies,
                     new string[] { "Editor" });
+            }
 
-                if (hasSceneMenuItem)
-                {
-                    string collapsedAssemblyName = assemblyName.Replace(".", "");
+            // Create the scene set asset if we want to
+            if (hasSceneMenuItem)
+            {
+                SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
+                sceneSet.name = $"{directoryName}SceneSet";
+                sceneSet.MenuItemPath = parameters.sceneSetMenuItemPath;
 
-                    // Create the code file for the menu items
-                    {
-                        string menuItemsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}MenuItems.cs");
-                        string menuItemsScript = string.Format(CreateAssemblyDefinitionConstants.MENU_ITEMS, editorAssemblyNamespace, collapsedAssemblyName);
-                        File.WriteAllText(menuItemsScriptPath, menuItemsScript);
-                    }
-
-                    // Create the code file for the constants
-                    {
-                        string editorConstantsScriptPath = Path.Combine(editorScriptsDirectory, $"{collapsedAssemblyName}EditorConstants.cs");
-                        string editorConstantsScript = string.Format(CreateAssemblyDefinitionConstants.EDITOR_CONSTANTS, editorAssemblyNamespace, collapsedAssemblyName, parameters.sceneSetPath, parameters.sceneMenuItemPath);
-                        File.WriteAllText(editorConstantsScriptPath, editorConstantsScript);
-                    }
-
-                    // Create the scene set asset if we want to
-                    if (parameters.createSceneSet)
-                    {
-                        SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
-                        sceneSet.name = $"{directoryName}SceneSet";
-                        EditorOnly.CreateAsset(sceneSet, parameters.sceneSetPath);
-                    }
-
-                    // We've created actual scripts so we can delete the placeholder script now
-                    {
-                        string placeholderScriptPath = Path.Combine(editorScriptsDirectory, PLACEHOLDER_SCRIPT_NAME);
-                        File.Delete(placeholderScriptPath);
-                    }
-                }
+                EditorOnly.CreateAsset(sceneSet, parameters.sceneSetPath);
             }
 
             AssetDatabase.SaveAssets();

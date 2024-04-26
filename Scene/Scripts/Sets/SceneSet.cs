@@ -2,6 +2,7 @@
 using Celeste.DataStructures;
 using Celeste.Debug.Settings;
 using Celeste.Parameters;
+using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections;
@@ -48,6 +49,19 @@ namespace Celeste.Scene
     {
         #region Properties and Fields
 
+        public string MenuItemPath
+        {
+            get => menuItemPath;
+            set
+            {
+                if (string.CompareOrdinal(menuItemPath, value) != 0)
+                {
+                    menuItemPath = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
+        }
+
         public int NumScenes => scenes.Count;
 
         public bool HasCustomDebugBuildValue
@@ -78,6 +92,7 @@ namespace Celeste.Scene
             }
         }
 
+        [SerializeField] private string menuItemPath = string.Empty;
         [SerializeField] private List<SceneSetEntry> scenes = new List<SceneSetEntry>();
 
         [Header("Loading Settings")]
@@ -95,6 +110,12 @@ namespace Celeste.Scene
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            if (string.IsNullOrEmpty(menuItemPath))
+            {
+                menuItemPath = $"Celeste/Scenes/{name}";
+                EditorOnly.SetDirty(this);
+            }
+
             if (hasCustomDebugBuildValue)
             {
                 if (isDebugBuild == null)
@@ -103,7 +124,7 @@ namespace Celeste.Scene
 
                     if (isDebugBuild != null)
                     {
-                        UnityEditor.EditorUtility.SetDirty(this);
+                        EditorOnly.SetDirty(this);
                     }
                 }
             }
@@ -112,7 +133,7 @@ namespace Celeste.Scene
                 if (isDebugBuild != null)
                 {
                     isDebugBuild = null;
-                    UnityEditor.EditorUtility.SetDirty(this);
+                    EditorOnly.SetDirty(this);
                 }
             }
         }

@@ -31,6 +31,8 @@ using UnityEditor.PackageManager;
 using UnityEngine.SceneManagement;
 using Celeste.Sound;
 using Celeste.Tools;
+using CelesteEditor.BuildSystem.Steps;
+using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 
 namespace CelesteEditor.UnityProject
 {
@@ -236,6 +238,102 @@ namespace CelesteEditor.UnityProject
                 return;
             }
 
+            // Addressable Group Names
+            {
+                AddressableGroupNames addressableGroupNames = ScriptableObject.CreateInstance<AddressableGroupNames>();
+                addressableGroupNames.name = nameof(AddressableGroupNames);
+                addressableGroupNames.UseAllCreatedAddressableGroups = true;
+
+                EditorOnly.CreateAssetInFolder(addressableGroupNames, BuildSystemConstants.EDITOR_FOLDER);
+            }
+
+            // Build Preparation Steps
+            {
+                DeleteBuildDirectory deleteBuildDirectory = ScriptableObject.CreateInstance<DeleteBuildDirectory>();
+                deleteBuildDirectory.name = nameof(DeleteBuildDirectory);
+
+                EditorOnly.CreateAssetInFolder(deleteBuildDirectory, BuildSystemConstants.BUILD_PREPARATION_STEPS_FOLDER);
+
+                BuildPreparationSteps buildPreparationSteps = ScriptableObject.CreateInstance<BuildPreparationSteps>();
+                buildPreparationSteps.name = nameof(BuildPreparationSteps);
+                buildPreparationSteps.AddItem(deleteBuildDirectory);
+
+                EditorOnly.CreateAssetInFolder(buildPreparationSteps, BuildSystemConstants.BUILD_PREPARATION_STEPS_FOLDER);
+            }
+
+            // Build Post Process Steps
+            {
+                WriteBuildEnvironmentVariablesToFile writeBuildEnvironmentVariablesToFile = ScriptableObject.CreateInstance<WriteBuildEnvironmentVariablesToFile>();
+                writeBuildEnvironmentVariablesToFile.name = nameof(WriteBuildEnvironmentVariablesToFile);
+
+                EditorOnly.CreateAssetInFolder(writeBuildEnvironmentVariablesToFile, BuildSystemConstants.BUILD_POST_PROCESS_STEPS_FOLDER);
+
+                BuildPostProcessSteps buildPostProcessSteps = ScriptableObject.CreateInstance<BuildPostProcessSteps>();
+                buildPostProcessSteps.name = nameof(BuildPostProcessSteps);
+                buildPostProcessSteps.AddItem(writeBuildEnvironmentVariablesToFile);
+
+                EditorOnly.CreateAssetInFolder(buildPostProcessSteps, BuildSystemConstants.BUILD_POST_PROCESS_STEPS_FOLDER);
+            }
+
+            // Asset Preparation Steps
+            {
+                DeleteAddressablesRemoteDirectory deleteAddressablesRemoteDirectory = ScriptableObject.CreateInstance<DeleteAddressablesRemoteDirectory>();
+                deleteAddressablesRemoteDirectory.name = nameof(DeleteAddressablesRemoteDirectory);
+
+                EditorOnly.CreateAssetInFolder(deleteAddressablesRemoteDirectory, BuildSystemConstants.ASSET_PREPARATION_STEPS_FOLDER);
+
+                AssetPreparationSteps assetPreparationSteps = ScriptableObject.CreateInstance<AssetPreparationSteps>();
+                assetPreparationSteps.name = nameof(AssetPreparationSteps);
+                assetPreparationSteps.AddItem(deleteAddressablesRemoteDirectory);
+
+                EditorOnly.CreateAssetInFolder(assetPreparationSteps, BuildSystemConstants.ASSET_PREPARATION_STEPS_FOLDER);
+            }
+
+            // Asset Post Process Steps
+            {
+                BundleRemoteAddressablesInBuild bundleRemoteAddressablesInBuild = ScriptableObject.CreateInstance<BundleRemoteAddressablesInBuild>();
+                bundleRemoteAddressablesInBuild.name = nameof(BundleRemoteAddressablesInBuild);
+
+                EditorOnly.CreateAssetInFolder(bundleRemoteAddressablesInBuild, BuildSystemConstants.ASSET_POST_PROCESS_STEPS_FOLDER);
+
+                WriteAssetEnvironmentVariablesToFile writeAssetEnvironmentVariablesToFile = ScriptableObject.CreateInstance<WriteAssetEnvironmentVariablesToFile>();
+                writeAssetEnvironmentVariablesToFile.name = nameof(WriteAssetEnvironmentVariablesToFile);
+
+                EditorOnly.CreateAssetInFolder(writeAssetEnvironmentVariablesToFile, BuildSystemConstants.ASSET_POST_PROCESS_STEPS_FOLDER);
+
+                AssetPostProcessSteps assetPostProcessStepsForBuild = ScriptableObject.CreateInstance<AssetPostProcessSteps>();
+                assetPostProcessStepsForBuild.name = $"{nameof(AssetPostProcessSteps)}ForBuild";
+                assetPostProcessStepsForBuild.AddItem(bundleRemoteAddressablesInBuild);
+                assetPostProcessStepsForBuild.AddItem(writeAssetEnvironmentVariablesToFile);
+
+                EditorOnly.CreateAssetInFolder(assetPostProcessStepsForBuild, BuildSystemConstants.ASSET_POST_PROCESS_STEPS_FOLDER);
+
+                AssetPostProcessSteps assetPostProcessStepsForUpdate = ScriptableObject.CreateInstance<AssetPostProcessSteps>();
+                assetPostProcessStepsForUpdate.name = $"{nameof(AssetPostProcessSteps)}ForUpdate";
+                assetPostProcessStepsForUpdate.AddItem(writeAssetEnvironmentVariablesToFile);
+
+                EditorOnly.CreateAssetInFolder(assetPostProcessStepsForUpdate, BuildSystemConstants.ASSET_POST_PROCESS_STEPS_FOLDER);
+            }
+
+            // Create Scripting Define Symbols
+            EditorOnly.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+
+            // Debug
+            {
+                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
+                debugScriptingDefineSymbols.name = $"Debug{nameof(ScriptingDefineSymbols)}";
+                debugScriptingDefineSymbols.AddDefaultDebugSymbols();
+                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+            }
+
+            // Release
+            {
+                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
+                debugScriptingDefineSymbols.name = $"Release{nameof(ScriptingDefineSymbols)}";
+                debugScriptingDefineSymbols.AddDefaultReleaseSymbols();
+                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
+            }
+
             if (parameters.runsOnWindows)
             {
                 AllPlatformSettings.GetOrCreateSettings().CreateWindowsSettings();
@@ -281,25 +379,6 @@ namespace CelesteEditor.UnityProject
             if (parameters.useWebGLBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
-            }
-
-            // Create Scripting Define Symbols
-            EditorOnly.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
-
-            // Debug
-            {
-                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
-                debugScriptingDefineSymbols.name = "DebugScriptingDefineSymbols";
-                debugScriptingDefineSymbols.AddDefaultDebugSymbols();
-                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
-            }
-
-            // Release
-            {
-                ScriptingDefineSymbols debugScriptingDefineSymbols = ScriptableObject.CreateInstance<ScriptingDefineSymbols>();
-                debugScriptingDefineSymbols.name = "ReleaseScriptingDefineSymbols";
-                debugScriptingDefineSymbols.AddDefaultReleaseSymbols();
-                EditorOnly.CreateAssetInFolder(debugScriptingDefineSymbols, BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
             }
         }
 
@@ -347,6 +426,16 @@ namespace CelesteEditor.UnityProject
                     startupLoadJobBuilder.WithLoadJob(enableBundledAddressables);
 
                     EditorOnly.CreateAssetInFolder(enableBundledAddressables, StartupConstants.LOAD_JOBS_FOLDER_PATH);
+                }
+
+                // Download Bootstrap addressables load job
+                {
+                    DownloadAddressablesLoadJob downloadAddressablesLoadJob = ScriptableObject.CreateInstance<DownloadAddressablesLoadJob>();
+                    downloadAddressablesLoadJob.name = StartupConstants.DOWNLOAD_BOOTSTRAP_ADDRESSABLES_LOAD_JOB_NAME;
+                    downloadAddressablesLoadJob.AddressablesLabel = BootstrapConstants.ADDRESSABLES_GROUP_NAME;
+                    startupLoadJobBuilder.WithLoadJob(downloadAddressablesLoadJob);
+
+                    EditorOnly.CreateAssetInFolder(downloadAddressablesLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
                 }
             }
 
@@ -412,9 +501,9 @@ namespace CelesteEditor.UnityProject
             startupAssembly.hasEditorAssembly = true;
             startupAssembly.assemblyName = $"{parameters.rootNamespaceName}.{StartupConstants.NAMESPACE_NAME}";
             startupAssembly.directoryName = StartupConstants.FOLDER_NAME;
-            startupAssembly.hasSceneMenuItem = true;
+            startupAssembly.hasSceneSet = true;
             startupAssembly.sceneSetPath = $"{StartupConstants.SCENES_FOLDER_PATH}{StartupConstants.SCENE_SET_NAME}.asset";
-            startupAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
+            startupAssembly.sceneSetMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {StartupConstants.SCENE_NAME}";
             startupAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
@@ -451,7 +540,18 @@ namespace CelesteEditor.UnityProject
                 var disableFallbackAssets = EditorOnly.FindAsset<LoadJob>(CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME);
                 Debug.Assert(disableFallbackAssets != null, $"Could not find disable fallback load assets load job: {CelesteConstants.DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME}.");
                 bootstrapLoadJobBuilder.WithLoadJob(disableFallbackAssets);
-                disableFallbackAssets.MakeAddressable();
+                MakeAddressable(parameters, disableFallbackAssets, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
+            }
+
+            // Download Bootstrap Addressables load job
+            {
+                DownloadAddressablesLoadJob downloadCommonAddressablesLoadJob = ScriptableObject.CreateInstance<DownloadAddressablesLoadJob>();
+                downloadCommonAddressablesLoadJob.name = BootstrapConstants.DOWNLOAD_COMMON_ADDRESSABLES_LOAD_JOB_NAME;
+                downloadCommonAddressablesLoadJob.AddressablesLabel = CelesteConstants.COMMON_ADDRESSABLES_GROUP_NAME;
+                bootstrapLoadJobBuilder.WithLoadJob(downloadCommonAddressablesLoadJob);
+
+                EditorOnly.CreateAssetInFolder(downloadCommonAddressablesLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+                MakeAddressable(parameters, downloadCommonAddressablesLoadJob, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
 
             // Load engine systems scene set load job
@@ -468,14 +568,14 @@ namespace CelesteEditor.UnityProject
                 bootstrapLoadJobBuilder.WithLoadJob(loadEngineSystemsSceneSet);
 
                 EditorOnly.CreateAssetInFolder(loadEngineSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
-                MakeAddressable(parameters, loadEngineSystemsSceneSet);
+                MakeAddressable(parameters, loadEngineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
 
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
 
             EditorOnly.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
-            MakeAddressable(parameters, bootstrapLoadJob);
+            MakeAddressable(parameters, bootstrapLoadJob, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
 
         private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
@@ -490,8 +590,8 @@ namespace CelesteEditor.UnityProject
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableAddress(LoadingConstants.SCENE_NAME);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableAddress(BootstrapConstants.SCENE_NAME);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableInfo(BootstrapConstants.ADDRESSABLES_GROUP_NAME, LoadingConstants.SCENE_NAME);
+            AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableInfo(BootstrapConstants.ADDRESSABLES_GROUP_NAME, BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
@@ -500,7 +600,6 @@ namespace CelesteEditor.UnityProject
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
 
             EditorOnly.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
-            MakeAddressable(parameters, bootstrapSceneSet);
         }
 
         private static void CreateBootstrapAssemblies(SetUpCelesteParameters parameters)
@@ -509,9 +608,9 @@ namespace CelesteEditor.UnityProject
             bootstrapAssembly.hasEditorAssembly = true;
             bootstrapAssembly.assemblyName = $"{parameters.rootNamespaceName}.{BootstrapConstants.NAMESPACE_NAME}";
             bootstrapAssembly.directoryName = BootstrapConstants.FOLDER_NAME;
-            bootstrapAssembly.hasSceneMenuItem = true;
+            bootstrapAssembly.hasSceneSet = true;
             bootstrapAssembly.sceneSetPath = $"{BootstrapConstants.SCENES_FOLDER_PATH}{BootstrapConstants.SCENE_SET_NAME}.asset";
-            bootstrapAssembly.sceneMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
+            bootstrapAssembly.sceneSetMenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
             bootstrapAssembly.createSceneSet = false;
 
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
@@ -555,7 +654,7 @@ namespace CelesteEditor.UnityProject
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
             EditorOnly.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
-            MakeAddressable(parameters, engineSystemsSceneSet);
+            MakeAddressable(parameters, engineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
 
         private static void CreateEngineSystemsAssets(SetUpCelesteParameters parameters)
@@ -660,7 +759,7 @@ namespace CelesteEditor.UnityProject
             gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
 
             EditorOnly.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
-            MakeAddressable(parameters, gameSystemsSceneSet);
+            MakeAddressable(parameters, gameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
 
         #endregion
@@ -816,16 +915,37 @@ namespace CelesteEditor.UnityProject
                 bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
                 Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
 
-                // Rename default group and add tag
-                settings.AddLabel("CommonAddressables", false);
-                settings.DefaultGroup.Name = "CommonAddressables";
-                settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
-
                 string remoteBuildPath = AddressablesExtensions.GetAddressablesRemoteBuildPath();
                 string remoteLoadPath = AddressablesExtensions.GetAddressablesRemoteLoadPath();
 
-                settings.DefaultGroup.SetBuildPath(remoteBuildPath);
-                settings.DefaultGroup.SetLoadPath(remoteLoadPath);
+                // Rename default group to and add tag for Common Addressables
+                {
+                    settings.AddLabel(CelesteConstants.COMMON_ADDRESSABLES_GROUP_NAME, false);
+                    settings.DefaultGroup.Name = CelesteConstants.COMMON_ADDRESSABLES_GROUP_NAME;
+                    settings.DefaultGroup.SetBuildPath(remoteBuildPath);
+                    settings.DefaultGroup.SetLoadPath(remoteLoadPath);
+
+                    if (parameters.usesBakedGroupsWithRemoteOverride)
+                    {
+                        settings.DefaultGroup.AddSchema<BundledGroupSchema>(false);
+                    }
+                }
+
+                // Add Bootstrap addressables group for initial assets
+                {
+                    settings.AddLabel(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false);
+
+                    AddressableAssetGroup bootstrapAddressables = settings.CreateGroup(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false, false, false, new List<AddressableAssetGroupSchema>());
+                    bootstrapAddressables.AddSchema<BundledAssetGroupSchema>(false);
+                    bootstrapAddressables.AddSchema<ContentUpdateGroupSchema>();
+                    bootstrapAddressables.SetBuildPath(remoteBuildPath);
+                    bootstrapAddressables.SetLoadPath(remoteLoadPath);
+
+                    if (parameters.usesBakedGroupsWithRemoteOverride)
+                    {
+                        bootstrapAddressables.AddSchema<BundledGroupSchema>(false);
+                    }
+                }
             }
 
             if (parameters.usesTextMeshPro)
@@ -840,6 +960,14 @@ namespace CelesteEditor.UnityProject
             if (parameters.usesAddressables)
             {
                 obj.MakeAddressable();
+            }
+        }
+
+        private static void MakeAddressable(SetUpCelesteParameters parameters, UnityEngine.Object obj, string groupName)
+        {
+            if (parameters.usesAddressables)
+            {
+                obj.MakeAddressable(groupName);
             }
         }
 

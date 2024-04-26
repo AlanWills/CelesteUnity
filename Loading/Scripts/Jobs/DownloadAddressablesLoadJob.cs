@@ -1,5 +1,6 @@
 ﻿using Celeste.Assets;
 using Celeste.Log;
+using Celeste.Tools;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -12,6 +13,19 @@ namespace Celeste.Loading
     public class DownloadAddressablesLoadJob : LoadJob
     {
         #region Properties and Fields
+
+        public string AddressablesLabel
+        {
+            get => addressablesLabel;
+            set
+            {
+                if (string.CompareOrdinal(addressablesLabel, value) == 0)
+                {
+                    addressablesLabel = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
+        }
 
         [Tooltip("Download all of the assets marked with this addressable label.  This is not downloading a particular addressable group, but rather all assets with this label.")]
         [SerializeField] private string addressablesLabel;

@@ -1,8 +1,5 @@
-﻿using Celeste.Persistence;
-using Celeste.Scene;
-using System.IO;
+﻿using Celeste.Scene;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CelesteEditor.Scene
