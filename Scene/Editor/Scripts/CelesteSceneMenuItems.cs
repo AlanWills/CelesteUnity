@@ -8,6 +8,12 @@ namespace CelesteEditor.Scene
 {
     public static class CelesteSceneMenuItems
     {
+        [MenuItem("Celeste/Tools/Scenes/Update Scene Menu Items")]
+        public static void UpdateSceneMenuItems()
+        {
+            SceneSetUnityMenuItems.AddForAllSceneSets();
+        }
+
         [MenuItem("Celeste/Tools/Scenes/Update Scenes In Build")]
         public static void UpdateScenesInBuild()
         {

@@ -11,7 +11,13 @@ namespace CelesteEditor.Scene
     [CustomEditor(typeof(SceneSet))]
     public class SceneSetEditor : Editor
     {
+        private SerializedProperty menuItemPathProperty;
         private SceneSet mergedSceneSet;
+
+        private void OnEnable()
+        {
+            menuItemPathProperty = serializedObject.FindProperty("menuItemPath");
+        }
 
         public override void OnInspectorGUI()
         {
@@ -68,7 +74,23 @@ namespace CelesteEditor.Scene
                 }
             }
 
-            DrawPropertiesExcluding(serializedObject, "m_Script");
+            using (var changeCheck = new ChangeCheckScope())
+            {
+                string oldMenuItemPath = menuItemPathProperty.stringValue;
+                EditorGUILayout.DelayedTextField(menuItemPathProperty);
+
+                if (changeCheck.changed)
+                {
+                    if (Unity.Menu.HasMenuItem(oldMenuItemPath))
+                    {
+                        Unity.Menu.RemoveMenuItem(oldMenuItemPath);
+                    }
+
+                    SceneSetUnityMenuItems.AddLoadMenuItem(sceneSet);
+                }
+            }
+
+            DrawPropertiesExcluding(serializedObject, "m_Script", "menuItemPath");
 
             serializedObject.ApplyModifiedProperties();
         }
