@@ -1,4 +1,5 @@
 using Celeste.Scene;
+using Celeste.Scene.Catalogue;
 using Celeste.Tools;
 using UnityEditor;
 
@@ -14,9 +15,12 @@ namespace CelesteEditor.Scene
 
         public static void AddForAllSceneSets()
         {
-            foreach (SceneSet sceneSet in EditorOnly.FindAssets<SceneSet>())
+            foreach (SceneSetCatalogue sceneSetCatalogue in EditorOnly.FindAssets<SceneSetCatalogue>())
             {
-                AddLoadMenuItem(sceneSet);
+                foreach (SceneSet sceneSet in sceneSetCatalogue)
+                {
+                    AddLoadMenuItem(sceneSet);
+                }
             }
         }
 

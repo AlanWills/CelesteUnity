@@ -1,7 +1,6 @@
 ﻿using Celeste.Coroutines;
 using Celeste.Debug.Menus;
-using Celeste.Scene;
-using System.Collections.Generic;
+using Celeste.Scene.Catalogue;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEngine.GUILayout;
@@ -13,7 +12,7 @@ namespace Celeste.Scene.Debug
     {
         #region Properties and Fields
 
-        [SerializeField] private List<SceneSet> sceneSets = new List<SceneSet>();
+        [SerializeField] private SceneSetCatalogue sceneSetCatalogue;
 
         #endregion
 
@@ -21,12 +20,10 @@ namespace Celeste.Scene.Debug
 
         protected override void OnDrawMenu()
         {
-            for (int i = 0, n = sceneSets.Count; i < n; ++i)
+            foreach (SceneSet sceneSet in sceneSetCatalogue)
             {
                 using (var horizontal = new HorizontalScope())
                 {
-                    SceneSet sceneSet = sceneSets[i];
-
                     Label(sceneSet.name);
 
                     if (Button($"Single", ExpandWidth(false)))

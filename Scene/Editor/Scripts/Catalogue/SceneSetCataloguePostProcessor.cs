@@ -1,10 +1,10 @@
-﻿using Celeste.Logic;
-using Celeste.Logic.Catalogue;
+﻿using Celeste.Scene;
+using Celeste.Scene.Catalogue;
 using CelesteEditor.Objects;
 
-namespace CelesteEditor.Logic.Assets
+namespace CelesteEditor.Scene
 {
-    public class ConditionCataloguePostProcessor : CataloguePostProcessor<Condition, ConditionCatalogue>
+    public class SceneSetCataloguePostProcessor : CataloguePostProcessor<SceneSet, SceneSetCatalogue>
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {

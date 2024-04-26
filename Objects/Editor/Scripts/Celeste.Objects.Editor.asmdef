@@ -3,6 +3,7 @@
     "rootNamespace": "CelesteEditor.Objects",
     "references": [
         "Celeste.Objects",
+        "Celeste.DataStructures",
         "Celeste.Tools",
         "Celeste.Tools.Editor"
 	],
