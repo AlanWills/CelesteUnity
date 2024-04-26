@@ -667,8 +667,7 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
             EditorOnly.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
 
-            SceneAsset engineSystemsScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(EngineSystemsConstants.SCENE_PATH);
-            EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
+            UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
 
             // Set Music Settings
             {
@@ -691,6 +690,8 @@ namespace CelesteEditor.UnityProject
                     sfxManager.SFXSettings = sfxSettings;
                 }
             }
+
+            EditorSceneManager.SaveScene(engineSystemsScene, EngineSystemsConstants.SCENE_PATH);
         }
 
         #endregion
