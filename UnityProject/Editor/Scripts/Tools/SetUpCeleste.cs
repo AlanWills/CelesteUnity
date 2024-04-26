@@ -104,7 +104,7 @@ namespace CelesteEditor.UnityProject
         public void UseDefaults()
         {
             packagePath = "Packages/com.celestegames.celeste/";
-            embedCeleste = true;
+            embedCeleste = false;
 
             usePresetGitIgnoreFile = true;
             usePresetGitLFSFile = true;
