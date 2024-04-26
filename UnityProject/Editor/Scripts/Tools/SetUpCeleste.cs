@@ -34,6 +34,7 @@ using Celeste.Tools;
 using CelesteEditor.BuildSystem.Steps;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using System.Security.Cryptography;
+using Celeste.Scene.Catalogue;
 
 namespace CelesteEditor.UnityProject
 {
@@ -729,6 +730,7 @@ namespace CelesteEditor.UnityProject
             {
                 CreateGameSystemsFolders();
                 CreateGameSystemsScenes(parameters);
+                CreateGameSystemsAssets(parameters);
             }
         }
 
@@ -759,6 +761,15 @@ namespace CelesteEditor.UnityProject
             MakeAddressable(parameters, gameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
 
+        private static void CreateGameSystemsAssets(SetUpCelesteParameters parameters)
+        {
+            SceneSetCatalogue sceneSetCatalogue = ScriptableObject.CreateInstance<SceneSetCatalogue>();
+            sceneSetCatalogue.name = nameof(SceneSetCatalogue);
+
+            EditorOnly.CreateAssetInFolder(sceneSetCatalogue, GameSystemsConstants.DATA_FOLDER_PATH);
+            MakeAddressable(parameters, sceneSetCatalogue);
+        }
+        
         #endregion
 
         #region Editor Settings
