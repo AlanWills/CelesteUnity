@@ -27,7 +27,7 @@ namespace CelesteEditor.Objects
                     }
                     else
                     {
-                        UnityEngine.Debug.LogAssertion($"Detected and stripped out null item from {nameof(TCatalogue)} {catalogue.name}.");
+                        UnityEngine.Debug.LogAssertion($"Detected and stripped out null item from {typeof(TCatalogue).Name} {catalogue.name}.");
                         catalogue.RemoveItemAt(i);
                     }
                 }

@@ -20,7 +20,6 @@ namespace Celeste.Parameters
                     // Fallback events are always invoked silently to prevent useless log spam from unnamed events
                     fallbackOnValueChanged = CreateInstance<TValueChangedEvent>();
                     fallbackOnValueChanged.name = $"{name}_OnValueChanged_Fallback";
-                    invokeValueChangedSilently = true;
                 }
 
                 return onValueChanged ?? fallbackOnValueChanged;
@@ -82,7 +81,7 @@ namespace Celeste.Parameters
 #endif
         [SerializeField] private T defaultValue;
         [SerializeField] private TValueChangedEvent onValueChanged;
-        [SerializeField, HideIfNull(nameof(onValueChanged))] private bool invokeValueChangedSilently = false;
+        [SerializeField, HideIfNull(nameof(onValueChanged))] private bool invokeValueChangedSilently = true;
 
         [NonSerialized] private TValueChangedEvent fallbackOnValueChanged;
 
