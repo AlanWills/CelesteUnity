@@ -14,7 +14,7 @@ namespace CelesteEditor.Events
         {
             base.OnInspectorGUI();
 
-            if (UnityEngine.GUILayout.Button("Raise"))
+            if (UnityEngine.GUILayout.Button("Invoke"))
             {
                 (target as Event).Invoke();
             }

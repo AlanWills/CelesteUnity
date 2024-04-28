@@ -1,15 +1,10 @@
 ﻿using Celeste.DS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XNode;
 
 namespace Celeste.DSNodes
 {
-    [CreateNodeMenu("Celeste/Maths/Divide")]
-    public class DivideNode : DataNode 
+    [CreateNodeMenu("Celeste/Maths/Divide Numbers")]
+    public class DivideNumbersNode : DataNode 
     {
         #region Properties and Fields
 
@@ -21,7 +16,7 @@ namespace Celeste.DSNodes
 
         #endregion
 
-        public DivideNode()
+        public DivideNumbersNode()
         {
             AddDynamicInput(typeof(void), ConnectionType.Override, fieldName: NUMERATOR_PORT_NAME);
             AddDynamicInput(typeof(void), ConnectionType.Override, fieldName: DENOMINATOR_PORT_NAME);

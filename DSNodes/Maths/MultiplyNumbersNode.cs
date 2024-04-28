@@ -1,15 +1,10 @@
 ﻿using Celeste.DS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XNode;
 
 namespace Celeste.DSNodes
 {
-    [CreateNodeMenu("Celeste/Maths/Multiply")]
-    public class MultiplyNode : DataNode 
+    [CreateNodeMenu("Celeste/Maths/Multiply Numbers")]
+    public class MultiplyNumbersNode : DataNode 
     {
         #region Properties and Fields
 
@@ -21,7 +16,7 @@ namespace Celeste.DSNodes
 
         #endregion
 
-        public MultiplyNode()
+        public MultiplyNumbersNode()
         {
             AddDynamicInput(typeof(void), ConnectionType.Override, fieldName: VALUE_PORT_NAME);
             AddDynamicInput(typeof(void), ConnectionType.Override, fieldName: MULTIPLIER_PORT_NAME);

@@ -84,7 +84,7 @@ namespace Celeste.Input
 
         private void Update()
         {
-            if (raycastCamera.Value == null)
+            if (raycastCamera.Value == null && fallbackMainCamera == null)
             {
                 UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.");
                 fallbackMainCamera = Camera.main; 

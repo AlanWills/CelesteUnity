@@ -22,7 +22,7 @@ namespace CelesteEditor.Events
             {
                 argument = DrawArgument(argument);
 
-                if (GUILayout.Button("Raise", GUILayout.ExpandWidth(false)))
+                if (GUILayout.Button("Invoke", GUILayout.ExpandWidth(false)))
                 {
                     (target as TEvent).Invoke(argument);
                 }

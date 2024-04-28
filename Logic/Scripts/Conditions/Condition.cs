@@ -18,6 +18,11 @@ namespace Celeste.Logic
             get => isMet;
             set
             {
+                if (negate)
+                {
+                    value = !value;
+                }
+
                 if (isMet != value)
                 {
                     isMet = value;
@@ -30,6 +35,7 @@ namespace Celeste.Logic
             }
         }
 
+        [SerializeField] private bool negate = false;
         [SerializeField] private GuaranteedBoolValueChangedEvent onIsMetChanged = new GuaranteedBoolValueChangedEvent();
 
         [NonSerialized] private bool isMet = false;
