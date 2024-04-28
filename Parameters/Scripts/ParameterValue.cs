@@ -81,7 +81,7 @@ namespace Celeste.Parameters
 #endif
         [SerializeField] private T defaultValue;
         [SerializeField] private TValueChangedEvent onValueChanged;
-        [SerializeField, HideIfNull(nameof(onValueChanged))] private bool invokeValueChangedSilently = true;
+        [SerializeField] private bool invokeValueChangedSilently = true;
 
         [NonSerialized] private TValueChangedEvent fallbackOnValueChanged;
 
