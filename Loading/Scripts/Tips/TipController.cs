@@ -23,7 +23,11 @@ namespace Celeste.Loading
 
         private void OnEnable()
         {
-            tipText.text = tipsRecord.RandomTip;
+            string randomTip = tipsRecord.RandomTip;
+            if (!string.IsNullOrEmpty(randomTip))
+            {
+                tipText.text = tipsRecord.RandomTip;
+            }
         }
 
         #endregion
