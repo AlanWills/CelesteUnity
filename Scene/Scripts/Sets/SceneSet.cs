@@ -112,7 +112,7 @@ namespace Celeste.Scene
         {
             if (string.IsNullOrEmpty(menuItemPath))
             {
-                menuItemPath = $"Celeste/Scenes/{name}";
+                menuItemPath = $"Celeste/Scenes/Load {name.Replace("SceneSet", string.Empty)}";
                 EditorOnly.SetDirty(this);
             }
 

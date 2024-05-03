@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: ApplicationDebugMenu
   m_EditorClassIdentifier: 
   displayName: App
+  menuPriority: 0
+  isEditor: {fileID: 11400000, guid: 79743135f00c957458a1a77387dbb95f, type: 2}
+  isMobile: {fileID: 11400000, guid: 56ecc82f2b636624da9110ce5586c9b4, type: 2}
+  isDebug: {fileID: 11400000, guid: 50039586d3d71834c8dbb6af9cae319c, type: 2}
