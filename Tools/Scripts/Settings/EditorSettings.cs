@@ -20,6 +20,7 @@ namespace Celeste.Tools.Settings
                 UnityEditor.AssetDatabase.SaveAssets();
                 
                 settings.OnCreate();
+                Debug.Assert(settings != null, $"Editor Settings {nameof(T)} was null in {nameof(GetOrCreateSettings)}.  This should never happen...");
                 UnityEditor.EditorUtility.SetDirty(settings);
                 UnityEditor.AssetDatabase.SaveAssetIfDirty(settings);
             }

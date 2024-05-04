@@ -233,10 +233,12 @@ namespace Celeste.Input
 
             if (numTouches == 1)
             {
+                UnityEngine.Debug.Assert(singleTouch != null, $"No {nameof(singleTouch)} event found on {nameof(InputState)} {name}.");
                 singleTouch.Invoke(touches[0]);
             }
             else if (numTouches == 2)
             {
+                UnityEngine.Debug.Assert(doubleTouch != null, $"No {nameof(doubleTouch)} event found on {nameof(InputState)} {name}.");
                 doubleTouch.InvokeSilently(new MultiTouchEventArgs()
                 {
                     touchCount = numTouches,
@@ -245,6 +247,7 @@ namespace Celeste.Input
             }
             else if (numTouches == 3)
             {
+                UnityEngine.Debug.Assert(tripleTouch != null, $"No {nameof(tripleTouch)} event found on {nameof(InputState)} {name}.");
                 tripleTouch.InvokeSilently(new MultiTouchEventArgs()
                 {
                     touchCount = numTouches,
