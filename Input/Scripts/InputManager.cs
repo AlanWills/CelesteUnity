@@ -100,7 +100,7 @@ namespace Celeste.Input
                 // Only update pointer state if we've actually touched down, otherwise leave it as it was the last time we touched the screen
                 // The hit game object and touches logic in the InputState should flag to other systems we've not hit anything
                 Vector3 touchPosition = touches[0].screenPosition;
-                ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(touchPosition);
+                ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(touchPosition, touches[0].touchId);
                 Vector3 touchWorldPosition = hitObject.Item1;
                 hitGameObject = hitObject.Item2;
 
@@ -121,7 +121,7 @@ namespace Celeste.Input
                 return;
             }
 #endif
-            ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(mousePosition);
+            ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(mousePosition, 0);
             inputState.UpdatePointerPosition(mousePosition, hitObject.Item1);
             inputState.UpdatePointerOverObject(hitObject.Item2, mouse.leftButton.isPressed);
 
@@ -138,7 +138,7 @@ namespace Celeste.Input
 
         #region Utility Functions
 
-        private ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(Vector2 pointerPosition)
+        private ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(Vector2 pointerPosition, int pointerOrTouchId)
         {
             Vector3 pointerWorldPosition = Vector3.zero;
             GameObject hitGameObject = null;
@@ -149,7 +149,7 @@ namespace Celeste.Input
 
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
-                    hitGameObject = uiInputModule.GetLastRaycastResult(0).gameObject;
+                    hitGameObject = uiInputModule.GetLastRaycastResult(pointerOrTouchId).gameObject;
                     UnityEngine.Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
                 }
 
