@@ -15,7 +15,7 @@ namespace Celeste.Tilemaps
         private Camera cameraToDrag;
         private float timeSinceFingerDown = 0;
         private const float DRAG_THRESHOLD = 0.1f;
-        private bool mouseDownLastFrame = false;
+        private bool dragStarted = false;
         private Vector2 previousMouseDownPosition = new Vector2();
 
         #endregion
@@ -31,24 +31,31 @@ namespace Celeste.Tilemaps
 
         #region Utility Functions
 
+        public void StartDrag(Vector2 mousePosition)
+        {
+            dragStarted = true;
+            previousMouseDownPosition = mousePosition;
+        }
+
         public void DragUsingMouse(Vector2 mousePosition)
         {
-            if (mouseDownLastFrame)
+            if (dragStarted)
             {
-                Vector3 mouseDelta = previousMouseDownPosition - mousePosition;
-                float scrollModifier = dragSpeed.Value * cameraToDrag.orthographicSize;
+                Vector3 previousMouseDownWorldPosition = cameraToDrag.ScreenToWorldPoint(previousMouseDownPosition);
+                Vector3 mouseWorldPosition = cameraToDrag.ScreenToWorldPoint(mousePosition);
+                Vector2 mouseDelta = previousMouseDownWorldPosition - mouseWorldPosition;
+                mouseDelta *= dragSpeed.Value;
 
-                transform.Translate(mouseDelta.x * scrollModifier, mouseDelta.y * scrollModifier, 0);
+                transform.position += new Vector3(mouseDelta.x, mouseDelta.y, 0);
+                previousMouseDownPosition = mousePosition;
+
                 ClampCamera();
             }
-
-            previousMouseDownPosition = mousePosition;
-            mouseDownLastFrame = true;
         }
 
         public void EndDrag()
         {
-            mouseDownLastFrame = false;
+            dragStarted = false;
         }
 
         public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
