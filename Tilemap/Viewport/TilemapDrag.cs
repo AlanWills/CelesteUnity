@@ -36,7 +36,7 @@ namespace Celeste.Tilemaps
             if (mouseDownLastFrame)
             {
                 Vector3 mouseDelta = previousMouseDownPosition - mousePosition;
-                float scrollModifier = dragSpeed.Value * Time.deltaTime * cameraToDrag.orthographicSize;
+                float scrollModifier = dragSpeed.Value * cameraToDrag.orthographicSize;
 
                 transform.Translate(mouseDelta.x * scrollModifier, mouseDelta.y * scrollModifier, 0);
                 ClampCamera();
@@ -69,7 +69,7 @@ namespace Celeste.Tilemaps
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
                         Vector2 dragAmount = -touch.delta;
-                        float scrollModifier = dragSpeed.Value * Time.deltaTime * cameraToDrag.orthographicSize;
+                        float scrollModifier = dragSpeed.Value * cameraToDrag.orthographicSize;
 
                         transform.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                         ClampCamera();
