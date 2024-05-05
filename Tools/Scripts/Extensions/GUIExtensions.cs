@@ -22,6 +22,11 @@ namespace Celeste.Tools
             return UIntField(string.Empty, currentValue);
         }
 
+        public static int IntField(int currentInt)
+        {
+            return IntField(string.Empty, currentInt);
+        }
+
         public static int IntField(string label, int currentInt)
         {
             using (new HorizontalScope())
@@ -47,9 +52,34 @@ namespace Celeste.Tools
             }
         }
 
-        public static int IntField(int currentInt)
+        public static float FloatField(float currentFloat)
         {
-            return IntField(string.Empty, currentInt);
+            return FloatField(string.Empty, currentFloat);
+        }
+
+        public static float FloatField(string label, float currentFloat)
+        {
+            using (new HorizontalScope())
+            {
+                if (!string.IsNullOrEmpty(label))
+                {
+                    Label(label, MaxWidth(150));
+                    FlexibleSpace();
+                }
+
+                string currentFloatText = currentFloat.ToString();
+                currentFloatText = TextField(currentFloatText, MinWidth(40));
+
+                if (GUI.changed)
+                {
+                    if (float.TryParse(currentFloatText, out float newFloat))
+                    {
+                        currentFloat = newFloat;
+                    }
+                }
+
+                return currentFloat;
+            }
         }
 
         public static int PlusMinusField(string label, int currentInt)
