@@ -122,12 +122,12 @@ namespace Celeste.Input
 
             if (inputSettings.RightMouseButtonDown != null)
             {
-                rightMouseButtonFirstDown = inputSettings.RightMouseButtonDown;
+                rightMouseButtonDown = inputSettings.RightMouseButtonDown;
             }
 
             if (inputSettings.RightMouseButtonFirstUp != null)
             {
-                rightMouseButtonFirstDown = inputSettings.RightMouseButtonFirstUp;
+                rightMouseButtonFirstUp = inputSettings.RightMouseButtonFirstUp;
             }
 
             if (inputSettings.SingleTouch != null)

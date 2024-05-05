@@ -11,16 +11,16 @@ namespace Celeste.Tools.Settings
             var settings = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(filePath);
             if (settings == null)
             {
-                Debug.Log($"Creating instance of {typeof(T).Name} because it could not be found at {filePath}.");
-                settings = CreateInstance<T>();
-
                 Directory.CreateDirectory(folderPath);
                 UnityEditor.AssetDatabase.Refresh();
+
+                Debug.Log($"Creating instance of {typeof(T).Name} because it could not be found at {filePath}.");
+                settings = CreateInstance<T>();
                 UnityEditor.AssetDatabase.CreateAsset(settings, filePath);
                 UnityEditor.AssetDatabase.SaveAssets();
                 
                 settings.OnCreate();
-                Debug.Assert(settings != null, $"Editor Settings {nameof(T)} was null in {nameof(GetOrCreateSettings)}.  This should never happen...");
+                Debug.Assert(settings != null, $"Editor Settings {typeof(T).Name} was null in {nameof(GetOrCreateSettings)}.  This should never happen...");
                 UnityEditor.EditorUtility.SetDirty(settings);
                 UnityEditor.AssetDatabase.SaveAssetIfDirty(settings);
             }
