@@ -68,9 +68,12 @@ namespace Celeste.Tilemaps
 
                     if (timeSinceFingerDown >= DRAG_THRESHOLD)
                     {
-                        Vector2 dragAmount = -touch.delta;
-                        float scrollModifier = dragSpeed.Value * cameraToDrag.orthographicSize;
-
+                        Vector2 touchPosition = touch.screenPosition;
+                        Vector3 previousTouchDownWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition - touch.delta);
+                        Vector3 touchWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition);
+                        Vector2 dragAmount = touchWorldPosition - previousTouchDownWorldPosition;
+                        float scrollModifier = dragSpeed.Value;
+                        
                         transform.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
                         ClampCamera();
                     }
