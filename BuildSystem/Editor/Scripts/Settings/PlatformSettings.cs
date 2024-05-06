@@ -23,7 +23,12 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        private const string STRING_SUBSTITUTION_HELP = "  {version} will be replaced with the full version number.  {major}, {minor} and {build} will be replaced with the corresponding values from the version.  {build_target} will be replaced with the value of the 'BuildTarget' variable.  {build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable.  {environment} will be replaced with 'Debug' or 'Release' if the 'IsDebugBuild' variable is true or false respectively.";
+        private const string STRING_SUBSTITUTION_HELP = 
+            "\n\n{version} will be replaced with the full version number." +
+            "\n\n{major}, {minor} and {build} will be replaced with the corresponding values from the version." +
+            "\n\n{build_target} will be replaced with the value of the 'BuildTarget' variable." +
+            "\n\n{build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable." +
+            "\n\n{environment} will be replaced with 'Debug' or 'Release' if the 'IsDebugBuild' variable is true or false respectively.";
 
         [SerializeField]
         [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
