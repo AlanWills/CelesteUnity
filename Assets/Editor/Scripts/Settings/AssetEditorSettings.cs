@@ -17,6 +17,7 @@ namespace CelesteEditor.Assets
 
         public bool showAddressableGroupSelection;
         public bool showExportAsJsonForScriptableObjects = true;
+        public bool showApplyJsonForScriptableObjects = true;
         public bool showCopyGuidForObjects = true;
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Tools;
+﻿using Celeste.Tools;
+using CelesteEditor.Tools;
 using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -61,6 +62,25 @@ namespace CelesteEditor.Assets.GUI
                     {
                         string json = JsonUtility.ToJson(target);
                         GUIUtility.systemCopyBuffer = json;
+                    }
+                }
+
+                if (target is ScriptableObject && AssetEditorSettings.GetOrCreateSettings().showApplyJsonForScriptableObjects)
+                {
+                    if (!hasSpaceBeenDrawn)
+                    {
+                        EditorGUILayout.Space();
+                        hasSpaceBeenDrawn = true;
+                    }
+
+                    using (new GUIEnabledScope(!string.IsNullOrEmpty(GUIUtility.systemCopyBuffer)))
+                    {
+                        if (GUILayout.Button("Apply Json from Clipboard", GUILayout.ExpandWidth(false)))
+                        {
+                            string json = GUIUtility.systemCopyBuffer;
+                            JsonUtility.FromJsonOverwrite(json, target);
+                            EditorUtility.SetDirty(target);
+                        }
                     }
                 }
             }
