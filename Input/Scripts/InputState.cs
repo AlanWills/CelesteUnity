@@ -1,5 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Input.Settings;
+using Celeste.Tools;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -85,64 +86,76 @@ namespace Celeste.Input
 #if UNITY_EDITOR
             var inputSettings = InputEditorSettings.GetOrCreateSettings();
 
-            if (inputSettings.LeftMouseButtonFirstDown != null)
+            if (inputSettings.LeftMouseButtonFirstDown != null && leftMouseButtonFirstDown == null)
             {
                 leftMouseButtonFirstDown = inputSettings.LeftMouseButtonFirstDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.LeftMouseButtonDown != null)
+            if (inputSettings.LeftMouseButtonDown != null && leftMouseButtonDown == null)
             {
                 leftMouseButtonDown = inputSettings.LeftMouseButtonDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.LeftMouseButtonFirstUp != null)
+            if (inputSettings.LeftMouseButtonFirstUp != null && leftMouseButtonFirstUp == null)
             {
                 leftMouseButtonFirstUp = inputSettings.LeftMouseButtonFirstUp;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.MiddleMouseButtonFirstDown != null)
+            if (inputSettings.MiddleMouseButtonFirstDown != null && middleMouseButtonFirstDown == null)
             {
                 middleMouseButtonFirstDown = inputSettings.MiddleMouseButtonFirstDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.MiddleMouseButtonDown != null)
+            if (inputSettings.MiddleMouseButtonDown != null && middleMouseButtonDown == null)
             {
                 middleMouseButtonDown = inputSettings.MiddleMouseButtonDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.MiddleMouseButtonFirstUp != null)
+            if (inputSettings.MiddleMouseButtonFirstUp != null && middleMouseButtonFirstUp == null)
             {
                 middleMouseButtonFirstUp = inputSettings.MiddleMouseButtonFirstUp;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.RightMouseButtonFirstDown != null)
+            if (inputSettings.RightMouseButtonFirstDown != null && rightMouseButtonFirstDown == null)
             {
                 rightMouseButtonFirstDown = inputSettings.RightMouseButtonFirstDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.RightMouseButtonDown != null)
+            if (inputSettings.RightMouseButtonDown != null && rightMouseButtonDown == null)
             {
                 rightMouseButtonDown = inputSettings.RightMouseButtonDown;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.RightMouseButtonFirstUp != null)
+            if (inputSettings.RightMouseButtonFirstUp != null && rightMouseButtonFirstUp == null)
             {
                 rightMouseButtonFirstUp = inputSettings.RightMouseButtonFirstUp;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.SingleTouch != null)
+            if (inputSettings.SingleTouch != null && singleTouch == null)
             {
                 singleTouch = inputSettings.SingleTouch;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.DoubleTouch != null)
+            if (inputSettings.DoubleTouch != null && doubleTouch == null)
             {
                 doubleTouch = inputSettings.DoubleTouch;
+                EditorOnly.SetDirty(this);
             }
 
-            if (inputSettings.TripleTouch != null)
+            if (inputSettings.TripleTouch != null && tripleTouch == null)
             {
                 tripleTouch = inputSettings.TripleTouch;
+                EditorOnly.SetDirty(this);
             }
 #endif
         }

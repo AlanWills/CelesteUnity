@@ -66,7 +66,19 @@ namespace Celeste.Debug.Menus
                 GUILayout.Label(displayName, GUI.skin.label.New().Bold().UpperCentreAligned());
             }
 
-            OnDrawMenu();
+            if (Application.isPlaying)
+            {
+                OnDrawMenu();
+            }
+            else
+            {
+                // If we're in Editor mode, swallow all exceptions as it's likely we're not in a complete state to properly draw the menu
+                try
+                {
+                    OnDrawMenu();
+                }
+                catch { }
+            }
         }
 
         protected virtual void OnShowMenu() { }

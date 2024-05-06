@@ -43,7 +43,7 @@ namespace Celeste.Tilemaps
             {
                 Vector3 previousMouseDownWorldPosition = cameraToDrag.ScreenToWorldPoint(previousMouseDownPosition);
                 Vector3 mouseWorldPosition = cameraToDrag.ScreenToWorldPoint(mousePosition);
-                Vector2 mouseDelta = previousMouseDownWorldPosition - mouseWorldPosition;
+                Vector2 mouseDelta = previousMouseDownWorldPosition - mouseWorldPosition; // We need to go in the opposite direction to the drag
                 mouseDelta *= dragSpeed.Value;
 
                 transform.position += new Vector3(mouseDelta.x, mouseDelta.y, 0);
@@ -78,7 +78,7 @@ namespace Celeste.Tilemaps
                         Vector2 touchPosition = touch.screenPosition;
                         Vector3 previousTouchDownWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition - touch.delta);
                         Vector3 touchWorldPosition = cameraToDrag.ScreenToWorldPoint(touchPosition);
-                        Vector2 dragAmount = previousTouchDownWorldPosition - touchWorldPosition; // The tilemap needs to go in the opposite direction to the drag
+                        Vector2 dragAmount = previousTouchDownWorldPosition - touchWorldPosition; // We need to go in the opposite direction to the drag
                         float scrollModifier = dragSpeed.Value;
                         
                         transform.Translate(dragAmount.x * scrollModifier, dragAmount.y * scrollModifier, 0);
