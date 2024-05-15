@@ -43,7 +43,7 @@ namespace CelesteEditor.BuildSystem.Steps
 
                 if (writeAddressablesUploadCredentialsVariable)
                 {
-                    locationInfo.AppendLine($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+                    locationInfo.AppendLine($"{addressablesUploadCredentialsVariableName}={platformSettings.AddressablesUploadCredentials}");
                 }
             }
 
