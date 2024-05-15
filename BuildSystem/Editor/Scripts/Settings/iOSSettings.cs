@@ -1,4 +1,7 @@
 ﻿using Celeste;
+using Celeste.Tools;
+using Celeste.Tools.Attributes.GUI;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,10 +22,29 @@ namespace CelesteEditor.BuildSystem
             get { return runInXCodeAs; }
             set
             {
-                runInXCodeAs = value;
-                EditorUtility.SetDirty(this);
+                if (runInXCodeAs != value)
+                {
+                    runInXCodeAs = value;
+                    EditorUtility.SetDirty(this);
+                }
             }
         }
+
+        [SerializeField] private string ipaName;
+
+        [Header("Custom Build System Settings")]
+        [SerializeField] private bool useiOSProjectBuilder = true;
+        [SerializeField, ShowIf(nameof(useiOSProjectBuilder))] private string iOSProjectBuilderInstallPath = "C:/Users/alawi/iOS Project Builder for Unity";
+        [SerializeField, ShowIf(nameof(useiOSProjectBuilder)), Tooltip("A recommended setting")] private bool useTempDirectoryDuringBuild = true;
+        [SerializeField, ShowIfAll(nameof(useiOSProjectBuilder), nameof(useTempDirectoryDuringBuild))] private string tempDirectoryPath = "C:/iOS";
+
+        [Header("Credentials")]
+        [SerializeField] private string distributionCertificate = "ios_distribution.cer";
+        [SerializeField] private string privateKeyName = "";
+        [SerializeField] private string privateKeyPassword = "";
+        [SerializeField] private string provisioningProfileName = "";
+        [SerializeField] private string appStoreConnectUsername = "";
+        [SerializeField] private string appStoreConnectPassword = "";
 
         #endregion
 
@@ -32,6 +54,16 @@ namespace CelesteEditor.BuildSystem
             BuildTarget = BuildTarget.iOS;
             BuildTargetGroup = BuildTargetGroup.iOS;
             RunInXCodeAs = XcodeBuildConfig.Release;
+            useiOSProjectBuilder = true;
+            iOSProjectBuilderInstallPath = "C:/Users/alawi/iOS Project Builder for Unity";
+
+#if UNITY_EDITOR_WIN
+            useTempDirectoryDuringBuild = true;
+            tempDirectoryPath = "C:/iOS";
+#else
+            useTempDirectoryDuringBuild = false;
+            tempDirectoryPath = string.Empty;
+#endif
         }
 
         protected override void ApplyImpl()
@@ -41,6 +73,33 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.stripEngineCode = false;
             PlayerSettings.iOS.buildNumber = Version.ToString();
             UnityEngine.Debug.Log($"iOS version is now: {PlayerSettings.iOS.buildNumber}.");
+        }
+
+        public override void InjectBuildEnvVars(StringBuilder stringBuilder)
+        {
+            base.InjectBuildEnvVars(stringBuilder);
+
+            stringBuilder.AppendLine($"IPA_NAME={ipaName}");
+
+            if (useiOSProjectBuilder)
+            {
+                
+                stringBuilder.AppendLine($"USE_IOS_PROJECT_BUILDER={useiOSProjectBuilder}");
+                stringBuilder.AppendLine($"IOS_PROJECT_BUILDER_INSTALL_PATH={EditorOnly.EnsureDelimitersCorrect(iOSProjectBuilderInstallPath)}");
+                
+                if(useTempDirectoryDuringBuild)
+                {
+                    stringBuilder.AppendLine($"USE_TEMP_DIRECTORY={useTempDirectoryDuringBuild}");
+                    stringBuilder.AppendLine($"TEMP_DIRECTORY_PATH={EditorOnly.EnsureDelimitersCorrect(tempDirectoryPath)}");
+                }
+            }
+
+            stringBuilder.AppendLine($"DISTRIBUTION_CERTIFICATE={distributionCertificate}");
+            stringBuilder.AppendLine($"PRIVATE_KEY={privateKeyName}");
+            stringBuilder.AppendLine($"PRIVATE_KEY_PASSWORD={privateKeyPassword}");
+            stringBuilder.AppendLine($"PROVISIONING_PROFILE={provisioningProfileName}");
+            stringBuilder.AppendLine($"ASC_USERNAME={appStoreConnectUsername}");
+            stringBuilder.AppendLine($"ASC_PASSWORD={appStoreConnectPassword}");
         }
     }
 }

@@ -160,6 +160,22 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("When building addressables as part of a build pipeline, this value will be exported as an environment variable to allow you to provide credentials to whatever system you use for uploading assets." + STRING_SUBSTITUTION_HELP)]
+        private string addressablesUploadCredentials;
+        public string AddressablesUploadCredentials
+        {
+            get => Resolve(addressablesUploadCredentials);
+            protected set
+            {
+                if (string.CompareOrdinal(addressablesUploadCredentials, value) != 0)
+                {
+                    addressablesUploadCredentials = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Enable advanced addressables settings.  Warning, most users will not need to edit these values.")]
         private bool advancedAddressablesSettings;
 

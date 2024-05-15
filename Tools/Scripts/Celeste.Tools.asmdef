@@ -2,7 +2,8 @@
     "name": "Celeste.Tools",
     "rootNamespace": "Celeste.Tools",
     "references": [
-        "Unity.Addressables.Editor"
+        "Unity.Addressables.Editor",
+        "Celeste.UnityProject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

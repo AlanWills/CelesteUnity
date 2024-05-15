@@ -1,7 +1,6 @@
 ﻿using Celeste.Log.DataStructures;
 using Celeste.Memory;
 using Celeste.Objects;
-using Celeste.Objects.Types;
 using System;
 using UnityEngine;
 

@@ -37,25 +37,22 @@ namespace CelesteEditor.BuildSystem.Steps
             StringBuilder buildInfo = new StringBuilder();
             if (writeBuildDirectoryVariable)
             {
-                buildInfo.Append($"{buildDirectoryVariableName}={platformSettings.BuildDirectory}");
-                buildInfo.AppendLine();
+                buildInfo.AppendLine($"{buildDirectoryVariableName}={platformSettings.BuildDirectory}");
             }
 
             if (writeBuildLocationVariable)
             {
-                buildInfo.Append($"{buildLocationVariableName}={buildPlayerOptions.locationPathName}");
-                buildInfo.AppendLine();
+                buildInfo.AppendLine($"{buildLocationVariableName}={buildPlayerOptions.locationPathName}");
             }
 
             if (writeVersionVariable)
             {
-                buildInfo.Append($"{versionVariableName}={platformSettings.Version}");
-                buildInfo.AppendLine();
+                buildInfo.AppendLine($"{versionVariableName}={platformSettings.Version}");
             }
 
             if (writeUploadDirectoryVariable)
             {
-                buildInfo.Append($"{uploadDirectoryVariableName}={platformSettings.BuildUploadURL}");
+                buildInfo.AppendLine($"{uploadDirectoryVariableName}={platformSettings.BuildUploadURL}");
             }
 
             platformSettings.InjectBuildEnvVars(buildInfo);

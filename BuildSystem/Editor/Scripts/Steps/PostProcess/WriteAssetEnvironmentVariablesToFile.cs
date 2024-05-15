@@ -23,6 +23,9 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField] private bool writeAddressablesUploadURLVariable = true;
         [SerializeField, ShowIf(nameof(writeAddressablesUploadURLVariable))] private string addressablesUploadURLVariableName = "ASSETS_DESTINATION";
 
+        [SerializeField, ShowIf(nameof(writeAddressablesUploadURLVariable))] private bool writeAddressablesUploadCredentialsVariable = true;
+        [SerializeField, ShowIfAll(nameof(writeAddressablesUploadURLVariable), nameof(writeAddressablesUploadCredentialsVariable))] private string addressablesUploadCredentialsVariableName = "ASSETS_UPLOAD_CREDENTIALS";
+
         #endregion
 
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
@@ -31,13 +34,17 @@ namespace CelesteEditor.BuildSystem.Steps
 
             if (writeAddressablesBuildDirectoryVariable)
             {
-                locationInfo.Append($"{addressablesBuildDirectoryVariableName}={platformSettings.AddressablesBuildDirectory}");
-                locationInfo.AppendLine();
+                locationInfo.AppendLine($"{addressablesBuildDirectoryVariableName}={platformSettings.AddressablesBuildDirectory}");
             }
 
             if (writeAddressablesUploadURLVariable)
             {
-                locationInfo.Append($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+                locationInfo.AppendLine($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+
+                if (writeAddressablesUploadCredentialsVariable)
+                {
+                    locationInfo.AppendLine($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+                }
             }
 
             if (!Directory.Exists(platformSettings.AddressablesBuildDirectory))
