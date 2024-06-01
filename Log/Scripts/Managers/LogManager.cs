@@ -17,7 +17,7 @@ namespace Celeste.Log
 
         #region Unity Methods
 
-        private void Awake()
+        private void OnEnable()
         {
             if (logRecord != null && sectionLogSettingsCatalogue != null)
             {
@@ -42,17 +42,15 @@ namespace Celeste.Log
             }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            if (unityLogHandler != null && !logRecord.Equals(unityLogHandler))
-            {
-                UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
-            }
-            else
+            if (unityLogHandler == null || logRecord.Equals(unityLogHandler))
             {
                 UnityEngine.Debug.LogAssertion($"The default unity log handler looks odd, so we'll replace it with a fresh UnityEngine.DebugLogHandler.");
                 unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
             }
+
+            UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
         }
 
         #endregion

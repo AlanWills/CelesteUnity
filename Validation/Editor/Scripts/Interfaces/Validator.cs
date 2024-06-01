@@ -77,10 +77,7 @@ namespace CelesteEditor.Validation
     {
         #region Properties and Fields
 
-        public static int NumValidationConditions
-        {
-            get { return validationConditions.Count; }
-        }
+        public static int NumValidationConditions => validationConditions.Count;
 
         private static List<IValidationCondition<T>> validationConditions = new List<IValidationCondition<T>>();
 
@@ -106,14 +103,14 @@ namespace CelesteEditor.Validation
                 {
                     if (validationCondition.IsAssignableFrom(t) && !t.IsAbstract)
                     {
-                        Debug.LogFormat("Found validation condition type: {0}", t.Name);
+                        Debug.Log($"Found validation condition type: {t.Name}");
                         validationConditions.Add(Activator.CreateInstance(t) as IValidationCondition<T>);
                     }
                 }
             }
 
             stopWatch.Stop();
-            Debug.LogFormat("Loaded {0} Validation Conditions in {1} seconds", validationConditions.Count, stopWatch.ElapsedMilliseconds / 1000.0f);
+            Debug.Log($"Loaded {validationConditions.Count} Validation Conditions in {stopWatch.ElapsedMilliseconds / 1000.0f} seconds");
         }
 
         public static IValidationCondition<T> GetValidationCondition(int validationCondition)
