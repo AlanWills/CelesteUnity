@@ -22,7 +22,12 @@ namespace Celeste.Log
             if (logRecord != null && sectionLogSettingsCatalogue != null)
             {
                 unityLogHandler = UnityEngine.Debug.unityLogger.logHandler;
-                UnityEngine.Debug.Assert((UnityEngine.Object)unityLogHandler != logRecord, $"Our custom {nameof(LogRecord)} is about to be used as the unity default log handler.  This is going to cause Stack Overflows!");
+                
+                if (logRecord.Equals(unityLogHandler))
+                {
+                    UnityEngine.Debug.LogAssertion($"Our custom {nameof(LogRecord)} is about to be used as the unity default log handler.  This is going to cause Stack Overflows so will be replaced with the UnityEngine.DebugLogHandler.");
+                    unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
+                }
 
                 logRecord.Initialize(unityLogHandler, sectionLogSettingsCatalogue);
                 UnityEngine.Debug.unityLogger.logHandler = logRecord;
@@ -39,12 +44,15 @@ namespace Celeste.Log
 
         private void OnDestroy()
         {
-            if (unityLogHandler != null)
+            if (unityLogHandler != null && !logRecord.Equals(unityLogHandler))
             {
                 UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
             }
-
-            UnityEngine.Debug.Assert((UnityEngine.Object)UnityEngine.Debug.unityLogger.logHandler != logRecord, $"Our custom {nameof(LogRecord)} is still set up as the unity log handler!");
+            else
+            {
+                UnityEngine.Debug.LogAssertion($"The default unity log handler looks odd, so we'll replace it with a fresh UnityEngine.DebugLogHandler.");
+                unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
+            }
         }
 
         #endregion
