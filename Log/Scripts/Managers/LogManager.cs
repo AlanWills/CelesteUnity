@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Celeste.Log
@@ -10,6 +11,8 @@ namespace Celeste.Log
         [SerializeField] private LogRecord logRecord;
         [SerializeField] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
 
+        [NonSerialized] private ILogHandler unityLogHandler;
+
         #endregion
 
         #region Unity Methods
@@ -18,7 +21,10 @@ namespace Celeste.Log
         {
             if (logRecord != null && sectionLogSettingsCatalogue != null)
             {
-                logRecord.Initialize(UnityEngine.Debug.unityLogger.logHandler, sectionLogSettingsCatalogue);
+                unityLogHandler = UnityEngine.Debug.unityLogger.logHandler;
+                UnityEngine.Debug.Assert((UnityEngine.Object)unityLogHandler != logRecord, $"Our custom {nameof(LogRecord)} is about to be used as the unity default log handler.  This is going to cause Stack Overflows!");
+
+                logRecord.Initialize(unityLogHandler, sectionLogSettingsCatalogue);
                 UnityEngine.Debug.unityLogger.logHandler = logRecord;
             }
             else if (logRecord == null)
@@ -29,6 +35,16 @@ namespace Celeste.Log
             {
                 UnityEngine.Debug.LogWarning($"{nameof(LogManager)} will not activate custom log behaviour due to unassigned {nameof(sectionLogSettingsCatalogue)} in {name}.", CelesteLog.Core.WithContext(this));
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (unityLogHandler != null)
+            {
+                UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
+            }
+
+            UnityEngine.Debug.Assert((UnityEngine.Object)UnityEngine.Debug.unityLogger.logHandler != logRecord, $"Our custom {nameof(LogRecord)} is still set up as the unity log handler!");
         }
 
         #endregion
