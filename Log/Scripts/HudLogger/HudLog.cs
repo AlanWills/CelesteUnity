@@ -81,7 +81,6 @@ namespace Celeste.Log
             if (Instance != null && IsLogLevelEnabled(HudLogLevel.Info))
             {
                 Instance.Log(message, Instance.infoColour);
-                UnityEngine.Debug.Log(message);
             }
         }
 
@@ -90,7 +89,6 @@ namespace Celeste.Log
             if (Instance != null && IsLogLevelEnabled(HudLogLevel.Warning))
             {
                 Instance.Log(message, Instance.warningColour);
-                UnityEngine.Debug.LogWarning(message);
             }
         }
 
@@ -99,7 +97,6 @@ namespace Celeste.Log
             if (Instance != null && IsLogLevelEnabled(HudLogLevel.Error))
             {
                 Instance.Log(message, Instance.errorColour);
-                UnityEngine.Debug.LogError(message);
             }
         }
 
@@ -130,51 +127,10 @@ namespace Celeste.Log
                 hudMessage.SetUp(message, colour, () => { hudMessages.Deallocate(messageGameObject); });
                 messageGameObject.SetActive(true);
             }
-            else
-            {
-                UnityEngine.Debug.LogWarningFormat("Hud Message limit reached.  Message: {0}", message);
-            }
-
+            
             if (logMessages != null)
             {
                 logMessages.AddItem(new HudLogMessage() { message = message, callstack = callstack });
-            }
-        }
-
-        #endregion
-
-        #region Unity Methods
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            Application.logMessageReceived += Application_logMessageReceived;
-        }
-
-        private void OnDestroy()
-        {
-            Application.logMessageReceived -= Application_logMessageReceived;
-        }
-
-        #endregion
-
-        #region Callbacks
-
-        private void Application_logMessageReceived(string logString, string stackTrace, LogType type)
-        {
-            if (Instance == null)
-            {
-                return;
-            }
-
-            if (type == LogType.Exception && IsLogLevelEnabled(HudLogLevel.Exception))
-            {
-                Log($"{logString}", stackTrace, Instance.errorColour);
-            }
-            else if (type == LogType.Assert && IsLogLevelEnabled(HudLogLevel.Assert))
-            {
-                Log(logString, stackTrace, Instance.errorColour);
             }
         }
 
