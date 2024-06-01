@@ -41,7 +41,7 @@ namespace Celeste.Log
             }
         }
 
-        [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Assert | HudLogLevel.Exception | HudLogLevel.Error | HudLogLevel.Warning | HudLogLevel.Info;
+        [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Assert | HudLogLevel.Exception | HudLogLevel.Error | HudLogLevel.Warning;
         [SerializeField] private HudLogMessageList logMessages;
         [SerializeField] private GameObjectAllocator hudMessages;
         [SerializeField] private Color infoColour = Color.white;
