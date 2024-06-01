@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32c12788c34e1d43995651ca6d65bbb, type: 3}
+  m_Script: {fileID: 11500000, guid: 066d0f5873f7eb746ba4f3a72e92e96d, type: 3}
   m_Name: HudLogDebugMenu
   m_EditorClassIdentifier: 
   displayName: Hud Log

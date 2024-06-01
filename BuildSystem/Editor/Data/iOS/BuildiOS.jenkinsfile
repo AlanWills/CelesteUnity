@@ -1,4 +1,6 @@
 UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
+buildPath = ""
+projectPath = ""
 
 pipeline 
 {
@@ -40,6 +42,7 @@ pipeline
                 script 
                 {
                     readProperties(file: "${env.WORKSPACE}/Builds/iOS/${params.CONFIGURATION}/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+					buildPath = "${projectPath}/${env.BUILD_LOCATION}"
                 }
                 buildName "iOS-" + CONFIGURATION + "-" + env.BUILD_VERSION
                 script 
@@ -48,6 +51,29 @@ pipeline
                 }
             }
         }
+		stage('Copy iOS Project To Temp Directory')
+		{
+			when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_TEMP_DIRECTORY == 'True'
+                }
+            }
+			steps
+			{
+				script
+				{
+					tempBuildPath = "${env.TEMP_DIRECTORY_PATH}/Build-${env.BUILD_VERSION}-${params.CONFIGURATION}"
+					deleteCommand = "/usr/bin/find ${env.TEMP_DIRECTORY_PATH}/* -not -path " + '"' + "${env.TEMP_DIRECTORY_PATH}/builder*" + '" -prune -exec rm -rf {} \\;'
+					
+					echo "${deleteCommand}"
+					sh "${deleteCommand}"
+					sh "cp -r ${projectPath}/${env.BUILD_LOCATION} ${tempBuildPath}"
+					buildPath = tempBuildPath
+				}
+			}
+		}
         stage('Build iOS Project')
         {
             when
@@ -59,9 +85,31 @@ pipeline
             }
             steps
             {
-                bat 'call "C:/Users/alawi/iOS Project Builder for Unity/build.cmd" "${env.WORKSPACE}/${env.BUILD_LOCATION}" -xcname "Unity-iPhone" -xcpname "iPhone-target" -xcconf "Release" -archs "arm64" -multicore -autoresolve -strip bitcode -pngcrush -ipa -identity "ios_distribution.cer:celeste_games.key:favouriteprimes111929" -provision "Robbi_App_Store_Provisioning_Profile.mobileprovision"'
+				script
+				{
+					buildScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/build.cmd" + '" "' + "${buildPath}" + '" -xcname "Unity-iPhone" -xcpname "iPhone-target" -xcconf "Release" -archs "arm64" -multicore -lld -strip bitcode -pngcrush -ipa -identity "' + "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}" + '" -provision "' + "${env.PROVISIONING_PROFILE}" + '"'
+					echo "${buildScript}"
+					bat "${buildScript}"
+				}
             }
         }
+		stage('Copy .ipa From Temp Directory')
+		{
+			when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_TEMP_DIRECTORY == 'True'
+                }
+            }
+			steps
+            {
+				script
+				{
+					sh "cp -r ${tempBuildPath}/Packages ${projectPath}/${env.BUILD_LOCATION}/Packages"
+				}
+            }
+		}
         stage('Commit Version')
         {
             when
@@ -75,6 +123,7 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built iOS and updating version"'
+				sh "git pull origin ${env.GIT_BRANCH} --rebase"
 				sh "git lfs push origin ${env.GIT_BRANCH} --all"
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
@@ -83,14 +132,14 @@ pipeline
 		{
 			steps 
 			{
-				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
+				archiveArtifacts artifacts: "${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa", onlyIfSuccessful: true
 			}
 		}
 		stage('Artifact Assets')
 		{
 			steps 
 			{
-				archiveArtifacts artifacts: '${env.ASSETS_SOURCE}/*.*', onlyIfSuccessful: true
+				archiveArtifacts artifacts: "${env.ASSETS_SOURCE}/*.*", onlyIfSuccessful: true
 			}
 		}
         stage('Upload Build')
@@ -104,7 +153,14 @@ pipeline
             }
             steps
             {
-                bat 'call "C:/Users/alawi/iOS Project Builder for Unity/upload.cmd" -v "${env.WORKSPACE}/${env.BUILD_LOCATION}/Packages/Robbi.ipa" -asclogin "alawills@googlemail.com" -ascpassword "dkqo-aiog-high-jtpd" -ascprovider ""'
+				script
+				{
+					ipaWorkspaceLocationForUpload = "${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
+					ipaWorkspaceLocationForUpload = ipaWorkspaceLocationForUpload.replace('/', '\\')
+					uploadScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd" + '" -v "' + "${ipaWorkspaceLocationForUpload}" + '" -asclogin "' + "${env.ASC_USERNAME}" + '" -ascpassword "' + "${env.ASC_PASSWORD}" + '" -ascprovider ""'
+					echo "${uploadScript}"
+					bat "${uploadScript}"
+				}
             }
         }
         stage('Upload Assets')
@@ -118,7 +174,7 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.ASSETS_SOURCE}/*"
+                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: "${env.ASSETS_UPLOAD_CREDENTIALS}", pattern: "${env.ASSETS_SOURCE}/*"
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }
