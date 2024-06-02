@@ -21,6 +21,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.ads",
+            "expression": "0.0.1",
+            "define": "LEGACY_UNITY_ADS"
+        }
+    ],
     "noEngineReferences": false
 }

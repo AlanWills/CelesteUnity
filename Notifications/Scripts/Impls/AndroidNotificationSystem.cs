@@ -1,4 +1,4 @@
-#if UNITY_ANDROID
+#if UNITY_ANDROID && UNITY_NOTIFICATIONS
 using Celeste.Log;
 using Celeste.Notifications.Objects;
 using System;

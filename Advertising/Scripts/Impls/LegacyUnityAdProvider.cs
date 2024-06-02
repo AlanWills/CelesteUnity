@@ -1,18 +1,18 @@
 ﻿using Celeste.Parameters;
 using System;
 using UnityEngine;
-#if UNITY_ADS
+#if LEGACY_UNITY_ADS
 using UnityEngine.Advertisements;
 #endif
 
 namespace Celeste.Advertising.Impls
 {
     [CreateAssetMenu(
-        fileName = nameof(UnityAdProvider), 
-        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Providers/Unity Ad Provider",
+        fileName = nameof(LegacyUnityAdProvider), 
+        menuName = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM + "Providers/Legacy Unity Ad Provider",
         order = CelesteMenuItemConstants.ADVERTISING_MENU_ITEM_PRIORITY)]
-    public class UnityAdProvider : ScriptableObject, IAdProvider
-#if UNITY_ADS
+    public class LegacyUnityAdProvider : ScriptableObject, IAdProvider
+#if LEGACY_UNITY_ADS
         , IUnityAdsInitializationListener, IUnityAdsLoadListener, IUnityAdsShowListener
 #endif
     {
@@ -51,7 +51,7 @@ namespace Celeste.Advertising.Impls
             this.onInitializationComplete = onInitializationComplete;
             this.onInitializationFailed = onInitializationFailed;
 
-#if UNITY_ADS
+#if LEGACY_UNITY_ADS
             if (!Advertisement.isInitialized)
             {
                 Advertisement.Initialize(GameId, testMode.Value, this);
@@ -61,7 +61,7 @@ namespace Celeste.Advertising.Impls
 
         public void LoadAdPlacement(AdPlacement adPlacement)
         {
-#if UNITY_ADS
+#if LEGACY_UNITY_ADS
             if (adPlacement.IsEnabled)
             {
                 Advertisement.Load(adPlacement.PlacementId, this);
@@ -71,7 +71,7 @@ namespace Celeste.Advertising.Impls
 
         public void PlayAdPlacement(AdPlacement adPlacement, Action<AdWatchResult> onShow)
         {
-#if UNITY_ADS
+#if LEGACY_UNITY_ADS
             if (adPlacement.IsLoaded)
             {
                 adPlacement.OnShow += onShow;
@@ -89,7 +89,7 @@ namespace Celeste.Advertising.Impls
             return adPlacements.FindPlacementById(placementId);
         }
 
-#if UNITY_ADS
+#if LEGACY_UNITY_ADS
         #region IUnityAdsInitializationListener
 
         public void OnInitializationComplete()

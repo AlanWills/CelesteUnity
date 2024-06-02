@@ -28,8 +28,8 @@ namespace Celeste.Advertising
 
         [Header("Providers")]
         [SerializeField] private EditorAdProvider editorAdProvider;
-#if UNITY_ADS
-        [SerializeField] private UnityAdProvider unityAdProvider;
+#if LEGACY_UNITY_ADS
+        [SerializeField] private LegacyUnityAdProvider legacyUnityAdProvider;
 #endif
 
         [NonSerialized] private IAdProvider impl = new DisabledAdProvider();
@@ -50,8 +50,8 @@ namespace Celeste.Advertising
             {
 #if UNITY_EDITOR
                 impl = editorAdProvider;
-#elif UNITY_ADS
-                impl = unityAdProvider;
+#elif LEGACY_UNITY_ADS
+                impl = legacyUnityAdProvider;
 #else
                 impl = disabledAdProvider;
 #endif

@@ -28,7 +28,7 @@ namespace Celeste.Notifications.Record
 
         public bool Initialize()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || !UNITY_NOTIFICATIONS
             impl = new DisabledNotificationSystem();
 #elif UNITY_ANDROID
             impl = new AndroidNotificationSystem();

@@ -1,4 +1,4 @@
-#if UNITY_IOS
+#if UNITY_IOS && UNITY_NOTIFICATIONS
 using System;
 using System.Collections;
 using Celeste.Notifications.Objects;
@@ -8,7 +8,7 @@ namespace Celeste.Notifications.Impls
 {
     public class IOSNotificationSystem : INotificationSystem
     {
-#region Properties and Fields
+        #region Properties and Fields
 
         public bool PermissionsRequested => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.NotDetermined;
         public bool PermissionsGranted => iOSNotificationCenter.GetNotificationSettings().AuthorizationStatus == AuthorizationStatus.Authorized;
