@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16678ca79e316ee46a99edf941ce8cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultLogLevel: -1
+  defaultLogLevel: 30
   logMessages: {fileID: 11400000, guid: 1a02d3721e635fe478c0a4b4d09996c5, type: 2}
   hudMessages: {fileID: 3570087743746332946}
   infoColour: {r: 0.27650985, g: 0.7924528, b: 0.25044498, a: 1}

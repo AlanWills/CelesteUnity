@@ -67,19 +67,7 @@ namespace Celeste.Loading
 #else
             var url = Path.GetFullPath(bundleCacheFileURL);
 #endif
-            Debug.Log($"Beginning to load bundle cache info at {url}.");
-            var loadBundleCacheRequest = UnityWebRequest.Get(url);
-            yield return loadBundleCacheRequest.SendWebRequest();
-
-            if (!string.IsNullOrEmpty(loadBundleCacheRequest.error))
-            {
-                Debug.LogError(loadBundleCacheRequest.error);
-            }
-            else
-            {
-                Debug.Log($"Bundled cache info loaded successfully {loadBundleCacheRequest.downloadHandler.text}.");
-                JsonUtility.FromJsonOverwrite(loadBundleCacheRequest.downloadHandler.text, cachedAssetBundles);
-            }
+            yield return LoadCachedBundlesInfo(url);
 
             if (cachedAssetBundles != null && cachedAssetBundles.IsValid)
             {
@@ -92,6 +80,39 @@ namespace Celeste.Loading
             {
                 Debug.LogWarning($"No cached asset bundles found - ignoring custom transform func.");
             }
+        }
+
+        private IEnumerator LoadCachedBundlesInfo(string url)
+        {
+            Debug.Log($"Beginning to load bundle cache info at {url}.");
+            string cachedBundlesInfo = "";
+
+#if UNITY_ANDROID
+            var loadBundleCacheRequest = UnityWebRequest.Get(url);
+            yield return loadBundleCacheRequest.SendWebRequest();
+
+            if (!string.IsNullOrEmpty(loadBundleCacheRequest.error))
+            {
+                Debug.LogError(loadBundleCacheRequest.error);
+            }
+#else
+            if (File.Exists(url))
+            {
+                cachedBundlesInfo = File.ReadAllText(url);
+            }
+            else
+            {
+                Debug.LogError($"Failed to find the file for bundle cache info at path {url}.");
+            }
+#endif
+            Debug.Assert(!string.IsNullOrEmpty(cachedBundlesInfo), "Cached Bundles Info is empty!");
+            if (!string.IsNullOrEmpty(cachedBundlesInfo))
+            {
+                Debug.Log($"Bundled cache info loaded successfully {cachedBundlesInfo}.");
+                JsonUtility.FromJsonOverwrite(cachedBundlesInfo, cachedAssetBundles);
+            }
+
+            yield break;
         }
 
         private string Addressables_InternalIdTransformFunc(IResourceLocation location)

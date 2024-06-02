@@ -48,8 +48,8 @@ namespace Celeste.Log
         [SerializeField] private Color warningColour = Color.yellow;
         [SerializeField] private Color errorColour = Color.red;
 
-        private HudLogLevel logLevel;
-        private bool logLevelInitialized;
+        [NonSerialized] private HudLogLevel logLevel;
+        [NonSerialized] private bool logLevelInitialized;
 
         private const string HUD_LOG_LEVEL_PREFS_KEY = "HudLogLevel";
 
