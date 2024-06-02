@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Components.Catalogue
 {
-    public class ComponentCatalogue<T> : DictionaryScriptableObject<string, T> where T : Component
+    public class ComponentCatalogue<T> : DictionaryScriptableObject<string, T> where T : BaseComponent
     {
         public ComponentHandle CreateComponent(string typeName, string jsonData)
         {
@@ -36,5 +36,5 @@ namespace Celeste.Components.Catalogue
         fileName = nameof(ComponentCatalogue), 
         menuName = CelesteMenuItemConstants.COMPONENTS_MENU_ITEM + "Component Catalogue",
         order = CelesteMenuItemConstants.COMPONENTS_MENU_ITEM_PRIORITY)]
-    public class ComponentCatalogue : ComponentCatalogue<Component> { }
+    public class ComponentCatalogue : ComponentCatalogue<BaseComponent> { }
 }

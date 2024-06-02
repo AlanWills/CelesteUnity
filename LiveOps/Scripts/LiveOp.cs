@@ -156,7 +156,7 @@ namespace Celeste.LiveOps
             State = LiveOpState.Finished;
         }
 
-        public ComponentHandle<Component> GetComponent(int index)
+        public ComponentHandle<BaseComponent> GetComponent(int index)
         {
             return Components.GetComponent(index);
         }

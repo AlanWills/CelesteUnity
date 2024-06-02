@@ -13,38 +13,6 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
-        // HideInInspector cos enum not editable via default UI
-        [SerializeField, HideInInspector]
-        private ScriptingImplementation scriptingBackend;
-        public ScriptingImplementation ScriptingBackend
-        {
-            get => scriptingBackend;
-            set
-            {
-                if (scriptingBackend != value)
-                {
-                    scriptingBackend = value;
-                    EditorUtility.SetDirty(this);
-                }
-            }
-        }
-
-        // HideInInspector cos enum not editable via default UI
-        [SerializeField, HideInInspector]
-        private AndroidArchitecture architecture;
-        public AndroidArchitecture Architecture
-        {
-            get => architecture;
-            set 
-            {
-                if (architecture != value)
-                {
-                    architecture = value;
-                    EditorUtility.SetDirty(this);
-                }
-            }
-        }
-
         [SerializeField, Header("Android Settings")]
         [Tooltip("Whether the build pipeline should create an apk or aab.  Set this to true if building for store release, as only an aab can be uploading to Google Play.")]
         private bool buildAppBundle;
@@ -118,6 +86,37 @@ namespace CelesteEditor.BuildSystem
                 if (targetSdkVersion != value)
                 {
                     targetSdkVersion = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        // HideInInspector cos enum not editable via default UI
+        [SerializeField]
+        private ScriptingImplementation scriptingBackend;
+        public ScriptingImplementation ScriptingBackend
+        {
+            get => scriptingBackend;
+            set
+            {
+                if (scriptingBackend != value)
+                {
+                    scriptingBackend = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField]
+        private AndroidArchitecture architecture;
+        public AndroidArchitecture Architecture
+        {
+            get => architecture;
+            set
+            {
+                if (architecture != value)
+                {
+                    architecture = value;
                     EditorUtility.SetDirty(this);
                 }
             }

@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerRuntime<T> : IComponentContainerRuntime<T> where T : Component
+    public class ComponentContainerRuntime<T> : IComponentContainerRuntime<T> where T : BaseComponent
     {
         #region Properties and Fields
 

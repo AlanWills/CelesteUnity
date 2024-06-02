@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 namespace Celeste.LiveOps.Components
 {
     [CreateAssetMenu(fileName = nameof(AddressableAssets), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Assets/Addressables", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class AddressableAssets : Celeste.Components.Component, ILiveOpAssets
+    public class AddressableAssets : Celeste.Components.BaseComponent, ILiveOpAssets
     {
         #region Save Data
 

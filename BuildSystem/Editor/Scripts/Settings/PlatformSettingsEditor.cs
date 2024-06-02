@@ -1,6 +1,4 @@
 ﻿using Celeste;
-using Celeste.Tools;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 

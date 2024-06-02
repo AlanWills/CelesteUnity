@@ -3,7 +3,7 @@
 namespace Celeste.Components
 {
     public abstract class ComponentController<TComponent, TRuntime> : MonoBehaviour, IComponentController<TComponent>
-        where TComponent : Component
+        where TComponent : BaseComponent
         where TRuntime : class, IComponentContainerRuntime<TComponent>
     {
         protected TRuntime Runtime { get; private set; }

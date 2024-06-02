@@ -23,7 +23,7 @@ namespace Celeste.Tools.Attributes.GUI
         {
             float propertyHeight = TOP_SPACING + CelesteGUIStyles.BoldLabel.CalcSize(label).y + TITLE_SPACING;
 
-            foreach (SerializedProperty visibleChild in VisibleChildren(property))
+            foreach (SerializedProperty visibleChild in property.EditorOnly_VisibleChildProperties())
             {
                 propertyHeight += EditorGUI.GetPropertyHeight(visibleChild, true) + PROPERTY_SPACING;
             }
@@ -46,7 +46,7 @@ namespace Celeste.Tools.Attributes.GUI
 
             ++EditorGUI.indentLevel;
 
-            foreach (SerializedProperty visibleChild in VisibleChildren(property))
+            foreach (SerializedProperty visibleChild in property.EditorOnly_VisibleChildProperties())
             {
                 float childHeight = EditorGUI.GetPropertyHeight(visibleChild, true);
                 drawRect.height = childHeight;
@@ -56,24 +56,6 @@ namespace Celeste.Tools.Attributes.GUI
 
             --EditorGUI.indentLevel;
             return position;
-        }
-
-        private IEnumerable<SerializedProperty> VisibleChildren(SerializedProperty property)
-        {
-            SerializedProperty nextSiblingProperty = property.Copy();
-            nextSiblingProperty.NextVisible(false);
-
-            if (property.NextVisible(true))
-            {
-                do
-                {
-                    if (SerializedProperty.EqualContents(property, nextSiblingProperty))
-                        yield break;
-
-                    yield return property;
-                }
-                while (property.NextVisible(false));
-            }
         }
 #endif
     }

@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace CelesteEditor.Components
 {
-    public abstract class ComponentContainerUsingSubAssetsEditor<TComponent> : Editor where TComponent : Component
+    public abstract class ComponentContainerUsingSubAssetsEditor<TComponent> : Editor where TComponent : BaseComponent
     {
         #region Properties and Fields
 

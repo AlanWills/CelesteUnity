@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
-using UnityEngine;
+﻿using UnityEditor;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -22,10 +14,8 @@ namespace CelesteEditor.BuildSystem
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("scriptingBackend"));
-            
             AndroidSettings androidSettings = target as AndroidSettings;
-            androidSettings.Architecture = (AndroidArchitecture)EditorGUILayout.EnumPopup("Architecture", androidSettings.Architecture);
+            androidSettings.Architecture = (AndroidArchitecture)EditorGUILayout.EnumFlagsField("Architecture", androidSettings.Architecture);
 
             serializedObject.ApplyModifiedProperties();
         }

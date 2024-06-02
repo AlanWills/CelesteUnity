@@ -1,6 +1,6 @@
 ﻿namespace Celeste.Components
 {
-    public interface IComponentController<T> where T : Component
+    public interface IComponentController<T> where T : BaseComponent
     {
         void Hookup(IComponentContainerRuntime<T> container, IRuntimeAddedContext context);
         void Shutdown();

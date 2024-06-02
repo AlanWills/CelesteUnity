@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CelesteEditor.Components
 {
     public abstract class ComponentContainerUsingTemplatesEditor<TComponent> : Editor
-        where TComponent : Celeste.Components.Component
+        where TComponent : Celeste.Components.BaseComponent
     {
         #region Properties and Fields
 
@@ -47,7 +47,7 @@ namespace CelesteEditor.Components
                     {
                         SerializedProperty componentTemplate = componentTemplatesProperty.GetArrayElementAtIndex(i);
                         SerializedProperty componentProperty = componentTemplate.FindPropertyRelative("component"); 
-                        var component = componentProperty.objectReferenceValue as Celeste.Components.Component;
+                        var component = componentProperty.objectReferenceValue as Celeste.Components.BaseComponent;
 
                         if (component == null)
                         {

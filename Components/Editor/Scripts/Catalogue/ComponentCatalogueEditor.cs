@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace CelesteEditor.Components.Catalogue
 {
-    public class ComponentCatalogueEditor<T> : DictionaryScriptableObjectEditor<string, T> where T : Component
+    public class ComponentCatalogueEditor<T> : DictionaryScriptableObjectEditor<string, T> where T : BaseComponent
     {
         protected override string GetKey(T item)
         {
@@ -22,5 +22,5 @@ namespace CelesteEditor.Components.Catalogue
     }
 
     [CustomEditor(typeof(ComponentCatalogue))]
-    public class ComponentCatalogueEditor : ComponentCatalogueEditor<Component> { }
+    public class ComponentCatalogueEditor : ComponentCatalogueEditor<BaseComponent> { }
 }

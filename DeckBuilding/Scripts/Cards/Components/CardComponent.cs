@@ -2,7 +2,7 @@
 
 namespace Celeste.DeckBuilding.Components
 {
-    public abstract class CardComponent : Component
+    public abstract class CardComponent : BaseComponent
     {
     }
 }

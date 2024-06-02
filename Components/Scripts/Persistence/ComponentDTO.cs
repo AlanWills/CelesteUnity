@@ -10,13 +10,13 @@ namespace Celeste.Components.Persistence
         public string typeName;
         [Json] public string data;
 
-        private ComponentDTO(Component component, ComponentData componentData)
+        private ComponentDTO(BaseComponent component, ComponentData componentData)
         {
             typeName = component.name;
             data = componentData.ToJson();
         }
 
-        public static ComponentDTO From(Component component, ComponentData componentData)
+        public static ComponentDTO From(BaseComponent component, ComponentData componentData)
         {
             return new ComponentDTO(component, componentData);
         }
@@ -26,7 +26,7 @@ namespace Celeste.Components.Persistence
             return new ComponentDTO(componentHandle.component, componentHandle.instance.data);
         }
 
-        public static ComponentDTO From<T>(ComponentHandle<T> componentHandle) where T : Component
+        public static ComponentDTO From<T>(ComponentHandle<T> componentHandle) where T : BaseComponent
         {
             return new ComponentDTO(componentHandle.component, componentHandle.instance.data);
         }

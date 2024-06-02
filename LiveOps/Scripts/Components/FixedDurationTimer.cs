@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Celeste.LiveOps.Components
 {
     [CreateAssetMenu(fileName = nameof(FixedDurationTimer), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Timers/Fixed Duration", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class FixedDurationTimer : Celeste.Components.Component, ILiveOpTimer
+    public class FixedDurationTimer : Celeste.Components.BaseComponent, ILiveOpTimer
     {
         #region Save Data
 

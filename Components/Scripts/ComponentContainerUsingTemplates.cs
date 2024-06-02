@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Celeste.Components
 {
     public class ComponentContainerUsingTemplates<TComponent> : ScriptableObject, IComponentContainerUsingTemplates<TComponent> 
-        where TComponent : Component
+        where TComponent : BaseComponent
     {
         #region Template
 

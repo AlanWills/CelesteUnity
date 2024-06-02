@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Celeste.LiveOps.Components
 {
     [CreateAssetMenu(fileName = nameof(ScheduleIfFeatureEnabled), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Scheduling/If Feature Enabled", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class ScheduleIfFeatureEnabled : Celeste.Components.Component, ILiveOpScheduleCondition
+    public class ScheduleIfFeatureEnabled : Celeste.Components.BaseComponent, ILiveOpScheduleCondition
     {
         #region Data
 

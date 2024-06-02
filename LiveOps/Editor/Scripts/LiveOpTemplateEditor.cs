@@ -20,7 +20,7 @@ namespace CelesteEditor.LiveOps
         private SerializedProperty componentsDataProperty;
 
         private ComponentCatalogue componentCatalogue;
-        private List<Celeste.Components.Component> availableComponents = new List<Celeste.Components.Component>();
+        private List<Celeste.Components.BaseComponent> availableComponents = new List<Celeste.Components.BaseComponent>();
         private string[] availableComponentNames = default;
         private int selectedType = -1;
         private int currentPage = 0;

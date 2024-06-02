@@ -1,6 +1,6 @@
 ﻿namespace Celeste.Components
 {
-    public interface IComponentContainer<T> where T : Component
+    public interface IComponentContainer<T> where T : BaseComponent
     {
         int NumComponents { get; }
 

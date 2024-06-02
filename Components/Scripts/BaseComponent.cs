@@ -44,15 +44,15 @@ namespace Celeste.Components
 
         public bool IsValid => component != null;
 
-        public Component component;
+        public BaseComponent component;
         public Instance instance;
 
-        public ComponentHandle(Component component, ComponentData data, ComponentEvents events)
+        public ComponentHandle(BaseComponent component, ComponentData data, ComponentEvents events)
              : this(component, new Instance(data, events))
         {
         }
 
-        public ComponentHandle(Component component, Instance instance)
+        public ComponentHandle(BaseComponent component, Instance instance)
         {
             this.component = component;
             this.instance = instance;
@@ -68,7 +68,7 @@ namespace Celeste.Components
             return new InterfaceHandle<T>(component as T, instance);
         }
 
-        public ComponentHandle<T> AsComponent<T>() where T : Component
+        public ComponentHandle<T> AsComponent<T>() where T : BaseComponent
         {
             return new ComponentHandle<T>(component as T, instance);
         }
@@ -81,7 +81,7 @@ namespace Celeste.Components
     }
 
     [Serializable]
-    public struct ComponentHandle<TComponent> where TComponent : Component
+    public struct ComponentHandle<TComponent> where TComponent : BaseComponent
     {
         public static readonly ComponentHandle<TComponent> NULL = new ComponentHandle<TComponent>();
         
@@ -153,7 +153,7 @@ namespace Celeste.Components
         }
     }
 
-    public class Component : ScriptableObject
+    public class BaseComponent : ScriptableObject
     {
         public virtual ComponentData CreateData()
         {

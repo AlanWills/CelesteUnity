@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 namespace Celeste.LiveOps.Components
 {
     [CreateAssetMenu(fileName = nameof(CompletionReward), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Rewards/Completion Reward", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class CompletionReward : Celeste.Components.Component, ILiveOpCompletionReward
+    public class CompletionReward : Celeste.Components.BaseComponent, ILiveOpCompletionReward
     {
         #region Save Data
 

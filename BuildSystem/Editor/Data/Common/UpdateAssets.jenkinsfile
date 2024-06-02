@@ -56,6 +56,7 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Updating assets"'
+				sh "git pull origin ${env.GIT_BRANCH} --rebase"
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
         }
@@ -70,7 +71,7 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "{env.ASSETS_SOURCE}/*"
+                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: "${env.ASSETS_UPLOAD_CREDENTIALS}", pattern: "{env.ASSETS_SOURCE}/*"
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }

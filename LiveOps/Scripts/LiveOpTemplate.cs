@@ -3,7 +3,7 @@ using Celeste.DataStructures;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections.Generic;
 using UnityEngine;
-using Component = Celeste.Components.Component;
+using BaseComponent = Celeste.Components.BaseComponent;
 
 namespace Celeste.LiveOps
 {
@@ -24,12 +24,12 @@ namespace Celeste.LiveOps
         [SerializeField, Timestamp] private long startTimestamp;
         [SerializeField, Tooltip("The wait time between an event starting and the next recurring event starting in seconds.")] private bool isRecurring;
         [SerializeField, ShowIf(nameof(isRecurring))] private long repeatsAfter;
-        [SerializeField] private List<Component> components = new List<Component>();
+        [SerializeField] private List<BaseComponent> components = new List<BaseComponent>();
         [SerializeField] private List<string> componentsData = new List<string>();
 
         #endregion
 
-        public void AddComponent(Component component)
+        public void AddComponent(BaseComponent component)
         {
 #if NULL_CHECKS
             UnityEngine.Debug.Assert(component != null, $"Null component added to {name}.");
@@ -54,7 +54,7 @@ namespace Celeste.LiveOps
             if (0 <= componentIndex && componentIndex < components.Count)
 #endif
             {
-                Component component = components[componentIndex];
+                BaseComponent component = components[componentIndex];
                 components.RemoveAt(componentIndex);
                 componentsData.RemoveAt(componentIndex);
 #if UNITY_EDITOR
@@ -77,14 +77,14 @@ namespace Celeste.LiveOps
             }
         }
 
-        public Component GetComponent(int componentIndex)
+        public BaseComponent GetComponent(int componentIndex)
         {
             return components.Get(componentIndex);
         }
 
         public ComponentData GetComponentData(int componentIndex)
         {
-            Component component = components.Get(componentIndex);
+            BaseComponent component = components.Get(componentIndex);
             ComponentData componentData = component.CreateData();
             string componentDataJson = componentsData.Get(componentIndex);
             JsonUtility.FromJsonOverwrite(componentDataJson, componentData);

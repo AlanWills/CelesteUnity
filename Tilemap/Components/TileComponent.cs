@@ -2,7 +2,7 @@
 
 namespace Celeste.Tilemaps.Components
 {
-    public abstract class TileComponent : Component
+    public abstract class TileComponent : BaseComponent
     {
     }
 }

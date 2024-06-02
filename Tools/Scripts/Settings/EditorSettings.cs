@@ -17,7 +17,6 @@ namespace Celeste.Tools.Settings
                 Debug.Log($"Creating instance of {typeof(T).Name} because it could not be found at {filePath}.");
                 settings = CreateInstance<T>();
                 UnityEditor.AssetDatabase.CreateAsset(settings, filePath);
-                UnityEditor.AssetDatabase.SaveAssets();
                 
                 settings.OnCreate();
                 Debug.Assert(settings != null, $"Editor Settings {typeof(T).Name} was null in {nameof(GetOrCreateSettings)}.  This should never happen...");

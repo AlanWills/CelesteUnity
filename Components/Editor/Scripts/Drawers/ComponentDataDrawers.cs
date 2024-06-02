@@ -37,7 +37,7 @@ namespace CelesteEditor.Components
             }
         }
 
-        public static ComponentDataDrawer GetComponentDataDrawer(SerializedProperty dataProperty, Component component)
+        public static ComponentDataDrawer GetComponentDataDrawer(SerializedProperty dataProperty, BaseComponent component)
         {
             SerializedObject componentObject = new SerializedObject(component);
 

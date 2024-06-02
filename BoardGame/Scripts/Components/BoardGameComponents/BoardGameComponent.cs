@@ -2,7 +2,7 @@
 
 namespace Celeste.BoardGame.Components
 {
-    public abstract class BoardGameComponent : Component
+    public abstract class BoardGameComponent : BaseComponent
     {
     }
 }

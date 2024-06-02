@@ -5,7 +5,7 @@ namespace Celeste.Components
 {
     public class ComponentContainerController<TRuntime, TComponent> : MonoBehaviour, IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>
         where TRuntime : IComponentContainerRuntime<TComponent> 
-        where TComponent : Component
+        where TComponent : BaseComponent
     {
         #region Properties and Fields
 

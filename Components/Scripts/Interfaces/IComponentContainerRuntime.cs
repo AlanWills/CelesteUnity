@@ -2,7 +2,7 @@
 
 namespace Celeste.Components
 {
-    public interface IComponentContainerRuntime<T> where T : Component
+    public interface IComponentContainerRuntime<T> where T : BaseComponent
     {
         UnityEvent ComponentDataChanged { get; }
 
