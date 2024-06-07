@@ -12,6 +12,8 @@ namespace CelesteEditor.Tools
         private void OnEnable()
         {
             propertyDrawCallbacks.Clear();
+
+            DoOnEnable();
         }
 
         private void OnDisable()
@@ -21,22 +23,18 @@ namespace CelesteEditor.Tools
 
         public sealed override void OnInspectorGUI()
         {
-            serializedObject.Update();
-
             OnPrePropertiesGUI();
 
-            SerializedProperty serializedProperty = serializedObject.GetIterator();
+            serializedObject.Update();
 
-            DrawProperty(serializedProperty);
-
-            foreach (SerializedProperty property in serializedProperty.EditorOnly_VisibleChildProperties())
+            foreach (SerializedProperty property in serializedObject.EditorOnly_AllVisibleProperties())
             {
                 DrawProperty(property);
             }
 
-            OnPostPropertiesGUI();
-
             serializedObject.ApplyModifiedProperties();
+
+            OnPostPropertiesGUI();
         }
 
         protected virtual void DoOnEnable() { }

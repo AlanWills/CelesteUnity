@@ -7,6 +7,7 @@
         "Celeste.Memory",
         "Celeste.Tools",
         "Celeste.UnityProject",
+        "Celeste.RemoteConfig",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

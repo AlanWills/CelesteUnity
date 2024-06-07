@@ -62,14 +62,14 @@ namespace Celeste.Loading
 
                         if (getSizeOperation.Status != AsyncOperationStatus.Succeeded)
                         {
-                            HudLog.LogError(getSizeOperation.OperationException.Message);
+                            Debug.LogError(getSizeOperation.OperationException.Message, CelesteLog.Addressables);
                             setOutput($"Failed: Could not get size of {addressablesLabel}");
                             setProgress(1);
 
                             yield break;
                         }
 
-                        HudLog.LogInfo($"Size of {addressablesLabel} is {getSizeOperation.Result}");
+                        Debug.Log($"Size of {addressablesLabel} is {getSizeOperation.Result}.", CelesteLog.Addressables);
 
                         if (getSizeOperation.Result == 0)
                         {
@@ -107,14 +107,14 @@ namespace Celeste.Loading
 
                         if (downloadOperation.Status != AsyncOperationStatus.Succeeded)
                         {
-                            HudLog.LogError(downloadOperation.OperationException.Message);
+                            Debug.LogError(downloadOperation.OperationException.Message, CelesteLog.Addressables);
                             setOutput($"Failed: Could not download {addressablesLabel}");
                             setProgress(1);
 
                             yield break;
                         }
 
-                        HudLog.LogInfo($"Downloaded {addressablesLabel} successfully");
+                        Debug.Log($"Downloaded {addressablesLabel} successfully!", CelesteLog.Addressables);
                     }
                     else
                     {

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logRecord: {fileID: 11400000, guid: 6bc0bad7f868db34b92e3b5fc7d439bd, type: 2}
   sectionLogSettingsCatalogue: {fileID: 0}
+  remoteConfigRecord: {fileID: 0}
 --- !u!114 &3694818387209789720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,3 +61,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coreLogSettings: {fileID: 11400000, guid: 8dc305e5cbe356447aad736542825bff, type: 2}
+  persistenceLogSettings: {fileID: 11400000, guid: d7a2fc045f4216a4f922bb31300c6c43, type: 2}
+  addressablesLogSettings: {fileID: 11400000, guid: f7b3df466a40c43408ab7f2cc4f8e782, type: 2}

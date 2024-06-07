@@ -56,7 +56,7 @@ namespace Celeste.Persistence.Debug
                         File.WriteAllText(path, snapshotAsJson);
                     }
 
-                    HudLog.LogInfo($"Snapshot {dataSnapshot.name} created successfully!");
+                    UnityEngine.Debug.Log($"Snapshot {dataSnapshot.name} created successfully!", CelesteLog.Persistence);
                     snapshotRecord.RuntimeSnapshots.AddItem(dataSnapshot);
                 }
             }

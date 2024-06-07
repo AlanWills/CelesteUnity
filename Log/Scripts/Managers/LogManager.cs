@@ -1,3 +1,5 @@
+using Celeste.RemoteConfig;
+using Celeste.Tools;
 using System;
 using UnityEngine;
 
@@ -8,10 +10,25 @@ namespace Celeste.Log
     {
         #region Properties and Fields
 
+        public SectionLogSettingsCatalogue SectionLogSettingsCatalogue
+        {
+            set
+            {
+                if (sectionLogSettingsCatalogue != value)
+                {
+                    sectionLogSettingsCatalogue = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
+        }
+
         [SerializeField] private LogRecord logRecord;
         [SerializeField] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
+        [SerializeField] private RemoteConfigRecord remoteConfigRecord;
 
         [NonSerialized] private ILogHandler unityLogHandler;
+
+        private const string LOG_CONFIG_KEY = "LogConfig";
 
         #endregion
 
@@ -31,6 +48,8 @@ namespace Celeste.Log
 
                 logRecord.Initialize(unityLogHandler, sectionLogSettingsCatalogue);
                 UnityEngine.Debug.unityLogger.logHandler = logRecord;
+                
+                SyncLogSettingsFromRemoteConfig();
             }
             else if (logRecord == null)
             {
@@ -51,6 +70,38 @@ namespace Celeste.Log
             }
 
             UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
+        }
+
+        #endregion
+        private void SyncLogSettingsFromRemoteConfig()
+        {
+            if (remoteConfigRecord == null)
+            {
+                return;
+            }
+
+            IRemoteConfigDictionary logConfig = remoteConfigRecord.GetDictionary(LOG_CONFIG_KEY);
+
+            if (logConfig != null)
+            {
+                for (int i = 0, n = logRecord.NumSectionLogSettings; i < n; ++i)
+                {
+                    SectionLogSettings sectionLogSettings = logRecord.GetSectionLogSettings(i);
+                    string sectionSettings = remoteConfigRecord.GetString(sectionLogSettings.SectionName, string.Empty);
+
+                    if (!string.IsNullOrEmpty(sectionSettings))
+                    {
+                        JsonUtility.FromJsonOverwrite(sectionSettings, sectionSettings);
+                    }
+                }
+            }
+        }
+
+        #region Callbacks
+
+        public void OnRemoteConfigChanged()
+        {
+            SyncLogSettingsFromRemoteConfig();
         }
 
         #endregion

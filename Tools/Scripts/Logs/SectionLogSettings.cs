@@ -7,6 +7,16 @@ namespace Celeste.Log
     [CreateAssetMenu(fileName = nameof(SectionLogSettings), menuName = CelesteMenuItemConstants.LOG_MENU_ITEM + "Section Log Settings", order = CelesteMenuItemConstants.LOG_MENU_ITEM_PRIORITY)]
     public class SectionLogSettings : ScriptableObject
     {
+        [Flags]
+        private enum LogTypeBitField
+        {
+            Log = 1 << 0,
+            Warning = 1 << 1,
+            Error = 1 << 2,
+            Assertion = 1 << 3,
+            Exception = 1 << 4
+        }
+
         #region Properties and Fields
 
         public UnityEngine.Object LogContext { get; set; }
@@ -15,12 +25,7 @@ namespace Celeste.Log
 
         [SerializeField] private string sectionName;
         [SerializeField] private Color32 sectionColour;
-        [SerializeField] private List<LogType> typesToLogToHudAutomatically = new List<LogType>()
-        {
-            LogType.Exception,
-            LogType.Error,
-            LogType.Assert
-        };
+        [SerializeField] private LogTypeBitField typesToLogToHudAutomatically = LogTypeBitField.Error | LogTypeBitField.Assertion | LogTypeBitField.Exception;
 
         #endregion
 
@@ -41,7 +46,8 @@ namespace Celeste.Log
 
         public bool ShouldLogToHud(LogType logType)
         {
-            return typesToLogToHudAutomatically.Contains(logType);
+            LogTypeBitField logTypeBitField = ToLogTypeBitField(logType);
+            return typesToLogToHudAutomatically.HasFlag(logTypeBitField);
         }
 
         public string FormatLogMessage(string format, params object[] args)
@@ -65,6 +71,25 @@ namespace Celeste.Log
             // A bit of a hack around the fact we're passing this as the context to a log, but may still want to pass an actual object for the context to Unity logs (and others)
             LogContext = logContext;
             return this;
+        }
+
+        private static LogTypeBitField ToLogTypeBitField(LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Log:
+                    return LogTypeBitField.Log;
+                case LogType.Warning:
+                    return LogTypeBitField.Warning;
+                case LogType.Error:
+                    return LogTypeBitField.Error;
+                case LogType.Assert:
+                    return LogTypeBitField.Assertion;
+                case LogType.Exception:
+                    return LogTypeBitField.Exception;
+                default:
+                    return LogTypeBitField.Log;
+            }
         }
     }
 }

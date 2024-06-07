@@ -35,6 +35,7 @@ using CelesteEditor.BuildSystem.Steps;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using System.Security.Cryptography;
 using Celeste.Scene.Catalogue;
+using Celeste.Log;
 
 namespace CelesteEditor.UnityProject
 {
@@ -657,15 +658,20 @@ namespace CelesteEditor.UnityProject
         private static void CreateEngineSystemsAssets(SetUpCelesteParameters parameters)
         {
             MusicSettings musicSettings = ScriptableObject.CreateInstance<MusicSettingsUsingAssets>();
-            musicSettings.name = "MusicSettings";
+            musicSettings.name = nameof(MusicSettings);
             MakeAddressable(parameters, musicSettings);
 
             SFXSettings sfxSettings = ScriptableObject.CreateInstance<SFXSettingsUsingAssets>();
-            sfxSettings.name = "SFXSettings";
+            sfxSettings.name = nameof(SFXSettings);
             MakeAddressable(parameters, sfxSettings);
+
+            SectionLogSettingsCatalogue sectionLogSettingsCatalogue = ScriptableObject.CreateInstance<SectionLogSettingsCatalogue>();
+            sectionLogSettingsCatalogue.name = nameof(SectionLogSettingsCatalogue);
+            MakeAddressable(parameters, sectionLogSettingsCatalogue);
 
             EditorOnly.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
             EditorOnly.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
+            EditorOnly.CreateAssetInFolder(sectionLogSettingsCatalogue, EngineSystemsConstants.DATA_FOLDER_PATH);
 
             UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
 
@@ -688,6 +694,17 @@ namespace CelesteEditor.UnityProject
                 if (sfxManager != null)
                 {
                     sfxManager.SFXSettings = sfxSettings;
+                }
+            }
+
+            // Set Section Log Settings Catalogue
+            {
+                LogManager logManager = GameObject.FindFirstObjectByType<LogManager>();
+                Debug.Assert(logManager, $"Could not find {nameof(LogManager)} in the Engine Systems scene!  You'll have to assign Log settings manually...");
+
+                if (logManager != null)
+                {
+                    logManager.SectionLogSettingsCatalogue = sectionLogSettingsCatalogue;
                 }
             }
 

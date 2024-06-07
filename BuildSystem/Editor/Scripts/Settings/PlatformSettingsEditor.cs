@@ -1,4 +1,5 @@
 ﻿using Celeste;
+using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,11 +7,11 @@ namespace CelesteEditor.BuildSystem
 {
     [CustomEditor(typeof(PlatformSettings), true)]
     [CanEditMultipleObjects]
-    public class PlatformSettingsEditor : Editor
+    public class PlatformSettingsEditor : AdvancedEditor
     {
         #region GUI
 
-        public override void OnInspectorGUI()
+        protected override void OnPrePropertiesGUI()
         {
             serializedObject.Update();
 
@@ -105,8 +106,6 @@ namespace CelesteEditor.BuildSystem
             }
 
             EditorGUILayout.Space();
-
-            base.OnInspectorGUI();
 
             serializedObject.ApplyModifiedProperties();
         }

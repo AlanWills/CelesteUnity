@@ -1,7 +1,7 @@
 ﻿using Celeste.Log;
 using Celeste.Persistence.Settings;
 using Celeste.Persistence.Snapshots;
-using Celeste.Persistence.Utility;
+using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections;
 using System.IO;
@@ -100,17 +100,17 @@ namespace Celeste.Persistence
                     if (tDTO != null)
                     {
                         Deserialize(tDTO);
-                        HudLog.LogInfo($"{name} loaded");
+                        UnityEngine.Debug.Log($"{name} loaded.", CelesteLog.Persistence);
                     }
                     else
                     {
-                        HudLog.LogError($"Error deserializing data in {persistentFilePath}.  Using default values.");
+                        UnityEngine.Debug.LogError($"Error deserializing data in {persistentFilePath}.  Using default values.", CelesteLog.Persistence.WithContext(this));
                         SetDefaultValues();
                     }
                 }
                 else
                 {
-                    UnityEngine.Debug.Log($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.");
+                    UnityEngine.Debug.Log($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.", CelesteLog.Persistence);
                     SetDefaultValues();
                 }
             }
@@ -120,8 +120,8 @@ namespace Celeste.Persistence
         {
             if (loadingLock.Locked)
             {
-                HudLog.LogError($"{name} is ignoring a save request as loading is in progress.  " +
-                    $"You can use {nameof(DelayedSave)} if you really need to save immediately, but it's likely you're accidentally requesting a save during loading.");
+                UnityEngine.Debug.LogError($"{name} is ignoring a save request as loading is in progress.  " +
+                    $"You can use {nameof(DelayedSave)} if you really need to save immediately, but it's likely you're accidentally requesting a save during loading.", CelesteLog.Persistence.WithContext(this));
                 return;
             }
 
@@ -172,11 +172,11 @@ namespace Celeste.Persistence
 
             if (saveTask.IsCompletedSuccessfully)
             {
-                HudLog.LogInfo($"{name} saved successfully");
+                UnityEngine.Debug.Log($"{name} saved successfully.", CelesteLog.Core);
             }
             else
             {
-                HudLog.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}");
+                UnityEngine.Debug.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}", CelesteLog.Persistence.WithContext(this));
             }
 
             if (saveRequested)

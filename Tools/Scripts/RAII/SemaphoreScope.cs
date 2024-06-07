@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Celeste.Persistence.Utility
+namespace Celeste.Tools
 {
     public class Semaphore
     {

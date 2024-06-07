@@ -88,7 +88,7 @@ namespace Celeste.Features.Persistence
                 {
                     Feature feature = featureRecord.GetFeature(i);
                     
-                    if (remoteConfigRecord.GetBool(feature.name, false))
+                    if (featuresConfig.GetBool(feature.name, false))
                     {
                         feature.Kill();
                     }

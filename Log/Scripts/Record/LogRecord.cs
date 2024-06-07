@@ -1,3 +1,4 @@
+using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Celeste.Log
         [NonSerialized] private List<ICustomLogHandler> customLogHandlers = new List<ICustomLogHandler>();
         [NonSerialized] private HashSet<SectionLogSettings> blacklistedSections = new HashSet<SectionLogSettings>();
         [NonSerialized] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
+        [NonSerialized] private Semaphore loggingException;
+        [NonSerialized] private Semaphore loggingNormally;
 
         #endregion
 
@@ -58,6 +61,16 @@ namespace Celeste.Log
             }
         }
 
+        public SectionLogSettings GetSectionLogSettings(int index)
+        {
+            return sectionLogSettingsCatalogue.GetItem(index);
+        }
+
+        public bool IsSectionBlacklisted(SectionLogSettings settings)
+        {
+            return blacklistedSections.Contains(settings);
+        }
+
         public void RemoveSectionFromBlacklist(string sectionName)
         {
             SectionLogSettings settings = sectionLogSettingsCatalogue.MustFindBySectionName(sectionName);
@@ -66,63 +79,81 @@ namespace Celeste.Log
 
         public void LogException(Exception exception, UnityEngine.Object context)
         {
-            if (context is SectionLogSettings logSettings)
+            if (loggingException.Locked)
             {
-                if (!blacklistedSections.Contains(logSettings))
-                {
-                    string formattedException = logSettings.FormatException(exception);
-                    defaultUnityLogHandler.LogFormat(LogType.Exception, logSettings.LogContext, "{0}", formattedException);
+                // Prevent infinite loops
+                return;
+            }
 
-                    if (logSettings.ShouldLogToHud(LogType.Exception))
+            using (loggingException.Lock())
+            {
+                if (context is SectionLogSettings logSettings)
+                {
+                    if (!blacklistedSections.Contains(logSettings))
                     {
-                        hudLogHandler.LogException(exception, logSettings.LogContext, formattedException);
+                        string formattedException = logSettings.FormatException(exception);
+                        defaultUnityLogHandler.LogFormat(LogType.Exception, logSettings.LogContext, "{0}", formattedException);
+
+                        if (logSettings.ShouldLogToHud(LogType.Exception))
+                        {
+                            hudLogHandler.LogException(exception, logSettings.LogContext, formattedException);
+                        }
+
+                        for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
+                        {
+                            customLogHandlers[i].LogException(exception, logSettings.LogContext, formattedException);
+                        }
                     }
+                }
+                else
+                {
+                    string exceptionMessage = $"{exception.Message}";
+                    defaultUnityLogHandler.LogException(exception, context);
+                    hudLogHandler.LogException(exception, context, exceptionMessage);
 
                     for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
                     {
-                        customLogHandlers[i].LogException(exception, logSettings.LogContext, formattedException);
+                        customLogHandlers[i].LogException(exception, context, exceptionMessage);
                     }
-                }
-            }
-            else
-            {
-                string exceptionMessage = $"{exception.Message}";
-                defaultUnityLogHandler.LogException(exception, context);
-                hudLogHandler.LogException(exception, context, exceptionMessage);
-
-                for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
-                {
-                    customLogHandlers[i].LogException(exception, context, exceptionMessage);
                 }
             }
         }
 
         public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)
         {
-            if (context is SectionLogSettings logSettings)
+            if (loggingNormally.Locked)
             {
-                string formattedLog = logSettings.FormatLogMessage(format, args);
-                defaultUnityLogHandler.LogFormat(logType, logSettings.LogContext, "{0}", formattedLog);
-
-                if (logSettings.ShouldLogToHud(logType))
-                {
-                    hudLogHandler.Log(logType, logSettings.LogContext, formattedLog);
-                }
-
-                for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
-                {
-                    customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog);
-                }
+                // Prevent infinite loops
+                return;
             }
-            else
-            {
-                string formattedLog = string.Format(format, args);
-                defaultUnityLogHandler.LogFormat(logType, context, format, args);
-                hudLogHandler.Log(logType, context, formattedLog);
 
-                for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
+            using (loggingNormally.Lock())
+            {
+                if (context is SectionLogSettings logSettings)
                 {
-                    customLogHandlers[i].Log(logType, context, formattedLog);
+                    string formattedLog = logSettings.FormatLogMessage(format, args);
+                    defaultUnityLogHandler.LogFormat(logType, logSettings.LogContext, "{0}", formattedLog);
+
+                    if (logSettings.ShouldLogToHud(logType))
+                    {
+                        hudLogHandler.Log(logType, logSettings.LogContext, formattedLog);
+                    }
+
+                    for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
+                    {
+                        customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog);
+                    }
+                }
+                else
+                {
+                    string formattedLog = string.Format(format, args);
+                    defaultUnityLogHandler.LogFormat(logType, context, format, args);
+                    hudLogHandler.Log(logType, context, formattedLog);
+
+                    for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
+                    {
+                        customLogHandlers[i].Log(logType, context, formattedLog);
+                    }
                 }
             }
         }

@@ -7,7 +7,6 @@
         "Unity.TextMeshPro",
         "Celeste.Scene",
         "Celeste.Events",
-        "Celeste.Log",
         "Celeste.Objects",
         "Celeste.Assets",
         "Celeste.Coroutines",

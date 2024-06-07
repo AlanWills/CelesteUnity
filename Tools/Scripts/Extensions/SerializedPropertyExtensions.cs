@@ -25,6 +25,23 @@ namespace Celeste.Tools
                 while (property.NextVisible(false));
             }
         }
+
+        public static IEnumerable<SerializedProperty> EditorOnly_AllVisibleProperties(this SerializedObject serializedObject)
+        {
+            SerializedProperty serializedProperty = serializedObject.GetIterator();
+            serializedProperty.NextVisible(true);
+
+            yield return serializedProperty;
+
+            if (serializedProperty.NextVisible(true))
+            {
+                do
+                {
+                    yield return serializedProperty;
+                }
+                while (serializedProperty.NextVisible(false));
+            }
+        }
 #endif
     }
 }

@@ -2,7 +2,6 @@
     "name": "Celeste.Persistence",
     "rootNamespace": "Celeste.Persistence",
     "references": [
-        "Celeste.Log",
         "Celeste.Objects",
         "Celeste.Tools",
         "Celeste.FullSerializer",

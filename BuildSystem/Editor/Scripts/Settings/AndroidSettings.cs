@@ -61,7 +61,7 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         [Tooltip("The minimum Android Sdk version that this build will be able to target.")]
-        private AndroidSdkVersions minSdkVersion;
+        private AndroidSdkVersions minSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
         public AndroidSdkVersions MinSdkVersion
         {
             get => minSdkVersion;
@@ -77,7 +77,7 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         [Tooltip("The desired Android Sdk version that this build will be able to target.")]
-        private AndroidSdkVersions targetSdkVersion;
+        private AndroidSdkVersions targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
         public AndroidSdkVersions TargetSdkVersion
         {
             get => targetSdkVersion;
@@ -122,6 +122,8 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        public const int DEFAULT_TARGET_SDK_VERSION = 33;
+
         #endregion
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
@@ -133,7 +135,7 @@ namespace CelesteEditor.BuildSystem
             Architecture = AndroidArchitecture.ARMv7;
             RequiresWritePermission = true;
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
-            TargetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
+            TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;
         }
 
         protected override void ApplyImpl()
