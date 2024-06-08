@@ -87,7 +87,7 @@ namespace Celeste.Loading
             Debug.Log($"Beginning to load bundle cache info at {url}.");
             string cachedBundlesInfo = "";
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             var loadBundleCacheRequest = UnityWebRequest.Get(url);
             yield return loadBundleCacheRequest.SendWebRequest();
 

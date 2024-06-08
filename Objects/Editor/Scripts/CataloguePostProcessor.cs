@@ -9,7 +9,12 @@ namespace CelesteEditor.Objects
         where TAsset : UnityEngine.Object
         where TCatalogue : ListScriptableObject<TAsset>
     {
-        public static void ImportAssetsIntoCatalogues()
+        public static void HandleOnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
+        {
+            CompletelyRefreshAssetsInCatalogues();
+        }
+
+        private static void CompletelyRefreshAssetsInCatalogues()
         {
             HashSet<TAsset> existingItems = new HashSet<TAsset>();
 

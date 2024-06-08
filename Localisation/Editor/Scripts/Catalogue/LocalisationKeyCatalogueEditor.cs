@@ -1,6 +1,7 @@
 ﻿using Celeste.Localisation;
 using Celeste.Localisation.Catalogue;
 using Celeste.Tools;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -18,17 +19,16 @@ namespace CelesteEditor.Localisation.Catalogue
 
             if (GUILayout.Button("Find All"))
             {
-                Dictionary<string, LocalisationKey> newLookup = new Dictionary<string, LocalisationKey>();
+                Dictionary<string, LocalisationKey> newLookup = new Dictionary<string, LocalisationKey>(StringComparer.Ordinal);
 
                 foreach (var localisationKey in EditorOnly.FindAssets<LocalisationKey>())
                 {
+                    Debug.Assert(!string.IsNullOrEmpty(localisationKey.Key), $"Found a localisation key {localisationKey.name} with a null or empty Key!");
                     newLookup.Add(localisationKey.Key, localisationKey);
                 }
 
                 localisationKeyCatalogue.SetItems(newLookup);
-                
-                EditorUtility.SetDirty(target);
-                AssetDatabase.SaveAssets();
+                EditorOnly.SaveAsset(target);
             }
 
             if (GUILayout.Button("Remove Null"))
@@ -44,9 +44,7 @@ namespace CelesteEditor.Localisation.Catalogue
                 }
 
                 localisationKeyCatalogue.SetItems(newLookup);
-
-                EditorUtility.SetDirty(target);
-                AssetDatabase.SaveAssets();
+                EditorOnly.SaveAsset(target);
             }
 
             base.OnInspectorGUI();

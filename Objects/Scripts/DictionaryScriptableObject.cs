@@ -153,7 +153,10 @@ namespace Celeste.Objects
             foreach (var item in items)
             {
 #if KEY_CHECKS
-                UnityEngine.Debug.Assert(!itemsDictionary.ContainsKey(item.key), $"{name} already contains an item with key {item.key}.  The old value {itemsDictionary[item.key]} will be replaced with {item.value}.");
+                if (itemsDictionary.TryGetValue(item.key, out TValue oldValue))
+                {
+                    Debug.LogAssertion($"{nameof(DictionaryScriptableObject<TKey, TValue>)} already contains an item with key {item.key}.  The old value {oldValue} will be replaced with {item.value}.");
+                }
 #endif
                 itemsDictionary[item.key] = item.value;
             }

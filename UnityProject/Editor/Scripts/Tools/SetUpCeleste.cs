@@ -581,6 +581,16 @@ namespace CelesteEditor.UnityProject
         private static void CreateBootstrapScene(SetUpCelesteParameters parameters)
         {
             UnityEngine.SceneManagement.Scene bootstrapScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+
+            // Create main camera
+            {
+                GameObject cameraGameObject = new GameObject("Main Camera");
+                Camera camera = cameraGameObject.AddComponent<Camera>();
+                camera.clearFlags = CameraClearFlags.SolidColor;
+                camera.backgroundColor = Color.white;
+                camera.orthographic = true;
+            }
+
             GameObject bootstrapManagerPrefab = EditorOnly.FindAsset<GameObject>(BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME);
             Debug.Assert(bootstrapManagerPrefab != null, $"Could not find bootstrap manager prefab: {BootstrapConstants.BOOTSTRAP_MANAGER_PREFAB_NAME}.");
 
@@ -713,7 +723,7 @@ namespace CelesteEditor.UnityProject
 
         #endregion
 
-        #region Game Systems
+        #region Loading
 
         private static void CreateLoading(SetUpCelesteParameters parameters)
         {

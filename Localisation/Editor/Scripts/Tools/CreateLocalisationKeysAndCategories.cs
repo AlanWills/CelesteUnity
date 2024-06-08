@@ -10,6 +10,7 @@ using Celeste.Web.ImportSteps;
 using System.IO;
 using Celeste;
 using Celeste.Tools;
+using CelesteEditor.Tools;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -41,86 +42,86 @@ namespace CelesteEditor.Localisation.Tools
 
         public override void Execute(GoogleSheet googleSheet)
         {
-            GoogleSheet.Column keyStrings = googleSheet.GetColumn(keyColumn);
-            GoogleSheet.Column categoryStrings = googleSheet.GetColumn(categoryColumn);
-
-            for (int column = languagesColumnOffset; column < googleSheet.NumColumns; ++column)
+            using (new AssetEditingScope())
             {
-                GoogleSheet.Column columnData = googleSheet.GetColumn(column);
-                Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
-                Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
+                GoogleSheet.Column keyStrings = googleSheet.GetColumn(keyColumn);
+                GoogleSheet.Column categoryStrings = googleSheet.GetColumn(categoryColumn);
 
-                Dictionary<string, AudioClip> speechLookup = CreateSpeechLookup(language);
-                List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
-
-                for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
+                for (int column = languagesColumnOffset; column < googleSheet.NumColumns; ++column)
                 {
-                    string keyString = keyStrings.Values[row];
-                    string localisedString = columnData.Values[row];
-                    string categoryString = categoryStrings.Values[row];
+                    GoogleSheet.Column columnData = googleSheet.GetColumn(column);
+                    Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
+                    Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
 
-                    if (string.IsNullOrEmpty(localisedString))
-                    {
-                        Debug.LogAssertion($"Key {keyString} has no localised string set for language {language.name}.");
-                        continue;
-                    }
+                    Dictionary<string, AudioClip> speechLookup = CreateSpeechLookup(language);
+                    List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
-                    foreach (char disallowedTrailingCharacters in disallowedTrailingCharacters)
+                    for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
                     {
-                        if (localisedString.EndsWith(disallowedTrailingCharacters))
+                        string keyString = keyStrings.Values[row];
+                        string localisedString = columnData.Values[row];
+                        string categoryString = categoryStrings.Values[row];
+
+                        if (string.IsNullOrEmpty(localisedString))
                         {
-                            Debug.LogError($"{keyString} {language.CountryCode} localisation ends with disallowed character {disallowedTrailingCharacters}.  Removing...");
-                            localisedString = localisedString.Remove(localisedString.Length - 1);
-                            break;
+                            Debug.LogAssertion($"Key {keyString} has no localised string set for language {language.name}.");
+                            continue;
                         }
+
+                        foreach (char disallowedTrailingCharacters in disallowedTrailingCharacters)
+                        {
+                            if (localisedString.EndsWith(disallowedTrailingCharacters))
+                            {
+                                Debug.LogError($"{keyString} {language.CountryCode} localisation ends with disallowed character {disallowedTrailingCharacters}.  Removing...");
+                                localisedString = localisedString.Remove(localisedString.Length - 1);
+                                break;
+                            }
+                        }
+
+                        // Need to create a new localisation key asset
+                        LocalisationKey localisationKey = localisationKeyCatalogue.GetItem(keyString);
+
+                        if (localisationKey == null)
+                        {
+                            Debug.Assert(!string.IsNullOrEmpty(keyString), $"Null or empty key string found for column {column} in row {row} for category {categoryString}.");
+                            Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for column {column} in row {row} for category {categoryString}.");
+                            localisationKey = CreateInstance<LocalisationKey>();
+                            localisationKey.name = keyString.ToAssetName();
+                            localisationKey.Key = keyString;
+                            localisationKey.Fallback = localisedString;
+
+                            localisationKeyCatalogue.AddItem(keyString, localisationKey);
+
+                            string directory = $"{localisationKeysDirectory}/{categoryString}";
+                            EditorOnly.CreateAssetInFolder(localisationKey, directory);
+                        }
+
+                        LocalisationKeyCategory localisationKeyCategory = localisationKeyCategoryCatalogue.FindByCategoryName(categoryString);
+
+                        if (localisationKeyCategory == null)
+                        {
+                            localisationKeyCategory = CreateInstance<LocalisationKeyCategory>();
+                            localisationKeyCategory.name = $"{categoryString.ToAssetName()}Category";
+                            localisationKeyCategory.CategoryName = categoryString;
+
+                            localisationKeyCategoryCatalogue.AddItem(localisationKeyCategory);
+
+                            EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
+                        }
+
+                        if (!speechLookup.TryGetValue(localisationKey.Key, out AudioClip audioClip))
+                        {
+                            Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
+                        }
+
+                        localisationKey.Category = localisationKeyCategory;
+                        localisationEntries.Add(new LocalisationEntry(localisationKey, localisedString, audioClip));
                     }
 
-                    // Need to create a new localisation key asset
-                    LocalisationKey localisationKey = localisationKeyCatalogue.GetItem(keyString);
-
-                    if (localisationKey == null)
-                    {
-                        Debug.Assert(!string.IsNullOrEmpty(keyString), $"Null or empty key string found for column {column} in row {row} for category {categoryString}.");
-                        Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for column {column} in row {row} for category {categoryString}.");
-                        localisationKey = CreateInstance<LocalisationKey>();
-                        localisationKey.name = keyString.ToAssetName();
-                        localisationKey.Key = keyString;
-                        localisationKey.Fallback = localisedString;
-
-                        localisationKeyCatalogue.AddItem(keyString, localisationKey);
-
-                        string directory = $"{localisationKeysDirectory}/{categoryString}";
-                        EditorOnly.CreateAssetInFolder(localisationKey, directory);
-                    }
-
-                    LocalisationKeyCategory localisationKeyCategory = localisationKeyCategoryCatalogue.FindByCategoryName(categoryString);
-
-                    if (localisationKeyCategory == null)
-                    {
-                        localisationKeyCategory = CreateInstance<LocalisationKeyCategory>();
-                        localisationKeyCategory.name = $"{categoryString.ToAssetName()}Category";
-                        localisationKeyCategory.CategoryName = categoryString;
-
-                        localisationKeyCategoryCatalogue.AddItem(localisationKeyCategory);
-
-                        EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
-                    }
-
-                    if (!speechLookup.TryGetValue(localisationKey.Key, out AudioClip audioClip))
-                    {
-                        Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
-                    }
-                    
-                    localisationKey.Category = localisationKeyCategory;
-                    localisationEntries.Add(new LocalisationEntry(localisationKey, localisedString, audioClip));
+                    language.AddEntries(localisationEntries);
+                    EditorUtility.SetDirty(language);
                 }
-
-                language.AddEntries(localisationEntries);
-                EditorUtility.SetDirty(language);
             }
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
         }
 
         private Dictionary<string, AudioClip> CreateSpeechLookup(Language language)

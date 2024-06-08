@@ -115,8 +115,6 @@ namespace CelesteEditor.LiveOps
                 }
                 else
                 {
-                    DrawValidationGUI();
-
                     currentPage = GUIExtensions.ReadOnlyPaginatedList(
                         currentPage,
                         40,

@@ -17,8 +17,8 @@ namespace Celeste.Log
         [NonSerialized] private List<ICustomLogHandler> customLogHandlers = new List<ICustomLogHandler>();
         [NonSerialized] private HashSet<SectionLogSettings> blacklistedSections = new HashSet<SectionLogSettings>();
         [NonSerialized] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
-        [NonSerialized] private Semaphore loggingException;
-        [NonSerialized] private Semaphore loggingNormally;
+        [NonSerialized] private Semaphore loggingException = new Semaphore();
+        [NonSerialized] private Semaphore loggingNormally = new Semaphore();
 
         #endregion
 

@@ -63,13 +63,15 @@ namespace Celeste.Log
 
         private void OnDisable()
         {
-            if (unityLogHandler == null || logRecord.Equals(unityLogHandler))
+            if (logRecord.Equals(unityLogHandler))
             {
-                UnityEngine.Debug.LogAssertion($"The default unity log handler looks odd, so we'll replace it with a fresh UnityEngine.DebugLogHandler.");
+                UnityEngine.Debug.LogAssertion($"The default unity log handler looks odd, so we're going to set it to null.  Unity may not recover from this in which case, you may lose logs until you restart Unity.");
                 unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
             }
-
-            UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
+            else if (unityLogHandler != null)
+            {
+                UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
+            }
         }
 
         #endregion

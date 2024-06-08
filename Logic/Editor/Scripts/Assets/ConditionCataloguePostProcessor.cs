@@ -8,7 +8,7 @@ namespace CelesteEditor.Logic.Assets
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
-            ImportAssetsIntoCatalogues();
+            HandleOnPostprocessAllAssets(importedAssets, deletedAssets, movedAssets, movedFromAssetPaths, didDomainReload);
         }
     }
 }

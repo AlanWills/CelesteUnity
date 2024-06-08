@@ -1,8 +1,10 @@
 using Celeste.Localisation.Catalogue;
 using Celeste.Localisation.Pronouns;
+using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEditor;
 using UnityEngine;
 
 namespace Celeste.Localisation
@@ -136,7 +138,7 @@ namespace Celeste.Localisation
         {
             if (key == null)
             {
-                UnityEngine.Debug.LogAssertion("Failed to perform localisation due to null inputted key.  No fallback possible...");
+                UnityEngine.Debug.LogAssertion($"Failed to perform localisation due to null inputted key in language {name}.  No fallback possible...");
                 return string.Empty;
             }
 
@@ -147,7 +149,7 @@ namespace Celeste.Localisation
         {
             if (!localisationLookup.TryGetValue(key, out string localisedText))
             {
-                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry.");
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to localise '{key}' due to missing entry in language {name}.");
                 return fallback;
             }
 
@@ -158,7 +160,7 @@ namespace Celeste.Localisation
         {
             if (numberToTextConverter == null)
             {
-                UnityEngine.Debug.LogAssertion($"Failed to localise {number} due to missing converter.  No fallback possible...");
+                UnityEngine.Debug.LogAssertion($"Failed to localise {number} due to missing converter in language {name}.  No fallback possible...");
                 return number.ToString();
             }
 
@@ -187,13 +189,13 @@ namespace Celeste.Localisation
         {
             if (key == null)
             {
-                UnityEngine.Debug.LogAssertion("Failed to perform synthesize due to null inputted key.  No fallback possible...");
+                UnityEngine.Debug.LogAssertion($"Failed to perform synthesize due to null inputted key in language {name}.  No fallback possible...");
                 return null;
             }
 
             if (!speechLookup.TryGetValue(key.Key, out AudioClip synthesizedText))
             {
-                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to perform synthesize of '{key}' due to missing entry.  No fallback possible...");
+                UnityEngine.Debug.Assert(!assertOnFallback, $"Failed to perform synthesize of '{key}' due to missing entry in language {name}.  No fallback possible...");
                 return null;
             }
 
@@ -260,9 +262,7 @@ namespace Celeste.Localisation
                 if (!speechLookup.ContainsKey(audioClip.name))
                 {
                     speechLookup.Add(audioClip.name, audioClip);
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
                 else
                 {
@@ -277,9 +277,7 @@ namespace Celeste.Localisation
             categoryLookup.Clear();
             speechLookup.Clear();
 
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
+            EditorOnly.SetDirty(this);
         }
 
         public bool HasKey(LocalisationKey localisationKey)
@@ -351,14 +349,14 @@ namespace Celeste.Localisation
             foreach (LocalisationData localisationData in localisation)
             {
 #if KEY_CHECKS
-                UnityEngine.Debug.Assert(!localisationLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in localised text lookup in language {name}.");
+                UnityEngine.Debug.Assert(!localisationLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in localised text lookup in language.");
 #endif
                 localisationLookup[localisationData.key] = localisationData.localisedText;
 
                 if (localisationData.synthesizedSpeech != null)
                 {
 #if KEY_CHECKS
-                    UnityEngine.Debug.Assert(!speechLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in speech lookup in language {name}.");
+                    UnityEngine.Debug.Assert(!speechLookup.ContainsKey(localisationData.key), $"Duplicated localisation key {localisationData.key} found in speech lookup in language.");
 #endif
                     speechLookup[localisationData.key] = localisationData.synthesizedSpeech;
                 }
@@ -367,7 +365,10 @@ namespace Celeste.Localisation
             foreach (LocalisationCategoryData localisationCategoryData in categories)
             {
 #if KEY_CHECKS
-                UnityEngine.Debug.Assert(!categoryLookup.ContainsKey(localisationCategoryData.category), $"Duplicated category {localisationCategoryData.category} found in category lookup in language {name}.");
+                if (categoryLookup.ContainsKey(localisationCategoryData.category))
+                {
+                    UnityEngine.Debug.LogAssertion($"Duplicated category {localisationCategoryData.category.CategoryName} found in category lookup in language.");
+                }
 #endif
                 categoryLookup[localisationCategoryData.category] = localisationCategoryData.keys;
             }
