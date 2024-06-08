@@ -106,13 +106,13 @@ namespace Celeste.Persistence.Debug
                                 .SetSubject($"Share Live Ops Save")
                                 .SetCallback((result, shareTarget) =>
                                     {
-                                        HudLog.LogInfo($"Share result: {result}, selected app: {shareTarget}");
+                                        UnityEngine.Debug.LogInfo($"Share result: {result}, selected app: {shareTarget}", CelesteLog.Persistence);
                                         File.Delete(tempFilePath);
                                     })
                                 .AddFile(tempFilePath, "text/plain")
                                 .Share();
 #else
-                            UnityEngine.Debug.LogAssertion($"Sharing snapshots is not supported with the Celeste Native Share package.");
+                            UnityEngine.Debug.LogAssertion($"Sharing snapshots is not supported without the Celeste Native Share package.");
 #endif
                         }
                     }
