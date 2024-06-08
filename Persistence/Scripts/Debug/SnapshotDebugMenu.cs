@@ -106,7 +106,7 @@ namespace Celeste.Persistence.Debug
                                 .SetSubject($"Share Live Ops Save")
                                 .SetCallback((result, shareTarget) =>
                                     {
-                                        UnityEngine.Debug.LogInfo($"Share result: {result}, selected app: {shareTarget}", CelesteLog.Persistence);
+                                        UnityEngine.Debug.Log($"Share result: {result}, selected app: {shareTarget}", CelesteLog.Persistence);
                                         File.Delete(tempFilePath);
                                     })
                                 .AddFile(tempFilePath, "text/plain")
