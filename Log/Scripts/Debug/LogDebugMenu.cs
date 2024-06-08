@@ -14,7 +14,7 @@ namespace Celeste.Log.Debug
             {
                 SectionLogSettings sectionLogSettings = logRecord.GetSectionLogSettings(i);
                 bool wasBlacklisted = logRecord.IsSectionBlacklisted(sectionLogSettings);
-                bool isBlacklisted = GUILayout.Toggle(sectionLogSettings.SectionName, wasBlacklisted);
+                bool isBlacklisted = GUILayout.Toggle(wasBlacklisted, sectionLogSettings.SectionName);
 
                 if (wasBlacklisted != isBlacklisted)
                 {
