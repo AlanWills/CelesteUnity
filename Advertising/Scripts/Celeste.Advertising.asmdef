@@ -12,7 +12,9 @@
         "Celeste.UI",
         "Celeste.RemoteConfig",
         "Celeste.UnityProject",
-        "UnityEngine.Advertisements"
+        "Celeste.Loading",
+        "UnityEngine.Advertisements",
+        "Unity.Advertisement.IosSupport"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -26,6 +28,11 @@
             "name": "com.unity.ads",
             "expression": "0.0.1",
             "define": "LEGACY_UNITY_ADS"
+        },
+        {
+            "name": "com.unity.ads.ios-support",
+            "expression": "0.0.1",
+            "define": "UNITY_ATT"
         }
     ],
     "noEngineReferences": false

@@ -267,6 +267,7 @@ namespace CelesteEditor.BuildSystem
 
         public void SetDefaultValues(bool isDebugConfig)
         {
+            OutputName = "Build-{version}-{environment}";
             BuildDirectory = "Builds/{build_target}/{environment}";
             BuildUploadURL = "celeste-games/";
             AddressablesEnabled = true;
@@ -382,6 +383,11 @@ namespace CelesteEditor.BuildSystem
             buildPlayerOptions.target = BuildTarget;
             buildPlayerOptions.targetGroup = BuildTargetGroup;
 
+            return ModifyBuildPlayerOptions(buildPlayerOptions);
+        }
+
+        protected virtual BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)
+        {
             return buildPlayerOptions;
         }
 

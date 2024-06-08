@@ -21,9 +21,20 @@ namespace CelesteEditor.BuildSystem
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
         {
-            OutputName = "Build-{version}-{environment}.exe";
             BuildTarget = BuildTarget.StandaloneWindows64;
             BuildTargetGroup = BuildTargetGroup.Standalone;
+        }
+
+        protected override BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)
+        {
+            if (!buildPlayerOptions.locationPathName.EndsWith(".exe") &&
+                !buildPlayerOptions.locationPathName.Contains('.'))
+            {
+                // Pretty crude test, but if we don't end in .exe and it doesn't look like we have an extension, we can add ours here
+                buildPlayerOptions.locationPathName += ".exe";
+            }
+
+            return buildPlayerOptions;
         }
 
         protected override void ApplyImpl()

@@ -10,7 +10,7 @@ using UnityEditor.iOS.Xcode;
 
 namespace CelesteEditor.Application
 {
-	public static class AddAlternativeIconsToAppPostProcessStep
+	public static class AddAlternativeIconsToApp
 	{
 		#region Properties and Fields
 

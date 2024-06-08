@@ -128,7 +128,6 @@ namespace CelesteEditor.BuildSystem
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
         {
-            OutputName = "Build-{version}-{environment}.apk";
             BuildTarget = BuildTarget.Android;
             BuildTargetGroup = BuildTargetGroup.Android;
             ScriptingBackend = ScriptingImplementation.IL2CPP;
@@ -136,6 +135,20 @@ namespace CelesteEditor.BuildSystem
             RequiresWritePermission = true;
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
             TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;
+        }
+
+        protected override BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)
+        {
+            string desiredExtension = buildAppBundle ? ".aab" : ".apk";
+            
+            if (!buildPlayerOptions.locationPathName.EndsWith(desiredExtension) &&
+                !buildPlayerOptions.locationPathName.Contains('.'))
+            {
+                // Pretty crude test, but if we don't end in the correct extension and it doesn't look like we have an extension, we can add ours here
+                buildPlayerOptions.locationPathName += desiredExtension;
+            }
+
+            return buildPlayerOptions;
         }
 
         protected override void ApplyImpl()

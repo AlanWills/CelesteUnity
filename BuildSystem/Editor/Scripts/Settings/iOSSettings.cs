@@ -50,7 +50,6 @@ namespace CelesteEditor.BuildSystem
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
         {
-            OutputName = "Build-{version}-{environment}";
             BuildTarget = BuildTarget.iOS;
             BuildTargetGroup = BuildTargetGroup.iOS;
             RunInXCodeAs = XcodeBuildConfig.Release;
