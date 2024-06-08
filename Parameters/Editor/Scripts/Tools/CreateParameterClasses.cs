@@ -29,7 +29,7 @@ namespace CelesteEditor.Parameters
     {
         #region Wizard Methods
 
-        public static void Generate(CreateParameterClassesArgs args)
+        public static void Generate(CreateParameterClassesArgs args, string valueParameterClassTemplate, string referenceParameterClassTemplate)
         {
             string namespaceName = args.namespaceName;
             string classTypeName = args.classTypeName;
@@ -40,17 +40,28 @@ namespace CelesteEditor.Parameters
 
             if (args.generateValueParameterClasses)
             {
-                string valueParameterFileContents = string.Format(CreateParameterClassesConstants.VALUE_PARAMETER_CLASS_FORMAT, namespaceName, classTypeName, parameterTypeName, args.valueParameterCreateAssetMenuPath);
+                valueParameterClassTemplate = Format(valueParameterClassTemplate, namespaceName, classTypeName, parameterTypeName, args.valueParameterCreateAssetMenuPath);
+
                 string valueParameterFilePath = Path.Combine(parentDirectoryPath, $"{classTypeName}Value.cs");
-                File.WriteAllText(valueParameterFilePath, valueParameterFileContents);
+                File.WriteAllText(valueParameterFilePath, valueParameterClassTemplate);
             }
 
             if (args.generateReferenceParameterClasses)
             {
-                string referenceParameterFileContents = string.Format(CreateParameterClassesConstants.REFERENCE_PARAMETER_CLASS_FORMAT, namespaceName, classTypeName, parameterTypeName, args.valueParameterCreateAssetMenuPath);
+                referenceParameterClassTemplate = Format(referenceParameterClassTemplate, namespaceName, classTypeName, parameterTypeName, args.referenceParameterCreateAssetMenuPath);
+
                 string referenceParameterFilePath = Path.Combine(parentDirectoryPath, $"{classTypeName}Reference.cs");
-                File.WriteAllText(referenceParameterFilePath, referenceParameterFileContents);
+                File.WriteAllText(referenceParameterFilePath, referenceParameterClassTemplate);
             }
+        }
+
+        private static string Format(string inputString, string _namespace, string type, string dataType, string menuPath)
+        {
+            return inputString
+                    .Replace("{NAMESPACE}", _namespace, StringComparison.Ordinal)
+                    .Replace("{TYPE}", type, StringComparison.Ordinal)
+                    .Replace("{DATA_TYPE}", dataType, StringComparison.Ordinal)
+                    .Replace("{MENU_PATH}", menuPath, StringComparison.Ordinal);
         }
 
         #endregion

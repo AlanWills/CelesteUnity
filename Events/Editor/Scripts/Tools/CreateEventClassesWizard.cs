@@ -10,6 +10,12 @@ namespace CelesteEditor.Events.Tools
         #region Properties and Fields
 
         [SerializeField, InlineDataInInspector] private CreateEventClassesArgs args;
+        [SerializeField] private TextAsset eventClassTemplate;
+        [SerializeField] private TextAsset eventListenerClassTemplate;
+        [SerializeField] private TextAsset eventRaiserClassTemplate;
+        [SerializeField] private TextAsset valueChangedEventClassTemplate;
+        [SerializeField] private TextAsset valueChangedEventListenerClassTemplate;
+        [SerializeField] private TextAsset valueChangedEventRaiserClassTemplate;
 
         #endregion
 
@@ -38,6 +44,36 @@ namespace CelesteEditor.Events.Tools
                     args.directoryPath = EditorOnly.GetAssetFolderPath(selectionInProject[0]);
                 }
             }
+
+            if (eventClassTemplate == null)
+            {
+                eventClassTemplate = EditorOnly.FindAsset<TextAsset>("EventClassTemplate");
+            }
+
+            if (eventListenerClassTemplate == null)
+            {
+                eventListenerClassTemplate = EditorOnly.FindAsset<TextAsset>("EventListenerClassTemplate");
+            }
+
+            if (eventRaiserClassTemplate == null)
+            {
+                eventRaiserClassTemplate = EditorOnly.FindAsset<TextAsset>("EventRaiserClassTemplate");
+            }
+
+            if (valueChangedEventClassTemplate == null)
+            {
+                valueChangedEventClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventClassTemplate");
+            }
+
+            if (valueChangedEventListenerClassTemplate == null)
+            {
+                valueChangedEventListenerClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventListenerClassTemplate");
+            }
+
+            if (valueChangedEventRaiserClassTemplate == null)
+            {
+                valueChangedEventRaiserClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventRaiserClassTemplate");
+            }
         }
 
         private void OnWizardCreate()
@@ -47,7 +83,14 @@ namespace CelesteEditor.Events.Tools
 
         private void OnWizardOtherButton()
         {
-            CreateEventClasses.Generate(args);
+            CreateEventClasses.Generate(
+                args, 
+                eventClassTemplate.text, 
+                eventListenerClassTemplate.text, 
+                eventRaiserClassTemplate.text,
+                valueChangedEventClassTemplate.text,
+                valueChangedEventListenerClassTemplate.text,
+                valueChangedEventRaiserClassTemplate.text);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

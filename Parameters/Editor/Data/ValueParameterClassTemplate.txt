@@ -1,0 +1,12 @@
+using Celeste.Events;
+using Celeste.Parameters.Constraints;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace {NAMESPACE}
+{
+    [CreateAssetMenu(fileName = nameof({TYPE}Value), menuName = "{MENU_PATH}")]
+    public class {TYPE}Value : ParameterValue<{DATA_TYPE}, {TYPE}ValueChangedEvent>
+    {
+    }
+}

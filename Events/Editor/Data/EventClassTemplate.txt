@@ -1,0 +1,17 @@
+using System;
+using UnityEngine;
+using UnityEngine.Events;
+using Celeste.Events;
+
+namespace {NAMESPACE}
+{
+    [Serializable]
+    public class {TYPE}UnityEvent : UnityEvent<{ARGUMENTS}> { }
+
+    [Serializable]
+    [CreateAssetMenu(fileName = nameof({TYPE}Event), menuName = "{MENU_PATH}")]
+    public class {TYPE}Event : ParameterisedEvent<{ARGUMENTS}> { }
+    
+    [Serializable]
+    public class Guaranteed{TYPE}Event : GuaranteedParameterisedEvent<{TYPE}Event, {ARGUMENTS}> { }
+}

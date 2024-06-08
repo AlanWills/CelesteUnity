@@ -1,0 +1,11 @@
+using UnityEngine;
+using Celeste.Objects;
+using {NAMESPACE}.Objects;
+
+namespace {NAMESPACE}.Catalogue
+{
+    [CreateAssetMenu(fileName = nameof({TYPE}), menuName = "{MENU_PATH}")]
+    public class {TYPE} : ListScriptableObject<{OBJECT_TYPE}>
+    {
+    }
+}

@@ -22,7 +22,11 @@ namespace CelesteEditor.UI.Tools
 
     public static class CreateRecyclableScrollRectClasses
     {
-        public static void Generate(CreateRecyclableScrollRectClassesArgs args)
+        public static void Generate(
+            CreateRecyclableScrollRectClassesArgs args, 
+            string controllerClassTemplate,
+            string dataClassTemplate,
+            string uiClassTemplate)
         {
             string namespaceName = args.namespaceName;
             string typeName = args.typeName;
@@ -35,24 +39,32 @@ namespace CelesteEditor.UI.Tools
 
             // Controller Class
             {
-                string controllerFileContents = string.Format(CreateRecyclableScrollRectClassesConstants.CONTROLLER_CLASS_FORMAT, namespaceName, capitalisedTypeName, lowerCaseTypeName);
+                controllerClassTemplate = Format(controllerClassTemplate, namespaceName, capitalisedTypeName, lowerCaseTypeName);
                 string controllerFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}sUIController.cs");
-                File.WriteAllText(controllerFilePath, controllerFileContents);
+                File.WriteAllText(controllerFilePath, controllerClassTemplate);
             }
 
             // UIData Class
             {
-                string uiDataFileContents = string.Format(CreateRecyclableScrollRectClassesConstants.UI_DATA_CLASS_FORMAT, namespaceName, capitalisedTypeName, lowerCaseTypeName);
+                dataClassTemplate = Format(dataClassTemplate, namespaceName, capitalisedTypeName, lowerCaseTypeName);
                 string uiDataFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}UIData.cs");
-                File.WriteAllText(uiDataFilePath, uiDataFileContents);
+                File.WriteAllText(uiDataFilePath, dataClassTemplate);
             }
 
             // UI Class
             {
-                string uiFileContents = string.Format(CreateRecyclableScrollRectClassesConstants.UI_CLASS_FORMAT, namespaceName, capitalisedTypeName, lowerCaseTypeName);
+                uiClassTemplate = Format(uiClassTemplate, namespaceName, capitalisedTypeName, lowerCaseTypeName);
                 string uiFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}UI.cs");
-                File.WriteAllText(uiFilePath, uiFileContents);
+                File.WriteAllText(uiFilePath, uiClassTemplate);
             }
+        }
+
+        private static string Format(string inputString, string _namespace, string type, string lowerCaseType)
+        {
+            return inputString
+                    .Replace("{NAMESPACE}", _namespace, StringComparison.Ordinal)
+                    .Replace("{TYPE}", type, StringComparison.Ordinal)
+                    .Replace("{LOWER_CASE_TYPE}", lowerCaseType, StringComparison.Ordinal);
         }
     }
 }

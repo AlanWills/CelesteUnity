@@ -1,0 +1,62 @@
+using System.Collections.Generic;
+using {NAMESPACE}.Objects;
+using Celeste.Tools;
+using PolyAndCode.UI;
+using UnityEngine;
+using {NAMESPACE}.Record;
+
+namespace {NAMESPACE}.UI
+{
+    public class {TYPE}sUIController : MonoBehaviour, IRecyclableScrollRectDataSource
+	{
+		#region Properties and Fields
+
+		[SerializeField] private RecyclableScrollRect scrollRect;
+		[SerializeField] private {TYPE}Record {LOWER_CASE_TYPE}Record;
+
+		[NonSerialized] private List<{TYPE}UIData> {LOWER_CASE_TYPE}CellData = new List<{TYPE}UIData>();
+
+		#endregion
+
+		#region Unity Methods
+
+		private void OnValidate()
+		{
+			this.TryGetInChildren(ref scrollRect);
+		}
+
+		private void Start()
+		{
+			SetUpUI();
+		}
+
+		#endregion
+
+		private void SetUpUI()
+		{
+			{LOWER_CASE_TYPE}CellData.Clear();
+
+			for (int i = 0, n = {LOWER_CASE_TYPE}Record.Num{TYPE}s; i < n; ++i)
+			{
+				{TYPE} {LOWER_CASE_TYPE} = {LOWER_CASE_TYPE}Record.Get{TYPE}(i);
+				{LOWER_CASE_TYPE}CellData.Add(new {TYPE}UIData({LOWER_CASE_TYPE}));
+			}
+
+			scrollRect.Initialize(this);
+		}
+
+		#region IRecyclableScrollRectDataSource
+
+		public int GetItemCount()
+		{
+			return {LOWER_CASE_TYPE}CellData.Count;
+		}
+
+		public void SetCell(ICell cell, int index)
+		{
+			(cell as {TYPE}UI).Hookup({LOWER_CASE_TYPE}CellData[index]);
+		}
+
+		#endregion
+	}
+}

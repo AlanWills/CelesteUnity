@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace {NAMESPACE}.Managers
+{
+    [AddComponentMenu("{MENU_PATH}")]
+    public class {TYPE} : MonoBehaviour
+    {
+    }
+}

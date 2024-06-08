@@ -1,0 +1,13 @@
+using UnityEngine;
+using UnityEditor;
+using CelesteEditor.DataStructures;
+using {RUNTIME_NAMESPACE}.Objects;
+using {RUNTIME_NAMESPACE}.Catalogue;
+
+namespace {NAMESPACE}.Catalogue
+{
+    [CustomEditor(typeof({TYPE}))]
+    public class {TYPE}Editor : IIndexableItemsEditor<{OBJECT_TYPE}>
+    {
+    }
+}

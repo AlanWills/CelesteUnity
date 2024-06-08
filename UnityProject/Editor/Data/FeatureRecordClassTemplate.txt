@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace {NAMESPACE}.Record
+{
+    [CreateAssetMenu(fileName = nameof({TYPE}), menuName = "{MENU_PATH}")]
+    public class {TYPE} : ScriptableObject
+    {
+    }
+}

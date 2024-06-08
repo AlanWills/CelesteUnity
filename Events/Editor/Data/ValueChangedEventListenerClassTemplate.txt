@@ -1,0 +1,7 @@
+using UnityEngine;
+using Celeste.Events;
+
+namespace {NAMESPACE}
+{
+    public class {TYPE}ValueChangedEventListener : ParameterisedEventListener<ValueChangedArgs<{ARGUMENTS}>, {TYPE}ValueChangedEvent, {TYPE}ValueChangedUnityEvent> { }
+}

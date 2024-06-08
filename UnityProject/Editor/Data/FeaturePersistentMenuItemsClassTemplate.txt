@@ -1,0 +1,22 @@
+using UnityEditor;
+using Celeste.Persistence;
+using CelesteEditor.Persistence;
+using {RUNTIME_NAMESPACE}.Managers;
+
+namespace {NAMESPACE}.Persistence
+{
+    public static class {TYPE}PersistenceMenuItems
+    {
+        [MenuItem("{OPEN_MENU_PATH}", priority = 0)]
+        public static void Open{TYPE}SaveMenuItem()
+        {
+            PersistenceMenuItemUtility.OpenExplorerAtPersistentData();
+        }
+
+        [MenuItem("{DELETE_MENU_PATH}", priority = 100)]
+        public static void Delete{TYPE}SaveMenuItem()
+        {
+            PersistenceUtility.DeletePersistentDataFile({MANAGER_TYPE}.FILE_NAME);
+        }
+    }
+}

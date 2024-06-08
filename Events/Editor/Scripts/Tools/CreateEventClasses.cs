@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using static UnityEditor.LightingExplorerTableColumn;
 
 namespace CelesteEditor.Events.Tools
 {
@@ -29,7 +30,14 @@ namespace CelesteEditor.Events.Tools
     {
         #region Wizard Methods
 
-        public static void Generate(CreateEventClassesArgs args)
+        public static void Generate(
+            CreateEventClassesArgs args,
+            string eventClassTemplate,
+            string eventListenerClassTemplate,
+            string eventRaiserClassTemplate,
+            string valueChangedEventClassTemplate,
+            string valueChangedEventListenerClassTemplate,
+            string valueChangedEventRaiserClassTemplate)
         {
             string namespaceName = args.namespaceName;
             string typeName = args.typeName;
@@ -44,23 +52,23 @@ namespace CelesteEditor.Events.Tools
             {
                 // Event
                 {
-                    string eventFileContents = string.Format(CreateEventClassesConstants.EVENT_CLASS_FORMAT, namespaceName, typeName, arguments, args.eventCreateAssetMenuPath);
+                    eventClassTemplate = Format(eventClassTemplate, namespaceName, capitalisedTypeName, arguments, args.eventCreateAssetMenuPath);
                     string eventFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}Event.cs");
-                    File.WriteAllText(eventFilePath, eventFileContents);
+                    File.WriteAllText(eventFilePath, eventClassTemplate);
                 }
 
                 // Event Listener
                 {
-                    string eventListenerFileContents = string.Format(CreateEventClassesConstants.EVENT_LISTENER_CLASS_FORMAT, namespaceName, typeName, arguments);
+                    eventListenerClassTemplate = Format(eventListenerClassTemplate, namespaceName, capitalisedTypeName, arguments);
                     string eventListenerFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}EventListener.cs");
-                    File.WriteAllText(eventListenerFilePath, eventListenerFileContents);
+                    File.WriteAllText(eventListenerFilePath, eventListenerClassTemplate);
                 }
 
                 // Event Raiser
                 {
-                    string eventRaiserFileContents = string.Format(CreateEventClassesConstants.EVENT_RAISER_CLASS_FORMAT, namespaceName, typeName, arguments);
+                    eventRaiserClassTemplate = Format(eventRaiserClassTemplate, namespaceName, capitalisedTypeName, arguments);
                     string eventRaiserFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}EventRaiser.cs");
-                    File.WriteAllText(eventRaiserFilePath, eventRaiserFileContents);
+                    File.WriteAllText(eventRaiserFilePath, eventRaiserClassTemplate);
                 }
             }
 
@@ -68,25 +76,39 @@ namespace CelesteEditor.Events.Tools
             {
                 // Value Changed Event
                 {
-                    string valueChangedEventFileContents = string.Format(CreateEventClassesConstants.VALUE_CHANGED_EVENT_CLASS_FORMAT, namespaceName, capitalisedTypeName, arguments, args.valueChangedEventCreateAssetMenuPath);
+                    valueChangedEventClassTemplate = Format(valueChangedEventClassTemplate, namespaceName, capitalisedTypeName, arguments, args.valueChangedEventCreateAssetMenuPath);
                     string valueChangedEventFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}ValueChangedEvent.cs");
-                    File.WriteAllText(valueChangedEventFilePath, valueChangedEventFileContents);
+                    File.WriteAllText(valueChangedEventFilePath, valueChangedEventClassTemplate);
                 }
 
                 // Value Changed Event Listener
                 {
-                    string valueChangedEventListenerFileContents = string.Format(CreateEventClassesConstants.VALUE_CHANGED_EVENT_LISTENER_CLASS_FORMAT, namespaceName, capitalisedTypeName, arguments);
+                    valueChangedEventListenerClassTemplate = Format(valueChangedEventListenerClassTemplate, namespaceName, capitalisedTypeName, arguments);
                     string valueChangedEventListenerFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}ValueChangedEventListener.cs");
-                    File.WriteAllText(valueChangedEventListenerFilePath, valueChangedEventListenerFileContents);
+                    File.WriteAllText(valueChangedEventListenerFilePath, valueChangedEventListenerClassTemplate);
                 }
 
                 // Value Changed Event Raiser
                 {
-                    string valueChangedEventRaiserFileContents = string.Format(CreateEventClassesConstants.VALUE_CHANGED_EVENT_RAISER_CLASS_FORMAT, namespaceName, capitalisedTypeName, arguments);
+                    valueChangedEventRaiserClassTemplate = Format(valueChangedEventRaiserClassTemplate, namespaceName, capitalisedTypeName, arguments);
                     string valueChangedEventRaiserFilePath = Path.Combine(parentDirectoryPath, $"{capitalisedTypeName}ValueChangedEventRaiser.cs");
-                    File.WriteAllText(valueChangedEventRaiserFilePath, valueChangedEventRaiserFileContents);
+                    File.WriteAllText(valueChangedEventRaiserFilePath, valueChangedEventRaiserClassTemplate);
                 }
             }
+        }
+
+        private static string Format(string inputString, string _namespace, string type, string arguments)
+        {
+            return inputString
+                    .Replace("{NAMESPACE}", _namespace, StringComparison.Ordinal)
+                    .Replace("{TYPE}", type, StringComparison.Ordinal)
+                    .Replace("{ARGUMENTS}", arguments, StringComparison.Ordinal);
+        }
+
+        private static string Format(string inputString, string _namespace, string type, string arguments, string menuPath)
+        {
+            return Format(inputString, _namespace, type, arguments)
+                .Replace("{MENU_PATH}", menuPath, StringComparison.Ordinal);
         }
 
         #endregion

@@ -1,0 +1,7 @@
+using UnityEngine;
+using Celeste.Events;
+
+namespace {NAMESPACE}
+{
+    public class {TYPE}EventListener : ParameterisedEventListener<{ARGUMENTS}, {TYPE}Event, {TYPE}UnityEvent> { }
+}

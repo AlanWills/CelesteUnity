@@ -1,0 +1,35 @@
+using UnityEngine;
+using Celeste.Persistence;
+using {NAMESPACE}.Persistence;
+
+namespace {NAMESPACE}.Managers
+{
+    [AddComponentMenu("{MENU_PATH}")]
+    public class {TYPE} : PersistentSceneManager<{TYPE}, {DTO_TYPE}>
+    {
+		#region Properties and Fields
+	
+        public const string FILE_NAME = "{TYPE}.dat";
+		
+        protected override string FileName => FILE_NAME;
+
+		#endregion
+		
+		#region Save/Load
+
+        protected override {DTO_TYPE} Serialize()
+        {
+            return new {DTO_TYPE}();
+        }
+
+        protected override void Deserialize({DTO_TYPE} dto)
+        {
+        }
+
+        protected override void SetDefaultValues()
+        {
+        }
+		
+		#endregion
+    }
+}

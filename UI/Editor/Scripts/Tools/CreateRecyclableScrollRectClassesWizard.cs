@@ -10,6 +10,9 @@ namespace CelesteEditor.UI.Tools
         #region Properties and Fields
 
         [SerializeField, InlineDataInInspector] private CreateRecyclableScrollRectClassesArgs args;
+        [SerializeField] private TextAsset controllerClassTemplate;
+        [SerializeField] private TextAsset dataClassTemplate;
+        [SerializeField] private TextAsset uiClassTemplate;
 
         #endregion
 
@@ -35,6 +38,21 @@ namespace CelesteEditor.UI.Tools
             {
                 args.directoryPath = EditorOnly.GetAssetFolderPath(selectionInProject[0]);
             }
+
+            if (controllerClassTemplate == null)
+            {
+                controllerClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectControllerClassTemplate");
+            }
+
+            if (dataClassTemplate == null)
+            {
+                dataClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectDataClassTemplate");
+            }
+
+            if (uiClassTemplate == null)
+            {
+                uiClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectUIClassTemplate");
+            }
         }
 
         private void OnWizardCreate()
@@ -44,7 +62,7 @@ namespace CelesteEditor.UI.Tools
 
         private void OnWizardOtherButton()
         {
-            CreateRecyclableScrollRectClasses.Generate(args);
+            CreateRecyclableScrollRectClasses.Generate(args, controllerClassTemplate.text, dataClassTemplate.text, uiClassTemplate.text);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

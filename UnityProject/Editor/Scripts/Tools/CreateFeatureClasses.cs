@@ -2,6 +2,7 @@
 using Celeste.Tools.Attributes.GUI;
 using System;
 using System.IO;
+using System.Web;
 using UnityEditor;
 using UnityEngine;
 
@@ -53,18 +54,27 @@ namespace CelesteEditor.UnityProject
 
     public static class CreateFeatureClasses
     {
-        public static void Create(CreateFeatureClassesParameters parameters)
+        public static void Create(
+            CreateFeatureClassesParameters parameters,
+            string objectClassTemplate,
+            string catalogueClassTemplate,
+            string catalogueEditorClassTemplate,
+            string recordClassTemplate,
+            string nonPersistentManagerClassTemplate,
+            string persistentManagerClassTemplate,
+            string dtoClassTemplate,
+            string persistentMenuItemsClassTemplate)
         {
-            CreateObject(parameters);
-            CreateCatalogue(parameters);
-            CreateRecord(parameters);
-            CreateManager(parameters);
+            CreateObject(parameters, objectClassTemplate);
+            CreateCatalogue(parameters, catalogueClassTemplate, catalogueEditorClassTemplate);
+            CreateRecord(parameters, recordClassTemplate);
+            CreateManager(parameters, nonPersistentManagerClassTemplate, persistentManagerClassTemplate, dtoClassTemplate, persistentMenuItemsClassTemplate);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        private static void CreateObject(CreateFeatureClassesParameters parameters)
+        private static void CreateObject(CreateFeatureClassesParameters parameters, string objectClassTemplate)
         {
             if (parameters.createObject)
             {
@@ -72,16 +82,12 @@ namespace CelesteEditor.UnityProject
                 EditorOnly.CreateFolder(objectsFolderPath);
 
                 string objectScriptPath = $"{objectsFolderPath}/{parameters.objectTypeName}.cs";
-                string objectScriptContents = string.Format(
-                    CreateFeatureClassesConstants.OBJECT_SCRIPT_CONTENTS, 
-                    parameters.runtimeNamespaceName, 
-                    parameters.objectTypeName, 
-                    parameters.createObjectMenuPath);
-                File.WriteAllText(objectScriptPath, objectScriptContents);
+                objectClassTemplate = Format(objectClassTemplate, parameters.runtimeNamespaceName, parameters.objectTypeName, parameters.createObjectMenuPath);
+                File.WriteAllText(objectScriptPath, objectClassTemplate);
             }
         }
 
-        private static void CreateCatalogue(CreateFeatureClassesParameters parameters)
+        private static void CreateCatalogue(CreateFeatureClassesParameters parameters, string catalogueClassTemplate, string catalogueEditorClassTemplate)
         {
             if (parameters.createCatalogue)
             {
@@ -91,13 +97,9 @@ namespace CelesteEditor.UnityProject
                     EditorOnly.CreateFolder(catalogueFolderPath);
 
                     string catalogueScriptPath = $"{catalogueFolderPath}/{parameters.catalogueTypeName}.cs";
-                    string catalogueScriptContents = string.Format(
-                        CreateFeatureClassesConstants.CATALOGUE_SCRIPT_CONTENTS,
-                        parameters.runtimeNamespaceName,
-                        parameters.catalogueTypeName,
-                        parameters.createCatalogueMenuPath,
-                        parameters.objectTypeName);
-                    File.WriteAllText(catalogueScriptPath, catalogueScriptContents);
+                    catalogueClassTemplate = Format(catalogueClassTemplate, parameters.runtimeNamespaceName, parameters.catalogueTypeName, parameters.createCatalogueMenuPath)
+                        .Replace("{OBJECT_TYPE}", parameters.objectTypeName);
+                    File.WriteAllText(catalogueScriptPath, catalogueClassTemplate);
                 }
 
                 // Catalogue Editor
@@ -106,18 +108,15 @@ namespace CelesteEditor.UnityProject
                     EditorOnly.CreateFolder(catalogueEditorFolderPath);
 
                     string catalogueEditorScriptPath = $"{catalogueEditorFolderPath}/{parameters.catalogueTypeName}Editor.cs";
-                    string catalogueEditorScriptContents = string.Format(
-                        CreateFeatureClassesConstants.CATALOGUE_EDITOR_SCRIPT_CONTENTS,
-                        parameters.editorNamespaceName,
-                        parameters.catalogueTypeName,
-                        parameters.objectTypeName,
-                        parameters.runtimeNamespaceName);
-                    File.WriteAllText(catalogueEditorScriptPath, catalogueEditorScriptContents);
+                    catalogueEditorClassTemplate = Format(catalogueEditorClassTemplate, parameters.editorNamespaceName, parameters.catalogueTypeName)
+                        .Replace("{OBJECT_TYPE}", parameters.objectTypeName)
+                        .Replace("{RUNTIME_NAMESPACE}", parameters.runtimeNamespaceName);
+                    File.WriteAllText(catalogueEditorScriptPath, catalogueEditorClassTemplate);
                 }
             }
         }
 
-        private static void CreateRecord(CreateFeatureClassesParameters parameters)
+        private static void CreateRecord(CreateFeatureClassesParameters parameters, string recordClassTemplate)
         {
             if (parameters.createRecord)
             {
@@ -125,16 +124,17 @@ namespace CelesteEditor.UnityProject
                 EditorOnly.CreateFolder(recordFolderPath);
 
                 string recordScriptPath = $"{recordFolderPath}/{parameters.recordTypeName}.cs";
-                string recordScriptContents = string.Format(
-                    CreateFeatureClassesConstants.RECORD_SCRIPT_CONTENTS,
-                    parameters.runtimeNamespaceName,
-                    parameters.recordTypeName,
-                    parameters.createRecordMenuPath);
-                File.WriteAllText(recordScriptPath, recordScriptContents);
+                recordClassTemplate = Format(recordClassTemplate, parameters.runtimeNamespaceName, parameters.recordTypeName, parameters.createRecordMenuPath);
+                File.WriteAllText(recordScriptPath, recordClassTemplate);
             }
         }
 
-        private static void CreateManager(CreateFeatureClassesParameters parameters)
+        private static void CreateManager(
+            CreateFeatureClassesParameters parameters,
+            string nonPersistentManagerClassTemplate,
+            string persistentManagerClassTemplate,
+            string dtoClassTemplate,
+            string persistentMenuItemsClassTemplate)
         {
             if (parameters.createManager)
             {
@@ -144,18 +144,18 @@ namespace CelesteEditor.UnityProject
                     EditorOnly.CreateFolder(managerFolderPath);
 
                     string managerScriptPath = $"{managerFolderPath}/{parameters.managerTypeName}.cs";
-                    string managerScriptContents = parameters.isManagerPersistent ?
-                        string.Format(
-                            CreateFeatureClassesConstants.PERSISTENT_MANAGER_SCRIPT_CONTENTS,
-                            parameters.runtimeNamespaceName,
-                            parameters.managerTypeName,
-                            parameters.addManagerMenuPath,
-                            parameters.managerDTOTypeName) :
-                        string.Format(
-                            CreateFeatureClassesConstants.NON_PERSISTENT_MANAGER_SCRIPT_CONTENTS,
-                            parameters.runtimeNamespaceName,
-                            parameters.managerTypeName,
-                            parameters.addManagerMenuPath);
+                    string managerScriptContents;
+
+                    if (parameters.isManagerPersistent)
+                    {
+                        managerScriptContents = Format(persistentManagerClassTemplate, parameters.runtimeNamespaceName, parameters.managerTypeName, parameters.addManagerMenuPath)
+                            .Replace("{DTO_TYPE}", parameters.managerDTOTypeName);
+                    }
+                    else
+                    {
+                        managerScriptContents = Format(nonPersistentManagerClassTemplate, parameters.runtimeNamespaceName, parameters.managerTypeName, parameters.addManagerMenuPath);
+                    }
+
                     File.WriteAllText(managerScriptPath, managerScriptContents);
                 }
 
@@ -167,28 +167,35 @@ namespace CelesteEditor.UnityProject
                         EditorOnly.CreateFolder(dtoFolderPath);
 
                         string dtoScriptPath = $"{dtoFolderPath}/{parameters.managerDTOTypeName}.cs";
-                        string dtoScriptContents = string.Format(
-                                CreateFeatureClassesConstants.DTO_SCRIPT_CONTENTS,
-                                parameters.runtimeNamespaceName,
-                                parameters.managerDTOTypeName);
-                        File.WriteAllText(dtoScriptPath, dtoScriptContents);
+                        dtoClassTemplate = Format(dtoClassTemplate, parameters.runtimeNamespaceName, parameters.managerDTOTypeName);
+                        File.WriteAllText(dtoScriptPath, dtoClassTemplate);
                     }
 
                     // Create Persistence Menu Items
                     {
                         string dtoScriptPath = $"{parameters.editorScriptsDirectory}/{parameters.persistenceMenuItemsName}PersistenceMenuItems.cs";
-                        string dtoScriptContents = string.Format(
-                                CreateFeatureClassesConstants.PERSISTENCE_MENU_ITEMS_SCRIPT_CONTENTS,
-                                parameters.editorNamespaceName,
-                                parameters.persistenceMenuItemsName,
-                                parameters.openMenuPath,
-                                parameters.deleteMenuPath,
-                                parameters.managerTypeName,
-                                parameters.runtimeNamespaceName);
-                        File.WriteAllText(dtoScriptPath, dtoScriptContents);
+                        persistentMenuItemsClassTemplate = Format(persistentMenuItemsClassTemplate, parameters.editorNamespaceName, parameters.persistenceMenuItemsName)
+                            .Replace("{OPEN_MENU_PATH}", parameters.openMenuPath)
+                            .Replace("{DELETE_MENU_PATH}", parameters.deleteMenuPath)
+                            .Replace("{MANAGER_TYPE}", parameters.managerTypeName)
+                            .Replace("{RUNTIME_NAMESPACE}", parameters.runtimeNamespaceName);
+                        File.WriteAllText(dtoScriptPath, persistentMenuItemsClassTemplate);
                     }
                 }
             }
+        }
+
+        private static string Format(string inputString, string _namespace, string type)
+        {
+            return inputString
+                    .Replace("{NAMESPACE}", _namespace, StringComparison.Ordinal)
+                    .Replace("{TYPE}", type, StringComparison.Ordinal);
+        }
+
+        private static string Format(string inputString, string _namespace, string type, string menuPath)
+        {
+            return Format(inputString, _namespace, type)
+                .Replace("{MENU_PATH}", menuPath, StringComparison.Ordinal);
         }
     }
 }

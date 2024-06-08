@@ -1,0 +1,29 @@
+using UnityEngine;
+using PolyAndCode.UI;
+using {NAMESPACE}.Objects;
+
+namespace {NAMESPACE}.UI
+{
+    public class {TYPE}UI : MonoBehaviour, ICell
+    {
+        #region Properties and Fields
+
+        private {TYPE} {LOWER_CASE_TYPE}
+
+        #endregion
+
+		public void Hookup({TYPE}UIData {LOWER_CASE_TYPE}UIData)
+		{
+			{LOWER_CASE_TYPE} = {LOWER_CASE_TYPE}UIData.{TYPE};
+		}
+
+		#region Unity Methods
+
+		private void OnDisable()
+		{
+			{LOWER_CASE_TYPE} = null;
+		}
+
+		#endregion
+	}
+}

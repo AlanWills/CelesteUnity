@@ -1,0 +1,18 @@
+using {NAMESPACE}.Objects;
+
+namespace {NAMESPACE}.UI
+{
+	public class {TYPE}UIData
+	{
+		#region Properties and Fields
+	
+		public {TYPE} {TYPE} { get; }
+	
+		#endregion
+
+		public {TYPE}UIData({TYPE} {LOWER_CASE_TYPE})
+		{
+			{TYPE} = {LOWER_CASE_TYPE};
+		}
+	}
+}

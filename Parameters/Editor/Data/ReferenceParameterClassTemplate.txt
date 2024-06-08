@@ -1,0 +1,9 @@
+using UnityEngine;
+
+namespace {NAMESPACE}
+{
+    [CreateAssetMenu(fileName = nameof({TYPE}Reference), menuName = "{MENU_PATH}")]
+    public class {TYPE}Reference : ParameterReference<{DATA_TYPE}, {TYPE}Value, {TYPE}Reference>
+    {
+    }
+}

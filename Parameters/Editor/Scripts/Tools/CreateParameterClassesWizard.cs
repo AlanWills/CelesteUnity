@@ -10,6 +10,8 @@ namespace CelesteEditor.Parameters
         #region Properties and Fields
 
         [SerializeField, InlineDataInInspector] private CreateParameterClassesArgs args;
+        [SerializeField] private TextAsset valueParameterClassTemplate;
+        [SerializeField] private TextAsset referenceParameterClassTemplate;
 
         #endregion
 
@@ -38,6 +40,16 @@ namespace CelesteEditor.Parameters
                     args.directoryPath = EditorOnly.GetAssetFolderPath(selectionInProject[0]);
                 }
             }
+
+            if (valueParameterClassTemplate == null)
+            {
+                valueParameterClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueParameterClassTemplate");
+            }
+
+            if (referenceParameterClassTemplate == null)
+            {
+                referenceParameterClassTemplate = EditorOnly.FindAsset<TextAsset>("ReferenceParameterClassTemplate");
+            }
         }
 
         private void OnWizardCreate()
@@ -47,7 +59,7 @@ namespace CelesteEditor.Parameters
 
         private void OnWizardOtherButton()
         {
-            CreateParameterClasses.Generate(args);
+            CreateParameterClasses.Generate(args, valueParameterClassTemplate.text, referenceParameterClassTemplate.text);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
