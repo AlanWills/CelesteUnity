@@ -29,9 +29,9 @@ namespace CelesteEditor.Localisation.Catalogue
             Language language = target as Language;
             
             localisationEntries.Clear();
-            foreach (var entry in language.LocalisationLookup)
+            for (int i = 0, n = language.NumLocalisationKeys; i < n; ++i)
             {
-                localisationEntries.Add(new ValueTuple<string, string>(entry.Key, entry.Value));
+                localisationEntries.Add(language.GetLocalisationEntry(i));
             }
 
             localisationEntries.Sort((a, b) =>
