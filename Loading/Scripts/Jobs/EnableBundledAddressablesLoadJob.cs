@@ -95,6 +95,10 @@ namespace Celeste.Loading
             {
                 Debug.LogError(loadBundleCacheRequest.error);
             }
+            else
+            {
+                cachedBundlesInfo = loadBundleCacheRequest.downloadHandler.text;
+            }
 #else
             if (File.Exists(url))
             {
