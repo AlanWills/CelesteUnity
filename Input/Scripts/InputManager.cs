@@ -86,7 +86,7 @@ namespace Celeste.Input
         {
             if (raycastCamera.Value == null && fallbackMainCamera == null)
             {
-                UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.");
+                UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.", CelesteLog.Input.WithContext(this));
                 fallbackMainCamera = Camera.main; 
             }
 
@@ -150,20 +150,21 @@ namespace Celeste.Input
                 if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
                 {
                     hitGameObject = uiInputModule.GetLastRaycastResult(pointerOrTouchId).gameObject;
-                    UnityEngine.Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                    UnityEngine.Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", CelesteLog.Input.WithContext(hitGameObject));
                 }
 
                 if (hitGameObject == null)
                 {
                     // If we haven't hit any UI, see if we have hit any game objects in the world
                     hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
-                    UnityEngine.Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                    UnityEngine.Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", CelesteLog.Input.WithContext(hitGameObject));
                 }
             }
 
             return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
         }
 
+        // DO NOT DELETE, USED FOR PLATFORMS OTHER THAN IOS AND ANDROID
         private void CheckMouseButton(ButtonControl buttonControl, MouseButton mouseButton)
         {
             PointerState mouseButtonState = new PointerState()
