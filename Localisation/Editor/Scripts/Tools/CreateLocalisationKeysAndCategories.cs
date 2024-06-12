@@ -53,7 +53,6 @@ namespace CelesteEditor.Localisation.Tools
                     Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
                     Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
 
-                    Dictionary<string, AudioClip> speechLookup = CreateSpeechLookup(language);
                     List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
 
                     for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
@@ -109,7 +108,8 @@ namespace CelesteEditor.Localisation.Tools
                             EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
                         }
 
-                        if (!speechLookup.TryGetValue(localisationKey.Key, out AudioClip audioClip))
+                        AudioClip audioClip = language.CanSynthesize(localisationKey) ? language.Synthesize(localisationKey) : null;
+                        if (audioClip == null)
                         {
                             Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
                         }
@@ -122,22 +122,6 @@ namespace CelesteEditor.Localisation.Tools
                     EditorUtility.SetDirty(language);
                 }
             }
-        }
-
-        private Dictionary<string, AudioClip> CreateSpeechLookup(Language language)
-        {
-            Dictionary<string, AudioClip> speechLookup = new Dictionary<string, AudioClip>();
-            string audioDirectory = Path.Combine(localisationAudioDirectory, language.CountryCode);
-
-            if (Directory.Exists(audioDirectory))
-            {
-                foreach (AudioClip audioClip in EditorOnly.FindAssets<AudioClip>("", audioDirectory))
-                {
-                    speechLookup.Add(audioClip.name, audioClip);
-                }
-            }
-
-            return speechLookup;
         }
     }
 }

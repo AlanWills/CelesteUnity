@@ -22,7 +22,7 @@ namespace CelesteEditor.Localisation.Tools
         {
             foreach (Language language in languageCatalogue.Items)
             {
-                language.ClearEntries();
+                language.ClearData();
             }
         }
     }

@@ -5,9 +5,7 @@ using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace Celeste.Localisation
 {
@@ -236,6 +234,11 @@ namespace Celeste.Localisation
             return numberToTextConverter != null ? numberToTextConverter.Truncate(number, this) : number.ToString();
         }
 
+        public bool CanSynthesize(LocalisationKey key)
+        {
+            return key != null && SpeechLookup.TryGetValue(key.Key, out AudioClip synthesizedText) && synthesizedText != null;
+        }
+
         public AudioClip Synthesize(LocalisationKey key)
         {
             if (key == null)
@@ -329,7 +332,7 @@ namespace Celeste.Localisation
             }
         }
 
-        public void ClearEntries()
+        public void ClearData()
         {
             localisation.Clear();
             categories.Clear();
@@ -355,11 +358,6 @@ namespace Celeste.Localisation
         public LocalisationKey FindKey(string key)
         {
             return localisationKeyCatalogue != null ? localisationKeyCatalogue.GetItem(key) : null;
-        }
-
-        public bool CanSynthesize(LocalisationKey key)
-        {
-            return SpeechLookup.ContainsKey(key.Key);
         }
 
         public int NumEntriesInCategory(LocalisationKeyCategory category)

@@ -56,7 +56,7 @@ namespace CelesteEditor.Localisation.Catalogue
                 {
                     LocalisationKeyCatalogue localisationKeyCatalogue = localisationKeyCatalogueProperty.objectReferenceValue as LocalisationKeyCatalogue;
 
-                    language.ClearEntries();
+                    language.ClearData();
                     language.AddEntries(localisationKeyCatalogue.Items.Values.Select(x => new Language.LocalisationEntry()
                     {
                         key = x,
