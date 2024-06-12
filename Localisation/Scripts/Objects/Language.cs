@@ -5,6 +5,7 @@ using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using UnityEngine;
 
 namespace Celeste.Localisation
@@ -12,29 +13,10 @@ namespace Celeste.Localisation
     [CreateAssetMenu(fileName = nameof(Language), menuName = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM + "Language", order = CelesteMenuItemConstants.LOCALISATION_MENU_ITEM_PRIORITY)]
     public class Language : ScriptableObject, ISerializationCallbackReceiver
     {
-        #region LocalisationEntry
-
-        [Serializable]
-        public struct LocalisationEntry
-        {
-            public LocalisationKey key;
-            public string localisedText;
-            public AudioClip synthesizedSpeech;
-
-            public LocalisationEntry(LocalisationKey key, string localisedText, AudioClip synthesizedSpeech)
-            {
-                this.key = key;
-                this.localisedText = localisedText;
-                this.synthesizedSpeech = synthesizedSpeech;
-            }
-        }
-
-        #endregion
-
         #region Serialized Data
 
         [Serializable]
-        private struct LocalisationData
+        public struct LocalisationData
         {
             public string key;
             public string localisedText;
@@ -47,7 +29,7 @@ namespace Celeste.Localisation
         }
 
         [Serializable]
-        private struct LocalisationCategoryData
+        public struct LocalisationCategoryData
         {
             public LocalisationKeyCategory category;
             public List<LocalisationKey> keys;
@@ -60,7 +42,7 @@ namespace Celeste.Localisation
         }
 
         [Serializable]
-        private struct LocalisationSpeechData
+        public struct LocalisationSpeechData
         {
             public string key;
             public AudioClip synthesizedSpeech;
@@ -177,9 +159,9 @@ namespace Celeste.Localisation
         [SerializeField] private List<LocalisationCategoryData> categories = new List<LocalisationCategoryData>();
         [SerializeField] private List<LocalisationSpeechData> speech = new List<LocalisationSpeechData>();
 
-        [NonSerialized] private Dictionary<string, string> _localisationLookup = new Dictionary<string, string>();
+        [NonSerialized] private Dictionary<string, string> _localisationLookup = new Dictionary<string, string>(StringComparer.Ordinal);
         [NonSerialized] private Dictionary<LocalisationKeyCategory, List<LocalisationKey>> _categoryLookup = new Dictionary<LocalisationKeyCategory, List<LocalisationKey>>(new LocalisationKeyCategoryComparer());
-        [NonSerialized] private Dictionary<string, AudioClip> _speechLookup = new Dictionary<string, AudioClip>();
+        [NonSerialized] private Dictionary<string, AudioClip> _speechLookup = new Dictionary<string, AudioClip>(StringComparer.Ordinal);
 
         #endregion
 
@@ -256,78 +238,61 @@ namespace Celeste.Localisation
             return synthesizedText;
         }
 
-        public void AddEntries(List<LocalisationEntry> localisationEntries)
+        public void AddData(IReadOnlyList<LocalisationData> localisationData)
         {
-            for (int i = 0, n = localisationEntries.Count; i < n; ++i)
+            for (int i = 0, n = localisationData.Count; i < n; ++i)
             {
-                var localisationEntry = localisationEntries[i];
-                var localisationKey = localisationEntry.key;
+                LocalisationData data = localisationData[i];
 
-                if (localisationKey != null)
+                // Add to text localisation lookup
+                if (!LocalisationLookup.ContainsKey(data.key))
                 {
-                    // Add to text localisation lookup
-                    if (!LocalisationLookup.ContainsKey(localisationKey.Key))
-                    {
-                        localisation.Add(new LocalisationData(localisationKey.Key, localisationEntry.localisedText));
-                        _localisationLookup[localisationKey.Key] = localisationEntry.localisedText;
-                        EditorOnly.SetDirty(this);
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.LogAssertion($"Localisation lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
-                    }
-
-                    // Add to category lookup
-                    if (localisationKey.Category != null)
-                    {
-                        if (!CategoryLookup.TryGetValue(localisationKey.Category, out List<LocalisationKey> list))
-                        {
-                            list = new List<LocalisationKey>();
-                            categories.Add(new LocalisationCategoryData(localisationKey.Category, list));
-                            _categoryLookup.Add(localisationKey.Category, list);
-                            EditorOnly.SetDirty(this);
-                        }
-
-                        list.Add(localisationKey);
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.LogAssertion($"No category set for localisation key {localisationKey}.");
-                    }
-
-                    // Add to audio lookup
-                    if (localisationEntry.synthesizedSpeech != null)
-                    {
-                        if (!SpeechLookup.ContainsKey(localisationKey.Key))
-                        {
-                            speech.Add(new LocalisationSpeechData(localisationKey.Key, localisationEntry.synthesizedSpeech));
-                            _speechLookup.Add(localisationKey.Key, localisationEntry.synthesizedSpeech);
-                            EditorOnly.SetDirty(this);
-                        }
-                        else
-                        {
-                            UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {localisationKey.Key} ({localisationKey.name}).");
-                        }
-                    }
-                }
-            }
-        }
-
-        public void AddEntries(IReadOnlyList<AudioClip> synthesizationEntries)
-        {
-            for (int i = 0, n = synthesizationEntries.Count; i < n; ++i)
-            {
-                AudioClip audioClip = synthesizationEntries[i];
-
-                if (!SpeechLookup.ContainsKey(audioClip.name))
-                {
-                    speech.Add(new LocalisationSpeechData(audioClip.name, audioClip));
-                    _speechLookup.Add(audioClip.name, audioClip);
+                    localisation.Add(new LocalisationData(data.key, data.localisedText));
+                    _localisationLookup[data.key] = data.localisedText;
                     EditorOnly.SetDirty(this);
                 }
                 else
                 {
-                    UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {audioClip.name}.");
+                    UnityEngine.Debug.LogAssertion($"Localisation lookup already contains key {data.key} ({data.localisedText}).");
+                }
+            }
+        }
+
+        public void AddData(IReadOnlyList<LocalisationCategoryData> categoryData)
+        {
+            for (int i = 0, n = categoryData.Count; i < n; ++i)
+            {
+                LocalisationCategoryData data = categoryData[i];
+
+                if (!CategoryLookup.TryGetValue(data.category, out List<LocalisationKey> list))
+                {
+                    list = new List<LocalisationKey>(data.keys);
+                    categories.Add(new LocalisationCategoryData(data.category, list));
+                    _categoryLookup.Add(data.category, list);
+                    EditorOnly.SetDirty(this);
+                }
+                else
+                {
+                    list.AddRange(data.keys);
+                }
+            }
+        }
+
+        public void AddData(IReadOnlyList<LocalisationSpeechData> speechData)
+        {
+            for (int i = 0, n = speechData.Count; i < n; ++i)
+            {
+                LocalisationSpeechData data = speechData[i];
+
+                if (!SpeechLookup.ContainsKey(data.key))
+                {
+                    speech.Add(new LocalisationSpeechData(data.key, data.synthesizedSpeech));
+                    _speechLookup.Add(data.key, data.synthesizedSpeech);
+                    EditorOnly.SetDirty(this);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogAssertion($"Speech lookup already contains key {data.key}.");
                 }
             }
         }

@@ -53,7 +53,7 @@ namespace CelesteEditor.Localisation.Tools
                     Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
                     Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
 
-                    List<LocalisationEntry> localisationEntries = new List<LocalisationEntry>();
+                    List<LocalisationData> localisationData = new List<LocalisationData>();
 
                     for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
                     {
@@ -108,18 +108,16 @@ namespace CelesteEditor.Localisation.Tools
                             EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
                         }
 
-                        AudioClip audioClip = language.CanSynthesize(localisationKey) ? language.Synthesize(localisationKey) : null;
-                        if (audioClip == null)
+                        if (!language.CanSynthesize(localisationKey))
                         {
                             Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
                         }
 
                         localisationKey.Category = localisationKeyCategory;
-                        localisationEntries.Add(new LocalisationEntry(localisationKey, localisedString, audioClip));
+                        localisationData.Add(new LocalisationData(localisationKey.Key, localisedString));
                     }
 
-                    language.AddEntries(localisationEntries);
-                    EditorUtility.SetDirty(language);
+                    language.AddData(localisationData);
                 }
             }
         }
