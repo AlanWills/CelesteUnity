@@ -105,8 +105,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
 
             string subNarrativeKey = splitText[1];
             SubFSMNode subFSMNode = parseContext.Graph.AddNode<SubFSMNode>();
-            subFSMNode.subFSM = FindSubNarrative(subNarrativeKey);
-            UnityEngine.Debug.Assert(subFSMNode.subFSM != null, $"Could not find sub narrative {subNarrativeKey}");
+            subFSMNode.SubFSM = FindSubNarrative(subNarrativeKey);
+            UnityEngine.Debug.Assert(subFSMNode.SubFSM != null, $"Could not find sub narrative {subNarrativeKey}");
 
             parseContext.FSMNode = subFSMNode;
 #if UNITY_EDITOR

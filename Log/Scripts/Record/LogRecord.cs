@@ -107,7 +107,7 @@ namespace Celeste.Log
                 }
                 else
                 {
-                    string exceptionMessage = $"{exception.Message}";
+                    string exceptionMessage = exception.Message;
                     defaultUnityLogHandler.LogException(exception, context);
                     hudLogHandler.LogException(exception, context, exceptionMessage);
 
@@ -129,6 +129,8 @@ namespace Celeste.Log
 
             using (loggingNormally.Lock())
             {
+                string stackTrace = StackTraceUtility.ExtractStackTrace();
+
                 if (context is SectionLogSettings logSettings)
                 {
                     string formattedLog = logSettings.FormatLogMessage(format, args);
@@ -136,23 +138,23 @@ namespace Celeste.Log
 
                     if (logSettings.ShouldLogToHud(logType))
                     {
-                        hudLogHandler.Log(logType, logSettings.LogContext, formattedLog);
+                        hudLogHandler.Log(logType, logSettings.LogContext, formattedLog, stackTrace);
                     }
 
                     for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
                     {
-                        customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog);
+                        customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog, stackTrace);
                     }
                 }
                 else
                 {
                     string formattedLog = string.Format(format, args);
                     defaultUnityLogHandler.LogFormat(logType, context, format, args);
-                    hudLogHandler.Log(logType, context, formattedLog);
+                    hudLogHandler.Log(logType, context, formattedLog, stackTrace);
 
                     for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
                     {
-                        customLogHandlers[i].Log(logType, context, formattedLog);
+                        customLogHandlers[i].Log(logType, context, formattedLog, stackTrace);
                     }
                 }
             }

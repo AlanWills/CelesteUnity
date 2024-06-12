@@ -49,10 +49,13 @@ namespace Celeste.Advertising
             if (adsEnabled.Value)
             {
 #if UNITY_EDITOR
+                UnityEngine.Debug.Assert(editorAdProvider != null, $"{nameof(editorAdProvider)} has not been set on {nameof(AdRecord)}.  Editor errors and Ads not working should be expected.");
                 impl = editorAdProvider;
 #elif LEGACY_UNITY_ADS
+                UnityEngine.Debug.Assert(legacyUnityAdProvider != null, $"{nameof(legacyUnityAdProvider)} has not been set on {nameof(AdRecord)}.  Runtime errors and Ads not working should be expected.");
                 impl = legacyUnityAdProvider;
 #else
+                UnityEngine.Debug.Assert(disabledAdProvider != null, $"{nameof(disabledAdProvider)} has not been set on {nameof(AdRecord)}.  Runtime errors and Ads not working should be expected.");
                 impl = disabledAdProvider;
 #endif
             }

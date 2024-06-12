@@ -204,7 +204,7 @@ namespace Celeste.Narrative
                 {
                     SubFSMNode subFSMNode = node as SubFSMNode;
 
-                    FindCharacters(subFSMNode.subFSM, charactersLookup);
+                    FindCharacters(subFSMNode.SubFSM, charactersLookup);
                 }
             }
         }

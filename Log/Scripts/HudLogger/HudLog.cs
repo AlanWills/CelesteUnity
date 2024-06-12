@@ -84,6 +84,14 @@ namespace Celeste.Log
             }
         }
 
+        public static void LogInfo(string message, string stackTrace)
+        {
+            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Info))
+            {
+                Instance.Log(message, stackTrace, Instance.infoColour);
+            }
+        }
+
         public static void LogWarning(string message)
         {
             if (Instance != null && IsLogLevelEnabled(HudLogLevel.Warning))
@@ -92,11 +100,27 @@ namespace Celeste.Log
             }
         }
 
+        public static void LogWarning(string message, string stackTrace)
+        {
+            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Warning))
+            {
+                Instance.Log(message, stackTrace, Instance.warningColour);
+            }
+        }
+
         public static void LogError(string message)
         {
             if (Instance != null && IsLogLevelEnabled(HudLogLevel.Error))
             {
                 Instance.Log(message, Instance.errorColour);
+            }
+        }
+
+        public static void LogError(string message, string stackTrace)
+        {
+            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Error))
+            {
+                Instance.Log(message, stackTrace, Instance.errorColour);
             }
         }
 

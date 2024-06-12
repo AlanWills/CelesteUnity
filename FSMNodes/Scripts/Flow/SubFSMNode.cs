@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Celeste.Tools;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Celeste.FSM.Nodes
 {
@@ -29,7 +31,7 @@ namespace Celeste.FSM.Nodes
         [NonSerialized] private FSMNode currentNode;
         public FSMNode CurrentNode 
         {
-            get { return currentNode; }
+            get => currentNode;
             set
             {
                 if (currentNode != value)
@@ -44,10 +46,30 @@ namespace Celeste.FSM.Nodes
         public FSMNode StartNode
         {
             get { return startNode != null ? startNode : subFSM.startNode; }
-            set { startNode = value; }
+            set 
+            {
+                if (startNode != value)
+                {
+                    startNode = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
         }
 
-        public FSMGraph subFSM;
+        public FSMGraph SubFSM
+        {
+            get => subFSM;
+            set
+            {
+                if (subFSM != value)
+                {
+                    subFSM = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField] private FSMGraph subFSM;
 
         [NonSerialized] private FSMGraph runtimeSubFSMGraph;
         [NonSerialized] private ILinearRuntime fsmRuntime;

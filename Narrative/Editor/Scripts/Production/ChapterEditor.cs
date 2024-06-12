@@ -79,7 +79,7 @@ namespace CelesteEditor.Narrative.Production
                 {
                     SubFSMNode subFSMNode = node as SubFSMNode;
 
-                    FindValues<T, TValue, TReference>(valuesProperty, subFSMNode.subFSM, values);
+                    FindValues<T, TValue, TReference>(valuesProperty, subFSMNode.SubFSM, values);
                 }
             }
 

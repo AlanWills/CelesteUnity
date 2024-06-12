@@ -36,7 +36,7 @@ namespace Celeste.FSM
         [SerializeField] private bool startAutomatically = true;
         [SerializeField] private bool lateUpdate = false;
 
-        protected ILinearRuntimeRecord record;
+        protected ILinearRuntimeRecord record = new EmptyLinearRuntimeRecord();
         private FSMRuntimeEngine runtimeEngine;
 
         #endregion
