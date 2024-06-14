@@ -1,3 +1,4 @@
+using Celeste.Parameters;
 using Celeste.Tools;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,19 @@ namespace Celeste.Log
     [CreateAssetMenu(fileName = nameof(LogRecord), menuName = CelesteMenuItemConstants.LOG_MENU_ITEM + "Log Record", order = CelesteMenuItemConstants.LOG_MENU_ITEM_PRIORITY)]
     public class LogRecord : ScriptableObject, ILogHandler
     {
+        public struct LogData
+        {
+            public string message;
+            public string callstack;
+            public LogType logType;
+        }
+
         #region Properties and Fields
 
         public int NumSectionLogSettings => sectionLogSettingsCatalogue.NumItems;
+        public IReadOnlyList<LogMessage> LogMessages => logMessages;
+
+        [SerializeField] private BoolValue isDebugBuild;
 
         [NonSerialized] private ILogHandler defaultUnityLogHandler;
         [NonSerialized] private ICustomLogHandler hudLogHandler;
@@ -19,6 +30,7 @@ namespace Celeste.Log
         [NonSerialized] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
         [NonSerialized] private Semaphore loggingException = new Semaphore();
         [NonSerialized] private Semaphore loggingNormally = new Semaphore();
+        [NonSerialized] private List<LogMessage> logMessages = new List<LogMessage>();
 
         #endregion
 
@@ -27,6 +39,7 @@ namespace Celeste.Log
             defaultUnityLogHandler = _defaultUnityLogHandler;
             hudLogHandler = new HudLogHandler();
             sectionLogSettingsCatalogue = _sectionLogSettingsCatalogue;
+            logMessages.Clear();
         }
 
         public void AddCustomLogHandler(ICustomLogHandler handler)
@@ -87,11 +100,13 @@ namespace Celeste.Log
 
             using (loggingException.Lock())
             {
+                string formattedException = string.Empty;
+
                 if (context is SectionLogSettings logSettings)
                 {
                     if (!blacklistedSections.Contains(logSettings))
                     {
-                        string formattedException = logSettings.FormatException(exception);
+                        formattedException = logSettings.FormatException(exception);
                         defaultUnityLogHandler.LogFormat(LogType.Exception, logSettings.LogContext, "{0}", formattedException);
 
                         if (logSettings.ShouldLogToHud(LogType.Exception))
@@ -107,15 +122,17 @@ namespace Celeste.Log
                 }
                 else
                 {
-                    string exceptionMessage = exception.Message;
+                    formattedException = exception.Message;
                     defaultUnityLogHandler.LogException(exception, context);
-                    hudLogHandler.LogException(exception, context, exceptionMessage);
+                    hudLogHandler.LogException(exception, context, formattedException);
 
                     for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
                     {
-                        customLogHandlers[i].LogException(exception, context, exceptionMessage);
+                        customLogHandlers[i].LogException(exception, context, formattedException);
                     }
                 }
+
+                TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
             }
         }
 
@@ -130,10 +147,11 @@ namespace Celeste.Log
             using (loggingNormally.Lock())
             {
                 string stackTrace = StackTraceUtility.ExtractStackTrace();
+                string formattedLog = string.Empty;
 
                 if (context is SectionLogSettings logSettings)
                 {
-                    string formattedLog = logSettings.FormatLogMessage(format, args);
+                    formattedLog = logSettings.FormatLogMessage(format, args);
                     defaultUnityLogHandler.LogFormat(logType, logSettings.LogContext, "{0}", formattedLog);
 
                     if (logSettings.ShouldLogToHud(logType))
@@ -148,7 +166,7 @@ namespace Celeste.Log
                 }
                 else
                 {
-                    string formattedLog = string.Format(format, args);
+                    formattedLog = string.Format(format, args);
                     defaultUnityLogHandler.LogFormat(logType, context, format, args);
                     hudLogHandler.Log(logType, context, formattedLog, stackTrace);
 
@@ -157,6 +175,26 @@ namespace Celeste.Log
                         customLogHandlers[i].Log(logType, context, formattedLog, stackTrace);
                     }
                 }
+                
+                TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
+            }
+        }
+
+        public void Clear()
+        {
+            logMessages.Clear();
+        }
+
+        private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel)
+        {
+            if (isDebugBuild.Value)
+            {
+                logMessages.Add(new LogMessage()
+                {
+                    message = message,
+                    trackTrace = stackTrace,
+                    logType = logLevel
+                });
             }
         }
     }

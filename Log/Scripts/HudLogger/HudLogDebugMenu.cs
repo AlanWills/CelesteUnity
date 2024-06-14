@@ -12,10 +12,12 @@ namespace Celeste.Log
     {
         #region Properties and Fields
         
-        [SerializeField] private HudLogMessageList logMessages;
+        [SerializeField] private LogMessageList logMessages;
 
         [NonSerialized] private int currentlyExpanded = NOT_EXPANDED;
         [NonSerialized] private int currentPage = 0;
+        [NonSerialized] private LogLevel currentlyShowingLevel = LogLevel.Assert | LogLevel.Exception | LogLevel.Error | LogLevel.Warning | LogLevel.Info;
+        [NonSerialized] private string logFilter;
 
         private const int ENTRIES_PER_PAGE = 20;
         private const int NOT_EXPANDED = -1;
@@ -29,14 +31,48 @@ namespace Celeste.Log
                 HudLog.Clear();
             }
 
-            DrawHudLogLevel(HudLogLevel.Info);
-            DrawHudLogLevel(HudLogLevel.Warning);
-            DrawHudLogLevel(HudLogLevel.Error);
-            DrawHudLogLevel(HudLogLevel.Exception);
-            DrawHudLogLevel(HudLogLevel.Assert);
+            Space(5);
+            Label("Allow These Log Levels:", CelesteGUIStyles.CentredBoldLabel);
+
+            using (new HorizontalScope())
+            {
+                DrawLogLevelModifier(LogLevel.Info);
+                DrawLogLevelModifier(LogLevel.Warning);
+                DrawLogLevelModifier(LogLevel.Error);
+            }
+
+            using (new HorizontalScope())
+            {
+                DrawLogLevelModifier(LogLevel.Exception);
+                DrawLogLevelModifier(LogLevel.Assert);
+            }
 
             if (logMessages != null)
             {
+                Space(5);
+                Label("Show These Log Levels Here:", CelesteGUIStyles.CentredBoldLabel);
+                
+                using (new HorizontalScope())
+                {
+                    DrawLogLevelFilter(LogLevel.Info);
+                    DrawLogLevelFilter(LogLevel.Warning);
+                    DrawLogLevelFilter(LogLevel.Error);
+                }
+
+                using (new HorizontalScope())
+                {
+                    DrawLogLevelFilter(LogLevel.Exception);
+                    DrawLogLevelFilter(LogLevel.Assert);
+                }
+
+                using (new HorizontalScope())
+                {
+                    Space(5);
+                    Label("Log Filter");
+                    logFilter = TextField(logFilter);
+                }
+
+                Space(5);
                 currentPage = GUIExtensions.ReadOnlyPaginatedList(
                     currentPage,
                     ENTRIES_PER_PAGE,
@@ -52,13 +88,30 @@ namespace Celeste.Log
 
                         if (currentlyExpanded == i)
                         {
-                            Label(logMessage.callstack);
+                            Label(logMessage.trackTrace);
                         }
+                    },
+                    (i) =>
+                    {
+                        var logMessage = logMessages.GetItem(i);
+                        
+                        if (!currentlyShowingLevel.HasFlag(logMessage.logType))
+                        {
+                            return false;
+                        }
+
+                        if (!string.IsNullOrEmpty(logFilter))
+                        {
+                            return logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) ||
+                                   logMessage.trackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        return true;
                     });
             }
         }
 
-        private void DrawHudLogLevel(HudLogLevel hudLogLevel)
+        private void DrawLogLevelModifier(LogLevel hudLogLevel)
         {
             bool isEnabled = HudLog.IsLogLevelEnabled(hudLogLevel);
             if (isEnabled != Toggle(isEnabled, hudLogLevel.ToString()))
@@ -72,6 +125,24 @@ namespace Celeste.Log
                 {
                     // Was not enabled and now is
                     HudLog.AddLogLevel(hudLogLevel);
+                }
+            }
+        }
+
+        private void DrawLogLevelFilter(LogLevel hudLogLevel)
+        {
+            bool isEnabled = currentlyShowingLevel.HasFlag(hudLogLevel);
+            if (isEnabled != Toggle(isEnabled, hudLogLevel.ToString(), ExpandWidth(false)))
+            {
+                if (isEnabled)
+                {
+                    // Was enabled and is now not
+                    currentlyShowingLevel &= ~hudLogLevel;
+                }
+                else
+                {
+                    // Was not enabled and now is
+                    currentlyShowingLevel |= hudLogLevel;
                 }
             }
         }

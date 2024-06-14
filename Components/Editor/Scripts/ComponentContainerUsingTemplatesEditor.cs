@@ -83,6 +83,7 @@ namespace CelesteEditor.Components
                 () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
                 () => Container.AddEmptyTemplate(),
                 (i) => Container.RemoveComponent(i),
+                null,
                 GUIExtensions.ListLayoutOptions.None);
 
             serializedObject.ApplyModifiedProperties();

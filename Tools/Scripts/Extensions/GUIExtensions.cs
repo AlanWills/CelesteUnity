@@ -108,7 +108,8 @@ namespace Celeste.Tools
             int numItems,
             Action<int> drawItem,
             Action addItem,
-            Action<int> removeItem)
+            Action<int> removeItem,
+            Func<int, bool> filter = null)
         {
             return PaginatedList(
                 currentPage,
@@ -125,14 +126,16 @@ namespace Celeste.Tools
                 },
                 () => Button("-", ExpandWidth(false)),
                 addItem,
-                removeItem);
+                removeItem,
+                filter);
         }
 
         public static int ReadOnlyPaginatedList(
             int currentPage,
             int entriesPerPage,
             int numItems,
-            Action<int> drawItem)
+            Action<int> drawItem,
+            Func<int, bool> filter = null)
         {
             return PaginatedList(
                 currentPage,
@@ -142,7 +145,8 @@ namespace Celeste.Tools
                 () => { return false; },
                 () => { return false; },
                 () => { },
-                (i) => { });
+                (i) => { },
+                filter);
         }
 
         public static int PaginatedList(
@@ -154,8 +158,20 @@ namespace Celeste.Tools
             Func<bool> drawRemoveItem,
             Action addItem,
             Action<int> removeItem,
+            Func<int, bool> filter = null,
             ListLayoutOptions layoutOptions = ListLayoutOptions.AutomaticallyVerticalScope)
         {
+            if (filter != null)
+            {
+                for (int i = 0, n = numItems; i < n; ++i)
+                {
+                    if (!filter(i))
+                    {
+                        --numItems;
+                    }
+                }
+            }
+
             int numPages = Mathf.Max(1, Mathf.CeilToInt((float)numItems / entriesPerPage));
 
             using (HorizontalScope horizontal = new HorizontalScope())
@@ -202,8 +218,15 @@ namespace Celeste.Tools
             int removeIndex = -1;
             int startingIndex = currentPage * entriesPerPage;
 
-            for (int i = startingIndex; i < Mathf.Min(startingIndex + entriesPerPage, numItems); ++i)
+            for (int i = startingIndex, filteredMessageIndex = 0; filteredMessageIndex < Mathf.Min(startingIndex + entriesPerPage, numItems); ++i)
             {
+                if (filter != null && !filter.Invoke(i))
+                {
+                    continue;
+                }
+
+                ++filteredMessageIndex;
+
                 using (var horizontal = new HorizontalScope())
                 {
                     if (drawRemoveItem())

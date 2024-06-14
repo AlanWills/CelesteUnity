@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f981d3be8ecb71419e56598840f235a, type: 3}
   m_Name: LogRecord
   m_EditorClassIdentifier: 
-  sectionLogSettingsCatalogue: {fileID: 0}
+  isDebugBuild: {fileID: 11400000, guid: 50039586d3d71834c8dbb6af9cae319c, type: 2}

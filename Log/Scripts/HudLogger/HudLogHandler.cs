@@ -16,15 +16,15 @@ namespace Celeste.Log
                 case LogType.Error:
                     HudLog.LogError(message, stackTrace); break;
                 case LogType.Assert:
-                    HudLog.LogError(message, stackTrace); break;
+                    HudLog.LogAssertion(message, stackTrace); break;
                 case LogType.Exception:
-                    HudLog.LogError(message, stackTrace); break;
+                    HudLog.LogException(message, stackTrace); break;
             }
         }
 
         public void LogException(Exception exception, UnityEngine.Object context, string message)
         {
-            HudLog.LogError(message, exception.StackTrace);
+            HudLog.LogException(message, exception.StackTrace);
         }
     }
 }

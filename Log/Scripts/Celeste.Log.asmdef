@@ -6,6 +6,8 @@
         "Celeste.Debug",
         "Celeste.Memory",
         "Celeste.Tools",
+        "Celeste.Parameters",
+        "Celeste.Events",
         "Celeste.UnityProject",
         "Celeste.RemoteConfig",
         "Unity.TextMeshPro"

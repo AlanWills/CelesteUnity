@@ -6,29 +6,18 @@ using UnityEngine;
 
 namespace Celeste.Log
 {
-    [Serializable, Flags]
-    public enum HudLogLevel
-    {
-        None = 0,
-        Info = 1,
-        Warning = 2,
-        Error = 4,
-        Exception = 8,
-        Assert = 16,
-    }
-
     [AddComponentMenu("Celeste/Log/Hud Log")]
     public class HudLog : SceneSingleton<HudLog>
     {
         #region Properties and Fields
 
-        private HudLogLevel LogLevel
+        private LogLevel LogLevel
         {
             get
             {
                 if (!logLevelInitialized)
                 {
-                    logLevel = (HudLogLevel)PlayerPrefs.GetInt(HUD_LOG_LEVEL_PREFS_KEY, (int)defaultLogLevel);
+                    logLevel = (LogLevel)PlayerPrefs.GetInt(HUD_LOG_LEVEL_PREFS_KEY, (int)defaultLogLevel);
                 }
 
                 return logLevel;
@@ -41,14 +30,14 @@ namespace Celeste.Log
             }
         }
 
-        [SerializeField] private HudLogLevel defaultLogLevel = HudLogLevel.Assert | HudLogLevel.Exception | HudLogLevel.Error | HudLogLevel.Warning;
-        [SerializeField] private HudLogMessageList logMessages;
+        [SerializeField] private LogLevel defaultLogLevel = LogLevel.Assert | LogLevel.Exception | LogLevel.Error | LogLevel.Warning;
+        [SerializeField] private LogMessageList logMessages;
         [SerializeField] private GameObjectAllocator hudMessages;
         [SerializeField] private Color infoColour = Color.white;
         [SerializeField] private Color warningColour = Color.yellow;
         [SerializeField] private Color errorColour = Color.red;
 
-        [NonSerialized] private HudLogLevel logLevel;
+        [NonSerialized] private LogLevel logLevel;
         [NonSerialized] private bool logLevelInitialized;
 
         private const string HUD_LOG_LEVEL_PREFS_KEY = "HudLogLevel";
@@ -57,17 +46,17 @@ namespace Celeste.Log
 
         #region Log Type
 
-        public static bool IsLogLevelEnabled(HudLogLevel desiredLevel)
+        public static bool IsLogLevelEnabled(LogLevel desiredLevel)
         {
             return Instance != null && (Instance.LogLevel & desiredLevel) == desiredLevel;
         }
 
-        public static void AddLogLevel(HudLogLevel desiredLevel)
+        public static void AddLogLevel(LogLevel desiredLevel)
         {
             Instance.LogLevel |= desiredLevel;
         }
 
-        public static void RemoveLogLevel(HudLogLevel desiredLevel)
+        public static void RemoveLogLevel(LogLevel desiredLevel)
         {
             Instance.LogLevel &= ~desiredLevel;
         }
@@ -78,49 +67,81 @@ namespace Celeste.Log
 
         public static void LogInfo(string message)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Info))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Info))
             {
-                Instance.Log(message, Instance.infoColour);
+                Instance.Log(message, Instance.infoColour, LogLevel.Info);
             }
         }
 
         public static void LogInfo(string message, string stackTrace)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Info))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Info))
             {
-                Instance.Log(message, stackTrace, Instance.infoColour);
+                Instance.Log(message, stackTrace, Instance.infoColour, LogLevel.Info);
             }
         }
 
         public static void LogWarning(string message)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Warning))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Warning))
             {
-                Instance.Log(message, Instance.warningColour);
+                Instance.Log(message, Instance.warningColour, LogLevel.Warning);
             }
         }
 
         public static void LogWarning(string message, string stackTrace)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Warning))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Warning))
             {
-                Instance.Log(message, stackTrace, Instance.warningColour);
+                Instance.Log(message, stackTrace, Instance.warningColour, LogLevel.Warning);
             }
         }
 
         public static void LogError(string message)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Error))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Error))
             {
-                Instance.Log(message, Instance.errorColour);
+                Instance.Log(message, Instance.errorColour, LogLevel.Error);
             }
         }
 
         public static void LogError(string message, string stackTrace)
         {
-            if (Instance != null && IsLogLevelEnabled(HudLogLevel.Error))
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Error))
             {
-                Instance.Log(message, stackTrace, Instance.errorColour);
+                Instance.Log(message, stackTrace, Instance.errorColour, LogLevel.Error);
+            }
+        }
+
+        public static void LogException(string message)
+        {
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Exception))
+            {
+                Instance.Log(message, Instance.errorColour, LogLevel.Exception);
+            }
+        }
+
+        public static void LogException(string message, string stackTrace)
+        {
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Exception))
+            {
+                Instance.Log(message, stackTrace, Instance.errorColour, LogLevel.Exception);
+            }
+        }
+
+        public static void LogAssertion(string message)
+        {
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Assert))
+            {
+                Instance.Log(message, Instance.errorColour, LogLevel.Assert);
+            }
+        }
+
+        public static void LogAssertion(string message, string stackTrace)
+        {
+            if (Instance != null && IsLogLevelEnabled(LogLevel.Assert))
+            {
+                Instance.Log(message, stackTrace, Instance.errorColour, LogLevel.Assert);
             }
         }
 
@@ -137,12 +158,12 @@ namespace Celeste.Log
             }
         }
 
-        private void Log(string message, Color colour)
+        private void Log(string message, Color colour, LogLevel logLevel)
         {
-            Instance.Log(message, StackTraceUtility.ExtractStackTrace(), colour);
+            Instance.Log(message, StackTraceUtility.ExtractStackTrace(), colour, logLevel);
         }
 
-        private void Log(string message, string callstack, Color colour)
+        private void Log(string message, string callstack, Color colour, LogLevel logLevel)
         {
             if (hudMessages.CanAllocate(1))
             {
@@ -154,7 +175,7 @@ namespace Celeste.Log
             
             if (logMessages != null)
             {
-                logMessages.AddItem(new HudLogMessage() { message = message, callstack = callstack });
+                logMessages.AddItem(new LogMessage() { message = message, trackTrace = callstack, logType = logLevel });
             }
         }
 
