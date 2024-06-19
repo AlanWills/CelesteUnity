@@ -94,6 +94,34 @@ namespace Celeste
             }
         }
 
+        private static GUIStyle wrappedLabel;
+        public static GUIStyle WrappedLabel
+        {
+            get
+            {
+                if (wrappedLabel == null)
+                {
+                    wrappedLabel = GUI.skin.label.New().EnableWrapping();
+                }
+
+                return wrappedLabel;
+            }
+        }
+
+        private static GUIStyle wrappedButton;
+        public static GUIStyle WrappedButton
+        {
+            get
+            {
+                if (wrappedButton == null)
+                {
+                    wrappedButton = GUI.skin.button.New().EnableWrapping();
+                }
+
+                return wrappedButton;
+            }
+        }
+
         #endregion
 
         public static GUIStyle New(this GUIStyle guiStyle)

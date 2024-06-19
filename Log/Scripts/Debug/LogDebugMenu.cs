@@ -32,7 +32,7 @@ namespace Celeste.Log.Debug
             {
                 SectionLogSettings sectionLogSettings = logRecord.GetSectionLogSettings(i);
                 bool wasBlacklisted = logRecord.IsSectionBlacklisted(sectionLogSettings);
-                bool isBlacklisted = Toggle(wasBlacklisted, sectionLogSettings.SectionName);
+                bool isBlacklisted = Toggle(!wasBlacklisted, sectionLogSettings.SectionName);
 
                 if (wasBlacklisted != isBlacklisted)
                 {
@@ -79,14 +79,14 @@ namespace Celeste.Log.Debug
                 {
                     var logMessage = logRecord.LogMessages[i];
 
-                    if (Button(logMessage.message))
+                    if (Button(logMessage.message, CelesteGUIStyles.WrappedButton))
                     {
                         currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
                     }
 
                     if (currentlyExpanded == i)
                     {
-                        Label(logMessage.trackTrace);
+                        Label(logMessage.trackTrace, CelesteGUIStyles.WrappedLabel);
                     }
                 },
                 (i) =>

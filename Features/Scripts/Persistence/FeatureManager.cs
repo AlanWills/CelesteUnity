@@ -22,15 +22,6 @@ namespace Celeste.Features.Persistence
 
         #region Unity Methods
 
-        protected override void Awake()
-        {
-            featureRecord.Hookup(featureCatalogue);
-
-            SyncKilledFeaturesFromRemoteConfig();
-
-            base.Awake();
-        }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -44,10 +35,9 @@ namespace Celeste.Features.Persistence
 
         protected override void Deserialize(FeatureManagerDTO dto)
         {
-            foreach (int guid in dto.enabledFeatures)
-            {
-                featureRecord.SetFeatureEnabled(guid, true);
-            }
+            featureRecord.Hookup(featureCatalogue, dto.enabledFeatures);
+
+            SyncKilledFeaturesFromRemoteConfig();
         }
 
         protected override FeatureManagerDTO Serialize()
@@ -69,6 +59,9 @@ namespace Celeste.Features.Persistence
 
         protected override void SetDefaultValues()
         {
+            featureRecord.Hookup(featureCatalogue);
+
+            SyncKilledFeaturesFromRemoteConfig();
         }
 
         #endregion

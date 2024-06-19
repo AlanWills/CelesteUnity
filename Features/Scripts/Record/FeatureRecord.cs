@@ -1,6 +1,5 @@
 ﻿using Celeste.DataStructures;
 using Celeste.Events;
-using Celeste.Parameters;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,9 +21,15 @@ namespace Celeste.Features
 
         public void Hookup(FeatureCatalogue featureCatalogue)
         {
+            Hookup(featureCatalogue, Array.Empty<int>());
+        }
+
+        public void Hookup(FeatureCatalogue featureCatalogue, IReadOnlyList<int> enabledFeatures)
+        {
             for (int i = 0, n = featureCatalogue.NumItems; i < n; ++i)
             {
                 Feature feature = featureCatalogue.GetItem(i);
+                feature.IsEnabled = enabledFeatures.Contains(i);
                 feature.AddOnEnabledChangedCallback(OnEnabledChanged);
                 feature.Hookup();
                 features.Add(feature);
