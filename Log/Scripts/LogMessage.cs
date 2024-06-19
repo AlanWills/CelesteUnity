@@ -6,7 +6,7 @@ namespace Celeste.Log
     public struct LogMessage
     {
         public string message;
-        public string trackTrace;
+        public string stackTrace;
         public LogLevel logType;
     }
 }

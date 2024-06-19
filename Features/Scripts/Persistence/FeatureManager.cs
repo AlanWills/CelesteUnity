@@ -1,6 +1,7 @@
 ﻿using Celeste.Persistence;
 using Celeste.RemoteConfig;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Celeste.Features.Persistence
@@ -35,9 +36,8 @@ namespace Celeste.Features.Persistence
 
         protected override void Deserialize(FeatureManagerDTO dto)
         {
-            featureRecord.Hookup(featureCatalogue, dto.enabledFeatures);
-
-            SyncKilledFeaturesFromRemoteConfig();
+            List<int> enabledFeaturesFromSaveAndRemoteConfig = MergeEnabledFeaturesWithRemoteConfig(dto.enabledFeatures);
+            featureRecord.Hookup(featureCatalogue, enabledFeaturesFromSaveAndRemoteConfig);
         }
 
         protected override FeatureManagerDTO Serialize()
@@ -59,12 +59,57 @@ namespace Celeste.Features.Persistence
 
         protected override void SetDefaultValues()
         {
-            featureRecord.Hookup(featureCatalogue);
-
-            SyncKilledFeaturesFromRemoteConfig();
+            List<int> enabledFeaturesFromRemoteConfig = GetEnabledFeaturesFromRemoteConfig();
+            featureRecord.Hookup(featureCatalogue, enabledFeaturesFromRemoteConfig);
         }
 
         #endregion
+
+        private List<int> GetEnabledFeaturesFromRemoteConfig()
+        {
+            List<int> enabledFeatures = new List<int>();
+
+            if (remoteConfigRecord != null)
+            {
+                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+
+                if (featuresConfig != null)
+                {
+                    foreach (Feature feature in featureCatalogue.Items)
+                    {
+                        if (featuresConfig.GetBool(feature.name, false))
+                        {
+                            enabledFeatures.Add(feature.Guid);
+                        }
+                    }
+                }
+            }
+
+            return enabledFeatures;
+        }
+
+        private List<int> MergeEnabledFeaturesWithRemoteConfig(IReadOnlyList<int> desiredEnabledFeatures)
+        {
+            List<int> enabledFeatures = new List<int>();
+
+            if (remoteConfigRecord != null)
+            {
+                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+
+                if (featuresConfig != null)
+                {
+                    foreach (Feature feature in featureCatalogue.Items)
+                    {
+                        if (featuresConfig.GetBool(feature.name, false) && desiredEnabledFeatures.Contains(feature.Guid))
+                        {
+                            enabledFeatures.Add(feature.Guid);
+                        }
+                    }
+                }
+            }
+
+            return enabledFeatures;
+        }
 
         private void SyncKilledFeaturesFromRemoteConfig()
         {

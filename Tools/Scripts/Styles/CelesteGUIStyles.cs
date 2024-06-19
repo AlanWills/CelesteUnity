@@ -147,9 +147,21 @@ namespace Celeste
             return guiStyle;
         }
 
+        public static GUIStyle Alignment(this GUIStyle guiStyle, TextAnchor alignment)
+        {
+            guiStyle.alignment = alignment;
+            return guiStyle;
+        }
+
         public static GUIStyle EnableWrapping(this GUIStyle guiStyle)
         {
             guiStyle.wordWrap = true;
+            return guiStyle;
+        }
+
+        public static GUIStyle FontSize(this GUIStyle guiStyle, int fontSize)
+        {
+            guiStyle.fontSize = fontSize;
             return guiStyle;
         }
     }

@@ -79,14 +79,14 @@ namespace Celeste.Log.Debug
                 {
                     var logMessage = logRecord.LogMessages[i];
 
-                    if (Button(logMessage.message, CelesteGUIStyles.WrappedButton))
+                    if (Button(logMessage.message, CelesteGUIStyles.WrappedButton.New().Alignment(TextAnchor.MiddleLeft), ExpandWidth(true)))
                     {
                         currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
                     }
 
                     if (currentlyExpanded == i)
                     {
-                        Label(logMessage.trackTrace, CelesteGUIStyles.WrappedLabel);
+                        Label(logMessage.stackTrace, CelesteGUIStyles.WrappedLabel.New().FontSize(10).Alignment(TextAnchor.MiddleLeft));
                     }
                 },
                 (i) =>
@@ -101,7 +101,7 @@ namespace Celeste.Log.Debug
                     if (!string.IsNullOrEmpty(logFilter))
                     {
                         return logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) ||
-                               logMessage.trackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase);
+                               logMessage.stackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase);
                     }
 
                     return true;

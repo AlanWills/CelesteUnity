@@ -192,7 +192,7 @@ namespace Celeste.Log
                 logMessages.Add(new LogMessage()
                 {
                     message = message,
-                    trackTrace = stackTrace,
+                    stackTrace = stackTrace,
                     logType = logLevel
                 });
             }

@@ -175,7 +175,7 @@ namespace Celeste.Log
             
             if (logMessages != null)
             {
-                logMessages.AddItem(new LogMessage() { message = message, trackTrace = callstack, logType = logLevel });
+                logMessages.AddItem(new LogMessage() { message = message, stackTrace = callstack, logType = logLevel });
             }
         }
 
