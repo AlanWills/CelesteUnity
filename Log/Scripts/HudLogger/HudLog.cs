@@ -13,24 +13,17 @@ namespace Celeste.Log
 
         private LogLevel LogLevel
         {
-            get
-            {
-                if (!logLevelInitialized)
-                {
-                    logLevel = (LogLevel)PlayerPrefs.GetInt(HUD_LOG_LEVEL_PREFS_KEY, (int)defaultLogLevel);
-                }
-
-                return logLevel;
-            }
+            get => logLevel;
             set
             {
-                logLevel = value;
-                PlayerPrefs.SetInt(HUD_LOG_LEVEL_PREFS_KEY, (int)logLevel);
-                PlayerPrefs.Save();
+                if (logLevel != value)
+                {
+                    logLevel = value;
+                    save?.Invoke();
+                }
             }
         }
 
-        [SerializeField] private LogLevel defaultLogLevel = LogLevel.Assert | LogLevel.Exception | LogLevel.Error | LogLevel.Warning;
         [SerializeField] private LogMessageList logMessages;
         [SerializeField] private GameObjectAllocator hudMessages;
         [SerializeField] private Color infoColour = Color.white;
@@ -38,11 +31,15 @@ namespace Celeste.Log
         [SerializeField] private Color errorColour = Color.red;
 
         [NonSerialized] private LogLevel logLevel;
-        [NonSerialized] private bool logLevelInitialized;
-
-        private const string HUD_LOG_LEVEL_PREFS_KEY = "HudLogLevel";
+        [NonSerialized] private Action save;
 
         #endregion
+
+        public static void Hookup(Action save, LogLevel enabledLogLevel)
+        {
+            Instance.logLevel = enabledLogLevel;
+            Instance.save = save;
+        }
 
         #region Log Type
 
@@ -59,6 +56,16 @@ namespace Celeste.Log
         public static void RemoveLogLevel(LogLevel desiredLevel)
         {
             Instance.LogLevel &= ~desiredLevel;
+        }
+
+        public static LogLevel GetAllEnabledLogLevels()
+        {
+            return Instance.LogLevel;
+        }
+
+        public static void SetAllEnabledLogLevels(LogLevel enabledLogLevels)
+        {
+            Instance.LogLevel = enabledLogLevels;
         }
 
         #endregion

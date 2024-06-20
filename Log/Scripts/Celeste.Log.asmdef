@@ -10,6 +10,7 @@
         "Celeste.Events",
         "Celeste.UnityProject",
         "Celeste.RemoteConfig",
+        "Celeste.Persistence",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

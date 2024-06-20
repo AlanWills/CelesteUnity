@@ -1,3 +1,4 @@
+using Celeste.Persistence;
 using Celeste.RemoteConfig;
 using Celeste.Tools;
 using System;
@@ -6,9 +7,12 @@ using UnityEngine;
 namespace Celeste.Log
 {
     [AddComponentMenu("Celeste/Log/Log Manager")]
-    public class LogManager : MonoBehaviour
+    public class LogManager : PersistentSceneManager<LogManager, LogManagerDTO>
     {
         #region Properties and Fields
+
+        public const string FILE_NAME = "Log.dat";
+        protected override string FileName => FILE_NAME;
 
         public SectionLogSettingsCatalogue SectionLogSettingsCatalogue
         {
@@ -25,6 +29,7 @@ namespace Celeste.Log
         [SerializeField] private LogRecord logRecord;
         [SerializeField] private SectionLogSettingsCatalogue sectionLogSettingsCatalogue;
         [SerializeField] private RemoteConfigRecord remoteConfigRecord;
+        [SerializeField] private LogLevel defaultHudLogLevel = LogLevel.Assert | LogLevel.Exception | LogLevel.Error | LogLevel.Warning;
 
         [NonSerialized] private ILogHandler unityLogHandler;
 
@@ -75,6 +80,29 @@ namespace Celeste.Log
         }
 
         #endregion
+
+        #region Save/Load
+
+        protected override LogManagerDTO Serialize()
+        {
+            return new LogManagerDTO()
+            {
+                currentHudLogLevel = (int)HudLog.GetAllEnabledLogLevels()
+            };
+        }
+
+        protected override void Deserialize(LogManagerDTO dto)
+        {
+            HudLog.Hookup(Save, (LogLevel)dto.currentHudLogLevel);
+        }
+
+        protected override void SetDefaultValues()
+        {
+            HudLog.Hookup(Save, defaultHudLogLevel);
+        }
+
+        #endregion
+
         private void SyncLogSettingsFromRemoteConfig()
         {
             if (remoteConfigRecord == null)
