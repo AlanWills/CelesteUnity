@@ -32,7 +32,7 @@ namespace Celeste.FSM.Nodes.Logic
             BoolValue _value1 = GetInputValue(nameof(value1), value1);
             BoolValue _value2 = GetInputValue(nameof(value2), value2);
 
-            return _value1.Value && _value2.Value ? GetConnectedNode(TRUE_OUTPUT_PORT) : GetConnectedNode(FALSE_OUTPUT_PORT);
+            return _value1.Value && _value2.Value ? GetConnectedNodeFromOutput(TRUE_OUTPUT_PORT) : GetConnectedNodeFromOutput(FALSE_OUTPUT_PORT);
         }
 
         #endregion

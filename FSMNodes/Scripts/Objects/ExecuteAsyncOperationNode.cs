@@ -46,7 +46,7 @@ namespace Celeste.FSM.Nodes.Objects
 
             if (handleWrapper.HasError)
             {
-                HudLog.LogError("Async Operation failed");
+                UnityEngine.Debug.LogError("Async Operation failed");
             }
         }
 

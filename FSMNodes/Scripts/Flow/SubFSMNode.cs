@@ -97,8 +97,8 @@ namespace Celeste.FSM.Nodes
         protected override FSMNode OnUpdate()
         {
             // When we no longer have nodes to update, we have finished the sub story and can move on
-            FSMNode newNode = runtimeEngine.Update();
-            return newNode != null ? this : GetConnectedNodeFromDefaultOutput();
+            bool nodesLeftToUpdate = runtimeEngine.Update();
+            return nodesLeftToUpdate ? this : GetConnectedNodeFromDefaultOutput();
         }
 
         protected override void OnExit()

@@ -3,7 +3,7 @@ using System;
 namespace Celeste.Log
 {
     [Serializable]
-    public class LogManagerDTO
+    public class HudLogDTO
     {
         public int currentHudLogLevel;
     }

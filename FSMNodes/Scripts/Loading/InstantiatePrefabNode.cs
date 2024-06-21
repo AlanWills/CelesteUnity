@@ -57,7 +57,7 @@ namespace Celeste.FSM.Nodes.Loading
 
             if (isAddressable && instantiateHandle.Status == AsyncOperationStatus.Failed)
             {
-                HudLog.LogError(instantiateHandle.OperationException.Message);
+                Debug.LogException(instantiateHandle.OperationException);
             }
         }
 

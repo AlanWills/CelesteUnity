@@ -139,7 +139,7 @@ namespace Celeste.FSM.Nodes.Logic
                 if (condition.Condition.IsMet)
                 {
                     Debug.LogFormat("If Node condition {0} passed with argument {1} in FSM {2}", condition.Name, _argument != null ? _argument : "null", graph.name);
-                    return GetConnectedNode(condition.Name);
+                    return GetConnectedNodeFromOutput(condition.Name);
                 }
             }
 

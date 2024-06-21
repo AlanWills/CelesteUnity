@@ -60,7 +60,7 @@ namespace Celeste.FSM.Nodes.Flow
                 if (gameObjectPath.GameObject != null)
                 {
                     Debug.LogFormat("Found GameObject {0}", gameObjectPath.Path);
-                    return GetConnectedNode(FOUND_OUTPUT_PORT);
+                    return GetConnectedNodeFromOutput(FOUND_OUTPUT_PORT);
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace Celeste.FSM.Nodes.Flow
             }
 
             Debug.LogFormat("Could not find GameObject with path {0}", gameObjectPath);
-            return GetConnectedNode(NOT_FOUND_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(NOT_FOUND_OUTPUT_PORT);
         }
 
         #endregion

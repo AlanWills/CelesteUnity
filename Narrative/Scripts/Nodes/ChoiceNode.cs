@@ -286,7 +286,7 @@ namespace Celeste.Narrative
 
         protected override FSMNode OnUpdate()
         {
-            return selectedChoice != null ? GetConnectedNode(selectedChoice.name) : this;
+            return selectedChoice != null ? GetConnectedNodeFromOutput(selectedChoice.name) : this;
         }
 
         #endregion

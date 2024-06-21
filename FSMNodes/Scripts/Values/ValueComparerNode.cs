@@ -41,7 +41,7 @@ namespace Celeste.FSM.Nodes
         protected override FSMNode OnUpdate()
         {
             T input = GetInputValue<T>(nameof(inputValue));
-            return input.SatisfiesEquality(condition, targetValue.Value) ? GetConnectedNode(TRUE_PORT_NAME) : GetConnectedNode(FALSE_PORT_NAME);
+            return input.SatisfiesEquality(condition, targetValue.Value) ? GetConnectedNodeFromOutput(TRUE_PORT_NAME) : GetConnectedNodeFromOutput(FALSE_PORT_NAME);
         }
 
         #endregion

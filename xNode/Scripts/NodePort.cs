@@ -107,7 +107,6 @@ namespace XNode {
         public void VerifyConnections() {
             for (int i = connections.Count - 1; i >= 0; i--) {
                 if (connections[i].node != null &&
-                    !string.IsNullOrEmpty(connections[i].fieldName) &&
                     connections[i].node.GetPort(connections[i].fieldName) != null)
                     continue;
                 connections.RemoveAt(i);
@@ -232,7 +231,7 @@ namespace XNode {
 
         public NodePort GetConnection(int i) {
             //If the connection is broken for some reason, remove it.
-            if (connections[i].node == null || string.IsNullOrEmpty(connections[i].fieldName)) {
+            if (connections[i].node == null) {
                 connections.RemoveAt(i);
                 return null;
             }
@@ -410,7 +409,7 @@ namespace XNode {
 
             /// <summary> Returns the port that this <see cref="PortConnection"/> points to </summary>
             private NodePort GetPort() {
-                if (node == null || string.IsNullOrEmpty(fieldName)) return null;
+                if (node == null) return null;
                 return node.GetPort(fieldName);
             }
         }

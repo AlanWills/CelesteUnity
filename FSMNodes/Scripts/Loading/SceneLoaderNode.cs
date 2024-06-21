@@ -97,7 +97,7 @@ namespace Celeste.FSM.Nodes
 
             if (isAddressable && addressablesOperation.Status == AsyncOperationStatus.Failed)
             {
-                HudLog.LogError(addressablesOperation.OperationException.Message);
+                Debug.LogError(addressablesOperation.OperationException.Message);
             }
         }
 

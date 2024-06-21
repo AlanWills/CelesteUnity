@@ -24,7 +24,7 @@ namespace Celeste.FSM.Nodes.Logic
             }
 
             int randomPort = UnityEngine.Random.Range(0, outputs.Count);
-            return GetConnectedNode(outputs[randomPort].fieldName);
+            return GetConnectedNodeFromOutput(outputs[randomPort].fieldName);
         }
 
         #endregion

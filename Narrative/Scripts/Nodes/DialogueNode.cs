@@ -4,7 +4,6 @@ using Celeste.Localisation.Parameters;
 using Celeste.Localisation;
 using Celeste.Localisation.Settings;
 using Celeste.Narrative.Characters;
-using Celeste.Narrative.Nodes;
 using Celeste.Narrative.UI;
 using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace Celeste.Narrative
 {
     [CreateNodeMenu("Celeste/Narrative/Dialogue")]
     [NodeTint(0, 0.4f, 0)]
-    public class DialogueNode : NarrativeNode, IInputReceiverNode, IDialogueNode, ICharacterNode
+    public class DialogueNode : NarrativeNode, IDialogueNode, ICharacterNode
     {
         #region Properties and Fields
 
@@ -118,7 +117,6 @@ namespace Celeste.Narrative
 
         [System.NonSerialized] public string tokenizedDialogue;
         [System.NonSerialized] public bool hasBeenLocalised;
-        [System.NonSerialized] public bool isRead;
 
         #endregion
 
@@ -169,21 +167,11 @@ namespace Celeste.Narrative
             }
 
             tokenizedDialogue = TokenUtility.SubstituteTokens(tokenizedDialogue, dialogueTokens);
-            isRead = false;
         }
 
         protected override FSMNode OnUpdate()
         {
-            return isRead ? base.OnUpdate() : this;
-        }
-
-        #endregion
-
-        #region IInputReceiverNode
-
-        void IInputReceiverNode.OnContinueInputReceived()
-        {
-            isRead = true;
+            return this;
         }
 
         #endregion

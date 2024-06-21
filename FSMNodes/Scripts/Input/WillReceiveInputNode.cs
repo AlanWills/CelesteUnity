@@ -67,7 +67,7 @@ namespace Celeste.FSM.Nodes.Input
                     if (closestGameObject != null && closestGameObject == gameObject)
                     {
                         Debug.LogFormat("GameObject {0} will receive input", gameObjectPath.Path);
-                        return GetConnectedNode(WILL_RECEIVE_INPUT_OUTPUT_PORT);
+                        return GetConnectedNodeFromOutput(WILL_RECEIVE_INPUT_OUTPUT_PORT);
                     }
                 }
 
@@ -76,7 +76,7 @@ namespace Celeste.FSM.Nodes.Input
             }
 
             Debug.LogFormat("GameObject {0} will not receive input", gameObjectPath);
-            return GetConnectedNode(WONT_RECEIVE_INPUT_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(WONT_RECEIVE_INPUT_OUTPUT_PORT);
         }
 
         #endregion

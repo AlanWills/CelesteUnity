@@ -60,16 +60,16 @@ namespace Celeste.FSM.Nodes.Assets
             {
                 if (downloadOperation.Status == AsyncOperationStatus.Failed)
                 {
-                    HudLog.LogError(downloadOperation.OperationException.Message);
+                    UnityEngine.Debug.LogException(downloadOperation.OperationException, CelesteLog.Addressables);
                 }
                 else if (downloadOperation.Status == AsyncOperationStatus.Succeeded)
                 {
-                    HudLog.LogInfo($"{label} downloaded correctly");
+                    UnityEngine.Debug.Log($"{label} downloaded correctly", CelesteLog.Addressables);
                 }
             }
             else
             {
-                HudLog.LogError($"Failed to download {label}");
+                UnityEngine.Debug.LogError($"Failed to download {label}", CelesteLog.Addressables);
             }
         }
 

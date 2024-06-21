@@ -46,7 +46,7 @@ namespace Celeste.FSM.Nodes.Events
                 argument = eventCondition.Item2;
                 
                 Debug.LogFormat("Name: {0} with Argument: {1} was consumed by MEQ Node", eventCondition.Item1.name, argument != null ? argument : "null");
-                return GetConnectedNode(eventCondition.Item1.name);
+                return GetConnectedNodeFromOutput(eventCondition.Item1.name);
             }
 
             return this;

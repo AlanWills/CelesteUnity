@@ -143,7 +143,7 @@ namespace Celeste.Narrative
             if (selectedChoice != null)
             {
                 // Made a choice, so we can move on now!
-                return GetConnectedNode(selectedChoice.name);
+                return GetConnectedNodeFromOutput(selectedChoice.name);
             }
 
             elapsedTime += Time.deltaTime;

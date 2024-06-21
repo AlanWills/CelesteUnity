@@ -99,7 +99,19 @@ namespace Celeste.FSM
             AddDynamicOutput(typeof(void), connectionType, TypeConstraint.None, portName);
         }
 
-        protected FSMNode GetConnectedNode(string outputPortName)
+        protected FSMNode GetConnectedNodeFromInput(string inputPortName)
+        {
+            NodePort nodePort = GetInputPort(inputPortName);
+            if (nodePort == null || nodePort.ConnectionCount == 0)
+            {
+                return null;
+            }
+
+            NodePort connection = nodePort.GetConnection(0);
+            return connection != null ? connection.node as FSMNode : null;
+        }
+
+        protected FSMNode GetConnectedNodeFromOutput(string outputPortName)
         {
             NodePort nodePort = GetOutputPort(outputPortName);
             if (nodePort == null || nodePort.ConnectionCount == 0)
@@ -111,9 +123,14 @@ namespace Celeste.FSM
             return connection != null ? connection.node as FSMNode : null;
         }
 
+        public FSMNode GetConnectedNodeFromDefaultInput()
+        {
+            return GetConnectedNodeFromInput(DEFAULT_INPUT_PORT_NAME);
+        }
+
         public FSMNode GetConnectedNodeFromDefaultOutput()
         {
-            return GetConnectedNode(DEFAULT_OUTPUT_PORT_NAME);
+            return GetConnectedNodeFromOutput(DEFAULT_OUTPUT_PORT_NAME);
         }
 
         public NodePort GetDefaultOutputPort()

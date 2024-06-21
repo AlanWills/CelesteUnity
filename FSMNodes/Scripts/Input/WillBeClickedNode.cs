@@ -66,7 +66,7 @@ namespace Celeste.FSM.Nodes.Input
                     if (closestGameObject != null && closestGameObject == ExecuteEvents.GetEventHandler<IPointerClickHandler>(gameObject))
                     {
                         Debug.LogFormat("GameObject {0} will be clicked", gameObjectPath.Path);
-                        return GetConnectedNode(WILL_BE_CLICKED_OUTPUT_PORT);
+                        return GetConnectedNodeFromOutput(WILL_BE_CLICKED_OUTPUT_PORT);
                     }
                 }
 
@@ -75,7 +75,7 @@ namespace Celeste.FSM.Nodes.Input
             }
 
             Debug.LogFormat("GameObject {0} will not be clicked", gameObjectPath);
-            return GetConnectedNode(WONT_BE_CLICKED_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(WONT_BE_CLICKED_OUTPUT_PORT);
         }
 
         #endregion

@@ -6,15 +6,16 @@ namespace Celeste.FSM
     {
         #region Properties and Fields
 
-        private FSMNode CurrentNode 
+        public FSMNode CurrentNode 
         {
+            get => currentNode;
             set
             {
-                if (runtime.CurrentNode != value)
+                if (currentNode != value)
                 {
                     ExitCurrentNode();
 
-                    runtime.CurrentNode = value;
+                    currentNode = value;
 
                     EnterCurrentNode();
                 }
@@ -22,6 +23,7 @@ namespace Celeste.FSM
         }
 
         private ILinearRuntime runtime;
+        private FSMNode currentNode;
 
         #endregion
 
@@ -37,49 +39,49 @@ namespace Celeste.FSM
             Debug.Log($"Spooling up FSM with starting node {startNode.name}");
         }
 
-        public FSMNode Update()
+        public bool Update()
         {
             FSMNode newNode = UpdateCurrentNode();
 
-            while (newNode != runtime.CurrentNode)
+            while (newNode != currentNode)
             {
                 CurrentNode = newNode;
                 newNode = UpdateCurrentNode();
             }
 
-            return runtime.CurrentNode;
+            return currentNode != null;
         }
 
         #region Node Methods
 
         private void EnterCurrentNode()
         {
-            if (runtime.CurrentNode != null)
+            if (currentNode != null)
             {
-                runtime.CurrentNode.Enter();
-                runtime.OnNodeEnter.Invoke(runtime.CurrentNode);
+                currentNode.Enter();
+                runtime.OnNodeEnter.Invoke(currentNode);
             }
         }
 
         private FSMNode UpdateCurrentNode()
         {
-            if (runtime.CurrentNode != null)
+            if (currentNode != null)
             {
-                FSMNode newNode = runtime.CurrentNode.Update();
-                runtime.OnNodeUpdate.Invoke(runtime.CurrentNode);
+                FSMNode newNode = currentNode.Update();
+                runtime.OnNodeUpdate.Invoke(currentNode);
 
                 return newNode;
             }
 
-            return runtime.CurrentNode;
+            return currentNode;
         }
 
         private void ExitCurrentNode()
         {
-            if (runtime.CurrentNode != null)
+            if (currentNode != null)
             {
-                runtime.CurrentNode.Exit();
-                runtime.OnNodeExit.Invoke(runtime.CurrentNode);
+                currentNode.Exit();
+                runtime.OnNodeExit.Invoke(currentNode);
             }
         }
 

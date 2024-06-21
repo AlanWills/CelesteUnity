@@ -45,7 +45,7 @@ namespace Celeste.FSM.Nodes.Flow
                 if (scene != null && scene.IsValid())
                 {
                     Debug.LogFormat("Found scene {0}", sceneName);
-                    return GetConnectedNode(FOUND_OUTPUT_PORT);
+                    return GetConnectedNodeFromOutput(FOUND_OUTPUT_PORT);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace Celeste.FSM.Nodes.Flow
             }
 
             Debug.LogFormat("Could not find Scene with name {0}", sceneName);
-            return GetConnectedNode(NOT_FOUND_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(NOT_FOUND_OUTPUT_PORT);
         }
 
         #endregion

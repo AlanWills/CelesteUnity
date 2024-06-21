@@ -64,7 +64,7 @@ namespace Celeste.FSM.Nodes.Input
                     if (gameObject.Click())
                     {
                         Debug.LogFormat("Successfully clicked on {0}", gameObjectPath.Path);
-                        return GetConnectedNode(FOUND_OUTPUT_PORT);
+                        return GetConnectedNodeFromOutput(FOUND_OUTPUT_PORT);
                     }
                 }
 
@@ -73,7 +73,7 @@ namespace Celeste.FSM.Nodes.Input
             }
 
             Debug.LogFormat("Failed to click on GameObject with path {0}", gameObjectPath);
-            return GetConnectedNode(NOT_FOUND_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(NOT_FOUND_OUTPUT_PORT);
         }
 
         #endregion

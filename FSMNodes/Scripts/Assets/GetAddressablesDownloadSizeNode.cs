@@ -1,5 +1,4 @@
-﻿using Celeste.Log;
-using System;
+﻿using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using XNode;
@@ -47,16 +46,16 @@ namespace Celeste.FSM.Nodes.Assets
             {
                 if (downloadOperation.Status == AsyncOperationStatus.Failed)
                 {
-                    HudLog.LogError(downloadOperation.OperationException.Message);
+                    UnityEngine.Debug.LogException(downloadOperation.OperationException, CelesteLog.Addressables);
                 }
                 else if (downloadOperation.Status == AsyncOperationStatus.Succeeded)
                 {
-                    HudLog.LogInfo($"{label} download size is {size}");
+                    UnityEngine.Debug.Log($"{label} download size is {size}", CelesteLog.Addressables);
                 }
             }
             else
             {
-                HudLog.LogError($"Failed to check download size for {label}");
+                UnityEngine.Debug.LogError($"Failed to check download size for {label}", CelesteLog.Addressables);
             }
         }
 

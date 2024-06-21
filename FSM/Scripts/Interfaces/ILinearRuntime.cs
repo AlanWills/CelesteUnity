@@ -1,6 +1,4 @@
-﻿using XNode;
-
-namespace Celeste.FSM
+﻿namespace Celeste.FSM
 {
     public interface ILinearRuntime
     {
@@ -9,7 +7,7 @@ namespace Celeste.FSM
         public FSMNodeUnityEvent OnNodeExit { get; }
 
         FSMNode StartNode { get; }
-        FSMNode CurrentNode { get; set; }
+        FSMNode CurrentNode { get; }
         ILinearRuntimeRecord Record { get; }
     }
 }

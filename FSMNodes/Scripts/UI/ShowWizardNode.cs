@@ -69,11 +69,11 @@ namespace Celeste.FSM.Nodes.UI
         {
             if (confirmDummyEventListener.eventRaised)
             {
-                return GetConnectedNode(CONFIRM_PRESSED_PORT_NAME);
+                return GetConnectedNodeFromOutput(CONFIRM_PRESSED_PORT_NAME);
             }
             else if (closeDummyEventListener.eventRaised)
             {
-                return GetConnectedNode(CLOSE_PRESSED_PORT_NAME);
+                return GetConnectedNodeFromOutput(CLOSE_PRESSED_PORT_NAME);
             }
 
             return this;

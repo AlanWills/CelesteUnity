@@ -60,7 +60,7 @@ namespace Celeste.FSM.Nodes.Flow
                 if (gameObjectPath.GameObject == null)
                 {
                     Debug.LogFormat("gameObject removed {0}", gameObjectPath.Path);
-                    return GetConnectedNode(REMOVED_OUTPUT_PORT);
+                    return GetConnectedNodeFromOutput(REMOVED_OUTPUT_PORT);
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace Celeste.FSM.Nodes.Flow
             }
 
             Debug.LogFormat("GameObject with path {0} not removed", gameObjectPath);
-            return GetConnectedNode(NOT_REMOVED_OUTPUT_PORT);
+            return GetConnectedNodeFromOutput(NOT_REMOVED_OUTPUT_PORT);
         }
 
         #endregion

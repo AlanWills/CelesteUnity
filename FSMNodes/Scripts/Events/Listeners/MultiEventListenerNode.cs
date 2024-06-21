@@ -26,7 +26,7 @@ namespace Celeste.FSM.Nodes.Events
                     argument = eventCondition.ConsumeEvent();
 
                     Debug.LogFormat("Name: {0} with Argument: {1} was consumed by MEL Node", eventConditionName, argument != null ? argument : "");
-                    return GetConnectedNode(eventConditionName);
+                    return GetConnectedNodeFromOutput(eventConditionName);
                 }
             }
 

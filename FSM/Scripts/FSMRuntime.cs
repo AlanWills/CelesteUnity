@@ -18,7 +18,7 @@ namespace Celeste.FSM
 
         ILinearRuntimeRecord ILinearRuntime.Record => record;
 
-        public FSMNode CurrentNode { get; set; }
+        public FSMNode CurrentNode => runtimeEngine?.CurrentNode;
 
         // Runtime only override of the start node - useful for loading an FSM at a particular state
         [NonSerialized] private FSMNode startNode;
@@ -43,7 +43,7 @@ namespace Celeste.FSM
 
         public void Run()
         {
-            CurrentNode = null;
+            runtimeEngine = null;
             enabled = true;
 
             if (graph != null)
@@ -68,7 +68,16 @@ namespace Celeste.FSM
             
             enabled = false;
             runtimeEngine = null;
-            CurrentNode = null;
+        }
+
+        public void JumpTo(FSMNode targetNode)
+        {
+            if (runtimeEngine == null)
+            {
+                return;
+            }
+
+            runtimeEngine.CurrentNode = targetNode;
         }
 
         private void UpdateFSM()
@@ -78,13 +87,9 @@ namespace Celeste.FSM
                 return;
             }
 
-            if (CurrentNode == null)
+            if (!runtimeEngine.Update())
             {
                 Stop();
-            }
-            else
-            {
-                CurrentNode = runtimeEngine.Update();
             }
         }
 

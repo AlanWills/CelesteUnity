@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace Celeste.Narrative
+﻿namespace Celeste.Narrative
 {
     public interface ITextChoice : IChoice
     {
