@@ -125,7 +125,6 @@ namespace Celeste.Logic
         [Conditional("UNITY_EDITOR")]
         protected virtual void DoEditorInitialize()
         {
-            DoInitialize();
         }
     }
 }
