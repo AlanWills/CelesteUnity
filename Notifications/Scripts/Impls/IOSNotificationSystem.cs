@@ -44,13 +44,18 @@ namespace Celeste.Notifications.Impls
                 res += "\n granted :  " + req.Granted;
                 res += "\n error:  " + req.Error;
                 res += "\n deviceToken:  " + req.DeviceToken;
-                UnityEngine.Debug.Log(res);
+                UnityEngine.Debug.Log(res, CelesteLog.Notifications);
             }
         }
 
         public void ResetPermissions()
         {
             UnityEngine.Debug.LogAssertion($"Cannot reset permissions on iOS yet.");
+        }
+
+        public void DenyPermissions()
+        {
+            iOSNotificationCenter.OpenNotificationSettings();
         }
 
         public NotificationStatus GetNotificationStatus(Notification notification)

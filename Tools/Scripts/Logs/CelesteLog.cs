@@ -12,11 +12,13 @@ namespace Celeste
         public static SectionLogSettings Persistence => instance?.persistenceLogSettings;
         public static SectionLogSettings Addressables => instance?.addressablesLogSettings;
         public static SectionLogSettings Input => instance?.inputLogSettings;
+        public static SectionLogSettings Notifications => instance?.notificationLogSettings;
 
         [SerializeField] private SectionLogSettings coreLogSettings;
         [SerializeField] private SectionLogSettings persistenceLogSettings;
         [SerializeField] private SectionLogSettings addressablesLogSettings;
         [SerializeField] private SectionLogSettings inputLogSettings;
+        [SerializeField] private SectionLogSettings notificationLogSettings;
 
         [NonSerialized] private static CelesteLog instance;
 

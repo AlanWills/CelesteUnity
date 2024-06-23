@@ -8,8 +8,8 @@ namespace Celeste.Notifications.Impls
     {
         #region Properties and Fields
 
-        public bool PermissionsRequested => true;
-        public bool PermissionsGranted => false;
+        public bool PermissionsRequested { get; private set; }
+        public bool PermissionsGranted { get; private set; }
         public string LastRespondedNotificationData => string.Empty;
 
         #endregion
@@ -21,10 +21,23 @@ namespace Celeste.Notifications.Impls
 
         public IEnumerator RequestPermissions()
         {
+            PermissionsRequested = true;
+            PermissionsGranted = true;
+
             yield break;
         }
 
-        public void ResetPermissions() { }
+        public void ResetPermissions() 
+        {
+            PermissionsRequested = false;
+            PermissionsGranted = false;
+        }
+
+        public void DenyPermissions() 
+        {
+            PermissionsRequested = true;
+            PermissionsGranted = false;
+        }
 
         public NotificationStatus GetNotificationStatus(Notification notification)
         {

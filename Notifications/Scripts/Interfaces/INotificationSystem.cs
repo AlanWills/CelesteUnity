@@ -21,6 +21,7 @@ namespace Celeste.Notifications
         bool Initialize();
         IEnumerator RequestPermissions();
         void ResetPermissions();
+        void DenyPermissions();
         NotificationStatus GetNotificationStatus(Notification notification);
 
         void AddNotificationChannel(NotificationChannel notificationChannel);

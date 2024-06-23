@@ -32,20 +32,19 @@ namespace Celeste.Notifications.Debug
 
             using (var horizontal = new GUILayout.HorizontalScope())
             {
-                using (new GUIEnabledScope(!notificationRecord.PermissionsRequested))
+                if (GUILayout.Button("Request"))
                 {
-                    if (GUILayout.Button("Request"))
-                    {
-                        CoroutineManager.Instance.StartCoroutine(notificationRecord.RequestPermissions());
-                    }
+                    CoroutineManager.Instance.StartCoroutine(notificationRecord.RequestPermissions());
                 }
 
-                using (new GUIEnabledScope(notificationRecord.PermissionsRequested))
+                if (GUILayout.Button("Reset"))
                 {
-                    if (GUILayout.Button("Reset"))
-                    {
-                        notificationRecord.ResetPermissions();
-                    }
+                    notificationRecord.ResetPermissions();
+                }
+
+                if (GUILayout.Button("Deny"))
+                {
+                    notificationRecord.DenyPermissions();
                 }
             }
 

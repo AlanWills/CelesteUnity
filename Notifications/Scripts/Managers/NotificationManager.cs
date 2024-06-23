@@ -2,7 +2,7 @@ using UnityEngine;
 using Celeste.Persistence;
 using Celeste.Notifications.Persistence;
 using Celeste.Notifications.Record;
-using Celeste.Log;
+using Celeste.Events;
 
 namespace Celeste.Notifications.Managers
 {
@@ -26,15 +26,17 @@ namespace Celeste.Notifications.Managers
 
             if (notificationRecord.Initialize())
             {
-                HudLog.LogInfo("Successfully initialized notifications");
+                UnityEngine.Debug.Log("Successfully initialized notifications", CelesteLog.Notifications);
             }
             else
             {
-                HudLog.LogError("Notifications failed to initialize");
+                UnityEngine.Debug.Log("Notifications failed to initialize", CelesteLog.Notifications);
             }
         }
 
         #endregion
+
+        #region Save/Load
 
         protected override NotificationManagerDTO Serialize()
         {
@@ -48,5 +50,7 @@ namespace Celeste.Notifications.Managers
         protected override void SetDefaultValues()
         {
         }
+
+        #endregion
     }
 }

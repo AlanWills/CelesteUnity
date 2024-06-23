@@ -1,5 +1,4 @@
 ﻿using Celeste.Loading;
-using Celeste.Log;
 using Celeste.Notifications.Record;
 using System;
 using System.Collections;
@@ -16,7 +15,7 @@ namespace Celeste.Notifications.Loading
         {
             yield return notificationRecord.RequestPermissions();
 
-            HudLog.LogInfo($"Notification Permissions? {notificationRecord.PermissionsGranted}");
+            UnityEngine.Debug.Log($"Notification Permissions? {notificationRecord.PermissionsGranted}", CelesteLog.Notifications);
             if (notificationRecord.PermissionsGranted)
             {
                 notificationRecord.AddAllNotificationChannels();

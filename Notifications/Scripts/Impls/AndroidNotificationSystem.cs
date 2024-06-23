@@ -41,13 +41,19 @@ namespace Celeste.Notifications.Impls
                 yield return null;
             }
 
-            HudLog.LogInfo($"Permission Request finished with status: {permissionRequest.Status}");
-            HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}");
+            UnityEngine.Debug.Log($"Permission Request finished with status: {permissionRequest.Status}", CelesteLog.Notifications);
+            UnityEngine.Debug.Log($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}", CelesteLog.Notifications);
         }
 
         public void ResetPermissions()
         {
             PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
+            PlayerPrefs.Save();
+        }
+
+        public void DenyPermissions()
+        {
+            PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.DeniedDontAskAgain);
             PlayerPrefs.Save();
         }
         
@@ -70,7 +76,7 @@ namespace Celeste.Notifications.Impls
                     return NotificationStatus.Delivered;
 
                 default:
-                    UnityEngine.Debug.LogAssertion($"Failed to convert android notification status '{status}' into a celeste notification status.");
+                    UnityEngine.Debug.LogAssertion($"Failed to convert android notification status '{status}' into a celeste notification status.", CelesteLog.Notifications);
                     return NotificationStatus.Unknown;
             }
         }
@@ -107,29 +113,29 @@ namespace Celeste.Notifications.Impls
             int notificationId = notification.ID;
             string notificationChannelId = notification.NotificationChannelID;
             NotificationStatus notificationStatus = GetNotificationStatus(notification);
-            UnityEngine.Debug.Log($"Notification with id has status {notificationStatus} before attempted scheduling.");
+            UnityEngine.Debug.Log($"Notification with id has status {notificationStatus} before attempted scheduling.", CelesteLog.Notifications);
 
             if (notificationStatus == NotificationStatus.Scheduled)
             {
                 // Replace the scheduled notification with a new notification.
                 CancelNotification(notification);
                 SendNotification(androidNotification, notificationChannelId, notificationId);
-                UnityEngine.Debug.Log($"Notification with id {notificationId} was scheduled and has been updated.");
+                UnityEngine.Debug.Log($"Notification with id {notificationId} was scheduled and has been updated.", CelesteLog.Notifications);
             }
             else if (notificationStatus == NotificationStatus.Delivered)
             {
                 CancelNotification(notification);
                 SendNotification(androidNotification, notificationChannelId, notificationId);
-                UnityEngine.Debug.Log($"Notification with id {notificationId} was delivered, so has been cancelled and updated.");
+                UnityEngine.Debug.Log($"Notification with id {notificationId} was delivered, so has been cancelled and updated.", CelesteLog.Notifications);
             }
             else if (notificationStatus == NotificationStatus.Unknown)
             {
                 SendNotification(androidNotification, notificationChannelId, notificationId);
-                UnityEngine.Debug.Log($"Notification with id {notificationId} had an unknown status and has been resent.");
+                UnityEngine.Debug.Log($"Notification with id {notificationId} had an unknown status and has been resent.", CelesteLog.Notifications);
             }
             else if (notificationStatus == NotificationStatus.Unknown)
             {
-                UnityEngine.Debug.LogError($"Notification with id {notificationId} could not be scheduled due to unknown status.");
+                UnityEngine.Debug.LogError($"Notification with id {notificationId} could not be scheduled due to unknown status.", CelesteLog.Notifications);
             }
         }
 
@@ -168,7 +174,7 @@ namespace Celeste.Notifications.Impls
                     return Importance.High;
 
                 default:
-                    UnityEngine.Debug.LogAssertion($"Failed to convert celeste importance '{importance}' to android importance enum.");
+                    UnityEngine.Debug.LogAssertion($"Failed to convert celeste importance '{importance}' to android importance enum.", CelesteLog.Notifications);
                     return Importance.None;
             }
         }

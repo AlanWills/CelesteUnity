@@ -51,6 +51,11 @@ namespace Celeste.Notifications.Record
             impl.ResetPermissions();
         }
 
+        public void DenyPermissions()
+        {
+            impl.DenyPermissions();
+        }
+
         public NotificationStatus GetNotificationStatus(Notification notification)
         {
             return impl.GetNotificationStatus(notification);
@@ -66,13 +71,13 @@ namespace Celeste.Notifications.Record
         {
             if (!impl.PermissionsGranted)
             {
-                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to permissions not granted.");
+                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to permissions not granted.", CelesteLog.Notifications);
                 return;
             }
 
             if (!notification.NotificationChannelEnabled)
             {
-                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to channel {notification.NotificationChannelID} not being enabled.");
+                UnityEngine.Debug.Log($"Skipping scheduling of notification {notification.name} due to channel {notification.NotificationChannelID} not being enabled.", CelesteLog.Notifications);
                 return;
             }
 
