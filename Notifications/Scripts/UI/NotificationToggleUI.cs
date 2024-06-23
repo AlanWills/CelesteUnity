@@ -23,6 +23,14 @@ namespace Celeste.Notifications.UI
             UpdateUI();
         }
 
+        private void OnApplicationFocus(bool focus)
+        {
+            if (focus)
+            {
+                UpdateUI();
+            }
+        }
+
         #endregion
 
         private void UpdateUI()
@@ -30,26 +38,25 @@ namespace Celeste.Notifications.UI
             notificationEnabledToggle.SetIsOnWithoutNotify(notificationRecord.PermissionsGranted);
         }
 
-        private IEnumerator RequestNotificationsCoroutine()
+        private IEnumerator RequestNotificationsCoroutine(bool requestEnableNotifications)
         {
-            yield return notificationRecord.RequestPermissions();
-
+            if (requestEnableNotifications && !notificationRecord.PermissionsRequested)
+            {
+                yield return notificationRecord.RequestPermissions();
+            }
+            else
+            {
+                notificationRecord.OpenPermissionsSettings();
+            }
+            
             UpdateUI();
         }
 
         #region Callbacks
 
-        public void OnNotificationsToggled(bool areNotificationsEnabled)
+        public void OnNotificationsToggled(bool requestEnableNotifications)
         {
-            if (areNotificationsEnabled)
-            {
-                notificationRecord.ResetPermissions();
-                StartCoroutine(RequestNotificationsCoroutine());
-            }
-            else
-            {
-                notificationRecord.DenyPermissions();
-            }
+            StartCoroutine(RequestNotificationsCoroutine(requestEnableNotifications));
         }
 
         #endregion

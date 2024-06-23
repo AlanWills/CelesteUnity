@@ -26,6 +26,7 @@
         public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
         public const string DOWNLOAD_COMMON_ADDRESSABLES_LOAD_JOB_NAME = "DownloadCommonAddressables";
         public const string LOAD_ENGINE_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadEngineSystemsSceneSet";
+        public const string LOAD_GAME_SYSTEMS_SCENE_SET_LOAD_JOB_NAME = "LoadGameSystemsSceneSet";
         public const string LOAD_JOB_NAME = "BootstrapLoadJob";
         public const string SCENE_NAME = "Bootstrap";
         public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";

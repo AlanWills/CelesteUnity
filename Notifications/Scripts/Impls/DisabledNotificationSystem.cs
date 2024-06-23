@@ -27,17 +27,7 @@ namespace Celeste.Notifications.Impls
             yield break;
         }
 
-        public void ResetPermissions() 
-        {
-            PermissionsRequested = false;
-            PermissionsGranted = false;
-        }
-
-        public void DenyPermissions() 
-        {
-            PermissionsRequested = true;
-            PermissionsGranted = false;
-        }
+        public void OpenPermissionsSettings() { }
 
         public NotificationStatus GetNotificationStatus(Notification notification)
         {

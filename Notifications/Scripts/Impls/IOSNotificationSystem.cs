@@ -48,12 +48,7 @@ namespace Celeste.Notifications.Impls
             }
         }
 
-        public void ResetPermissions()
-        {
-            UnityEngine.Debug.LogAssertion($"Cannot reset permissions on iOS yet.");
-        }
-
-        public void DenyPermissions()
+        public void OpenPermissionsSettings()
         {
             iOSNotificationCenter.OpenNotificationSettings();
         }

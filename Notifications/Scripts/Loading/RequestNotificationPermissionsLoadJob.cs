@@ -13,13 +13,9 @@ namespace Celeste.Notifications.Loading
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {
+            UnityEngine.Debug.Assert(notificationRecord.IsInitialized, $"Attempting to request notification permissions when the {nameof(NotificationRecord)} is not initialized!");
+            UnityEngine.Debug.Log($"Beginning notification permissions request (requested: {notificationRecord.PermissionsRequested} & current permissions: {notificationRecord.PermissionsGranted}).", CelesteLog.Notifications);
             yield return notificationRecord.RequestPermissions();
-
-            UnityEngine.Debug.Log($"Notification Permissions? {notificationRecord.PermissionsGranted}", CelesteLog.Notifications);
-            if (notificationRecord.PermissionsGranted)
-            {
-                notificationRecord.AddAllNotificationChannels();
-            }
         }
     }
 }

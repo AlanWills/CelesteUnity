@@ -1,10 +1,8 @@
 #if UNITY_ANDROID && UNITY_NOTIFICATIONS
-using Celeste.Log;
 using Celeste.Notifications.Objects;
 using System;
 using System.Collections;
 using Unity.Notifications.Android;
-using UnityEngine;
 
 namespace Celeste.Notifications.Impls
 {
@@ -33,7 +31,7 @@ namespace Celeste.Notifications.Impls
 
         public IEnumerator RequestPermissions()
         {
-            HudLog.LogInfo($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}");
+            UnityEngine.Debug.Log($"{nameof(AndroidNotificationCenter.UserPermissionToPost)}: {AndroidNotificationCenter.UserPermissionToPost}", CelesteLog.Notifications);
             PermissionRequest permissionRequest = new PermissionRequest();
 
             while (permissionRequest.Status == PermissionStatus.RequestPending)
@@ -45,18 +43,9 @@ namespace Celeste.Notifications.Impls
             UnityEngine.Debug.Log($"{nameof(AndroidNotificationCenter.UserPermissionToPost)} after request: {AndroidNotificationCenter.UserPermissionToPost}", CelesteLog.Notifications);
         }
 
-        public void ResetPermissions()
+        public void OpenPermissionsSettings()
         {
             AndroidNotificationCenter.OpenNotificationSettings();
-            //PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
-            //PlayerPrefs.Save();
-        }
-
-        public void DenyPermissions()
-        {
-            AndroidNotificationCenter.OpenNotificationSettings();
-            //PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.Denied);
-            //PlayerPrefs.Save();
         }
         
         public NotificationStatus GetNotificationStatus(Notification notification)

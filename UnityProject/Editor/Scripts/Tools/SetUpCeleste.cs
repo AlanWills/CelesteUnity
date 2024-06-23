@@ -571,6 +571,23 @@ namespace CelesteEditor.UnityProject
                 MakeAddressable(parameters, loadEngineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
 
+            // Load game systems scene set load job
+            {
+                SceneSet gameSystemsSceneSet = EditorOnly.FindAsset<SceneSet>(GameSystemsConstants.SCENE_SET_NAME);
+                Debug.Assert(gameSystemsSceneSet != null, $"Could not find game systems scene set for load job: {GameSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
+                var loadGameSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
+                    .WithLoadSceneMode(LoadSceneMode.Additive)
+                    .WithSceneSet(gameSystemsSceneSet)
+                    .WithShowOutputOnLoadingScreen(false);
+
+                LoadSceneSetLoadJob loadGameSystemsSceneSet = loadGameSystemsSceneSetBuilder.Build();
+                loadGameSystemsSceneSet.name = BootstrapConstants.LOAD_GAME_SYSTEMS_SCENE_SET_LOAD_JOB_NAME;
+                bootstrapLoadJobBuilder.WithLoadJob(loadGameSystemsSceneSet);
+
+                EditorOnly.CreateAssetInFolder(loadGameSystemsSceneSet, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
+                MakeAddressable(parameters, loadGameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
+            }
+
             LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
 

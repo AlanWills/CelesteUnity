@@ -118,6 +118,8 @@ namespace Celeste.Log
                         {
                             customLogHandlers[i].LogException(exception, logSettings.LogContext, formattedException);
                         }
+
+                        TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
                     }
                 }
                 else
@@ -130,9 +132,9 @@ namespace Celeste.Log
                     {
                         customLogHandlers[i].LogException(exception, context, formattedException);
                     }
-                }
 
-                TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
+                    TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
+                }
             }
         }
 
@@ -151,17 +153,22 @@ namespace Celeste.Log
 
                 if (context is SectionLogSettings logSettings)
                 {
-                    formattedLog = logSettings.FormatLogMessage(format, args);
-                    defaultUnityLogHandler.LogFormat(logType, logSettings.LogContext, "{0}", formattedLog);
-
-                    if (logSettings.ShouldLogToHud(logType))
+                    if (!blacklistedSections.Contains(logSettings))
                     {
-                        hudLogHandler.Log(logType, logSettings.LogContext, formattedLog, stackTrace);
-                    }
+                        formattedLog = logSettings.FormatLogMessage(format, args);
+                        defaultUnityLogHandler.LogFormat(logType, logSettings.LogContext, "{0}", formattedLog);
 
-                    for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
-                    {
-                        customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog, stackTrace);
+                        if (logSettings.ShouldLogToHud(logType))
+                        {
+                            hudLogHandler.Log(logType, logSettings.LogContext, formattedLog, stackTrace);
+                        }
+
+                        for (int i = 0, n = customLogHandlers.Count; i < n; ++i)
+                        {
+                            customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog, stackTrace);
+                        }
+
+                        TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
                     }
                 }
                 else
@@ -174,9 +181,9 @@ namespace Celeste.Log
                     {
                         customLogHandlers[i].Log(logType, context, formattedLog, stackTrace);
                     }
+
+                    TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
                 }
-                
-                TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
             }
         }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 using Celeste.Persistence;
 using Celeste.Notifications.Persistence;
 using Celeste.Notifications.Record;
-using Celeste.Events;
 
 namespace Celeste.Notifications.Managers
 {
@@ -20,13 +19,14 @@ namespace Celeste.Notifications.Managers
 
         #region Unity Methods
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
 
             if (notificationRecord.Initialize())
             {
                 UnityEngine.Debug.Log("Successfully initialized notifications", CelesteLog.Notifications);
+                notificationRecord.AddAllNotificationChannels();
             }
             else
             {

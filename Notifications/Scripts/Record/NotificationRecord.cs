@@ -13,6 +13,7 @@ namespace Celeste.Notifications.Record
     {
         #region Properties and Fields
 
+        public bool IsInitialized => isInitialized;
         public bool PermissionsRequested => impl.PermissionsRequested;
         public bool PermissionsGranted => impl.PermissionsGranted;
         public string LastRespondedNotificationData => impl.LastRespondedNotificationData;
@@ -22,6 +23,7 @@ namespace Celeste.Notifications.Record
         [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
         [SerializeField] private Events.Event save;
 
+        [NonSerialized] private bool isInitialized;
         [NonSerialized] private INotificationSystem impl = new DisabledNotificationSystem();
 
         #endregion
@@ -35,7 +37,8 @@ namespace Celeste.Notifications.Record
 #elif UNITY_IOS
             impl = new IOSNotificationSystem();
 #endif
-            return impl.Initialize();
+            isInitialized = impl.Initialize();
+            return isInitialized;
         }
 
         public IEnumerator RequestPermissions()
@@ -44,16 +47,15 @@ namespace Celeste.Notifications.Record
             {
                 yield return impl.RequestPermissions();
             }
+            else
+            {
+                UnityEngine.Debug.Log($"Skipping requesting notification permissions as we've already requested before.", CelesteLog.Notifications);
+            }
         }
 
-        public void ResetPermissions()
+        public void OpenPermissionsSettings()
         {
-            impl.ResetPermissions();
-        }
-
-        public void DenyPermissions()
-        {
-            impl.DenyPermissions();
+            impl.OpenPermissionsSettings();
         }
 
         public NotificationStatus GetNotificationStatus(Notification notification)

@@ -27,24 +27,28 @@ namespace Celeste.Notifications.Debug
 
         protected override void OnDrawMenu()
         {
+            GUILayout.Label($"Is Initialized: {notificationRecord.IsInitialized}");
             GUILayout.Label($"Permissions Requested: {notificationRecord.PermissionsRequested}");
             GUILayout.Label($"Permissions Granted: {notificationRecord.PermissionsGranted}");
 
             using (var horizontal = new GUILayout.HorizontalScope())
             {
+                using (new GUIEnabledScope(!notificationRecord.IsInitialized))
+                {
+                    if (GUILayout.Button("Initialize"))
+                    {
+                        notificationRecord.Initialize();
+                    }
+                }
+
                 if (GUILayout.Button("Request"))
                 {
                     CoroutineManager.Instance.StartCoroutine(notificationRecord.RequestPermissions());
                 }
 
-                if (GUILayout.Button("Reset"))
+                if (GUILayout.Button("Open Settings"))
                 {
-                    notificationRecord.ResetPermissions();
-                }
-
-                if (GUILayout.Button("Deny"))
-                {
-                    notificationRecord.DenyPermissions();
+                    notificationRecord.OpenPermissionsSettings();
                 }
             }
 
