@@ -47,14 +47,16 @@ namespace Celeste.Notifications.Impls
 
         public void ResetPermissions()
         {
-            PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
-            PlayerPrefs.Save();
+            AndroidNotificationCenter.OpenNotificationSettings();
+            //PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.NotRequested);
+            //PlayerPrefs.Save();
         }
 
         public void DenyPermissions()
         {
-            PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.DeniedDontAskAgain);
-            PlayerPrefs.Save();
+            AndroidNotificationCenter.OpenNotificationSettings();
+            //PlayerPrefs.SetInt(AndroidNotificationCenter.SETTING_POST_NOTIFICATIONS_PERMISSION, (int)PermissionStatus.Denied);
+            //PlayerPrefs.Save();
         }
         
         public NotificationStatus GetNotificationStatus(Notification notification)
