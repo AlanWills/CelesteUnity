@@ -21,7 +21,6 @@ namespace Celeste.Log
         [NonSerialized] private string logFilter;
         [NonSerialized] private GUIStyle buttonStyle;
         [NonSerialized] private GUIStyle stackTraceStyle;
-        [NonSerialized] private List<LogMessage> filteredMessages = new List<LogMessage>();
 
         private const int ENTRIES_PER_PAGE = 20;
         private const int NOT_EXPANDED = -1;
@@ -34,15 +33,6 @@ namespace Celeste.Log
 
             buttonStyle = CelesteGUIStyles.WrappedButton.New().Alignment(TextAnchor.MiddleLeft);
             stackTraceStyle = CelesteGUIStyles.WrappedLabel.New().FontSize(10).Alignment(TextAnchor.MiddleLeft);
-
-            RefreshFilteredMessages();
-        }
-
-        protected override void OnHideMenu()
-        {
-            base.OnHideMenu();
-
-            filteredMessages.Clear();
         }
 
         protected override void OnDrawMenu()
@@ -90,16 +80,8 @@ namespace Celeste.Log
                 {
                     Space(5);
                     Label("Log Filter");
-
-                    string newlogFilter = TextField(logFilter);
-                    if (string.CompareOrdinal(newlogFilter, logFilter) != 0)
-                    {
-                        logFilter = newlogFilter;
-                        RefreshFilteredMessages();
-                    }
+                    logFilter = TextField(logFilter);
                 }
-
-                int numMessages = string.IsNullOrEmpty(logFilter) ? logMessages.NumItems : filteredMessages.Count;
 
                 Space(5);
                 currentPage = GUIExtensions.ReadOnlyPaginatedList(
@@ -108,7 +90,7 @@ namespace Celeste.Log
                     logMessages.NumItems,
                     (i) =>
                     {
-                        var logMessage = string.IsNullOrEmpty(logFilter) ? logMessages.GetItem(i) : filteredMessages[i];
+                        var logMessage = logMessages.GetItem(i);
 
                         if (Button(logMessage.message, buttonStyle, ExpandWidth(true)))
                         {
@@ -119,6 +101,23 @@ namespace Celeste.Log
                         {
                             Label(logMessage.stackTrace, stackTraceStyle);
                         }
+                    },
+                    (i) =>
+                    {
+                        var logMessage = logMessages.GetItem(i);
+
+                        if (!currentlyShowingLevel.HasFlag(logMessage.logType))
+                        {
+                            return false;
+                        }
+
+                        if (!string.IsNullOrEmpty(logFilter))
+                        {
+                            return logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) ||
+                                   logMessage.stackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase);
+                        }
+
+                        return true;
                     });
             }
         }
@@ -155,32 +154,6 @@ namespace Celeste.Log
                 {
                     // Was not enabled and now is
                     currentlyShowingLevel |= hudLogLevel;
-                }
-            }
-        }
-
-        private void RefreshFilteredMessages()
-        {
-            filteredMessages.Clear();
-
-            if (string.IsNullOrEmpty(logFilter))
-            {
-                return;
-            }
-
-            for (int i = 0, n = logMessages.NumItems; i < n; ++i)
-            {
-                var logMessage = logMessages.GetItem(i);
-
-                if (!currentlyShowingLevel.HasFlag(logMessage.logType))
-                {
-                    continue;
-                }
-
-                if (logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) ||
-                    logMessage.stackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase))
-                {
-                    filteredMessages.Add(logMessage);
                 }
             }
         }

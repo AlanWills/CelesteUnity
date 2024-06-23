@@ -108,7 +108,8 @@ namespace Celeste.Tools
             int numItems,
             Action<int> drawItem,
             Action addItem,
-            Action<int> removeItem)
+            Action<int> removeItem,
+            Func<int, bool> filter = null)
         {
             return PaginatedList(
                 currentPage,
@@ -125,14 +126,16 @@ namespace Celeste.Tools
                 },
                 () => Button("-", ExpandWidth(false)),
                 addItem,
-                removeItem);
+                removeItem,
+                filter);
         }
 
         public static int ReadOnlyPaginatedList(
             int currentPage,
             int entriesPerPage,
             int numItems,
-            Action<int> drawItem)
+            Action<int> drawItem,
+            Func<int, bool> filter = null)
         {
             return PaginatedList(
                 currentPage,
@@ -142,7 +145,8 @@ namespace Celeste.Tools
                 () => { return false; },
                 () => { return false; },
                 () => { },
-                (i) => { });
+                (i) => { },
+                filter);
         }
 
         public static int PaginatedList(
@@ -154,9 +158,27 @@ namespace Celeste.Tools
             Func<bool> drawRemoveItem,
             Action addItem,
             Action<int> removeItem,
+            Func<int, bool> filter = null,
             ListLayoutOptions layoutOptions = ListLayoutOptions.AutomaticallyVerticalScope)
         {
-            int numPages = Mathf.Max(1, Mathf.CeilToInt((float)numItems / entriesPerPage));
+            int numFilteredItems = 0;
+
+            for (int i = 0; i < numItems; ++i)
+            {
+                if (filter == null || filter.Invoke(i))
+                {
+                    ++numFilteredItems;
+                }
+            }
+
+            int numPages = Mathf.Max(1, Mathf.CeilToInt((float)numFilteredItems / entriesPerPage));
+
+            if (currentPage >= numPages)
+            {
+                // We passed in a current page that is out of range, presumably because our filter has changed
+                // Start again at 0
+                currentPage = 0;
+            }
 
             using (HorizontalScope horizontal = new HorizontalScope())
             {
@@ -200,27 +222,51 @@ namespace Celeste.Tools
             }
 
             int removeIndex = -1;
-            int startingIndex = currentPage * entriesPerPage;
+            int unfilteredStartingIndex = currentPage * entriesPerPage;
 
-            for (int i = startingIndex; i < Mathf.Min(startingIndex + entriesPerPage, numItems); ++i)
+            // We have a filter active, so we have to figure out what unfiltered absolute index corresponds to the start of our filtered index page
+            if (numFilteredItems != numItems)
             {
+                int foundFilteredItems = 0;
+                unfilteredStartingIndex = 0;
+
+                while (unfilteredStartingIndex < numItems && foundFilteredItems < currentPage * entriesPerPage)
+                {
+                    if (filter.Invoke(unfilteredStartingIndex))
+                    {
+                        ++foundFilteredItems;
+                    }
+
+                    ++unfilteredStartingIndex;
+                }
+            }
+
+            for (int unfilteredIndex = unfilteredStartingIndex, filteredItemCount = 0; unfilteredIndex < numItems && filteredItemCount < Mathf.Min(entriesPerPage, numFilteredItems); ++unfilteredIndex)
+            {
+                if (filter != null && !filter.Invoke(unfilteredIndex))
+                {
+                    continue;
+                }
+
+                ++filteredItemCount;
+
                 using (var horizontal = new HorizontalScope())
                 {
                     if (drawRemoveItem())
                     {
-                        removeIndex = i;
+                        removeIndex = unfilteredIndex;
                     }
 
                     if ((layoutOptions & ListLayoutOptions.AutomaticallyVerticalScope) == ListLayoutOptions.AutomaticallyVerticalScope)
                     {
                         using (var vertical = new VerticalScope())
                         {
-                            drawItem(i);
+                            drawItem(unfilteredIndex);
                         }
                     }
                     else
                     {
-                        drawItem(i);
+                        drawItem(unfilteredIndex);
                     }
                 }
             }

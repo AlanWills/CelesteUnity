@@ -3,6 +3,7 @@ using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Google.JarResolver.PlayServicesSupport;
 using static UnityEngine.GUILayout;
 
 namespace Celeste.Log.Debug
@@ -18,7 +19,6 @@ namespace Celeste.Log.Debug
         [NonSerialized] private string logFilter;
         [NonSerialized] private GUIStyle buttonStyle;
         [NonSerialized] private GUIStyle stackTraceStyle;
-        [NonSerialized] private List<LogMessage> filteredMessages = new List<LogMessage>();
 
         private const int ENTRIES_PER_PAGE = 20;
         private const int NOT_EXPANDED = -1;
@@ -29,15 +29,6 @@ namespace Celeste.Log.Debug
 
             buttonStyle = CelesteGUIStyles.WrappedButton.New().Alignment(TextAnchor.MiddleLeft);
             stackTraceStyle = CelesteGUIStyles.WrappedLabel.New().FontSize(10).Alignment(TextAnchor.MiddleLeft);
-
-            RefreshFilteredMessages();
-        }
-
-        protected override void OnHideMenu()
-        {
-            base.OnHideMenu();
-
-            filteredMessages.Clear();
         }
 
         protected override void OnDrawMenu()
@@ -65,8 +56,6 @@ namespace Celeste.Log.Debug
                     {
                         logRecord.RemoveSectionFromBlacklist(sectionLogSettings);
                     }
-
-                    RefreshFilteredMessages();
                 }
             }
 
@@ -90,25 +79,17 @@ namespace Celeste.Log.Debug
             {
                 Space(5);
                 Label("Log Filter");
-                
-                string newlogFilter = TextField(logFilter);
-                if (string.CompareOrdinal(newlogFilter, logFilter) != 0)
-                {
-                    logFilter = newlogFilter;
-                    RefreshFilteredMessages();
-                }
+                logFilter = TextField(logFilter);
             }
-
-            int numMessages = string.IsNullOrEmpty(logFilter) ? logRecord.LogMessages.Count : filteredMessages.Count;
 
             Space(5);
             currentPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentPage,
                 ENTRIES_PER_PAGE,
-                numMessages,
+                logRecord.LogMessages.Count,
                 (i) =>
                 {
-                    var logMessage = string.IsNullOrEmpty(logFilter) ? logRecord.LogMessages[i] : filteredMessages[i];
+                    var logMessage = logRecord.LogMessages[i];
 
                     if (Button(logMessage.message, buttonStyle, ExpandWidth(true)))
                     {
@@ -119,6 +100,28 @@ namespace Celeste.Log.Debug
                     {
                         Label(logMessage.stackTrace, stackTraceStyle);
                     }
+                },
+                (i) =>
+                {
+                    var logMessage = logRecord.LogMessages[i];
+
+                    if (!currentlyShowingLevel.HasFlag(logMessage.logType))
+                    {
+                        return false;
+                    }
+
+                    if (logMessage.sectionLogSettings != null && logRecord.IsSectionBlacklisted(logMessage.sectionLogSettings))
+                    {
+                        return false;
+                    }
+
+                    if (!string.IsNullOrEmpty(logFilter))
+                    {
+                        return logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) ||
+                               logMessage.stackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    return true;
                 });
         }
 
@@ -136,32 +139,6 @@ namespace Celeste.Log.Debug
                 {
                     // Was not enabled and now is
                     currentlyShowingLevel |= hudLogLevel;
-                }
-            }
-        }
-
-        private void RefreshFilteredMessages()
-        {
-            filteredMessages.Clear();
-
-            if (string.IsNullOrEmpty(logFilter))
-            {
-                return;
-            }
-
-            for (int i = 0, n = logRecord.LogMessages.Count; i < n; ++i)
-            {
-                var logMessage = logRecord.LogMessages[i];
-
-                if (!currentlyShowingLevel.HasFlag(logMessage.logType))
-                {
-                    continue;
-                }
-
-                if (logMessage.message.Contains(logFilter, StringComparison.OrdinalIgnoreCase) || 
-                    logMessage.stackTrace.Contains(logFilter, StringComparison.OrdinalIgnoreCase))
-                {
-                    filteredMessages.Add(logMessage);
                 }
             }
         }

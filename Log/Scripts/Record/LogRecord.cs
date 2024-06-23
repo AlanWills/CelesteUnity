@@ -119,7 +119,7 @@ namespace Celeste.Log
                             customLogHandlers[i].LogException(exception, logSettings.LogContext, formattedException);
                         }
 
-                        TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
+                        TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception, logSettings);
                     }
                 }
                 else
@@ -133,7 +133,7 @@ namespace Celeste.Log
                         customLogHandlers[i].LogException(exception, context, formattedException);
                     }
 
-                    TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception);
+                    TrackLogMessage(formattedException, exception.StackTrace, LogLevel.Exception, null);
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace Celeste.Log
                             customLogHandlers[i].Log(logType, logSettings.LogContext, formattedLog, stackTrace);
                         }
 
-                        TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
+                        TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel(), logSettings);
                     }
                 }
                 else
@@ -182,7 +182,7 @@ namespace Celeste.Log
                         customLogHandlers[i].Log(logType, context, formattedLog, stackTrace);
                     }
 
-                    TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel());
+                    TrackLogMessage(formattedLog, stackTrace, logType.ToLogLevel(), null);
                 }
             }
         }
@@ -192,7 +192,7 @@ namespace Celeste.Log
             logMessages.Clear();
         }
 
-        private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel)
+        private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel, SectionLogSettings sectionLogSettings)
         {
             if (isDebugBuild.Value)
             {
@@ -200,7 +200,8 @@ namespace Celeste.Log
                 {
                     message = message,
                     stackTrace = stackTrace,
-                    logType = logLevel
+                    logType = logLevel,
+                    sectionLogSettings = sectionLogSettings
                 });
             }
         }

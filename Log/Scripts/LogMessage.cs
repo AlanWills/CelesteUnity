@@ -8,5 +8,6 @@ namespace Celeste.Log
         public string message;
         public string stackTrace;
         public LogLevel logType;
+        [NonSerialized] public SectionLogSettings sectionLogSettings;
     }
 }
