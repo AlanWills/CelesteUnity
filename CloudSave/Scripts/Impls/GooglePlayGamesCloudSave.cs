@@ -218,7 +218,7 @@ namespace Celeste.CloudSave
             
             savedGameClient.OpenWithAutomaticConflictResolution(
                 saveGameName,
-                DataSource.ReadNetworkOnly,
+                DataSource.ReadCacheOrNetwork,
                 ConflictResolutionStrategy.UseMostRecentlySaved,
                 (SavedGameRequestStatus status, ISavedGameMetadata metadata) =>
                 {
