@@ -2,7 +2,6 @@
 using Celeste.Log.DataStructures;
 using Celeste.Tools;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GUILayout;
 

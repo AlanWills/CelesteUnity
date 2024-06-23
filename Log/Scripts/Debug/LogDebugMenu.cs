@@ -1,9 +1,7 @@
 using Celeste.Debug.Menus;
 using Celeste.Tools;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using static Google.JarResolver.PlayServicesSupport;
 using static UnityEngine.GUILayout;
 
 namespace Celeste.Log.Debug
