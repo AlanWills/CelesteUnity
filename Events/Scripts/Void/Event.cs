@@ -65,7 +65,16 @@ namespace Celeste.Events
 
         public void Invoke()
         {
-            Debug.Log($"Event {name} was raised", this);
+            Invoke(true);
+        }
+
+        public void Invoke(bool logInvocation)
+        {
+            if (logInvocation)
+            {
+                Debug.Log($"Event {name} was raised", this);
+            }
+
             InvokeSilently();
         }
 

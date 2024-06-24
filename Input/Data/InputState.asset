@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b7c35d468b38a4296a6ccfb5a689a2, type: 3}
   m_Name: InputState
   m_EditorClassIdentifier: 
+  defaultVerboseLogging: 0
+  raycastCamera: {fileID: 11400000, guid: 14ae487a7b0d7524e8df71e5b3255874, type: 2}
   pointerMoved: {fileID: 11400000, guid: 563148fb673d6dc4dafd34d657d1bf33, type: 2}
   pointerEnteredGameObjectEvent: {fileID: 11400000, guid: 18d131f46cfdfc042b3309fedecc35a4, type: 2}
   pointerExitedGameObjectEvent: {fileID: 11400000, guid: ab881b82897d13e4586a10be2790acdb, type: 2}
   pointerFirstDownOnGameObjectEvent: {fileID: 11400000, guid: f59c51073e82ad949b34c187ab55a647, type: 2}
   pointerDownOnGameObjectEvent: {fileID: 11400000, guid: 9fc8dee37cc7b27458e53bfb36eaf47d, type: 2}
   pointerFirstUpFromGameObjectEvent: {fileID: 11400000, guid: cdb6bf82ba654934790475d0c0e2d81b, type: 2}
-  singleTouchEvent: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
-  doubleTouchEvent: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
-  tripleTouchEvent: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
+  singleTouch: {fileID: 11400000, guid: 6e60b11d2a4389641b69eadaf7d97ecd, type: 2}
+  doubleTouch: {fileID: 11400000, guid: 8b044a9344308e84ab49dbcf4963122b, type: 2}
+  tripleTouch: {fileID: 11400000, guid: 10ba0f09655a5f243b414d2b64c32ed8, type: 2}
   mouseScrolled: {fileID: 11400000, guid: f8e41487b26e73a4a8c520f166a1d589, type: 2}
   leftMouseButtonFirstDown: {fileID: 11400000, guid: 3e0f99d77fe7e284b98c11650a91e607, type: 2}
   leftMouseButtonDown: {fileID: 11400000, guid: 80d21d9030dfeee4ab10e4c4d0c06dc2, type: 2}

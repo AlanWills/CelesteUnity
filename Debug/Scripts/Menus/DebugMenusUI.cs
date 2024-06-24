@@ -78,15 +78,29 @@ namespace Celeste.Debug.Menus
 
                     if (visibleDebugMenu != null)
                     {
-                        if (GUILayout.Button("Back"))
+                        using (new GUILayout.HorizontalScope())
                         {
-                            visibleDebugMenu.Visible = false;
+                            if (GUILayout.Button("Close"))
+                            {
+                                Visible = false;
+                                visibleDebugMenu.Visible = false;
+                            }
+
+                            if (GUILayout.Button("Back"))
+                            {
+                                visibleDebugMenu.Visible = false;
+                            }
                         }
 
                         visibleDebugMenu.DrawMenu();
                     }
                     else
                     {
+                        if (GUILayout.Button("Close"))
+                        {
+                            Visible = false;
+                        }
+
                         foreach (DebugMenu debugMenu in debugMenus)
                         {
                             if (GUILayout.Button(debugMenu.DisplayName, GUILayout.ExpandWidth(true)))

@@ -1,5 +1,4 @@
-﻿using Celeste.Log;
-using System;
+﻿using System;
 
 namespace Celeste.CloudSave
 {

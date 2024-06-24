@@ -1,10 +1,14 @@
 ﻿using Celeste.Events;
 using Celeste.Input.Settings;
+using Celeste.Parameters;
 using Celeste.Tools;
 using System;
+using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Utilities;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
@@ -31,6 +35,16 @@ namespace Celeste.Input
     {
         #region Properties and Fields
 
+        public bool VerboseLogging { get; set; }
+        public Camera RaycastCamera
+        {
+            get => raycastCamera.Value ?? fallbackMainCamera;
+            set
+            {
+                raycastCamera.Value = value;
+            }
+        }
+
         public Vector2 PointerPosition { get; private set; }
         public Vector3 PointerWorldPosition { get; private set; }
         public PointerState PointerState { get; private set; }
@@ -48,6 +62,10 @@ namespace Celeste.Input
         public PointerState MiddleMouseButton { get; private set; }
         public PointerState RightMouseButton { get; private set; }
         public float MouseScroll { get; private set; }
+
+        [Header("Data")]
+        [SerializeField] private bool defaultVerboseLogging = false;
+        [SerializeField] private CameraValue raycastCamera = default;
 
         [Header("Common Events")]
         [SerializeField] private Vector2Event pointerMoved;
@@ -76,6 +94,8 @@ namespace Celeste.Input
         [SerializeField] private GameObjectClickEvent gameObjectLeftClicked;
         [SerializeField] private GameObjectClickEvent gameObjectMiddleClicked;
         [SerializeField] private GameObjectClickEvent gameObjectRightClicked;
+        
+        [NonSerialized] private Camera fallbackMainCamera;
 
         #endregion
 
@@ -85,6 +105,12 @@ namespace Celeste.Input
         {
 #if UNITY_EDITOR
             var inputSettings = InputEditorSettings.GetOrCreateSettings();
+            
+            if (inputSettings.InputCamera != null)
+            {
+                raycastCamera = inputSettings.InputCamera;
+                EditorOnly.SetDirty(this);
+            }
 
             if (inputSettings.LeftMouseButtonFirstDown != null && leftMouseButtonFirstDown == null)
             {
@@ -162,6 +188,21 @@ namespace Celeste.Input
 
         #endregion
 
+        public void Initialize()
+        {
+            VerboseLogging = defaultVerboseLogging;
+            fallbackMainCamera = null;
+        }
+
+        public void CheckRaycastCamera()
+        {
+            if (raycastCamera.Value == null && fallbackMainCamera == null)
+            {
+                UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.", CelesteLog.Input.WithContext(this));
+                fallbackMainCamera = Camera.main;
+            }
+        }
+
         public void UpdatePointerPosition(Vector2 position, Vector3 worldPosition)
         {
             PreviousPointerPosition = PointerPosition;
@@ -202,13 +243,13 @@ namespace Celeste.Input
                 if (PreviousHitGameObject != null)
                 {
                     currentInputHandler?.OnPointerExit(this);
-                    pointerExitedGameObjectEvent.Invoke(PreviousHitGameObject);
+                    pointerExitedGameObjectEvent.Invoke(PreviousHitGameObject, VerboseLogging);
                 }
 
                 if (newHitGameObject != null)
                 {
                     newInputHandler?.OnPointerEnter(this);
-                    pointerEnteredGameObjectEvent.Invoke(newHitGameObject);
+                    pointerEnteredGameObjectEvent.Invoke(newHitGameObject, VerboseLogging);
                 }
             }
             else if (PreviousHitGameObject != null)
@@ -222,19 +263,19 @@ namespace Celeste.Input
                 if (PointerState.wasFirstDownThisFrame)
                 {
                     newInputHandler?.OnPointerFirstDown(this);
-                    pointerFirstDownOnGameObjectEvent?.Invoke(newHitGameObject);
+                    pointerFirstDownOnGameObjectEvent?.Invoke(newHitGameObject, VerboseLogging);
                 }
 
                 if (PointerState.isDown)
                 {
                     newInputHandler?.OnPointerDown(this);
-                    pointerDownOnGameObjectEvent?.Invoke(newHitGameObject);
+                    pointerDownOnGameObjectEvent?.Invoke(newHitGameObject, VerboseLogging);
                 }
 
                 if (PointerState.wasFirstUpThisFrame)
                 {
                     newInputHandler?.OnPointerFirstUp(this);
-                    pointerFirstUpFromGameObjectEvent?.Invoke(newHitGameObject);
+                    pointerFirstUpFromGameObjectEvent?.Invoke(newHitGameObject, VerboseLogging);
                 }
             }
         }
@@ -247,25 +288,25 @@ namespace Celeste.Input
             if (numTouches == 1)
             {
                 UnityEngine.Debug.Assert(singleTouch != null, $"No {nameof(singleTouch)} event found on {nameof(InputState)} {name}.", CelesteLog.Input.WithContext(this));
-                singleTouch.Invoke(touches[0]);
+                singleTouch.Invoke(touches[0], VerboseLogging);
             }
             else if (numTouches == 2)
             {
                 UnityEngine.Debug.Assert(doubleTouch != null, $"No {nameof(doubleTouch)} event found on {nameof(InputState)} {name}.", CelesteLog.Input.WithContext(this));
-                doubleTouch.InvokeSilently(new MultiTouchEventArgs()
+                doubleTouch.Invoke(new MultiTouchEventArgs()
                 {
                     touchCount = numTouches,
                     touches = touches,
-                });
+                }, VerboseLogging);
             }
             else if (numTouches == 3)
             {
                 UnityEngine.Debug.Assert(tripleTouch != null, $"No {nameof(tripleTouch)} event found on {nameof(InputState)} {name}.", CelesteLog.Input.WithContext(this));
-                tripleTouch.InvokeSilently(new MultiTouchEventArgs()
+                tripleTouch.Invoke(new MultiTouchEventArgs()
                 {
                     touchCount = numTouches,
                     touches = touches,
-                });
+                }, VerboseLogging);
             }
         }
 
@@ -344,6 +385,51 @@ namespace Celeste.Input
             });
         }
 
+        [Conditional("DEVELOPMENT")]
+        private void VerboseLog(string message, UnityEngine.Object context)
+        {
+            if (VerboseLogging)
+            {
+                UnityEngine.Debug.Log(message, CelesteLog.Input.WithContext(context));
+            }
+        }
+
+        public ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(
+            Vector2 pointerPosition, 
+            int pointerOrTouchId,
+            EventSystem eventSystem,
+            InputSystemUIInputModule uiInputModule)
+        {
+            Vector3 pointerWorldPosition = Vector3.zero;
+            GameObject hitGameObject = null;
+
+            if (RaycastCamera != null)
+            {
+                pointerWorldPosition = RaycastCamera.ScreenToWorldPoint(pointerPosition);
+
+                if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
+                {
+                    hitGameObject = uiInputModule.GetLastRaycastResult(pointerOrTouchId).gameObject;
+                    VerboseLog($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                }
+
+                if (hitGameObject == null)
+                {
+                    // If we haven't hit any UI, see if we have hit any game objects in the world
+                    hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
+                    VerboseLog($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                }
+            }
+
+            return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
+        }
+
+        private GameObject Raycast(Vector2 origin)
+        {
+            RaycastHit2D raycastHit = Physics2D.Raycast(origin, Vector2.zero);
+            return raycastHit.transform != null ? raycastHit.transform.gameObject : null;
+        }
+
         private void CheckMouseEvents(
             PointerState mouseButtonState, 
             Vector2Event firstDownEvent, 
@@ -353,7 +439,7 @@ namespace Celeste.Input
         {
             if (mouseButtonState.wasFirstDownThisFrame)
             {
-                firstDownEvent.InvokeSilently(PointerPosition);
+                firstDownEvent.Invoke(PointerPosition, VerboseLogging);
 
                 if (HitGameObject != null)
                 {
@@ -361,7 +447,7 @@ namespace Celeste.Input
                     {
                         gameObject = HitGameObject,
                         clickWorldPosition = PointerWorldPosition
-                    });
+                    }, VerboseLogging);
                 }
             }
 
@@ -372,7 +458,7 @@ namespace Celeste.Input
 
             if (mouseButtonState.wasFirstUpThisFrame)
             {
-                firstUpEvent.InvokeSilently(PointerPosition);
+                firstUpEvent.Invoke(PointerPosition, VerboseLogging);
             }
         }
     }

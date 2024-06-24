@@ -14,6 +14,7 @@ namespace Celeste.Input
 
         protected override void OnDrawMenu()
         {
+            inputState.VerboseLogging = GUILayout.Toggle(inputState.VerboseLogging, "Verbose Logging");
         }
     }
 }

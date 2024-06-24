@@ -65,3 +65,4 @@ MonoBehaviour:
   addressablesLogSettings: {fileID: 11400000, guid: f7b3df466a40c43408ab7f2cc4f8e782, type: 2}
   inputLogSettings: {fileID: 11400000, guid: dfa9292d3da307f4180fdde3a8305e8b, type: 2}
   notificationLogSettings: {fileID: 11400000, guid: 9a85ffdf82b93554c856bbcbb0a644d7, type: 2}
+  narrativeLogSettings: {fileID: 11400000, guid: 09254ed17f42e14418a3cb0ba87608ac, type: 2}

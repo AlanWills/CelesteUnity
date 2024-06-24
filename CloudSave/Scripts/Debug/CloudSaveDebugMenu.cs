@@ -1,9 +1,7 @@
 ﻿using Celeste.Coroutines;
 using Celeste.Debug.Menus;
 using Celeste.Persistence.Snapshots;
-using Celeste.Scene;
 using Celeste.Tools;
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,7 +17,6 @@ namespace Celeste.CloudSave
 
         [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private CloudSaveRecord cloudSave;
-        [SerializeField] private SceneSet startupSceneSet;
 
         #endregion
 
@@ -64,8 +61,8 @@ namespace Celeste.CloudSave
                         JsonUtility.FromJsonOverwrite(saveGameString, snapshot);
                         snapshot.UnpackItems();
 
-                        CoroutineManager.Instance.StartCoroutine(
-                            startupSceneSet.LoadAsync(LoadSceneMode.Single, (f) => { }, (s) => { }, () => { }));
+                        // Load the first scene in build settings (we assume it's the startup scene)
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
                     }));
             }
 

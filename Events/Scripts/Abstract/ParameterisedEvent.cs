@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -62,7 +61,16 @@ namespace Celeste.Events
 
         public void Invoke(T argument)
         {
-            Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}", this);
+            Invoke(argument, true);
+        }
+
+        public void Invoke(T argument, bool logInvocation)
+        {
+            if (logInvocation)
+            {
+                Debug.Log($"Event {name} was raised with argument {(argument != null ? argument.ToString() : "<null>")}", this);
+            }
+
             InvokeSilently(argument);
         }
 

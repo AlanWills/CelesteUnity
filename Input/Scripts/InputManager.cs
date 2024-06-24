@@ -19,51 +19,33 @@ namespace Celeste.Input
         #region Properties and Fields
 
 #if UNITY_EDITOR
-
         public bool EditorOnly_MouseOverGameView
         {
             get
             {
-                if (RaycastCamera != null)
+                if (inputState.RaycastCamera != null)
                 {
-                    Vector2 viewportCoords = RaycastCamera.ScreenToViewportPoint(Mouse.current.position.ReadValue());
+                    Vector2 viewportCoords = inputState.RaycastCamera.ScreenToViewportPoint(Mouse.current.position.ReadValue());
                     return viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1;
                 }
 
                 return false;
             }
         }
-
 #endif
-        private Camera RaycastCamera => raycastCamera.Value ?? fallbackMainCamera;
-
-        [SerializeField] private CameraValue raycastCamera = default;
+        
         [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
         [SerializeField] private InputSystemUIInputModule uiInputModule;
-
-        [NonSerialized] private Camera fallbackMainCamera;
 
         #endregion
 
         #region Unity Methods
 
-        private void OnValidate()
-        {
-#if UNITY_EDITOR
-            var inputSettings = InputEditorSettings.GetOrCreateSettings();
-
-            if (inputSettings.InputCamera != null)
-            {
-                raycastCamera = inputSettings.InputCamera;
-            }
-#endif
-        }
-
         private void OnEnable()
         {
-            fallbackMainCamera = null;
-
+            inputState.Initialize();
+            
 #if UNITY_ANDROID || UNITY_IOS
             if (!EnhancedTouchSupport.enabled)
             {
@@ -84,11 +66,7 @@ namespace Celeste.Input
 
         private void Update()
         {
-            if (raycastCamera.Value == null && fallbackMainCamera == null)
-            {
-                UnityEngine.Debug.LogWarning($"No raycast camera found, falling back to main camera to try and provide some input support.", CelesteLog.Input.WithContext(this));
-                fallbackMainCamera = Camera.main; 
-            }
+            inputState.CheckRaycastCamera();
 
 #if UNITY_ANDROID || UNITY_IOS
             GameObject hitGameObject = null;
@@ -100,7 +78,7 @@ namespace Celeste.Input
                 // Only update pointer state if we've actually touched down, otherwise leave it as it was the last time we touched the screen
                 // The hit game object and touches logic in the InputState should flag to other systems we've not hit anything
                 Vector3 touchPosition = touches[0].screenPosition;
-                ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(touchPosition, touches[0].touchId);
+                ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(touchPosition, touches[0].touchId, eventSystem, uiInputModule);
                 Vector3 touchWorldPosition = hitObject.Item1;
                 hitGameObject = hitObject.Item2;
 
@@ -121,7 +99,7 @@ namespace Celeste.Input
                 return;
             }
 #endif
-            ValueTuple<Vector3, GameObject> hitObject = CalculateHitObjectAndWorldPosition(mousePosition, 0);
+            ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(mousePosition, 0, eventSystem, uiInputModule);
             inputState.UpdatePointerPosition(mousePosition, hitObject.Item1);
             inputState.UpdatePointerOverObject(hitObject.Item2, mouse.leftButton.isPressed);
 
@@ -138,32 +116,6 @@ namespace Celeste.Input
 
         #region Utility Functions
 
-        private ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(Vector2 pointerPosition, int pointerOrTouchId)
-        {
-            Vector3 pointerWorldPosition = Vector3.zero;
-            GameObject hitGameObject = null;
-
-            if (RaycastCamera != null)
-            {
-                pointerWorldPosition = RaycastCamera.ScreenToWorldPoint(pointerPosition);
-
-                if (eventSystem.IsPointerOverGameObject() && uiInputModule != null)
-                {
-                    hitGameObject = uiInputModule.GetLastRaycastResult(pointerOrTouchId).gameObject;
-                    UnityEngine.Debug.Log($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", CelesteLog.Input.WithContext(hitGameObject));
-                }
-
-                if (hitGameObject == null)
-                {
-                    // If we haven't hit any UI, see if we have hit any game objects in the world
-                    hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
-                    UnityEngine.Debug.Log($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", CelesteLog.Input.WithContext(hitGameObject));
-                }
-            }
-
-            return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
-        }
-
         // DO NOT DELETE, USED FOR PLATFORMS OTHER THAN IOS AND ANDROID
         private void CheckMouseButton(ButtonControl buttonControl, MouseButton mouseButton)
         {
@@ -171,16 +123,10 @@ namespace Celeste.Input
             {
                 wasFirstDownThisFrame = buttonControl.wasPressedThisFrame,
                 isDown = buttonControl.isPressed,
-                wasFirstUpThisFrame= buttonControl.wasReleasedThisFrame,
+                wasFirstUpThisFrame = buttonControl.wasReleasedThisFrame,
             };
-        
-            inputState.UpdateMouseButtonState(mouseButton, mouseButtonState);
-        }
 
-        private GameObject Raycast(Vector2 origin)
-        {
-            RaycastHit2D raycastHit = Physics2D.Raycast(origin, Vector2.zero);
-            return raycastHit.transform != null ? raycastHit.transform.gameObject : null;
+            inputState.UpdateMouseButtonState(mouseButton, mouseButtonState);
         }
 
         #endregion
@@ -189,7 +135,7 @@ namespace Celeste.Input
 
         public void SetInputCamera(Camera camera)
         {
-            raycastCamera.Value = camera;
+            inputState.RaycastCamera = camera;
         }
 
         #endregion
