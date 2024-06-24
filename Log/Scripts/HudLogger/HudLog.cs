@@ -226,7 +226,12 @@ namespace Celeste.Log
             
             if (hudLogDTO != null)
             {
+                UnityEngine.Debug.Log($"Beginning loading of {nameof(HudLog)} cloud save.", CelesteLog.CloudSave);
                 Deserialize(hudLogDTO);
+            }
+            else
+            {
+                UnityEngine.Debug.Log($"Skipping loading of {nameof(HudLog)} cloud save because it was not present in the cloud save data.", CelesteLog.CloudSave);
             }
         }
 
