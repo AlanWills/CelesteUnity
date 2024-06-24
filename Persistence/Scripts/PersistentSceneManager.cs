@@ -1,5 +1,4 @@
-﻿using Celeste.Log;
-using Celeste.Persistence.Settings;
+﻿using Celeste.Persistence.Settings;
 using Celeste.Persistence.Snapshots;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
@@ -12,7 +11,7 @@ namespace Celeste.Persistence
 {
     public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour, IPersistentSceneManager, IInterestedInSnapshots, ISupportsDataSnapshots, ISupportsFileSnapshots
         where TManager : PersistentSceneManager<TManager, TDTO>
-        where TDTO : class  // Need for Odin to pick up AOT formatter for serialization
+        where TDTO : class
     {
         private enum SaveState
         {

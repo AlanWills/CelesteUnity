@@ -1,4 +1,5 @@
-﻿using Celeste.Log.DataStructures;
+﻿using Celeste.CloudSave;
+using Celeste.Log.DataStructures;
 using Celeste.Memory;
 using Celeste.Persistence;
 using System;
@@ -212,6 +213,20 @@ namespace Celeste.Log
             if (logMessages != null)
             {
                 logMessages.AddItem(new LogMessage() { message = message, stackTrace = callstack, logType = logLevel });
+            }
+        }
+
+        #endregion
+
+        #region Callbacks
+
+        public void OnCloudSaveLoaded(CloudSaveLoadedArgs cloudSaveLoadedArgs)
+        {
+            HudLogDTO hudLogDTO = cloudSaveLoadedArgs.loadedData?.DeserializeData<HudLogDTO>(FilePath);
+            
+            if (hudLogDTO != null)
+            {
+                Deserialize(hudLogDTO);
             }
         }
 

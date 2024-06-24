@@ -252,7 +252,7 @@ namespace Celeste.CloudSave
         {
             if (enableLogging)
             {
-                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.Log(message, CelesteLog.CloudSave);
             }
         }
 
@@ -260,7 +260,7 @@ namespace Celeste.CloudSave
         {
             if (enableLogging)
             {
-                UnityEngine.Debug.LogError(message);
+                UnityEngine.Debug.LogError(message, CelesteLog.CloudSave);
             }
         }
 
@@ -278,7 +278,7 @@ namespace Celeste.CloudSave
                     return AuthenticateStatus.Cancelled;
 
                 default:
-                    UnityEngine.Debug.LogAssertion($"Unhandled {nameof(SignInStatus)} {signInStatus}");
+                    UnityEngine.Debug.LogAssertion($"Unhandled {nameof(SignInStatus)} {signInStatus}", CelesteLog.CloudSave);
                     return AuthenticateStatus.InternalError;
             }
         }
@@ -303,7 +303,7 @@ namespace Celeste.CloudSave
                     return SaveRequestStatus.TimeoutError;
 
                 default:
-                    UnityEngine.Debug.LogAssertion($"Unhandled {nameof(SavedGameRequestStatus)} {signInStatus}");
+                    UnityEngine.Debug.LogAssertion($"Unhandled {nameof(SavedGameRequestStatus)} {signInStatus}", CelesteLog.CloudSave);
                     return SaveRequestStatus.InternalError;
             }
         }

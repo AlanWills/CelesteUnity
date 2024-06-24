@@ -14,6 +14,7 @@ namespace Celeste
         public static SectionLogSettings Input => instance?.inputLogSettings;
         public static SectionLogSettings Notifications => instance?.notificationLogSettings;
         public static SectionLogSettings Narrative => instance?.narrativeLogSettings;
+        public static SectionLogSettings CloudSave => instance?.cloudSaveLogSettings;
 
         [SerializeField] private SectionLogSettings coreLogSettings;
         [SerializeField] private SectionLogSettings persistenceLogSettings;
@@ -21,6 +22,7 @@ namespace Celeste
         [SerializeField] private SectionLogSettings inputLogSettings;
         [SerializeField] private SectionLogSettings notificationLogSettings;
         [SerializeField] private SectionLogSettings narrativeLogSettings;
+        [SerializeField] private SectionLogSettings cloudSaveLogSettings;
 
         [NonSerialized] private static CelesteLog instance;
 

@@ -39,9 +39,6 @@ namespace Celeste.CloudSave
                     (saveDataString) =>
                     {
                         setOutput("Default Cloud Save Loaded");
-                        DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
-                        JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
-                        dataSnapshot.UnpackItems();
                     },
                     (status) =>
                     {

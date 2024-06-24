@@ -1,5 +1,6 @@
 ﻿using Celeste.Log;
 using Celeste.Parameters;
+using Celeste.Persistence.Snapshots;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -37,6 +38,7 @@ namespace Celeste.CloudSave
 
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private string defaultSaveGameName = "DefaultSaveGame";
+        [SerializeField] private CloudSaveLoadedEvent cloudSaveLoaded;
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private ICloudSave impl = new DisabledCloudSave();
@@ -56,15 +58,14 @@ namespace Celeste.CloudSave
                     break;
 
                 case Implementation.PlatformAppropriate:
-#if UNITY_EDITOR
                     impl = new DisabledCloudSave();
-#elif UNITY_ANDROID && GOOGLE_PLAY_GAMES
+#if UNITY_ANDROID && GOOGLE_PLAY_GAMES
                     impl = new GooglePlayGamesCloudSave();
 #endif
                     break;
             }
 
-            UnityEngine.Debug.Log("Cloud Save Initialized!");
+            UnityEngine.Debug.Log("Cloud Save Initialized!", CelesteLog.CloudSave);
         }
 
         public void Activate()
@@ -78,24 +79,24 @@ namespace Celeste.CloudSave
         {
             if (impl.IsAuthenticated)
             {
-                HudLog.LogInfo("Cloud Save already authenticated");
+                UnityEngine.Debug.Log("Cloud Save already authenticated", CelesteLog.CloudSave);
                 onAuthenticateSucceeded?.Invoke();
                 yield break;
             }
 
             bool authenticationComplete = false;
-            HudLog.LogInfo("Beginning to authenticate cloud save");
+            UnityEngine.Debug.Log("Beginning to authenticate cloud save", CelesteLog.CloudSave);
 
             impl.Authenticate(
                 () =>
                 {
-                    HudLog.LogInfo("Successfully authenticated cloud save");
+                    UnityEngine.Debug.Log("Successfully authenticated cloud save", CelesteLog.CloudSave);
                     authenticationComplete = true;
                     onAuthenticateSucceeded?.Invoke();
                 },
                 (status) =>
                 {
-                    HudLog.LogInfo("Unsuccessfully authenticated cloud save");
+                    UnityEngine.Debug.Log("Unsuccessfully authenticated cloud save", CelesteLog.CloudSave);
                     impl = new DisabledCloudSave();
                     authenticationComplete = true;
                     onAuthenticateFailed?.Invoke(status);
@@ -113,25 +114,30 @@ namespace Celeste.CloudSave
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                HudLog.LogWarning("Internet is not reachable, so reading of Cloud Save will be skipped...");
+                UnityEngine.Debug.LogWarning("Internet is not reachable, so reading of Cloud Save will be skipped...", CelesteLog.CloudSave);
                 onSaveGameReadFailed?.Invoke(SaveRequestStatus.TimeoutError);
                 yield break;
             }
 
             bool readComplete = false;
-            HudLog.LogInfo("Beginning to read default cloud save");
+            UnityEngine.Debug.Log("Beginning to read default cloud save", CelesteLog.CloudSave);
 
             impl.ReadSaveGame(
                 defaultSaveGameName,
                 (saveDataString) =>
                 {
-                    HudLog.LogWarning("Successfully read default cloud save game");
+                    UnityEngine.Debug.LogWarning("Successfully read default cloud save game", CelesteLog.CloudSave);
                     readComplete = true;
+
+                    DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
+                    JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
+
+                    cloudSaveLoaded?.Invoke(new CloudSaveLoadedArgs() { loadedData = dataSnapshot });
                     onSaveGameReadSucceeded?.Invoke(saveDataString);
                 },
                 (status) =>
                 {
-                    HudLog.LogWarning("Unsuccessfully read default cloud save game");
+                    UnityEngine.Debug.LogWarning("Unsuccessfully read default cloud save game", CelesteLog.CloudSave);
                     readComplete = true;
                     onSaveGameReadFailed?.Invoke(status);
                 });
@@ -148,22 +154,22 @@ namespace Celeste.CloudSave
             Action<SaveRequestStatus> onSaveGameFailed = null)
         {
             bool writeComplete = false;
-            HudLog.LogInfo("Beginning to write default cloud save");
+            UnityEngine.Debug.Log("Beginning to write default cloud save", CelesteLog.CloudSave);
 
-            UnityEngine.Debug.Assert(impl != null, $"Impl is null!");
+            UnityEngine.Debug.Assert(impl != null, $"Impl is null!", CelesteLog.CloudSave);
             impl.WriteSaveGame(
                 defaultSaveGameName,
                 saveData,
                 DateTimeOffset.UtcNow - PlaytimeStart,
                 () =>
                 {
-                    HudLog.LogInfo("Successfully wrote default cloud save game");
+                    UnityEngine.Debug.Log("Successfully wrote default cloud save game", CelesteLog.CloudSave);
                     writeComplete = true;
                     onSaveGameSucceeded?.Invoke();
                 },
                 (status) =>
                 {
-                    HudLog.LogWarning("Unsuccessfully wrote default cloud save game");
+                    UnityEngine.Debug.LogWarning("Unsuccessfully wrote default cloud save game", CelesteLog.CloudSave);
                     writeComplete = true;
                     onSaveGameFailed?.Invoke(status);
                 });
@@ -179,19 +185,19 @@ namespace Celeste.CloudSave
             Action<SaveRequestStatus> onSaveGameDeletedFailed = null)
         {
             bool deleteComplete = false;
-            HudLog.LogInfo("Beginning to delete default cloud save");
+            UnityEngine.Debug.Log("Beginning to delete default cloud save", CelesteLog.CloudSave);
 
             impl.DeleteSaveGame(
                 defaultSaveGameName,
                 () =>
                 {
-                    HudLog.LogInfo("Successfully deleted default cloud save game");
+                    UnityEngine.Debug.Log("Successfully deleted default cloud save game", CelesteLog.CloudSave);
                     deleteComplete = true;
                     onSaveGameDeletedSucceeded?.Invoke();
                 },
                 (status) =>
                 {
-                    HudLog.LogWarning("Unsuccessfully deleted default cloud save game");
+                    UnityEngine.Debug.LogWarning("Unsuccessfully deleted default cloud save game", CelesteLog.CloudSave);
                     deleteComplete = true;
                     onSaveGameDeletedFailed?.Invoke(status);
                 });

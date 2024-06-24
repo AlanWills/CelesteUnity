@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1185063488355416628}
   - component: {fileID: 2814967683919728978}
   - component: {fileID: 3570087743746332946}
+  - component: {fileID: 2714948496392324765}
   m_Layer: 0
   m_Name: HudLog
   m_TagString: Untagged
@@ -51,6 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16678ca79e316ee46a99edf941ce8cec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapshotRecord: {fileID: 11400000, guid: a34ea895f3952af4db7c6e9d24039f61, type: 2}
+  loadOnAwake: 1
+  loadOnStart: 0
   defaultLogLevel: 30
   logMessages: {fileID: 11400000, guid: 1a02d3721e635fe478c0a4b4d09996c5, type: 2}
   hudMessages: {fileID: 3570087743746332946}
@@ -111,3 +115,32 @@ MonoBehaviour:
   prefab: {fileID: 2323012877272773708, guid: 4bbbeee5eb7962f469508500014d28d1, type: 3}
   defaultChunkSize: 1
   allocateOnStart: 40
+--- !u!114 &2714948496392324765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540866142405327290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7918154e7147d77459a9680c062080f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 627cfeee3dad3564488143b180574589, type: 2}
+  logAddAndRemoveListener: 0
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8540866142405327285}
+        m_TargetAssemblyTypeName: Celeste.Log.HudLog, Celeste.Log
+        m_MethodName: OnCloudSaveLoaded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

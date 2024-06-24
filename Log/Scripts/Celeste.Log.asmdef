@@ -11,6 +11,7 @@
         "Celeste.UnityProject",
         "Celeste.RemoteConfig",
         "Celeste.Persistence",
+        "Celeste.CloudSave",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

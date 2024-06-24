@@ -11,7 +11,6 @@
         "Celeste.Parameters",
         "Celeste.Events",
         "Celeste.Tools",
-        "Celeste.Log",
         "Celeste.UnityProject",
         "Google.Play.Games"
     ],
