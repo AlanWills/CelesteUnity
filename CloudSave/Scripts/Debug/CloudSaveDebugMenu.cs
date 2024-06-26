@@ -2,6 +2,7 @@
 using Celeste.Debug.Menus;
 using Celeste.Persistence.Snapshots;
 using Celeste.Tools;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,8 @@ namespace Celeste.CloudSave
 
         [SerializeField] private SnapshotRecord snapshotRecord;
         [SerializeField] private CloudSaveRecord cloudSave;
+
+        [NonSerialized] private DataSnapshot lastReadCloudSave;
 
         #endregion
 
@@ -52,31 +55,60 @@ namespace Celeste.CloudSave
                 }
             }
 
-            if (GUILayout.Button("Load Save Game"))
+            using (new GUILayout.HorizontalScope())
             {
-                CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
-                    (saveGameString) =>
-                    {
-                        DataSnapshot snapshot = CreateInstance<DataSnapshot>();
-                        JsonUtility.FromJsonOverwrite(saveGameString, snapshot);
-                        snapshot.UnpackItems();
+                if (GUILayout.Button("Read Save"))
+                {
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
+                        (saveGameString) =>
+                        {
+                            lastReadCloudSave = CreateInstance<DataSnapshot>();
+                            JsonUtility.FromJsonOverwrite(saveGameString, lastReadCloudSave);
+                        }));
+                }
 
-                        // Load the first scene in build settings (we assume it's the startup scene)
-                        SceneManager.LoadScene(0, LoadSceneMode.Single);
-                    }));
+                if (GUILayout.Button("Overwrite Local Save"))
+                {
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
+                        (saveGameString) =>
+                        {
+                            DataSnapshot snapshot = CreateInstance<DataSnapshot>();
+                            JsonUtility.FromJsonOverwrite(saveGameString, snapshot);
+                            snapshot.UnpackItems();
+
+                            // Load the first scene in build settings (we assume it's the startup scene)
+                            SceneManager.LoadScene(0, LoadSceneMode.Single);
+                        }));
+                }
             }
 
-            if (GUILayout.Button("Write Default Save Game"))
+            using (new GUILayout.HorizontalScope())
             {
-                Snapshot snapshot = snapshotRecord.CreateDataSnapshot();
-                string snapshotString = snapshot.Serialize();
+                if (GUILayout.Button("Write Default Save"))
+                {
+                    Snapshot snapshot = snapshotRecord.CreateDataSnapshot();
+                    string snapshotString = snapshot.Serialize();
 
-                CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString));
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString));
+                }
+
+                if (GUILayout.Button("Delete Default Save"))
+                {
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.DeleteDefaultSaveGameAsync());
+                }
             }
 
-            if (GUILayout.Button("Delete Default Save Game"))
+            if (lastReadCloudSave == null)
             {
-                CoroutineManager.Instance.StartCoroutine(cloudSave.DeleteDefaultSaveGameAsync());
+                GUILayout.Label("No Cloud Save Read");
+            }
+            else
+            {
+                for (int i = 0, n = lastReadCloudSave.NumDataFiles; i < n; ++i)
+                {
+                    GUILayout.Label(lastReadCloudSave.GetUnpackPath(i), CelesteGUIStyles.BoldLabel);
+                    GUILayout.Label(lastReadCloudSave.GetData(i));
+                }
             }
         }
     }

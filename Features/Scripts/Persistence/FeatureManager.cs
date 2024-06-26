@@ -1,4 +1,5 @@
-﻿using Celeste.Persistence;
+﻿using Celeste.CloudSave;
+using Celeste.Persistence;
 using Celeste.RemoteConfig;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Celeste.Features.Persistence
         protected override void Deserialize(FeatureManagerDTO dto)
         {
             List<int> enabledFeaturesFromSaveAndRemoteConfig = MergeEnabledFeaturesWithRemoteConfig(dto.enabledFeatures);
-            featureRecord.Hookup(featureCatalogue, enabledFeaturesFromSaveAndRemoteConfig);
+            featureRecord.Initialize(featureCatalogue, enabledFeaturesFromSaveAndRemoteConfig);
         }
 
         protected override FeatureManagerDTO Serialize()
@@ -60,7 +61,7 @@ namespace Celeste.Features.Persistence
         protected override void SetDefaultValues()
         {
             List<int> enabledFeaturesFromRemoteConfig = GetEnabledFeaturesFromRemoteConfig();
-            featureRecord.Hookup(featureCatalogue, enabledFeaturesFromRemoteConfig);
+            featureRecord.Initialize(featureCatalogue, enabledFeaturesFromRemoteConfig);
         }
 
         #endregion

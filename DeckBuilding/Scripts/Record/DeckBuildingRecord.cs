@@ -1,6 +1,5 @@
 ﻿using Celeste.DataStructures;
 using Celeste.DeckBuilding.Decks;
-using Celeste.DeckBuilding.Shuffler;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,14 +10,21 @@ namespace Celeste.DeckBuilding.Persistence
     {
         #region Properties and Fields
 
-        public int NumDecks
-        {
-            get { return decks.Count; }
-        }
+        public int NumDecks => decks.Count;
 
         private List<Deck> decks = new List<Deck>();
 
         #endregion
+
+        public void Initialize()
+        {
+            Shutdown();
+        }
+
+        public void Shutdown()
+        {
+            decks.Clear();
+        }
 
         public Deck CreateDeck()
         {

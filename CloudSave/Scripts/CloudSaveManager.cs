@@ -68,6 +68,17 @@ namespace Celeste.CloudSave
             }
         }
 
+        public void OnCloudSaveLoaded(CloudSaveLoadedArgs cloudSaveLoadedArgs)
+        {
+            CloudSaveDTO cloudSaveDTO = cloudSaveLoadedArgs.loadedData?.DeserializeData<CloudSaveDTO>(FileName);
+            UnityEngine.Debug.Assert(cloudSaveDTO != null, $"Failed to find cloud save data in our loaded cloud save.");
+
+            if (cloudSaveDTO != null)
+            {
+                cloudSaveRecord.PlaytimeStart = cloudSaveDTO.playtimeFirstStart;
+            }
+        }
+
         #endregion
     }
 }

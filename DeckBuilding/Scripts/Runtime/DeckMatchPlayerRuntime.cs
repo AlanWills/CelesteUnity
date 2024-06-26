@@ -55,6 +55,14 @@ namespace Celeste.DeckBuilding
 
         #region Deck Management
 
+        public void ClearHand()
+        {
+            for (int i = CurrentHand.NumCards - 1; i >= 0; --i)
+            {
+                CurrentHand.RemoveCard(CurrentHand.GetCard(i));
+            }
+        }
+
         public void AddCardToDrawPile(CardRuntime card)
         {
             deck.AddCardToDrawPile(card);
@@ -81,6 +89,14 @@ namespace Celeste.DeckBuilding
         public void AddCardToRemovedPile(CardRuntime card)
         {
             deck.AddCardToRemovedPile(card);
+        }
+
+        public void ClearStage()
+        {
+            for (int i = Stage.NumCards - 1; i >= 0; --i)
+            {
+                Stage.RemoveCard(i);
+            }
         }
 
         public void AddCardToStage(CardRuntime card)

@@ -22,7 +22,18 @@ namespace Celeste.CloudSave
         #region Properties and Fields
 
         public bool IsAuthenticated => impl.IsAuthenticated;
-        public DateTimeOffset PlaytimeStart { get; private set; }
+        public DateTimeOffset PlaytimeStart
+        {
+            get => playtimeStart;
+            set
+            {
+                if (playtimeStart != value)
+                {
+                    playtimeStart = value;
+                    save.Invoke();
+                }
+            }
+        }
         public Implementation ActiveImplementation
         {
             get => activeImplementation;
@@ -42,6 +53,7 @@ namespace Celeste.CloudSave
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private ICloudSave impl = new DisabledCloudSave();
+        [NonSerialized] private DateTimeOffset playtimeStart;
         [NonSerialized] private Implementation activeImplementation = Implementation.Disabled;
 
         #endregion
@@ -126,7 +138,8 @@ namespace Celeste.CloudSave
                 defaultSaveGameName,
                 (saveDataString) =>
                 {
-                    UnityEngine.Debug.LogWarning("Successfully read default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.Log("Successfully read default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.Log($"Cloud save string is: {saveDataString}", CelesteLog.CloudSave);
                     readComplete = true;
 
                     DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();

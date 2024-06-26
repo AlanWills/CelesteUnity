@@ -3,7 +3,6 @@ using Celeste.Events;
 using Celeste.Parameters;
 using Celeste.Persistence;
 using Celeste.RemoteConfig;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Advertising
@@ -42,6 +41,13 @@ namespace Celeste.Advertising
             SyncAdsEnabledFromRemoteConfig();
 
             adRecord.Initialize();
+        }
+
+        protected override void OnDestroy()
+        {
+            adRecord.Shutdown();
+
+            base.OnDestroy();
         }
 
         #endregion

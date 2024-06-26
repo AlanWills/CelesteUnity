@@ -57,6 +57,21 @@ namespace Celeste.DeckBuilding
             return false;
         }
 
+        public bool RemoveCard(int index)
+        {
+            CardRuntime card = cards.Get(index);
+
+            if (card != null)
+            {
+                card.OnPlayCardSuccess.RemoveListener(OnPlayCardSuccess);
+                cardRemovedEvent.Invoke(card);
+                return true;
+            }
+
+            UnityEngine.Debug.LogAssertion($"Failed to find a card in hand at index {index} in current hand.");
+            return false;
+        }
+
         public bool HasCard(Predicate<CardRuntime> predicate)
         {
             return cards.Exists(predicate);

@@ -1,4 +1,5 @@
-﻿using Celeste.Tools.Attributes.GUI;
+﻿using Celeste.DataStructures;
+using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +40,16 @@ namespace Celeste.Persistence.Snapshots
                 UnpackPath = unpackPath,
                 SourceData = saveData,
             });
+        }
+
+        public string GetUnpackPath(int index)
+        {
+            return data.Get(index).UnpackPath;
+        }
+
+        public string GetData(int index)
+        {
+            return data.Get(index).SourceData;
         }
 
         public string FindData(string unpackPath)

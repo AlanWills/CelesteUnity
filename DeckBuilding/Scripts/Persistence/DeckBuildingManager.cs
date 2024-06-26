@@ -1,4 +1,5 @@
-﻿using Celeste.DeckBuilding.Cards;
+﻿using Celeste.CloudSave;
+using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Catalogue;
 using Celeste.DeckBuilding.Decks;
 using Celeste.Persistence;
@@ -22,10 +23,23 @@ namespace Celeste.DeckBuilding.Persistence
 
         #endregion
 
+        #region Unity Methods
+
+        protected override void OnDestroy()
+        {
+            deckBuildingRecord.Shutdown();
+
+            base.OnDestroy();
+        }
+
+        #endregion
+
         #region Save/Load Methods
 
         protected override void Deserialize(DeckBuildingDTO dto)
         {
+            deckBuildingRecord.Initialize();
+
             foreach (DeckDTO deckDTO in dto.decks)
             {
                 Deck deck = deckBuildingRecord.CreateDeck();

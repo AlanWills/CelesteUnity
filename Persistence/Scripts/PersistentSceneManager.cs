@@ -210,6 +210,27 @@ namespace Celeste.Persistence
         protected abstract void Deserialize(TDTO dto);
         protected abstract void SetDefaultValues();
 
+        protected void LoadFromDataSnapshot(DataSnapshot dataSnapshot)
+        {
+            if (dataSnapshot == null)
+            {
+                UnityEngine.Debug.LogAssertion($"{name} is attempting to load data from a data snapshot, but it was null.", CelesteLog.Persistence.WithContext(this));
+                return;
+            }
+
+            TDTO dto = dataSnapshot.DeserializeData<TDTO>(FileName);
+
+            if (dto != null)
+            {
+                UnityEngine.Debug.Log($"Beginning loading of {name} from data snapshot.", CelesteLog.Persistence);
+                Deserialize(dto);
+            }
+            else
+            {
+                UnityEngine.Debug.Log($"Skipping loading of {name} from data snapshot because it did not have data in the data snapshot.", CelesteLog.Persistence);
+            }
+        }
+
         #endregion
     }
 }

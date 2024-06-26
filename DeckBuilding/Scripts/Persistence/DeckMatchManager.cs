@@ -97,6 +97,8 @@ namespace Celeste.DeckBuilding
         private void Deserialize(DeckMatchPlayerRuntime playerRuntime, DeckMatchPlayerRuntimeDTO playerRuntimeDTO)
         {
             playerRuntime.SetResources(playerRuntimeDTO.availableResources);
+            playerRuntime.ClearHand();
+            playerRuntime.ClearStage();
 
             foreach (var cardRuntimeDTO in playerRuntimeDTO.cardsInHand)
             {

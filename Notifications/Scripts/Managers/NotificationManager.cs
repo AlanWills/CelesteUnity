@@ -2,6 +2,7 @@ using UnityEngine;
 using Celeste.Persistence;
 using Celeste.Notifications.Persistence;
 using Celeste.Notifications.Record;
+using Celeste.CloudSave;
 
 namespace Celeste.Notifications.Managers
 {
@@ -45,6 +46,10 @@ namespace Celeste.Notifications.Managers
 
         protected override void Deserialize(NotificationManagerDTO dto)
         {
+            foreach (NotificationChannelDTO notificationChannelDTO in dto.notificationChannels)
+            {
+                notificationRecord.SetNotificationChannelEnabled(notificationChannelDTO.guid, notificationChannelDTO.enabled);
+            }
         }
 
         protected override void SetDefaultValues()

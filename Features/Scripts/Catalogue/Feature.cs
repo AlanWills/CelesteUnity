@@ -39,7 +39,7 @@ namespace Celeste.Features
 
         #endregion
 
-        public void Hookup()
+        public void Initialize()
         {
             if (canEnable != null)
             {

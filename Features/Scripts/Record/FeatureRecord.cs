@@ -19,19 +19,21 @@ namespace Celeste.Features
 
         #endregion
 
-        public void Hookup(FeatureCatalogue featureCatalogue)
+        public void Initialize(FeatureCatalogue featureCatalogue)
         {
-            Hookup(featureCatalogue, Array.Empty<int>());
+            Initialize(featureCatalogue, Array.Empty<int>());
         }
 
-        public void Hookup(FeatureCatalogue featureCatalogue, IReadOnlyList<int> enabledFeatures)
+        public void Initialize(FeatureCatalogue featureCatalogue, IReadOnlyList<int> enabledFeatures)
         {
+            Shutdown(featureCatalogue);
+
             for (int i = 0, n = featureCatalogue.NumItems; i < n; ++i)
             {
                 Feature feature = featureCatalogue.GetItem(i);
                 feature.IsEnabled = enabledFeatures.Contains(i);
+                feature.Initialize();
                 feature.AddOnEnabledChangedCallback(OnEnabledChanged);
-                feature.Hookup();
                 features.Add(feature);
             }
         }
@@ -44,6 +46,8 @@ namespace Celeste.Features
                 feature.RemoveOnEnabledChangedCallback(OnEnabledChanged);
                 feature.Shutdown();
             }
+
+            features.Clear();
         }
 
         public bool IsFeatureEnabled(int featureGuid)

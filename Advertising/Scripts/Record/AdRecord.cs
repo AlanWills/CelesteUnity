@@ -39,9 +39,17 @@ namespace Celeste.Advertising
 
         public void Initialize()
         {
+            Shutdown();
+
             adsEnabled.AddValueChangedCallback(OnAdsEnabledValueChanged);
 
             SelectImpl();
+        }
+
+        public void Shutdown()
+        {
+            adsEnabled.RemoveValueChangedCallback(OnAdsEnabledValueChanged);
+            impl = disabledAdProvider;
         }
 
         private void SelectImpl()

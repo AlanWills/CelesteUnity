@@ -1,5 +1,4 @@
-﻿using Celeste.Components;
-using Celeste.Components.Catalogue;
+﻿using Celeste.Components.Catalogue;
 using Celeste.Components.Persistence;
 using Celeste.Core;
 using Celeste.DataStructures;

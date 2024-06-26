@@ -23,7 +23,7 @@ namespace Celeste.Log
                 if (logLevel != value)
                 {
                     logLevel = value;
-                    save?.Invoke();
+                    Save();
                 }
             }
         }
@@ -36,7 +36,6 @@ namespace Celeste.Log
         [SerializeField] private Color errorColour = Color.red;
 
         [NonSerialized] private LogLevel logLevel;
-        [NonSerialized] private Action save;
         [NonSerialized] private static HudLog instance;
 
         #endregion
@@ -222,17 +221,7 @@ namespace Celeste.Log
 
         public void OnCloudSaveLoaded(CloudSaveLoadedArgs cloudSaveLoadedArgs)
         {
-            HudLogDTO hudLogDTO = cloudSaveLoadedArgs.loadedData?.DeserializeData<HudLogDTO>(FilePath);
-            
-            if (hudLogDTO != null)
-            {
-                UnityEngine.Debug.Log($"Beginning loading of {nameof(HudLog)} cloud save.", CelesteLog.CloudSave);
-                Deserialize(hudLogDTO);
-            }
-            else
-            {
-                UnityEngine.Debug.Log($"Skipping loading of {nameof(HudLog)} cloud save because it was not present in the cloud save data.", CelesteLog.CloudSave);
-            }
+            LoadFromDataSnapshot(cloudSaveLoadedArgs.loadedData);
         }
 
         #endregion

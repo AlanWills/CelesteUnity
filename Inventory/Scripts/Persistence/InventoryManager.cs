@@ -1,4 +1,5 @@
 ﻿using Celeste.Assets;
+using Celeste.CloudSave;
 using Celeste.Inventory.Persistence;
 using Celeste.Inventory.Settings;
 using Celeste.Persistence;
@@ -13,10 +14,7 @@ namespace Celeste.Inventory
         #region Properties and Fields
 
         public static readonly string FILE_NAME = "Inventory.dat";
-        protected override string FileName
-        {
-            get { return FILE_NAME; }
-        }
+        protected override string FileName => FILE_NAME;
 
         [SerializeField] private InventorySettings inventorySettings;
         [SerializeField] private InventoryRecord inventoryRecord;
@@ -41,22 +39,22 @@ namespace Celeste.Inventory
 
         #endregion
 
+        #region Unity Methods
+
+        protected override void OnDestroy()
+        {
+            inventoryRecord.Shutdown();
+
+            base.OnDestroy();
+        }
+
+        #endregion
+
         #region Save/Load Methods
 
         protected override void Deserialize(InventoryDTO dto)
         {
-            inventoryRecord.Clear();
-            inventoryRecord.MaxSize = dto.maxSize;
-
-            foreach (int itemGuid in dto.itemGuids)
-            {
-                InventoryItem item = inventorySettings.MustFindInventoryItemByGuid(itemGuid);
-
-                if (item != null)
-                {
-                    inventoryRecord.AddItem(item);
-                }
-            }
+            inventoryRecord.Initialize(dto.maxSize, dto.itemGuids, inventorySettings);
         }
 
         protected override InventoryDTO Serialize()

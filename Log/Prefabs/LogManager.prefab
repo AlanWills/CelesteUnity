@@ -66,3 +66,4 @@ MonoBehaviour:
   inputLogSettings: {fileID: 11400000, guid: dfa9292d3da307f4180fdde3a8305e8b, type: 2}
   notificationLogSettings: {fileID: 11400000, guid: 9a85ffdf82b93554c856bbcbb0a644d7, type: 2}
   narrativeLogSettings: {fileID: 11400000, guid: 09254ed17f42e14418a3cb0ba87608ac, type: 2}
+  cloudSaveLogSettings: {fileID: 11400000, guid: ce9bbe571f087ae409aa8a7fef7a0968, type: 2}

@@ -38,6 +38,23 @@ namespace Celeste.DeckBuilding
             actorAddedEvent.Invoke(card);
         }
 
+        public void RemoveCard(int index)
+        {
+            CardRuntime card = cards.Get(index);
+
+            if (card != null)
+            {
+                card.SetOnStage(false);
+                card.RemoveOnDieCallback(OnCardDied);
+
+                actorRemovedEvent.Invoke(card);
+            }
+            else
+            {
+                UnityEngine.Debug.LogAssertion($"Remove Failed: could not find card at index {index} in Stage.");
+            }
+        }
+
         public void RemoveCard(CardRuntime card)
         {
             if (cards.Remove(card))

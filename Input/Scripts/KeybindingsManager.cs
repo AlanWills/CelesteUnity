@@ -1,4 +1,5 @@
-﻿using Celeste.DataStructures;
+﻿using Celeste.CloudSave;
+using Celeste.DataStructures;
 using Celeste.Parameters.Input;
 using Celeste.Persistence;
 using System;
@@ -13,23 +14,14 @@ namespace Celeste.Input
         #region Properties and Fields
 
         private const string FILE_NAME = "Keybindings.dat";
+        protected override string FileName => FILE_NAME;
 
-        protected override string FileName
-        {
-            get { return FILE_NAME; }
-        }
-
-        public int NumKeyCodes
-        {
-            get { return keyCodes.Count; }
-        }
+        public int NumKeyCodes => keyCodes.Count;
 
         [SerializeField]
         private List<KeyCodeValue> keyCodes = new List<KeyCodeValue>();
 
         #endregion
-
-        private KeybindingsManager() { }
 
         #region Save/Load Methods
 

@@ -61,6 +61,7 @@ MonoBehaviour:
   infoColour: {r: 0.27650985, g: 0.7924528, b: 0.25044498, a: 1}
   warningColour: {r: 1, g: 0.5372549, b: 0, a: 1}
   errorColour: {r: 1, g: 0, b: 0, a: 1}
+  save: {fileID: 11400000, guid: 51e2b2f6be85bce449ba5c78f04616be, type: 2}
 --- !u!114 &1185063488355416628
 MonoBehaviour:
   m_ObjectHideFlags: 0

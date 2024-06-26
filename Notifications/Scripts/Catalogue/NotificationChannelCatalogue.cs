@@ -7,5 +7,9 @@ namespace Celeste.Notifications.Catalogue
     [CreateAssetMenu(fileName = nameof(NotificationChannelCatalogue), menuName = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM + "Notification Channel Catalogue", order = CelesteMenuItemConstants.NOTIFICATIONS_MENU_ITEM_PRIORITY)]
     public class NotificationChannelCatalogue : ListScriptableObject<NotificationChannel>
     {
+        public NotificationChannel FindItemByGuid(int guid)
+        {
+            return FindItem(x => x.Guid == guid);
+        }
     }
 }

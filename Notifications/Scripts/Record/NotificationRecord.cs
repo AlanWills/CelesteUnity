@@ -69,6 +69,20 @@ namespace Celeste.Notifications.Record
             notificationChannel.AddEnabledChangedCallback(OnChannelEnabledChanged);
         }
 
+        public void SetNotificationChannelEnabled(int notificationChannelGuid, bool isEnabled)
+        {
+            NotificationChannel notificationChannel = notificationChannelCatalogue.FindItemByGuid(notificationChannelGuid);
+
+            if (notificationChannel != null)
+            {
+                notificationChannel.Enabled = isEnabled;
+            }
+            else
+            {
+                UnityEngine.Debug.LogAssertion($"Failed to change the enabled status of notification channel with guid {notificationChannelGuid} as it could not be found.");
+            }
+        }
+
         public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
             if (!impl.PermissionsGranted)

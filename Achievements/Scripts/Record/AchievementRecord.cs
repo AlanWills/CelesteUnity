@@ -32,6 +32,8 @@ namespace Celeste.Achievements.Objects
 
         public void Initialize(IIndexableItems<Achievement> achievementItems)
         {
+            Shutdown();
+
             for (int i = 0, n = achievementItems.NumItems; i < n; ++i)
             {
                 Achievement achievement = achievementItems.GetItem(i);
@@ -48,6 +50,8 @@ namespace Celeste.Achievements.Objects
                 achievement.RemoveOnStateChangedCallback(OnAchievementStateChanged);
                 achievement.Shutdown();
             }
+
+            achievements.Clear();
         }
 
         public Achievement GetAchievement(int index)

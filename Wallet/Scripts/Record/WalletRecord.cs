@@ -23,6 +23,8 @@ namespace Celeste.Wallet
 
         public void Initialize(CurrencyCatalogue currencyCatalogue)
         {
+            Shutdown();
+
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
                 Currency currency = currencyCatalogue.GetItem(i);
