@@ -1,5 +1,4 @@
-﻿using Celeste.CloudSave;
-using Celeste.DataStructures;
+﻿using Celeste.DataStructures;
 using Celeste.Parameters.Input;
 using Celeste.Persistence;
 using System;

@@ -1,5 +1,4 @@
 ﻿using Celeste.Assets;
-using Celeste.CloudSave;
 using Celeste.Inventory.Persistence;
 using Celeste.Inventory.Settings;
 using Celeste.Persistence;

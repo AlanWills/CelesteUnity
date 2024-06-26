@@ -2,7 +2,6 @@ using UnityEngine;
 using Celeste.Persistence;
 using Celeste.Notifications.Persistence;
 using Celeste.Notifications.Record;
-using Celeste.CloudSave;
 
 namespace Celeste.Notifications.Managers
 {

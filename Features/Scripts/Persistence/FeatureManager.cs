@@ -1,5 +1,4 @@
-﻿using Celeste.CloudSave;
-using Celeste.Persistence;
+﻿using Celeste.Persistence;
 using Celeste.RemoteConfig;
 using System.Collections.Generic;
 using System.Linq;

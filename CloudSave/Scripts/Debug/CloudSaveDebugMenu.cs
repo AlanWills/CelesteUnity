@@ -72,10 +72,6 @@ namespace Celeste.CloudSave
                     CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
                         (saveGameString) =>
                         {
-                            DataSnapshot snapshot = CreateInstance<DataSnapshot>();
-                            JsonUtility.FromJsonOverwrite(saveGameString, snapshot);
-                            snapshot.UnpackItems();
-
                             // Load the first scene in build settings (we assume it's the startup scene)
                             SceneManager.LoadScene(0, LoadSceneMode.Single);
                         }));

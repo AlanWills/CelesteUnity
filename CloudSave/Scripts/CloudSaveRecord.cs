@@ -145,6 +145,10 @@ namespace Celeste.CloudSave
                     DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
                     JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
 
+                    // We need to add comparison against any existing file for the timestamp
+                    // Only replace older time stamped files
+                    dataSnapshot.UnpackItems();
+
                     cloudSaveLoaded?.Invoke(new CloudSaveLoadedArgs() { loadedData = dataSnapshot });
                     onSaveGameReadSucceeded?.Invoke(saveDataString);
                 },
