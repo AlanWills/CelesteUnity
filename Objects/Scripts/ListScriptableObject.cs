@@ -58,6 +58,12 @@ namespace Celeste.Objects
             return ItemsImpl.Find(predicate);
         }
 
+        public T MustFindItem(Predicate<T> predicate)
+        {
+            Debug.Assert(ItemsImpl.Exists(predicate), $"Failed to find item matching inputted requirement in '{name}'.", CelesteLog.Core.WithContext(this));
+            return ItemsImpl.Find(predicate);
+        }
+
         public void AddItem(T item)
         {
             using (ChangeBlock changeBlock = new ChangeBlock(this))

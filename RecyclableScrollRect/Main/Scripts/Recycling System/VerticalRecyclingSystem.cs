@@ -5,7 +5,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static PolyAndCode.UI.RecyclableScrollRect;
 
 namespace PolyAndCode.UI
 {
@@ -20,7 +22,7 @@ namespace PolyAndCode.UI
 
         //Cell dimensions
         private float _cellWidth, _cellHeight;
-        private int _direction = 1;
+        private VerticalDirectionType _direction = VerticalDirectionType.TopToBottom;
 
         //Pool Generation
         private List<RectTransform> _cellPool;
@@ -40,7 +42,7 @@ namespace PolyAndCode.UI
         private Vector2 zeroVector = Vector2.zero;
 
         #region INIT
-        public VerticalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int coloumns, int direction)
+        public VerticalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int coloumns, VerticalDirectionType direction)
         {
             PrototypeCell = prototypeCell;
             Viewport = viewport;
@@ -74,7 +76,7 @@ namespace PolyAndCode.UI
             //Set content height according to no of rows
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
-            SetTopAnchor(Content);
+            SetAnchorUsingDirection(Content);
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
 
             if (onInitialized != null) onInitialized();
@@ -144,6 +146,7 @@ namespace PolyAndCode.UI
                 RectTransform item = (UnityEngine.Object.Instantiate(PrototypeCell.gameObject)).GetComponent<RectTransform>();
                 item.name = "Cell";
                 item.sizeDelta = new Vector2(_cellWidth, _cellHeight);
+                SetAnchorUsingDirection(item);
                 _cellPool.Add(item);
                 item.SetParent(Content, false);
 
@@ -154,14 +157,14 @@ namespace PolyAndCode.UI
                     if (++_bottomMostCellColoumn >= _coloumns)
                     {
                         _bottomMostCellColoumn = 0;
-                        posY += _direction * _cellHeight;
+                        posY += (int)_direction * _cellHeight;
                         currentPoolCoverage += item.rect.height;
                     }
                 }
                 else
                 {
                     item.anchoredPosition = new Vector2(0, posY);
-                    posY = item.anchoredPosition.y + _direction * _cellHeight;
+                    posY = item.anchoredPosition.y + (int)_direction * _cellHeight;
                     currentPoolCoverage += _cellHeight;
                 }
 
@@ -358,6 +361,7 @@ namespace PolyAndCode.UI
         #endregion
 
         #region  HELPERS
+        
         /// <summary>
         /// Anchoring cell and content rect transforms to top preset. Makes repositioning easy.
         /// </summary>
@@ -391,6 +395,34 @@ namespace PolyAndCode.UI
             //Reapply size
             rectTransform.sizeDelta = new Vector2(width, height);
         }
+
+        private void SetBottomAnchor(RectTransform rectTransform)
+        {
+            //Saving to reapply after anchoring. Width and height changes if anchoring is change. 
+            float width = rectTransform.rect.width;
+            float height = rectTransform.rect.height;
+
+            //Setting top anchor 
+            rectTransform.anchorMin = new Vector2(0.5f, 0);
+            rectTransform.anchorMax = new Vector2(0.5f, 0);
+            rectTransform.pivot = new Vector2(0.5f, 0);
+
+            //Reapply size
+            rectTransform.sizeDelta = new Vector2(width, height);
+        }
+
+        private void SetAnchorUsingDirection(RectTransform rectTransform)
+        {
+            if (_direction == VerticalDirectionType.TopToBottom)
+            {
+                SetTopAnchor(rectTransform);
+            }
+            else
+            {
+                SetBottomAnchor(rectTransform);
+            }
+        }
+
         #endregion
 
         #region TESTING

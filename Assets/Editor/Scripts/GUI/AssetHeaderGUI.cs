@@ -1,4 +1,5 @@
-﻿using Celeste.Tools;
+﻿using Celeste.Assets;
+using Celeste.Tools;
 using CelesteEditor.Tools;
 using System;
 using UnityEditor;
@@ -60,7 +61,17 @@ namespace CelesteEditor.Assets.GUI
 
                     if (GUILayout.Button("Export as Json to Clipboard", GUILayout.ExpandWidth(false)))
                     {
-                        string json = JsonUtility.ToJson(target);
+                        string json = string.Empty;
+
+                        if (target is ICustomiseJsonSerialization customSerialisation)
+                        {
+                            json = customSerialisation.Serialize();
+                        }
+                        else
+                        {
+                            json = JsonUtility.ToJson(target);
+                        }
+
                         GUIUtility.systemCopyBuffer = json;
                     }
                 }
@@ -78,7 +89,16 @@ namespace CelesteEditor.Assets.GUI
                         if (GUILayout.Button("Apply Json from Clipboard", GUILayout.ExpandWidth(false)))
                         {
                             string json = GUIUtility.systemCopyBuffer;
-                            JsonUtility.FromJsonOverwrite(json, target);
+                            
+                            if (target is ICustomiseJsonSerialization customSerialisation)
+                            {
+                                customSerialisation.Deserialize(json);
+                            }
+                            else
+                            {
+                                JsonUtility.FromJsonOverwrite(json, target);
+                            }
+
                             EditorUtility.SetDirty(target);
                         }
                     }

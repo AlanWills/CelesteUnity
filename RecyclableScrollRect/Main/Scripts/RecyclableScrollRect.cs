@@ -70,7 +70,7 @@ namespace PolyAndCode.UI
             //Contruct the recycling system.
             if (Direction == DirectionType.Vertical)
             {
-                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments, (int)VerticalDirection);
+                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments, VerticalDirection);
             }
             else if (Direction == DirectionType.Horizontal)
             {
