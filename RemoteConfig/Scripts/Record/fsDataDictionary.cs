@@ -1,4 +1,5 @@
-﻿using FullSerializer;
+﻿using Celeste.Persistence;
+using FullSerializer;
 using System.Collections.Generic;
 
 namespace Celeste.RemoteConfig
@@ -56,7 +57,7 @@ namespace Celeste.RemoteConfig
             return defaultValue;
         }
 
-        public IRemoteConfigDictionary GetDictionary(string key)
+        public IRemoteConfigDictionary GetObjectAsDictionary(string key)
         {
             if (dictionary.TryGetValue(key, out fsData value))
             {
@@ -64,6 +65,16 @@ namespace Celeste.RemoteConfig
             }
 
             return new fsDataDictionary();
+        }
+
+        public string GetObjectAsString(string key, string defaultValue)
+        {
+            if (dictionary.TryGetValue(key, out fsData value))
+            {
+                return value.IsDictionary ? value.ToString() : defaultValue;
+            }
+
+            return defaultValue;
         }
     }
 }

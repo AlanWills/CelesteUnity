@@ -71,7 +71,7 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
                 if (featuresConfig != null)
                 {
@@ -94,7 +94,7 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
                 if (featuresConfig != null)
                 {
@@ -118,7 +118,7 @@ namespace Celeste.Features.Persistence
                 return;
             }
 
-            IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetDictionary(FEATURES_CONFIG_KEY);
+            IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
             if (featuresConfig != null)
             {

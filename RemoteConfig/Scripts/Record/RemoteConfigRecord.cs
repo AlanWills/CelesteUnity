@@ -77,7 +77,7 @@ namespace Celeste.RemoteConfig
             }
 
             impl.AddOnDataFetchedCallback(OnDataFetched);
-            UnityEngine.Debug.Log($"Remote Config data source set to '{dataSource}'!");
+            UnityEngine.Debug.Log($"Remote Config data source set to '{dataSource}'!", CelesteLog.RemoteConfig.WithContext(this));
         }
 
         public void Deserialize(RemoteConfigManagerDTO remoteConfigManagerDTO)
@@ -89,22 +89,23 @@ namespace Celeste.RemoteConfig
         {
             if (string.IsNullOrEmpty(json) || json == "{}")
             {
-                UnityEngine.Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.");
+                UnityEngine.Debug.LogWarning($"Received empty json for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.", CelesteLog.RemoteConfig.WithContext(this));
                 fetchedJson = json;
                 fetchedData = new fsDataDictionary();
             }
             else
             {
-                fsResult parsingResult = fsJsonParser.Parse(fetchedJson, out fsData parsedData);
+                fsResult parsingResult = fsJsonParser.Parse(json, out fsData parsedData);
 
                 if (parsingResult.Succeeded && parsedData.IsDictionary)
                 {
+                    UnityEngine.Debug.Log($"Fetched '{json}' from remote config successfully!", CelesteLog.RemoteConfig.WithContext(this));
                     fetchedJson = json;
                     fetchedData = new fsDataDictionary(parsedData.AsDictionary);
                 }
                 else
                 {
-                    UnityEngine.Debug.LogError($"Failed to parse non-empty json {fetchedJson} into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.");
+                    UnityEngine.Debug.LogError($"Failed to parse non-empty json '{json}' into a dictionary for {nameof(RemoteConfigRecord)}.{nameof(DeserializeData)}.", CelesteLog.RemoteConfig.WithContext(this));
                     fetchedJson = json;
                     fetchedData = new fsDataDictionary();
                 }
@@ -126,9 +127,26 @@ namespace Celeste.RemoteConfig
             return fetchedData.GetBool(key, defaultValue);
         }
 
-        public IRemoteConfigDictionary GetDictionary(string key)
+        public IRemoteConfigDictionary GetObjectAsDictionary(string key)
         {
-            return fetchedData.GetDictionary(key);
+            return fetchedData.GetObjectAsDictionary(key);
+        }
+
+        public string GetObjectAsString(string key, string defaultValue)
+        {
+            return fetchedData.GetObjectAsString(key, defaultValue);
+        }
+
+        public T GetObject<T>(string key, T defaultValue)
+        {
+            string objectAsString = fetchedData.GetObjectAsString(key, string.Empty);
+            if (string.IsNullOrEmpty(objectAsString))
+            {
+                return defaultValue;
+            }
+
+            T deserializedObject = JsonUtility.FromJson<T>(objectAsString);
+            return (deserializedObject == null || deserializedObject.Equals(default(T))) ? defaultValue : deserializedObject;
         }
 
         public string GetString(string key, string defaultValue)

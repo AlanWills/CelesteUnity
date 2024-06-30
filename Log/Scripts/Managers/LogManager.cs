@@ -83,7 +83,7 @@ namespace Celeste.Log
                 return;
             }
 
-            IRemoteConfigDictionary logConfig = remoteConfigRecord.GetDictionary(LOG_CONFIG_KEY);
+            IRemoteConfigDictionary logConfig = remoteConfigRecord.GetObjectAsDictionary(LOG_CONFIG_KEY);
 
             if (logConfig != null)
             {

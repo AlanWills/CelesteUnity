@@ -78,7 +78,7 @@ namespace Celeste.Advertising
                 return;
             }
 
-            IRemoteConfigDictionary adsConfig = remoteConfigRecord.GetDictionary(ADS_CONFIG_KEY);
+            IRemoteConfigDictionary adsConfig = remoteConfigRecord.GetObjectAsDictionary(ADS_CONFIG_KEY);
 
             if (adsConfig != null)
             {

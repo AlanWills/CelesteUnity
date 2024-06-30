@@ -6,6 +6,7 @@ using Unity.Services.Core;
 using UnityEngine;
 using Celeste.RemoteConfig;
 using System;
+using Celeste;
 
 public class UnityRemoteConfigImpl : IRemoteConfigImpl
 {
@@ -14,6 +15,7 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
 
     #region Properties and Fields
 
+    private bool isDataFetched;
     private Action<string> onDataFetched; 
 
     #endregion
@@ -48,15 +50,23 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
 
     private async Task FetchRemoteConfig()
     {
+        isDataFetched = false;
+
+        // UPDATE: This had bugs and Unity told me I didn't need it anyway
         // initialize Unity's authentication and core services, however check for internet connection
         // in order to fail gracefully without throwing exception if connection does not exist
-        if (Utilities.CheckForInternetConnection())
+        //if (Utilities.CheckForInternetConnection())
         {
             await InitializeRemoteConfigAsync();
         }
 
         RemoteConfigService.Instance.FetchCompleted += OnDataFetched;
         RemoteConfigService.Instance.FetchConfigs(new userAttributes(), new appAttributes());
+
+        while (isDataFetched == false)
+        {
+            await Task.Yield();
+        }
     }
 
     #region Callbacks
@@ -64,8 +74,9 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
     private void OnDataFetched(ConfigResponse configResponse)
     {
         string configResponseString = RemoteConfigService.Instance.appConfig.config.ToString();
-        Debug.Log($"RemoteConfigService.Instance.appConfig fetched: {configResponseString}");
+        Debug.Log($"RemoteConfigService.Instance.appConfig fetched: {configResponseString}", CelesteLog.RemoteConfig);
 
+        isDataFetched = true;
         onDataFetched?.Invoke(configResponseString);
     }
 
