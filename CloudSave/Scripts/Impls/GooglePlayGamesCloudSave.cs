@@ -12,6 +12,18 @@ namespace Celeste.CloudSave
         #region Properties and Fields
 
         public bool IsAuthenticated => PlayGamesPlatform.Instance.IsAuthenticated();
+        public UserInformation UserInformation
+        {
+            get
+            {
+                return IsAuthenticated ? new UserInformation()
+                {
+                    id = PlayGamesPlatform.Instance.GetUserId(),
+                    displayName = PlayGamesPlatform.Instance.GetUserDisplayName(),
+                    avatarUrl = PlayGamesPlatform.Instance.GetUserImageUrl()
+                } : new UserInformation();
+            }
+        }
 
         private bool enableLogging = false;
 

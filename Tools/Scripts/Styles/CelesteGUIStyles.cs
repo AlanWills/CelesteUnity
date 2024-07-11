@@ -164,5 +164,11 @@ namespace Celeste
             guiStyle.fontSize = fontSize;
             return guiStyle;
         }
+
+        public static GUIStyle Colour(this GUIStyle guiStyle, Color colour)
+        {
+            guiStyle.normal.textColor = colour;
+            return guiStyle;
+        }
     }
 }

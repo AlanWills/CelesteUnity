@@ -28,6 +28,19 @@ namespace Celeste.CloudSave
             GUILayout.Label($"Current Implementation: {cloudSave.ActiveImplementation}");
             GUILayout.Label($"Playtime Start: {cloudSave.PlaytimeStart}");
 
+            if (cloudSave.IsAuthenticated)
+            {
+                var userId = cloudSave.UserInformation;
+
+                GUILayout.Label($"ID: {userId.id}");
+                GUILayout.Label($"Display Name: {userId.displayName}");
+                GUILayout.Label($"Avatar Url: {userId.avatarUrl}");
+            }
+            else
+            {
+                GUILayout.Label("No user information available (not authenticated).");
+            }
+
             using (new GUILayout.HorizontalScope())
             {
                 using (new GUIEnabledScope(cloudSave.ActiveImplementation != Implementation.Disabled))

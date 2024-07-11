@@ -5,6 +5,7 @@ namespace Celeste.CloudSave
     public class DisabledCloudSave : ICloudSave
     {
         public bool IsAuthenticated => true;
+        public UserInformation UserInformation => new UserInformation();
 
         public void Activate(bool debugLogging) { }
 

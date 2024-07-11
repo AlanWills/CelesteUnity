@@ -19,9 +19,17 @@ namespace Celeste.CloudSave
         BadInputError = -4
     }
 
+    public struct UserInformation
+    {
+        public string id;
+        public string displayName;
+        public string avatarUrl;
+    }
+
     public interface ICloudSave
     {
         bool IsAuthenticated { get; }
+        UserInformation UserInformation { get; }
 
         void Activate(bool debugLogging);
         void Authenticate(Action onAuthenticateSucceeded, Action<AuthenticateStatus> onAuthenticateFailed);

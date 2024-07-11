@@ -1,5 +1,4 @@
-﻿using Celeste.Log;
-using Celeste.Parameters;
+﻿using Celeste.Parameters;
 using Celeste.Persistence.Snapshots;
 using System;
 using System.Collections;
@@ -22,6 +21,8 @@ namespace Celeste.CloudSave
         #region Properties and Fields
 
         public bool IsAuthenticated => impl.IsAuthenticated;
+        public UserInformation UserInformation => impl.UserInformation;
+
         public DateTimeOffset PlaytimeStart
         {
             get => playtimeStart;

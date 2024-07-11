@@ -20,6 +20,11 @@ namespace Celeste.Scene.Debug
 
         protected override void OnDrawMenu()
         {
+            if (Button("Load Startup Scene"))
+            {
+                SceneManager.LoadScene(0, LoadSceneMode.Single);
+            }
+
             foreach (SceneSet sceneSet in sceneSetCatalogue)
             {
                 using (var horizontal = new HorizontalScope())

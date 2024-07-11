@@ -20,6 +20,7 @@ namespace Celeste.Log
         [NonSerialized] private string logFilter;
         [NonSerialized] private GUIStyle buttonStyle;
         [NonSerialized] private GUIStyle stackTraceStyle;
+        [NonSerialized] private int maxMessageLength = 100;
 
         private const int ENTRIES_PER_PAGE = 20;
         private const int NOT_EXPANDED = -1;
@@ -80,6 +81,7 @@ namespace Celeste.Log
                     Space(5);
                     Label("Log Filter");
                     logFilter = TextField(logFilter);
+                    maxMessageLength = GUIExtensions.IntField("Max Message Length", maxMessageLength);
                 }
 
                 Space(5);
@@ -90,8 +92,14 @@ namespace Celeste.Log
                     (i) =>
                     {
                         var logMessage = logMessages.GetItem(i);
+                        string message = logMessage.message;
 
-                        if (Button(logMessage.message, buttonStyle, ExpandWidth(true)))
+                        if (message.Length > maxMessageLength)
+                        {
+                            message = message.Substring(0, maxMessageLength);
+                        }
+
+                        if (Button(message, buttonStyle, ExpandWidth(true)))
                         {
                             currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
                         }
