@@ -2,6 +2,7 @@
 using Celeste.Persistence.Snapshots;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
+using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Celeste.Persistence
 {
     public abstract class PersistentSceneManager<TManager, TDTO> : MonoBehaviour, IPersistentSceneManager, IInterestedInSnapshots, ISupportsDataSnapshots, ISupportsFileSnapshots
         where TManager : PersistentSceneManager<TManager, TDTO>
-        where TDTO : class
+        where TDTO : VersionedDTO
     {
         private enum SaveState
         {
@@ -34,9 +35,10 @@ namespace Celeste.Persistence
         [SerializeField] protected bool loadOnAwake = true;
         [SerializeField, HideIf(nameof(loadOnAwake))] protected bool loadOnStart = false;
 
-        private SaveState currentSaveState = SaveState.None;
-        private bool saveRequested = false;
-        private Semaphore loadingLock = new Semaphore();
+        [NonSerialized] private SaveState currentSaveState = SaveState.None;
+        [NonSerialized] private bool saveRequested = false;
+        [NonSerialized] private Semaphore loadingLock = new Semaphore();
+        [NonSerialized] private IVersioned mostRecentlyLoadedVersion;
 
         #endregion
 
@@ -92,24 +94,31 @@ namespace Celeste.Persistence
             {
                 string persistentFilePath = FilePath;
 
-                if (PersistenceUtility.CanLoad(persistentFilePath))
+                if (!PersistenceUtility.CanLoad(persistentFilePath))
                 {
-                    TDTO tDTO = PersistenceUtility.Load<TDTO>(persistentFilePath);
+                    UnityEngine.Debug.Log($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.", CelesteLog.Persistence);
+                    SetDefaultValues();
 
-                    if (tDTO != null)
-                    {
-                        Deserialize(tDTO);
-                        UnityEngine.Debug.Log($"{name} loaded.", CelesteLog.Persistence);
-                    }
-                    else
-                    {
-                        UnityEngine.Debug.LogError($"Error deserializing data in {persistentFilePath}.  Using default values.", CelesteLog.Persistence.WithContext(this));
-                        SetDefaultValues();
-                    }
+                    return;
+                }
+
+                TDTO tDTO = PersistenceUtility.Load<TDTO>(persistentFilePath);
+
+                if (mostRecentlyLoadedVersion != null && !mostRecentlyLoadedVersion.IsLowerVersionThan(tDTO))
+                {
+                    UnityEngine.Debug.Log($"Skipping load of {persistentFilePath} as the currently loaded save is of a higher version.", CelesteLog.Persistence);
+                    return;
+                }
+
+                if (tDTO != null)
+                {
+                    mostRecentlyLoadedVersion = tDTO.versionInformation;
+                    Deserialize(tDTO);
+                    UnityEngine.Debug.Log($"{name} loaded.", CelesteLog.Persistence);
                 }
                 else
                 {
-                    UnityEngine.Debug.Log($"{persistentFilePath} not found for {GetType().Name} {name}.  Using default values.", CelesteLog.Persistence);
+                    UnityEngine.Debug.LogError($"Error deserializing data in {persistentFilePath}.  Using default values.", CelesteLog.Persistence.WithContext(this));
                     SetDefaultValues();
                 }
             }
@@ -200,6 +209,12 @@ namespace Celeste.Persistence
         private async Task SaveAsync()
         {
             TDTO serializedInstance = Serialize();
+            serializedInstance.versionInformation = new VersionInformation()
+            {
+                Version = serializedInstance.versionInformation.Version,
+                SaveTime = DateTimeOffset.UtcNow
+            };
+
             await PersistenceUtility.SaveAsync(FilePath, serializedInstance);
         }
 
@@ -220,9 +235,16 @@ namespace Celeste.Persistence
 
             TDTO dto = dataSnapshot.DeserializeData<TDTO>(FileName);
 
+            if (mostRecentlyLoadedVersion != null && !mostRecentlyLoadedVersion.IsLowerVersionThan(dto))
+            {
+                UnityEngine.Debug.Log($"Skipping load of {name} from data snapshot as the currently loaded save is of a higher version.", CelesteLog.Persistence);
+                return;
+            }
+
             if (dto != null)
             {
                 UnityEngine.Debug.Log($"Beginning loading of {name} from data snapshot.", CelesteLog.Persistence);
+                mostRecentlyLoadedVersion = dto.versionInformation;
                 Deserialize(dto);
             }
             else

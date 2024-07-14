@@ -91,7 +91,7 @@ namespace Celeste.Persistence.Debug
 
                         if (GUILayout.Button("Load", GUILayout.ExpandWidth(false)))
                         {
-                            snapshot.UnpackItems();
+                            snapshot.UnpackItems(LoadMode.Overwrite);
                         }
 
                         if (GUILayout.Button("Share", GUILayout.ExpandWidth(false)))

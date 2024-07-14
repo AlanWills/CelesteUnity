@@ -1,9 +1,10 @@
+using Celeste.Persistence;
 using System.Collections.Generic;
 
 namespace Celeste.Loading
 {
     [System.Serializable]
-    public class TipsManagerDTO
+    public class TipsManagerDTO : VersionedDTO
     {
         public List<uint> unseenIndexes;
         public List<uint> seenIndexes;

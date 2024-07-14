@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
 using static Celeste.Options.Internals.OptionStructs;
 
 namespace Celeste.Options.Internals
 {
     [Serializable]
-    public class OptionsManagerDTO
+    public class OptionsManagerDTO : VersionedDTO
     {
         public List<BoolOptionDTO> boolOptions = new List<BoolOptionDTO>();
         public List<FloatOptionDTO> floatOptions = new List<FloatOptionDTO>();

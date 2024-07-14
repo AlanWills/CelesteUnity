@@ -3,7 +3,7 @@ using System;
 namespace {NAMESPACE}.Persistence
 {
     [Serializable]
-    public class {TYPE}
+    public class {TYPE} : Celeste.Persistence.VersionedDTO
     {
     }
 }

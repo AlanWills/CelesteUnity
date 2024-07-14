@@ -40,14 +40,15 @@ namespace Celeste.Persistence.Snapshots
             });
         }
 
-        public override void UnpackItems()
+        public override void UnpackItems(LoadMode loadMode)
         {
             for (int i = 0, n = data.Count; i < n; ++i)
             {
                 Data snapshotData = data[i];
-                string sourceData = File.ReadAllText(snapshotData.SourceFilePath);
-                string filePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
-                File.WriteAllText(filePath, sourceData);
+                string newData = File.ReadAllText(snapshotData.SourceFilePath);
+                string targetFilePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
+
+                UnpackItem(loadMode, targetFilePath, newData);
             }
         }
 

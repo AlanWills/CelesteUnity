@@ -68,7 +68,7 @@ namespace Celeste.Input
     }
 
     [Serializable]
-    public class KeybindingsManagerDTO
+    public class KeybindingsManagerDTO : VersionedDTO
     {
         public List<KeyBinding> keyCodes = new List<KeyBinding>();
 

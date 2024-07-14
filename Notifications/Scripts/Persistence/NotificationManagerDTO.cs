@@ -1,5 +1,6 @@
 using Celeste.Notifications.Objects;
 using Celeste.Notifications.Record;
+using Celeste.Persistence;
 using System;
 using System.Collections.Generic;
 
@@ -19,7 +20,7 @@ namespace Celeste.Notifications.Persistence
     }
 
     [Serializable]
-    public class NotificationManagerDTO
+    public class NotificationManagerDTO : VersionedDTO
     {
         public List<NotificationChannelDTO> notificationChannels = new List<NotificationChannelDTO>();
 

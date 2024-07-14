@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Celeste.Twine.Persistence
 {
     [Serializable]
-    public class TwineDTO
+    public class TwineDTO : VersionedDTO
     {
         public List<TwineStoryDTO> stories = new List<TwineStoryDTO>();
 

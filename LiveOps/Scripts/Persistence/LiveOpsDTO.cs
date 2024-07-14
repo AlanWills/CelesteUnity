@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Celeste.LiveOps.Persistence
 {
     [Serializable]
-    public class LiveOpsDTO
+    public class LiveOpsDTO : VersionedDTO
     {
         public List<LiveOpDTO> liveOps = new List<LiveOpDTO>();
 

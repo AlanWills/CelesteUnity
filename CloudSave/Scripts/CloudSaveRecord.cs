@@ -142,15 +142,6 @@ namespace Celeste.CloudSave
                     UnityEngine.Debug.Log("Successfully read default cloud save game", CelesteLog.CloudSave);
                     UnityEngine.Debug.Log($"Cloud save string is: {saveDataString}", CelesteLog.CloudSave);
                     readComplete = true;
-
-                    DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
-                    JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
-
-                    // We need to add comparison against any existing file for the timestamp
-                    // Only replace older time stamped files
-                    dataSnapshot.UnpackItems();
-
-                    cloudSaveLoaded?.Invoke(new CloudSaveLoadedArgs() { loadedData = dataSnapshot });
                     onSaveGameReadSucceeded?.Invoke(saveDataString);
                 },
                 (status) =>
@@ -164,6 +155,36 @@ namespace Celeste.CloudSave
             {
                 yield return null;
             }
+        }
+
+        public IEnumerator LoadDefaultSaveGameAsync(
+            LoadMode loadMode,
+            Action<string> onSaveGameLoadSucceeded = null,
+            Action<SaveRequestStatus> onSaveGameLoadFailed = null)
+        {
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                UnityEngine.Debug.LogWarning("Internet is not reachable, so loading of Cloud Save will be skipped...", CelesteLog.CloudSave);
+                onSaveGameLoadFailed?.Invoke(SaveRequestStatus.TimeoutError);
+                yield break;
+            }
+
+            yield return ReadDefaultSaveGameAsync(
+                (string saveDataString) =>
+                {
+                    DataSnapshot dataSnapshot = CreateInstance<DataSnapshot>();
+                    JsonUtility.FromJsonOverwrite(saveDataString, dataSnapshot);
+
+                    dataSnapshot.UnpackItems(loadMode);
+
+                    cloudSaveLoaded?.Invoke(new CloudSaveLoadedArgs() { loadedData = dataSnapshot });
+                    onSaveGameLoadSucceeded?.Invoke(saveDataString);
+                },
+                (SaveRequestStatus status) =>
+                {
+                    UnityEngine.Debug.LogWarning("Unsuccessfully loaded default cloud save game", CelesteLog.CloudSave);
+                    onSaveGameLoadFailed?.Invoke(status);
+                });
         }
 
         public IEnumerator WriteDefaultSaveGameAsync(

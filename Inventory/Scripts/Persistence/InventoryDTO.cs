@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.Inventory.Persistence
 {
     [Serializable]
-    public class InventoryDTO
+    public class InventoryDTO : VersionedDTO
     {
         public int maxSize;
         public List<int> itemGuids;

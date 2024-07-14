@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 
 namespace Celeste.RemoteConfig.Persistence
 {
     [Serializable]
-    public class RemoteConfigManagerDTO
+    public class RemoteConfigManagerDTO : VersionedDTO
     {
         public int dataSource;
         public string cachedConfig;

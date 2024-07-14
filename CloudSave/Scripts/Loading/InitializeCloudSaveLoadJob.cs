@@ -35,7 +35,8 @@ namespace Celeste.CloudSave
                 setProgress(0.5f);
                 setOutput("Cloud Save Authenticated");
 
-                yield return cloudSaveRecord.ReadDefaultSaveGameAsync(
+                yield return cloudSaveRecord.LoadDefaultSaveGameAsync(
+                    LoadMode.RespectVersion,
                     (saveDataString) =>
                     {
                         setOutput("Default Cloud Save Loaded");

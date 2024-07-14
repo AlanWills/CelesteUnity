@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Celeste.Wallet.Persistence
 {
     [Serializable]
-    public class WalletDTO
+    public class WalletDTO : VersionedDTO
     {
         public List<CurrencyDTO> currencies;
 

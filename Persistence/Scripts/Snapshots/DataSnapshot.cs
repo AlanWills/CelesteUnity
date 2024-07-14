@@ -65,15 +65,15 @@ namespace Celeste.Persistence.Snapshots
             return deserializeResult.Item1.Succeeded ? deserializeResult.Item2 : default;
         }
 
-        public override void UnpackItems()
+        public override void UnpackItems(LoadMode loadMode)
         {
             UnityEngine.Debug.Log($"Snapshot has {data.Count} files contained within it.");
             for (int i = 0, n = data.Count; i < n; ++i)
             {
                 Data snapshotData = data[i];
-                string filePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
-                UnityEngine.Debug.Log($"Unpacking snapshot data {i} to {filePath} with contents {snapshotData.SourceData}.");
-                File.WriteAllText(filePath, snapshotData.SourceData);
+                string targetFilePath = Path.Combine(Application.persistentDataPath, snapshotData.UnpackPath);
+
+                UnpackItem(loadMode, targetFilePath, snapshotData.SourceData);
             }
         }
 

@@ -1,14 +1,11 @@
-﻿using Celeste.DeckBuilding.Match;
-using Celeste.FSM;
+﻿using Celeste.FSM;
+using Celeste.Persistence;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
     [Serializable]
-    public class DeckMatchDTO
+    public class DeckMatchDTO : VersionedDTO
     {
         public bool isPlayerTurn;
         public DeckMatchPlayerRuntimeDTO playerDeckRuntime;

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
     [Serializable]
-    public class DeckBuildingDTO
+    public class DeckBuildingDTO : VersionedDTO
     {
         public List<DeckDTO> decks = new List<DeckDTO>();
 

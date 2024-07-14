@@ -45,7 +45,7 @@ namespace CelesteEditor.Persistence
                 string fileContents = File.ReadAllText(filePath);
                 DataSnapshot dataSnapshot = ScriptableObject.CreateInstance<DataSnapshot>();
                 JsonUtility.FromJsonOverwrite(fileContents, dataSnapshot);
-                dataSnapshot.UnpackItems();
+                dataSnapshot.UnpackItems(LoadMode.Overwrite);
             }
         }
     }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Celeste.Narrative.Persistence
 {
     [Serializable]
-    public class ProductionDTO
+    public class ProductionDTO : VersionedDTO
     {
         public int lastPlayedStoryGuid;
         public int lastPlayedChapterGuid;

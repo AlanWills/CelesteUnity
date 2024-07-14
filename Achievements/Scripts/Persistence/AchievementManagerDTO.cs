@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Celeste.Achievements.Objects;
+using Celeste.Persistence;
 
 namespace Celeste.Achievements.Persistence
 {
@@ -12,7 +13,7 @@ namespace Celeste.Achievements.Persistence
     }
     
     [Serializable]
-    public class AchievementManagerDTO
+    public class AchievementManagerDTO : VersionedDTO
     {
         public List<AchievementDTO> achievements = new();
         

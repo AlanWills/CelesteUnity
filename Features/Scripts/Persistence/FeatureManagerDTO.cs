@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 using System.Collections.Generic;
 
 namespace Celeste.Features.Persistence
 {
     [Serializable]
-    public class FeatureManagerDTO
+    public class FeatureManagerDTO : VersionedDTO
     {
         public List<int> enabledFeatures;
 

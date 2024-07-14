@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 
 namespace Celeste.Shop.Persistence
 {
     [Serializable]
-    public class ShopDTO
+    public class ShopDTO : VersionedDTO
     {
     }
 }

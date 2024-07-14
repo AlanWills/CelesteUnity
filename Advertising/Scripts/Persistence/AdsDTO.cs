@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Celeste.Persistence;
+using System;
 
 namespace Celeste.Advertising.Persistence
 {
     [Serializable]
-    public class AdsManagerDTO
+    public class AdsManagerDTO : VersionedDTO
     {
         public bool adsTestMode = true;
 

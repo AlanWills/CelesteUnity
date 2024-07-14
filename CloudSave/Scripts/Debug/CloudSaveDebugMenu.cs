@@ -80,9 +80,21 @@ namespace Celeste.CloudSave
                         }));
                 }
 
-                if (GUILayout.Button("Overwrite Local Save"))
+                if (GUILayout.Button("Load Save (Versioned)"))
                 {
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
+                        LoadMode.Overwrite,
+                        (saveGameString) =>
+                        {
+                            // Load the first scene in build settings (we assume it's the startup scene)
+                            SceneManager.LoadScene(0, LoadSceneMode.Single);
+                        }));
+                }
+
+                if (GUILayout.Button("Load Save (Overwrite"))
+                {
+                    CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
+                        LoadMode.Overwrite,
                         (saveGameString) =>
                         {
                             // Load the first scene in build settings (we assume it's the startup scene)

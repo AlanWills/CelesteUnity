@@ -9,9 +9,17 @@ namespace CelesteEditor.Persistence.Snapshots
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Load"))
+            using (new EditorGUILayout.HorizontalScope())
             {
-                (target as Snapshot).UnpackItems();
+                if (GUILayout.Button("Force Load"))
+                {
+                    (target as Snapshot).UnpackItems(LoadMode.Overwrite);
+                }
+
+                if (GUILayout.Button("Versioned Load"))
+                {
+                    (target as Snapshot).UnpackItems(LoadMode.RespectVersion);
+                }
             }
 
             base.OnInspectorGUI();
