@@ -141,8 +141,7 @@ namespace CelesteEditor.BuildSystem
         {
             string desiredExtension = buildAppBundle ? ".aab" : ".apk";
             
-            if (!buildPlayerOptions.locationPathName.EndsWith(desiredExtension) &&
-                !buildPlayerOptions.locationPathName.Contains('.'))
+            if (!buildPlayerOptions.locationPathName.EndsWith(desiredExtension))
             {
                 // Pretty crude test, but if we don't end in the correct extension and it doesn't look like we have an extension, we can add ours here
                 buildPlayerOptions.locationPathName += desiredExtension;
