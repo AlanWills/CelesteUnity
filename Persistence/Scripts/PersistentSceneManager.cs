@@ -28,7 +28,8 @@ namespace Celeste.Persistence
         string ISupportsFileSnapshots.SourceFile => FilePath;
 
         protected abstract string FileName { get; }
-        protected string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        protected virtual int LatestSaveVersion => default;
+        protected virtual string FilePath => Path.Combine(Application.persistentDataPath, FileName);
         protected SnapshotRecord SnapshotRecord => snapshotRecord;
 
         [SerializeField] private SnapshotRecord snapshotRecord;
@@ -211,7 +212,7 @@ namespace Celeste.Persistence
             TDTO serializedInstance = Serialize();
             serializedInstance.versionInformation = new VersionInformation()
             {
-                Version = serializedInstance.versionInformation.Version,
+                Version = LatestSaveVersion,
                 SaveTime = DateTimeOffset.UtcNow
             };
 
