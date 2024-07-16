@@ -17,7 +17,7 @@ namespace Celeste.UI.Popups
 
         #region IPopupController
 
-        public override void OnShow(IPopupArgs args) 
+        protected override void OnShow(IPopupArgs args) 
         {
             StringEntryPopupArgs stringEntryPopupArgs = args as StringEntryPopupArgs;
             Debug.Assert(stringEntryPopupArgs != null, $"No {nameof(StringEntryPopupArgs)} passed to popup {name}.");
@@ -29,7 +29,7 @@ namespace Celeste.UI.Popups
             }
         }
 
-        public override void OnConfirmPressed() 
+        protected override void OnConfirmPressed() 
         {
             if (nameValue != null)
             {

@@ -69,7 +69,7 @@ namespace Celeste.UI.Popups
             if (popupController != null)
             {
                 popupController.RequestToClosePopup = OnCloseButtonPressed;
-                popupController.OnShow(args);
+                popupController.Show(args);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Celeste.UI.Popups
 
             if (popupController != null)
             {
-                popupController.OnHide();
+                popupController.Hide();
                 popupController.RequestToClosePopup = null;
             }
 
@@ -129,7 +129,7 @@ namespace Celeste.UI.Popups
         {
             if (popupController != null)
             {
-                popupController.OnConfirmPressed();
+                popupController.ConfirmPressed();
             }
 
             if (onConfirmPressed != null)
@@ -147,7 +147,7 @@ namespace Celeste.UI.Popups
         {
             if (popupController != null)
             {
-                popupController.OnClosePressed();
+                popupController.ClosePressed();
             }
 
             if (onClosePressed != null)

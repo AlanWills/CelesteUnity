@@ -20,7 +20,7 @@ namespace Celeste.Narrative.UI
 
         #region IPopupController
 
-        public override void OnShow(IPopupArgs args)
+        protected override void OnShow(IPopupArgs args)
         {
             popupArgs = args as NameEntryPopupArgs;
             UnityEngine.Debug.Assert(popupArgs != null, $"No {nameof(NameEntryPopupArgs)} passed to popup {name}.");
@@ -33,7 +33,7 @@ namespace Celeste.Narrative.UI
             ValidateName(inputField.text);
         }
 
-        public override void OnConfirmPressed()
+        protected override void OnConfirmPressed()
         {
             if (popupArgs != null)
             {

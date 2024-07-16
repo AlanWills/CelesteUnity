@@ -7,10 +7,10 @@ namespace Celeste.UI
     {
         Action RequestToClosePopup { get; set; }
 
-        void OnShow(IPopupArgs args);
-        void OnHide();
+        void Show(IPopupArgs args);
+        void Hide();
 
-        void OnConfirmPressed();
-        void OnClosePressed();
+        void ConfirmPressed();
+        void ClosePressed();
     }
 }

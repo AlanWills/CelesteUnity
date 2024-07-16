@@ -39,7 +39,7 @@ namespace Celeste.Twine.UI
 
         #region IPopupController
 
-        public override void OnShow(IPopupArgs args)
+        protected override void OnShow(IPopupArgs args)
         {
             EditTwineNodePopupArgs editTwineNodePopupArgs = (EditTwineNodePopupArgs)args;
             twineNode = editTwineNodePopupArgs.twineNode;
@@ -54,7 +54,7 @@ namespace Celeste.Twine.UI
             followLinkUIManager.Hookup(twineNode.Links);
         }
 
-        public override void OnHide()
+        protected override void OnHide()
         {
             twineNode = null;
             originalNodeName = "";
@@ -63,7 +63,7 @@ namespace Celeste.Twine.UI
             originalNodeLinks.Clear();
         }
 
-        public override void OnClosePressed()
+        protected override void OnClosePressed()
         {
             // Revert the changes to the node
             twineNode.UpdateData(originalNodeName, originalNodeText, originalNodeTags, originalNodeLinks);
