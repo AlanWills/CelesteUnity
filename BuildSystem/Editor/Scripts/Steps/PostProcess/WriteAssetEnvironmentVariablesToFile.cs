@@ -52,9 +52,9 @@ namespace CelesteEditor.BuildSystem.Steps
                 Directory.CreateDirectory(platformSettings.AddressablesBuildDirectory);
             }
 
-            string tempDirectory = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Temp");
-            Directory.CreateDirectory(tempDirectory);
-            File.WriteAllText(Path.Combine(tempDirectory, assetEnvironmentVariablesFileName), locationInfo.ToString());
+            string libraryDirectory = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Library");
+            Directory.CreateDirectory(libraryDirectory);
+            File.WriteAllText(Path.Combine(libraryDirectory, assetEnvironmentVariablesFileName), locationInfo.ToString());
         }
     }
 }
