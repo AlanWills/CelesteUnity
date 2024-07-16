@@ -28,7 +28,7 @@ namespace Celeste.Logic
 
         protected override void DoSetVariable(object arg)
         {
-            target = (AdWatchResult)arg;
+            runtimeVariable = (AdWatchResult)arg;
         }
 
         protected override bool DoCheck()

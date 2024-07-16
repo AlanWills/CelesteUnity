@@ -138,13 +138,13 @@ namespace Celeste.FSM.Nodes.Logic
 
                 if (condition.Condition.IsMet)
                 {
-                    Debug.LogFormat("If Node condition {0} passed with argument {1} in FSM {2}", condition.Name, _argument != null ? _argument : "null", graph.name);
+                    Debug.Log($"If Node condition {condition.Name} passed with argument {(_argument != null ? _argument : "null")} in FSM {graph.name}");
                     return GetConnectedNodeFromOutput(condition.Name);
                 }
             }
 
             // Fall back to else port
-            Debug.LogFormat("If Node no conditions passed with argument {0} in FSM {1}", _argument != null ? _argument : "null", graph.name);
+            Debug.Log($"If Node no conditions passed with argument {(_argument != null ? _argument : "null")} in FSM {graph.name}");
             return base.OnUpdate();
         }
 

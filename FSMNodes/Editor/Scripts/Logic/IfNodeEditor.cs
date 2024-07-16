@@ -63,7 +63,7 @@ namespace CelesteEditor.FSM.Nodes.Logic
                         EditorGUI.BeginChangeCheck();
 
                         condition.Condition = ObjectField(condition.Condition, typeof(Condition), false) as Condition;
-                        condition.UseArgument = ToggleLeft("In Arg Is Target", condition.UseArgument);
+                        condition.UseArgument = ToggleLeft("Compare In Arg To Target", condition.UseArgument);
 
                         if (EditorGUI.EndChangeCheck())
                         {
