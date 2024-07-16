@@ -131,7 +131,8 @@ namespace CelesteEditor.BuildSystem
 
             buildAppBundle = isAppBundle;
 
-            BuildDirectory = "Builds/{build_target}/{environment}" + (isAppBundle ? "Bundle" : "Apk");
+            string environmentSuffix = isAppBundle ? "Bundle" : "Apk";
+            BuildDirectory = "Builds/{build_target}/{environment}" + environmentSuffix;
 
             // If building an app bundle we should include all architectures by default
             Architecture = isAppBundle ? AndroidArchitecture.All : Architecture;

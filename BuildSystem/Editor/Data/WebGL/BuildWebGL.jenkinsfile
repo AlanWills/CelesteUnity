@@ -39,12 +39,12 @@ pipeline
                 sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
                 script 
                 {
-                    readProperties(file: "${env.WORKSPACE}/Builds/WebGL/${params.CONFIGURATION}/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    readProperties(file: "${env.WORKSPACE}/Temp/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
                 buildName "WebGL-" + CONFIGURATION + "-" + env.BUILD_VERSION
                 script 
                 {
-                    readProperties(file: "${env.WORKSPACE}/ServerData/WebGL/${params.CONFIGURATION}/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    readProperties(file: "${env.WORKSPACE}/Temp/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
         }

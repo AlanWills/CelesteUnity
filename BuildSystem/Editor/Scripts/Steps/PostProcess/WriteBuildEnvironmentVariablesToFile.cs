@@ -57,8 +57,9 @@ namespace CelesteEditor.BuildSystem.Steps
 
             platformSettings.InjectBuildEnvVars(buildInfo);
 
-            Directory.CreateDirectory(platformSettings.BuildDirectory);
-            File.WriteAllText(Path.Combine(platformSettings.BuildDirectory, $"{buildEnvironmentVariablesFileName}"), buildInfo.ToString());
+            string tempDirectory = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Temp");
+            Directory.CreateDirectory(tempDirectory);
+            File.WriteAllText(Path.Combine(tempDirectory, $"{buildEnvironmentVariablesFileName}"), buildInfo.ToString());
         }
     }
 }
