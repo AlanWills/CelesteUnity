@@ -81,6 +81,11 @@ namespace Celeste.Log
                     Space(5);
                     Label("Log Filter");
                     logFilter = TextField(logFilter);
+                }
+
+                using (new HorizontalScope())
+                {
+                    Space(5);
                     maxMessageLength = GUIExtensions.IntField("Max Message Length", maxMessageLength);
                 }
 

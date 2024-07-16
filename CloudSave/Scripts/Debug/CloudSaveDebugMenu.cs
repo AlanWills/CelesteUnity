@@ -68,18 +68,18 @@ namespace Celeste.CloudSave
                 }
             }
 
+            if (GUILayout.Button("Read Save"))
+            {
+                CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
+                    (saveGameString) =>
+                    {
+                        lastReadCloudSave = CreateInstance<DataSnapshot>();
+                        JsonUtility.FromJsonOverwrite(saveGameString, lastReadCloudSave);
+                    }));
+            }
+
             using (new GUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("Read Save"))
-                {
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
-                        (saveGameString) =>
-                        {
-                            lastReadCloudSave = CreateInstance<DataSnapshot>();
-                            JsonUtility.FromJsonOverwrite(saveGameString, lastReadCloudSave);
-                        }));
-                }
-
                 if (GUILayout.Button("Load Save (Versioned)"))
                 {
                     CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
