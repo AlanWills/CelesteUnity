@@ -11,8 +11,6 @@ namespace Celeste.UI.Nodes
         public ShowPopupEvent toRaise;
         public ShowPopupArgs arguments;
 
-        [Input] public object extraContext;
-
         #endregion
 
         #region FSM Runtime
