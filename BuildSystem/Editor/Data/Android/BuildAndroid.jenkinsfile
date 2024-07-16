@@ -18,7 +18,7 @@ pipeline
                                 artifactNumToKeepStr: '', 
                                 numToKeepStr: '1')), 
                         parameters([
-                            choice(choices: ['Debug', 'ReleaseApk', 'ReleaseBundle'], name: 'CONFIGURATION'), 
+                            choice(choices: ['DebugApk', 'DebugBundle', 'ReleaseApk', 'ReleaseBundle'], name: 'CONFIGURATION'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
                         ])

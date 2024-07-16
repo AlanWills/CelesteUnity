@@ -1,5 +1,5 @@
 ﻿using Celeste;
-using CelesteEditor.Tools;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -14,7 +14,8 @@ namespace CelesteEditor.BuildSystem
         private SerializedObject allPlatformSettings;
         private SerializedProperty iOSDebugProperty;
         private SerializedProperty iOSReleaseProperty;
-        private SerializedProperty androidDebugProperty;
+        private SerializedProperty androidDebugApkProperty;
+        private SerializedProperty androidDebugBundleProperty;
         private SerializedProperty androidReleaseApkProperty;
         private SerializedProperty androidReleaseBundleProperty;
         private SerializedProperty windowsDebugProperty;
@@ -33,7 +34,8 @@ namespace CelesteEditor.BuildSystem
             allPlatformSettings = AllPlatformSettings.GetSerializedSettings();
             iOSDebugProperty = allPlatformSettings.FindProperty("m_iOSDebug");
             iOSReleaseProperty = allPlatformSettings.FindProperty("m_iOSRelease");
-            androidDebugProperty = allPlatformSettings.FindProperty("m_androidDebug");
+            androidDebugApkProperty = allPlatformSettings.FindProperty("m_androidDebugApk");
+            androidDebugBundleProperty = allPlatformSettings.FindProperty("m_androidDebugBundle");
             androidReleaseApkProperty = allPlatformSettings.FindProperty("m_androidReleaseApk");
             androidReleaseBundleProperty = allPlatformSettings.FindProperty("m_androidReleaseBundle");
             windowsDebugProperty = allPlatformSettings.FindProperty("m_windowsDebug");
@@ -62,19 +64,15 @@ namespace CelesteEditor.BuildSystem
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
             {
-                SettingsGUI<iOSSettings>(
+                SettingsGUI(
                     iOSDebugProperty,
                     "iOS Debug",
-                    AllPlatformSettings.iOSPlatformSettingsPath,
-                    "iOSDebug",
-                    true);
+                    () => AllPlatformSettings.FindOrCreateiOSSettingsAsset(AllPlatformSettings.iOSPlatformSettingsPath, "iOSDebug", true));
 
-                SettingsGUI<iOSSettings>(
+                SettingsGUI(
                     iOSReleaseProperty,
                     "iOS Release",
-                    AllPlatformSettings.iOSPlatformSettingsPath,
-                    "iOSRelease",
-                    false);
+                    () => AllPlatformSettings.FindOrCreateiOSSettingsAsset(AllPlatformSettings.iOSPlatformSettingsPath, "iOSRelease", false));
             }
         }
 
@@ -86,26 +84,41 @@ namespace CelesteEditor.BuildSystem
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
             {
-                SettingsGUI<AndroidSettings>(
-                    androidDebugProperty,
-                    "Android Debug",
-                    AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidDebug",
-                    true);
+                SettingsGUI(
+                    androidDebugApkProperty,
+                    "Android Debug Apk",
+                    () => AllPlatformSettings.FindOrCreateAndroidSettingsAsset(
+                        AllPlatformSettings.AndroidPlatformSettingsPath, 
+                        "AndroidDebugApk", 
+                        true, 
+                        false));
 
-                SettingsGUI<AndroidSettings>(
+                SettingsGUI(
+                    androidDebugBundleProperty,
+                    "Android Debug Bundle",
+                    () => AllPlatformSettings.FindOrCreateAndroidSettingsAsset(
+                        AllPlatformSettings.AndroidPlatformSettingsPath,
+                        "AndroidDebugBundle",
+                        true,
+                        true));
+
+                SettingsGUI(
                     androidReleaseApkProperty,
                     "Android Release Apk",
-                    AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidReleaseApk",
-                    false);
+                    () => AllPlatformSettings.FindOrCreateAndroidSettingsAsset(
+                        AllPlatformSettings.AndroidPlatformSettingsPath,
+                        "AndroidReleaseApk",
+                        false,
+                        false));
 
-                SettingsGUI<AndroidSettings>(
+                SettingsGUI(
                     androidReleaseBundleProperty,
                     "Android Release Bundle",
-                    AllPlatformSettings.AndroidPlatformSettingsPath,
-                    "AndroidReleaseBundle",
-                    false);
+                    () => AllPlatformSettings.FindOrCreateAndroidSettingsAsset(
+                        AllPlatformSettings.AndroidPlatformSettingsPath,
+                        "AndroidReleaseBundle",
+                        false,
+                        true));
             }
         }
 
@@ -117,19 +130,15 @@ namespace CelesteEditor.BuildSystem
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
             {
-                SettingsGUI<WindowsSettings>(
+                SettingsGUI(
                     windowsDebugProperty,
                     "Windows Debug",
-                    AllPlatformSettings.WindowsPlatformSettingsPath,
-                    "WindowsDebug",
-                    true);
+                    () => AllPlatformSettings.FindOrCreateWindowsSettingsAsset(AllPlatformSettings.WindowsPlatformSettingsPath, "WindowsDebug", true));
 
-                SettingsGUI<WindowsSettings>(
+                SettingsGUI(
                     windowsReleaseProperty,
                     "Windows Release",
-                    AllPlatformSettings.WindowsPlatformSettingsPath,
-                    "WindowsRelease",
-                    false);
+                    () => AllPlatformSettings.FindOrCreateWindowsSettingsAsset(AllPlatformSettings.WindowsPlatformSettingsPath, "WindowsRelease", false));
             }
         }
 
@@ -141,28 +150,22 @@ namespace CelesteEditor.BuildSystem
 
             using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
             {
-                SettingsGUI<WebGLSettings>(
+                SettingsGUI(
                     webGLDebugProperty,
                     "WebGL Debug",
-                    AllPlatformSettings.WebGLPlatformSettingsPath,
-                    "WebGLDebug",
-                    true);
+                    () => AllPlatformSettings.FindOrCreateWebGLSettingsAsset(AllPlatformSettings.WebGLPlatformSettingsPath, "WebGLDebug", true));
 
-                SettingsGUI<WebGLSettings>(
+                SettingsGUI(
                     webGLReleaseProperty,
                     "WebGL Release",
-                    AllPlatformSettings.WebGLPlatformSettingsPath,
-                    "WebGLRelease",
-                    false);
+                    () => AllPlatformSettings.FindOrCreateWebGLSettingsAsset(AllPlatformSettings.WebGLPlatformSettingsPath, "WebGLRelease", false));
             }
         }
 
         private void SettingsGUI<T>(
             SerializedProperty settingsProperty,
             string settingsPropertyName,
-            string folder,
-            string name,
-            bool isDebugConfig) where T : PlatformSettings
+            Func<T> findOrCreateFunctor) where T : PlatformSettings
         {
             if (settingsProperty.objectReferenceValue != null)
             {
@@ -170,21 +173,8 @@ namespace CelesteEditor.BuildSystem
             }
             else if (GUILayout.Button($"Find Or Create {settingsPropertyName} Settings", GUILayout.ExpandWidth(false)))
             {
-                FindOrCreateSettingsAsset<T>(
-                    folder,
-                    name,
-                    settingsProperty,
-                    isDebugConfig);
+                settingsProperty.objectReferenceValue = findOrCreateFunctor?.Invoke();
             }
-        }
-
-        private void FindOrCreateSettingsAsset<T>(
-            string folder,
-            string settingsName,
-            SerializedProperty settingsProperty,
-            bool isDebugConfig) where T : PlatformSettings
-        {
-            settingsProperty.objectReferenceValue = AllPlatformSettings.FindOrCreatePlatformSettingsAsset<T>(folder, settingsName, isDebugConfig);
         }
 
         #region Settings Provider

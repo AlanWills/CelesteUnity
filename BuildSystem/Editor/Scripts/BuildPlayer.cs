@@ -6,17 +6,30 @@ namespace CelesteEditor.BuildSystem
     {
         #region Android
 
-        [MenuItem("Celeste/Builds/Debug/Android", validate = true)]
-        public static bool ValidateBuildDebugAndroidPlayer()
+        [MenuItem("Celeste/Builds/Debug/Android Apk", validate = true)]
+        public static bool ValidateBuildDebugApkAndroidPlayer()
         {
-            return AllPlatformSettings.GetOrCreateSettings().AndroidDebug != null;
+            return AllPlatformSettings.GetOrCreateSettings().AndroidDebugApk != null;
         }
 
-        [MenuItem("Celeste/Builds/Debug/Android", validate = false)]
-        public static void BuildDebugAndroidPlayer()
+        [MenuItem("Celeste/Builds/Debug/Android Apk", validate = false)]
+        public static void BuildDebugApkAndroidPlayer()
         {
-            AllPlatformSettings.GetOrCreateSettings().AndroidDebug.BuildPlayer();
-            AllPlatformSettings.GetOrCreateSettings().AndroidDebug.IncrementBuild();
+            AllPlatformSettings.GetOrCreateSettings().AndroidDebugApk.BuildPlayer();
+            AllPlatformSettings.GetOrCreateSettings().AndroidDebugApk.IncrementBuild();
+        }
+
+        [MenuItem("Celeste/Builds/Debug/Android Bundle", validate = true)]
+        public static bool ValidateBuildDebugBundleAndroidPlayer()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().AndroidDebugBundle != null;
+        }
+
+        [MenuItem("Celeste/Builds/Debug/Android Bundle", validate = false)]
+        public static void BuildDebugBundleAndroidPlayer()
+        {
+            AllPlatformSettings.GetOrCreateSettings().AndroidDebugBundle.BuildPlayer();
+            AllPlatformSettings.GetOrCreateSettings().AndroidDebugBundle.IncrementBuild();
         }
 
         [MenuItem("Celeste/Builds/Release/Android Apk", validate = true)]

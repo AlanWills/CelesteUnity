@@ -68,24 +68,75 @@ namespace Celeste.Input.Settings
         {
             base.OnCreate();
 
-            inputCameraValue = EditorOnly.FindAsset<CameraValue>("InputCamera");
-            setInputCameraEvent = EditorOnly.FindAsset<CameraEvent>("SetInputCamera");
+            if (inputCameraValue == null)
+            {
+                inputCameraValue = EditorOnly.FindAsset<CameraValue>("InputCamera");
+            }
 
-            leftMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
-            leftMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonDown");
-            leftMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstUp");
+            if (setInputCameraEvent == null)
+            {
+                setInputCameraEvent = EditorOnly.FindAsset<CameraEvent>("SetInputCamera");
+            }
 
-            middleMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
-            middleMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonDown");
-            middleMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
+            if (leftMouseButtonFirstDownEvent == null)
+            {
+                leftMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
+            }
 
-            rightMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstDown");
-            rightMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonDown");
-            rightMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstUp");
+            if (leftMouseButtonDownEvent == null)
+            {
+                leftMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonDown");
+            }
 
-            singleTouchEvent = EditorOnly.FindAsset<TouchEvent>("SingleTouch");
-            doubleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("DoubleTouch");
-            tripleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("TripleTouch");
+            if (leftMouseButtonFirstUpEvent == null)
+            {
+                leftMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstUp");
+            }
+
+            if (middleMouseButtonFirstDownEvent == null)
+            {
+                middleMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
+            }
+
+            if (middleMouseButtonDownEvent == null)
+            {
+                middleMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonDown");
+            }
+
+            if (middleMouseButtonFirstUpEvent == null)
+            {
+                middleMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
+            }
+
+            if (rightMouseButtonFirstDownEvent == null)
+            {
+                rightMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstDown");
+            }
+
+            if (rightMouseButtonDownEvent == null)
+            {
+                rightMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonDown");
+            }
+
+            if (rightMouseButtonFirstUpEvent == null)
+            {
+                rightMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstUp");
+            }
+
+            if (singleTouchEvent == null)
+            {
+                singleTouchEvent = EditorOnly.FindAsset<TouchEvent>("SingleTouch");
+            }
+
+            if (doubleTouchEvent == null)
+            {
+                doubleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("DoubleTouch");
+            }
+
+            if (tripleTouchEvent == null)
+            {
+                tripleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("TripleTouch");
+            }
         }
 #endif
     }

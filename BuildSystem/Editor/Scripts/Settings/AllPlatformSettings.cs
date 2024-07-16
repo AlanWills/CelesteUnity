@@ -1,6 +1,7 @@
 ﻿using Celeste;
 using Celeste.Tools;
 using Celeste.Tools.Settings;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace CelesteEditor.BuildSystem
 
         public iOSSettings iOSDebug => m_iOSDebug;
         public iOSSettings iOSRelease => m_iOSRelease;
-        public AndroidSettings AndroidDebug => m_androidDebug;
+        public AndroidSettings AndroidDebugApk => m_androidDebugApk;
+        public AndroidSettings AndroidDebugBundle => m_androidDebugBundle;
         public AndroidSettings AndroidReleaseApk => m_androidReleaseApk;
         public AndroidSettings AndroidReleaseBundle => m_androidReleaseBundle;
         public WindowsSettings WindowsDebug => m_windowsDebug;
@@ -27,7 +29,8 @@ namespace CelesteEditor.BuildSystem
         [SerializeField] private iOSSettings m_iOSDebug;
         [SerializeField] private iOSSettings m_iOSRelease;
 
-        [SerializeField] private AndroidSettings m_androidDebug;
+        [SerializeField] private AndroidSettings m_androidDebugApk;
+        [SerializeField] private AndroidSettings m_androidDebugBundle;
         [SerializeField] private AndroidSettings m_androidReleaseApk;
         [SerializeField] private AndroidSettings m_androidReleaseBundle;
 
@@ -58,8 +61,8 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateWindowsSettings()
         {
-            m_windowsDebug = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsDebug", true);
-            m_windowsRelease = FindOrCreatePlatformSettingsAsset<WindowsSettings>(WindowsPlatformSettingsPath, "WindowsRelease", false);
+            m_windowsDebug = FindOrCreateWindowsSettingsAsset(WindowsPlatformSettingsPath, "WindowsDebug", true);
+            m_windowsRelease = FindOrCreateWindowsSettingsAsset(WindowsPlatformSettingsPath, "WindowsRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(WindowsPlatformSettingsPath, "WindowsAppVersion");
@@ -69,21 +72,22 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateAndroidSettings()
         {
-            m_androidDebug = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidDebug", true);
-            m_androidReleaseApk = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseApk", false);
-            m_androidReleaseBundle = FindOrCreatePlatformSettingsAsset<AndroidSettings>(AndroidPlatformSettingsPath, "AndroidReleaseBundle", false);
+            m_androidDebugApk = FindOrCreateAndroidSettingsAsset(AndroidPlatformSettingsPath, "AndroidDebugApk", true, false);
+            m_androidDebugBundle = FindOrCreateAndroidSettingsAsset(AndroidPlatformSettingsPath, "AndroidDebugBundle", true, true);
+            m_androidReleaseApk = FindOrCreateAndroidSettingsAsset(AndroidPlatformSettingsPath, "AndroidReleaseApk", false, false);
+            m_androidReleaseBundle = FindOrCreateAndroidSettingsAsset(AndroidPlatformSettingsPath, "AndroidReleaseBundle", false, true);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(AndroidPlatformSettingsPath, "AndroidAppVersion");
-            m_androidDebug.Version = appVersion;
+            m_androidDebugApk.Version = appVersion;
             m_androidReleaseApk.Version = appVersion;
             m_androidReleaseBundle.Version = appVersion;
         }
 
         public void CreateiOSSettings()
         {
-            m_iOSDebug = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSDebug", true);
-            m_iOSRelease = FindOrCreatePlatformSettingsAsset<iOSSettings>(iOSPlatformSettingsPath, "iOSRelease", false);
+            m_iOSDebug = FindOrCreateiOSSettingsAsset(iOSPlatformSettingsPath, "iOSDebug", true);
+            m_iOSRelease = FindOrCreateiOSSettingsAsset(iOSPlatformSettingsPath, "iOSRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(iOSPlatformSettingsPath, "iOSAppVersion");
@@ -93,8 +97,8 @@ namespace CelesteEditor.BuildSystem
 
         public void CreateWebGLSettings()
         {
-            m_webGLDebug = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLDebug", true);
-            m_webGLRelease = FindOrCreatePlatformSettingsAsset<WebGLSettings>(WebGLPlatformSettingsPath, "WebGLRelease", false);
+            m_webGLDebug = FindOrCreateWebGLSettingsAsset(WebGLPlatformSettingsPath, "WebGLDebug", true);
+            m_webGLRelease = FindOrCreateWebGLSettingsAsset(WebGLPlatformSettingsPath, "WebGLRelease", false);
             EditorUtility.SetDirty(this);
 
             AppVersion appVersion = CreateVersionAsset(WebGLPlatformSettingsPath, "WebGLAppVersion");
@@ -114,7 +118,55 @@ namespace CelesteEditor.BuildSystem
             return appVersion;
         }
 
-        public static T FindOrCreatePlatformSettingsAsset<T>(string folder, string settingsName, bool isDebugConfig) where T : PlatformSettings
+        public static WindowsSettings FindOrCreateWindowsSettingsAsset(
+            string folder,
+            string settingsName,
+            bool isDebugConfig)
+        {
+            return FindOrCreatePlatformSettingsAsset<WindowsSettings>(
+                folder, 
+                settingsName, 
+                s => s.SetDefaultValues(isDebugConfig));
+        }
+
+        public static AndroidSettings FindOrCreateAndroidSettingsAsset(
+            string folder,
+            string settingsName,
+            bool isDebugConfig,
+            bool isAppBundle)
+        {
+            return FindOrCreatePlatformSettingsAsset<AndroidSettings>(
+                folder, 
+                settingsName, 
+                s => s.SetDefaultValues(isDebugConfig, isAppBundle));
+        }
+
+        public static iOSSettings FindOrCreateiOSSettingsAsset(
+            string folder,
+            string settingsName,
+            bool isDebugConfig)
+        {
+            return FindOrCreatePlatformSettingsAsset<iOSSettings>(
+                folder, 
+                settingsName, 
+                s => s.SetDefaultValues(isDebugConfig));
+        }
+
+        public static WebGLSettings FindOrCreateWebGLSettingsAsset(
+            string folder,
+            string settingsName,
+            bool isDebugConfig)
+        {
+            return FindOrCreatePlatformSettingsAsset<WebGLSettings>(
+                folder, 
+                settingsName, 
+                s => s.SetDefaultValues(isDebugConfig));
+        }
+
+        private static T FindOrCreatePlatformSettingsAsset<T>(
+            string folder, 
+            string settingsName, 
+            Action<T> setDefaultValues) where T : PlatformSettings
         {
             T existingSettings = EditorOnly.FindAsset<T>(settingsName, folder);
             
@@ -127,11 +179,11 @@ namespace CelesteEditor.BuildSystem
 
             T settings = CreateInstance<T>();
             settings.name = settingsName;
-            settings.SetDefaultValues(isDebugConfig);
+            setDefaultValues?.Invoke(settings);
 
             EditorOnly.CreateAssetInFolderAndSave(settings, folder);
 
-            return settings;
+            return existingSettings;
         }
     }
 }

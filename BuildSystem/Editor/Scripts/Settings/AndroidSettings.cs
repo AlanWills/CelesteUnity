@@ -126,6 +126,23 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
+        public void SetDefaultValues(bool isDebugConfig, bool isAppBundle)
+        {
+            SetDefaultValues(isDebugConfig);
+
+            buildAppBundle = isAppBundle;
+
+            // Have to disable build options when building an app bundle, whether it's debug or release
+            // otherwise google play store won't allow it to be uploaded
+            BuildOptions = isAppBundle ? BuildOptions.None : BuildOptions;
+
+            // If building an app bundle we should include all architectures by default
+            Architecture = isAppBundle ? AndroidArchitecture.All : Architecture;
+
+            // Build symbols for release bundles only by default
+            buildSymbols = isDebugConfig || isAppBundle == false ? AndroidCreateSymbols.Disabled : AndroidCreateSymbols.Public;
+        }
+
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
         {
             BuildTarget = BuildTarget.Android;

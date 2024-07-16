@@ -83,7 +83,7 @@ namespace Celeste.CloudSave
                 if (GUILayout.Button("Load Save (Versioned)"))
                 {
                     CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
-                        LoadMode.Overwrite,
+                        LoadMode.RespectVersion,
                         (saveGameString) =>
                         {
                             // Load the first scene in build settings (we assume it's the startup scene)

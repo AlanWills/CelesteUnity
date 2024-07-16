@@ -133,20 +133,20 @@ namespace Celeste.CloudSave
             }
 
             bool readComplete = false;
-            UnityEngine.Debug.Log("Beginning to read default cloud save", CelesteLog.CloudSave);
+            UnityEngine.Debug.Log("Beginning to read default cloud save.", CelesteLog.CloudSave);
 
             impl.ReadSaveGame(
                 defaultSaveGameName,
                 (saveDataString) =>
                 {
-                    UnityEngine.Debug.Log("Successfully read default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.Log("Successfully read default cloud save game.", CelesteLog.CloudSave);
                     UnityEngine.Debug.Log($"Cloud save string is: {saveDataString}", CelesteLog.CloudSave);
                     readComplete = true;
                     onSaveGameReadSucceeded?.Invoke(saveDataString);
                 },
                 (status) =>
                 {
-                    UnityEngine.Debug.LogWarning("Unsuccessfully read default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.LogWarning("Unsuccessfully read default cloud save game.", CelesteLog.CloudSave);
                     readComplete = true;
                     onSaveGameReadFailed?.Invoke(status);
                 });
@@ -177,12 +177,13 @@ namespace Celeste.CloudSave
 
                     dataSnapshot.UnpackItems(loadMode);
 
+                    UnityEngine.Debug.Log("Successfully unpacked cloud save into local save.", CelesteLog.CloudSave);
                     cloudSaveLoaded?.Invoke(new CloudSaveLoadedArgs() { loadedData = dataSnapshot });
                     onSaveGameLoadSucceeded?.Invoke(saveDataString);
                 },
                 (SaveRequestStatus status) =>
                 {
-                    UnityEngine.Debug.LogWarning("Unsuccessfully loaded default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.LogWarning("Unsuccessfully loaded default cloud save game.", CelesteLog.CloudSave);
                     onSaveGameLoadFailed?.Invoke(status);
                 });
         }
@@ -202,13 +203,13 @@ namespace Celeste.CloudSave
                 DateTimeOffset.UtcNow - PlaytimeStart,
                 () =>
                 {
-                    UnityEngine.Debug.Log("Successfully wrote default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.Log("Successfully wrote default cloud save game.", CelesteLog.CloudSave);
                     writeComplete = true;
                     onSaveGameSucceeded?.Invoke();
                 },
                 (status) =>
                 {
-                    UnityEngine.Debug.LogWarning("Unsuccessfully wrote default cloud save game", CelesteLog.CloudSave);
+                    UnityEngine.Debug.LogWarning("Unsuccessfully wrote default cloud save game.", CelesteLog.CloudSave);
                     writeComplete = true;
                     onSaveGameFailed?.Invoke(status);
                 });

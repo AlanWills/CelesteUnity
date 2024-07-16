@@ -11,13 +11,13 @@ namespace CelesteEditor.BuildSystem
         [MenuItem("Celeste/Assets/Debug/Build Android Assets", validate = true)]
         public static bool ValidateBuildDebugAndroidAssets()
         {
-            return AllPlatformSettings.GetOrCreateSettings().AndroidDebug != null;
+            return AllPlatformSettings.GetOrCreateSettings().AndroidDebugApk != null;
         }
 
         [MenuItem("Celeste/Assets/Debug/Build Android Assets", validate = false)]
         public static void BuildDebugAndroidAssets()
         {
-            AllPlatformSettings.GetOrCreateSettings().AndroidDebug.BuildAssetsAndExit();
+            AllPlatformSettings.GetOrCreateSettings().AndroidDebugApk.BuildAssetsAndExit();
         }
 
         [MenuItem("Celeste/Assets/Release/Build Android Assets", validate = true)]

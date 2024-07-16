@@ -226,7 +226,18 @@ namespace CelesteEditor.BuildSystem
 
         [SerializeField]
         private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.StrictMode;
-        public BuildOptions BuildOptions => buildOptions;
+        public BuildOptions BuildOptions
+        {
+            get => buildOptions;
+            protected set
+            {
+                if (buildOptions != value)
+                {
+                    buildOptions = value;
+                    EditorOnly.SetDirty(this);
+                }
+            }
+        }
 
         [Header("Build Player")]
         [SerializeField]
