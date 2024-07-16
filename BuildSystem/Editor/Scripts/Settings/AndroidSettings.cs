@@ -1,5 +1,4 @@
 ﻿using Celeste;
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -131,10 +130,6 @@ namespace CelesteEditor.BuildSystem
             SetDefaultValues(isDebugConfig);
 
             buildAppBundle = isAppBundle;
-
-            // Have to disable build options when building an app bundle, whether it's debug or release
-            // otherwise google play store won't allow it to be uploaded
-            BuildOptions = isAppBundle ? BuildOptions.None : BuildOptions;
 
             // If building an app bundle we should include all architectures by default
             Architecture = isAppBundle ? AndroidArchitecture.All : Architecture;

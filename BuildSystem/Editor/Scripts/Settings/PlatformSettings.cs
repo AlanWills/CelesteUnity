@@ -225,7 +225,7 @@ namespace CelesteEditor.BuildSystem
         private bool waitForManagedDebugger = false;
 
         [SerializeField]
-        private BuildOptions buildOptions = BuildOptions.Development | BuildOptions.StrictMode;
+        private BuildOptions buildOptions = BuildOptions.StrictMode;
         public BuildOptions BuildOptions
         {
             get => buildOptions;
@@ -288,7 +288,7 @@ namespace CelesteEditor.BuildSystem
             AddressablesUploadURL = "celeste-games/";
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
-            buildOptions = isDebugConfig ? BuildOptions.Development | BuildOptions.StrictMode : BuildOptions.None;
+            buildOptions = isDebugConfig ? BuildOptions.StrictMode : BuildOptions.None;
 
             scriptingDefineSymbols = EditorOnly.FindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
             addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
