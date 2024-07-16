@@ -41,13 +41,13 @@ pipeline
                 sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
                 script 
                 {
-                    readProperties(file: "${env.WORKSPACE}/Temp/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
 					buildPath = "${projectPath}/${env.BUILD_LOCATION}"
                 }
                 buildName "iOS-" + CONFIGURATION + "-" + env.BUILD_VERSION
                 script 
                 {
-                    readProperties(file: "${env.WORKSPACE}/Temp/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
         }
