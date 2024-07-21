@@ -17,6 +17,8 @@ namespace Celeste.CloudSave
             avatarUrl = ""
         };
 
+        private const string FILE_EXTENSION = ".cloudsave";
+
         #endregion
 
         public void Activate(bool debugLogging) { }
@@ -29,7 +31,7 @@ namespace Celeste.CloudSave
 
         public void DeleteSaveGame(string saveGameName, Action onSaveGameDeletedSucceeded, Action<SaveRequestStatus> onSaveGameDeletedFailed)
         {
-            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}.dat");
+            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}{FILE_EXTENSION}");
 
             if (File.Exists(saveGamePath))
             {
@@ -44,7 +46,7 @@ namespace Celeste.CloudSave
 
         public async void ReadSaveGame(string saveGameName, Action<string> onSaveGameOpenedSucceeded, Action<SaveRequestStatus> onSaveGameOpenedFailed)
         {
-            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}.dat");
+            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}{FILE_EXTENSION}");
 
             if (File.Exists(saveGamePath))
             {
@@ -60,7 +62,7 @@ namespace Celeste.CloudSave
 
         public void WriteSaveGame(string saveGameName, string saveData, TimeSpan totalPlaytime, Action onSaveGameSucceeded, Action<SaveRequestStatus> onSaveGameFailed)
         {
-            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}.dat");
+            string saveGamePath = Path.Combine(Application.persistentDataPath, $"{saveGameName}{FILE_EXTENSION}");
             File.WriteAllText(saveGamePath, saveData);
             onSaveGameSucceeded?.Invoke();
         }
