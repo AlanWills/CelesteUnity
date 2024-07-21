@@ -12,11 +12,12 @@ namespace Celeste.Debug.Menus
         private bool visible;
         private bool Visible
         {
-            get { return visible; }
+            get => visible;
             set
             {
                 visible = value;
                 inputBlocker.SetActive(visible);
+                scrollPosition = Vector2.zero;
             }
         }
 
@@ -106,6 +107,7 @@ namespace Celeste.Debug.Menus
                             if (GUILayout.Button(debugMenu.DisplayName, GUILayout.ExpandWidth(true)))
                             {
                                 debugMenu.Visible = true;
+                                scrollPosition = Vector2.zero;
                             }
                         }
                     }

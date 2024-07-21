@@ -115,6 +115,10 @@ namespace Celeste.CloudSave
                 CoroutineManager.Instance.StartCoroutine(cloudSave.DeleteDefaultSaveGameAsync());
             }
 
+            GUILayout.Space(5);
+            GUILayout.Label("---------------------");
+            GUILayout.Space(5);
+
             if (lastReadCloudSave == null)
             {
                 GUILayout.Label("No Cloud Save Read");
@@ -123,7 +127,7 @@ namespace Celeste.CloudSave
             {
                 for (int i = 0, n = lastReadCloudSave.NumDataFiles; i < n; ++i)
                 {
-                    if (GUILayout.Button(lastReadCloudSave.GetUnpackPath(i), CelesteGUIStyles.BoldLabel))
+                    if (GUILayout.Button(lastReadCloudSave.GetUnpackPath(i)))
                     {
                         // Toggle expanding the section
                         cloudSaveSectionExpanded = i == cloudSaveSectionExpanded ? -1 : i;

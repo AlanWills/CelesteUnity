@@ -78,7 +78,7 @@ namespace Celeste.CloudSave
             savedGameClient.OpenWithAutomaticConflictResolution(
                 saveGameName,
                 DataSource.ReadCacheOrNetwork,
-                ConflictResolutionStrategy.UseLongestPlaytime,
+                ConflictResolutionStrategy.UseMostRecentlySaved,
                 (SavedGameRequestStatus status, ISavedGameMetadata metadata) =>
                 {
                     if (status == SavedGameRequestStatus.Success)

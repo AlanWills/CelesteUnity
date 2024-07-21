@@ -45,7 +45,7 @@ namespace Celeste.CloudSave
             Action onSaveGameSucceeded,
             Action<SaveRequestStatus> onSaveGameFailed);
         void DeleteSaveGame(
-            string filename,
+            string saveGameName,
             Action onSaveGameDeletedSucceeded,
             Action<SaveRequestStatus> onSaveGameDeletedFailed);
     }

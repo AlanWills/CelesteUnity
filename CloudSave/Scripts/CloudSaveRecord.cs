@@ -72,7 +72,9 @@ namespace Celeste.CloudSave
 
                 case Implementation.PlatformAppropriate:
                     impl = new DisabledCloudSave();
-#if UNITY_ANDROID && GOOGLE_PLAY_GAMES
+#if UNITY_EDITOR
+                    impl = new SimulatedCloudSave();
+#elif UNITY_ANDROID && GOOGLE_PLAY_GAMES
                     impl = new GooglePlayGamesCloudSave();
 #endif
                     break;
