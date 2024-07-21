@@ -38,8 +38,11 @@ namespace CelesteEditor.BuildSystem
             get => version;
             set
             {
-                version = value;
-                EditorUtility.SetDirty(this);
+                if (version != value)
+                {
+                    version = value;
+                    EditorUtility.SetDirty(this);
+                }
             }
         }
 
@@ -51,21 +54,11 @@ namespace CelesteEditor.BuildSystem
             get => Resolve(buildDirectory);
             protected set
             {
-                buildDirectory = value;
-                EditorUtility.SetDirty(this);
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("A URL that can be passed to a build system to allow uploading of the output build.")]
-        private string buildUploadURL;
-        public string BuildUploadURL
-        {
-            get => Resolve(buildUploadURL);
-            protected set
-            {
-                buildUploadURL = value;
-                EditorUtility.SetDirty(this);
+                if (string.CompareOrdinal(buildDirectory, value) != 0)
+                {
+                    buildDirectory = value;
+                    EditorUtility.SetDirty(this);
+                }
             }
         }
 
@@ -77,8 +70,43 @@ namespace CelesteEditor.BuildSystem
             get => Resolve(outputName);
             protected set
             {
-                outputName = value;
-                EditorUtility.SetDirty(this);
+                if (string.CompareOrdinal(outputName, value) != 0)
+                {
+                    outputName = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("The name of the storage bucket you wish to upload the build too.")]
+        private string buildUploadBucket;
+        public string BuildUploadBucket
+        {
+            get => Resolve(buildUploadBucket);
+            protected set
+            {
+                if (string.CompareOrdinal(buildUploadBucket, value) != 0)
+                {
+                    buildUploadBucket = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("A path within the BuildUploadBucket where the build will be uploaded to.")]
+        private string buildUploadPath;
+        public string BuildUploadPath
+        {
+            get => Resolve(buildUploadPath);
+            protected set
+            {
+                if (string.CompareOrdinal(buildUploadPath, value) != 0)
+                {
+                    buildUploadPath = value;
+                    EditorUtility.SetDirty(this);
+                }
             }
         }
 
@@ -144,16 +172,32 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
-        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file under the variable 'ASSETS_DESTINATION' to allow uploading to a specific location." + STRING_SUBSTITUTION_HELP)]
-        private string addressablesUploadURL;
-        public string AddressablesUploadURL
+        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file to allow uploading to a specific storage bucket." + STRING_SUBSTITUTION_HELP)]
+        private string addressablesUploadBucket;
+        public string AddressablesUploadBucket
         {
-            get => Resolve(addressablesUploadURL);
+            get => Resolve(addressablesUploadBucket);
             protected set
             {
-                if (string.CompareOrdinal(addressablesUploadURL, value) != 0)
+                if (string.CompareOrdinal(addressablesUploadBucket, value) != 0)
                 {
-                    addressablesUploadURL = value;
+                    addressablesUploadBucket = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("When building addressables as part of a build pipeline, this value will be added to a file to allow uploading to a specific location with the storage bucket specified using AddressablesUploadBucket." + STRING_SUBSTITUTION_HELP)]
+        private string addressablesUploadPath;
+        public string AddressablesUploadPath
+        {
+            get => Resolve(addressablesUploadPath);
+            protected set
+            {
+                if (string.CompareOrdinal(addressablesUploadPath, value) != 0)
+                {
+                    addressablesUploadPath = value;
                     EditorUtility.SetDirty(this);
                 }
             }
@@ -280,12 +324,12 @@ namespace CelesteEditor.BuildSystem
         {
             OutputName = "Build-{version}-{environment}";
             BuildDirectory = "Builds/{build_target}/{environment}";
-            BuildUploadURL = "celeste-games/";
+            BuildUploadBucket = "celeste-games/";
             AddressablesEnabled = true;
             PlayerOverrideVersion = "resources";
             AddressablesBuildDirectory = "ServerData/{build_target}/{environment}/{major}.{minor}";
             AddressablesLoadDirectory = "https://storage.googleapis.com/celeste-games/ServerData/{build_target}/{environment}/{major}.{minor}";
-            AddressablesUploadURL = "celeste-games/";
+            AddressablesUploadBucket = "celeste-games/";
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
             buildOptions = isDebugConfig ? BuildOptions.StrictMode : BuildOptions.None;

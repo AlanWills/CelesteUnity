@@ -20,11 +20,12 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField] private bool writeAddressablesBuildDirectoryVariable = true;
         [SerializeField, ShowIf(nameof(writeAddressablesBuildDirectoryVariable))] private string addressablesBuildDirectoryVariableName = "ASSETS_SOURCE";
 
-        [SerializeField] private bool writeAddressablesUploadURLVariable = true;
-        [SerializeField, ShowIf(nameof(writeAddressablesUploadURLVariable))] private string addressablesUploadURLVariableName = "ASSETS_DESTINATION";
+        [SerializeField] private bool writeAddressablesUploadVariables = true;
+        [SerializeField, ShowIf(nameof(writeAddressablesUploadVariables))] private string addressablesUploadBucketVariableName = "ASSETS_UPLOAD_BUCKET";
+        [SerializeField, ShowIf(nameof(writeAddressablesUploadVariables))] private string addressablesUploadPathVariableName = "ASSETS_UPLOAD_PATH";
 
-        [SerializeField, ShowIf(nameof(writeAddressablesUploadURLVariable))] private bool writeAddressablesUploadCredentialsVariable = true;
-        [SerializeField, ShowIfAll(nameof(writeAddressablesUploadURLVariable), nameof(writeAddressablesUploadCredentialsVariable))] private string addressablesUploadCredentialsVariableName = "ASSETS_UPLOAD_CREDENTIALS";
+        [SerializeField, ShowIf(nameof(writeAddressablesUploadVariables))] private bool writeAddressablesUploadCredentialsVariable = true;
+        [SerializeField, ShowIfAll(nameof(writeAddressablesUploadVariables), nameof(writeAddressablesUploadCredentialsVariable))] private string addressablesUploadCredentialsVariableName = "ASSETS_UPLOAD_CREDENTIALS";
 
         #endregion
 
@@ -37,9 +38,10 @@ namespace CelesteEditor.BuildSystem.Steps
                 locationInfo.AppendLine($"{addressablesBuildDirectoryVariableName}={platformSettings.AddressablesBuildDirectory}");
             }
 
-            if (writeAddressablesUploadURLVariable)
+            if (writeAddressablesUploadVariables)
             {
-                locationInfo.AppendLine($"{addressablesUploadURLVariableName}={platformSettings.AddressablesUploadURL}");
+                locationInfo.AppendLine($"{addressablesUploadBucketVariableName}={platformSettings.AddressablesUploadBucket}");
+                locationInfo.AppendLine($"{addressablesUploadPathVariableName}={platformSettings.AddressablesUploadPath}");
 
                 if (writeAddressablesUploadCredentialsVariable)
                 {

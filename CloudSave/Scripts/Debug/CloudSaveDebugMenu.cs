@@ -20,6 +20,7 @@ namespace Celeste.CloudSave
         [SerializeField] private CloudSaveRecord cloudSave;
 
         [NonSerialized] private DataSnapshot lastReadCloudSave;
+        [NonSerialized] private int cloudSaveSectionExpanded = -1;
 
         #endregion
 
@@ -73,50 +74,45 @@ namespace Celeste.CloudSave
                 CoroutineManager.Instance.StartCoroutine(cloudSave.ReadDefaultSaveGameAsync(
                     (saveGameString) =>
                     {
+                        cloudSaveSectionExpanded = -1;
                         lastReadCloudSave = CreateInstance<DataSnapshot>();
                         JsonUtility.FromJsonOverwrite(saveGameString, lastReadCloudSave);
                     }));
             }
 
-            using (new GUILayout.HorizontalScope())
+            if (GUILayout.Button("Load Save (Versioned)"))
             {
-                if (GUILayout.Button("Load Save (Versioned)"))
-                {
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
-                        LoadMode.RespectVersion,
-                        (saveGameString) =>
-                        {
-                            // Load the first scene in build settings (we assume it's the startup scene)
-                            SceneManager.LoadScene(0, LoadSceneMode.Single);
-                        }));
-                }
-
-                if (GUILayout.Button("Load Save (Overwrite"))
-                {
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
-                        LoadMode.Overwrite,
-                        (saveGameString) =>
-                        {
-                            // Load the first scene in build settings (we assume it's the startup scene)
-                            SceneManager.LoadScene(0, LoadSceneMode.Single);
-                        }));
-                }
+                CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
+                    LoadMode.RespectVersion,
+                    (saveGameString) =>
+                    {
+                        // Load the first scene in build settings (we assume it's the startup scene)
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
+                    }));
             }
 
-            using (new GUILayout.HorizontalScope())
+            if (GUILayout.Button("Load Save (Overwrite"))
             {
-                if (GUILayout.Button("Write Default Save"))
-                {
-                    Snapshot snapshot = snapshotRecord.CreateDataSnapshot();
-                    string snapshotString = snapshot.Serialize();
+                CoroutineManager.Instance.StartCoroutine(cloudSave.LoadDefaultSaveGameAsync(
+                    LoadMode.Overwrite,
+                    (saveGameString) =>
+                    {
+                        // Load the first scene in build settings (we assume it's the startup scene)
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
+                    }));
+            }
 
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString));
-                }
+            if (GUILayout.Button("Write Default Save"))
+            {
+                Snapshot snapshot = snapshotRecord.CreateDataSnapshot();
+                string snapshotString = snapshot.Serialize();
 
-                if (GUILayout.Button("Delete Default Save"))
-                {
-                    CoroutineManager.Instance.StartCoroutine(cloudSave.DeleteDefaultSaveGameAsync());
-                }
+                CoroutineManager.Instance.StartCoroutine(cloudSave.WriteDefaultSaveGameAsync(snapshotString));
+            }
+
+            if (GUILayout.Button("Delete Default Save"))
+            {
+                CoroutineManager.Instance.StartCoroutine(cloudSave.DeleteDefaultSaveGameAsync());
             }
 
             if (lastReadCloudSave == null)
@@ -127,8 +123,16 @@ namespace Celeste.CloudSave
             {
                 for (int i = 0, n = lastReadCloudSave.NumDataFiles; i < n; ++i)
                 {
-                    GUILayout.Label(lastReadCloudSave.GetUnpackPath(i), CelesteGUIStyles.BoldLabel);
-                    GUILayout.Label(lastReadCloudSave.GetData(i));
+                    if (GUILayout.Button(lastReadCloudSave.GetUnpackPath(i), CelesteGUIStyles.BoldLabel))
+                    {
+                        // Toggle expanding the section
+                        cloudSaveSectionExpanded = i == cloudSaveSectionExpanded ? -1 : i;
+                    }
+
+                    if (cloudSaveSectionExpanded == i)
+                    {
+                        GUILayout.Label(lastReadCloudSave.GetData(i));
+                    }
                 }
             }
         }

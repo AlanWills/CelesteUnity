@@ -30,8 +30,9 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField] private bool writeVersionVariable = true;
         [SerializeField, ShowIf(nameof(writeVersionVariable))] private string versionVariableName = "BUILD_VERSION";
 
-        [SerializeField] private bool writeUploadDirectoryVariable = true;
-        [SerializeField, ShowIf(nameof(writeUploadDirectoryVariable))] private string uploadDirectoryVariableName = "BUILD_UPLOAD_DIRECTORY";
+        [SerializeField] private bool writeUploadVariables = true;
+        [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadBucketVariableName = "BUILD_UPLOAD_BUCKET";
+        [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadPathVariableName = "BUILD_UPLOAD_PATH";
 
         #endregion
 
@@ -58,9 +59,10 @@ namespace CelesteEditor.BuildSystem.Steps
                 buildInfo.AppendLine($"{versionVariableName}={platformSettings.Version}");
             }
 
-            if (writeUploadDirectoryVariable)
+            if (writeUploadVariables)
             {
-                buildInfo.AppendLine($"{uploadDirectoryVariableName}={platformSettings.BuildUploadURL}");
+                buildInfo.AppendLine($"{uploadBucketVariableName}={platformSettings.BuildUploadBucket}");
+                buildInfo.AppendLine($"{uploadPathVariableName}={platformSettings.BuildUploadPath}");
             }
 
             platformSettings.InjectBuildEnvVars(buildInfo);

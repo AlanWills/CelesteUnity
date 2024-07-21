@@ -104,7 +104,12 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.BUILD_UPLOAD_DIRECTORY}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.BUILD_DIRECTORY}/${env.BUILD_OUTPUT_NAME}"
+                googleStorageUpload(
+					bucket: "gs://${env.BUILD_UPLOAD_BUCKET}", 
+					credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', 
+					pattern: "**/${env.BUILD_OUTPUT_NAME}",
+					sharedPublicly: true,
+                    pathPrefix: "${env.BUILD_UPLOAD_PATH}")
             }
         }
         stage('Upload Assets')
@@ -118,7 +123,12 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.ASSETS_SOURCE}/*"
+                googleStorageUpload(
+					bucket: "gs://${env.ASSETS_UPLOAD_BUCKET}", 
+					credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', 
+					pattern: "${env.ASSETS_SOURCE}/*",
+					sharedPublicly: true,
+                    pathPrefix: "${env.ASSETS_UPLOAD_PATH}")
                 sh "rm -r ${env.ASSETS_SOURCE}"
             }
         }
