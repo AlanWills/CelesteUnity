@@ -24,6 +24,9 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField] private bool writeBuildLocationVariable = true;
         [SerializeField, ShowIf(nameof(writeBuildLocationVariable))] private string buildLocationVariableName = "BUILD_LOCATION";
 
+        [SerializeField] private bool writeBuildOutputNameVariable = true;
+        [SerializeField, ShowIf(nameof(writeBuildOutputNameVariable))] private string buildOutputNameVariableName = "BUILD_OUTPUT_NAME";
+
         [SerializeField] private bool writeVersionVariable = true;
         [SerializeField, ShowIf(nameof(writeVersionVariable))] private string versionVariableName = "BUILD_VERSION";
 
@@ -43,6 +46,11 @@ namespace CelesteEditor.BuildSystem.Steps
             if (writeBuildLocationVariable)
             {
                 buildInfo.AppendLine($"{buildLocationVariableName}={buildPlayerOptions.locationPathName}");
+            }
+
+            if (writeBuildOutputNameVariable)
+            {
+                buildInfo.AppendLine($"{buildOutputNameVariableName}={Path.GetFileName(buildPlayerOptions.locationPathName)}");
             }
 
             if (writeVersionVariable)
