@@ -111,6 +111,22 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField]
+        [Tooltip("When making a build as part of a build pipeline, this value will be exported as an environment variable to allow you to provide credentials to whatever system you use for uploading builds.")]
+        private string buildUploadCredentials;
+        public string BuildUploadCredentials
+        {
+            get => buildUploadCredentials;
+            protected set
+            {
+                if (string.CompareOrdinal(buildUploadCredentials, value) != 0)
+                {
+                    buildUploadCredentials = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField]
         [Tooltip("If enabled, addressable specific pipelines will run in the build pipeline.")]
         private bool addressablesEnabled = false;
         public bool AddressablesEnabled

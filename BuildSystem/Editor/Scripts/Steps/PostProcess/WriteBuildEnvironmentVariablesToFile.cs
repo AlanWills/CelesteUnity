@@ -34,6 +34,9 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadBucketVariableName = "BUILD_UPLOAD_BUCKET";
         [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadPathVariableName = "BUILD_UPLOAD_PATH";
 
+        [SerializeField, ShowIf(nameof(writeUploadVariables))] private bool writeBuildUploadCredentialsVariable = true;
+        [SerializeField, ShowIfAll(nameof(writeUploadVariables), nameof(writeBuildUploadCredentialsVariable))] private string buildUploadCredentialsVariableName = "BUILD_UPLOAD_CREDENTIALS";
+
         #endregion
 
         public override void Execute(BuildPlayerOptions buildPlayerOptions, BuildReport result, PlatformSettings platformSettings)
@@ -63,6 +66,11 @@ namespace CelesteEditor.BuildSystem.Steps
             {
                 buildInfo.AppendLine($"{uploadBucketVariableName}={platformSettings.BuildUploadBucket}");
                 buildInfo.AppendLine($"{uploadPathVariableName}={platformSettings.BuildUploadPath}");
+
+                if (writeBuildUploadCredentialsVariable)
+                {
+                    buildInfo.AppendLine($"{buildUploadCredentialsVariableName}={platformSettings.BuildUploadCredentials}");
+                }
             }
 
             platformSettings.InjectBuildEnvVars(buildInfo);
