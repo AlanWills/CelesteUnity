@@ -31,8 +31,7 @@ namespace CelesteEditor.BuildSystem.Steps
         [SerializeField, ShowIf(nameof(writeVersionVariable))] private string versionVariableName = "BUILD_VERSION";
 
         [SerializeField] private bool writeUploadVariables = true;
-        [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadBucketVariableName = "BUILD_UPLOAD_BUCKET";
-        [SerializeField, ShowIf(nameof(writeUploadVariables))] private string uploadPathVariableName = "BUILD_UPLOAD_PATH";
+        [SerializeField, ShowIf(nameof(writeUploadVariables))] private string buildUploadURLVariableName = "BUILD_UPLOAD_URL";
 
         [SerializeField, ShowIf(nameof(writeUploadVariables))] private bool writeBuildUploadCredentialsVariable = true;
         [SerializeField, ShowIfAll(nameof(writeUploadVariables), nameof(writeBuildUploadCredentialsVariable))] private string buildUploadCredentialsVariableName = "BUILD_UPLOAD_CREDENTIALS";
@@ -64,8 +63,7 @@ namespace CelesteEditor.BuildSystem.Steps
 
             if (writeUploadVariables)
             {
-                buildInfo.AppendLine($"{uploadBucketVariableName}={platformSettings.BuildUploadBucket}");
-                buildInfo.AppendLine($"{uploadPathVariableName}={platformSettings.BuildUploadPath}");
+                buildInfo.AppendLine($"{buildUploadURLVariableName}={platformSettings.BuildUploadURL}");
 
                 if (writeBuildUploadCredentialsVariable)
                 {
