@@ -24,7 +24,7 @@ namespace Celeste.Persistence
         #region Properties and Fields
 
         string IInterestedInSnapshots.UnpackPath => FileName;
-        object ISupportsDataSnapshots.Data => Serialize();
+        object ISupportsDataSnapshots.Data => SerializeWithVersionInfo();
         string ISupportsFileSnapshots.SourceFile => FilePath;
 
         protected abstract string FileName { get; }
@@ -158,7 +158,7 @@ namespace Celeste.Persistence
 
         string IPersistentSceneManager.SerializeToString()
         {
-            return JsonUtility.ToJson(Serialize());
+            return JsonUtility.ToJson(SerializeWithVersionInfo());
         }
 
         private IEnumerator DoSave()
@@ -209,6 +209,13 @@ namespace Celeste.Persistence
 
         private async Task SaveAsync()
         {
+            TDTO serializedInstance = SerializeWithVersionInfo();
+
+            await PersistenceUtility.SaveAsync(FilePath, serializedInstance);
+        }
+
+        private TDTO SerializeWithVersionInfo()
+        {
             TDTO serializedInstance = Serialize();
             serializedInstance.versionInformation = new VersionInformation()
             {
@@ -216,7 +223,7 @@ namespace Celeste.Persistence
                 SaveTime = DateTimeOffset.UtcNow
             };
 
-            await PersistenceUtility.SaveAsync(FilePath, serializedInstance);
+            return serializedInstance;
         }
 
         protected virtual void OnSaveStart() { }
