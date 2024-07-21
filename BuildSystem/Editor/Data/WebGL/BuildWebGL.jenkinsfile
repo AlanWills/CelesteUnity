@@ -104,7 +104,7 @@ pipeline
             }
             steps
             {
-                googleStorageUpload bucket: "gs://${env.BUILD_UPLOAD_DIRECTORY}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: $"{env.BUILD_DIRECTORY}/{env.BUILD_OUTPUT_NAME}"
+                googleStorageUpload bucket: "gs://${env.BUILD_UPLOAD_DIRECTORY}", credentialsId: 'e5a6c71c-c5f9-413e-8066-e3f8d58ee869', pattern: "${env.BUILD_DIRECTORY}/${env.BUILD_OUTPUT_NAME}"
             }
         }
         stage('Upload Assets')
