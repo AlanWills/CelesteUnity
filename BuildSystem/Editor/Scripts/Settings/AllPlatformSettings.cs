@@ -168,22 +168,22 @@ namespace CelesteEditor.BuildSystem
             string settingsName, 
             Action<T> setDefaultValues) where T : PlatformSettings
         {
-            T existingSettings = EditorOnly.FindAsset<T>(settingsName, folder);
+            T settings = EditorOnly.FindAsset<T>(settingsName, folder);
             
-            if (existingSettings  != null)
+            if (settings  != null)
             {
-                return existingSettings;
+                return settings;
             }
 
             EditorOnly.CreateFolder(folder);
 
-            T settings = CreateInstance<T>();
+            settings = CreateInstance<T>();
             settings.name = settingsName;
             setDefaultValues?.Invoke(settings);
 
             EditorOnly.CreateAssetInFolderAndSave(settings, folder);
 
-            return existingSettings;
+            return settings;
         }
     }
 }
