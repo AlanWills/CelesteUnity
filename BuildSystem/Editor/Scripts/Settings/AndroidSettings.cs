@@ -146,7 +146,7 @@ namespace CelesteEditor.BuildSystem
             BuildTarget = BuildTarget.Android;
             BuildTargetGroup = BuildTargetGroup.Android;
             ScriptingBackend = ScriptingImplementation.IL2CPP;
-            Architecture = AndroidArchitecture.ARMv7;
+            Architecture = AndroidArchitecture.ARM64;
             RequiresWritePermission = true;
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
             TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;

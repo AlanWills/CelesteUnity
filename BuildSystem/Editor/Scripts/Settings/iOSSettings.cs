@@ -19,7 +19,7 @@ namespace CelesteEditor.BuildSystem
         private XcodeBuildConfig runInXCodeAs = XcodeBuildConfig.Debug;
         public XcodeBuildConfig RunInXCodeAs
         {
-            get { return runInXCodeAs; }
+            get => runInXCodeAs;
             set
             {
                 if (runInXCodeAs != value)
@@ -30,7 +30,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        [SerializeField] private string ipaName;
+        [SerializeField, Tooltip("The .ipa extension will be added at runtime.")] private string ipaName;
 
         [Header("Custom Build System Settings")]
         [SerializeField] private bool useiOSProjectBuilder = true;

@@ -79,7 +79,7 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField]
-        [Tooltip("The url path in the storage bucket you wish to upload the build too.")]
+        [Tooltip("The url path in the storage bucket you wish to upload the build too." + STRING_SUBSTITUTION_HELP)]
         private string buildUploadUrl;
         public string BuildUploadURL
         {
@@ -316,7 +316,7 @@ namespace CelesteEditor.BuildSystem
             AddressablesUploadURL = "celeste-games/";
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
-            buildOptions = isDebugConfig ? BuildOptions.StrictMode : BuildOptions.None;
+            buildOptions = BuildOptions.StrictMode;
 
             scriptingDefineSymbols = EditorOnly.FindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
             addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
