@@ -1,5 +1,4 @@
 ﻿using Celeste.Assets;
-using Celeste.Log;
 using Celeste.Tools;
 using System;
 using System.Collections;
@@ -19,7 +18,7 @@ namespace Celeste.Loading
             get => addressablesLabel;
             set
             {
-                if (string.CompareOrdinal(addressablesLabel, value) == 0)
+                if (string.CompareOrdinal(addressablesLabel, value) != 0)
                 {
                     addressablesLabel = value;
                     EditorOnly.SetDirty(this);

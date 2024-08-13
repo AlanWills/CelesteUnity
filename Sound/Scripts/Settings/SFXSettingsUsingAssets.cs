@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -29,6 +30,12 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
+            if (sfxEnabled == null)
+            {
+                sfxEnabled = SoundEditorSettings.GetOrCreateSettings().sfxEnabled;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
             if (playSFXWithRawClip == null)
             {
                 playSFXWithRawClip = SoundEditorSettings.GetOrCreateSettings().playSFXWithRawClipEvent;

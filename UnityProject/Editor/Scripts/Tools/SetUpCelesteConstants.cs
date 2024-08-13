@@ -83,6 +83,7 @@
 
         public CelesteConstants(string celesteRootFolder)
         {
+            UnityEngine.Debug.Assert(celesteRootFolder.EndsWith('/'), $"Celeste Root Folder does not end in the correct path delimiter.  This will cause serious issues with Setup!");
             LOADING_SCENE_PATH = $"{celesteRootFolder}Loading/Scenes/Loading.unity";
             CELESTE_GIT_IGNORE_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitignore.sample";
             CELESTE_GIT_LFS_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitattributes.sample";
@@ -116,6 +117,7 @@
 
         public BuildSystemConstants(string celesteRootFolder)
         {
+            UnityEngine.Debug.Assert(celesteRootFolder.EndsWith('/'), $"Celeste Root Folder does not end in the correct path delimiter.  This will cause serious issues with Setup!");
             CELESTE_BUILD_SYSTEM_FOLDER = $"{celesteRootFolder}BuildSystem/";
         }
     }

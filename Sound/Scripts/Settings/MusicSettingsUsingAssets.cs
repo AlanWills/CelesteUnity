@@ -38,6 +38,18 @@ namespace Celeste.Sound.Settings
         private void OnValidate()
         {
 #if UNITY_EDITOR
+            if (musicEnabled == null)
+            {
+                musicEnabled = SoundEditorSettings.GetOrCreateSettings().musicEnabled;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
+            if (shuffleMusic == null)
+            {
+                shuffleMusic = SoundEditorSettings.GetOrCreateSettings().shuffleMusic;
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+
             if (playMusicWithRawClip == null)
             {
                 playMusicWithRawClip = SoundEditorSettings.GetOrCreateSettings().playMusicWithRawClipEvent;

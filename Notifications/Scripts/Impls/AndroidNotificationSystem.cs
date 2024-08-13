@@ -77,7 +77,7 @@ namespace Celeste.Notifications.Impls
             var channel = new AndroidNotificationChannel
             {
                 Id = notificationChannel.ID,
-                Name = notificationChannel.name,
+                Name = notificationChannel.DisplayName,
                 Importance = ToAndroidImportance(notificationChannel.Importance),
                 Description = notificationChannel.Description,
                 CanShowBadge = notificationChannel.CanShowBadge

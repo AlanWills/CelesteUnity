@@ -33,9 +33,11 @@ using Celeste.Sound;
 using Celeste.Tools;
 using CelesteEditor.BuildSystem.Steps;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
-using System.Security.Cryptography;
 using Celeste.Scene.Catalogue;
 using Celeste.Log;
+using CelesteEditor.Assets.Analyze;
+using UnityEditor.AddressableAssets.Build.AnalyzeRules;
+using CelesteEditor.Scene.Analyze;
 
 namespace CelesteEditor.UnityProject
 {
@@ -44,8 +46,10 @@ namespace CelesteEditor.UnityProject
     {
         #region Properties and Fields
 
-        public CelesteConstants CelesteConstants => new CelesteConstants(packagePath);
-        public BuildSystemConstants BuildSystemConstants => new BuildSystemConstants(packagePath);
+        private string FullyDelimitedPackagePath => packagePath.EndsWith('/') ? packagePath : packagePath + '/';
+
+        public CelesteConstants CelesteConstants => new CelesteConstants(FullyDelimitedPackagePath);
+        public BuildSystemConstants BuildSystemConstants => new BuildSystemConstants(FullyDelimitedPackagePath);
 
         [Header("Project")]
         [LabelWidth(300)]
@@ -143,6 +147,15 @@ namespace CelesteEditor.UnityProject
 
         private const string IMPORT_TMPRO_ESSENTIALS_MENU_ITEM = "Window/TextMeshPro/Import TMP Essential Resources";
 
+        private static List<AnalyzeRule> addressableAnalyzeRules = new List<AnalyzeRule>()
+        {
+            new EnsureAssetsHaveNoOtherGroupLabelAnalyzeRule(),
+            new EnsureAssetsHaveGroupLabelAnalyzeRule(),
+            new EnsureBundledGroupsHaveRemoteBuildAndLoadPathsAnalyzeRule(),
+            new EnsureGroupsHaveBundledSchemaAnalyzeRule(),
+            new EnsureAddressableScenesSetUpCorrectlyAnalyzeRule()
+        };
+
         #endregion
 
         public static void Execute(SetUpCelesteParameters parameters)
@@ -168,6 +181,14 @@ namespace CelesteEditor.UnityProject
                 else
                 {
                     Debug.LogError($"Failed to embed Celeste as a package (package path: {parameters.packagePath})");
+                }
+            }
+
+            if (parameters.usesAddressables)
+            {
+                foreach (AnalyzeRule analyzeRule in addressableAnalyzeRules)
+                {
+                    analyzeRule.FixIssues(AddressableAssetSettingsDefaultObject.GetSettings(false));
                 }
             }
             
@@ -470,6 +491,7 @@ namespace CelesteEditor.UnityProject
             // Create main camera
             {
                 GameObject cameraGameObject = new GameObject("Main Camera");
+                cameraGameObject.tag = "MainCamera";
                 Camera camera = cameraGameObject.AddComponent<Camera>();
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.white;
@@ -602,6 +624,7 @@ namespace CelesteEditor.UnityProject
             // Create main camera
             {
                 GameObject cameraGameObject = new GameObject("Main Camera");
+                cameraGameObject.tag = "MainCamera";
                 Camera camera = cameraGameObject.AddComponent<Camera>();
                 camera.clearFlags = CameraClearFlags.SolidColor;
                 camera.backgroundColor = Color.white;
@@ -688,7 +711,7 @@ namespace CelesteEditor.UnityProject
             musicSettings.name = nameof(MusicSettings);
             MakeAddressable(parameters, musicSettings);
 
-            SFXSettings sfxSettings = ScriptableObject.CreateInstance<SFXSettingsUsingAssets>();
+            SFXSettingsUsingAssets sfxSettings = ScriptableObject.CreateInstance<SFXSettingsUsingAssets>();
             sfxSettings.name = nameof(SFXSettings);
             MakeAddressable(parameters, sfxSettings);
 
@@ -999,6 +1022,8 @@ namespace CelesteEditor.UnityProject
                         bootstrapAddressables.AddSchema<BundledGroupSchema>(false);
                     }
                 }
+
+                settings.RemoveLabel("default");
             }
 
             if (parameters.usesTextMeshPro)

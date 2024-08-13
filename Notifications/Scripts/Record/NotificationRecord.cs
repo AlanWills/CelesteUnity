@@ -2,6 +2,7 @@ using Celeste.Events;
 using Celeste.Notifications.Catalogue;
 using Celeste.Notifications.Impls;
 using Celeste.Notifications.Objects;
+using Celeste.Parameters;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Celeste.Notifications.Record
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
 
         [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
+        [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private bool isInitialized;
@@ -65,6 +67,12 @@ namespace Celeste.Notifications.Record
 
         public void AddNotificationChannel(NotificationChannel notificationChannel)
         {
+            if (!isDebugBuild.Value && notificationChannel.IsDebugOnly)
+            {
+                // Don't add debug only channels when not in debug builds
+                return;
+            }
+
             impl.AddNotificationChannel(notificationChannel);
             notificationChannel.AddEnabledChangedCallback(OnChannelEnabledChanged);
         }

@@ -1,6 +1,7 @@
 ﻿using Celeste.Tools.Settings;
 using UnityEngine;
 using Celeste.Tools;
+using Celeste.Parameters;
 
 namespace Celeste.Sound.Settings
 {
@@ -11,6 +12,10 @@ namespace Celeste.Sound.Settings
 
         public const string FOLDER_PATH = "Assets/Sound/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "SoundEditorSettings.asset";
+
+        public BoolValue sfxEnabled;
+        public BoolValue musicEnabled;
+        public BoolValue shuffleMusic;
 
         public AudioClipEvent playMusicWithRawClipEvent;
         public AudioClipSettingsEvent playMusicWithSettingsEvent;
@@ -33,6 +38,10 @@ namespace Celeste.Sound.Settings
         protected override void OnCreate()
         {
             base.OnCreate();
+
+            sfxEnabled = EditorOnly.FindAsset<BoolValue>("SFXEnabled");
+            musicEnabled = EditorOnly.FindAsset<BoolValue>("MusicEnabled");
+            shuffleMusic = EditorOnly.FindAsset<BoolValue>("ShuffleMusic");
 
             playMusicWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlayMusicWithRawClip");
             playMusicWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
