@@ -1,4 +1,5 @@
-﻿using Celeste.Assets.AssetReferences;
+﻿#if USE_ADDRESSABLES
+using Celeste.Assets.AssetReferences;
 using System;
 
 namespace Celeste.Parameters.AssetReferences
@@ -11,3 +12,4 @@ namespace Celeste.Parameters.AssetReferences
         }
     }
 }
+#endif

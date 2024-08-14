@@ -1,31 +1,16 @@
 ﻿using Celeste.Assets;
 using Celeste.Debug.Menus;
-using Celeste.Narrative.TwineImporter.Assets;
 using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Narrative.TwineImporter.Debug
 {
     [CreateAssetMenu(fileName = nameof(TwineStoryImporterSettingsDebugMenu), order = CelesteMenuItemConstants.TWINE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TWINE_MENU_ITEM + "Debug/Twine Story Importer Settings Debug Menu")]
-    public class TwineStoryImporterSettingsDebugMenu : DebugMenu, IHasAssets
+    public class TwineStoryImporterSettingsDebugMenu : DebugMenu
     {
         #region Properties and Fields
 
-        [SerializeField] private TwineStoryImporterSettingsAssetReference twineStoryImporterSettings;
-
-        #endregion
-
-        #region IHasAssets
-
-        public bool ShouldLoadAssets()
-        {
-            return twineStoryImporterSettings.ShouldLoad;
-        }
-
-        public IEnumerator LoadAssets()
-        {
-            yield return twineStoryImporterSettings.LoadAssetAsync();
-        }
+        [SerializeField] private TwineStoryImporterSettings twineStoryImporterSettings;
 
         #endregion
 
@@ -33,10 +18,10 @@ namespace Celeste.Narrative.TwineImporter.Debug
 
         protected override void OnDrawMenu()
         {
-            GUILayout.Label(twineStoryImporterSettings.Asset.IgnoreTag);
-            GUILayout.Label(twineStoryImporterSettings.Asset.StartTag);
+            GUILayout.Label(twineStoryImporterSettings.IgnoreTag);
+            GUILayout.Label(twineStoryImporterSettings.StartTag);
 
-            foreach (var twineNodeParserStep in twineStoryImporterSettings.Asset.ParserSteps)
+            foreach (var twineNodeParserStep in twineStoryImporterSettings.ParserSteps)
             {
                 bool doesUseKeys = twineNodeParserStep is IUsesKeys;
                 bool doesUseTags = twineNodeParserStep is IUsesTags;

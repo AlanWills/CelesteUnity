@@ -1,4 +1,5 @@
-﻿using Celeste;
+﻿#if USE_ADDRESSABLES
+using Celeste;
 using CelesteEditor.BuildSystem.Steps;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
@@ -29,3 +30,4 @@ namespace CelesteEditor.BuildSystem
         }
     }
 }
+#endif

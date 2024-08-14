@@ -1,15 +1,17 @@
-﻿using Celeste.Events;
-using Celeste.Input.Settings;
-using Celeste.Parameters;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if USE_NEW_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.UI;
 
 // DO NOT DELETE THIS, IT IS NEEDED
 using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#else
+using Touch = UnityEngine.Touch;
+#endif
 
 namespace Celeste.Input
 {
@@ -25,18 +27,22 @@ namespace Celeste.Input
             {
                 if (inputState.RaycastCamera != null)
                 {
+#if USE_NEW_INPUT_SYSTEM
                     Vector2 viewportCoords = inputState.RaycastCamera.ScreenToViewportPoint(Mouse.current.position.ReadValue());
                     return viewportCoords.x >= 0 && viewportCoords.x <= 1 && viewportCoords.y >= 0 && viewportCoords.y <= 1;
+#endif
                 }
 
                 return false;
             }
         }
 #endif
-        
-        [SerializeField] private InputState inputState;
+
+                    [SerializeField] private InputState inputState;
         [SerializeField] private EventSystem eventSystem;
+#if USE_NEW_INPUT_SYSTEM
         [SerializeField] private InputSystemUIInputModule uiInputModule;
+#endif
 
         #endregion
 
@@ -45,22 +51,26 @@ namespace Celeste.Input
         private void OnEnable()
         {
             inputState.Initialize();
-            
+
 #if UNITY_ANDROID || UNITY_IOS
+#if USE_NEW_INPUT_SYSTEM
             if (!EnhancedTouchSupport.enabled)
             {
                 EnhancedTouchSupport.Enable();
             }
+#endif
 #endif
         }
 
         private void OnDisable()
         {
 #if UNITY_ANDROID || UNITY_IOS
+#if USE_NEW_INPUT_SYSTEM
             if (EnhancedTouchSupport.enabled)
             {
                 EnhancedTouchSupport.Disable();
             }
+#endif
 #endif
         }
 
@@ -69,6 +79,7 @@ namespace Celeste.Input
             inputState.CheckRaycastCamera();
 
 #if UNITY_ANDROID || UNITY_IOS
+#if USE_NEW_INPUT_SYSTEM
             GameObject hitGameObject = null;
             var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
             int numTouches = touches.Count;
@@ -87,9 +98,8 @@ namespace Celeste.Input
             
             inputState.UpdatePointerOverObject(hitGameObject, numTouches == 1);
             inputState.UpdateTouches(touches);
+#endif
 #else
-            Mouse mouse = Mouse.current;
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
 
 #if UNITY_EDITOR
             if (!EditorOnly_MouseOverGameView)
@@ -99,6 +109,11 @@ namespace Celeste.Input
                 return;
             }
 #endif
+
+#if USE_NEW_INPUT_SYSTEM
+            Mouse mouse = Mouse.current;
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+
             ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(mousePosition, 0, eventSystem, uiInputModule);
             inputState.UpdatePointerPosition(mousePosition, hitObject.Item1);
             inputState.UpdatePointerOverObject(hitObject.Item2, mouse.leftButton.isPressed);
@@ -110,13 +125,15 @@ namespace Celeste.Input
             float mouseScrollDelta = mouse.scroll.ReadValue().y;
             inputState.UpdateMouseScroll(mouseScrollDelta);
 #endif
+#endif
         }
 
-        #endregion
+#endregion
 
-        #region Utility Functions
+#region Utility Functions
 
-        // DO NOT DELETE, USED FOR PLATFORMS OTHER THAN IOS AND ANDROID
+// DO NOT DELETE, USED FOR PLATFORMS OTHER THAN IOS AND ANDROID
+#if USE_NEW_INPUT_SYSTEM
         private void CheckMouseButton(ButtonControl buttonControl, MouseButton mouseButton)
         {
             PointerState mouseButtonState = new PointerState()
@@ -128,8 +145,9 @@ namespace Celeste.Input
 
             inputState.UpdateMouseButtonState(mouseButton, mouseButtonState);
         }
+#endif
 
-        #endregion
+#endregion
 
         #region Callbacks
 

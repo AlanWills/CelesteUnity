@@ -1,7 +1,6 @@
-﻿using Celeste.Coroutines;
-using Celeste.Debug.Menus;
+﻿using Celeste.Debug.Menus;
 using Celeste.Events;
-using Celeste.Localisation.AssetReferences;
+using Celeste.Localisation.Catalogue;
 using UnityEngine;
 
 namespace Celeste.Localisation.Debug
@@ -11,18 +10,10 @@ namespace Celeste.Localisation.Debug
     {
         #region Properties and Fields
 
-        [SerializeField] private AssetReferenceLanguageCatalogue languageCatalogue;
+        [SerializeField] private LanguageCatalogue languageCatalogue;
         [SerializeField] private LanguageEvent setCurrentLanguage;
 
         #endregion
-
-        protected override void OnShowMenu()
-        {
-            if (languageCatalogue.ShouldLoad)
-            {
-                CoroutineManager.Instance.StartCoroutine(languageCatalogue.LoadAssetAsync());
-            }
-        }
 
         protected override void OnDrawMenu()
         {

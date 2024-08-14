@@ -1,4 +1,5 @@
-﻿using Celeste.Narrative.Assets.References;
+﻿#if USE_ADDRESSABLES
+using Celeste.Narrative.Assets.References;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -32,3 +33,4 @@ namespace Celeste.Narrative.Characters.Settings
         }
     }
 }
+#endif

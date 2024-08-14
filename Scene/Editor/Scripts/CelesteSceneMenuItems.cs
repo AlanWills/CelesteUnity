@@ -36,7 +36,15 @@ namespace CelesteEditor.Scene
                 {
                     string sceneId = sceneSet.GetSceneId(i);
                     SceneType sceneType = sceneSet.GetSceneType(i);
-                    SceneUtility.SceneInfo sceneInfo = new SceneUtility.SceneInfo() { name = sceneId, isAddressable = sceneType == SceneType.Addressable };
+                    SceneUtility.SceneInfo sceneInfo = new SceneUtility.SceneInfo() 
+                    { 
+                        name = sceneId,
+#if USE_ADDRESSABLES
+                        isAddressable = sceneType == SceneType.Addressable 
+#else
+                        isAddressable = false
+#endif
+                    };
 
                     if (sceneType == SceneType.Baked)
                     {
@@ -47,6 +55,7 @@ namespace CelesteEditor.Scene
                             newScenes.Add(scenePath, new EditorBuildSettingsScene(scenePath, true));
                         }
                     }
+#if USE_ADDRESSABLES
                     else if (sceneType == SceneType.Addressable)
                     {
                         // Also handle the case where the address has the file path at the end
@@ -68,6 +77,7 @@ namespace CelesteEditor.Scene
                             UnityEngine.Debug.LogAssertion($"Failed to find scene path for {sceneId}.");
                         }
                     }
+#endif
                 }
             }
 

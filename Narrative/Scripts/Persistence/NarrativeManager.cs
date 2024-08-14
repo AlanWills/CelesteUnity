@@ -1,6 +1,5 @@
 ﻿using Celeste.Assets;
 using Celeste.FSM;
-using Celeste.Narrative.Assets;
 using Celeste.Narrative.Persistence;
 using Celeste.Persistence;
 using System.Collections;
@@ -16,7 +15,7 @@ namespace Celeste.Narrative
         public static readonly string FILE_NAME = "Narrative.dat";
         protected override string FileName => FILE_NAME;
 
-        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
+        [SerializeField] private StoryCatalogue storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
 
         #endregion
@@ -30,11 +29,9 @@ namespace Celeste.Narrative
 
         public IEnumerator LoadAssets()
         {
-            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
+            narrativeRecord.Initialize(storyCatalogue);
 
-            narrativeRecord.Initialize(storyCatalogue.Asset);
-
-            Load();
+            yield break;
         }
 
         #endregion
@@ -43,14 +40,15 @@ namespace Celeste.Narrative
 
         protected override void Deserialize(ProductionDTO dto)
         {
+            
             UnityEngine.Debug.Assert(narrativeRecord != null, $"Could not find {nameof(NarrativeRecord)} in {nameof(NarrativeManager)}.", CelesteLog.Narrative);
             narrativeRecord.LastPlayedStoryGuid = dto.lastPlayedStoryGuid;
             narrativeRecord.LastPlayedChapterGuid = dto.lastPlayedChapterGuid;
 
             foreach (StoryDTO storyDTO in dto.stories)
             {
-                UnityEngine.Debug.Assert(storyCatalogue.Asset != null, $"{nameof(StoryCatalogue)} asset has not been loaded in {nameof(NarrativeManager)}.", CelesteLog.Narrative);
-                Story story = storyCatalogue.Asset.FindByGuid(storyDTO.guid);
+                UnityEngine.Debug.Assert(storyCatalogue != null, $"{nameof(StoryCatalogue)} asset has not been loaded in {nameof(NarrativeManager)}.", CelesteLog.Narrative);
+                Story story = storyCatalogue.FindByGuid(storyDTO.guid);
                 UnityEngine.Debug.Assert(story != null, $"Could not find story with guid {storyDTO.guid}.", CelesteLog.Narrative);
                 StoryRecord storyRecord = narrativeRecord.FindOrAddStoryRecord(story);
 

@@ -10,7 +10,7 @@ namespace Celeste.Narrative.Assets
     {
         #region Properties and Fields
 
-        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
+        [SerializeField] private StoryCatalogue storyCatalogue;
         [SerializeField] private TwineRecord twineRecord;
 
         private const int STORY_GUID_FOR_TWINE_RECORD = 9999999;
@@ -26,9 +26,9 @@ namespace Celeste.Narrative.Assets
 
         public IEnumerator LoadAssets()
         {
-            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
-
             AddMissingTwineRecordStories();
+
+            yield break;
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace Celeste.Narrative.Assets
             // Add twine record stories
             if (twineRecord.NumTwineStoryRecords > 0)
             {
-                Story twineRecordStory = storyCatalogue.Asset.FindByGuid(STORY_GUID_FOR_TWINE_RECORD);
+                Story twineRecordStory = storyCatalogue.FindByGuid(STORY_GUID_FOR_TWINE_RECORD);
 
                 if (twineRecordStory == null)
                 {
@@ -57,7 +57,7 @@ namespace Celeste.Narrative.Assets
                     twineRecordStory.Guid = STORY_GUID_FOR_TWINE_RECORD;
                     twineRecordStory.StoryDescription = "Stories automatically generated from the twine record.";
 
-                    storyCatalogue.Asset.AddItem(twineRecordStory);
+                    storyCatalogue.AddItem(twineRecordStory);
                 }
 
                 for (int i = 0, n = twineRecord.NumTwineStoryRecords; i < n; ++i)

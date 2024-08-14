@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_ADDRESSABLES
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -74,3 +75,4 @@ namespace Celeste.Assets
         }
     }
 }
+#endif

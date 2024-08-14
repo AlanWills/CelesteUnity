@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if USE_ADDRESSABLES
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.Application;
 
@@ -152,3 +153,4 @@ namespace CelesteEditor.BuildSystem
         }
     }
 }
+#endif

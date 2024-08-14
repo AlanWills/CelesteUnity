@@ -43,7 +43,7 @@ namespace Celeste.Log
                 if (logRecord.Equals(unityLogHandler))
                 {
                     UnityEngine.Debug.LogAssertion($"Our custom {nameof(LogRecord)} is about to be used as the unity default log handler.  This is going to cause Stack Overflows so will be replaced with the UnityEngine.DebugLogHandler.");
-                    unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
+                    //unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
                 }
 
                 logRecord.Initialize(unityLogHandler, sectionLogSettingsCatalogue);
@@ -66,7 +66,7 @@ namespace Celeste.Log
             if (logRecord.Equals(unityLogHandler))
             {
                 UnityEngine.Debug.LogAssertion($"The default unity log handler looks odd, so we're going to set it to null.  Unity may not recover from this in which case, you may lose logs until you restart Unity.");
-                unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
+                //unityLogHandler = Activator.CreateInstance("UnityEngine", "DebugLogHandler") as ILogHandler;
             }
             else if (unityLogHandler != null)
             {

@@ -25,7 +25,7 @@ namespace Celeste.LiveOps
 
         public ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent)
         {
-            return LoadAddressableRequest<GameObject>.FromNothing();
+            return LoadAssetRequest<GameObject>.FromNothing();
         }
     }
 }

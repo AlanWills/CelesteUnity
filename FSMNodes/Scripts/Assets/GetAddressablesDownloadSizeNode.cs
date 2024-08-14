@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_ADDRESSABLES
+using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using XNode;
@@ -81,3 +82,4 @@ namespace Celeste.FSM.Nodes.Assets
         #endregion
     }
 }
+#endif

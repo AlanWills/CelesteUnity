@@ -9,9 +9,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+#if USE_ADDRESSABLES
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+#endif
 using UnityEngine.SceneManagement;
 using UnityScene = UnityEngine.SceneManagement.Scene;
 
@@ -21,7 +23,9 @@ namespace Celeste.Scene
     public enum SceneType
     {
         Baked,
+#if USE_ADDRESSABLES
         Addressable
+#endif
     }
 
     [Serializable]
@@ -230,6 +234,7 @@ namespace Celeste.Scene
 
                         loadedScene = SceneManager.GetSceneByName(sceneId);
                     }
+#if USE_ADDRESSABLES
                     else if (sceneType == SceneType.Addressable)
                     {
                         AsyncOperationHandle<SceneInstance> asyncOperation = Addressables.LoadSceneAsync(sceneId, LoadSceneMode.Additive);
@@ -241,6 +246,7 @@ namespace Celeste.Scene
 
                         loadedScene = asyncOperation.Result.Scene;
                     }
+#endif
                     else
                     {
                         UnityEngine.Debug.LogError($"Unhandled scene type {sceneType}.");

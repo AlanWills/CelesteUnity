@@ -86,6 +86,7 @@ namespace Celeste.FX
             }
         }
 
+#if USE_NEW_INPUT_SYSTEM
         public void ZoomUsingPinch(MultiTouchEventArgs touchEventArgs)
         {
             if (touchEventArgs.touchCount == 2)
@@ -109,6 +110,7 @@ namespace Celeste.FX
                 transformToZoom.localScale = new Vector3(newScale, newScale, 1);
             }
         }
+#endif
 
         #endregion
     }

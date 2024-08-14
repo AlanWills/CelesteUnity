@@ -1,4 +1,5 @@
-﻿using Celeste.DataImporters.Settings;
+﻿#if USE_EDITOR_COROUTINES
+using Celeste.DataImporters.Settings;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 
@@ -19,7 +20,6 @@ namespace CelesteEditor.DataImporters
                 UpdateProgressOfImportAll,
                 ImportAllComplete));
         }
-
         private static void UpdateProgressOfImportAll(string log, float currentProgress)
         {
             EditorUtility.DisplayProgressBar("Importing Data", log, currentProgress);
@@ -31,3 +31,4 @@ namespace CelesteEditor.DataImporters
         }
     }
 }
+#endif

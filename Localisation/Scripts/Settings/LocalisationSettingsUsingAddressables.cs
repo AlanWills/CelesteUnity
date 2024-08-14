@@ -1,4 +1,5 @@
-﻿using Celeste.Localisation.AssetReferences;
+﻿#if USE_ADDRESSABLES
+using Celeste.Localisation.AssetReferences;
 using Celeste.Localisation.Parameters;
 using System.Collections;
 using UnityEngine;
@@ -48,3 +49,4 @@ namespace Celeste.Localisation.Settings
         }
     }
 }
+#endif

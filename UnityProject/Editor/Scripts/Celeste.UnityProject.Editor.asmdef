@@ -41,6 +41,11 @@
             "name": "com.celestegames.native-file-picker",
             "expression": "0.0.1",
             "define": "CELESTE_NATIVE_FILE_PICKER"
+        },
+		{
+            "name": "com.unity.addressables",
+            "expression": "0.0.1",
+            "define": "USE_ADDRESSABLES"
         }
     ],
     "noEngineReferences": false

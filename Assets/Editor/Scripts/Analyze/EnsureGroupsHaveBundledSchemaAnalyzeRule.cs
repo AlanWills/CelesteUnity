@@ -1,4 +1,5 @@
-﻿using CelesteEditor.Assets.Schemas;
+﻿#if USE_ADDRESSABLES
+using CelesteEditor.Assets.Schemas;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Build;
@@ -87,3 +88,4 @@ namespace CelesteEditor.Assets.Analyze
         #endregion
     }
 }
+#endif

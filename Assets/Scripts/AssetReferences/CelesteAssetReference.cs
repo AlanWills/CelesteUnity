@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if USE_ADDRESSABLES
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -30,3 +31,4 @@ namespace Celeste.Assets.AssetReferences
         }
     }
 }
+#endif

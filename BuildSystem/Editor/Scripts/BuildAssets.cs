@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if USE_ADDRESSABLES
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.Application;
 
@@ -130,6 +131,7 @@ namespace CelesteEditor.BuildSystem
                     exceptionMessage = logString;
                 }
             };
+
             Application.logMessageReceived += logDelegate;
             platformSettings.BuildAssets();
             Application.logMessageReceived -= logDelegate;
@@ -152,3 +154,4 @@ namespace CelesteEditor.BuildSystem
         }
     }
 }
+#endif

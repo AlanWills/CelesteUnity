@@ -1,4 +1,5 @@
-﻿using Celeste.Input;
+﻿#if USE_NEW_INPUT_SYSTEM
+using Celeste.Input;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,7 +28,7 @@ namespace Celeste.UI
             showMoreDetailInputAction.started += OnShowMoreDetailInputPressed;
             showMoreDetailInputAction.canceled += OnShowMoreDetailInputReleased;
         }
-
+        
         #endregion
 
         private void ShowDetail(GameObject currentDetailGameObject, IDetail detail)
@@ -96,3 +97,4 @@ namespace Celeste.UI
         #endregion
     }
 }
+#endif

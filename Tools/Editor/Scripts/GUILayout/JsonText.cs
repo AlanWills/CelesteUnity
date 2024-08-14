@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor
@@ -16,8 +15,8 @@ namespace CelesteEditor
                 {
                     if (GUILayout.Button("Prettify", GUILayout.ExpandWidth(false)))
                     {
-                        JToken jt = JToken.Parse(property.stringValue);
-                        property.stringValue = jt.ToString(Newtonsoft.Json.Formatting.Indented);
+                        object jsonObject = JsonUtility.FromJson<object>(property.stringValue);
+                        property.stringValue = JsonUtility.ToJson(jsonObject, true);
                     }
 
                     property.stringValue = EditorGUILayout.TextArea(property.stringValue);

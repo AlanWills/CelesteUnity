@@ -1,8 +1,8 @@
 using Celeste.Input;
-using Celeste.Parameters.Input;
 using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
+using Celeste.Parameters.Input;
 
 namespace CelesteEditor.Input
 {

@@ -1,3 +1,4 @@
+#if USE_NEW_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 
 namespace Celeste.Events
@@ -6,3 +7,4 @@ namespace Celeste.Events
 	{
 	}
 }
+#endif

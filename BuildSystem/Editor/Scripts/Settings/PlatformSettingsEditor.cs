@@ -48,6 +48,7 @@ namespace CelesteEditor.BuildSystem
                 }
             }
 
+#if USE_ADDRESSABLES
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Assets", CelesteGUIStyles.BoldLabel);
 
@@ -76,6 +77,7 @@ namespace CelesteEditor.BuildSystem
                     platformSettings.UpdateAssets();
                 }
             }
+#endif
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Build", CelesteGUIStyles.BoldLabel);
@@ -110,6 +112,6 @@ namespace CelesteEditor.BuildSystem
             serializedObject.ApplyModifiedProperties();
         }
 
-        #endregion
+#endregion
     }
 }

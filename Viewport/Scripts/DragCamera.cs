@@ -1,5 +1,10 @@
 ﻿using Celeste.Parameters;
 using UnityEngine;
+#if USE_NEW_INPUT_SYSTEM
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#else
+using Touch = UnityEngine.Touch;
+#endif
 
 namespace Celeste.Viewport
 {
@@ -72,8 +77,9 @@ namespace Celeste.Viewport
             dragStarted = false;
         }
 
-        public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
+        public void DragUsingTouch(Touch touch)
         {
+#if USE_NEW_INPUT_SYSTEM
             switch (touch.phase)
             {
                 case UnityEngine.InputSystem.TouchPhase.Began:
@@ -103,6 +109,7 @@ namespace Celeste.Viewport
                     timeSinceFingerDown = 0;
                     break;
             }
+#endif
         }
 
         private void CreateDragSpeedIfNotSet()

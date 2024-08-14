@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Newtonsoft.Json.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,8 +23,8 @@ namespace Celeste.Tools.Attributes.GUI
 
             if (UnityEngine.GUI.Button(buttonPosition, buttonContent))
             {
-                JToken jt = JToken.Parse(property.stringValue);
-                property.stringValue = jt.ToString(Newtonsoft.Json.Formatting.Indented);
+                object jsonObject = JsonUtility.FromJson<object>(property.stringValue);
+                property.stringValue = JsonUtility.ToJson(jsonObject, true);
             }
 
             Rect textAreaPosition = new Rect(position);

@@ -1,6 +1,5 @@
 ﻿using Celeste.Assets;
 using Celeste.Debug.Menus;
-using Celeste.Inventory.AssetReferences;
 using System.Collections;
 using UnityEngine;
 using static UnityEngine.GUILayout;
@@ -8,42 +7,20 @@ using static UnityEngine.GUILayout;
 namespace Celeste.Inventory.Debug
 {
     [CreateAssetMenu(fileName = nameof(InventoryDebugMenu), menuName = CelesteMenuItemConstants.INVENTORY_MENU_ITEM + "Debug/Inventory Debug Menu", order = CelesteMenuItemConstants.INVENTORY_MENU_ITEM_PRIORITY)]
-    public class InventoryDebugMenu : DebugMenu, IHasAssets
+    public class InventoryDebugMenu : DebugMenu
     {
         #region Properties and Fields
 
-        private int NumEvents
-        {
-            get { return inventoryItemCatalogue.Asset.NumItems; }
-        }
-
-        private int NumPages
-        {
-            get { return Mathf.Max(1, Mathf.CeilToInt((float)NumEvents / PageSize)); }
-        }
-
+        private int NumEvents => inventoryItemCatalogue.NumItems;
+        private int NumPages => Mathf.Max(1, Mathf.CeilToInt((float)NumEvents / PageSize));
         private int CurrentPage { get; set; } = DEFAULT_CURRENT_PAGE;
         private int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
 
         [SerializeField] private InventoryRecord inventoryRecord;
-        [SerializeField] private InventoryItemCatalogueAssetReference inventoryItemCatalogue;
+        [SerializeField] private InventoryItemCatalogue inventoryItemCatalogue;
 
         private const int DEFAULT_PAGE_SIZE = 10;
         private const int DEFAULT_CURRENT_PAGE = 0;
-
-        #endregion
-
-        #region IHasAssets
-
-        public bool ShouldLoadAssets()
-        {
-            return inventoryItemCatalogue.ShouldLoad;
-        }
-
-        public IEnumerator LoadAssets()
-        {
-            yield return inventoryItemCatalogue.LoadAssetAsync();
-        }
 
         #endregion
 
@@ -122,7 +99,7 @@ namespace Celeste.Inventory.Debug
 
             for (int itemIndex = firstItemIndex; itemIndex < firstItemIndex + numEventsToShow; ++itemIndex)
             {
-                InventoryItem inventoryItem = inventoryItemCatalogue.Asset.GetItem(itemIndex);
+                InventoryItem inventoryItem = inventoryItemCatalogue.GetItem(itemIndex);
                 Label(inventoryItem.DisplayName);
 
                 if (!inventoryRecord.IsFull && Button("Add", ExpandWidth(false)))

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+#if USE_ADDRESSABLES
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+#endif
 
 namespace Celeste.FSM.Nodes.Loading
 {
@@ -16,12 +18,16 @@ namespace Celeste.FSM.Nodes.Loading
     {
         #region Properties and Fields
 
+#if USE_ADDRESSABLES
         public bool isAddressable = false;
         public string addressablePath;
+#endif
         public GameObject prefab;
         public Transform parent;
 
+#if USE_ADDRESSABLES
         private AsyncOperationHandle<GameObject> instantiateHandle;
+#endif
 
         #endregion
 
@@ -31,11 +37,13 @@ namespace Celeste.FSM.Nodes.Loading
         {
             base.OnEnter();
 
+#if USE_ADDRESSABLES
             if (isAddressable)
             {
                 instantiateHandle = Addressables.InstantiateAsync(addressablePath, parent);
             }
             else
+#endif
             {
                 GameObject.Instantiate(prefab, parent);
             }
@@ -43,10 +51,12 @@ namespace Celeste.FSM.Nodes.Loading
 
         protected override FSMNode OnUpdate()
         {
+#if USE_ADDRESSABLES
             if (!isAddressable || instantiateHandle.IsDone)
             {
                 return base.OnUpdate();
             }
+#endif
 
             return this;
         }
@@ -55,10 +65,12 @@ namespace Celeste.FSM.Nodes.Loading
         {
             base.OnExit();
 
+#if USE_ADDRESSABLES
             if (isAddressable && instantiateHandle.Status == AsyncOperationStatus.Failed)
             {
                 Debug.LogException(instantiateHandle.OperationException);
             }
+#endif
         }
 
         #endregion

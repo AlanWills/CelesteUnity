@@ -1,3 +1,4 @@
+#if USE_ADDRESSABLES
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
@@ -41,3 +42,4 @@ namespace CelesteEditor.Assets
         }
     }
 }
+#endif

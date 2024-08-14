@@ -1,4 +1,5 @@
-﻿using Celeste.Events;
+﻿#if USE_ADDRESSABLES
+using Celeste.Events;
 using Celeste.Parameters.AssetReferences;
 using Celeste.Sound.AssetReferences;
 using System;
@@ -109,3 +110,4 @@ namespace Celeste.Sound.Settings
         #endregion
     }
 }
+#endif

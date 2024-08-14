@@ -72,6 +72,7 @@ namespace Celeste.Tilemaps
             }
         }
 
+#if USE_NEW_INPUT_SYSTEM
         public void ZoomUsingPinch(MultiTouchEventArgs touchEventArgs)
         {
             Debug.AssertFormat(touchEventArgs.touchCount == 2, "Expected 2 touches for ZoomUsingPinch, but got {0}", touchEventArgs.touchCount);
@@ -95,6 +96,7 @@ namespace Celeste.Tilemaps
                 ApplyZoom(deltaMagnitudeDiff * zoomSpeed.Value);
             }
         }
+#endif
 
         private void ApplyZoom(float zoomAmount)
         {
@@ -115,6 +117,6 @@ namespace Celeste.Tilemaps
             cameraToZoom.orthographicSize = FitSize;
         }
 
-        #endregion
+#endregion
     }
 }

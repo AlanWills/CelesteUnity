@@ -1,4 +1,5 @@
-﻿using UnityEngine.AddressableAssets;
+﻿#if USE_ADDRESSABLES
+using UnityEngine.AddressableAssets;
 
 namespace Celeste.Assets
 {
@@ -10,3 +11,4 @@ namespace Celeste.Assets
         }
     }
 }
+#endif

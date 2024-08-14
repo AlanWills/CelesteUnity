@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.Utilities;
+#if USE_NEW_INPUT_SYSTEM
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#else
+using Touch = UnityEngine.Touch;
+#endif
 
 namespace Celeste.Events
 {
@@ -9,7 +14,7 @@ namespace Celeste.Events
     public struct MultiTouchEventArgs
     {
         public int touchCount;
-        public ReadOnlyArray<UnityEngine.InputSystem.EnhancedTouch.Touch> touches;
+        public IReadOnlyList<Touch> touches;
     }
 
     [Serializable]

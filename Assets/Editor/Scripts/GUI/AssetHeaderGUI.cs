@@ -3,7 +3,9 @@ using Celeste.Tools;
 using CelesteEditor.Tools;
 using System;
 using UnityEditor;
+#if USE_ADDRESSABLES
 using UnityEditor.AddressableAssets;
+#endif
 using UnityEngine;
 
 namespace CelesteEditor.Assets.GUI
@@ -108,10 +110,13 @@ namespace CelesteEditor.Assets.GUI
 
         private static void DrawGroupField(UnityEngine.Object target)
         {
+#if !USE_ADDRESSABLES
+            return;
+#else
             if (!AddressableAssetSettingsDefaultObject.SettingsExists)
             {
                 return;
-            }
+            }      
 
             if (!AssetEditorSettings.GetOrCreateSettings().showAddressableGroupSelection)
             {
@@ -149,6 +154,7 @@ namespace CelesteEditor.Assets.GUI
                 target.SetAddressableGroup(newGroupName);
                 target.EnableOnlyAddressableLabel(newGroupName);
             }
+#endif
         }
     }
 }

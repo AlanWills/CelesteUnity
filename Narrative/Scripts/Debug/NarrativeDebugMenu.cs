@@ -1,34 +1,21 @@
-﻿using Celeste.Assets;
-using Celeste.Debug.Menus;
-using Celeste.Narrative.Assets;
+﻿using Celeste.Debug.Menus;
 using Celeste.Narrative.Loading;
 using Celeste.Scene.Events;
-using System.Collections;
 using UnityEngine;
 
 namespace Celeste.Narrative.Debug
 {
     [CreateAssetMenu(fileName = nameof(NarrativeDebugMenu), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Debug/Narrative Debug Menu", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
-    public class NarrativeDebugMenu : DebugMenu, IHasAssets
+    public class NarrativeDebugMenu : DebugMenu
     {
         #region Properties and Fields
 
-        [SerializeField] private StoryCatalogueAssetReference storyCatalogue;
+        [SerializeField] private StoryCatalogue storyCatalogue;
         [SerializeField] private NarrativeRecord narrativeRecord;
         [SerializeField] private OnContextLoadedEvent onContextLoadedEvent;
         [SerializeField] private Celeste.Events.Event saveNarrativeRecord;
 
         #endregion
-
-        public bool ShouldLoadAssets()
-        {
-            return storyCatalogue.ShouldLoad;
-        }
-
-        public IEnumerator LoadAssets()
-        {
-            yield return storyCatalogue.LoadAssetAsync<StoryCatalogue>();
-        }
 
         #region GUI
 
@@ -38,7 +25,7 @@ namespace Celeste.Narrative.Debug
             {
                 if (GUILayout.Button("Load Last"))
                 {
-                    ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue.Asset);
+                    ChapterRecord lastPlayedChapter = narrativeRecord.FindLastPlayedChapterRecord(storyCatalogue);
                     UnityEngine.Debug.Assert(lastPlayedChapter != null, $"Could not find last played chapter.");
 
                     if (lastPlayedChapter != null)

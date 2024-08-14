@@ -1,4 +1,5 @@
-﻿using Celeste.BuildSystem;
+﻿#if USE_ADDRESSABLES
+using Celeste.BuildSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,3 +52,4 @@ namespace Celeste.Loading
         }
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using Celeste.Narrative.Assets.References;
+﻿#if USE_ADDRESSABLES
+using Celeste.Narrative.Assets.References;
 using Celeste.Narrative.Parameters;
 using System;
 using System.Collections;
@@ -55,3 +56,4 @@ namespace Celeste.Narrative.Backgrounds.Settings
         }
     }
 }
+#endif

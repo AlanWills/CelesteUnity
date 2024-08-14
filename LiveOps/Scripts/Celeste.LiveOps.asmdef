@@ -34,6 +34,11 @@
             "name": "com.celestegames.native-share",
             "expression": "0.0.1",
             "define": "CELESTE_NATIVE_SHARE"
+        },
+		{
+            "name": "com.unity.addressables",
+            "expression": "0.0.1",
+            "define": "USE_ADDRESSABLES"
         }
     ],
     "noEngineReferences": false

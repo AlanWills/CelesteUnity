@@ -1,4 +1,5 @@
-﻿using Celeste.Assets;
+﻿#if USE_ADDRESSABLES
+using Celeste.Assets;
 using Celeste.Log;
 using System;
 using System.Collections.Generic;
@@ -53,3 +54,4 @@ namespace Celeste.FSM.Nodes.Objects
         #endregion
     }
 }
+#endif

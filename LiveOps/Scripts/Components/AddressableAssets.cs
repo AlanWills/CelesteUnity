@@ -1,4 +1,5 @@
-﻿using Celeste.Assets;
+﻿#if USE_ADDRESSABLES
+using Celeste.Assets;
 using Celeste.Components;
 using System;
 using System.Collections;
@@ -71,3 +72,4 @@ namespace Celeste.LiveOps.Components
         }
     }
 }
+#endif

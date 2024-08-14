@@ -1,4 +1,5 @@
-﻿using Celeste.Scene;
+﻿#if USE_ADDRESSABLES
+using Celeste.Scene;
 using Celeste.Tools;
 using CelesteEditor.Tools;
 using System.Collections.Generic;
@@ -105,3 +106,4 @@ namespace CelesteEditor.Scene.Analyze
         #endregion
     }
 }
+#endif

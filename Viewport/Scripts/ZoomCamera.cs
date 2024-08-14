@@ -118,6 +118,7 @@ namespace Celeste.Viewport
                 var touchZero = touchEventArgs.touches[0];
                 var touchOne = touchEventArgs.touches[1];
 
+#if USE_NEW_INPUT_SYSTEM
                 // Find the position in the previous frame of each touch.
                 Vector2 touchZeroPrevPos = touchZero.screenPosition - touchZero.delta;
                 Vector2 touchOnePrevPos = touchOne.screenPosition - touchOne.delta;
@@ -130,6 +131,7 @@ namespace Celeste.Viewport
                 float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
                 cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize + deltaMagnitudeDiff * zoomSpeed.Value, minZoom.Value, maxZoom.Value);
+#endif
             }
         }
 

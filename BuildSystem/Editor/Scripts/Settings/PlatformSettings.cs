@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+#if USE_ADDRESSABLES
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEditor.AddressableAssets.Settings.GroupSchemas;
+#endif
 using UnityEditor.Build.Reporting;
 using UnityEngine;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using CelesteEditor.Tools;
 using Celeste.Tools.Attributes.GUI;
 using CelesteEditor.BuildSystem.Steps;
@@ -110,6 +112,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+#if USE_ADDRESSABLES
         [SerializeField]
         [Tooltip("If enabled, addressable specific pipelines will run in the build pipeline.")]
         private bool addressablesEnabled = false;
@@ -216,6 +219,7 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("The load path that Unity uses at runtime to load local addressable groups it has bundled with the app." + STRING_SUBSTITUTION_HELP)]
         private string localAddressablesLoadPath = "{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]";
         public string LocalAddressablesLoadPath => Resolve(localAddressablesLoadPath);
+#endif
 
         [SerializeField]
         private BuildTarget buildTarget;
@@ -272,17 +276,18 @@ namespace CelesteEditor.BuildSystem
         [Tooltip("Insert custom scripting defines to customise the behaviour of pre-processor macros.")]
         private ScriptingDefineSymbols scriptingDefineSymbols;
 
-        [SerializeField, ShowIf(nameof(addressablesEnabled))]
-        [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
-        private AddressableGroupNames addressableGroupsInBuild;
-
-        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [SerializeField]
         [Tooltip("Any custom scripting steps that should be run before making a player build.  Useful for creating extra metadata or custom build pipelines.")]
         private BuildPreparationSteps buildPreparationSteps;
 
         [SerializeField]
         [Tooltip("Any custom scripting steps that should be run after creating a build.  Useful for creating extra metadata or custom build pipelines.")]
         private BuildPostProcessSteps buildPostProcessSteps;
+
+#if USE_ADDRESSABLES
+        [SerializeField, ShowIf(nameof(addressablesEnabled))]
+        [Tooltip("The addressable groups that should be built as part of this particular build setting.")]
+        private AddressableGroupNames addressableGroupsInBuild;
 
         [Title("Build Assets")]
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
@@ -301,6 +306,7 @@ namespace CelesteEditor.BuildSystem
         [SerializeField, ShowIf(nameof(addressablesEnabled))]
         [Tooltip("Any custom scripting steps that should be run after updating assets.  Useful for automated asset tooling.")]
         private AssetPostProcessSteps updateAssetsPostProcessSteps;
+#endif
 
         #endregion
 
@@ -309,24 +315,27 @@ namespace CelesteEditor.BuildSystem
             OutputName = "Build-{version}-{environment}";
             BuildDirectory = "Builds/{build_target}/{environment}";
             BuildUploadURL = "celeste-games/";
+#if USE_ADDRESSABLES
             AddressablesEnabled = true;
             PlayerOverrideVersion = "resources";
             AddressablesBuildDirectory = "ServerData/{build_target}/{environment}/{major}.{minor}";
             AddressablesLoadDirectory = "https://storage.googleapis.com/celeste-games/ServerData/{build_target}/{environment}/{major}.{minor}";
             AddressablesUploadURL = "celeste-games/";
+#endif
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
             buildOptions = BuildOptions.StrictMode;
 
             scriptingDefineSymbols = EditorOnly.FindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
-            addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
             buildPreparationSteps = EditorOnly.FindAsset<BuildPreparationSteps>();
             buildPostProcessSteps = EditorOnly.FindAsset<BuildPostProcessSteps>();
+#if USE_ADDRESSABLES
+            addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
             buildAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
             buildAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForBuild");
             updateAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
             updateAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForUpdate");
-
+#endif
             SetPlatformDefaultValues(isDebugConfig);
             
             EditorUtility.SetDirty(this);
@@ -355,10 +364,12 @@ namespace CelesteEditor.BuildSystem
         {
             Debug.Log($"Applying {name}'s settings.");
 
+#if USE_ADDRESSABLES
             if (addressablesEnabled)
             {
                 SetAddressableAssetSettings();
             }
+#endif
 
             EditorOnly.CreateFolder("Assets/Resources");
             File.WriteAllText($"Assets/Resources/{DebugConstants.IS_DEBUG_BUILD_FILE}.txt", isDebugBuild ? "1" : "0");
@@ -370,6 +381,7 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.bundleVersion = Version.ToString();
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols.ToArray());
 
+#if USE_ADDRESSABLES
             if (addressablesEnabled)
             {
                 AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
@@ -396,6 +408,7 @@ namespace CelesteEditor.BuildSystem
                     }
                 }
             }
+#endif
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -409,7 +422,7 @@ namespace CelesteEditor.BuildSystem
             Apply();
         }
 
-        #endregion
+#endregion
 
         #region Building
 
@@ -448,8 +461,9 @@ namespace CelesteEditor.BuildSystem
             LogExtensions.Clear();
 
             Switch();
+#if USE_ADDRESSABLES
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
-
+#endif
             Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
 
             PrepareForBuild(buildPlayerOptions);
@@ -477,6 +491,7 @@ namespace CelesteEditor.BuildSystem
 
         public virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
 
+#if USE_ADDRESSABLES
         public void PrepareAssetsForBuild()
         {
             foreach (AssetPreparationStep assetPreparationStep in buildAssetsPreparationSteps)
@@ -566,8 +581,9 @@ namespace CelesteEditor.BuildSystem
 
             Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, "AddressableAssetSettingsDefaultObject is null");
         }
+#endif
 
-        #endregion
+#endregion
 
         #region Version Methods
 

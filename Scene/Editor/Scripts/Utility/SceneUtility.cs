@@ -108,7 +108,11 @@ namespace CelesteEditor.Scene
                 SceneInfo sceneInfo = new SceneInfo()
                 {
                     name = sceneSet.GetSceneId(i),
+#if USE_ADDRESSABLES
                     isAddressable = sceneSet.GetSceneType(i) == SceneType.Addressable
+#else
+                    isAddressable = false
+#endif
                 };
 
                 if (!loadedScenes.Contains(sceneInfo.name))

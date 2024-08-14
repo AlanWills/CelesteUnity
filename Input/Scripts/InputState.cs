@@ -3,14 +3,19 @@ using Celeste.Input.Settings;
 using Celeste.Parameters;
 using Celeste.Tools;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if USE_NEW_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Utilities;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#else
+using Touch = UnityEngine.Touch;
+#endif
 
 namespace Celeste.Input
 {
@@ -56,7 +61,7 @@ namespace Celeste.Input
         public GameObject PreviousHitGameObject { get; private set; }
 
         public int NumTouches => Touches.Count;
-        public ReadOnlyArray<Touch> Touches { get; private set; }
+        public IReadOnlyList<Touch> Touches { get; private set; }
 
         public PointerState LeftMouseButton { get; private set; }
         public PointerState MiddleMouseButton { get; private set; }
@@ -186,7 +191,7 @@ namespace Celeste.Input
 #endif
         }
 
-        #endregion
+#endregion
 
         public void Initialize()
         {
@@ -280,7 +285,7 @@ namespace Celeste.Input
             }
         }
 
-        public void UpdateTouches(ReadOnlyArray<Touch> touches)
+        public void UpdateTouches(IReadOnlyList<Touch> touches)
         {
             int numTouches = touches.Count;
             Touches = touches;
@@ -394,6 +399,7 @@ namespace Celeste.Input
             }
         }
 
+#if USE_NEW_INPUT_SYSTEM
         public ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(
             Vector2 pointerPosition, 
             int pointerOrTouchId,
@@ -423,6 +429,7 @@ namespace Celeste.Input
 
             return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
         }
+#endif
 
         private GameObject Raycast(Vector2 origin)
         {

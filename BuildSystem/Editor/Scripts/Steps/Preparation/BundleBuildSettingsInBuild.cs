@@ -1,4 +1,5 @@
-﻿using Celeste;
+﻿#if USE_ADDRESSABLES
+using Celeste;
 using Celeste.BuildSystem;
 using System.IO;
 using UnityEditor;
@@ -27,3 +28,4 @@ namespace CelesteEditor.BuildSystem.Steps
         }
     }
 }
+#endif

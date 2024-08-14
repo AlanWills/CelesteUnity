@@ -55,7 +55,7 @@ namespace Celeste.Input.Settings
         [SerializeField] private TouchEvent singleTouchEvent;
         [SerializeField] private MultiTouchEvent doubleTouchEvent;
         [SerializeField] private MultiTouchEvent tripleTouchEvent;
-
+        
         #endregion
 
 #if UNITY_EDITOR

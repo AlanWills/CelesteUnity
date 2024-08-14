@@ -1,4 +1,5 @@
-﻿using Celeste.DataStructures;
+﻿#if USE_ADDRESSABLES
+using Celeste.DataStructures;
 using Celeste.Inventory.AssetReferences;
 using System;
 using System.Collections;
@@ -52,3 +53,4 @@ namespace Celeste.Inventory.Settings
         }
     }
 }
+#endif

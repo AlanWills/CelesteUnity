@@ -1,4 +1,5 @@
-﻿using UnityEditor.AddressableAssets.Build;
+﻿#if USE_ADDRESSABLES
+using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
 
 namespace CelesteEditor.BuildSystem.Steps
@@ -16,3 +17,4 @@ namespace CelesteEditor.BuildSystem.Steps
         public abstract void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings);
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using Celeste.Assets.AssetReferences;
+﻿#if USE_ADDRESSABLES
+using Celeste.Assets.AssetReferences;
 using Celeste.Localisation.Catalogue;
 using System;
 
@@ -19,3 +20,4 @@ namespace Celeste.Localisation.AssetReferences
         }
     }
 }
+#endif

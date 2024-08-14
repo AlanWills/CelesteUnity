@@ -1,7 +1,11 @@
-﻿using Celeste.Parameters.Input;
-using System;
+﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Celeste.Parameters.Input;
+#if USE_NEW_INPUT_SYSTEM
+using Key = UnityEngine.InputSystem.Key;
+#else
+using Key = UnityEngine.KeyCode;
+#endif
 
 namespace Celeste.Input
 {
@@ -20,7 +24,7 @@ namespace Celeste.Input
     }
 
     public static class ModifiersExtensions
-    { 
+    {
         public static Key AsKey(this Modifiers modifier)
         {
             switch (modifier)
@@ -29,7 +33,11 @@ namespace Celeste.Input
                     return Key.None;
 
                 case Modifiers.LeftCtrl:
+#if USE_NEW_INPUT_SYSTEM
                     return Key.LeftCtrl;
+#else
+                    return Key.LeftControl;
+#endif
 
                 case Modifiers.LeftShift:
                     return Key.LeftShift;

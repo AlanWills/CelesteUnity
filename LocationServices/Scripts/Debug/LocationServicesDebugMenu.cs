@@ -1,6 +1,8 @@
 using Celeste.Debug.Menus;
 using UnityEngine;
+#if USE_NEW_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+#endif
 
 namespace Celeste.LocationServices
 {
@@ -25,7 +27,8 @@ namespace Celeste.LocationServices
                 GUILayout.Label($"Pedometer Distance: {locationServicesRecord.PedometerDistance}");
                 GUILayout.Label($"Pedometer Update: {locationServicesRecord.UpdateCount}");
             }
-            
+
+#if USE_NEW_INPUT_SYSTEM
             if (StepCounter.current != null)
             {
                 StepCounter currentStepCounter = StepCounter.current;
@@ -37,6 +40,7 @@ namespace Celeste.LocationServices
             {
                 GUILayout.Label("Current Step Counter null");
             }
+#endif
         }
     }
 }

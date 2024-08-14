@@ -1,4 +1,5 @@
-﻿using Celeste;
+﻿#if USE_ADDRESSABLES
+using Celeste;
 using Celeste.BuildSystem;
 using CelesteEditor.Assets.Schemas;
 using CelesteEditor.Tools;
@@ -131,3 +132,4 @@ namespace CelesteEditor.BuildSystem.Steps
         #endregion
     }
 }
+#endif

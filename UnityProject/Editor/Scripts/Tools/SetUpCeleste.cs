@@ -6,7 +6,6 @@ using CelesteEditor.BuildSystem;
 using CelesteEditor.Tools;
 using System;
 using UnityEditor;
-using UnityEditor.AddressableAssets;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using CelesteEditor.UnityProject.Constants;
@@ -21,9 +20,6 @@ using Celeste.LiveOps.Settings;
 using Celeste.Debug.Settings;
 using Celeste.DataImporters.Settings;
 using Celeste.Input.Settings;
-using UnityEditor.AddressableAssets.Settings;
-using CelesteEditor.Assets;
-using CelesteEditor.Assets.Schemas;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Scene;
 using System.Collections.Generic;
@@ -32,12 +28,18 @@ using UnityEngine.SceneManagement;
 using Celeste.Sound;
 using Celeste.Tools;
 using CelesteEditor.BuildSystem.Steps;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using Celeste.Scene.Catalogue;
 using Celeste.Log;
+#if USE_ADDRESSABLES
+using UnityEditor.AddressableAssets.Settings.GroupSchemas;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
+using CelesteEditor.Assets;
+using CelesteEditor.Assets.Schemas;
 using CelesteEditor.Assets.Analyze;
 using UnityEditor.AddressableAssets.Build.AnalyzeRules;
 using CelesteEditor.Scene.Analyze;
+#endif
 
 namespace CelesteEditor.UnityProject
 {
@@ -50,6 +52,18 @@ namespace CelesteEditor.UnityProject
 
         public CelesteConstants CelesteConstants => new CelesteConstants(FullyDelimitedPackagePath);
         public BuildSystemConstants BuildSystemConstants => new BuildSystemConstants(FullyDelimitedPackagePath);
+
+        public SceneType DefaultSceneType
+        {
+            get
+            {
+#if USE_ADDRESSABLES
+                return usesAddressables ? SceneType.Addressable : SceneType.Baked
+#else
+                return SceneType.Baked;
+#endif
+            }
+        }
 
         [Header("Project")]
         [LabelWidth(300)]
@@ -93,8 +107,10 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public string rootMenuItemName;
 
         [Header("Assets")]
+#if USE_ADDRESSABLES
         [LabelWidth(300)] public bool usesAddressables;
         [LabelWidth(300), ShowIf(nameof(usesAddressables))] public bool usesBakedGroupsWithRemoteOverride;
+#endif
         [LabelWidth(300)] public bool usesTextMeshPro;
 
         [Header("Scenes")]
@@ -104,7 +120,7 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool needsLoadingScene;
         [LabelWidth(300)] public bool needsGameSystemsScene;
 
-        #endregion
+#endregion
 
         public void UseDefaults()
         {
@@ -129,8 +145,10 @@ namespace CelesteEditor.UnityProject
             useiOSBuildJenkinsFiles = true;
             useWebGLBuildJenkinsFiles = true;
 
+#if USE_ADDRESSABLES
             usesAddressables = true;
             usesBakedGroupsWithRemoteOverride = true;
+#endif
             usesTextMeshPro = true;
 
             needsStartupScene = true;
@@ -147,6 +165,7 @@ namespace CelesteEditor.UnityProject
 
         private const string IMPORT_TMPRO_ESSENTIALS_MENU_ITEM = "Window/TextMeshPro/Import TMP Essential Resources";
 
+#if USE_ADDRESSABLES
         private static List<AnalyzeRule> addressableAnalyzeRules = new List<AnalyzeRule>()
         {
             new EnsureAssetsHaveNoOtherGroupLabelAnalyzeRule(),
@@ -155,6 +174,7 @@ namespace CelesteEditor.UnityProject
             new EnsureGroupsHaveBundledSchemaAnalyzeRule(),
             new EnsureAddressableScenesSetUpCorrectlyAnalyzeRule()
         };
+#endif
 
         #endregion
 
@@ -184,6 +204,7 @@ namespace CelesteEditor.UnityProject
                 }
             }
 
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 foreach (AnalyzeRule analyzeRule in addressableAnalyzeRules)
@@ -191,6 +212,7 @@ namespace CelesteEditor.UnityProject
                     analyzeRule.FixIssues(AddressableAssetSettingsDefaultObject.GetSettings(false));
                 }
             }
+#endif
             
             CelesteSceneMenuItems.UpdateScenesInBuild();
 
@@ -263,6 +285,7 @@ namespace CelesteEditor.UnityProject
             }
 
             // Addressable Group Names
+#if USE_ADDRESSABLES
             {
                 AddressableGroupNames addressableGroupNames = ScriptableObject.CreateInstance<AddressableGroupNames>();
                 addressableGroupNames.name = nameof(AddressableGroupNames);
@@ -270,6 +293,7 @@ namespace CelesteEditor.UnityProject
 
                 EditorOnly.CreateAssetInFolder(addressableGroupNames, BuildSystemConstants.EDITOR_FOLDER);
             }
+#endif
 
             // Build Preparation Steps
             {
@@ -314,6 +338,7 @@ namespace CelesteEditor.UnityProject
             }
 
             // Asset Post Process Steps
+#if USE_ADDRESSABLES
             {
                 BundleRemoteAddressablesInBuild bundleRemoteAddressablesInBuild = ScriptableObject.CreateInstance<BundleRemoteAddressablesInBuild>();
                 bundleRemoteAddressablesInBuild.name = nameof(BundleRemoteAddressablesInBuild);
@@ -338,6 +363,7 @@ namespace CelesteEditor.UnityProject
 
                 EditorOnly.CreateAssetInFolder(assetPostProcessStepsForUpdate, BuildSystemConstants.ASSET_POST_PROCESS_STEPS_FOLDER);
             }
+#endif
 
             // Create Scripting Define Symbols
             EditorOnly.CreateFolder(BuildSystemConstants.SCRIPTING_DEFINE_SYMBOLS_FOLDER);
@@ -406,7 +432,7 @@ namespace CelesteEditor.UnityProject
             }
         }
 
-        #endregion
+#endregion
 
         #region Startup
 
@@ -432,6 +458,7 @@ namespace CelesteEditor.UnityProject
             var startupLoadJobBuilder = new MultiLoadJob.Builder()
                 .WithShowOutputInLoadingScreen(false);
 
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables && parameters.usesBakedGroupsWithRemoteOverride)
             {
                 // Load content catalogue load job
@@ -462,6 +489,7 @@ namespace CelesteEditor.UnityProject
                     EditorOnly.CreateAssetInFolder(downloadAddressablesLoadJob, StartupConstants.LOAD_JOBS_FOLDER_PATH);
                 }
             }
+#endif
 
             // Load bootstrap scene set load job
             {
@@ -531,7 +559,7 @@ namespace CelesteEditor.UnityProject
             CreateAssemblyDefinition.CreateAssemblies(startupAssembly);
         }
 
-        #endregion
+#endregion
 
         #region Bootstrap
 
@@ -565,6 +593,7 @@ namespace CelesteEditor.UnityProject
                 MakeAddressable(parameters, disableFallbackAssets, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
 
+#if USE_ADDRESSABLES
             // Download Bootstrap Addressables load job
             {
                 DownloadAddressablesLoadJob downloadCommonAddressablesLoadJob = ScriptableObject.CreateInstance<DownloadAddressablesLoadJob>();
@@ -575,6 +604,7 @@ namespace CelesteEditor.UnityProject
                 EditorOnly.CreateAssetInFolder(downloadCommonAddressablesLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
                 MakeAddressable(parameters, downloadCommonAddressablesLoadJob, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
+#endif
 
             // Load engine systems scene set load job
             {
@@ -646,8 +676,8 @@ namespace CelesteEditor.UnityProject
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             bootstrapSceneSet.name = BootstrapConstants.SCENE_SET_NAME;
             bootstrapSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {BootstrapConstants.SCENE_NAME}";
-            bootstrapSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false); // This must be first
-            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
+            bootstrapSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.DefaultSceneType, false); // This must be first
+            bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
 
             EditorOnly.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
@@ -663,7 +693,7 @@ namespace CelesteEditor.UnityProject
             CreateAssemblyDefinition.CreateAssemblies(bootstrapAssembly);
         }
 
-        #endregion
+#endregion
 
         #region Engine Systems
 
@@ -697,9 +727,9 @@ namespace CelesteEditor.UnityProject
             SceneSet engineSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             engineSystemsSceneSet.name = EngineSystemsConstants.SCENE_SET_NAME;
             engineSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {EngineSystemsConstants.SCENE_NAME}";
-            engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
-            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
-            engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
+            engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.DefaultSceneType, false);
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
+            engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
 
             EditorOnly.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, engineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -822,8 +852,8 @@ namespace CelesteEditor.UnityProject
             SceneSet gameSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
             gameSystemsSceneSet.name = GameSystemsConstants.SCENE_SET_NAME;
             gameSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {GameSystemsConstants.SCENE_NAME}";
-            gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, false);
-            gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.usesAddressables ? SceneType.Addressable : SceneType.Baked, true);
+            gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
+            gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
 
             EditorOnly.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, gameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -875,23 +905,19 @@ namespace CelesteEditor.UnityProject
 
             {
                 InputEditorSettings inputEditorSettings = InputEditorSettings.GetOrCreateSettings();
-
-                if (parameters.usesAddressables)
-                {
-                    MakeAddressable(parameters, inputEditorSettings.InputCamera);
-                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonDown);
-                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstDown);
-                    MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstUp);
-                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonDown);
-                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstDown);
-                    MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstUp);
-                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonDown);
-                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstDown);
-                    MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstUp);
-                    MakeAddressable(parameters, inputEditorSettings.SingleTouch);
-                    MakeAddressable(parameters, inputEditorSettings.DoubleTouch);
-                    MakeAddressable(parameters, inputEditorSettings.TripleTouch);
-                }
+                MakeAddressable(parameters, inputEditorSettings.InputCamera);
+                MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonDown);
+                MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstDown);
+                MakeAddressable(parameters, inputEditorSettings.LeftMouseButtonFirstUp);
+                MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonDown);
+                MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstDown);
+                MakeAddressable(parameters, inputEditorSettings.MiddleMouseButtonFirstUp);
+                MakeAddressable(parameters, inputEditorSettings.RightMouseButtonDown);
+                MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstDown);
+                MakeAddressable(parameters, inputEditorSettings.RightMouseButtonFirstUp);
+                MakeAddressable(parameters, inputEditorSettings.SingleTouch);
+                MakeAddressable(parameters, inputEditorSettings.DoubleTouch);
+                MakeAddressable(parameters, inputEditorSettings.TripleTouch);
             }
         }
 
@@ -976,6 +1002,7 @@ namespace CelesteEditor.UnityProject
 
         private static void CreateAssetData(SetUpCelesteParameters parameters)
         {
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 // Set Settings
@@ -1025,6 +1052,7 @@ namespace CelesteEditor.UnityProject
 
                 settings.RemoveLabel("default");
             }
+#endif
 
             if (parameters.usesTextMeshPro)
             {
@@ -1035,34 +1063,42 @@ namespace CelesteEditor.UnityProject
 
         private static void MakeAddressable(SetUpCelesteParameters parameters, UnityEngine.Object obj)
         {
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 obj.MakeAddressable();
             }
+#endif
         }
 
         private static void MakeAddressable(SetUpCelesteParameters parameters, UnityEngine.Object obj, string groupName)
         {
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 obj.MakeAddressable(groupName);
             }
+#endif
         }
 
         private static void SetAddressableAddress(SetUpCelesteParameters parameters, UnityEngine.Object obj, string address)
         {
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 obj.SetAddressableAddress(address);
             }
+#endif
         }
 
         private static void SetAddressableAddress(SetUpCelesteParameters parameters, string assetPath, string address)
         {
+#if USE_ADDRESSABLES
             if (parameters.usesAddressables)
             {
                 AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath).SetAddressableAddress(address);
             }
+#endif
         }
 
         #endregion
