@@ -86,7 +86,6 @@ namespace Celeste.FX
             }
         }
 
-#if USE_NEW_INPUT_SYSTEM
         public void ZoomUsingPinch(MultiTouchEventArgs touchEventArgs)
         {
             if (touchEventArgs.touchCount == 2)
@@ -95,6 +94,7 @@ namespace Celeste.FX
                 var touchZero = touchEventArgs.touches[0];
                 var touchOne = touchEventArgs.touches[1];
 
+#if USE_NEW_INPUT_SYSTEM
                 // Find the position in the previous frame of each touch.
                 Vector2 touchZeroPrevPos = touchZero.screenPosition - touchZero.delta;
                 Vector2 touchOnePrevPos = touchOne.screenPosition - touchOne.delta;
@@ -108,9 +108,9 @@ namespace Celeste.FX
                 float newScale = Mathf.Clamp(transform.localScale[0] + deltaMagnitudeDiff * zoomSpeed.Value, minZoom.Value, maxZoom.Value);
 
                 transformToZoom.localScale = new Vector3(newScale, newScale, 1);
+#endif
             }
         }
-#endif
 
         #endregion
     }

@@ -1,5 +1,8 @@
 #if USE_NEW_INPUT_SYSTEM
-using UnityEngine.InputSystem;
+using Key = UnityEngine.InputSystem.Key;
+#else
+using Key = UnityEngine.KeyCode;
+#endif
 
 namespace Celeste.Events
 {
@@ -7,4 +10,3 @@ namespace Celeste.Events
 	{
 	}
 }
-#endif

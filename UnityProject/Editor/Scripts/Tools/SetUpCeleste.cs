@@ -58,7 +58,7 @@ namespace CelesteEditor.UnityProject
             get
             {
 #if USE_ADDRESSABLES
-                return usesAddressables ? SceneType.Addressable : SceneType.Baked
+                return usesAddressables ? SceneType.Addressable : SceneType.Baked;
 #else
                 return SceneType.Baked;
 #endif

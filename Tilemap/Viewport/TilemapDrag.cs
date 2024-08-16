@@ -58,9 +58,9 @@ namespace Celeste.Tilemaps
             dragStarted = false;
         }
 
-#if USE_NEW_INPUT_SYSTEM
         public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
         {
+#if USE_NEW_INPUT_SYSTEM
             switch (touch.phase)
             {
                 case UnityEngine.InputSystem.TouchPhase.Began:
@@ -91,8 +91,8 @@ namespace Celeste.Tilemaps
                     timeSinceFingerDown = 0;
                     break;
             }
-        }
 #endif
+        }
 
         private void ClampCamera()
         {

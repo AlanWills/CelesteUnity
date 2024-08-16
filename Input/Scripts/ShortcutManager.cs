@@ -67,7 +67,7 @@ namespace Celeste.Input
         private bool CheckKey(Shortcut shortcut)
         {
 #if USE_NEW_INPUT_SYSTEM
-            CheckKey(shortcut.key);
+            return CheckKey(shortcut.key);
 #else
             return false;
 #endif
