@@ -25,7 +25,8 @@
         "Celeste.Log",
         "NativeFilePicker.Editor",
         "Unity.Addressables.Editor",
-        "Unity.TextMeshPro.Editor"
+        "Unity.TextMeshPro.Editor",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
@@ -42,7 +43,7 @@
             "expression": "0.0.1",
             "define": "CELESTE_NATIVE_FILE_PICKER"
         },
-		{
+        {
             "name": "com.unity.addressables",
             "expression": "0.0.1",
             "define": "USE_ADDRESSABLES"

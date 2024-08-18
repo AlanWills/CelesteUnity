@@ -30,6 +30,10 @@ using Celeste.Tools;
 using CelesteEditor.BuildSystem.Steps;
 using Celeste.Scene.Catalogue;
 using Celeste.Log;
+using TMPro;
+using System.Reflection;
+
+
 #if USE_ADDRESSABLES
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEditor.AddressableAssets;
@@ -1098,6 +1102,21 @@ namespace CelesteEditor.UnityProject
             {
                 string packageFullPath = TMP_EditorUtility.packageFullPath;
                 AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
+
+                TMP_Settings tmpSettings = TMP_Settings.LoadDefaultSettings();
+                Debug.Assert(tmpSettings, "Failed to load Text Mesh Pro default settings, so we will be unable to turn off raycasting by default on Text Mesh Pro components.");
+
+                if (tmpSettings != null)
+                {
+                    // Turn off raycast by default
+                    FieldInfo fieldInfo = typeof(TMP_Settings).GetField("m_EnableRaycastTarget");
+                    Debug.Assert(tmpSettings, "Failed find the raycast setting on the Text Mesh Pro default settings, so we will be unable to turn off raycasting by default on Text Mesh Pro components.");
+
+                    if (fieldInfo != null)
+                    {
+                        fieldInfo.SetValue(tmpSettings, false);
+                    }
+                }
             }
         }
 
