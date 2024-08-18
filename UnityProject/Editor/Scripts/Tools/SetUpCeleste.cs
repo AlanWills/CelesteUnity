@@ -78,7 +78,11 @@ namespace CelesteEditor.UnityProject
         [Header("Dependencies")]
         [LabelWidth(300)] public bool useNativeSharePackage;
         [LabelWidth(300)] public bool useNativeFilePickerPackage;
-        [LabelWidth(300)] public List<string> dependencies;
+        [LabelWidth(300)] public bool useRuntimeInspectorPackage;
+        [LabelWidth(300)] public bool useUnityAndroidLogcatPackage;
+        [LabelWidth(300)] public bool removeUnityCollabPackage;
+        [LabelWidth(300)] public List<string> dependenciesToAdd;
+        [LabelWidth(300)] public List<string> dependenciesToRemove;
 
         [Header("Build System")]
         [LabelWidth(300)] public bool needsBuildSystem;
@@ -132,7 +136,11 @@ namespace CelesteEditor.UnityProject
 
             useNativeSharePackage = true;
             useNativeFilePickerPackage = true;
-            dependencies = new List<string>();
+            useRuntimeInspectorPackage = true;
+            useUnityAndroidLogcatPackage = true;
+            removeUnityCollabPackage = true;
+            dependenciesToAdd = new List<string>();
+            dependenciesToRemove = new List<string>();
 
             needsBuildSystem = true;
             runsOnWindows = true;
@@ -186,6 +194,7 @@ namespace CelesteEditor.UnityProject
             CreateBuildSystemData(parameters);
             CreateModules(parameters);
             CreateFileShareSettings();
+            CreateCustomProguardFile(parameters);
 
             Finalise(parameters);
         }
@@ -216,21 +225,37 @@ namespace CelesteEditor.UnityProject
             
             CelesteSceneMenuItems.UpdateScenesInBuild();
 
-            List<string> dependencies = new List<string>(parameters.dependencies);
+            List<string> dependenciesToAdd = new List<string>(parameters.dependenciesToAdd);
+            List<string> dependenciesToRemove = new List<string>(parameters.dependenciesToRemove);
 
             if (parameters.useNativeFilePickerPackage)
             {
-                dependencies.Add("git@github.com:AlanWills/UnityNativeFilePicker.git");
+                dependenciesToAdd.Add("git@github.com:AlanWills/UnityNativeFilePicker.git");
             }
 
             if (parameters.useNativeSharePackage)
             {
-                dependencies.Add("git@github.com:AlanWills/UnityNativeShare.git");
+                dependenciesToAdd.Add("git@github.com:AlanWills/UnityNativeShare.git");
             }
 
-            if (dependencies.Count > 0)
+            if (parameters.useRuntimeInspectorPackage)
             {
-                Client.AddAndRemove(packagesToAdd: dependencies.ToArray());
+                dependenciesToAdd.Add("git@github.com:AlanWills/UnityRuntimeInspector.git");
+            }
+
+            if (parameters.useUnityAndroidLogcatPackage)
+            {
+                dependenciesToAdd.Add("com.unity.mobile.android-logcat");
+            }
+
+            if (parameters.removeUnityCollabPackage)
+            {
+                dependenciesToRemove.Add("com.unity.collab-proxy");
+            }
+
+            if (dependenciesToAdd.Count > 0)
+            {
+                Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray());
             }
         }
 
@@ -948,6 +973,21 @@ namespace CelesteEditor.UnityProject
                     extensions = new string[] { "datasnapshot" }
                 });
 #endif
+        }
+
+        #endregion
+
+        #region Custom Proguard File
+
+        private static void CreateCustomProguardFile(SetUpCelesteParameters parameters)
+        {
+            if (parameters.useNativeFilePickerPackage ||
+                parameters.useNativeSharePackage ||
+                parameters.useRuntimeInspectorPackage)
+            {
+                string proguardFilePath = Path.Combine(Application.dataPath, "Plugins", "Android", "proguard-user.txt");
+                File.WriteAllText(proguardFilePath, CelesteConstants.CUSTOM_PROGUARD_FILE_CONTENTS);
+            }
         }
 
         #endregion

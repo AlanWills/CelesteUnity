@@ -1,5 +1,10 @@
 ﻿using Celeste.Parameters;
 using UnityEngine;
+#if USE_NEW_INPUT_SYSTEM
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+#else
+using Touch = UnityEngine.Touch;
+#endif
 
 namespace Celeste.Tilemaps
 {
@@ -58,7 +63,7 @@ namespace Celeste.Tilemaps
             dragStarted = false;
         }
 
-        public void DragUsingTouch(UnityEngine.InputSystem.EnhancedTouch.Touch touch)
+        public void DragUsingTouch(Touch touch)
         {
 #if USE_NEW_INPUT_SYSTEM
             switch (touch.phase)

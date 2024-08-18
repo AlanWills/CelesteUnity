@@ -76,6 +76,7 @@
     {
         public const string COMMON_ADDRESSABLES_GROUP_NAME = "CommonAddressables";
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
+        public const string CUSTOM_PROGUARD_FILE_CONTENTS = "-keep class com.yasirkula.unity.* { *; }";
         
         public readonly string LOADING_SCENE_PATH;
         public readonly string CELESTE_GIT_IGNORE_FILE_PATH;
