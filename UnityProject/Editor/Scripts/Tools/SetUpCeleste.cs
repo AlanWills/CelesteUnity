@@ -132,7 +132,19 @@ namespace CelesteEditor.UnityProject
 
         public void UseDefaults()
         {
-            packagePath = "Packages/com.celestegames.celeste/";
+            if (Directory.Exists(Path.Combine(Application.dataPath, "Celeste")))
+            {
+                packagePath = "Assets/Celeste/";
+            }
+            else if (Directory.Exists(Path.Combine(Application.dataPath, "CelesteUnity")))
+            {
+                packagePath = "Assets/Celeste";
+            }
+            else
+            {
+                packagePath = "Packages/com.celestegames.celeste/";
+            }
+
             embedCeleste = false;
 
             usePresetGitIgnoreFile = true;
