@@ -43,16 +43,32 @@ namespace Celeste.CloudSave
             Action onAuthenticateSucceeded = null,
             Action<AuthenticateStatus> onAuthenticateFailed = null)
         {
-            PlayGamesPlatform.Instance.Authenticate((SignInStatus status) =>
-            {
-                if (status == SignInStatus.Success)
-                {
-                    Log($"Successfully signed in with Google Play Games");
-                    onAuthenticateSucceeded?.Invoke();
-                }
-                else
-                {
-                    PlayGamesPlatform.Instance.ManuallyAuthenticate((SignInStatus status) =>
+            //PlayGamesPlatform.Instance.Authenticate((SignInStatus status) =>
+            //{
+            //    if (status == SignInStatus.Success)
+            //    {
+            //        Log($"Successfully signed in with Google Play Games");
+            //        onAuthenticateSucceeded?.Invoke();
+            //    }
+            //    else
+            //    {
+            //        PlayGamesPlatform.Instance.ManuallyAuthenticate((SignInStatus status) =>
+            //        {
+            //            if (status == SignInStatus.Success)
+            //            {
+            //                Log($"Successfully signed in with Google Play Games");
+            //                onAuthenticateSucceeded?.Invoke();
+            //            }
+            //            else
+            //            {
+            //                LogError($"Failed to sign in with Google Play Games: {status}");
+            //                onAuthenticateFailed?.Invoke(ToAuthenticateStatus(status));
+            //            }
+            //        });
+            //    }
+            //});
+
+            PlayGamesPlatform.Instance.ManuallyAuthenticate((SignInStatus status) =>
                     {
                         if (status == SignInStatus.Success)
                         {
@@ -65,8 +81,6 @@ namespace Celeste.CloudSave
                             onAuthenticateFailed?.Invoke(ToAuthenticateStatus(status));
                         }
                     });
-                }
-            });
         }
 
         public void OpenSaveGame(
