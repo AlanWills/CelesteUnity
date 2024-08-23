@@ -1,6 +1,8 @@
+using Celeste.Tools.Attributes.GUI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -10,13 +12,15 @@ namespace CelesteEditor.UnityProject
     [Serializable]
     public struct BootstrapCelesteParameters
     {
-        public bool useAddressables;
-        public bool useNewInputSystem;
+        [LabelWidth(300)] public bool useAddressables;
+        [LabelWidth(300)] public bool useNewInputSystem;
+        [LabelWidth(300)] public bool useTextMeshPro;
 
         public void UseDefaults()
         {
             useAddressables = true;
             useNewInputSystem = true;
+            useTextMeshPro = true;
         }
     }
 
@@ -27,11 +31,20 @@ namespace CelesteEditor.UnityProject
         public static bool IsStarted => EditorPrefs.GetBool(BootstrapCelesteConstants.BOOTSTRAP_COMPLETED_EDITOR_PREFS_KEY, false);
 
         private static AddAndRemoveRequest s_addAndRemoveRequest;
+        private static BootstrapCelesteParameters s_parameters;
 
         #endregion
 
         public static void Execute(BootstrapCelesteParameters parameters)
         {
+            s_parameters = parameters;
+            
+            if (parameters.useTextMeshPro)
+            {
+                string packageFullPath = TMP_EditorUtility.packageFullPath;
+                AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
+            }
+
             List<string> dependenciesToAdd = new List<string>
             {
                 BootstrapCelesteConstants.EDITOR_COROUTINES_PACKAGE
@@ -94,7 +107,13 @@ namespace CelesteEditor.UnityProject
             EditorPrefs.SetBool(BootstrapCelesteConstants.BOOTSTRAP_COMPLETED_EDITOR_PREFS_KEY, true);
 
             // Restart the editor to allow everything to have a nice clean start (some packages also require a restart e.g. new input system)
-            EditorApplication.OpenProject(Directory.GetCurrentDirectory());
+            // Currently doesn't seem to play nice with the new input system, so only do this if we're not using the new input system
+            if (!s_parameters.useNewInputSystem)
+            {
+                EditorApplication.OpenProject(Directory.GetCurrentDirectory());
+            }
+
+            s_parameters = default;
         }
     }
 }

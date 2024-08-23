@@ -119,7 +119,6 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool usesAddressables;
         [LabelWidth(300), ShowIf(nameof(usesAddressables))] public bool usesBakedGroupsWithRemoteOverride;
 #endif
-        [LabelWidth(300)] public bool usesTextMeshPro;
 
         [Header("Scenes")]
         [LabelWidth(300)] public bool needsStartupScene;
@@ -176,7 +175,6 @@ namespace CelesteEditor.UnityProject
             usesAddressables = true;
             usesBakedGroupsWithRemoteOverride = true;
 #endif
-            usesTextMeshPro = true;
 
             needsStartupScene = true;
             needsBootstrapScene = true;
@@ -1122,14 +1120,10 @@ namespace CelesteEditor.UnityProject
             }
 #endif
 
-            if (parameters.usesTextMeshPro)
             {
-                string packageFullPath = TMP_EditorUtility.packageFullPath;
-                AssetDatabase.ImportPackage($"{packageFullPath}/Package Resources/TMP Essential Resources.unitypackage", false);
-
                 TMP_Settings tmpSettings = TMP_Settings.LoadDefaultSettings();
-                Debug.Assert(tmpSettings, "Failed to load Text Mesh Pro default settings, so we will be unable to turn off raycasting by default on Text Mesh Pro components.");
-
+                
+                // We may not have set text mesh pro up in the bootstrap phase so we may not get in here and that's OK
                 if (tmpSettings != null)
                 {
                     // Turn off raycast by default
