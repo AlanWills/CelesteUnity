@@ -121,7 +121,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        public const int DEFAULT_TARGET_SDK_VERSION = 33;
+        public const int DEFAULT_TARGET_SDK_VERSION = 34;
 
         #endregion
 

@@ -1059,8 +1059,16 @@ namespace CelesteEditor.UnityProject
                 settings.ShaderBundleCustomNaming = "alwaysbundle";
                 settings.MonoScriptBundleNaming = UnityEditor.AddressableAssets.Build.MonoScriptBundleNaming.Custom;
                 settings.MonoScriptBundleCustomNaming = "alwaysbundle";
-                bool result = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote");
-                Debug.Assert(result, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
+
+                {
+                    bool loadPathResult = settings.RemoteCatalogLoadPath.SetVariableByName(settings, "Remote.LoadPath");
+                    Debug.Assert(loadPathResult, "Failed to set Remote Catalog Load Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
+                }
+
+                {
+                    bool buildPathResult = settings.RemoteCatalogBuildPath.SetVariableByName(settings, "Remote.BuildPath");
+                    Debug.Assert(buildPathResult, "Failed to set Remote Catalog Build Path to 'Remote'.  This will need to be done manually in the Addressable Settings.");
+                }
 
                 string remoteBuildPath = AddressablesExtensions.GetAddressablesRemoteBuildPath();
                 string remoteLoadPath = AddressablesExtensions.GetAddressablesRemoteLoadPath();
@@ -1115,6 +1123,7 @@ namespace CelesteEditor.UnityProject
                     if (fieldInfo != null)
                     {
                         fieldInfo.SetValue(tmpSettings, false);
+                        EditorOnly.SaveAsset(tmpSettings);
                     }
                 }
             }
