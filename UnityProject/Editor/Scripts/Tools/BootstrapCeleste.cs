@@ -21,7 +21,13 @@ namespace CelesteEditor.UnityProject
 
     public static class BootstrapCeleste
     {
+        #region Properties and Fields
+
+        public static bool IsStarted => EditorPrefs.GetBool(BootstrapCelesteConstants.BOOTSTRAP_STARTED_EDITOR_PREFS_KEY, false);
+
         private static AddAndRemoveRequest s_addAndRemoveRequest;
+
+        #endregion
 
         public static void Execute(BootstrapCelesteParameters parameters)
         {
@@ -44,6 +50,7 @@ namespace CelesteEditor.UnityProject
             {
                 s_addAndRemoveRequest = Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray());
                 UnityEngine.Debug.Log("Beginning bootstrap of Celeste dependencies...");
+                EditorPrefs.SetBool(BootstrapCelesteConstants.BOOTSTRAP_STARTED_EDITOR_PREFS_KEY, true);
 
                 if (!s_addAndRemoveRequest.IsCompleted)
                 {

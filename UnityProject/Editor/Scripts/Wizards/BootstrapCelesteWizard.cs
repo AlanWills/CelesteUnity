@@ -1,5 +1,6 @@
 using Celeste.Tools.Attributes.GUI;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CelesteEditor.UnityProject.Wizards
