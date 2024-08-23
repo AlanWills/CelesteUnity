@@ -169,6 +169,9 @@ namespace CelesteEditor.UnityProject
             useiOSBuildJenkinsFiles = true;
             useWebGLBuildJenkinsFiles = true;
 
+            rootNamespaceName = Directory.GetParent(Application.dataPath).Name;
+            rootMenuItemName = Directory.GetParent(Application.dataPath).Name;
+
 #if USE_ADDRESSABLES
             usesAddressables = true;
             usesBakedGroupsWithRemoteOverride = true;
