@@ -783,19 +783,20 @@ namespace CelesteEditor.UnityProject
         {
             MusicSettings musicSettings = ScriptableObject.CreateInstance<MusicSettingsUsingAssets>();
             musicSettings.name = nameof(MusicSettings);
-            MakeAddressable(parameters, musicSettings);
 
             SFXSettingsUsingAssets sfxSettings = ScriptableObject.CreateInstance<SFXSettingsUsingAssets>();
             sfxSettings.name = nameof(SFXSettings);
-            MakeAddressable(parameters, sfxSettings);
 
             SectionLogSettingsCatalogue sectionLogSettingsCatalogue = ScriptableObject.CreateInstance<SectionLogSettingsCatalogue>();
             sectionLogSettingsCatalogue.name = nameof(SectionLogSettingsCatalogue);
-            MakeAddressable(parameters, sectionLogSettingsCatalogue);
 
             EditorOnly.CreateAssetInFolder(musicSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
             EditorOnly.CreateAssetInFolder(sfxSettings, EngineSystemsConstants.DATA_FOLDER_PATH);
             EditorOnly.CreateAssetInFolder(sectionLogSettingsCatalogue, EngineSystemsConstants.DATA_FOLDER_PATH);
+
+            MakeAddressable(parameters, musicSettings);
+            MakeAddressable(parameters, sfxSettings);
+            MakeAddressable(parameters, sectionLogSettingsCatalogue);
 
             UnityEngine.SceneManagement.Scene engineSystemsScene = EditorSceneManager.OpenScene(EngineSystemsConstants.SCENE_PATH, OpenSceneMode.Single);
 

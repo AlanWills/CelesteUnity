@@ -32,15 +32,30 @@ namespace CelesteEditor.Tools
                 return;
             }
 
-            Debug.Assert(o != null, $"Trying to set addressable info on a null object.");
+            if (o == null)
+            {
+                Debug.LogAssertion($"Trying to set addressable info on a null object.");
+                return;
+            }
+
             AddressableAssetSettings aaSettings = AddressableAssetSettingsDefaultObject.Settings;
             AssetDatabase.TryGetGUIDAndLocalFileIdentifier(o, out string guid, out long localID);
             
             AddressableAssetGroup assetGroup = aaSettings.FindGroup(group);
-            Debug.Assert(assetGroup != null, $"Failed to find group {group} when setting addressable info.");
+            if (assetGroup == null)
+            {
+                Debug.LogAssertion($"Failed to find group {group} when setting addressable info.");
+                return;
+            }
 
+            if (string.IsNullOrEmpty(address))
+            {
+                Debug.LogAssertion($"Attempting to set an empty addressable address for object '{o.name}'.");
+                return;
+            }
+            
             AddressableAssetEntry entry = aaSettings.CreateOrMoveEntry(guid, assetGroup);
-            Debug.Assert(entry != null, $"Failed to create or move entry for object {o.name}.");
+            Debug.Assert(entry != null, $"Failed to create or move entry for object '{o.name}'.");
 
             if (entry != null)
             {
@@ -155,6 +170,12 @@ namespace CelesteEditor.Tools
             if (o == null)
             {
                 Debug.LogAssertion($"Failed to set addressable address {address} as a null object was inputted.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(address))
+            {
+                Debug.LogAssertion($"Failed to set addressable address for object '{o.name}' as an empty address was inputted.");
                 return;
             }
 
