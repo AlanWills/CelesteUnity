@@ -1127,7 +1127,7 @@ namespace CelesteEditor.UnityProject
                 if (tmpSettings != null)
                 {
                     // Turn off raycast by default
-                    FieldInfo fieldInfo = typeof(TMP_Settings).GetField("m_EnableRaycastTarget");
+                    FieldInfo fieldInfo = typeof(TMP_Settings).GetField("m_EnableRaycastTarget", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     Debug.Assert(tmpSettings, "Failed find the raycast setting on the Text Mesh Pro default settings, so we will be unable to turn off raycasting by default on Text Mesh Pro components.");
 
                     if (fieldInfo != null)
