@@ -148,7 +148,7 @@ namespace CelesteEditor.UnityProject
             embedCeleste = false;
 
             usePresetGitIgnoreFile = true;
-            usePresetGitLFSFile = true;
+            usePresetGitLFSFile = false;
 
             useNativeSharePackage = true;
             useNativeFilePickerPackage = true;
