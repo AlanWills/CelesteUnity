@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -23,7 +24,7 @@ namespace CelesteEditor.UnityProject
     {
         #region Properties and Fields
 
-        public static bool IsStarted => EditorPrefs.GetBool(BootstrapCelesteConstants.BOOTSTRAP_STARTED_EDITOR_PREFS_KEY, false);
+        public static bool IsStarted => EditorPrefs.GetBool(BootstrapCelesteConstants.BOOTSTRAP_COMPLETED_EDITOR_PREFS_KEY, false);
 
         private static AddAndRemoveRequest s_addAndRemoveRequest;
 
@@ -50,12 +51,15 @@ namespace CelesteEditor.UnityProject
             {
                 s_addAndRemoveRequest = Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray());
                 UnityEngine.Debug.Log("Beginning bootstrap of Celeste dependencies...");
-                EditorPrefs.SetBool(BootstrapCelesteConstants.BOOTSTRAP_STARTED_EDITOR_PREFS_KEY, true);
 
                 if (!s_addAndRemoveRequest.IsCompleted)
                 {
                     EditorApplication.update += UpdateProgressBar;
                     EditorUtility.DisplayProgressBar("Bootstrapping", "Please wait, downloading necessary packages...", 0f);
+                }
+                else
+                {
+                    OnBootstrapComplete();
                 }
             }
         }
@@ -73,14 +77,24 @@ namespace CelesteEditor.UnityProject
                     UnityEngine.Debug.LogError("There was an issue bootstrapping dependencies.  You may have to do this yourself...");
                 }
 
-                s_addAndRemoveRequest = null;
                 EditorUtility.ClearProgressBar();
                 EditorApplication.update -= UpdateProgressBar;
+
+                OnBootstrapComplete();
             }
             else
             {
                 EditorUtility.DisplayProgressBar("Bootstrapping", "Please wait, downloading necessary packages...", 0f);
             }
+        }
+
+        private static void OnBootstrapComplete()
+        {
+            s_addAndRemoveRequest = null;
+            EditorPrefs.SetBool(BootstrapCelesteConstants.BOOTSTRAP_COMPLETED_EDITOR_PREFS_KEY, true);
+
+            // Restart the editor to allow everything to have a nice clean start (some packages also require a restart e.g. new input system)
+            EditorApplication.OpenProject(Directory.GetCurrentDirectory());
         }
     }
 }
