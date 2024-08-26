@@ -166,7 +166,7 @@ namespace CelesteEditor.BuildSystem
             BuildDirectory = "Builds/{build_target}/{environment}" + environmentSuffix;
 
             // If building an app bundle we should include all architectures by default
-            Architecture = isAppBundle ? AndroidArchitecture.All : Architecture;
+            Architecture = isAppBundle ? AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 : Architecture;
 
             // Build symbols for release bundles only by default
             buildSymbols = isDebugConfig || isAppBundle == false ? AndroidCreateSymbols.Disabled : AndroidCreateSymbols.Public;
