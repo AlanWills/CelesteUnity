@@ -44,10 +44,8 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.resizableWindow = resizeableWindow;
         }
 
-        public override void InjectBuildEnvVars(StringBuilder stringBuilder)
+        protected override void DoInjectBuildEnvVars(StringBuilder stringBuilder)
         {
-            base.InjectBuildEnvVars(stringBuilder);
-
             DirectoryInfo rootFolder = new DirectoryInfo(Application.dataPath).Parent;
             DirectoryInfo buildFolder = new DirectoryInfo(Path.Combine(BuildDirectory, OutputName)).Parent;
 

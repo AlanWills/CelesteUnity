@@ -489,7 +489,12 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        public virtual void InjectBuildEnvVars(StringBuilder stringBuilder) { }
+        public void InjectBuildEnvVars(StringBuilder stringBuilder)
+        {
+            DoInjectBuildEnvVars(stringBuilder);
+        }
+
+        protected virtual void DoInjectBuildEnvVars(StringBuilder stringBuilder) { }
 
 #if USE_ADDRESSABLES
         public void PrepareAssetsForBuild()

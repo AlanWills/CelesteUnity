@@ -1,4 +1,6 @@
 ﻿using Celeste;
+using Celeste.Tools.Attributes.GUI;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -121,6 +123,35 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        [Title("Google Play Settings")]
+        [ShowIf(nameof(buildAppBundle)), SerializeField] private bool useFastlane;
+        public bool UseFastlane
+        {
+            get => useFastlane;
+            set
+            {
+                if (useFastlane != value)
+                {
+                    useFastlane = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [ShowIfAll(nameof(buildAppBundle), nameof(useFastlane)), SerializeField] private string fastlaneUploadTrackName = "internal";
+        public string FastlaneUploadTrackName
+        {
+            get => fastlaneUploadTrackName;
+            set
+            {
+                if (string.CompareOrdinal(fastlaneUploadTrackName, value) != 0)
+                {
+                    fastlaneUploadTrackName = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
         public const int DEFAULT_TARGET_SDK_VERSION = 34;
 
         #endregion
@@ -146,10 +177,11 @@ namespace CelesteEditor.BuildSystem
             BuildTarget = BuildTarget.Android;
             BuildTargetGroup = BuildTargetGroup.Android;
             ScriptingBackend = ScriptingImplementation.IL2CPP;
-            Architecture = AndroidArchitecture.ARM64;
             RequiresWritePermission = true;
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
             TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;
+            UseFastlane = false;
+            FastlaneUploadTrackName = "internal";
         }
 
         protected override BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)
@@ -163,6 +195,16 @@ namespace CelesteEditor.BuildSystem
             }
 
             return buildPlayerOptions;
+        }
+
+        protected override void DoInjectBuildEnvVars(StringBuilder stringBuilder)
+        {
+            stringBuilder.AppendLine($"USE_FASTLANE={UseFastlane}");
+
+            if (UseFastlane)
+            {
+                stringBuilder.AppendLine($"FASTLANE_UPLOAD_TRACK_NAME={FastlaneUploadTrackName}");
+            }
         }
 
         protected override void ApplyImpl()

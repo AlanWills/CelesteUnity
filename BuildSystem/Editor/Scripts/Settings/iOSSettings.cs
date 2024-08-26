@@ -74,10 +74,8 @@ namespace CelesteEditor.BuildSystem
             UnityEngine.Debug.Log($"iOS version is now: {PlayerSettings.iOS.buildNumber}.");
         }
 
-        public override void InjectBuildEnvVars(StringBuilder stringBuilder)
+        protected override void DoInjectBuildEnvVars(StringBuilder stringBuilder)
         {
-            base.InjectBuildEnvVars(stringBuilder);
-
             stringBuilder.AppendLine($"IPA_NAME={ipaName}");
 
             if (useiOSProjectBuilder)
