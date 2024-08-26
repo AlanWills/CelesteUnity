@@ -211,12 +211,12 @@ namespace CelesteEditor.BuildSystem
         private bool advancedAddressablesSettings;
 
         [SerializeField, ShowIfAll(nameof(addressablesEnabled), nameof(advancedAddressablesSettings))]
-        [Tooltip("The build path for local addressables that Unity uses to copy built addressable groups to Streaming Assets when building a player." + STRING_SUBSTITUTION_HELP)]
+        [Indent, Tooltip("The build path for local addressables that Unity uses to copy built addressable groups to Streaming Assets when building a player." + STRING_SUBSTITUTION_HELP)]
         private string localAddressablesBuildPath = "[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]";
         public string LocalAddressablesBuildPath => Resolve(localAddressablesBuildPath);
 
         [SerializeField, ShowIfAll(nameof(addressablesEnabled), nameof(advancedAddressablesSettings))]
-        [Tooltip("The load path that Unity uses at runtime to load local addressable groups it has bundled with the app." + STRING_SUBSTITUTION_HELP)]
+        [Indent, Tooltip("The load path that Unity uses at runtime to load local addressable groups it has bundled with the app." + STRING_SUBSTITUTION_HELP)]
         private string localAddressablesLoadPath = "{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]";
         public string LocalAddressablesLoadPath => Resolve(localAddressablesLoadPath);
 #endif
