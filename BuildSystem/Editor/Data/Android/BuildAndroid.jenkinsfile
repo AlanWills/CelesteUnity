@@ -18,9 +18,15 @@ pipeline
                                 artifactNumToKeepStr: '', 
                                 numToKeepStr: '1')), 
                         parameters([
-                            choice(choices: ['DebugApk', 'DebugBundle', 'ReleaseApk', 'ReleaseBundle'], name: 'CONFIGURATION'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
+							choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'),
+							choice(choices: ['Apk', 'App Bundle'], name: 'OUTPUT_FILE'),
+                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD_TO_STORAGE'), 
+							booleanParam(defaultValue: false, name: 'UPLOAD_BUILD_TO_GOOGLE_PLAY'), 
+                            booleanParam(defaultValue: false, name: 'UPLOAD_ASSETS_TO_STORAGE'),
+							booleanParam(defaultValue: false, name: 'UPLOAD_STORE_METADATA'),
+							booleanParam(defaultValue: false, name: 'UPLOAD_STORE_CHANGE_LOGS'),
+							booleanParam(defaultValue: false, name: 'UPLOAD_STORE_IMAGES'),
+							booleanParam(defaultValue: false, name: 'UPLOAD_STORE_SCREENSHOTS')
                         ])
                     ])
                 }
@@ -30,10 +36,18 @@ pipeline
         {
             steps
             {
-                buildName "Android-" + CONFIGURATION
+				configAndOutput = CONFIGURATION
+				
+				if (params.OUTPUT_FILE == 'Apk') {
+					configAndOutput = configAndOutput + 'Apk'
+				} else {
+					configAndOutput = configAndOutput + 'AppBundle'
+				}
+				
+                buildName "Android-" + configAndOutput
                 script
                 {
-                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "AndroidPlayer"
+                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + configAndOutput + "AndroidPlayer"
                     projectPath = WORKSPACE.replace('\\', '/')
                 }
                 sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
@@ -41,7 +55,7 @@ pipeline
                 {
                     readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
-                buildName "Android-" + CONFIGURATION + "-" + env.BUILD_VERSION
+                buildName "Android-" + configAndOutput + "-" + env.BUILD_VERSION
                 script 
                 {
                     readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
@@ -80,13 +94,13 @@ pipeline
 				archiveArtifacts artifacts: "${env.ASSETS_SOURCE}/*.*", onlyIfSuccessful: true
 			}
 		}
-        stage('Upload Build')
+        stage('Upload Build To Storage')
         {
             when
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD_TO_STORAGE
                 }
             }
             steps
@@ -98,13 +112,28 @@ pipeline
                     pathPrefix: "${env.BUILD_DIRECTORY}")
             }
         }
-        stage('Upload Assets')
+        stage('Upload Build To Google Play')
         {
             when
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_BUILD_TO_GOOGLE_PLAY
+                }
+            }
+            steps
+            {
+				sh "bundle install"
+				sh "bundle exec fastlane upload_aab_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}' aab:'${env.BUILD_LOCATION}'"
+            }
+        }
+        stage('Upload Assets To Storage')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS_TO_STORAGE
                 }
             }
             steps
@@ -115,6 +144,66 @@ pipeline
 					pattern: "${env.ASSETS_SOURCE}/*",
                     pathPrefix: "${env.ASSETS_SOURCE}")
                 sh "rm -r ${env.ASSETS_SOURCE}"
+            }
+        }
+        stage('Upload Store Metadata To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_METADATA
+                }
+            }
+            steps
+            {
+				sh "bundle install"
+				sh "bundle exec fastlane upload_metadata_to_playstore" track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Change Logs To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_CHANGE_LOGS
+                }
+            }
+            steps
+            {
+				sh "bundle install"
+				sh "bundle exec fastlane upload_changelogs_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Images To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_IMAGES
+                }
+            }
+            steps
+            {
+				sh "bundle install"
+				sh "bundle exec fastlane upload_images_to_playstore" track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Screenshots To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_SCREENSHOTS
+                }
+            }
+            steps
+            {
+				sh "bundle install"
+				sh "bundle exec fastlane upload_screenshots_to_playstore" track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
     }   
