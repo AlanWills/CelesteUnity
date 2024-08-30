@@ -109,6 +109,9 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnWebGL))]
         [Tooltip("If true, copies of the WebGL template jenkins files will be added to the project for customisation and usage")]
         public bool useWebGLBuildJenkinsFiles;
+        [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem))]
+        [Tooltip("If true, copies of the template Fastlane files will be added to the project for customisation and usage.  Fastlane dramatically speeds up deploying app updates, release notes and general store management for Android and iOS.")]
+        public bool useFastlaneFiles;
 
         [Header("Code")]
         [LabelWidth(300)] public string rootNamespaceName;
@@ -167,6 +170,7 @@ namespace CelesteEditor.UnityProject
             useAndroidBuildJenkinsFiles = true;
             useiOSBuildJenkinsFiles = true;
             useWebGLBuildJenkinsFiles = true;
+            useFastlaneFiles = true;
 
             rootNamespaceName = Directory.GetParent(Application.dataPath).Name;
             rootMenuItemName = Directory.GetParent(Application.dataPath).Name;
@@ -471,6 +475,11 @@ namespace CelesteEditor.UnityProject
             if (parameters.useWebGLBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
+            }
+
+            if (parameters.useFastlaneFiles)
+            {
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_FASTLANE_BUILD_FILES_FOLDER, BuildSystemConstants.FASTLANE_BUILD_FILES_FOLDER);
             }
         }
 

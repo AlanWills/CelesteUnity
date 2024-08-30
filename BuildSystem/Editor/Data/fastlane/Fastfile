@@ -1,0 +1,78 @@
+lane :upload_aab_to_playstore do |options|
+  _track = options[:track]
+  _aab = options[:aab]
+
+  upload_to_play_store(
+    track: _track,
+    rollout: '1.0',
+	aab: _aab,
+	skip_upload_metadata: 'true',
+	skip_upload_changelogs: 'true',
+	skip_upload_images: 'true',
+	skip_upload_screenshots: 'true'
+  )
+end
+
+lane :upload_metadata_to_playstore do |options|
+  _track = options[:track]
+  _changesNotSentForReview = options[:send_to_review] ? 'false' : 'true'
+
+  upload_to_play_store(
+    track: _track,
+	skip_upload_apk: 'true',
+	skip_upload_aab: 'true',
+	skip_upload_metadata: 'false',
+	skip_upload_changelogs: 'true',
+	skip_upload_images: 'true',
+	skip_upload_screenshots: 'true',
+	changes_not_sent_for_review: _changesNotSentForReview
+  )
+end
+
+lane :upload_changelogs_to_playstore do |options|
+  _track = options[:track]
+  _changesNotSentForReview = options[:send_to_review] ? 'false' : 'true'
+
+  upload_to_play_store(
+    track: _track,
+	skip_upload_apk: 'true',
+	skip_upload_aab: 'true',
+	skip_upload_metadata: 'true',
+	skip_upload_changelogs: 'false',
+	skip_upload_images: 'true',
+	skip_upload_screenshots: 'true',
+	changes_not_sent_for_review: _changesNotSentForReview
+  )
+end
+
+lane :upload_images_to_playstore do |options|
+  _track = options[:track]
+  _changesNotSentForReview = options[:send_to_review] ? 'false' : 'true'
+
+  upload_to_play_store(
+    track: _track,
+	skip_upload_apk: 'true',
+	skip_upload_aab: 'true',
+	skip_upload_metadata: 'true',
+	skip_upload_changelogs: 'true',
+	skip_upload_images: 'false',
+	skip_upload_screenshots: 'true',
+	changes_not_sent_for_review: _changesNotSentForReview
+  )
+end
+
+lane :upload_screenshots_to_playstore do |options|
+  _track = options[:track]
+  _changesNotSentForReview = options[:send_to_review] ? 'false' : 'true'
+
+  upload_to_play_store(
+    track: _track,
+	skip_upload_apk: 'true',
+	skip_upload_aab: 'true',
+	skip_upload_metadata: 'true',
+	skip_upload_changelogs: 'true',
+	skip_upload_images: 'true',
+	skip_upload_screenshots: 'false',
+	changes_not_sent_for_review: _changesNotSentForReview
+  )
+end
