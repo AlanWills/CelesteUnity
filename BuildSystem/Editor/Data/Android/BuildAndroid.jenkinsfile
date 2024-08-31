@@ -43,7 +43,7 @@ pipeline
 					if (params.OUTPUT_FILE == 'Apk') {
 						configAndOutput = configAndOutput + 'Apk'
 					} else {
-						configAndOutput = configAndOutput + 'AppBundle'
+						configAndOutput = configAndOutput + 'Bundle'
 					}
 				}
 				
