@@ -1,5 +1,4 @@
 using System;
-using Celeste.Shop.Catalogue;
 using Celeste.Shop.Purchasing;
 using UnityEngine;
 
@@ -21,9 +20,10 @@ namespace Celeste.Shop.UI
             this.shopItem = shopItem;
         }
 
-        public void PurchaseShopItem()
+        public async void PurchaseShopItem()
         {
-            shopPurchaser.Purchase(shopItem);
+            PurchaseResult purchaseResult = await shopPurchaser.Purchase(shopItem);
+            Debug.Assert(purchaseResult.success, $"Purchase failed with reason: {purchaseResult.reason} and message: {purchaseResult.errorMessage}.");
         }
     }
 }

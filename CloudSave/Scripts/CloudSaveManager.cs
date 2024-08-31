@@ -1,5 +1,4 @@
 ﻿using Celeste.CloudSave.Persistence;
-using Celeste.Log;
 using Celeste.Persistence;
 using Celeste.Persistence.Snapshots;
 using System;

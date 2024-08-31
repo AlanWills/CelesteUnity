@@ -1,4 +1,5 @@
-﻿using Celeste.Shop.Catalogue;
+﻿using Celeste.Shop;
+using Celeste.Shop.Catalogue;
 using CelesteEditor.DataStructures;
 using UnityEditor;
 

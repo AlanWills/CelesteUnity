@@ -67,6 +67,13 @@ namespace Celeste.Localisation.UI
 
         #endregion
 
+        public void Setup(LocalisationKey localisationKey, params string[] locaTokens)
+        {
+            key = localisationKey;
+            
+            Setup(locaTokens);
+        }
+
         public void Setup(params string[] locaTokens)
         {
             for (int i = 0, n = locaTokens != null ? locaTokens.Length : 0; i < n - 1; i += 2)

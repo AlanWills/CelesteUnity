@@ -1,4 +1,5 @@
 ﻿using Celeste.Persistence;
+using Celeste.Shop.Catalogue;
 using Celeste.Shop.Purchasing;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Celeste.Shop.Persistence
 
         public const string FILE_NAME = "Shop.dat";
 
+        [SerializeField] private IAPCatalogue iapCatalogue;
         [SerializeField] private ShopPurchaser shopPurchaser;
 
         #endregion
@@ -21,6 +23,7 @@ namespace Celeste.Shop.Persistence
 
         protected override void Deserialize(ShopDTO dto)
         {
+            InitializePurchaser();
         }
 
         protected override ShopDTO Serialize()
@@ -30,8 +33,14 @@ namespace Celeste.Shop.Persistence
 
         protected override void SetDefaultValues()
         {
+            InitializePurchaser();
         }
 
         #endregion
+
+        private void InitializePurchaser()
+        {
+            shopPurchaser.Initialize(iapCatalogue);
+        }
     }
 }

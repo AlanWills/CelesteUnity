@@ -1,5 +1,5 @@
-﻿using Celeste.Localisation.UI;
-using Celeste.Shop.Catalogue;
+﻿using Celeste.Localisation;
+using Celeste.Localisation.UI;
 using UnityEngine;
 
 namespace Celeste.Shop.UI
@@ -9,15 +9,27 @@ namespace Celeste.Shop.UI
     {
         #region Properties and Fields
 
+        [SerializeField] private LocalisationKey iapPurchaseLocalisationKey;
+        [SerializeField] private LocalisationKey currencyPurchaseLocalisationKey;
         [SerializeField] private ParameterisedTextUI costQuantityText;
 
         #endregion
 
         public void Hookup(ShopItem shopItem)
         {
-            costQuantityText.Setup(
-                "GLYPH", shopItem.Cost.currency.GlyphName,
-                "COST", shopItem.Cost.quantity.ToString());
+            if (shopItem.IsCurrencyPurchase)
+            {
+                costQuantityText.Setup(
+                    currencyPurchaseLocalisationKey,
+                    "GLYPH", shopItem.Cost.currency.GlyphName,
+                    "COST", shopItem.Cost.quantity.ToString());
+            }
+            else
+            {
+                costQuantityText.Setup(
+                    iapPurchaseLocalisationKey,
+                    "COST", shopItem.IAP.LocalisedPriceString);
+            }
         }
     }
 }
