@@ -1,7 +1,6 @@
 using Celeste.Objects;
 using UnityEngine;
 using Celeste.Tools;
-using UnityEngine.Purchasing;
 using Celeste.Tools.Attributes.GUI;
 
 namespace Celeste.Shop.Objects
@@ -9,6 +8,13 @@ namespace Celeste.Shop.Objects
     [CreateAssetMenu(fileName = nameof(IAP), order = CelesteMenuItemConstants.SHOP_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SHOP_MENU_ITEM + "IAP")]
     public class IAP : ScriptableObject, IIntGuid
     {
+        public enum Type
+        {
+            Consumable,
+            NonConsumable,
+            Subscription
+        }
+
         #region Properties and Fields
 
         public int Guid
@@ -24,7 +30,7 @@ namespace Celeste.Shop.Objects
             }
         }
 
-        public ProductType ProductType => productType;
+        public Type ProductType => productType;
         public string IAPCode => iapCode;
         public string GoogleIAPCode => hasGoogleSpecificCode ? googleSpecificCode : iapCode;
         public string AppleIAPCode => hasAppleSpecificCode ? appleSpecificCode : iapCode;
@@ -36,7 +42,7 @@ namespace Celeste.Shop.Objects
         public float LocalisedPrice { get; set; }
 
         [SerializeField] private int guid;
-        [SerializeField] private ProductType productType = ProductType.Consumable;
+        [SerializeField] private Type productType = Type.Consumable;
         [SerializeField] private string iapCode;
         [SerializeField] private bool hasGoogleSpecificCode = false;
         [SerializeField, ShowIf(nameof(hasGoogleSpecificCode))] private string googleSpecificCode;

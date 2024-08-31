@@ -31,7 +31,7 @@ namespace Celeste.Shop.Purchasing.Impls
 
             foreach (IAP iap in _iapCatalogue)
             {
-                builder.AddProduct(iap.IAPCode, iap.ProductType, new IDs()
+                builder.AddProduct(iap.IAPCode, ToProductType(iap.ProductType), new IDs()
             {
                 { iap.GoogleIAPCode, GooglePlay.Name },
                 { iap.AppleIAPCode, AppleAppStore.Name }
@@ -215,6 +215,11 @@ namespace Celeste.Shop.Purchasing.Impls
         private static PurchaseFailedReason ToPurchaseFailedReason(PurchaseFailureReason purchaseFailureReason)
         {
             return (PurchaseFailedReason)purchaseFailureReason;
+        }
+
+        private static ProductType ToProductType(IAP.Type type)
+        {
+            return (ProductType)type;
         }
 
         #endregion

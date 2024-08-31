@@ -1,7 +1,6 @@
 using Celeste.Shop.Catalogue;
 using Celeste.Shop.Objects;
 using System.Threading.Tasks;
-using UnityEngine.Purchasing;
 
 namespace Celeste.Shop.Purchasing.Impls
 {
