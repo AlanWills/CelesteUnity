@@ -70,7 +70,7 @@ namespace CelesteEditor.Localisation.Tools
                         }
 
                         string localisationKeyName = keyString.ToAssetName();
-                        string localisationCategoryName = $"{categoryString.ToAssetName()}Category";
+                        string localisationCategoryName = $"{categoryString}Category";
 
                         if (!localisationKeyLookup.TryGetValue(localisationKeyName, out LocalisationKey localisationKey))
                         {
