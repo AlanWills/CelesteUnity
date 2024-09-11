@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Celeste.Shop.UI
 {
@@ -31,6 +30,8 @@ namespace Celeste.Shop.UI
             {
                 SetupSectionUI(shopSections[i]);
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(shopSectionsParent);
         }
 
         private void SetupSectionUI(ShopSectionLayout shopSectionLayout)

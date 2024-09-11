@@ -1,5 +1,6 @@
 using Celeste.Persistence;
 using Celeste.Wallet.Persistence;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Wallet
@@ -22,13 +23,6 @@ namespace Celeste.Wallet
 
         #region Unity Methods
 
-        protected override void Awake()
-        {
-            walletRecord.Initialize(currencyCatalogue);
-
-            base.Awake();
-        }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -42,16 +36,14 @@ namespace Celeste.Wallet
 
         protected override void Deserialize(WalletDTO dto)
         {
+            Dictionary<int, int> currencyAmountLookup = new Dictionary<int, int>();
+
             foreach (var currencyDto in dto.currencies)
             {
-                Currency currency = currencyCatalogue.FindByGuid(currencyDto.currencyGuid);
-                UnityEngine.Debug.Assert(currency != null, $"Could not find currency with guid {currencyDto.currencyGuid} in catalogue.");
-
-                if (currency != null && currency.IsPersistent)
-                {
-                    currency.Quantity = currencyDto.quantity;
-                }
+                currencyAmountLookup[currencyDto.currencyGuid] = currencyDto.quantity;
             }
+            
+            walletRecord.Initialize(currencyCatalogue, currencyAmountLookup);
         }
 
         protected override WalletDTO Serialize()
@@ -61,7 +53,7 @@ namespace Celeste.Wallet
 
         protected override void SetDefaultValues()
         {
-            walletRecord.CreateStartingWallet();
+            walletRecord.Initialize(currencyCatalogue);
         }
 
         #endregion

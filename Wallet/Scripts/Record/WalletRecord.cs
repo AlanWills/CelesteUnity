@@ -23,11 +23,28 @@ namespace Celeste.Wallet
 
         public void Initialize(CurrencyCatalogue currencyCatalogue)
         {
+            Dictionary<int, int> startingCurrencyLookup = new Dictionary<int, int>();
+
+            foreach (Currency currency in currencyCatalogue.Items)
+            {
+                startingCurrencyLookup[currency.Guid] = currency.Quantity;
+            }
+
+            Initialize(currencyCatalogue, startingCurrencyLookup);
+        }
+
+        public void Initialize(CurrencyCatalogue currencyCatalogue, IReadOnlyDictionary<int, int> currencyQuantityLookup)
+        {
             Shutdown();
 
             for (int i = 0, n = currencyCatalogue.NumItems; i < n; ++i)
             {
                 Currency currency = currencyCatalogue.GetItem(i);
+
+                if (currency.IsPersistent && currencyQuantityLookup.TryGetValue(currency.Guid, out int currencyQuantity))
+                {
+                    currency.Quantity = currencyQuantity;
+                }
                 
                 currency.AddOnQuantityChangedCallback((args) =>
                 {
@@ -52,14 +69,6 @@ namespace Celeste.Wallet
             }
 
             currencies.Clear();
-        }
-
-        public void CreateStartingWallet()
-        {
-            foreach (Currency currency in currencies)
-            {
-                currency.Quantity = currency.StartingQuantity;
-            }
         }
 
         public Currency GetCurrency(int recordIndex)
