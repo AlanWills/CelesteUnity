@@ -1,4 +1,6 @@
-using System.Diagnostics;
+using Celeste.Tools;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace CelesteEditor.Tools
@@ -46,15 +48,11 @@ namespace CelesteEditor.Tools
             return dirty;
         }
 
-        [Conditional("UNITY_EDITOR")]
         public static void FindAssets<T>(this Object target, string propertyName) where T : Object
         {
-#if UNITY_EDITOR
             FindAssetsImpl<T>(target, propertyName, string.Empty);
-#endif
         }
 
-        [Conditional("UNITY_EDITOR")]
         public static void FindAssets<T>(this Object target, string propertyName, string subDirectoryName) where T : Object
         {
             string targetFolder = Celeste.Tools.EditorOnly.GetAssetFolderPath(target);
@@ -67,7 +65,33 @@ namespace CelesteEditor.Tools
             FindAssetsImpl<T>(target, propertyName, targetFolder);
         }
 
-        [Conditional("UNITY_EDITOR")]
+        public static Dictionary<string, T> CreateAssetNameLookup<T>() where T : Object
+        {
+            Dictionary<string, T> lookup = new Dictionary<string, T>(System.StringComparer.Ordinal);
+
+            foreach (T asset in EditorOnly.FindAssets<T>())
+            {
+                lookup.Add(asset.name, asset);
+            }
+
+            return lookup;
+        }
+
+        public static Dictionary<string, T> CreateAssetNameLookup<T>(string directory) where T : Object
+        {
+            Dictionary<string, T> lookup = new Dictionary<string, T>(System.StringComparer.Ordinal);
+
+            if (Directory.Exists(directory))
+            {
+                foreach (T asset in EditorOnly.FindAssets<T>("", directory))
+                {
+                    lookup.Add(asset.name, asset);
+                }
+            }
+
+            return lookup;
+        }
+
         private static void FindAssetsImpl<T>(this Object target, string propertyName, string targetFolder) where T : Object
         {
             UnityEditor.SerializedObject serializedObject = new UnityEditor.SerializedObject(target);

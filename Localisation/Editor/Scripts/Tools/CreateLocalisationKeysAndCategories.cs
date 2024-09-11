@@ -1,16 +1,13 @@
-﻿using UnityEditor;
-using UnityEngine;
-using Celeste.Web;
-using System.Collections.Generic;
+﻿using Celeste;
 using Celeste.Localisation;
-using CelesteEditor.Localisation.Utility;
-using static Celeste.Localisation.Language;
 using Celeste.Localisation.Catalogue;
-using Celeste.Web.ImportSteps;
-using System.IO;
-using Celeste;
 using Celeste.Tools;
+using Celeste.Web;
+using Celeste.Web.ImportSteps;
+using CelesteEditor.Localisation.Utility;
 using CelesteEditor.Tools;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CelesteEditor.Localisation.Tools
 {
@@ -32,11 +29,8 @@ namespace CelesteEditor.Localisation.Tools
 
         [Header("Data")]
         [SerializeField] private LanguageCatalogue languageCatalogue;
-        [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
-        [SerializeField] private LocalisationKeyCategoryCatalogue localisationKeyCategoryCatalogue;
         [SerializeField] private string localisationKeysDirectory = "Assets/Localisation/Data/Keys";
         [SerializeField] private string localisationKeyCategoriesDirectory = "Assets/Localisation/Data/Categories";
-        [SerializeField] private string localisationAudioDirectory = "Assets/Localisation/Audio";
 
         #endregion
 
@@ -46,14 +40,14 @@ namespace CelesteEditor.Localisation.Tools
             {
                 GoogleSheet.Column keyStrings = googleSheet.GetColumn(keyColumn);
                 GoogleSheet.Column categoryStrings = googleSheet.GetColumn(categoryColumn);
+                Dictionary<string, LocalisationKey> localisationKeyLookup = AssetDatabaseExtensions.CreateAssetNameLookup<LocalisationKey>(localisationKeysDirectory);
+                Dictionary<string, LocalisationKeyCategory> localisationKeyCategoryLookup = AssetDatabaseExtensions.CreateAssetNameLookup<LocalisationKeyCategory>(localisationKeyCategoriesDirectory);
 
                 for (int column = languagesColumnOffset; column < googleSheet.NumColumns; ++column)
                 {
                     GoogleSheet.Column columnData = googleSheet.GetColumn(column);
                     Language language = languageCatalogue.FindLanguageForTwoLetterCountryCode(columnData.Name);
                     Debug.Assert(language != null, $"Could not find language for country code {columnData.Name}.");
-
-                    List<LocalisationData> localisationData = new List<LocalisationData>();
 
                     for (int row = 0, n = keyStrings.Values.Count; row < n; ++row)
                     {
@@ -77,10 +71,7 @@ namespace CelesteEditor.Localisation.Tools
                             }
                         }
 
-                        // Need to create a new localisation key asset
-                        LocalisationKey localisationKey = localisationKeyCatalogue.GetItem(keyString);
-
-                        if (localisationKey == null)
+                        if (!localisationKeyLookup.TryGetValue(keyString, out LocalisationKey localisationKey))
                         {
                             Debug.Assert(!string.IsNullOrEmpty(keyString), $"Null or empty key string found for column {column} in row {row} for category {categoryString}.");
                             Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for column {column} in row {row} for category {categoryString}.");
@@ -89,35 +80,19 @@ namespace CelesteEditor.Localisation.Tools
                             localisationKey.Key = keyString;
                             localisationKey.Fallback = localisedString;
 
-                            localisationKeyCatalogue.AddItem(keyString, localisationKey);
-
                             string directory = $"{localisationKeysDirectory}/{categoryString}";
                             EditorOnly.CreateAssetInFolder(localisationKey, directory);
                         }
 
-                        LocalisationKeyCategory localisationKeyCategory = localisationKeyCategoryCatalogue.FindByCategoryName(categoryString);
-
-                        if (localisationKeyCategory == null)
+                        if (!localisationKeyCategoryLookup.TryGetValue(categoryString, out LocalisationKeyCategory localisationKeyCategory))
                         {
                             localisationKeyCategory = CreateInstance<LocalisationKeyCategory>();
                             localisationKeyCategory.name = $"{categoryString.ToAssetName()}Category";
                             localisationKeyCategory.CategoryName = categoryString;
 
-                            localisationKeyCategoryCatalogue.AddItem(localisationKeyCategory);
-
                             EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
                         }
-
-                        if (!language.CanSynthesize(localisationKey))
-                        {
-                            Debug.LogWarning($"Could not find audio clip for localisation key {localisationKey.Key} and language {language.name}.");
-                        }
-
-                        localisationKey.Category = localisationKeyCategory;
-                        localisationData.Add(new LocalisationData(localisationKey.Key, localisedString));
                     }
-
-                    language.AddData(localisationData);
                 }
             }
         }
