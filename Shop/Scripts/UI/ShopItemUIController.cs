@@ -23,5 +23,10 @@ namespace Celeste.Shop.UI
             shopItemCost.Hookup(shopItemLayout.shopItem);
             shopItemPurchase.Hookup(shopItemLayout.shopItem);
         }
+
+        public void RefreshPrice()
+        {
+            shopItemCost.RefreshPrice();
+        }
     }
 }

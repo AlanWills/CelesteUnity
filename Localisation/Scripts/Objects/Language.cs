@@ -299,6 +299,29 @@ namespace Celeste.Localisation
             }
         }
 
+        public void MergeData(IReadOnlyList<LocalisationSpeechData> speechData)
+        {
+            for (int i = 0, n = speechData.Count; i < n; ++i)
+            {
+                LocalisationSpeechData data = speechData[i];
+                int existingIndex = speech.FindIndex(x => string.CompareOrdinal(x.key, data.key) == 0);
+
+                if (existingIndex < 0)
+                {
+                    speech.Add(new LocalisationSpeechData(data.key, data.synthesizedSpeech));
+                }
+                else
+                {
+                    LocalisationSpeechData existingData = speech[existingIndex];
+                    existingData.synthesizedSpeech = data.synthesizedSpeech;
+                    speech[existingIndex] = existingData;
+                }
+                
+                _speechLookup[data.key] = data.synthesizedSpeech;
+                EditorOnly.SetDirty(this);
+            }
+        }
+
         public void ClearData()
         {
             localisation.Clear();

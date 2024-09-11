@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Celeste.Shop.UI
@@ -10,19 +11,19 @@ namespace Celeste.Shop.UI
 
         [SerializeField] private ShopLayout shopLayout;
         [SerializeField] private RectTransform shopSectionsParent;
-        
+
         #endregion
-        
+
         #region Unity Methods
 
         private void OnEnable()
         {
-            RefreshUI();
+            SetupUI();
         }
 
         #endregion
-        
-        private void RefreshUI()
+
+        private void SetupUI()
         {
             var shopSections = shopLayout.ShopSectionLayouts;
 
@@ -37,6 +38,7 @@ namespace Celeste.Shop.UI
             GameObject shopSectionUI = Instantiate(shopSectionLayout.shopSectionPrefab, shopSectionsParent);
             IShopSectionUIController shopSectionUIController = shopSectionUI.GetComponent<IShopSectionUIController>();
             Debug.Assert(shopSectionUIController != null, $@"No script implementing the {nameof(IShopSectionUIController)} interface could be found on {shopSectionUI.name}.");
+            
             shopSectionUIController.Hookup(shopSectionLayout);
             
             for (int i = 0, n = shopSectionLayout.shopItemLayouts.Count; i < n; ++i)
@@ -50,7 +52,7 @@ namespace Celeste.Shop.UI
             GameObject shopItemUI = Instantiate(shopItemLayout.shopItemPrefab, shopSectionUIController.ShopItemParent);
             IShopItemUIController shopItemUIController = shopItemUI.GetComponent<IShopItemUIController>();
             Debug.Assert(shopItemUIController != null, $@"No script implementing the {nameof(IShopItemUIController)} interface could be found on {shopItemUI.name}.");
-            
+
             shopItemUIController.Hookup(shopItemLayout);
         }
     }

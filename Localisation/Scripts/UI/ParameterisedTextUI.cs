@@ -76,6 +76,8 @@ namespace Celeste.Localisation.UI
 
         public void Setup(params string[] locaTokens)
         {
+            this.locaTokens.Clear();
+
             for (int i = 0, n = locaTokens != null ? locaTokens.Length : 0; i < n - 1; i += 2)
             {
                 this.locaTokens.Add(new ValueTuple<string, string>(locaTokens[i], locaTokens[i+1]));

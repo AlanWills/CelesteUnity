@@ -16,6 +16,7 @@ namespace Celeste.Events
                 if (runtimeEvent == null && Application.isPlaying)
                 {
                     runtimeEvent = bakedEvent ?? ScriptableObject.CreateInstance<TEvent>();
+                    runtimeEvent.name = bakedEvent != null ? bakedEvent.name : $"Runtime{typeof(TEvent).Name}";
                 }
 
                 return runtimeEvent;

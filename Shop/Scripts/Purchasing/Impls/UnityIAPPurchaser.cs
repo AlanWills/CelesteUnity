@@ -37,7 +37,8 @@ namespace Celeste.Shop.Purchasing.Impls
                 { iap.AppleIAPCode, AppleAppStore.Name }
             });
             }
-            
+
+            UnityEngine.Debug.Log("Beginning initialization of Unity Purchasing.");
             UnityPurchasing.Initialize(this, builder);
         }
 
@@ -76,6 +77,8 @@ namespace Celeste.Shop.Purchasing.Impls
         /// </summary>
         void IStoreListener.OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
+            UnityEngine.Debug.Log("Unity Purchasing successfully initialized.");
+
             this.controller = controller;
             this.extensions = extensions;
 

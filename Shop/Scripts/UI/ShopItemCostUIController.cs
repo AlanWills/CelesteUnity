@@ -1,5 +1,7 @@
-﻿using Celeste.Localisation;
+﻿using Celeste.Events;
+using Celeste.Localisation;
 using Celeste.Localisation.UI;
+using System;
 using UnityEngine;
 
 namespace Celeste.Shop.UI
@@ -13,10 +15,29 @@ namespace Celeste.Shop.UI
         [SerializeField] private LocalisationKey currencyPurchaseLocalisationKey;
         [SerializeField] private ParameterisedTextUI costQuantityText;
 
+        [NonSerialized] private ShopItem shopItem;
+
         #endregion
 
-        public void Hookup(ShopItem shopItem)
+        public void Hookup(ShopItem _shopItem)
         {
+            shopItem = _shopItem;
+
+            RefreshPrice();
+            
+            if (shopItem.IsIAPPurchase)
+            {
+                shopItem.IAP.AddOnLocalisedPriceStringChangedCallback(OnLocalisedPriceStringChanged);
+            }
+        }
+
+        public void RefreshPrice()
+        {
+            if (shopItem == null)
+            {
+                return;
+            }
+
             if (shopItem.IsCurrencyPurchase)
             {
                 costQuantityText.Setup(
@@ -31,5 +52,14 @@ namespace Celeste.Shop.UI
                     "COST", shopItem.IAP.LocalisedPriceString);
             }
         }
+
+        #region Callbacks
+
+        private void OnLocalisedPriceStringChanged(ValueChangedArgs<string> args)
+        {
+            RefreshPrice();
+        }
+
+        #endregion
     }
 }

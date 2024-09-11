@@ -9,6 +9,7 @@
         "Celeste.Tools",
         "Celeste.Localisation",
         "Celeste.UnityProject",
+        "Celeste.Events",
         "Unity.TextMeshPro",
         "UnityEngine.Purchasing",
         "UnityEngine.Purchasing.Stores",

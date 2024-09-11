@@ -2,6 +2,9 @@ using Celeste.Objects;
 using UnityEngine;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
+using System;
+using Celeste.Events;
+using UnityEngine.Events;
 
 namespace Celeste.Shop.Objects
 {
@@ -35,7 +38,19 @@ namespace Celeste.Shop.Objects
         public string GoogleIAPCode => hasGoogleSpecificCode ? googleSpecificCode : iapCode;
         public string AppleIAPCode => hasAppleSpecificCode ? appleSpecificCode : iapCode;
 
-        public string LocalisedPriceString { get; set; } = "???";
+        public string LocalisedPriceString
+        {
+            get => localisedPriceString;
+            set
+            {
+                if (string.CompareOrdinal(localisedPriceString, value) != 0)
+                {
+                    string oldValue = localisedPriceString;
+                    localisedPriceString = value;
+                    onLocalisedPriceStringChanged.Invoke(oldValue, value);
+                }
+            }
+        }
         public string LocalisedTitle { get; set; }
         public string LocalisedDescription { get; set; }
         public string ISOCurrencyCode { get; set; } = "USD";
@@ -49,6 +64,19 @@ namespace Celeste.Shop.Objects
         [SerializeField] private bool hasAppleSpecificCode = false;
         [SerializeField, ShowIf(nameof(hasAppleSpecificCode))] private string appleSpecificCode;
 
+        [NonSerialized] private string localisedPriceString = "???";
+        [NonSerialized] private GuaranteedStringValueChangedEvent onLocalisedPriceStringChanged = new GuaranteedStringValueChangedEvent();
+
         #endregion
+
+        public void AddOnLocalisedPriceStringChangedCallback(UnityAction<ValueChangedArgs<string>> callback)
+        {
+            onLocalisedPriceStringChanged.AddListener(callback);
+        }
+
+        public void RemoveOnLocalisedPriceStringChangedCallback(UnityAction<ValueChangedArgs<string>> callback)
+        {
+            onLocalisedPriceStringChanged.RemoveListener(callback);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Celeste.Shop.Catalogue;
+﻿using Celeste.Events;
+using Celeste.Shop.Catalogue;
 using Celeste.Shop.Purchasing.Impls;
 using System;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace Celeste.Shop.Purchasing
 #else
             iapPurchaser = new DisabledPurchaser();
 #endif
+            UnityEngine.Debug.Log($"Created iap purchaser of type: {iapPurchaser.GetType().Name}.");
         }
 
         public async Task<PurchaseResult> Purchase(ShopItem shopItem)
