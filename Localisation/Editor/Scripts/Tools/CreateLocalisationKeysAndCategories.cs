@@ -71,12 +71,15 @@ namespace CelesteEditor.Localisation.Tools
                             }
                         }
 
-                        if (!localisationKeyLookup.TryGetValue(keyString, out LocalisationKey localisationKey))
+                        string localisationKeyName = keyString.ToAssetName();
+                        string localisationCategoryName = $"{categoryString.ToAssetName()}Category";
+
+                        if (!localisationKeyLookup.TryGetValue(localisationKeyName, out LocalisationKey localisationKey))
                         {
                             Debug.Assert(!string.IsNullOrEmpty(keyString), $"Null or empty key string found for column {column} in row {row} for category {categoryString}.");
                             Debug.Assert(!string.IsNullOrEmpty(localisedString), $"No localised string found for column {column} in row {row} for category {categoryString}.");
                             localisationKey = CreateInstance<LocalisationKey>();
-                            localisationKey.name = keyString.ToAssetName();
+                            localisationKey.name = localisationKeyName;
                             localisationKey.Key = keyString;
                             localisationKey.Fallback = localisedString;
 
@@ -84,10 +87,10 @@ namespace CelesteEditor.Localisation.Tools
                             EditorOnly.CreateAssetInFolder(localisationKey, directory);
                         }
 
-                        if (!localisationKeyCategoryLookup.TryGetValue(categoryString, out LocalisationKeyCategory localisationKeyCategory))
+                        if (!localisationKeyCategoryLookup.TryGetValue(localisationCategoryName, out LocalisationKeyCategory localisationKeyCategory))
                         {
                             localisationKeyCategory = CreateInstance<LocalisationKeyCategory>();
-                            localisationKeyCategory.name = $"{categoryString.ToAssetName()}Category";
+                            localisationKeyCategory.name = localisationCategoryName;
                             localisationKeyCategory.CategoryName = categoryString;
 
                             EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);

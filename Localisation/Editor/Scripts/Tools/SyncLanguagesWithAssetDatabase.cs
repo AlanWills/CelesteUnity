@@ -69,9 +69,12 @@ namespace CelesteEditor.Localisation.Tools
                             continue;
                         }
 
-                        if (!localisationKeyLookup.TryGetValue(keyString, out LocalisationKey localisationKey))
+                        string localisationKeyName = keyString.ToAssetName();
+                        string localisationCategoryName = $"{categoryString.ToAssetName()}Category";
+
+                        if (!localisationKeyLookup.TryGetValue(localisationKeyName, out LocalisationKey localisationKey))
                         {
-                            Debug.LogAssertion($"Key {keyString} could not be found in the Asset Database.  Skipping loc key {keyString}...");
+                            Debug.LogAssertion($"Key {localisationKeyName} could not be found in the Asset Database.  Skipping loc key {keyString}...");
                             continue;
                         }
                         else
@@ -79,9 +82,9 @@ namespace CelesteEditor.Localisation.Tools
                             languageLocalisationData.Add(new Language.LocalisationData(keyString, localisedString));
                         }
 
-                        if (!localisationKeyCategoryLookup.TryGetValue(categoryString, out LocalisationKeyCategory localisationKeyCategory))
+                        if (!localisationKeyCategoryLookup.TryGetValue(localisationCategoryName, out LocalisationKeyCategory localisationKeyCategory))
                         {
-                            Debug.LogAssertion($"Category {categoryString} could not be found in the Asset Database.  Skipping loc key {keyString}...");
+                            Debug.LogAssertion($"Category {localisationCategoryName} could not be found in the Asset Database.  Skipping loc key {keyString}...");
                             continue;
                         }
                         else
