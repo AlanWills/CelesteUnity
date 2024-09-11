@@ -72,7 +72,7 @@ namespace CelesteEditor.Localisation.Tools
                         }
 
                         string localisationKeyName = keyString.ToAssetName();
-                        string localisationCategoryName = $"{categoryString.ToAssetName()}Category";
+                        string localisationCategoryName = $"{categoryString}Category";
 
                         if (!localisationKeyLookup.TryGetValue(localisationKeyName, out LocalisationKey localisationKey))
                         {
@@ -85,6 +85,8 @@ namespace CelesteEditor.Localisation.Tools
 
                             string directory = $"{localisationKeysDirectory}/{categoryString}";
                             EditorOnly.CreateAssetInFolder(localisationKey, directory);
+
+                            localisationKeyLookup.Add(localisationKeyName, localisationKey);
                         }
 
                         if (!localisationKeyCategoryLookup.TryGetValue(localisationCategoryName, out LocalisationKeyCategory localisationKeyCategory))
@@ -94,6 +96,8 @@ namespace CelesteEditor.Localisation.Tools
                             localisationKeyCategory.CategoryName = categoryString;
 
                             EditorOnly.CreateAssetInFolder(localisationKeyCategory, localisationKeyCategoriesDirectory);
+
+                            localisationKeyCategoryLookup.Add(localisationCategoryName, localisationKeyCategory);
                         }
                     }
                 }
