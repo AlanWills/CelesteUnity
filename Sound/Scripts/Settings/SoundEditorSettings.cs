@@ -39,19 +39,19 @@ namespace Celeste.Sound.Settings
         {
             base.OnCreate();
 
-            sfxEnabled = EditorOnly.FindAsset<BoolValue>("SFXEnabled");
-            musicEnabled = EditorOnly.FindAsset<BoolValue>("MusicEnabled");
-            shuffleMusic = EditorOnly.FindAsset<BoolValue>("ShuffleMusic");
+            sfxEnabled = EditorOnly.MustFindAsset<BoolValue>("SFXEnabled");
+            musicEnabled = EditorOnly.MustFindAsset<BoolValue>("MusicEnabled");
+            shuffleMusic = EditorOnly.MustFindAsset<BoolValue>("ShuffleMusic");
 
-            playMusicWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlayMusicWithRawClip");
-            playMusicWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
-            playMusicOneShotWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlayMusicOneShotWithRawClip");
-            playMusicOneShotWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlayMusicOneShotWithSettings");
+            playMusicWithRawClipEvent = EditorOnly.MustFindAsset<AudioClipEvent>("PlayMusicWithRawClip");
+            playMusicWithSettingsEvent = EditorOnly.MustFindAsset<AudioClipSettingsEvent>("PlayMusicWithSettings");
+            playMusicOneShotWithRawClipEvent = EditorOnly.MustFindAsset<AudioClipEvent>("PlayMusicOneShotWithRawClip");
+            playMusicOneShotWithSettingsEvent = EditorOnly.MustFindAsset<AudioClipSettingsEvent>("PlayMusicOneShotWithSettings");
 
-            playSFXWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlaySFXWithRawClip");
-            playSFXWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlaySFXWithSettings");
-            playSFXOneShotWithRawClipEvent = EditorOnly.FindAsset<AudioClipEvent>("PlaySFXOneShotWithRawClip");
-            playSFXOneShotWithSettingsEvent = EditorOnly.FindAsset<AudioClipSettingsEvent>("PlaySFXOneShotWithSettings");
+            playSFXWithRawClipEvent = EditorOnly.MustFindAsset<AudioClipEvent>("PlaySFXWithRawClip");
+            playSFXWithSettingsEvent = EditorOnly.MustFindAsset<AudioClipSettingsEvent>("PlaySFXWithSettings");
+            playSFXOneShotWithRawClipEvent = EditorOnly.MustFindAsset<AudioClipEvent>("PlaySFXOneShotWithRawClip");
+            playSFXOneShotWithSettingsEvent = EditorOnly.MustFindAsset<AudioClipSettingsEvent>("PlaySFXOneShotWithSettings");
         }
 #endif
     }

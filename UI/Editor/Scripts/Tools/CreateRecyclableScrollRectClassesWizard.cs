@@ -41,17 +41,17 @@ namespace CelesteEditor.UI.Tools
 
             if (controllerClassTemplate == null)
             {
-                controllerClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectControllerClassTemplate");
+                controllerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("RecyclableScrollRectControllerClassTemplate");
             }
 
             if (dataClassTemplate == null)
             {
-                dataClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectDataClassTemplate");
+                dataClassTemplate = EditorOnly.MustFindAsset<TextAsset>("RecyclableScrollRectDataClassTemplate");
             }
 
             if (uiClassTemplate == null)
             {
-                uiClassTemplate = EditorOnly.FindAsset<TextAsset>("RecyclableScrollRectUIClassTemplate");
+                uiClassTemplate = EditorOnly.MustFindAsset<TextAsset>("RecyclableScrollRectUIClassTemplate");
             }
         }
 

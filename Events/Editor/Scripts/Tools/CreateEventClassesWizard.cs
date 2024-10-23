@@ -47,32 +47,32 @@ namespace CelesteEditor.Events.Tools
 
             if (eventClassTemplate == null)
             {
-                eventClassTemplate = EditorOnly.FindAsset<TextAsset>("EventClassTemplate");
+                eventClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventClassTemplate");
             }
 
             if (eventListenerClassTemplate == null)
             {
-                eventListenerClassTemplate = EditorOnly.FindAsset<TextAsset>("EventListenerClassTemplate");
+                eventListenerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventListenerClassTemplate");
             }
 
             if (eventRaiserClassTemplate == null)
             {
-                eventRaiserClassTemplate = EditorOnly.FindAsset<TextAsset>("EventRaiserClassTemplate");
+                eventRaiserClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventRaiserClassTemplate");
             }
 
             if (valueChangedEventClassTemplate == null)
             {
-                valueChangedEventClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventClassTemplate");
+                valueChangedEventClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventClassTemplate");
             }
 
             if (valueChangedEventListenerClassTemplate == null)
             {
-                valueChangedEventListenerClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventListenerClassTemplate");
+                valueChangedEventListenerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventListenerClassTemplate");
             }
 
             if (valueChangedEventRaiserClassTemplate == null)
             {
-                valueChangedEventRaiserClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueChangedEventRaiserClassTemplate");
+                valueChangedEventRaiserClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventRaiserClassTemplate");
             }
         }
 

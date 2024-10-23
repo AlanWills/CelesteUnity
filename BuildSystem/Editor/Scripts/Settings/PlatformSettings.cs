@@ -326,15 +326,15 @@ namespace CelesteEditor.BuildSystem
             isDebugBuild = isDebugConfig;
             buildOptions = BuildOptions.StrictMode;
 
-            scriptingDefineSymbols = EditorOnly.FindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
-            buildPreparationSteps = EditorOnly.FindAsset<BuildPreparationSteps>();
-            buildPostProcessSteps = EditorOnly.FindAsset<BuildPostProcessSteps>();
+            scriptingDefineSymbols = EditorOnly.MustFindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
+            buildPreparationSteps = EditorOnly.MustFindAsset<BuildPreparationSteps>();
+            buildPostProcessSteps = EditorOnly.MustFindAsset<BuildPostProcessSteps>();
 #if USE_ADDRESSABLES
-            addressableGroupsInBuild = EditorOnly.FindAsset<AddressableGroupNames>();
-            buildAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
-            buildAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForBuild");
-            updateAssetsPreparationSteps = EditorOnly.FindAsset<AssetPreparationSteps>();
-            updateAssetsPostProcessSteps = EditorOnly.FindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForUpdate");
+            addressableGroupsInBuild = EditorOnly.MustFindAsset<AddressableGroupNames>();
+            buildAssetsPreparationSteps = EditorOnly.MustFindAsset<AssetPreparationSteps>();
+            buildAssetsPostProcessSteps = EditorOnly.MustFindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForBuild");
+            updateAssetsPreparationSteps = EditorOnly.MustFindAsset<AssetPreparationSteps>();
+            updateAssetsPostProcessSteps = EditorOnly.MustFindAsset<AssetPostProcessSteps>("AssetPostProcessStepsForUpdate");
 #endif
             SetPlatformDefaultValues(isDebugConfig);
             

@@ -70,72 +70,72 @@ namespace Celeste.Input.Settings
 
             if (inputCameraValue == null)
             {
-                inputCameraValue = EditorOnly.FindAsset<CameraValue>("InputCamera");
+                inputCameraValue = EditorOnly.MustFindAsset<CameraValue>("InputCamera");
             }
 
             if (setInputCameraEvent == null)
             {
-                setInputCameraEvent = EditorOnly.FindAsset<CameraEvent>("SetInputCamera");
+                setInputCameraEvent = EditorOnly.MustFindAsset<CameraEvent>("SetInputCamera");
             }
 
             if (leftMouseButtonFirstDownEvent == null)
             {
-                leftMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstDown");
+                leftMouseButtonFirstDownEvent = EditorOnly.MustFindAsset<Vector2Event>("LeftMouseButtonFirstDown");
             }
 
             if (leftMouseButtonDownEvent == null)
             {
-                leftMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonDown");
+                leftMouseButtonDownEvent = EditorOnly.MustFindAsset<Vector2Event>("LeftMouseButtonDown");
             }
 
             if (leftMouseButtonFirstUpEvent == null)
             {
-                leftMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("LeftMouseButtonFirstUp");
+                leftMouseButtonFirstUpEvent = EditorOnly.MustFindAsset<Vector2Event>("LeftMouseButtonFirstUp");
             }
 
             if (middleMouseButtonFirstDownEvent == null)
             {
-                middleMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
+                middleMouseButtonFirstDownEvent = EditorOnly.MustFindAsset<Vector2Event>("MiddleMouseButtonFirstDown");
             }
 
             if (middleMouseButtonDownEvent == null)
             {
-                middleMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonDown");
+                middleMouseButtonDownEvent = EditorOnly.MustFindAsset<Vector2Event>("MiddleMouseButtonDown");
             }
 
             if (middleMouseButtonFirstUpEvent == null)
             {
-                middleMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
+                middleMouseButtonFirstUpEvent = EditorOnly.MustFindAsset<Vector2Event>("MiddleMouseButtonFirstUp");
             }
 
             if (rightMouseButtonFirstDownEvent == null)
             {
-                rightMouseButtonFirstDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstDown");
+                rightMouseButtonFirstDownEvent = EditorOnly.MustFindAsset<Vector2Event>("RightMouseButtonFirstDown");
             }
 
             if (rightMouseButtonDownEvent == null)
             {
-                rightMouseButtonDownEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonDown");
+                rightMouseButtonDownEvent = EditorOnly.MustFindAsset<Vector2Event>("RightMouseButtonDown");
             }
 
             if (rightMouseButtonFirstUpEvent == null)
             {
-                rightMouseButtonFirstUpEvent = EditorOnly.FindAsset<Vector2Event>("RightMouseButtonFirstUp");
+                rightMouseButtonFirstUpEvent = EditorOnly.MustFindAsset<Vector2Event>("RightMouseButtonFirstUp");
             }
 
             if (singleTouchEvent == null)
             {
-                singleTouchEvent = EditorOnly.FindAsset<TouchEvent>("SingleTouch");
+                singleTouchEvent = EditorOnly.MustFindAsset<TouchEvent>("SingleTouch");
             }
 
             if (doubleTouchEvent == null)
             {
-                doubleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("DoubleTouch");
+                doubleTouchEvent = EditorOnly.MustFindAsset<MultiTouchEvent>("DoubleTouch");
             }
 
             if (tripleTouchEvent == null)
             {
-                tripleTouchEvent = EditorOnly.FindAsset<MultiTouchEvent>("TripleTouch");
+                tripleTouchEvent = EditorOnly.MustFindAsset<MultiTouchEvent>("TripleTouch");
             }
         }
 #endif

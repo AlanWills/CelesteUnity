@@ -39,42 +39,42 @@ namespace CelesteEditor.UnityProject.Wizards
 
             if (objectClassTemplate == null)
             {
-                objectClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureObjectClassTemplate");
+                objectClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureObjectClassTemplate");
             }
 
             if (catalogueClassTemplate == null)
             {
-                catalogueClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureCatalogueClassTemplate");
+                catalogueClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureCatalogueClassTemplate");
             }
 
             if (catalogueEditorClassTemplate == null)
             {
-                catalogueEditorClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureCatalogueEditorClassTemplate");
+                catalogueEditorClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureCatalogueEditorClassTemplate");
             }
 
             if (recordClassTemplate == null)
             {
-                recordClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureRecordClassTemplate");
+                recordClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureRecordClassTemplate");
             }
 
             if (nonPersistentManagerClassTemplate == null)
             {
-                nonPersistentManagerClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureNonPersistentManagerClassTemplate");
+                nonPersistentManagerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureNonPersistentManagerClassTemplate");
             }
 
             if (persistentManagerClassTemplate == null)
             {
-                persistentManagerClassTemplate = EditorOnly.FindAsset<TextAsset>("FeaturePersistentManagerClassTemplate");
+                persistentManagerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeaturePersistentManagerClassTemplate");
             }
 
             if (dtoClassTemplate == null)
             {
-                dtoClassTemplate = EditorOnly.FindAsset<TextAsset>("FeatureDTOClassTemplate");
+                dtoClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeatureDTOClassTemplate");
             }
 
             if (persistentMenuItemsClassTemplate == null)
             {
-                persistentMenuItemsClassTemplate = EditorOnly.FindAsset<TextAsset>("FeaturePersistentMenuItemsClassTemplate");
+                persistentMenuItemsClassTemplate = EditorOnly.MustFindAsset<TextAsset>("FeaturePersistentMenuItemsClassTemplate");
             }
         }
 

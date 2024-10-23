@@ -43,12 +43,12 @@ namespace CelesteEditor.Parameters
 
             if (valueParameterClassTemplate == null)
             {
-                valueParameterClassTemplate = EditorOnly.FindAsset<TextAsset>("ValueParameterClassTemplate");
+                valueParameterClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueParameterClassTemplate");
             }
 
             if (referenceParameterClassTemplate == null)
             {
-                referenceParameterClassTemplate = EditorOnly.FindAsset<TextAsset>("ReferenceParameterClassTemplate");
+                referenceParameterClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ReferenceParameterClassTemplate");
             }
         }
 

@@ -32,7 +32,7 @@ namespace Celeste.Debug.Settings
 
             if (isDebugBuildValue == null)
             {
-                isDebugBuildValue = EditorOnly.FindAsset<BoolValue>("IsDebugBuild");
+                isDebugBuildValue = EditorOnly.MustFindAsset<BoolValue>("IsDebugBuild");
             }
         }
 #endif

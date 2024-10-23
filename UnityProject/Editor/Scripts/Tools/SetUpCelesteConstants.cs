@@ -106,7 +106,7 @@
         public const string ANDROID_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "Android/";
         public const string IOS_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "iOS/";
         public const string WEBGL_JENKINS_BUILD_FILES_FOLDER = EDITOR_FOLDER + "WebGL/";
-        public const string FASTLANE_BUILD_FILES_FOLDER = "Assets/../fastlane";
+        public const string FASTLANE_BUILD_FILES_FOLDER = "fastlane";
 
         public readonly string CELESTE_BUILD_SYSTEM_FOLDER;
         public readonly string CELESTE_BUILD_SYSTEM_EDITOR_FOLDER => CELESTE_BUILD_SYSTEM_FOLDER + "Editor/";

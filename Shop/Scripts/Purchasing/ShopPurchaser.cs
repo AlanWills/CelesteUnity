@@ -26,7 +26,7 @@ namespace Celeste.Shop.Purchasing
 #elif USE_UNITY_PURCHASING
             iapPurchaser = new UnityIAPPurchaser(_iapCatalogue);
 #else
-            iapPurchaser = new DisabledPurchaser();
+            iapPurchaser = new DisabledIAPPurchaser();
 #endif
             UnityEngine.Debug.Log($"Created iap purchaser of type: {iapPurchaser.GetType().Name}.");
         }

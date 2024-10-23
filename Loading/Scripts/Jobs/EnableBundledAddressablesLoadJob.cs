@@ -44,6 +44,8 @@ namespace Celeste.Loading
             new RuntimePlatformDirectory(RuntimePlatform.WebGLPlayer, "WebGL"),
             new RuntimePlatformDirectory(RuntimePlatform.WindowsPlayer, "StandaloneWindows64"),
             new RuntimePlatformDirectory(RuntimePlatform.WindowsEditor, "StandaloneWindows64"),
+            new RuntimePlatformDirectory(RuntimePlatform.OSXPlayer, "StandaloneOSX"),
+            new RuntimePlatformDirectory(RuntimePlatform.OSXEditor, "StandaloneOSX"),
         };
 
         private CachedAssetBundles cachedAssetBundles = new CachedAssetBundles();

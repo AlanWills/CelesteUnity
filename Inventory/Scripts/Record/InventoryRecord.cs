@@ -126,7 +126,9 @@ namespace Celeste.Inventory
                 return true;
             }
 
+#if INDEX_CHECKS
             return false;
+#endif
         }
 
         #endregion

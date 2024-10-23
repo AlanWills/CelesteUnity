@@ -328,6 +328,27 @@ namespace Celeste.Tools
 #endif
         }
 
+        public static T MustFindAsset<T>() where T : Object
+        {
+            return MustFindAsset<T>(string.Empty, string.Empty);
+        }
+
+        public static T MustFindAsset<T>(string name) where T : Object
+        {
+            return MustFindAsset<T>(name, string.Empty);
+        }
+
+        public static T MustFindAsset<T>(string name, string directory) where T : Object
+        {
+#if UNITY_EDITOR
+            T asset = FindAsset<T>(name, directory);
+            UnityEngine.Debug.Assert(asset != default, $"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.");
+            return asset;
+#else
+            return default;
+#endif
+        }
+        
         public static T FindAsset<T>() where T : Object
         {
             return FindAsset<T>(string.Empty, string.Empty);
@@ -356,8 +377,6 @@ namespace Celeste.Tools
                     return asset;
                 }
             }
-
-            UnityEngine.Debug.LogAssertion($"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.  Found: {assets.Count}.");
 #endif
             return default;
         }
