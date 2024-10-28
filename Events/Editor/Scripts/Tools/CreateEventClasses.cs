@@ -42,7 +42,7 @@ namespace CelesteEditor.Events.Tools
             string namespaceName = args.namespaceName;
             string typeName = args.typeName;
             string arguments = args.arguments;
-            string projectRootPath = Application.dataPath.Remove(0, "Assets/".Length);
+            string projectRootPath = Application.dataPath.Substring(0, Application.dataPath.Length - "Assets/".Length);
             string parentDirectoryPath = !string.IsNullOrEmpty(args.directoryPath) ? Path.Combine(projectRootPath, args.directoryPath) : projectRootPath;
             Directory.CreateDirectory(parentDirectoryPath);
 

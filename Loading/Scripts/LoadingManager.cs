@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace DnD.Core.Loading
+namespace Celeste.Core.Loading
 {
-    [AddComponentMenu("DnD/Core/Loading/Loading Manager")]
+    [AddComponentMenu("Celeste/Loading/Loading Manager")]
     public class LoadingManager : MonoBehaviour
     {
         #region Properties and Fields

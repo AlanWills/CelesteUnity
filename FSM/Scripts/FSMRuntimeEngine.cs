@@ -36,7 +36,7 @@ namespace Celeste.FSM
         {
             CurrentNode = startNode;
             
-            Debug.Log($"Spooling up FSM with starting node {startNode.name}");
+            Debug.Log($"Spooling up FSM with starting node {(startNode != null ? startNode.name : "none")}");
         }
 
         public bool Update()

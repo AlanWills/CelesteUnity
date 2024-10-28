@@ -118,6 +118,19 @@ namespace Celeste.Components
             }
         }
 
+        public InterfaceHandle<K> FindInterface<K>() where K : class
+        {
+            for (int i = 0, n = components.Count; i < n; ++i)
+            {
+                if (components[i].Is<K>())
+                {
+                    return components[i].AsInterface<K>();
+                }
+            }
+
+            return default;
+        }
+
         public ComponentHandle<K> FindComponent<K>() where K : T
         {
             for (int i = 0, n = components.Count; i < n; ++i)
@@ -128,7 +141,7 @@ namespace Celeste.Components
                 }
             }
 
-            return new ComponentHandle<K>();
+            return default;
         }
 
         public bool TryFindComponent<K>(out InterfaceHandle<K> iFace) where K : class

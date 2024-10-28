@@ -11,7 +11,7 @@ using XNode;
 namespace Celeste.FSM.Nodes.Events
 {
     [Serializable]
-    [CreateNodeMenu("Celeste/Events/Listeners/OnContextLoadedEvent Listener")]
+    [CreateNodeMenu("Celeste/Events/Listeners/On Context Loaded Event Listener")]
     [NodeTint(0.8f, 0.9f, 0)]
     public class OnContextLoadedEventListenerNode : ParameterisedEventListenerNode<OnContextLoadedArgs, OnContextLoadedEvent>
     {
