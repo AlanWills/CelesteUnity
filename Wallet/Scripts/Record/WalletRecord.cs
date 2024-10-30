@@ -27,7 +27,7 @@ namespace Celeste.Wallet
 
             foreach (Currency currency in currencyCatalogue.Items)
             {
-                startingCurrencyLookup[currency.Guid] = currency.Quantity;
+                startingCurrencyLookup[currency.Guid] = currency.StartingQuantity;
             }
 
             Initialize(currencyCatalogue, startingCurrencyLookup);
