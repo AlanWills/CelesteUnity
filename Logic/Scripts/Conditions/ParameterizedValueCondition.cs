@@ -17,6 +17,19 @@ namespace Celeste.Logic
 
         #endregion
 
+        protected override void DoEditorInitialize()
+        {
+            if (value == null)
+            {
+                value = CreateDependentAsset<TReference>($"{name}_value");
+            }
+
+            if (target == null)
+            {
+                target = CreateDependentAsset<TReference>($"{name}_target");
+            }
+        }
+
         protected override void DoInitialize()
         {
             if (value == null)

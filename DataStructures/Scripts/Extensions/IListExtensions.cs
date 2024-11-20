@@ -119,6 +119,19 @@ namespace Celeste.DataStructures
             return false;
         }
 
+        public static int FindIndex<T>(this IReadOnlyList<T> list, Predicate<T> predicate)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (predicate(list[i]))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public static void AssignFrom<T>(this List<T> list, IEnumerable<T> source)
         {
             list.Clear();
