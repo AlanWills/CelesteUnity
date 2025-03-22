@@ -80,6 +80,16 @@ namespace Celeste.FSM
             runtimeEngine.CurrentNode = targetNode;
         }
 
+        public void TryGoToNextDefaultNode()
+        {
+            if (CurrentNode == null)
+            {
+                return;
+            }
+
+            JumpTo(CurrentNode.GetConnectedNodeFromDefaultOutput());
+        }
+
         private void UpdateFSM()
         {
             if (runtimeEngine == null)

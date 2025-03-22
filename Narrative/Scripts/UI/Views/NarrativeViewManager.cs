@@ -45,7 +45,7 @@ namespace Celeste.Narrative.UI
             narrativeRuntime.OnNodeExit.RemoveListener(OnNodeExit);
         }
 
-        private void OnNodeEnter(FSMNode fsmNode)
+        public void OnNodeEnter(FSMNode fsmNode)
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
@@ -59,7 +59,7 @@ namespace Celeste.Narrative.UI
             }
         }
 
-        private void OnNodeUpdate(FSMNode fsmNode)
+        public void OnNodeUpdate(FSMNode fsmNode)
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
@@ -70,7 +70,7 @@ namespace Celeste.Narrative.UI
             }
         }
 
-        private void OnNodeExit(FSMNode fsmNode)
+        public void OnNodeExit(FSMNode fsmNode)
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {

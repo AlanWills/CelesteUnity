@@ -276,7 +276,7 @@ namespace CelesteEditor.UnityProject
 
             if (dependenciesToAdd.Count > 0)
             {
-                Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray());
+                Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray(), packagesToRemove: dependenciesToRemove.ToArray());
             }
         }
 
@@ -721,7 +721,6 @@ namespace CelesteEditor.UnityProject
             bootstrapManagerInstance.GetComponent<BootstrapManager>().bootstrapJob = bootstrapLoadJob;
             EditorUtility.SetDirty(bootstrapManagerInstance);
             EditorSceneManager.SaveScene(bootstrapScene, BootstrapConstants.SCENE_PATH);
-            AssetDatabase.LoadAssetAtPath<SceneAsset>(parameters.CelesteConstants.LOADING_SCENE_PATH).SetAddressableInfo(BootstrapConstants.ADDRESSABLES_GROUP_NAME, LoadingConstants.SCENE_NAME);
             AssetDatabase.LoadAssetAtPath<SceneAsset>(BootstrapConstants.SCENE_PATH).SetAddressableInfo(BootstrapConstants.ADDRESSABLES_GROUP_NAME, BootstrapConstants.SCENE_NAME);
 
             SceneSet bootstrapSceneSet = ScriptableObject.CreateInstance<SceneSet>();
