@@ -77,6 +77,7 @@ namespace Celeste.FSM
                 return;
             }
 
+            Debug.Assert(runtimeEngine.CurrentNode != targetNode, "Attempting to jump to the same node that the FSM is currently running on.  This feels like a mistake?");
             runtimeEngine.CurrentNode = targetNode;
         }
 

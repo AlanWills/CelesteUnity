@@ -126,7 +126,7 @@ namespace Celeste.Memory
         {
             for (int i = 0, n = cache.Count; i < n; ++i)
             {
-                cache[i].SetActive(false);
+                Deallocate(cache[i]);
             }
 
             allocated = 0;

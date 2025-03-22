@@ -20,12 +20,9 @@ namespace Celeste.Narrative.UI
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
+                narrativeViews[i].OnNarrativeBegin();
                 narrativeViews[i].gameObject.SetActive(false);
             }
-
-            narrativeRuntime.OnNodeEnter.AddListener(OnNodeEnter);
-            narrativeRuntime.OnNodeUpdate.AddListener(OnNodeUpdate);
-            narrativeRuntime.OnNodeExit.AddListener(OnNodeExit);
 
             if (narrativeRuntime.CurrentNode != null)
             {
@@ -37,12 +34,9 @@ namespace Celeste.Narrative.UI
         {
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
+                narrativeViews[i].OnNarrativeEnd();
                 narrativeViews[i].gameObject.SetActive(false);
             }
-
-            narrativeRuntime.OnNodeEnter.RemoveListener(OnNodeEnter);
-            narrativeRuntime.OnNodeUpdate.RemoveListener(OnNodeUpdate);
-            narrativeRuntime.OnNodeExit.RemoveListener(OnNodeExit);
         }
 
         public void OnNodeEnter(FSMNode fsmNode)
@@ -50,10 +44,11 @@ namespace Celeste.Narrative.UI
             for (int i = 0, n = narrativeViews.Length; i < n; ++i)
             {
                 NarrativeView narrativeView = narrativeViews[i];
-
-                if (narrativeView.IsValidForNode(fsmNode))
+                bool isValid = narrativeView.IsValidForNode(fsmNode);
+                narrativeView.gameObject.SetActive(isValid);
+                
+                if (isValid)
                 {
-                    narrativeView.gameObject.SetActive(true);
                     narrativeView.OnNodeEnter(fsmNode);
                 }
             }
@@ -77,7 +72,6 @@ namespace Celeste.Narrative.UI
                 if (narrativeViews[i].isActiveAndEnabled)
                 {
                     narrativeViews[i].OnNodeExit(fsmNode);
-                    narrativeViews[i].gameObject.SetActive(false);
                 }
             }
         }
