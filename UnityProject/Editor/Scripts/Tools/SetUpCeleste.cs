@@ -52,10 +52,10 @@ namespace CelesteEditor.UnityProject
     [Serializable]
     public class SetUpCelesteResults
     {
-        public SceneSet EngineSystemsSceneSet;
-        public SceneSet GameSystemsSceneSet;
-        public SceneSet MainMenuSceneSet;
-        public MultiLoadJob BootstrapLoadJob;
+        public SceneSet EngineSystemsSceneSet => EditorOnly.MustFindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
+        public SceneSet GameSystemsSceneSet => EditorOnly.MustFindAsset<SceneSet>(GameSystemsConstants.SCENE_SET_NAME);
+        public SceneSet MainMenuSceneSet => EditorOnly.MustFindAsset<SceneSet>(MainMenuConstants.SCENE_SET_NAME);
+        public MultiLoadJob BootstrapLoadJob => EditorOnly.MustFindAsset<MultiLoadJob>(BootstrapConstants.LOAD_JOB_NAME);
     }
     
     [Serializable]
@@ -65,8 +65,8 @@ namespace CelesteEditor.UnityProject
 
         private string FullyDelimitedPackagePath => packagePath.EndsWith('/') ? packagePath : packagePath + '/';
 
-        public CelesteConstants CelesteConstants => new CelesteConstants(FullyDelimitedPackagePath);
-        public BuildSystemConstants BuildSystemConstants => new BuildSystemConstants(FullyDelimitedPackagePath);
+        public CelesteConstants CelesteConstants => new(FullyDelimitedPackagePath);
+        public BuildSystemConstants BuildSystemConstants => new(FullyDelimitedPackagePath);
 
         public SceneType DefaultSceneType
         {
@@ -711,7 +711,6 @@ namespace CelesteEditor.UnityProject
 
             MultiLoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
-            results.BootstrapLoadJob = bootstrapLoadJob;
 
             EditorOnly.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
             MakeAddressable(parameters, bootstrapLoadJob, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -799,7 +798,6 @@ namespace CelesteEditor.UnityProject
             engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
-            results.EngineSystemsSceneSet = engineSystemsSceneSet;
             
             EditorOnly.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, engineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -925,7 +923,6 @@ namespace CelesteEditor.UnityProject
             gameSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {GameSystemsConstants.SCENE_NAME}";
             gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
-            results.GameSystemsSceneSet = gameSystemsSceneSet;
 
             EditorOnly.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, gameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -950,7 +947,7 @@ namespace CelesteEditor.UnityProject
             {
                 CreateMainMenuFolders();
                 CreateMainMenuScenes(parameters, results);
-                CreateGameSystemsAssets(parameters);
+                CreateMainMenuAssets(parameters, results);
             }
         }
 
@@ -991,7 +988,6 @@ namespace CelesteEditor.UnityProject
 
             mainMenuSceneSet.AddScene(MainMenuConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             mainMenuSceneSet.AddScene(MainMenuConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
-            results.MainMenuSceneSet = mainMenuSceneSet;
 
             EditorOnly.CreateAssetInFolder(mainMenuSceneSet, MainMenuConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, mainMenuSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
