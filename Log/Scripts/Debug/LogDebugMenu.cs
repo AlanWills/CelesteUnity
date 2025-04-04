@@ -74,17 +74,24 @@ namespace Celeste.Log.Debug
                 DrawLogLevelFilter(LogLevel.Assert);
             }
 
+            Space(5);
+            
             using (new HorizontalScope())
             {
-                Space(5);
                 Label("Log Filter");
                 logFilter = TextField(logFilter);
             }
 
+            Space(5);
+            
             using (new HorizontalScope())
             {
-                Space(5);
                 maxMessageLength = GUIExtensions.IntField("Max Message Length", maxMessageLength);
+            }
+
+            using (new HorizontalScope())
+            {
+                logRecord.StackFramesToDiscard = GUIExtensions.IntField("Stack Frames To Discard", logRecord.StackFramesToDiscard);
             }
 
             Space(5);
@@ -102,7 +109,7 @@ namespace Celeste.Log.Debug
                         message = message.Substring(0, maxMessageLength);
                     }
 
-                    if (Button(message, buttonStyle, ExpandWidth(true)))
+                    if (Button(message, buttonStyle))
                     {
                         currentlyExpanded = currentlyExpanded == NOT_EXPANDED ? i : NOT_EXPANDED;
                     }

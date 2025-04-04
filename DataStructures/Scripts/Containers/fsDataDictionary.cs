@@ -1,10 +1,9 @@
-﻿using Celeste.Persistence;
-using FullSerializer;
+﻿using FullSerializer;
 using System.Collections.Generic;
 
-namespace Celeste.RemoteConfig
+namespace Celeste.DataStructures
 {
-    public class fsDataDictionary : IRemoteConfigDictionary
+    public class fsDataDictionary : IDataDictionary
     {
         private Dictionary<string, fsData> dictionary;
 
@@ -15,6 +14,20 @@ namespace Celeste.RemoteConfig
         public fsDataDictionary(Dictionary<string, fsData> dictionary)
         {
             this.dictionary = dictionary;
+        }
+
+        public fsDataDictionary(string json)
+        {
+            fsResult parsingResult = fsJsonParser.Parse(json, out fsData parsedData);
+
+            if (parsingResult.Succeeded && parsedData.IsDictionary)
+            {
+                dictionary = parsedData.AsDictionary;
+            }
+            else
+            {
+                dictionary = new Dictionary<string, fsData>();
+            }
         }
 
         public bool GetBool(string key, bool defaultValue)
@@ -57,7 +70,7 @@ namespace Celeste.RemoteConfig
             return defaultValue;
         }
 
-        public IRemoteConfigDictionary GetObjectAsDictionary(string key)
+        public IDataDictionary GetObjectAsDictionary(string key)
         {
             if (dictionary.TryGetValue(key, out fsData value))
             {

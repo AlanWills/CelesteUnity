@@ -13,7 +13,8 @@
         "Celeste.Events",
         "Celeste.Debug",
         "Celeste.Loading",
-        "Celeste.UnityProject"
+        "Celeste.UnityProject",
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

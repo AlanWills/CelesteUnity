@@ -45,34 +45,43 @@ namespace CelesteEditor.Events.Tools
                 }
             }
 
-            if (eventClassTemplate == null)
+            if (args.generateEventClasses)
             {
-                eventClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventClassTemplate");
+                if (eventClassTemplate == null)
+                {
+                    eventClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventClassTemplate");
+                }
+
+                if (eventListenerClassTemplate == null)
+                {
+                    eventListenerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventListenerClassTemplate");
+                }
+
+                if (eventRaiserClassTemplate == null)
+                {
+                    eventRaiserClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventRaiserClassTemplate");
+                }
             }
 
-            if (eventListenerClassTemplate == null)
+            if (args.generateValueChangedEventClasses)
             {
-                eventListenerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventListenerClassTemplate");
-            }
+                if (valueChangedEventClassTemplate == null)
+                {
+                    valueChangedEventClassTemplate =
+                        EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventClassTemplate");
+                }
 
-            if (eventRaiserClassTemplate == null)
-            {
-                eventRaiserClassTemplate = EditorOnly.MustFindAsset<TextAsset>("EventRaiserClassTemplate");
-            }
+                if (valueChangedEventListenerClassTemplate == null)
+                {
+                    valueChangedEventListenerClassTemplate =
+                        EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventListenerClassTemplate");
+                }
 
-            if (valueChangedEventClassTemplate == null)
-            {
-                valueChangedEventClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventClassTemplate");
-            }
-
-            if (valueChangedEventListenerClassTemplate == null)
-            {
-                valueChangedEventListenerClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventListenerClassTemplate");
-            }
-
-            if (valueChangedEventRaiserClassTemplate == null)
-            {
-                valueChangedEventRaiserClassTemplate = EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventRaiserClassTemplate");
+                if (valueChangedEventRaiserClassTemplate == null)
+                {
+                    valueChangedEventRaiserClassTemplate =
+                        EditorOnly.MustFindAsset<TextAsset>("ValueChangedEventRaiserClassTemplate");
+                }
             }
         }
 

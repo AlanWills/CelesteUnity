@@ -1,6 +1,7 @@
 using Celeste.RemoteConfig;
 using Celeste.Tools;
 using System;
+using Celeste.DataStructures;
 using UnityEngine;
 
 namespace Celeste.Log
@@ -83,19 +84,22 @@ namespace Celeste.Log
                 return;
             }
 
-            IRemoteConfigDictionary logConfig = remoteConfigRecord.GetObjectAsDictionary(LOG_CONFIG_KEY);
-
-            if (logConfig != null)
+            IDataDictionary logConfig = remoteConfigRecord.GetObjectAsDictionary(LOG_CONFIG_KEY);
+            if (logConfig == null)
             {
-                for (int i = 0, n = logRecord.NumSectionLogSettings; i < n; ++i)
-                {
-                    SectionLogSettings sectionLogSettings = logRecord.GetSectionLogSettings(i);
-                    string sectionSettings = remoteConfigRecord.GetString(sectionLogSettings.SectionName, string.Empty);
+                return;
+            }
+            
+            logRecord.StackFramesToDiscard = logConfig.GetInt(nameof(logRecord.StackFramesToDiscard), logRecord.StackFramesToDiscard);
+                
+            for (int i = 0, n = logRecord.NumSectionLogSettings; i < n; ++i)
+            {
+                SectionLogSettings sectionLogSettings = logRecord.GetSectionLogSettings(i);
+                string sectionSettings = logConfig.GetString(sectionLogSettings.SectionName, string.Empty);
 
-                    if (!string.IsNullOrEmpty(sectionSettings))
-                    {
-                        JsonUtility.FromJsonOverwrite(sectionSettings, sectionSettings);
-                    }
+                if (!string.IsNullOrEmpty(sectionSettings))
+                {
+                    JsonUtility.FromJsonOverwrite(sectionSettings, sectionSettings);
                 }
             }
         }

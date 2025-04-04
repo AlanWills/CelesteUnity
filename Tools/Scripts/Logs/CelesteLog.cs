@@ -16,6 +16,7 @@ namespace Celeste
         public static SectionLogSettings Narrative => instance?.narrativeLogSettings;
         public static SectionLogSettings CloudSave => instance?.cloudSaveLogSettings;
         public static SectionLogSettings RemoteConfig => instance?.remoteConfigLogSettings;
+        public static SectionLogSettings Debug => instance?.debugLogSettings;
 
         [SerializeField] private SectionLogSettings coreLogSettings;
         [SerializeField] private SectionLogSettings persistenceLogSettings;
@@ -25,6 +26,7 @@ namespace Celeste
         [SerializeField] private SectionLogSettings narrativeLogSettings;
         [SerializeField] private SectionLogSettings cloudSaveLogSettings;
         [SerializeField] private SectionLogSettings remoteConfigLogSettings;
+        [SerializeField] private SectionLogSettings debugLogSettings;
 
         [NonSerialized] private static CelesteLog instance;
 
@@ -34,7 +36,7 @@ namespace Celeste
 
         private void Awake()
         {
-            Debug.Assert(instance == null, $"An instance of {nameof(CelesteLog)} already exists!  It's likely you have two in the hierarchy somewhere.");
+            UnityEngine.Debug.Assert(instance == null, $"An instance of {nameof(CelesteLog)} already exists!  It's likely you have two in the hierarchy somewhere.");
             instance = this;
         }
 

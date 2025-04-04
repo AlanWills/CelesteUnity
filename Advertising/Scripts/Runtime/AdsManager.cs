@@ -1,4 +1,5 @@
 ﻿using Celeste.Advertising.Persistence;
+using Celeste.DataStructures;
 using Celeste.Events;
 using Celeste.Parameters;
 using Celeste.Persistence;
@@ -78,7 +79,7 @@ namespace Celeste.Advertising
                 return;
             }
 
-            IRemoteConfigDictionary adsConfig = remoteConfigRecord.GetObjectAsDictionary(ADS_CONFIG_KEY);
+            IDataDictionary adsConfig = remoteConfigRecord.GetObjectAsDictionary(ADS_CONFIG_KEY);
 
             if (adsConfig != null)
             {

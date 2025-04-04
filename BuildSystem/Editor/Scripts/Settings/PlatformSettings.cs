@@ -1,5 +1,6 @@
 ﻿using Celeste.Constants;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ using CelesteEditor.BuildSystem.Steps;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Persistence;
 using Celeste.Tools;
+using Debug = UnityEngine.Debug;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -25,12 +27,20 @@ namespace CelesteEditor.BuildSystem
     {
         #region Properties and Fields
 
+        protected const string VERSION_VARIABLE_NAME = "version";
+        protected const string MAJOR_VERSION_VARIABLE_NAME = "major";
+        protected const string MINOR_VERSION_VARIABLE_NAME = "minor";
+        protected const string BUILD_VERSION_VARIABLE_NAME = "build";
+        protected const string BUILD_TARGET_VARIABLE_NAME = "build_target";
+        protected const string BUILD_TARGET_GROUP_VARIABLE_NAME = "build_target_group";
+        protected const string ENVIRONMENT_VARIABLE_NAME = "environment";
+        
         private const string STRING_SUBSTITUTION_HELP = 
-            "\n\n{version} will be replaced with the full version number." +
-            "\n\n{major}, {minor} and {build} will be replaced with the corresponding values from the version." +
-            "\n\n{build_target} will be replaced with the value of the 'BuildTarget' variable." +
-            "\n\n{build_target_group} will be replaced with the value of the 'BuildTargetGroup' variable." +
-            "\n\n{environment} will be replaced with 'Debug' or 'Release' if the 'IsDebugBuild' variable is true or false respectively.";
+            "\n\n{" + VERSION_VARIABLE_NAME + "} will be replaced with the full version number." +
+            "\n\n{" + MAJOR_VERSION_VARIABLE_NAME + "}, {" + MINOR_VERSION_VARIABLE_NAME + "} and {" + BUILD_VERSION_VARIABLE_NAME + "} will be replaced with the corresponding values from the version." +
+            "\n\n{" + BUILD_TARGET_VARIABLE_NAME + "} will be replaced with the value of the 'BuildTarget' variable." +
+            "\n\n{" + BUILD_TARGET_GROUP_VARIABLE_NAME + "} will be replaced with the value of the 'BuildTargetGroup' variable." +
+            "\n\n{" + ENVIRONMENT_VARIABLE_NAME + "} will be replaced with 'Debug' or 'Release' if the 'IsDebugBuild' variable is true or false respectively.";
 
         [SerializeField]
         [Tooltip("The version number that corresponds to the Application.version string.  Usually of the form 'Major.Minor.Patch'.")]
@@ -312,19 +322,19 @@ namespace CelesteEditor.BuildSystem
 
         public void SetDefaultValues(bool isDebugConfig)
         {
-            OutputName = "Build-{version}-{environment}";
-            BuildDirectory = "Builds/{build_target}/{environment}";
+            OutputName = $"Build-{{{VERSION_VARIABLE_NAME}}}-{{{ENVIRONMENT_VARIABLE_NAME}}}";
+            BuildDirectory = $"Builds/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}";
             BuildUploadURL = "celeste-games/";
 #if USE_ADDRESSABLES
             AddressablesEnabled = true;
             PlayerOverrideVersion = "resources";
-            AddressablesBuildDirectory = "ServerData/{build_target}/{environment}/{major}.{minor}";
-            AddressablesLoadDirectory = "https://storage.googleapis.com/celeste-games/ServerData/{build_target}/{environment}/{major}.{minor}";
+            AddressablesBuildDirectory = $"ServerData/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}/{{{MAJOR_VERSION_VARIABLE_NAME}}}.{{{MINOR_VERSION_VARIABLE_NAME}}}";
+            AddressablesLoadDirectory = $"https://storage.googleapis.com/celeste-games/ServerData/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}/{{{MAJOR_VERSION_VARIABLE_NAME}}}.{{{MINOR_VERSION_VARIABLE_NAME}}}";
             AddressablesUploadURL = "celeste-games/";
 #endif
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
-            buildOptions = BuildOptions.StrictMode;
+            buildOptions = BuildOptions.StrictMode | BuildOptions.ConnectToHost | BuildOptions.Development;
 
             scriptingDefineSymbols = EditorOnly.MustFindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
             buildPreparationSteps = EditorOnly.MustFindAsset<BuildPreparationSteps>();
@@ -461,9 +471,7 @@ namespace CelesteEditor.BuildSystem
             LogExtensions.Clear();
 
             Switch();
-#if USE_ADDRESSABLES
             BuildAssets();  // Always build assets, as the latest addressables data must be in the build
-#endif
             Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
 
             PrepareForBuild(buildPlayerOptions);
@@ -535,6 +543,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        [Conditional("USE_ADDRESSABLES")]
         public void BuildAssets()
         {
             LogExtensions.Clear();
@@ -611,13 +620,13 @@ namespace CelesteEditor.BuildSystem
             return string.IsNullOrEmpty(stringWithPossibleVersionCodes) ? 
                 stringWithPossibleVersionCodes :
                 stringWithPossibleVersionCodes.
-                    Replace("{version}", Version.ToString()).
-                    Replace("{major}", Version.Major.ToString()).
-                    Replace("{minor}", Version.Minor.ToString()).
-                    Replace("{build}", Version.Build.ToString()).
-                    Replace("{build_target}", BuildTarget.ToString()).
-                    Replace("{build_target_group}", BuildTargetGroup.ToString()).
-                    Replace("{environment}", isDebugBuild ? "Debug" : "Release");
+                    Replace($"{{{VERSION_VARIABLE_NAME}}}", Version.ToString()).
+                    Replace($"{{{MAJOR_VERSION_VARIABLE_NAME}}}", Version.Major.ToString()).
+                    Replace($"{{{MINOR_VERSION_VARIABLE_NAME}}}", Version.Minor.ToString()).
+                    Replace($"{{{BUILD_VERSION_VARIABLE_NAME}}}", Version.Build.ToString()).
+                    Replace($"{{{BUILD_TARGET_VARIABLE_NAME}}}", BuildTarget.ToString()).
+                    Replace($"{{{BUILD_TARGET_GROUP_VARIABLE_NAME}}}", BuildTargetGroup.ToString()).
+                    Replace($"{{{ENVIRONMENT_VARIABLE_NAME}}}", isDebugBuild ? "Debug" : "Release");
         }
 
         #endregion

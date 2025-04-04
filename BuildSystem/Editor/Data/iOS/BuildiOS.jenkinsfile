@@ -21,8 +21,12 @@ pipeline
                                 numToKeepStr: '1')), 
                         parameters([
                             choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
+                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD_TO_TESTFLIGHT'), 
+                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS_TO_STORAGE')
+                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_METADATA'),
+                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_CHANGE_LOGS'),
+                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_IMAGES'),
+                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_SCREENSHOTS')
                         ])
                     ])
                 }
@@ -142,13 +146,13 @@ pipeline
 				archiveArtifacts artifacts: "${env.ASSETS_SOURCE}/*.*", onlyIfSuccessful: true
 			}
 		}
-        stage('Upload Build')
+        stage('Upload Build To TestFlight')
         {
             when
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD_TO_TESTFLIGHT
                 }
             }
             steps
@@ -163,19 +167,79 @@ pipeline
 				}
             }
         }
-        stage('Upload Assets')
+        stage('Upload Assets To Storage')
         {
             when
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS_TO_STORAGE
                 }
             }
             steps
             {
                 googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: "${env.ASSETS_UPLOAD_CREDENTIALS}", pattern: "${env.ASSETS_SOURCE}/*"
                 sh "rm -r ${env.ASSETS_SOURCE}"
+            }
+        }
+        stage('Upload Store Metadata To App Store Connect')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_METADATA
+                }
+            }
+            steps
+            {
+                sh "bundle install"
+                sh "bundle exec fastlane ios upload_metadata track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Change Logs To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_CHANGE_LOGS
+                }
+            }
+            steps
+            {
+                sh "bundle install"
+                sh "bundle exec fastlane upload_changelogs track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Images To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_IMAGES
+                }
+            }
+            steps
+            {
+                sh "bundle install"
+                sh "bundle exec fastlane upload_images track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+            }
+        }
+        stage('Upload Store Screenshots To Google Play')
+        {
+            when
+            {
+                expression
+                {
+                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_SCREENSHOTS
+                }
+            }
+            steps
+            {
+                sh "bundle install"
+                sh "bundle exec fastlane upload_screenshots track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
     }   

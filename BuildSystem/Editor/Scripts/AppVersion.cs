@@ -16,9 +16,9 @@ namespace CelesteEditor.BuildSystem
         public int Minor => minor;
         public int Build => build;
 
-        [SerializeField] private int major = 0;
+        [SerializeField] private int major = 1;
         [SerializeField] private int minor = 0;
-        [SerializeField] private int build = 1;
+        [SerializeField] private int build = 0;
 
         #endregion
 

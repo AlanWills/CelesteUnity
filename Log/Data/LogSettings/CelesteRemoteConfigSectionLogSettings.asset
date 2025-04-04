@@ -16,4 +16,4 @@ MonoBehaviour:
   sectionColour:
     serializedVersion: 2
     rgba: 11842694
-  typesToLogToHudAutomatically: 30
+  typesToLogToHudAutomatically: -1

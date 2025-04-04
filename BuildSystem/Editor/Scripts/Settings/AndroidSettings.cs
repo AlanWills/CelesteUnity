@@ -123,7 +123,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        [Title("Google Play Settings")]
+        [Title("Distribution Settings")]
         [ShowIf(nameof(buildAppBundle)), SerializeField] private bool useFastlane;
         public bool UseFastlane
         {
@@ -138,7 +138,7 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
-        [ShowIfAll(nameof(buildAppBundle), nameof(useFastlane)), SerializeField] private string fastlaneUploadTrackName = "internal";
+        [ShowIfAll(nameof(buildAppBundle), nameof(useFastlane)), SerializeField] private string fastlaneUploadTrackName = DEFAULT_GOOGLE_PLAY_TRACK;
         public string FastlaneUploadTrackName
         {
             get => fastlaneUploadTrackName;
@@ -153,6 +153,7 @@ namespace CelesteEditor.BuildSystem
         }
 
         public const int DEFAULT_TARGET_SDK_VERSION = 34;
+        private const string DEFAULT_GOOGLE_PLAY_TRACK = "internal";
 
         #endregion
 
@@ -163,7 +164,7 @@ namespace CelesteEditor.BuildSystem
             buildAppBundle = isAppBundle;
 
             string environmentSuffix = isAppBundle ? "Bundle" : "Apk";
-            BuildDirectory = "Builds/{build_target}/{environment}" + environmentSuffix;
+            BuildDirectory = $"Builds/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}" + environmentSuffix;
 
             // If building an app bundle we should include all architectures by default
             Architecture = isAppBundle ? AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 : Architecture;
@@ -181,7 +182,7 @@ namespace CelesteEditor.BuildSystem
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
             TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;
             UseFastlane = false;
-            FastlaneUploadTrackName = "internal";
+            FastlaneUploadTrackName = DEFAULT_GOOGLE_PLAY_TRACK;
         }
 
         protected override BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)

@@ -2,6 +2,7 @@ using Celeste.Tools;
 using FullSerializer;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -29,15 +30,11 @@ namespace Celeste.Persistence
                 return default;
             }
 
-            string serializedState = File.ReadAllText(filePath);
-            var deserializeResult = Deserialize<T>(serializedState);
+            byte[] serializedBytes = File.ReadAllBytes(filePath);
+            string serializedJson = Encoding.UTF8.GetString(serializedBytes);
+            var deserializeResult = Deserialize<T>(serializedJson);
 
-            if (deserializeResult.Item1.Failed)
-            {
-                return default;
-            }
-
-            return deserializeResult.Item2;
+            return deserializeResult.Item1.Failed ? default : deserializeResult.Item2;
         }
 
         public static void Save<T>(string filePath, T persistenceDTO)
@@ -50,24 +47,24 @@ namespace Celeste.Persistence
                 if (result.Succeeded)
                 {
                     string jsonData = fsJsonPrinter.CompressedJson(data);
-                    File.WriteAllText(filePath, jsonData);
+                    byte[] bytes = Encoding.UTF8.GetBytes(jsonData);
+                    File.WriteAllBytes(filePath, bytes);
                 }
-            }
-
-#if UNITY_EDITOR
-            // Save debug human readable file
-            {
-                string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
-                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
                 
-                if (result.Succeeded)
+#if UNITY_EDITOR
+                // Save debug human readable file
                 {
-                    string jsonData = fsJsonPrinter.PrettyJson(data);
-                    File.WriteAllText(filePath, jsonData);
+                    string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
+                    
+                    if (result.Succeeded)
+                    {
+                        string jsonData = fsJsonPrinter.PrettyJson(data);
+                        File.WriteAllText(debugPersistentFilePath, jsonData);
+                    }
                 }
-            }
 #endif
-
+            }
+            
             // Needed to deal with browser async saving
             WebGLExtensions.SyncFiles();
         }
@@ -84,28 +81,28 @@ namespace Celeste.Persistence
                 if (result.Succeeded)
                 {
                     string jsonData = fsJsonPrinter.CompressedJson(data);
-                    await File.WriteAllTextAsync(filePath, jsonData);
+                    byte[] bytes = Encoding.UTF8.GetBytes(jsonData);
+                    await File.WriteAllBytesAsync(filePath, bytes);
                 }
-            }
-
+                
 #if UNITY_EDITOR
-            // Save debug human readable file
-            {
-                string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
-                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
-
-                if (result.Succeeded)
+                // Save debug human readable file
                 {
-                    string jsonData = fsJsonPrinter.PrettyJson(data);
-                    await File.WriteAllTextAsync(filePath, jsonData);
+                    string debugPersistentFilePath = $"{filePath}.{PersistenceConstants.DEBUG_FILE_EXTENSION}";
+                    
+                    if (result.Succeeded)
+                    {
+                        string jsonData = fsJsonPrinter.PrettyJson(data);
+                        await File.WriteAllTextAsync(debugPersistentFilePath, jsonData);
+                    }
                 }
-            }
 #endif
-
+            }
+            
             // Needed to deal with browser async saving
             WebGLExtensions.SyncFiles();
         }
-
+        
         #endregion
 
         public static string Serialize(object obj)

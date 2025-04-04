@@ -63,6 +63,20 @@
         public const string SCENE_SET_NAME = "GameSystemsSceneSet";
     }
 
+    public static class MainMenuConstants
+    {
+        public const string FOLDER_NAME = "MainMenu/";
+        public const string FOLDER_PATH = "Assets/" + FOLDER_NAME;
+        public const string LOAD_JOBS_FOLDER_PATH = FOLDER_PATH + "Jobs/";
+        public const string SCENES_FOLDER_PATH = FOLDER_PATH + "Scenes/";
+        public const string SCENE_NAME = "MainMenu";
+        public const string SCENE_PATH = SCENES_FOLDER_PATH + SCENE_NAME + ".unity";
+        public const string DEBUG_SCENE_NAME = "MainMenuDebug";
+        public const string DEBUG_SCENE_PATH = SCENES_FOLDER_PATH + DEBUG_SCENE_NAME + ".unity";
+        public const string SCENE_SET_NAME = "MainMenuSceneSet";
+        public const string LOAD_MAIN_MENU_SCENE_SET_LOAD_JOB_NAME = "LoadMainMenuSceneSet";
+    }
+
     public class LoadingConstants
     {
         public const string FOLDER_NAME = "Loading/";

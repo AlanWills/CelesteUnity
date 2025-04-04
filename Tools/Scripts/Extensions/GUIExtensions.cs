@@ -38,7 +38,7 @@ namespace Celeste.Tools
                 }
 
                 string currentIntText = currentInt.ToString();
-                currentIntText = TextField(currentIntText, MinWidth(40));
+                currentIntText = TextField(currentIntText, MinWidth(40), ExpandWidth(true));
 
                 if (GUI.changed)
                 {

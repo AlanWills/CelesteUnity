@@ -1,7 +1,7 @@
 {
     "name": "Celeste.DataStructures",
     "rootNamespace": "Celeste.DataStructures",
-    "references": [],
+    "references": ["GUID:6b620639584115d449c290ede80eafec"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

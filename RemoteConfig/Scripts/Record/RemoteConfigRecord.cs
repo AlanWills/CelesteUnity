@@ -3,6 +3,7 @@ using Celeste.RemoteConfig.Persistence;
 using FullSerializer;
 using System;
 using System.Threading.Tasks;
+using Celeste.DataStructures;
 using UnityEngine;
 
 namespace Celeste.RemoteConfig
@@ -14,7 +15,7 @@ namespace Celeste.RemoteConfig
     }
 
     [CreateAssetMenu(fileName = nameof(RemoteConfigRecord), order = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM + "Remote Config Record")]
-    public class RemoteConfigRecord : ScriptableObject, IRemoteConfigDictionary
+    public class RemoteConfigRecord : ScriptableObject, IDataDictionary
     {
         #region Properties and Fields
 
@@ -127,7 +128,7 @@ namespace Celeste.RemoteConfig
             return fetchedData.GetBool(key, defaultValue);
         }
 
-        public IRemoteConfigDictionary GetObjectAsDictionary(string key)
+        public IDataDictionary GetObjectAsDictionary(string key)
         {
             return fetchedData.GetObjectAsDictionary(key);
         }

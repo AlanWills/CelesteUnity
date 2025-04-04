@@ -127,7 +127,7 @@ pipeline
             steps
             {
 				sh "bundle install"
-				sh "bundle exec fastlane upload_aab_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}' aab:'${env.BUILD_LOCATION}'"
+				sh "bundle exec fastlane android upload_aab track:'${env.FASTLANE_UPLOAD_TRACK_NAME}' aab:'${env.BUILD_LOCATION}'"
             }
         }
         stage('Upload Assets To Storage')
@@ -161,7 +161,7 @@ pipeline
             steps
             {
 				sh "bundle install"
-				sh "bundle exec fastlane upload_metadata_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+				sh "bundle exec fastlane android upload_metadata track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
         stage('Upload Store Change Logs To Google Play')
@@ -176,7 +176,7 @@ pipeline
             steps
             {
 				sh "bundle install"
-				sh "bundle exec fastlane upload_changelogs_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+				sh "bundle exec fastlane android upload_changelogs track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
         stage('Upload Store Images To Google Play')
@@ -191,7 +191,7 @@ pipeline
             steps
             {
 				sh "bundle install"
-				sh "bundle exec fastlane upload_images_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+				sh "bundle exec fastlane android upload_images track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
         stage('Upload Store Screenshots To Google Play')
@@ -206,7 +206,7 @@ pipeline
             steps
             {
 				sh "bundle install"
-				sh "bundle exec fastlane upload_screenshots_to_playstore track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
+				sh "bundle exec fastlane android upload_screenshots track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
     }   

@@ -14,7 +14,8 @@
         "Celeste.UnityProject",
         "Celeste.Loading",
         "UnityEngine.Advertisements",
-        "Unity.Advertisement.IosSupport"
+        "Unity.Advertisement.IosSupport",
+        "Celeste.DataStructures"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

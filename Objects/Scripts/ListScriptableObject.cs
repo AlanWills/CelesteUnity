@@ -53,6 +53,11 @@ namespace Celeste.Objects
             return ItemsImpl.Get(index);
         }
 
+        public bool Exists(Predicate<T> predicate)
+        {
+            return ItemsImpl.Exists(predicate);
+        }
+
         public T FindItem(Predicate<T> predicate)
         {
             return ItemsImpl.Find(predicate);

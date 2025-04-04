@@ -68,3 +68,4 @@ MonoBehaviour:
   narrativeLogSettings: {fileID: 11400000, guid: 09254ed17f42e14418a3cb0ba87608ac, type: 2}
   cloudSaveLogSettings: {fileID: 11400000, guid: ce9bbe571f087ae409aa8a7fef7a0968, type: 2}
   remoteConfigLogSettings: {fileID: 11400000, guid: bbec8620b698be947913bc0e4ae8328d, type: 2}
+  debugLogSettings: {fileID: 11400000, guid: c1ffbf54132750446b200597a9d530b9, type: 2}

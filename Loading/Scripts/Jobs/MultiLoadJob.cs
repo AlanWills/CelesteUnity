@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Loading
@@ -49,6 +50,12 @@ namespace Celeste.Loading
         [SerializeField] private List<LoadJob> loadJobs = new List<LoadJob>();
 
         #endregion
+
+        public void AddLoadJob(LoadJob loadJob)
+        {
+            loadJobs.Add(loadJob);
+            EditorOnly.SetDirty(this);
+        }
 
         public override IEnumerator Execute(Action<float> setProgress, Action<string> setOutput)
         {

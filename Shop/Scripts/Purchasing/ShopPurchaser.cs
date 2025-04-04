@@ -1,5 +1,4 @@
-﻿using Celeste.Events;
-using Celeste.Shop.Catalogue;
+﻿using Celeste.Shop.Catalogue;
 using Celeste.Shop.Purchasing.Impls;
 using System;
 using System.Threading.Tasks;

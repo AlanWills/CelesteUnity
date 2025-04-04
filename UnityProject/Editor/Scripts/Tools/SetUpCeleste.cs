@@ -23,6 +23,7 @@ using Celeste.Input.Settings;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Scene;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor.PackageManager;
 using UnityEngine.SceneManagement;
 using Celeste.Sound;
@@ -32,6 +33,7 @@ using Celeste.Scene.Catalogue;
 using Celeste.Log;
 using TMPro;
 using System.Reflection;
+using NUnit.Framework.Internal;
 
 
 #if USE_ADDRESSABLES
@@ -47,6 +49,15 @@ using CelesteEditor.Scene.Analyze;
 
 namespace CelesteEditor.UnityProject
 {
+    [Serializable]
+    public class SetUpCelesteResults
+    {
+        public SceneSet EngineSystemsSceneSet;
+        public SceneSet GameSystemsSceneSet;
+        public SceneSet MainMenuSceneSet;
+        public MultiLoadJob BootstrapLoadJob;
+    }
+    
     [Serializable]
     public struct SetUpCelesteParameters
     {
@@ -129,6 +140,7 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool needsEngineSystemsScene;
         [LabelWidth(300)] public bool needsLoadingScene;
         [LabelWidth(300)] public bool needsGameSystemsScene;
+        [LabelWidth(300)] public bool needsMainMenuScene;
 
 #endregion
 
@@ -185,6 +197,7 @@ namespace CelesteEditor.UnityProject
             needsEngineSystemsScene = true;
             needsLoadingScene = true;
             needsGameSystemsScene = true;
+            needsMainMenuScene = true;
         }
     }
 
@@ -209,13 +222,16 @@ namespace CelesteEditor.UnityProject
 
         public static void Execute(SetUpCelesteParameters parameters)
         {
+            SetUpCelesteResults results = new SetUpCelesteResults();
+            
             CreateAssetData(parameters);
             CreateEditorSettings(parameters);
             CreateProjectData(parameters);
             CreateBuildSystemData(parameters);
-            CreateModules(parameters);
+            CreateModules(parameters, results);
             CreateFileShareSettings();
             CreateCustomProguardFile(parameters);
+            SetProjectSettings();
 
             Finalise(parameters);
         }
@@ -281,13 +297,14 @@ namespace CelesteEditor.UnityProject
         }
 
 
-        private static void CreateModules(SetUpCelesteParameters parameters)
+        private static void CreateModules(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             CreateLoading(parameters);
-            CreateGameSystems(parameters);
-            CreateEngineSystems(parameters);
-            CreateBootstrap(parameters);
+            CreateGameSystems(parameters, results);
+            CreateEngineSystems(parameters, results);
+            CreateBootstrap(parameters, results);
             CreateStartup(parameters);
+            CreateMainMenu(parameters, results);
         }
 
         private static void CreateProjectData(SetUpCelesteParameters parameters)
@@ -614,12 +631,12 @@ namespace CelesteEditor.UnityProject
 
         #region Bootstrap
 
-        private static void CreateBootstrap(SetUpCelesteParameters parameters)
+        private static void CreateBootstrap(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             if (parameters.needsBootstrapScene)
             {
                 CreateBootstrapFolders();
-                CreateBootstrapLoadJob(parameters);
+                CreateBootstrapLoadJob(parameters, results);
                 CreateBootstrapScene(parameters);
                 CreateBootstrapAssemblies(parameters);
             }
@@ -631,7 +648,7 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateFolder(BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
         }
 
-        private static void CreateBootstrapLoadJob(SetUpCelesteParameters parameters)
+        private static void CreateBootstrapLoadJob(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             var bootstrapLoadJobBuilder = new MultiLoadJob.Builder()
                 .WithShowOutputInLoadingScreen(false);
@@ -658,12 +675,13 @@ namespace CelesteEditor.UnityProject
 #endif
 
             // Load engine systems scene set load job
+            Debug.Assert(!parameters.needsEngineSystemsScene || results.EngineSystemsSceneSet != null, 
+                $"Failed to find {EngineSystemsConstants.SCENE_SET_NAME} even though one should have been created.  You may need to fix up the bootstrap load job manually...");
+            if (parameters.needsEngineSystemsScene && results.EngineSystemsSceneSet != null)
             {
-                SceneSet engineSystemsSceneSet = EditorOnly.MustFindAsset<SceneSet>(EngineSystemsConstants.SCENE_SET_NAME);
-                Debug.Assert(engineSystemsSceneSet != null, $"Could not find engine systems scene set for load job: {EngineSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadEngineSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(LoadSceneMode.Additive)
-                    .WithSceneSet(engineSystemsSceneSet)
+                    .WithSceneSet(results.EngineSystemsSceneSet)
                     .WithShowOutputOnLoadingScreen(false);
 
                 LoadSceneSetLoadJob loadEngineSystemsSceneSet = loadEngineSystemsSceneSetBuilder.Build();
@@ -675,12 +693,12 @@ namespace CelesteEditor.UnityProject
             }
 
             // Load game systems scene set load job
+            Debug.Assert(!parameters.needsGameSystemsScene || results.GameSystemsSceneSet != null, 
+                $"Failed to find {GameSystemsConstants.SCENE_SET_NAME} even though one should have been created.  You may need to fix up the bootstrap load job manually...");
             {
-                SceneSet gameSystemsSceneSet = EditorOnly.MustFindAsset<SceneSet>(GameSystemsConstants.SCENE_SET_NAME);
-                Debug.Assert(gameSystemsSceneSet != null, $"Could not find game systems scene set for load job: {GameSystemsConstants.SCENE_SET_NAME}.  It will have to be set manually later, after the scene set is created.");
                 var loadGameSystemsSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
                     .WithLoadSceneMode(LoadSceneMode.Additive)
-                    .WithSceneSet(gameSystemsSceneSet)
+                    .WithSceneSet(results.GameSystemsSceneSet)
                     .WithShowOutputOnLoadingScreen(false);
 
                 LoadSceneSetLoadJob loadGameSystemsSceneSet = loadGameSystemsSceneSetBuilder.Build();
@@ -691,8 +709,9 @@ namespace CelesteEditor.UnityProject
                 MakeAddressable(parameters, loadGameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
             }
 
-            LoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
+            MultiLoadJob bootstrapLoadJob = bootstrapLoadJobBuilder.Build();
             bootstrapLoadJob.name = BootstrapConstants.LOAD_JOB_NAME;
+            results.BootstrapLoadJob = bootstrapLoadJob;
 
             EditorOnly.CreateAssetInFolder(bootstrapLoadJob, BootstrapConstants.LOAD_JOBS_FOLDER_PATH);
             MakeAddressable(parameters, bootstrapLoadJob, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -747,12 +766,12 @@ namespace CelesteEditor.UnityProject
 
         #region Engine Systems
 
-        private static void CreateEngineSystems(SetUpCelesteParameters parameters)
+        private static void CreateEngineSystems(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             if (parameters.needsEngineSystemsScene)
             {
                 CreateEngineSystemsFolders();
-                CreateEngineSystemsScenes(parameters);
+                CreateEngineSystemsScenes(parameters, results);
                 CreateEngineSystemsAssets(parameters);
             }
         }
@@ -762,7 +781,7 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateFolder(EngineSystemsConstants.SCENES_FOLDER_PATH);
         }
 
-        private static void CreateEngineSystemsScenes(SetUpCelesteParameters parameters)
+        private static void CreateEngineSystemsScenes(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             // Create Engine Systems Scene
             {
@@ -780,7 +799,8 @@ namespace CelesteEditor.UnityProject
             engineSystemsSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             engineSystemsSceneSet.AddScene(EngineSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
-
+            results.EngineSystemsSceneSet = engineSystemsSceneSet;
+            
             EditorOnly.CreateAssetInFolder(engineSystemsSceneSet, EngineSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, engineSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
@@ -873,12 +893,12 @@ namespace CelesteEditor.UnityProject
 
         #region Game Systems
 
-        private static void CreateGameSystems(SetUpCelesteParameters parameters)
+        private static void CreateGameSystems(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             if (parameters.needsGameSystemsScene)
             {
                 CreateGameSystemsFolders();
-                CreateGameSystemsScenes(parameters);
+                CreateGameSystemsScenes(parameters, results);
                 CreateGameSystemsAssets(parameters);
             }
         }
@@ -888,7 +908,7 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateFolder(GameSystemsConstants.SCENES_FOLDER_PATH);
         }
 
-        private static void CreateGameSystemsScenes(SetUpCelesteParameters parameters)
+        private static void CreateGameSystemsScenes(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             // Create Game Systems Scene
             {
@@ -905,6 +925,7 @@ namespace CelesteEditor.UnityProject
             gameSystemsSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {GameSystemsConstants.SCENE_NAME}";
             gameSystemsSceneSet.AddScene(GameSystemsConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             gameSystemsSceneSet.AddScene(GameSystemsConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
+            results.GameSystemsSceneSet = gameSystemsSceneSet;
 
             EditorOnly.CreateAssetInFolder(gameSystemsSceneSet, GameSystemsConstants.SCENES_FOLDER_PATH);
             MakeAddressable(parameters, gameSystemsSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
@@ -919,6 +940,87 @@ namespace CelesteEditor.UnityProject
             MakeAddressable(parameters, sceneSetCatalogue);
         }
         
+        #endregion
+
+        #region Main Menu
+
+        private static void CreateMainMenu(SetUpCelesteParameters parameters, SetUpCelesteResults results)
+        {
+            if (parameters.needsMainMenuScene)
+            {
+                CreateMainMenuFolders();
+                CreateMainMenuScenes(parameters, results);
+                CreateGameSystemsAssets(parameters);
+            }
+        }
+
+        private static void CreateMainMenuFolders()
+        {
+            EditorOnly.CreateFolder(MainMenuConstants.SCENES_FOLDER_PATH);
+        }
+
+        private static void CreateMainMenuScenes(SetUpCelesteParameters parameters, SetUpCelesteResults results)
+        {
+            // Create Main Menu Scene
+            {
+                CreateScene(parameters, MainMenuConstants.SCENE_NAME, MainMenuConstants.SCENE_PATH);
+            }
+
+            // Create Main Menu Debug Scene
+            {
+                CreateScene(parameters, MainMenuConstants.DEBUG_SCENE_NAME, MainMenuConstants.DEBUG_SCENE_PATH);
+            }
+
+            SceneSet mainMenuSceneSet = ScriptableObject.CreateInstance<SceneSet>();
+            mainMenuSceneSet.name = MainMenuConstants.SCENE_SET_NAME;
+            mainMenuSceneSet.MenuItemPath = $"{parameters.rootMenuItemName}/Scenes/Load {MainMenuConstants.SCENE_NAME}";
+
+            Debug.Assert(!parameters.needsEngineSystemsScene || results.EngineSystemsSceneSet != null, 
+                $"It looks like an Engine Systems Scene Set should have been created, but has not been... It's likely you'll need to fix up the {MainMenuConstants.SCENE_SET_NAME} scene set by hand.");
+            if (parameters.needsEngineSystemsScene && results.EngineSystemsSceneSet != null)
+            {
+                mainMenuSceneSet.MergeFrom(results.EngineSystemsSceneSet);
+            }
+
+            Debug.Assert(!parameters.needsGameSystemsScene || results.GameSystemsSceneSet != null, 
+                $"It looks like a Game Systems Scene Set should have been created, but has not been... It's likely you'll need to fix up the {MainMenuConstants.SCENE_SET_NAME} scene set by hand.");
+            if (parameters.needsGameSystemsScene && results.GameSystemsSceneSet != null)
+            {
+                mainMenuSceneSet.MergeFrom(results.EngineSystemsSceneSet);
+            }
+
+            mainMenuSceneSet.AddScene(MainMenuConstants.SCENE_NAME, parameters.DefaultSceneType, false);
+            mainMenuSceneSet.AddScene(MainMenuConstants.DEBUG_SCENE_NAME, parameters.DefaultSceneType, true);
+            results.MainMenuSceneSet = mainMenuSceneSet;
+
+            EditorOnly.CreateAssetInFolder(mainMenuSceneSet, MainMenuConstants.SCENES_FOLDER_PATH);
+            MakeAddressable(parameters, mainMenuSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
+        }
+        
+        private static void CreateMainMenuAssets(SetUpCelesteParameters parameters, SetUpCelesteResults results)
+        {
+            // Load main menu scene set load job
+            {
+                var loadMainMenuSceneSetBuilder = new LoadSceneSetLoadJob.Builder()
+                    .WithLoadSceneMode(LoadSceneMode.Single)
+                    .WithSceneSet(results.MainMenuSceneSet)
+                    .WithShowOutputOnLoadingScreen(true);
+
+                LoadSceneSetLoadJob loadMainMenuSceneSet = loadMainMenuSceneSetBuilder.Build();
+                loadMainMenuSceneSet.name = MainMenuConstants.LOAD_MAIN_MENU_SCENE_SET_LOAD_JOB_NAME;
+
+                EditorOnly.CreateAssetInFolder(loadMainMenuSceneSet, MainMenuConstants.LOAD_JOBS_FOLDER_PATH);
+                MakeAddressable(parameters, loadMainMenuSceneSet, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
+
+                Debug.Assert(!parameters.needsBootstrapScene || results.BootstrapLoadJob != null, 
+                    $"It looks like a {BootstrapConstants.LOAD_JOB_NAME} should have been created, but has not been... It's likely you'll need to fix up the {BootstrapConstants.LOAD_JOB_NAME} to load the {MainMenuConstants.SCENE_SET_NAME} scene set by hand.");
+                if (parameters.needsBootstrapScene && results.BootstrapLoadJob != null)
+                {
+                    results.BootstrapLoadJob.AddLoadJob(loadMainMenuSceneSet);
+                }
+            }
+        }
+
         #endregion
 
         #region Editor Settings
@@ -1018,6 +1120,19 @@ namespace CelesteEditor.UnityProject
             }
         }
 
+        #endregion
+        
+        #region Project Settings
+
+        private static void SetProjectSettings()
+        {
+            Application.SetStackTraceLogType(LogType.Log,  StackTraceLogType.ScriptOnly);
+            Application.SetStackTraceLogType(LogType.Warning,  StackTraceLogType.ScriptOnly);
+            Application.SetStackTraceLogType(LogType.Error,  StackTraceLogType.ScriptOnly);
+            Application.SetStackTraceLogType(LogType.Exception,  StackTraceLogType.ScriptOnly);
+            Application.SetStackTraceLogType(LogType.Assert,  StackTraceLogType.ScriptOnly);
+        }
+        
         #endregion
 
         #region Utility
@@ -1119,11 +1234,6 @@ namespace CelesteEditor.UnityProject
                     bootstrapAddressables.AddSchema<ContentUpdateGroupSchema>();
                     bootstrapAddressables.SetBuildPath(remoteBuildPath);
                     bootstrapAddressables.SetLoadPath(remoteLoadPath);
-
-                    if (parameters.usesBakedGroupsWithRemoteOverride)
-                    {
-                        bootstrapAddressables.AddSchema<BundledGroupSchema>(false);
-                    }
                 }
 
                 settings.RemoveLabel("default");

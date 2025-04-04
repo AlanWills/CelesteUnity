@@ -2,6 +2,7 @@
 using Celeste.RemoteConfig;
 using System.Collections.Generic;
 using System.Linq;
+using Celeste.DataStructures;
 using UnityEngine;
 
 namespace Celeste.Features.Persistence
@@ -71,7 +72,7 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
+                IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
                 if (featuresConfig != null)
                 {
@@ -94,13 +95,13 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
+                IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
                 if (featuresConfig != null)
                 {
                     foreach (Feature feature in featureCatalogue.Items)
                     {
-                        if (featuresConfig.GetBool(feature.name, false) && desiredEnabledFeatures.Contains(feature.Guid))
+                        if (featuresConfig.GetBool(feature.name, false) && Enumerable.Contains(desiredEnabledFeatures, feature.Guid))
                         {
                             enabledFeatures.Add(feature.Guid);
                         }
@@ -118,7 +119,7 @@ namespace Celeste.Features.Persistence
                 return;
             }
 
-            IRemoteConfigDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
+            IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
 
             if (featuresConfig != null)
             {

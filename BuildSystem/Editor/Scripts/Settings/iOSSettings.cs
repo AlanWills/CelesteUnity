@@ -46,6 +46,21 @@ namespace CelesteEditor.BuildSystem
         [SerializeField] private string appStoreConnectUsername = "";
         [SerializeField] private string appStoreConnectPassword = "";
 
+        [Title("Distribution Settings")]
+        [SerializeField] private bool useFastlane;
+        public bool UseFastlane
+        {
+            get => useFastlane;
+            set
+            {
+                if (useFastlane != value)
+                {
+                    useFastlane = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
         #endregion
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
@@ -63,6 +78,7 @@ namespace CelesteEditor.BuildSystem
             useTempDirectoryDuringBuild = false;
             tempDirectoryPath = string.Empty;
 #endif
+            UseFastlane = false;
         }
 
         protected override void ApplyImpl()
@@ -97,6 +113,7 @@ namespace CelesteEditor.BuildSystem
             stringBuilder.AppendLine($"PROVISIONING_PROFILE={provisioningProfileName}");
             stringBuilder.AppendLine($"ASC_USERNAME={appStoreConnectUsername}");
             stringBuilder.AppendLine($"ASC_PASSWORD={appStoreConnectPassword}");
+            stringBuilder.AppendLine($"USE_FASTLANE={UseFastlane}");
         }
     }
 }
