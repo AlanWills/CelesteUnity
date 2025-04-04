@@ -503,24 +503,30 @@ namespace CelesteEditor.BuildSystem
         }
 
         protected virtual void DoInjectBuildEnvVars(StringBuilder stringBuilder) { }
-
-#if USE_ADDRESSABLES
+        
+        [Conditional("USE_ADDRESSABLES")]
         public void PrepareAssetsForBuild()
         {
+#if USE_ADDRESSABLES
             foreach (AssetPreparationStep assetPreparationStep in buildAssetsPreparationSteps)
             {
                 assetPreparationStep.Execute();
             }
+#endif
         }
 
+        [Conditional("USE_ADDRESSABLES")]
         public void PrepareAssetsForUpdate()
         {
+#if USE_ADDRESSABLES
             foreach (AssetPreparationStep assetPreparationStep in updateAssetsPreparationSteps)
             {
                 assetPreparationStep.Execute();
             }
+#endif
         }
 
+#if USE_ADDRESSABLES
         private void PostProcessAssetsForBuild(AddressablesPlayerBuildResult result)
         {
             foreach (AssetPostProcessStep assetPostProcessStep in buildAssetsPostProcessSteps)
@@ -543,9 +549,22 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        private static void SetAddressableAssetSettings()
+        {
+            if (AddressableAssetSettingsDefaultObject.Settings == null)
+            {
+                Debug.Log("Loading settings from asset database");
+                AddressableAssetSettingsDefaultObject.Settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(AddressableAssetSettingsDefaultObject.DefaultAssetPath);
+            }
+
+            Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, "AddressableAssetSettingsDefaultObject is null");
+        }
+#endif
+
         [Conditional("USE_ADDRESSABLES")]
         public void BuildAssets()
         {
+#if USE_ADDRESSABLES
             LogExtensions.Clear();
             
             Switch();
@@ -556,17 +575,19 @@ namespace CelesteEditor.BuildSystem
 
             PostProcessAssetsForBuild(result);
             Debug.Log("Finished building content");
+#endif
         }
 
         public bool UpdateAssets()
         {
+#if USE_ADDRESSABLES
             LogExtensions.Clear();
             
             Switch();
             PrepareAssetsForUpdate();
-
+            
             Debug.Log("Beginning to update content");
-
+            
             string contentStatePath = ContentUpdateScript.GetContentStateDataPath(false);
             Debug.Log($"Using content state path {contentStatePath}");
             AddressablesPlayerBuildResult buildResult = ContentUpdateScript.BuildContentUpdate(AddressableAssetSettingsDefaultObject.Settings, contentStatePath);
@@ -583,21 +604,12 @@ namespace CelesteEditor.BuildSystem
             PostProcessAssetsForUpdate(buildResult);
 
             return buildResult != null && string.IsNullOrEmpty(buildResult.Error);
-        }
-
-        private static void SetAddressableAssetSettings()
-        {
-            if (AddressableAssetSettingsDefaultObject.Settings == null)
-            {
-                Debug.Log("Loading settings from asset database");
-                AddressableAssetSettingsDefaultObject.Settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(AddressableAssetSettingsDefaultObject.DefaultAssetPath);
-            }
-
-            Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, "AddressableAssetSettingsDefaultObject is null");
-        }
+#else
+            return false;
 #endif
-
-#endregion
+        }
+        
+        #endregion
 
         #region Version Methods
 
