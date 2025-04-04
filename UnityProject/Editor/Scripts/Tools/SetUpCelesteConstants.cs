@@ -91,11 +91,11 @@
         public const string COMMON_ADDRESSABLES_GROUP_NAME = "CommonAddressables";
         public const string DISABLE_FALLBACK_LOAD_ASSETS_LOAD_JOB_NAME = "DisableFallbackLoadAssets";
         public const string CUSTOM_PROGUARD_FILE_CONTENTS = "-keep class com.yasirkula.unity.* { *; }";
+        public const string MAIN_INPUT_CAMERA_PREFAB_NAME = "MainInputCamera";
         
         public readonly string LOADING_SCENE_PATH;
         public readonly string CELESTE_GIT_IGNORE_FILE_PATH;
         public readonly string CELESTE_GIT_LFS_FILE_PATH;
-        public readonly string MAIN_INPUT_CAMERA_PREFAB_PATH;
 
         public CelesteConstants(string celesteRootFolder)
         {
@@ -103,7 +103,6 @@
             LOADING_SCENE_PATH = $"{celesteRootFolder}Loading/Scenes/Loading.unity";
             CELESTE_GIT_IGNORE_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitignore.sample";
             CELESTE_GIT_LFS_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitattributes.sample";
-            MAIN_INPUT_CAMERA_PREFAB_PATH = $"{celesteRootFolder}Input/Prefas/MainInputCamera";
         }
     }
 

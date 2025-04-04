@@ -960,7 +960,7 @@ namespace CelesteEditor.UnityProject
         {
             // Create Main Menu Scene
             {
-                CreateSceneWithPrefab(parameters, MainMenuConstants.SCENE_NAME, MainMenuConstants.SCENE_PATH, parameters.CelesteConstants.MAIN_INPUT_CAMERA_PREFAB_PATH);
+                CreateSceneWithPrefab(parameters, MainMenuConstants.SCENE_NAME, MainMenuConstants.SCENE_PATH, CelesteConstants.MAIN_INPUT_CAMERA_PREFAB_NAME);
             }
 
             // Create Main Menu Debug Scene

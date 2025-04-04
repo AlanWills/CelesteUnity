@@ -342,7 +342,7 @@ namespace Celeste.Tools
         {
 #if UNITY_EDITOR
             T asset = FindAsset<T>(name, directory);
-            UnityEngine.Debug.Assert(asset != default, $"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.");
+            UnityEngine.Debug.Assert(asset != null, $"Could not find exactly one asset of type '{typeof(T).Name}' and name '{name}'.");
             return asset;
 #else
             return default;
