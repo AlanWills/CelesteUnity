@@ -95,6 +95,7 @@
         public readonly string LOADING_SCENE_PATH;
         public readonly string CELESTE_GIT_IGNORE_FILE_PATH;
         public readonly string CELESTE_GIT_LFS_FILE_PATH;
+        public readonly string MAIN_INPUT_CAMERA_PREFAB_PATH;
 
         public CelesteConstants(string celesteRootFolder)
         {
@@ -102,6 +103,7 @@
             LOADING_SCENE_PATH = $"{celesteRootFolder}Loading/Scenes/Loading.unity";
             CELESTE_GIT_IGNORE_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitignore.sample";
             CELESTE_GIT_LFS_FILE_PATH = $"{celesteRootFolder}UnityProject/Editor/Data/.gitattributes.sample";
+            MAIN_INPUT_CAMERA_PREFAB_PATH = $"{celesteRootFolder}Input/Prefas/MainInputCamera";
         }
     }
 

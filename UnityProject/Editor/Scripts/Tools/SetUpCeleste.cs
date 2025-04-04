@@ -960,7 +960,7 @@ namespace CelesteEditor.UnityProject
         {
             // Create Main Menu Scene
             {
-                CreateScene(parameters, MainMenuConstants.SCENE_NAME, MainMenuConstants.SCENE_PATH);
+                CreateSceneWithPrefab(parameters, MainMenuConstants.SCENE_NAME, MainMenuConstants.SCENE_PATH, parameters.CelesteConstants.MAIN_INPUT_CAMERA_PREFAB_PATH);
             }
 
             // Create Main Menu Debug Scene
@@ -1176,9 +1176,9 @@ namespace CelesteEditor.UnityProject
             EditorSceneManager.SaveScene(scene, scenePath);
             AssetDatabase.Refresh();
 
-            SetAddressableAddress(parameters,scenePath, sceneName);
+            SetAddressableAddress(parameters, scenePath, sceneName);
         }
-
+        
         private static void CreateAssetData(SetUpCelesteParameters parameters)
         {
 #if USE_ADDRESSABLES
