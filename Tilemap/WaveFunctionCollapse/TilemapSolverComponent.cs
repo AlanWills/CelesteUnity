@@ -1,10 +1,4 @@
-﻿using Celeste.Tilemaps.WaveFunctionCollapse;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -42,7 +36,7 @@ namespace Celeste.Tilemaps.WaveFunctionCollapse
 
         public void ResetTilemap()
         {
-            tilemapSolver.Reset(tilemap);
+            tilemapSolver.ResetTilemap(tilemap);
         }
 
         public void SetUpFromTilemap()

@@ -28,6 +28,11 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
                 target.FindAssets<TileDescription>("tileDescriptions");
             }
 
+            if (GUILayout.Button("Initialise Tile Lookup", GUILayout.ExpandWidth(false)))
+            {
+                TilemapSolver.InitialiseTileLookup();
+            }
+
             if (GUILayout.Button("Check Symmetric Rules", GUILayout.ExpandWidth(false)))
             {
                 TilemapSolver.CheckSymmetricRules();

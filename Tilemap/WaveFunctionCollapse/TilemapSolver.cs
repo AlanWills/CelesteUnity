@@ -23,6 +23,13 @@ namespace Celeste.Tilemaps.WaveFunctionCollapse
 
         private void OnEnable()
         {
+            InitialiseTileLookup();
+        }
+
+        #region Utility
+
+        public void InitialiseTileLookup()
+        {
             tileLookup.Clear();
 
             foreach (TileDescription tileDescription in tileDescriptions)
@@ -33,8 +40,6 @@ namespace Celeste.Tilemaps.WaveFunctionCollapse
                 }
             }
         }
-
-        #region Utility
 
         public void CheckSymmetricRules()
         {
@@ -66,16 +71,15 @@ namespace Celeste.Tilemaps.WaveFunctionCollapse
                 return nullTile;
             }
 
-            TileDescription description;
-            if (!tileLookup.TryGetValue(tile, out description))
+            if (!tileLookup.TryGetValue(tile, out var description))
             {
-                Debug.LogAssertionFormat("No TileDescription found for tile {0}", tile.name);
+                Debug.LogAssertion($"No TileDescription found for tile {tile.name}");
             }
 
             return description;
         }
 
-        public void Reset(Tilemap tilemap)
+        public void ResetTilemap(Tilemap tilemap)
         {
             Solution.Clear();
 
