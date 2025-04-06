@@ -10,7 +10,8 @@ namespace CelesteEditor.UI.Events
     {
         protected override IPopupArgs DrawArgument(IPopupArgs argument)
         {
-            return null;
+            EditorGUILayout.LabelField("No Popup Args");
+            return new NoPopupArgs();
         }
     }
 }

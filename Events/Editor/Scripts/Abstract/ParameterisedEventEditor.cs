@@ -18,7 +18,7 @@ namespace CelesteEditor.Events
 
         public override void OnInspectorGUI()
         {
-            using (var horizontal = new GUILayout.HorizontalScope())
+            using (new GUILayout.HorizontalScope())
             {
                 argument = DrawArgument(argument);
 
@@ -27,8 +27,10 @@ namespace CelesteEditor.Events
                     (target as TEvent).Invoke(argument);
                 }
             }
-            
-            base.OnInspectorGUI();
+
+            EditorGUILayout.PrefixLabel("Help Text:");
+            SerializedProperty helpTextProperty = serializedObject.FindProperty("helpText");
+            helpTextProperty.stringValue = EditorGUILayout.TextArea(helpTextProperty.stringValue);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace Celeste.Events
         #region Properties and Fields
 
 #if UNITY_EDITOR
-        [SerializeField, TextArea] private string helpText;
+        [SerializeField] private string helpText;
 #endif
 
         private List<UnityActionCallback<T>> gameEventListeners = new List<UnityActionCallback<T>>();
