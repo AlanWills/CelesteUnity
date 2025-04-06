@@ -18,6 +18,9 @@ namespace Celeste.Objects.Attributes.GUI
 
         private const float CHOOSE_BUTTON_WIDTH = 80;
         private const float CHOOSE_BUTTON_SPACING = 4;
+
+        private static bool isPicking;
+        private static int controlIdWhichOpenedPicker = -1;
         
         #endregion
 
@@ -43,17 +46,27 @@ namespace Celeste.Objects.Attributes.GUI
 
             if (UnityEngine.GUI.Button(choosePosition, chooseContent))
             {
+                isPicking = true;
+                controlIdWhichOpenedPicker = GUIUtility.GetControlID(FocusType.Passive);
                 EditorGUIUtility.ShowObjectPicker<UnityEngine.Object>(null, false, $"t:{Type.Name}", GUIUtility.GetControlID(FocusType.Passive));
             }
 
             string commandName = Event.current.commandName;
 
-            if (string.CompareOrdinal(commandName, "ObjectSelectorUpdated") == 0 ||
-                string.CompareOrdinal(commandName, "ObjectSelectorClosed") == 0)
+            if (isPicking &&
+                (string.CompareOrdinal(commandName, "ObjectSelectorUpdated") == 0 ||
+                 string.CompareOrdinal(commandName, "ObjectSelectorClosed") == 0))
             {
-                if (EditorGUIUtility.GetObjectPickerObject() is IIntGuid guid)
+                if (EditorGUIUtility.GetObjectPickerControlID() == controlIdWhichOpenedPicker)
                 {
-                    property.intValue = guid.Guid;
+                    if (EditorGUIUtility.GetObjectPickerObject() is IIntGuid guid)
+                    {
+                        property.intValue = guid.Guid;
+                        property.serializedObject.ApplyModifiedProperties();
+                    }
+                    
+                    isPicking = false;
+                    controlIdWhichOpenedPicker = -1;
                 }
             }
 

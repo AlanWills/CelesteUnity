@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerController<TRuntime, TComponent> : MonoBehaviour, IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>
+    public class ComponentContainerController<TComponent, TRuntime> : MonoBehaviour, IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>
         where TRuntime : IComponentContainerRuntime<TComponent> 
         where TComponent : BaseComponent
     {
@@ -23,7 +23,7 @@ namespace Celeste.Components
         {
             componentControllers.Clear();
 
-            foreach (var componentController in GetComponents<IComponentController<TComponent>>())
+            foreach (var componentController in GetComponentsInChildren<IComponentController<TComponent>>())
             {
                 componentControllers.Add((componentController as MonoBehaviour).gameObject);
             }
@@ -36,9 +36,20 @@ namespace Celeste.Components
             Runtime = runtime;
             Runtime.Controller = this;
 
-            foreach (var component in componentControllers)
+            foreach (var componentControllerGameObject in componentControllers)
             {
-                component.GetComponent<IComponentController<TComponent>>().Hookup(runtime, context);
+                var componentController = componentControllerGameObject.GetComponent<IComponentController<TComponent>>();
+
+                if (componentController.IsValidFor(runtime, context))
+                {
+                    componentController.Hookup(runtime, context);
+                    componentController.enabled = true;
+                }
+                else
+                {
+                    componentController.Shutdown();
+                    componentController.enabled = false;
+                }
             }
         }
 

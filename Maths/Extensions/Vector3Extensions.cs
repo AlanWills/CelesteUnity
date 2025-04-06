@@ -18,5 +18,10 @@ namespace Celeste.Maths
         {
             return new Vector2Int(vector3Int.x, vector3Int.y);
         }
+        
+        public static Vector2Int ToVector2Int(this Vector3 vector3)
+        {
+            return new Vector2Int((int)vector3.x, (int)vector3.y);
+        }
     }
 }

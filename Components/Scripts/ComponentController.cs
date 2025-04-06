@@ -2,26 +2,48 @@
 
 namespace Celeste.Components
 {
-    public abstract class ComponentController<TComponent, TRuntime> : MonoBehaviour, IComponentController<TComponent>
-        where TComponent : BaseComponent
-        where TRuntime : class, IComponentContainerRuntime<TComponent>
+    public abstract class ComponentController<TComponent, TBaseComponent, TRuntime> : MonoBehaviour, IComponentController<TBaseComponent>
+        where TComponent : TBaseComponent
+        where TBaseComponent : BaseComponent
+        where TRuntime : class, IComponentContainerRuntime<TBaseComponent>
     {
+        protected ComponentHandle<TComponent> Component { get; private set; }
         protected TRuntime Runtime { get; private set; }
-        protected IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent> RuntimeController => Runtime.Controller;
+        protected IComponentContainerController<IComponentContainerRuntime<TBaseComponent>, TBaseComponent> RuntimeController => Runtime.Controller;
 
-        void IComponentController<TComponent>.Hookup(IComponentContainerRuntime<TComponent> container, IRuntimeAddedContext context)
+        bool IComponentController<TBaseComponent>.IsValidFor(
+            IComponentContainerRuntime<TBaseComponent> container,
+            IRuntimeAddedContext context)
         {
-            UnityEngine.Debug.Assert(container is TRuntime, $"Attempting to hookup a container that is not of type {typeof(TRuntime).Name}.");
+            return container.TryFindComponent(out ComponentHandle<TComponent> componentHandle) && CheckIsValidFor(componentHandle, container, context);
+        }
+        
+        void IComponentController<TBaseComponent>.Hookup(
+            IComponentContainerRuntime<TBaseComponent> container, 
+            IRuntimeAddedContext context)
+        {
+            bool didFindComponent = container.TryFindComponent(out ComponentHandle<TComponent> componentHandle);
+            Debug.Assert(didFindComponent, "Attempting to hookup a component controller that is not being given a valid component handle.");
+            Component = componentHandle;
+            
+            Debug.Assert(container is TRuntime, $"Attempting to hookup a container that is not of type {typeof(TRuntime).Name}.");
             Runtime = container as TRuntime;
 
             DoHookup(context);
         }
 
-        void IComponentController<TComponent>.Shutdown()
+        void IComponentController<TBaseComponent>.Shutdown()
         {
             DoShutdown();
+            
+            Component = ComponentHandle<TComponent>.NULL;
+            Runtime = null;
         }
 
+        protected virtual bool CheckIsValidFor(
+            ComponentHandle<TComponent> componentHandle,
+            IComponentContainerRuntime<TBaseComponent> container, 
+            IRuntimeAddedContext context) => true;
         protected abstract void DoHookup(IRuntimeAddedContext context);
         protected abstract void DoShutdown();
     }
