@@ -9,5 +9,7 @@ namespace Celeste
         TRuntime Runtime { get; }
         UnityEngine.Transform transform { get; }
         UnityEngine.GameObject gameObject { get; }
+
+        void Shutdown();
     }
 }
