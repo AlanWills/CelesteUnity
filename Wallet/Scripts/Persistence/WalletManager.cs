@@ -11,10 +11,7 @@ namespace Celeste.Wallet
         #region Properties and Fields
 
         public static readonly string FILE_NAME = "Wallet.dat";
-        protected override string FileName
-        {
-            get { return FILE_NAME; }
-        }
+        protected override string FileName => FILE_NAME;
 
         [SerializeField] private CurrencyCatalogue currencyCatalogue;
         [SerializeField] private WalletRecord walletRecord;

@@ -24,7 +24,7 @@ namespace DatingBros.PhoneSimulation.UI
         {
             base.SetLayoutHorizontal();
 
-            if (rectTransform.sizeDelta.x > maxWidth)
+            if (horizontalFit != FitMode.Unconstrained && rectTransform.sizeDelta.x > maxWidth)
             {
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxWidth);
             }
@@ -34,7 +34,7 @@ namespace DatingBros.PhoneSimulation.UI
         {
             base.SetLayoutVertical();
             
-            if (rectTransform.sizeDelta.y > maxHeight)
+            if (verticalFit != FitMode.Unconstrained && rectTransform.sizeDelta.y > maxHeight)
             {
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, maxHeight);
             }

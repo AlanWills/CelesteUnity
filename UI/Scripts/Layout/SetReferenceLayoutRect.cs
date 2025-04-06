@@ -35,7 +35,10 @@ namespace Celeste.UI.Layout
 
         public void SetReferenceLayout()
         {
-            referenceLayout.rectTransform = rectTransform;
+            if (referenceLayout != null)
+            {
+                referenceLayout.rectTransform = rectTransform;
+            }
         }
     }
 }

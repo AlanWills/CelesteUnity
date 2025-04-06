@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Celeste.UI
 {
     [CreateAssetMenu(fileName = nameof(CanvasLayers), order = CelesteMenuItemConstants.UI_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.UI_MENU_ITEM + "Canvas/Canvas Layers")]
-    public class CanvasLayers : ListScriptableObject<CanvasLayer>
+    public class CanvasLayers : ListScriptableObject<CanvasLayer>, IAutomaticImportSettings
     {
         #region Properties and Fields
 
         public int SortOrder
         {
-            get { return sortOrder; }
+            get => sortOrder;
             set
             {
                 if (sortOrder != value)
@@ -23,6 +23,9 @@ namespace Celeste.UI
             }
         }
 
+        public AutomaticImportBehaviour ImportBehaviour => automaticImportBehaviour;
+
+        [SerializeField] private AutomaticImportBehaviour automaticImportBehaviour = AutomaticImportBehaviour.ImportAssetsInCatalogueDirectoryAndSubDirectories;
         [SerializeField] private int sortOrder = 0;
 
         #endregion

@@ -47,7 +47,7 @@ namespace Celeste.Wallet.UI
 
                 if (isCurrencyTarget)
                 {
-                    animatedCurrencyTransformCache.AddCurrencyTarget(currency, GetComponent<RectTransform>());
+                    animatedCurrencyTransformCache?.AddCurrencyTarget(currency, GetComponent<RectTransform>());
                 }
 
                 if (truncateCurrency && currentLanguage != null)
@@ -65,7 +65,7 @@ namespace Celeste.Wallet.UI
             {
                 if (isCurrencyTarget)
                 {
-                    animatedCurrencyTransformCache.RemoveCurrencyTarget(currency);
+                    animatedCurrencyTransformCache?.RemoveCurrencyTarget(currency);
                 }
 
                 if (truncateCurrency && currentLanguage != null)
