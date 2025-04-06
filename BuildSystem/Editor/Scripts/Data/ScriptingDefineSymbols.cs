@@ -25,6 +25,7 @@ namespace CelesteEditor.BuildSystem.Data
 
         public void AddDefaultDebugSymbols()
         {
+            AddItem("DEVELOPMENT");
             AddItem("INDEX_CHECKS");
             AddItem("NULL_CHECKS");
             AddItem("COMPONENT_CHECKS");

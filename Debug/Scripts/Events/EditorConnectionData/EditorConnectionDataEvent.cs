@@ -12,7 +12,8 @@ namespace Celeste.Debug.Events
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(EditorConnectionDataEvent),
-        menuName = "Celeste/Debug/Events/Editor Connection Data Event")]
+        menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Debug/Editor Connection Data Event",
+        order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]
     public class EditorConnectionDataEvent : ParameterisedEvent<IDataDictionary>
     {
         public void Invoke(MessageEventArgs messageEventArgs)

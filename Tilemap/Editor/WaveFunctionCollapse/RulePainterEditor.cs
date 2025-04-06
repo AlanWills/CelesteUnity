@@ -14,10 +14,10 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
     [CustomEditor(typeof(RulePainter))]
     public class RulePainterEditor : Editor
     {
-        public RulePainter RulePainter
-        {
-            get { return target as RulePainter; }
-        }
+        private RulePainter RulePainter => target as RulePainter;
+        
+        const int X_SPACING = 4;
+        const int Y_SPACING = 4;
 
         public override void OnInspectorGUI()
         {
@@ -172,55 +172,75 @@ namespace CelesteEditor.Tilemaps.WaveFunctionCollapse
         private void SaveRules()
         {
             Tilemap tilemap = RulePainter.tilemap;
-            TileDescription tileDescription = RulePainter.tileDescription;
-            tileDescription.ClearRules();
 
-            int index = 0;
-            while (tilemap.HasTile(new Vector3Int(index * 3, 0, 0)))
+            for (int y = 0; tilemap.HasTile(new Vector3Int(0, y * Y_SPACING, 0)); ++y)
             {
-                Vector3Int currentTilePosition = new Vector3Int(index * 3, 0, 0);
-
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, 0, 0), Direction.LeftOf, tileDescription))
+                Vector3Int tilePosition = new Vector3Int(0, y * Y_SPACING, 0);
+                TileDescription tileDescription = RulePainter.tilemapSolver.FindTileDescription(tilemap.GetTile(tilePosition));
+                    
+                if (tileDescription == null)
                 {
-                    // Check LeftOf relationship (to the right)
+                    Debug.LogAssertion($"Could not find tile description to match tile at {tilePosition}.  No rules for this row will be applied.");
+                    continue;
                 }
-
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, 0, 0), Direction.RightOf, tileDescription))
+                    
+                tileDescription.ClearRules();
+                
+                for (int x = 0; tilemap.HasTile(new Vector3Int(x * X_SPACING, y * Y_SPACING, 0)); ++x)
                 {
-                    // Check RightOf relationship (to the left)
-                }
+                    Vector3Int currentTilePosition = new Vector3Int(x * X_SPACING, y * Y_SPACING, 0);
+                    
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, 0, 0), Direction.LeftOf,
+                            tileDescription))
+                    {
+                        // Check LeftOf relationship (to the right)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(0, -1, 0), Direction.Above, tileDescription))
-                {
-                    // Check Above relationship (to the bottom)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, 0, 0), Direction.RightOf,
+                            tileDescription))
+                    {
+                        // Check RightOf relationship (to the left)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(0, 1, 0), Direction.Below, tileDescription))
-                {
-                    // Check Below relationship (to the top)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(0, -1, 0), Direction.Above,
+                            tileDescription))
+                    {
+                        // Check Above relationship (to the bottom)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, -1, 0), Direction.AboveLeftOf, tileDescription))
-                {
-                    // Check AboveLeftOf relationship (to the right)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(0, 1, 0), Direction.Below,
+                            tileDescription))
+                    {
+                        // Check Below relationship (to the top)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, -1, 0), Direction.AboveRightOf, tileDescription))
-                {
-                    // Check AboveRightOf relationship (to the left)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, -1, 0),
+                            Direction.AboveLeftOf,
+                            tileDescription))
+                    {
+                        // Check AboveLeftOf relationship (to the right)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, 1, 0), Direction.BelowLeftOf, tileDescription))
-                {
-                    // Check BelowLeftOf relationship (to the bottom)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, -1, 0),
+                            Direction.AboveRightOf,
+                            tileDescription))
+                    {
+                        // Check AboveRightOf relationship (to the left)
+                    }
 
-                if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, 1, 0), Direction.BelowRightOf, tileDescription))
-                {
-                    // Check BelowRightOf relationship (to the top)
-                }
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(1, 1, 0), Direction.BelowLeftOf,
+                            tileDescription))
+                    {
+                        // Check BelowLeftOf relationship (to the bottom)
+                    }
 
-                ++index;
+                    if (CheckDirection(tilemap, currentTilePosition, new Vector3Int(-1, 1, 0),
+                            Direction.BelowRightOf,
+                            tileDescription))
+                    {
+                        // Check BelowRightOf relationship (to the top)
+                    }
+                }
             }
 
             AssetDatabase.SaveAssets();

@@ -1,4 +1,5 @@
-﻿using Celeste.Parameters;
+﻿using System;
+using Celeste.Parameters;
 using UnityEngine;
 #if USE_NEW_INPUT_SYSTEM
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -14,8 +15,8 @@ namespace Celeste.Tilemaps
     {
         #region Properties and Fields
 
-        [SerializeField] private TilemapValue tilemap;
-        [SerializeField] private FloatValue dragSpeed;
+        [SerializeField] private TilemapReference tilemap;
+        [SerializeField] private FloatReference dragSpeed;
 
         private Camera cameraToDrag;
         private float timeSinceFingerDown = 0;
@@ -26,6 +27,21 @@ namespace Celeste.Tilemaps
         #endregion
 
         #region Unity Methods
+
+        private void OnValidate()
+        {
+            if (tilemap == null)
+            {
+                tilemap = ScriptableObject.CreateInstance<TilemapReference>();
+            }
+
+            if (dragSpeed == null)
+            {
+                dragSpeed = ScriptableObject.CreateInstance<FloatReference>();
+                dragSpeed.IsConstant = true;
+                dragSpeed.Value = 1f;
+            }
+        }
 
         private void Start()
         {

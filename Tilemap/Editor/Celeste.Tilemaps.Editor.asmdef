@@ -7,7 +7,8 @@
         "Celeste.Tools",
         "Celeste.Components.Editor",
         "Celeste.Tools.Editor",
-        "Celeste.Objects.Editor"
+        "Celeste.Objects.Editor",
+        "Celeste.Parameters.Editor"
     ],
     "includePlatforms": [
         "Editor"

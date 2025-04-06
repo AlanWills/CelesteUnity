@@ -380,7 +380,7 @@ namespace Celeste.Tilemaps.WaveFunctionCollapse
 
 #endregion
 
-#region Neighbour Functions
+        #region Neighbour Functions
 
         public void UpdateFromNeighbours(int x, int y, TilePossibilities location)
         {
