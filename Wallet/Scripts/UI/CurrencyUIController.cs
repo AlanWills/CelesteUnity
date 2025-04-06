@@ -86,7 +86,12 @@ namespace Celeste.Wallet.UI
 
         public void UpdateUI()
         {
-            quantityText.text = truncateCurrency && currentLanguage != null ? currentLanguage.Truncate(currency.Quantity) : currency.Quantity.ToString();
+            if (currency != null)
+            {
+                quantityText.text = truncateCurrency && currentLanguage != null
+                    ? currentLanguage.Truncate(currency.Quantity)
+                    : currency.Quantity.ToString();
+            }
         }
 
         #region Callbacks

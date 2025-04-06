@@ -57,6 +57,11 @@ namespace Celeste.Memory
             }
         }
 
+        public void EnsureCapacity(int capacity)
+        {
+            EnsureCapacity((uint)capacity);
+        }
+
         public void AddChunk()
         {
             AddChunk(defaultChunkSize);
