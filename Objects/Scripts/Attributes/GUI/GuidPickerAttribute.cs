@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Celeste.Tools.Attributes.GUI;
 using Celeste.Tools;
@@ -19,8 +20,7 @@ namespace Celeste.Objects.Attributes.GUI
         private const float CHOOSE_BUTTON_WIDTH = 80;
         private const float CHOOSE_BUTTON_SPACING = 4;
 
-        private static bool isPicking;
-        private static int controlIdWhichOpenedPicker = -1;
+        private static Dictionary<string, bool> propertyIsPickingLookup = new();
         
         #endregion
 
@@ -46,28 +46,25 @@ namespace Celeste.Objects.Attributes.GUI
 
             if (UnityEngine.GUI.Button(choosePosition, chooseContent))
             {
-                isPicking = true;
-                controlIdWhichOpenedPicker = GUIUtility.GetControlID(FocusType.Passive);
-                EditorGUIUtility.ShowObjectPicker<UnityEngine.Object>(null, false, $"t:{Type.Name}", GUIUtility.GetControlID(FocusType.Passive));
+                propertyIsPickingLookup[property.propertyPath] = true;
+                int controlIdWhichOpenedPicker = GUIUtility.GetControlID(property.propertyPath.GetHashCode(), FocusType.Passive, position);
+                EditorGUIUtility.ShowObjectPicker<UnityEngine.Object>(null, false, $"t:{Type.Name}", controlIdWhichOpenedPicker);
             }
 
             string commandName = Event.current.commandName;
 
-            if (isPicking &&
+            if (propertyIsPickingLookup.TryGetValue(property.propertyPath, out bool isThisPropertyPicking) &&
+                isThisPropertyPicking &&
                 (string.CompareOrdinal(commandName, "ObjectSelectorUpdated") == 0 ||
                  string.CompareOrdinal(commandName, "ObjectSelectorClosed") == 0))
             {
-                if (EditorGUIUtility.GetObjectPickerControlID() == controlIdWhichOpenedPicker)
+                if (EditorGUIUtility.GetObjectPickerObject() is IIntGuid guid)
                 {
-                    if (EditorGUIUtility.GetObjectPickerObject() is IIntGuid guid)
-                    {
-                        property.intValue = guid.Guid;
-                        property.serializedObject.ApplyModifiedProperties();
-                    }
-                    
-                    isPicking = false;
-                    controlIdWhichOpenedPicker = -1;
+                    property.intValue = guid.Guid;
+                    property.serializedObject.ApplyModifiedProperties();
                 }
+
+                propertyIsPickingLookup[property.propertyPath] = false;
             }
 
             return position;
