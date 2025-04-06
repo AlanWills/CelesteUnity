@@ -7,8 +7,8 @@ namespace Celeste.Components
         where TBaseComponent : BaseComponent
         where TRuntime : class, IComponentContainerRuntime<TBaseComponent>
     {
-        protected ComponentHandle<TComponent> Component { get; private set; }
-        protected TRuntime Runtime { get; private set; }
+        public ComponentHandle<TComponent> Component { get; private set; }
+        public TRuntime Runtime { get; private set; }
         protected IComponentContainerController<IComponentContainerRuntime<TBaseComponent>, TBaseComponent> RuntimeController => Runtime.Controller;
 
         bool IComponentController<TBaseComponent>.IsValidFor(
