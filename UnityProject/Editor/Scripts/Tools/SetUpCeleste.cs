@@ -934,7 +934,7 @@ namespace CelesteEditor.UnityProject
             sceneSetCatalogue.name = nameof(SceneSetCatalogue);
 
             EditorOnly.CreateAssetInFolder(sceneSetCatalogue, GameSystemsConstants.DATA_FOLDER_PATH);
-            MakeAddressable(parameters, sceneSetCatalogue);
+            MakeAddressable(parameters, sceneSetCatalogue, BootstrapConstants.ADDRESSABLES_GROUP_NAME);
         }
         
         #endregion
@@ -1226,7 +1226,6 @@ namespace CelesteEditor.UnityProject
                     settings.AddLabel(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false);
 
                     AddressableAssetGroup bootstrapAddressables = settings.CreateGroup(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false, false, false, new List<AddressableAssetGroupSchema>());
-                    bootstrapAddressables.AddSchema<BundledAssetGroupSchema>(false);
                     bootstrapAddressables.AddSchema<ContentUpdateGroupSchema>();
                     bootstrapAddressables.SetBuildPath(remoteBuildPath);
                     bootstrapAddressables.SetLoadPath(remoteLoadPath);

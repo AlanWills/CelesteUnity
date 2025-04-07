@@ -1,4 +1,5 @@
-﻿using Celeste.Parameters;
+﻿using Celeste.Events;
+using Celeste.Parameters;
 using UnityEngine;
 #if USE_NEW_INPUT_SYSTEM
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
@@ -109,6 +110,13 @@ namespace Celeste.Viewport
                     timeSinceFingerDown = 0;
                     break;
             }
+#endif
+        }
+        
+        public void DragUsingMultiTouch(MultiTouchEventArgs touchEventArgs)
+        {
+#if USE_NEW_INPUT_SYSTEM
+            DragUsingTouch(touchEventArgs.touches[0]);
 #endif
         }
 

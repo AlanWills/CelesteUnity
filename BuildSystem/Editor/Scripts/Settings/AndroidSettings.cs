@@ -109,7 +109,7 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField]
-        private AndroidArchitecture architecture;
+        private AndroidArchitecture architecture = AndroidArchitecture.ARM64;
         public AndroidArchitecture Architecture
         {
             get => architecture;
@@ -167,7 +167,7 @@ namespace CelesteEditor.BuildSystem
             BuildDirectory = $"Builds/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}" + environmentSuffix;
 
             // If building an app bundle we should include all architectures by default
-            Architecture = isAppBundle ? AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 : Architecture;
+            Architecture = isAppBundle ? AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 : AndroidArchitecture.ARM64;
 
             // Build symbols for release bundles only by default
             buildSymbols = isDebugConfig || isAppBundle == false ? AndroidCreateSymbols.Disabled : AndroidCreateSymbols.Public;
