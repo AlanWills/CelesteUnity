@@ -58,16 +58,10 @@ namespace Celeste.Input.Settings
         
         #endregion
 
-#if UNITY_EDITOR
-        public static InputEditorSettings GetOrCreateSettings()
-        {
-            return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
-        }
+        #region Unity Methods
 
-        protected override void OnCreate()
+        private void OnValidate()
         {
-            base.OnCreate();
-
             if (inputCameraValue == null)
             {
                 inputCameraValue = EditorOnly.MustFindAsset<CameraValue>("InputCamera");
@@ -137,6 +131,21 @@ namespace Celeste.Input.Settings
             {
                 tripleTouchEvent = EditorOnly.MustFindAsset<MultiTouchEvent>("TripleTouch");
             }
+        }
+
+        #endregion
+        
+#if UNITY_EDITOR
+        public static InputEditorSettings GetOrCreateSettings()
+        {
+            return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
+        }
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+
+            OnValidate();
         }
 #endif
     }
