@@ -747,6 +747,7 @@ namespace CelesteEditor.UnityProject
             bootstrapSceneSet.AddScene(LoadingConstants.SCENE_NAME, parameters.DefaultSceneType, false); // This must be first
             bootstrapSceneSet.AddScene(BootstrapConstants.SCENE_NAME, parameters.DefaultSceneType, false);
             bootstrapSceneSet.HasCustomDebugBuildValue = false;
+            bootstrapSceneSet.DontImportAutomatically();
 
             EditorOnly.CreateAssetInFolder(bootstrapSceneSet, BootstrapConstants.SCENES_FOLDER_PATH);
         }
@@ -1226,6 +1227,7 @@ namespace CelesteEditor.UnityProject
                     settings.AddLabel(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false);
 
                     AddressableAssetGroup bootstrapAddressables = settings.CreateGroup(BootstrapConstants.ADDRESSABLES_GROUP_NAME, false, false, false, new List<AddressableAssetGroupSchema>());
+                    bootstrapAddressables.AddSchema<BundledAssetGroupSchema>();
                     bootstrapAddressables.AddSchema<ContentUpdateGroupSchema>();
                     bootstrapAddressables.SetBuildPath(remoteBuildPath);
                     bootstrapAddressables.SetLoadPath(remoteLoadPath);

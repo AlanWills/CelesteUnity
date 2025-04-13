@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Celeste.Objects;
 using UnityEngine;
 #if USE_ADDRESSABLES
 using UnityEngine.AddressableAssets;
@@ -49,7 +50,7 @@ namespace Celeste.Scene
     }
 
     [CreateAssetMenu(fileName = nameof(SceneSet), order = CelesteMenuItemConstants.SCENE_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.SCENE_MENU_ITEM + "Scene Set")]
-    public class SceneSet : ScriptableObject
+    public class SceneSet : ScriptableObject, IAutomaticImportAssetSettings
     {
         #region Properties and Fields
 
@@ -83,6 +84,8 @@ namespace Celeste.Scene
             }
         }
 
+        public AutomaticImportAssetSettings ImportSettings => importSettings;
+        
         private bool IsDebug
         {
             get
@@ -101,12 +104,14 @@ namespace Celeste.Scene
 
         [Header("Loading Settings")]
         [SerializeField] private bool unloadResourcesOnLoad = true;
-
+        
         [Header("Debug Settings")]
         [SerializeField] private bool hasCustomDebugBuildValue = true;
         [SerializeField, ShowIf(nameof(hasCustomDebugBuildValue))] private BoolValue isDebugBuild;
         [SerializeField] private bool checkForMissingComponents = true;
 
+        [SerializeField, InlineDataInInspector] private AutomaticImportAssetSettings importSettings = AutomaticImportAssetSettings.Add;
+        
         #endregion
 
         #region Unity Methods
@@ -345,6 +350,12 @@ namespace Celeste.Scene
                 }
             }
 #endif
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        public void DontImportAutomatically()
+        {
+            importSettings = AutomaticImportAssetSettings.DontAdd;
         }
     }
 }

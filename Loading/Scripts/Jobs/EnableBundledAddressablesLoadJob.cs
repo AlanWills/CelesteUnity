@@ -145,7 +145,7 @@ namespace Celeste.Loading
                     }
                 }
 
-                Debug.LogError($"Failed to load {location.PrimaryKey} from our asset bundle cache (fuzzy matching? {fuzzyNameMatching}).");
+                Debug.Log($"Failed to load {location.PrimaryKey} from our asset bundle cache (fuzzy matching? {fuzzyNameMatching}).");
             }
 
             return location.InternalId;

@@ -19,7 +19,13 @@ namespace CelesteEditor.BuildSystem.Steps
     {
         public override void Execute(AddressablesPlayerBuildResult result, PlatformSettings platformSettings)
         {
-            HashSet<string> bundledNames = GetBundledAssetBundleNames();
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                // If something went wrong with the addressables build we should try and execute this step
+                return;
+            }
+            
+            HashSet<string> bundledNames = GetBundledAssetBundleNames(result);
 
             if (bundledNames.Count > 0)
             {
@@ -91,27 +97,49 @@ namespace CelesteEditor.BuildSystem.Steps
             }
         }
 
-        private HashSet<string> GetBundledAssetBundleNames()
+        private HashSet<string> GetBundledAssetBundleNames(AddressablesPlayerBuildResult result)
         {
             HashSet<string> bundledAssetBundleNames = new HashSet<string>();
             var settings = AddressableAssetSettingsDefaultObject.Settings;
-            
-            if (settings.ShaderBundleNaming == ShaderBundleNaming.Custom)
+
+            var localBuildDir = AddressablesExtensions.GetAddressablesLocalBuildPath();
+
+            // Unity Built In Shaders
             {
-                bundledAssetBundleNames.Add($"{settings.ShaderBundleCustomNaming}_unitybuiltinshaders");
-            }
-            else
-            {
-                Debug.LogWarning($"Shader Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                string unityBuiltInShadersName = $"{settings.ShaderBundleCustomNaming}_unitybuiltinshaders";
+                string unityBuiltInShadersPath = result.FileRegistry.GetFilePathForBundle(unityBuiltInShadersName);
+
+                if (!string.IsNullOrEmpty(unityBuiltInShadersPath) && !unityBuiltInShadersPath.StartsWith(localBuildDir))
+                {
+                    if (settings.ShaderBundleNaming == ShaderBundleNaming.Custom)
+                    {
+                        bundledAssetBundleNames.Add(unityBuiltInShadersName);
+                    }
+                    else
+                    {
+                        Debug.LogWarning(
+                            $"Shader Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                    }
+                }
             }
 
-            if (settings.MonoScriptBundleNaming == MonoScriptBundleNaming.Custom)
+            // Monoscript Bundle
             {
-                bundledAssetBundleNames.Add($"{settings.MonoScriptBundleCustomNaming}_monoscripts");
-            }
-            else if (settings.MonoScriptBundleNaming != MonoScriptBundleNaming.Disabled)
-            {
-                Debug.LogWarning($"Mono Script Bundle Naming is enabled, but not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                string monoscriptBundleName = $"{settings.MonoScriptBundleCustomNaming}_monoscripts";
+                string monoscriptBundlePath = result.FileRegistry.GetFilePathForBundle(monoscriptBundleName);
+
+                if (!string.IsNullOrEmpty(monoscriptBundlePath) && !monoscriptBundlePath.StartsWith(localBuildDir))
+                {
+                    if (settings.MonoScriptBundleNaming == MonoScriptBundleNaming.Custom)
+                    {
+                        bundledAssetBundleNames.Add($"{settings.MonoScriptBundleCustomNaming}_monoscripts");
+                    }
+                    else if (settings.MonoScriptBundleNaming != MonoScriptBundleNaming.Disabled)
+                    {
+                        Debug.LogWarning(
+                            $"Mono Script Bundle Naming is enabled, but not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                    }
+                }
             }
 
             foreach (var group in settings.groups)

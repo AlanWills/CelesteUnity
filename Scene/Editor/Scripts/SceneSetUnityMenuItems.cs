@@ -15,12 +15,9 @@ namespace CelesteEditor.Scene
 
         public static void AddForAllSceneSets()
         {
-            foreach (SceneSetCatalogue sceneSetCatalogue in EditorOnly.FindAssets<SceneSetCatalogue>())
+            foreach (SceneSet sceneSet in EditorOnly.FindAssets<SceneSet>())
             {
-                foreach (SceneSet sceneSet in sceneSetCatalogue)
-                {
-                    AddLoadMenuItem(sceneSet);
-                }
+                AddLoadMenuItem(sceneSet);
             }
         }
 

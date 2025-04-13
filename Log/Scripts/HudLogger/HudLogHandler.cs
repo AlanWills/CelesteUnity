@@ -5,6 +5,7 @@ namespace Celeste.Log
 {
     public class HudLogHandler : ICustomLogHandler
     {
+        [HideInCallstack]
         public void Log(LogType logType, UnityEngine.Object context, string message, string stackTrace)
         {
             switch (logType)
@@ -22,6 +23,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public void LogException(Exception exception, UnityEngine.Object context, string message)
         {
             HudLog.LogException(message, exception.StackTrace);

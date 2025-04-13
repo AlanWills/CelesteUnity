@@ -9,7 +9,7 @@ namespace CelesteEditor.Objects
         where TAsset : UnityEngine.Object
         where TCatalogue : ListScriptableObject<TAsset>
     {
-        public static void HandleOnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
+        protected static void HandleOnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
             CompletelyRefreshAssetsInCatalogues();
         }
@@ -22,11 +22,11 @@ namespace CelesteEditor.Objects
             {
                 existingItems.Clear();
 
-                for (int i = 0, n = catalogue.Items.Count;  i < n; ++i)
+                for (int i = catalogue.Items.Count - 1;  i >= 0; --i)
                 {
                     TAsset item = catalogue.GetItem(i);
 
-                    if (item != null)
+                    if (item != null && ShouldAddAsset(item))
                     {
                         existingItems.Add(item);
                     }
@@ -52,6 +52,10 @@ namespace CelesteEditor.Objects
                         case AutomaticImportBehaviour.ImportAssetsInCatalogueDirectory:
                             ImportAssetsInDirectoryOnly(catalogue, existingItems);
                             break;
+                        
+                        case AutomaticImportBehaviour.None:
+                        default:
+                            break;
                     }
                 }
                 else
@@ -65,7 +69,7 @@ namespace CelesteEditor.Objects
         {
             foreach (TAsset asset in EditorOnly.FindAssets<TAsset>())
             {
-                if (!existingItems.Contains(asset))
+                if (!existingItems.Contains(asset) && ShouldAddAsset(asset))
                 {
                     catalogue.AddItem(asset);
                 }
@@ -81,7 +85,7 @@ namespace CelesteEditor.Objects
             {
                 string assetFolder = EditorOnly.GetAssetFolderPath(asset);
 
-                if (!assetFolder.StartsWith(catalogueFolder))
+                if (!assetFolder.StartsWith(catalogueFolder) || ShouldAddAsset(asset))
                 {
                     // This is not a valid item as it is not located in the same folder structure, so ensure it is removed
                     assetsToRemove.Add(asset);
@@ -95,7 +99,7 @@ namespace CelesteEditor.Objects
 
             foreach (TAsset asset in EditorOnly.FindAssets<TAsset>("", EditorOnly.GetAssetFolderPath(catalogue)))
             {
-                if (!existingItems.Contains(asset))
+                if (!existingItems.Contains(asset) && ShouldAddAsset(asset))
                 {
                     catalogue.AddItem(asset);
                 }
@@ -111,7 +115,7 @@ namespace CelesteEditor.Objects
             {
                 string assetFolder = EditorOnly.GetAssetFolderPath(asset);
 
-                if (string.CompareOrdinal(assetFolder, catalogueFolder) != 0)
+                if (string.CompareOrdinal(assetFolder, catalogueFolder) != 0 || ShouldAddAsset(asset))
                 {
                     // This is not a valid item as it has a different folder path, so ensure it is removed
                     assetsToRemove.Add(asset);
@@ -127,12 +131,24 @@ namespace CelesteEditor.Objects
             {
                 string assetPath = EditorOnly.GetAssetFolderPath(asset);
 
-                if (!existingItems.Contains(asset) && string.CompareOrdinal(assetPath, catalogueFolder) == 0)
+                if (!existingItems.Contains(asset) && 
+                    string.CompareOrdinal(assetPath, catalogueFolder) == 0 &&
+                    ShouldAddAsset(asset))
                 {
                     // Ensure the asset has the same asset folder path
                     catalogue.AddItem(asset);
                 }
             }
+        }
+
+        private static bool ShouldAddAsset(TAsset asset)
+        {
+            if (asset is IAutomaticImportAssetSettings settings)
+            {
+                return settings.ImportSettings.AddToCatalogue;
+            }
+
+            return true;
         }
     }
 }

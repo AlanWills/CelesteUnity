@@ -101,6 +101,7 @@ namespace Celeste.Log
 
         #region Logging Methods
 
+        [HideInCallstack]
         public static void LogInfo(string message)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Info))
@@ -109,6 +110,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogInfo(string message, string stackTrace)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Info))
@@ -117,6 +119,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogWarning(string message)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Warning))
@@ -125,6 +128,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogWarning(string message, string stackTrace)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Warning))
@@ -133,6 +137,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogError(string message)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Error))
@@ -141,6 +146,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogError(string message, string stackTrace)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Error))
@@ -148,7 +154,8 @@ namespace Celeste.Log
                 instance.Log(message, stackTrace, instance.errorColour, LogLevel.Error);
             }
         }
-
+        
+        [HideInCallstack]
         public static void LogException(string message)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Exception))
@@ -157,6 +164,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogException(string message, string stackTrace)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Exception))
@@ -165,6 +173,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogAssertion(string message)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Assert))
@@ -173,6 +182,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void LogAssertion(string message, string stackTrace)
         {
             if (instance != null && IsLogLevelEnabled(LogLevel.Assert))
@@ -181,6 +191,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public static void Clear()
         {
             if (instance != null)
@@ -194,11 +205,13 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         private void Log(string message, Color colour, LogLevel logLevel)
         {
             instance.Log(message, StackTraceUtility.ExtractStackTrace(), colour, logLevel);
         }
 
+        [HideInCallstack]
         private void Log(string message, string callstack, Color colour, LogLevel logLevel)
         {
             if (hudMessages.CanAllocate(1))

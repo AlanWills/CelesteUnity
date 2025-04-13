@@ -23,6 +23,7 @@ namespace CelesteEditor.BuildSystem
         {
             BuildTarget = BuildTarget.StandaloneWindows64;
             BuildTargetGroup = BuildTargetGroup.Standalone;
+            OutputName = $"Build-{{{VERSION_VARIABLE_NAME}}}-{{{ENVIRONMENT_VARIABLE_NAME}}}.exe";
         }
 
         protected override BuildPlayerOptions ModifyBuildPlayerOptions(BuildPlayerOptions buildPlayerOptions)

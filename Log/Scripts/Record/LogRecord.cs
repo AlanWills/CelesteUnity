@@ -88,6 +88,7 @@ namespace Celeste.Log
             RemoveSectionFromBlacklist(settings);
         }
 
+        [HideInCallstack]
         public void LogException(Exception exception, UnityEngine.Object context)
         {
             if (loggingException.Locked)
@@ -136,6 +137,7 @@ namespace Celeste.Log
             }
         }
 
+        [HideInCallstack]
         public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)
         {
             if (loggingNormally.Locked)
