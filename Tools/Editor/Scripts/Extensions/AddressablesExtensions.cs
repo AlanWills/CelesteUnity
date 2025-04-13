@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
+using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 #endif
 using UnityEngine;
 
@@ -258,6 +259,24 @@ namespace CelesteEditor.Tools
         {
             SetProfileSettingsString(LOCAL_LOAD_PATH_VARIABLE, localLoadPath);
         }
+        
+#if USE_ADDRESSABLES
+        public static bool HasLocalBuildPath(this BundledAssetGroupSchema bundledAssetGroupSchema, AddressableAssetSettings settings)
+        {
+            string localBuildPath = GetAddressablesLocalBuildPath();
+            string groupBuildPath = bundledAssetGroupSchema.BuildPath.GetValue(settings);
+            return string.CompareOrdinal(localBuildPath, groupBuildPath) == 0;
+        }
+#endif
+
+#if USE_ADDRESSABLES
+        public static bool HasRemoteBuildPath(this BundledAssetGroupSchema bundledAssetGroupSchema, AddressableAssetSettings settings)
+        {
+            string localBuildPath = GetAddressablesRemoteBuildPath();
+            string groupBuildPath = bundledAssetGroupSchema.BuildPath.GetValue(settings);
+            return string.CompareOrdinal(localBuildPath, groupBuildPath) == 0;
+        }
+#endif
 
         private static string EvaluateProfileSettingsString(string variablePath)
         {

@@ -1,4 +1,5 @@
-﻿using Celeste.Objects;
+﻿using System;
+using Celeste.Objects;
 using Celeste.Tools;
 using System.Collections.Generic;
 using UnityEditor;
@@ -21,6 +22,7 @@ namespace CelesteEditor.Objects
             foreach (TCatalogue catalogue in EditorOnly.FindAssets<TCatalogue>())
             {
                 existingItems.Clear();
+                catalogue.ClearDuplicates();
 
                 for (int i = catalogue.Items.Count - 1;  i >= 0; --i)
                 {
@@ -85,7 +87,7 @@ namespace CelesteEditor.Objects
             {
                 string assetFolder = EditorOnly.GetAssetFolderPath(asset);
 
-                if (!assetFolder.StartsWith(catalogueFolder) || ShouldAddAsset(asset))
+                if (!assetFolder.StartsWith(catalogueFolder, StringComparison.Ordinal) || !ShouldAddAsset(asset))
                 {
                     // This is not a valid item as it is not located in the same folder structure, so ensure it is removed
                     assetsToRemove.Add(asset);
@@ -115,7 +117,7 @@ namespace CelesteEditor.Objects
             {
                 string assetFolder = EditorOnly.GetAssetFolderPath(asset);
 
-                if (string.CompareOrdinal(assetFolder, catalogueFolder) != 0 || ShouldAddAsset(asset))
+                if (string.CompareOrdinal(assetFolder, catalogueFolder) != 0 || !ShouldAddAsset(asset))
                 {
                     // This is not a valid item as it has a different folder path, so ensure it is removed
                     assetsToRemove.Add(asset);

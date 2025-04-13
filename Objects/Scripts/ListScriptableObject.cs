@@ -110,6 +110,17 @@ namespace Celeste.Objects
             }
         }
 
+        public void ClearDuplicates()
+        {
+            HashSet<T> uniques = new HashSet<T>(ItemsImpl);
+            
+            using (ChangeBlock changesBlock = new ChangeBlock(this))
+            {
+                ItemsImpl.Clear();
+                ItemsImpl.AddRange(uniques);
+            }
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return ((IEnumerable<T>)items).GetEnumerator();

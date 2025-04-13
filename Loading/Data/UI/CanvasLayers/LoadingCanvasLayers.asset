@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - {fileID: 11400000, guid: 8d3765d541679ce41a0c39e1f1aa9e14, type: 2}
+  automaticImportBehaviour: 0
   sortOrder: 10000

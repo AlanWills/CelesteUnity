@@ -24,7 +24,7 @@ namespace Celeste.Events
             }
 
             Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
-            gameEvent.AddListener(this);
+            gameEvent?.AddListener(this);
         }
 
         private void OnDisable()
@@ -35,7 +35,7 @@ namespace Celeste.Events
             }
 
             Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
-            gameEvent.RemoveListener(this);
+            gameEvent?.RemoveListener(this);
         }
 
         #endregion

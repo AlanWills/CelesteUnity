@@ -1,6 +1,7 @@
 ﻿#if USE_ADDRESSABLES
 using CelesteEditor.Assets.Schemas;
 using System.Collections.Generic;
+using CelesteEditor.Tools;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Build.AnalyzeRules;
@@ -50,9 +51,23 @@ namespace CelesteEditor.Assets.Analyze
             foreach (AddressableAssetGroup addressableGroup in settings.groups)
             {
                 // Don't care about the Resources and Built in Data that comes default with Addressables
-                if (!addressableGroup.HasSchema<PlayerDataGroupSchema>() &&
-                    addressableGroup.HasSchema<BundledAssetGroupSchema>() &&
-                    !addressableGroup.HasSchema<BundledGroupSchema>())
+                if (addressableGroup.HasSchema<PlayerDataGroupSchema>())
+                {
+                    continue;
+                }
+
+                if (addressableGroup.HasSchema<BundledGroupSchema>())
+                {
+                    continue;
+                }
+                
+                BundledAssetGroupSchema bundledAssetGroupSchema = addressableGroup.GetSchema<BundledAssetGroupSchema>();
+                if (bundledAssetGroupSchema == null)
+                {
+                    continue;
+                }
+
+                if (bundledAssetGroupSchema.HasRemoteBuildPath(addressableGroup.Settings))
                 {
                     addressableGroupsToFix.Add(addressableGroup);
                 }
