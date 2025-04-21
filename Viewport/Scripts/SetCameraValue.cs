@@ -15,8 +15,8 @@ namespace Celeste.Viewport
 
         [SerializeField] private Camera _camera;
         [SerializeField] private bool useParameter = true;
-        [ShowIf(nameof(useParameter))] public CameraValue cameraValue = default;
-        [HideIf(nameof(useParameter))] public CameraEvent setInputCamera;
+        [ShowIf(nameof(useParameter))] public CameraValue cameraValue;
+        [HideIf(nameof(useParameter))] public CameraEvent setCameraEvent;
         [SerializeField] private bool setInAwake = true;
         [SerializeField] private bool setInOnEnable = false;
         [SerializeField] private bool setInStart = false;
@@ -40,13 +40,13 @@ namespace Celeste.Viewport
                 cameraValue = null;
             }
 
-            if (setInputCamera == null && !useParameter)
+            if (setCameraEvent == null && !useParameter)
             {
-                setInputCamera = InputEditorSettings.GetOrCreateSettings().SetInputCamera;
+                setCameraEvent = InputEditorSettings.GetOrCreateSettings().SetInputCamera;
             }
-            else if (setInputCamera != null && useParameter)
+            else if (setCameraEvent != null && useParameter)
             {
-                setInputCamera = null;
+                setCameraEvent = null;
             }
         }
 #endif
@@ -93,7 +93,7 @@ namespace Celeste.Viewport
             }
             else
             {
-                setInputCamera.Invoke(_camera);
+                setCameraEvent.Invoke(_camera);
             }
         }
     }

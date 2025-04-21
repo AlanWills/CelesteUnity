@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Debug.Menus
@@ -21,6 +22,7 @@ namespace Celeste.Debug.Menus
             }
         }
 
+        [SerializeField] private Canvas debugAreaCanvas;
         [SerializeField] private GUISkin guiSkin;
         [SerializeField] private GameObject inputBlocker;
         [SerializeField] private RectTransform debugGuiDrawArea;
@@ -35,6 +37,11 @@ namespace Celeste.Debug.Menus
 
         #region Unity Methods
 
+        private void OnValidate()
+        {
+            this.TryGetInParent(ref debugAreaCanvas);
+        }
+        
         private void Awake()
         {
             Visible = false;
@@ -55,7 +62,8 @@ namespace Celeste.Debug.Menus
 
             GUI.skin = guiSkin;
 
-            Rect debugScreenSpaceRect = GetGuiSpaceRect(debugGuiDrawArea);
+            Camera referenceCamera = debugAreaCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : debugAreaCanvas.worldCamera;
+            Rect debugScreenSpaceRect = GetGuiSpaceRect(debugGuiDrawArea, referenceCamera);
             float xAspectRatio = debugScreenSpaceRect.width / screenWidthDivisor;
             float yAspectRatio = debugScreenSpaceRect.height / screenHeightDivisor;
             float maxAspectRatio = Mathf.Max(xAspectRatio, yAspectRatio);
@@ -119,18 +127,22 @@ namespace Celeste.Debug.Menus
             GUI.skin = oldSkin;
         }
 
-        private static Rect GetGuiSpaceRect(RectTransform transform)
+        private static Rect GetGuiSpaceRect(RectTransform transform, Camera referenceCamera)
         {
-            Vector2 size = Vector2.Scale(transform.rect.size, transform.lossyScale);
-            Rect rect = new Rect((Vector2)transform.position - (size * transform.pivot), size);
-#if UNITY_ANDROID
-            rect.y += (Screen.height - rect.height);    // Adjust for safe area, but only on Android.  Don't know why, but it works...
-#endif
+            Vector3[] worldCorners = new Vector3[4];
+            transform.GetWorldCorners(worldCorners);
 
-            return rect;
+            Vector2 min = RectTransformUtility.WorldToScreenPoint(referenceCamera, worldCorners[0]);
+            Vector2 max = RectTransformUtility.WorldToScreenPoint(referenceCamera, worldCorners[2]);
+
+            float width = max.x - min.x;
+            float height = max.y - min.y;
+
+            // Flip Y for IMGUI because (0,0) is bottom-left in IMGUI, but top-left in ScreenPoint
+            return new Rect(min.x, Screen.height - max.y, width, height);
         }
 
-#endregion
+        #endregion
 
         #region Callbacks
 
