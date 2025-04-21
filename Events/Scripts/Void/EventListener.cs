@@ -33,8 +33,7 @@ namespace Celeste.Events
             {
                 Debug.Log($"{name} is removing a listener to event {(gameEvent != null ? gameEvent.name : "null")}.");
             }
-
-            Debug.Assert(gameEvent != null, $"{name} has a null game event on listener {GetType().Name}");
+            
             gameEvent?.RemoveListener(this);
         }
 
