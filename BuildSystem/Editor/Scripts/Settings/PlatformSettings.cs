@@ -327,7 +327,7 @@ namespace CelesteEditor.BuildSystem
             BuildUploadURL = "celeste-games/";
 #if USE_ADDRESSABLES
             AddressablesEnabled = true;
-            PlayerOverrideVersion = "resources";
+            PlayerOverrideVersion = $"{{{MAJOR_VERSION_VARIABLE_NAME}}}_{{{MINOR_VERSION_VARIABLE_NAME}}}";
             AddressablesBuildDirectory = $"ServerData/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}/{{{MAJOR_VERSION_VARIABLE_NAME}}}.{{{MINOR_VERSION_VARIABLE_NAME}}}";
             AddressablesLoadDirectory = $"https://storage.googleapis.com/celeste-games/ServerData/{{{BUILD_TARGET_VARIABLE_NAME}}}/{{{ENVIRONMENT_VARIABLE_NAME}}}/{{{MAJOR_VERSION_VARIABLE_NAME}}}.{{{MINOR_VERSION_VARIABLE_NAME}}}";
             AddressablesUploadURL = "celeste-games/";
