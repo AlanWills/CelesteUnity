@@ -1,8 +1,11 @@
 ﻿using Celeste;
 using Celeste.Tools.Attributes.GUI;
 using System.Text;
+using Unity.Android.Types;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
+using AndroidArchitecture = UnityEditor.AndroidArchitecture;
 
 namespace CelesteEditor.BuildSystem
 {
@@ -19,10 +22,17 @@ namespace CelesteEditor.BuildSystem
         private bool buildAppBundle;
         private bool BuildAppBundle => buildAppBundle;
 
+        #if UNITY_6000_0_OR_NEWER
         [SerializeField]
-        [Tooltip("A flag to instruct the build pipeline to create debug symbols to help symbolicate crashes?")]
+        [Tooltip("The level of debug symbols the build pipeline should create to help symbolicate crashes.")]
+        private DebugSymbolLevel debugSymbolLevel = DebugSymbolLevel.None;
+        private DebugSymbolLevel DebugSymbolLevel => debugSymbolLevel;
+        #else
+        [SerializeField]
+        [Tooltip("A flag to instruct the build pipeline to create debug symbols to help symbolicate crashes.")]
         private AndroidCreateSymbols buildSymbols = AndroidCreateSymbols.Disabled;
         private AndroidCreateSymbols BuildSymbols => buildSymbols;
+        #endif
 
         [SerializeField]
         [Tooltip("A flag to indicate if the build pipeline strip out unused code to reduce app size.")]
@@ -170,7 +180,11 @@ namespace CelesteEditor.BuildSystem
             Architecture = isAppBundle ? AndroidArchitecture.ARMv7 | AndroidArchitecture.ARM64 : AndroidArchitecture.ARM64;
 
             // Build symbols for release bundles only by default
+            #if UNITY_6000_0_OR_NEWER
+            debugSymbolLevel = isDebugConfig || isAppBundle == false ? DebugSymbolLevel.None : DebugSymbolLevel.Full;
+            #else
             buildSymbols = isDebugConfig || isAppBundle == false ? AndroidCreateSymbols.Disabled : AndroidCreateSymbols.Public;
+            #endif
         }
 
         protected override void SetPlatformDefaultValues(bool isDebugConfig)
@@ -216,14 +230,20 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.Android.keystorePass = KeystorePassword;
             PlayerSettings.Android.keyaliasName = KeyAliasName;
             PlayerSettings.Android.keyaliasPass = KeyAliasPassword;
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingBackend);
             PlayerSettings.Android.targetArchitectures = Architecture;
             PlayerSettings.Android.minifyRelease = MinifyRelease;
             EditorUserBuildSettings.buildAppBundle = BuildAppBundle;
-            EditorUserBuildSettings.androidCreateSymbols = BuildSymbols;
             PlayerSettings.Android.forceSDCardPermission = RequiresWritePermission;
             PlayerSettings.Android.minSdkVersion = MinSdkVersion;
             PlayerSettings.Android.targetSdkVersion = TargetSdkVersion;
+            
+#if UNITY_6000_0_OR_NEWER
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingBackend);
+            UnityEditor.Android.UserBuildSettings.DebugSymbols.level = DebugSymbolLevel;
+#else
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingBackend);
+            EditorUserBuildSettings.androidCreateSymbols = BuildSymbols;
+#endif
         }
     }
 }

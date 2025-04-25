@@ -1191,8 +1191,8 @@ namespace CelesteEditor.UnityProject
                 settings.BuildAddressablesWithPlayerBuild = AddressableAssetSettings.PlayerBuildOption.DoNotBuildWithPlayer;
                 settings.MaxConcurrentWebRequests = 50;
                 settings.OverridePlayerVersion = "res";
-                settings.ShaderBundleNaming = UnityEditor.AddressableAssets.Build.ShaderBundleNaming.Custom;
-                settings.ShaderBundleCustomNaming = "alwaysbundle";
+                settings.BuiltInBundleNaming = UnityEditor.AddressableAssets.Build.BuiltInBundleNaming.Custom;
+                settings.BuiltInBundleCustomNaming = "alwaysbundle";
                 settings.MonoScriptBundleNaming = UnityEditor.AddressableAssets.Build.MonoScriptBundleNaming.Custom;
                 settings.MonoScriptBundleCustomNaming = "alwaysbundle";
 

@@ -24,10 +24,12 @@ namespace CelesteEditor.BuildSystem
             // Summary:
             //     32-bit Intel architecture.
             X86 = 1 << 2,
+            #if !UNITY_6000_0_OR_NEWER
             //
             // Summary:
             //     64-bit Intel architecture.
             X86_64 = 1 << 3
+            #endif
         }
 
         protected override void DoOnEnable()
@@ -40,7 +42,9 @@ namespace CelesteEditor.BuildSystem
                 AndroidArchitecture currentArchitecture = (AndroidArchitecture)property.uintValue;
                 currentArchitecture = AndroidArchitectureSelect(currentArchitecture, AndroidArchitecture.ARMv7);
                 currentArchitecture = AndroidArchitectureSelect(currentArchitecture, AndroidArchitecture.ARM64);
+                #if !UNITY_6000_0_OR_NEWER
                 currentArchitecture = AndroidArchitectureSelect(currentArchitecture, AndroidArchitecture.X86);
+                #endif
                 currentArchitecture = AndroidArchitectureSelect(currentArchitecture, AndroidArchitecture.X86_64);
 
                 property.uintValue = (uint)currentArchitecture;

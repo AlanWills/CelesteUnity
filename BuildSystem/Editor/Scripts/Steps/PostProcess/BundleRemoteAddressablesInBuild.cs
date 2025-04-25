@@ -106,12 +106,12 @@ namespace CelesteEditor.BuildSystem.Steps
 
             // Unity Built In Shaders
             {
-                string unityBuiltInShadersName = $"{settings.ShaderBundleCustomNaming}_unitybuiltinshaders";
+                string unityBuiltInShadersName = $"{settings.BuiltInBundleCustomNaming}_unitybuiltinshaders";
                 string unityBuiltInShadersPath = result.FileRegistry.GetFilePathForBundle(unityBuiltInShadersName);
 
                 if (!string.IsNullOrEmpty(unityBuiltInShadersPath) && !unityBuiltInShadersPath.StartsWith(localBuildDir))
                 {
-                    if (settings.ShaderBundleNaming == ShaderBundleNaming.Custom)
+                    if (settings.BuiltInBundleNaming == BuiltInBundleNaming.Custom)
                     {
                         bundledAssetBundleNames.Add(unityBuiltInShadersName);
                     }
@@ -134,7 +134,7 @@ namespace CelesteEditor.BuildSystem.Steps
                     {
                         bundledAssetBundleNames.Add($"{settings.MonoScriptBundleCustomNaming}_monoscripts");
                     }
-                    else if (settings.MonoScriptBundleNaming != MonoScriptBundleNaming.Disabled)
+                    else
                     {
                         Debug.LogWarning(
                             $"Mono Script Bundle Naming is enabled, but not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
