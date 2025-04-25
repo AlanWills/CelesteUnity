@@ -101,6 +101,7 @@ namespace Celeste.Input
         [SerializeField] private GameObjectClickEvent gameObjectRightClicked;
         
         [NonSerialized] private Camera fallbackMainCamera;
+        [NonSerialized] private List<RaycastResult> eventSystemRaycastResults = new();
 
         #endregion
 
@@ -429,12 +430,55 @@ namespace Celeste.Input
 
             return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
         }
+#else
+        public ValueTuple<Vector3, GameObject> CalculateHitObjectAndWorldPosition(
+            Vector3 pointerPosition,
+            EventSystem eventSystem)
+        {
+            Vector3 pointerWorldPosition = Vector3.zero;
+            GameObject hitGameObject = null;
+
+            if (RaycastCamera != null)
+            {
+                pointerWorldPosition = RaycastCamera.ScreenToWorldPoint(pointerPosition);
+
+                if (eventSystem.IsPointerOverGameObject())
+                {
+                    hitGameObject = Raycast(pointerPosition, eventSystem);
+                    VerboseLog($"Hit UI Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                }
+
+                if (hitGameObject == null)
+                {
+                    // If we haven't hit any UI, see if we have hit any game objects in the world
+                    hitGameObject = Raycast(new Vector2(pointerWorldPosition.x, pointerWorldPosition.y));
+                    VerboseLog($"Hit Game Object {(hitGameObject != null ? hitGameObject.name : "none")}", hitGameObject);
+                }
+            }
+
+            return new ValueTuple<Vector3, GameObject>(pointerWorldPosition, hitGameObject);
+        }
 #endif
 
         private GameObject Raycast(Vector2 origin)
         {
             RaycastHit2D raycastHit = Physics2D.Raycast(origin, Vector2.zero);
             return raycastHit.transform != null ? raycastHit.transform.gameObject : null;
+        }
+
+        private GameObject Raycast(Vector2 rayOrigin, EventSystem eventSystem)
+        {
+            eventSystemRaycastResults.Clear();
+            
+            PointerEventData pointerData = new PointerEventData(eventSystem)
+            {
+                position = rayOrigin
+            };
+
+            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            eventSystem.RaycastAll(pointerData, raycastResults);
+
+            return raycastResults.Count > 0 ? raycastResults[0].gameObject : null;
         }
 
         private void CheckMouseEvents(

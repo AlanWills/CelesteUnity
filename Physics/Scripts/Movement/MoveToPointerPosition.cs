@@ -32,7 +32,11 @@ namespace Celeste.Physics.Movement
 
             if ((bodyToMove.position - worldPosition.ToVector2()).magnitude < threshold)
             {
+                #if UNITY_6000_0_OR_NEWER
+                bodyToMove.linearVelocity = Vector2.zero;
+                #else
                 bodyToMove.velocity = Vector2.zero;
+                #endif
                 enabled = false;
             }
         }
