@@ -1,8 +1,10 @@
-UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
-
 pipeline 
 {
     agent any
+    environment 
+    {
+        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.45f1/Editor/Unity.exe'
+    }
     stages 
     {
         stage('Setup Parameters') 
@@ -38,31 +40,29 @@ pipeline
             {
 				script
 				{
-					configAndOutput = params.CONFIGURATION
+					def configAndOutput = params.CONFIGURATION
 					
 					if (params.OUTPUT_FILE == 'Apk') {
 						configAndOutput = configAndOutput + 'Apk'
 					} else {
 						configAndOutput = configAndOutput + 'Bundle'
 					}
-				}
-				
-                buildName "Android-" + configAndOutput
-                script
-                {
-                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + configAndOutput + "AndroidPlayer"
-                    projectPath = WORKSPACE.replace('\\', '/')
-                }
-                sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
-                script 
-                {
+					
+					buildName "Android-" + configAndOutput
+					
+					def methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + configAndOutput + "AndroidPlayer"
+                    def projectPath = env.WORKSPACE.replace('\\', '/')
+                    def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
+                    
+                    echo "Executing Unity Build Command: ${unityCommand}"
+                    bat unityCommand
+
                     readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
-                }
-                buildName "Android-" + configAndOutput + "-" + env.BUILD_VERSION
-                script 
-                {
+                    
+                    buildName "Android-" + configAndOutput + "-" + env.BUILD_VERSION
+                    
                     readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
-                }
+				}
             }
         }
         stage('Commit Version')

@@ -1,10 +1,13 @@
-UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
 buildPath = ""
 projectPath = ""
 
 pipeline 
 {
     agent any
+	environment 
+    {
+        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.45f1/Editor/Unity.exe'
+    }
     stages 
     {
         stage('Setup Parameters') 
@@ -23,10 +26,6 @@ pipeline
                             choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_BUILD_TO_TESTFLIGHT'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS_TO_STORAGE')
-                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_METADATA'),
-                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_CHANGE_LOGS'),
-                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_IMAGES'),
-                            booleanParam(defaultValue: false, name: 'UPLOAD_STORE_SCREENSHOTS')
                         ])
                     ])
                 }
@@ -36,21 +35,23 @@ pipeline
         {
             steps
             {
-                buildName "iOS-" + CONFIGURATION
                 script
                 {
+                    buildName "iOS-" + CONFIGURATION
+                    
                     methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "iOSPlayer"
                     projectPath = WORKSPACE.replace('\\', '/')
-                }
-                sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
-                script 
-                {
+                    
+                    def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
+                     
+                    echo "Executing Unity Build Command: ${unityCommand}"
+                    bat unityCommand
+
                     readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+					
 					buildPath = "${projectPath}/${env.BUILD_LOCATION}"
-                }
-                buildName "iOS-" + CONFIGURATION + "-" + env.BUILD_VERSION
-                script 
-                {
+                    buildName "iOS-" + CONFIGURATION + "-" + env.BUILD_VERSION
+                    
                     readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
@@ -128,7 +129,6 @@ pipeline
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built iOS and updating version"'
 				sh "git pull origin ${env.GIT_BRANCH} --rebase"
-				sh "git lfs push origin ${env.GIT_BRANCH} --all"
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
         }
@@ -146,7 +146,7 @@ pipeline
 				archiveArtifacts artifacts: "${env.ASSETS_SOURCE}/*.*", onlyIfSuccessful: true
 			}
 		}
-        stage('Upload Build To TestFlight')
+        stage('Upload Build To Test Flight')
         {
             when
             {
@@ -180,66 +180,6 @@ pipeline
             {
                 googleStorageUpload bucket: "gs://${env.ASSETS_DESTINATION}", credentialsId: "${env.ASSETS_UPLOAD_CREDENTIALS}", pattern: "${env.ASSETS_SOURCE}/*"
                 sh "rm -r ${env.ASSETS_SOURCE}"
-            }
-        }
-        stage('Upload Store Metadata To App Store Connect')
-        {
-            when
-            {
-                expression
-                {
-                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_METADATA
-                }
-            }
-            steps
-            {
-                sh "bundle install"
-                sh "bundle exec fastlane ios upload_metadata track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
-            }
-        }
-        stage('Upload Store Change Logs To Google Play')
-        {
-            when
-            {
-                expression
-                {
-                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_CHANGE_LOGS
-                }
-            }
-            steps
-            {
-                sh "bundle install"
-                sh "bundle exec fastlane upload_changelogs track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
-            }
-        }
-        stage('Upload Store Images To Google Play')
-        {
-            when
-            {
-                expression
-                {
-                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_IMAGES
-                }
-            }
-            steps
-            {
-                sh "bundle install"
-                sh "bundle exec fastlane upload_images track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
-            }
-        }
-        stage('Upload Store Screenshots To Google Play')
-        {
-            when
-            {
-                expression
-                {
-                    return currentBuild.currentResult == "SUCCESS" && env.USE_FASTLANE && params.UPLOAD_STORE_SCREENSHOTS
-                }
-            }
-            steps
-            {
-                sh "bundle install"
-                sh "bundle exec fastlane upload_screenshots track:'${env.FASTLANE_UPLOAD_TRACK_NAME}'"
             }
         }
     }   

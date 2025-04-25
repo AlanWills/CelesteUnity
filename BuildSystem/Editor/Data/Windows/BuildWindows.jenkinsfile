@@ -1,8 +1,10 @@
-UNITY_PATH = "C:/Program\\ Files/Unity/Hub/Editor/2022.3.15f1/Editor/Unity.exe"
-
 pipeline 
 {
     agent any
+    environment 
+    {
+        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.45f1/Editor/Unity.exe'
+    }
     stages 
     {
         stage('Setup Parameters') 
@@ -30,20 +32,21 @@ pipeline
         {
             steps
             {
-                buildName "Windows-" + CONFIGURATION
                 script
                 {
-                    methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "WindowsPlayer"
-                    projectPath = WORKSPACE.replace('\\', '/')
-                }
-                sh UNITY_PATH + ' -quit -batchmode -nographics -executeMethod ' + methodToInvoke + ' -projectPath ' + projectPath
-                script 
-                {
+                    buildName "Windows-" + CONFIGURATION
+                    
+                    def methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "WindowsPlayer"
+                    def projectPath = WORKSPACE.replace('\\', '/')
+                    def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
+                                        
+                    echo "Executing Unity Build Command: ${unityCommand}"
+                    bat unityCommand
+
                     readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
-                }
-                buildName "Windows-" + CONFIGURATION + "-" + env.BUILD_VERSION
-                script 
-                {
+                    
+                    buildName "Windows-" + CONFIGURATION + "-" + env.BUILD_VERSION
+                    
                     readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
@@ -61,7 +64,6 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built Windows and updating version"'
-				sh "git lfs push origin ${env.GIT_BRANCH} --all"
                 sh "git push --set-upstream origin ${env.GIT_BRANCH}"
             }
         }
