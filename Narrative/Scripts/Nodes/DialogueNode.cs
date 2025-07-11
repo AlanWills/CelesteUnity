@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Celeste.DataStructures;
 using Celeste.FSM;
 using Celeste.Localisation.Parameters;
@@ -50,11 +51,12 @@ namespace Celeste.Narrative
             }
         }
 
-        public Object[] DialogueTokens
+        public IReadOnlyList<LocaToken> DialogueTokens
         {
-            set 
+            set
             {
-                ArrayExtensions.ResizeAndCopyFrom(ref dialogueTokens, value);
+                dialogueTokens.Clear();
+                dialogueTokens.AddRange(value);
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
 #endif
@@ -111,7 +113,7 @@ namespace Celeste.Narrative
         public bool isLocalised;
         public DialogueType dialogueType = DialogueType.Speech;
         [NodeEnum] public UIPosition uiPosition = UIPosition.Left;
-        [HideInNodeEditor] public Object[] dialogueTokens;
+        [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         public Character character;
         [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;
 

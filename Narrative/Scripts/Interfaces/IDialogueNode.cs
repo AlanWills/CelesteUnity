@@ -1,4 +1,6 @@
-﻿using Celeste.Narrative.UI;
+﻿using System.Collections.Generic;
+using Celeste.Narrative.Tokens;
+using Celeste.Narrative.UI;
 using UnityEngine;
 
 namespace Celeste.Narrative
@@ -12,6 +14,6 @@ namespace Celeste.Narrative
         string RawDialogue { get; set; }
         DialogueType DialogueType { get; set; }
         UIPosition UIPosition { get; set; }
-        Object[] DialogueTokens { set; }
+        IReadOnlyList<LocaToken> DialogueTokens { set; }
     }
 }

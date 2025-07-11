@@ -91,23 +91,15 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             TwineNode node = parseContext.TwineNode;
             IChoiceNode choiceNode = parseContext.FSMNode as IChoiceNode;
             ChoiceNodeBuilder choiceNodeBuilder = ChoiceNodeBuilder.WithNode(choiceNode);
-
-            List<UnityEngine.Object> foundLocaTokens = new List<UnityEngine.Object>();
             List<Condition> foundConditions = new List<Condition>();
 
             foreach (TwineNodeLink link in node.Links)
             {
                 string choiceDisplayText = ReplaceConditions(link.name, foundConditions);
 
-                if (locaTokens != null)
-                {
-                    choiceDisplayText = locaTokens.ReplaceLocaTokens(choiceDisplayText, foundLocaTokens);
-                }
-
                 choiceNodeBuilder.WithTextChoice(
                     link.link,
                     choiceDisplayText,
-                    foundLocaTokens.ToArray(),
                     foundConditions.ToArray());
             }
         }

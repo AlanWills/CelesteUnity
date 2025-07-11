@@ -1,4 +1,5 @@
-﻿using Celeste.DataStructures;
+﻿using System.Collections.Generic;
+using Celeste.DataStructures;
 using Celeste.FSM;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Tokens;
@@ -17,8 +18,8 @@ namespace Celeste.Narrative
 
         Vector2 IDialogueNode.Position 
         {
-            get { return position; }
-            set { position = value; }
+            get => position;
+            set => position = value;
         }
 
         public string Dialogue
@@ -38,9 +39,16 @@ namespace Celeste.Narrative
             }
         }
 
-        public Object[] DialogueTokens
+        public IReadOnlyList<LocaToken> DialogueTokens
         {
-            set { ArrayExtensions.ResizeAndCopyFrom(ref dialogueTokens, value); }
+            set
+            {
+                dialogueTokens.Clear();
+                dialogueTokens.AddRange(value);
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(this);
+#endif
+            }
         }
 
         public DialogueType DialogueType
@@ -69,7 +77,7 @@ namespace Celeste.Narrative
 
         [SerializeField, TextArea] private string dialogue;
         [SerializeField, HideInNodeEditor] private DialogueType dialogueType = DialogueType.Speech;
-        [SerializeField, HideInNodeEditor] private Object[] dialogueTokens;
+        [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         [SerializeField, HideInNodeEditor] private Character character;
 
         private string tokenizedDialogue;

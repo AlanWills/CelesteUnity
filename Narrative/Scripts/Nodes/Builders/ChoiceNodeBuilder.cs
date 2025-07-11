@@ -30,12 +30,10 @@ namespace Celeste.Narrative.Nodes
         public ChoiceNodeBuilder WithTextChoice(
             string name, 
             string displayText,
-            Object[] locaTokens,
             Condition[] conditions)
         {
             TextChoice textChoice = choiceNode.AddChoice<TextChoice>(name);
             textChoice.DisplayText = displayText;
-            //textChoice.DisplayTokens = locaTokens;
             textChoice.Conditions = conditions;
 
             return this;

@@ -153,19 +153,14 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             IDialogueNode dialogueNode = parseContext.FSMNode as IDialogueNode;
 
             string dialogueText = parseContext.StrippedLinksText;
-            List<UnityEngine.Object> foundLocaTokens = new List<UnityEngine.Object>();
-
-            if (locaTokens != null)
-            {
-                dialogueText = locaTokens.ReplaceLocaTokens(dialogueText, foundLocaTokens);
-            }
+            List<LocaToken> foundLocaTokens = locaTokens != null ? locaTokens.FindLocaTokens(dialogueText) : new List<LocaToken>();
 
             DialogueNodeBuilder.
                         WithNode(dialogueNode).
                         WithRawDialogue(dialogueText).
                         WithUIPosition(FindUIPositionFromTag(node.Tags, dialogueNode.UIPosition)).
                         WithDialogueType(FindDialogueTypeFromTag(node.Tags, DialogueType.Speech)).
-                        WithDialogueTokens(foundLocaTokens.ToArray());
+                        WithDialogueTokens(foundLocaTokens);
         }
 
         #endregion

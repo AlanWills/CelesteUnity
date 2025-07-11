@@ -16,7 +16,7 @@ using Celeste.Tools;
 namespace Celeste.Narrative
 {
     [CreateNodeMenu("Celeste/Narrative/Choice")]
-    [NodeTint(0, 0, 1f)]
+    [NodeTint(0, 0, 1f), NodeWidth(250)]
     public class ChoiceNode : NarrativeNode, IChoiceNode, IDialogueNode
     {
         #region Properties and Fields
@@ -54,11 +54,12 @@ namespace Celeste.Narrative
             }
         }
 
-        public Object[] DialogueTokens
+        public IReadOnlyList<LocaToken> DialogueTokens
         {
             set
             {
-                ArrayExtensions.ResizeAndCopyFrom(ref dialogueTokens, value);
+                dialogueTokens.Clear();
+                dialogueTokens.AddRange(value);
 #if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(this);
 #endif
@@ -117,13 +118,13 @@ namespace Celeste.Narrative
         public bool isLocalised;
         public DialogueType dialogueType = DialogueType.Speech;
         [NodeEnum] public UIPosition uiPosition;
-        [HideInNodeEditor] public Object[] dialogueTokens;
+        [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         public Character character;
         [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;
         [SerializeField] private List<Choice> choices = new List<Choice>();
 
-        [System.NonSerialized] public string tokenizedDialogue;
-        [System.NonSerialized] public bool hasBeenLocalised;
+        [System.NonSerialized] private string tokenizedDialogue;
+        [System.NonSerialized] private bool hasBeenLocalised;
         [System.NonSerialized] private IChoice selectedChoice;
 
         #endregion

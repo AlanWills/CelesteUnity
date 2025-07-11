@@ -5,6 +5,7 @@ using CelesteEditor.FSM.Nodes;
 using CelesteEditor.Narrative.Choices;
 using CelesteEditor.Popups;
 using System.Collections.Generic;
+using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
 using XNodeEditor;
@@ -51,6 +52,8 @@ namespace CelesteEditor.Narrative
                 }
             }
 
+            NodeEditorReflection.TryGetAttributeWidth(typeof(ChoiceNode), out int nodeWidth);
+
             for (int i = 0, n = choiceNode.NumChoices; i < n; ++i)
             {
                 Choice choice = choiceNode.GetChoice(i);
@@ -59,16 +62,22 @@ namespace CelesteEditor.Narrative
                 
                 using (new HorizontalScope())
                 {
-                    if (i > 0 && GUILayout.Button("^", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                    using (new GUIEnabledScope(i > 0))
                     {
-                        choiceNode.MoveChoice(i, i - 1);
-                        continue;
+                        if (GUILayout.Button("^", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                        {
+                            choiceNode.MoveChoice(i, i - 1);
+                            continue;
+                        }
                     }
 
-                    if (i < n - 1 && GUILayout.Button("V", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                    using (new GUIEnabledScope(i < n - 1))
                     {
-                        choiceNode.MoveChoice(i, i + 1);
-                        continue;
+                        if (GUILayout.Button("V", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
+                        {
+                            choiceNode.MoveChoice(i, i + 1);
+                            continue;
+                        }
                     }
 
                     if (GUILayout.Button("-", GUILayout.MaxWidth(16), GUILayout.MaxHeight(16)))
@@ -79,9 +88,9 @@ namespace CelesteEditor.Narrative
                         continue;
                     }
 
-                    LabelField(choice.name);
+                    LabelField(choice.name, GUILayout.ExpandWidth(false));
                     Rect rect = GUILayoutUtility.GetLastRect();
-                    NodeEditorGUILayout.PortField(rect.position + new Vector2(rect.width, 0), choiceNode.GetOutputPort(choice.name));
+                    NodeEditorGUILayout.PortField(new Vector2(nodeWidth - 16, rect.y), choiceNode.GetOutputPort(choice.name));
                 }
             }
 

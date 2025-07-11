@@ -1,4 +1,6 @@
-﻿using Celeste.Narrative.UI;
+﻿using System.Collections.Generic;
+using Celeste.Narrative.Tokens;
+using Celeste.Narrative.UI;
 using UnityEngine;
 
 namespace Celeste.Narrative.Nodes
@@ -55,7 +57,7 @@ namespace Celeste.Narrative.Nodes
             return this;
         }
 
-        public DialogueNodeBuilder WithDialogueTokens(Object[] locaTokens)
+        public DialogueNodeBuilder WithDialogueTokens(IReadOnlyList<LocaToken> locaTokens)
         {
             dialogueNode.DialogueTokens = locaTokens;
             return this;

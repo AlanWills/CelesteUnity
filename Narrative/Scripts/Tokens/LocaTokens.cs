@@ -13,6 +13,8 @@ namespace Celeste.Narrative.Tokens
     {
         string IKey.Key => key;
 
+        public bool IsValid => !string.IsNullOrWhiteSpace(key) && token != null;
+        
         public string key;
         public UnityEngine.Object token;
 
@@ -43,35 +45,9 @@ namespace Celeste.Narrative.Tokens
             return Items.Exists(x => string.CompareOrdinal(x.key, key) == 0);
         }
 
-        public UnityEngine.Object FindLocaToken(string key)
+        public LocaToken FindLocaToken(string key)
         {
-            return FindItem(x => string.CompareOrdinal(x.key, key) == 0).token;
-        }
-
-        public string ReplaceLocaTokens(string dialogueText, List<UnityEngine.Object> locaTokensUsed)
-        {
-            locaTokensUsed.Clear();
-
-            int currentToken = 0;
-            int startDelimiterIndex = dialogueText.IndexOf(startDelimiter);
-
-            while (startDelimiterIndex != -1)
-            {
-                int endDelimiterIndex = dialogueText.IndexOf(endDelimiter, startDelimiterIndex + 1);
-                string key = dialogueText.Substring(startDelimiterIndex + 1, endDelimiterIndex - startDelimiterIndex - 1);
-                string token = currentToken.ToString();
-                dialogueText = dialogueText.Remove(startDelimiterIndex + 1, key.Length);
-                dialogueText = dialogueText.Insert(startDelimiterIndex + 1, token);
-
-                UnityEngine.Object locaToken = FindLocaToken(key);
-                UnityEngine.Debug.Assert(locaToken != null, $"Could not find loca token for key {key} in node.");
-                locaTokensUsed.Add(locaToken);
-                ++currentToken;
-
-                startDelimiterIndex = dialogueText.IndexOf(startDelimiter, startDelimiterIndex + token.Length + 1);
-            }
-
-            return dialogueText.Trim();
+            return FindItem(x => string.CompareOrdinal(x.key, key) == 0);
         }
     }
 }
