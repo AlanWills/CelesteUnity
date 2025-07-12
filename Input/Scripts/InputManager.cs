@@ -84,7 +84,7 @@ namespace Celeste.Input
 #if UNITY_ANDROID || UNITY_IOS
 #if USE_NEW_INPUT_SYSTEM
             GameObject hitGameObject = null;
-            var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+            var touches = Touch.activeTouches;
             int numTouches = touches.Count;
 
             if (numTouches > 0)
@@ -103,7 +103,7 @@ namespace Celeste.Input
             inputState.UpdateTouches(touches);
 #else
             GameObject hitGameObject = null;
-            var touches = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches;
+            var touches = UnityEngine.Input.touches;
             int numTouches = touches.Count;
 
             if (numTouches > 0)

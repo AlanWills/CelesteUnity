@@ -86,5 +86,14 @@ namespace Celeste.Narrative.Characters
 #endif
             }
         }
+
+        #region Object Overrides
+
+        public override string ToString()
+        {
+            return CharacterName;
+        }
+        
+        #endregion
     }
 }

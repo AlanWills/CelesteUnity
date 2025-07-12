@@ -27,13 +27,11 @@ namespace Celeste.Tools.Attributes.GUI
         {
             get
             {
-                var helpBoxStyle = (UnityEngine.GUI.skin != null) ? UnityEngine.GUI.skin.GetStyle("helpbox") : null;
+                var helpBoxStyle = EditorStyles.helpBox;
                 if (helpBoxStyle != null)
                 {
-                    return 
-                        HELP_BOX_PRE_PADDING + 
-                        helpBoxStyle.CalcHeight(new GUIContent(HelpText), EditorGUIUtility.currentViewWidth) + 
-                        HELP_BOX_POST_PADDING;
+                    float helpBoxTextHeight = helpBoxStyle.CalcHeight(new GUIContent(HelpText), EditorGUIUtility.currentViewWidth - HELP_BOX_IMAGE_WIDTH);
+                    return HELP_BOX_PRE_PADDING + helpBoxTextHeight + HELP_BOX_POST_PADDING;
                 }
 
                 return 0;
@@ -45,6 +43,7 @@ namespace Celeste.Tools.Attributes.GUI
 
         private const float HELP_BOX_PRE_PADDING = 2;
         private const float HELP_BOX_POST_PADDING = 4;
+        private const float HELP_BOX_IMAGE_WIDTH = 32;
 #endif
 
         public HelpBoxAttribute(string helpText, HelpBoxMessageType messageType) :

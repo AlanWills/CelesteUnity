@@ -37,7 +37,7 @@ namespace Celeste.Narrative.Tokens
             string dialogueText, 
             IReadOnlyList<LocaToken> locaTokens,
             char startDelimiter = '{',
-            char endDelimiter = '{')
+            char endDelimiter = '}')
         {
             int startDelimiterIndex = dialogueText.IndexOf(startDelimiter);
 

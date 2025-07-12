@@ -1,7 +1,5 @@
-﻿using Celeste.DataStructures;
-using Celeste.FSM;
+﻿using Celeste.FSM;
 using Celeste.Narrative.Characters;
-using Celeste.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

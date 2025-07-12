@@ -14,18 +14,33 @@ namespace CelesteEditor.Narrative.UI
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Find All", GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("Find All In Scene", GUILayout.ExpandWidth(false)))
             {
                 serializedObject.Update();
 
                 NarrativeViewManager narrativeViewManager = target as NarrativeViewManager;
                 SerializedProperty narrativeViews = serializedObject.FindProperty("narrativeViews");
-                var foundNarrativeViews = narrativeViewManager.GetComponentsInChildren<NarrativeView>();
-                narrativeViews.arraySize = foundNarrativeViews.Length;
-
-                for (int i = 0, n = foundNarrativeViews.Length; i < n; ++i)
+                int startingSize = 0;
+                narrativeViews.arraySize = startingSize;
+                
+                foreach (GameObject rootGameObject in narrativeViewManager.gameObject.scene.GetRootGameObjects())
                 {
-                    narrativeViews.GetArrayElementAtIndex(i).objectReferenceValue = foundNarrativeViews[i];
+                    var foundNarrativeViews = rootGameObject.GetComponentsInChildren<NarrativeView>();
+                    int foundNarrativeViewsCount = foundNarrativeViews.Length;
+
+                    if (foundNarrativeViewsCount <= 0)
+                    {
+                        continue;
+                    }
+                    
+                    narrativeViews.arraySize += foundNarrativeViewsCount;
+
+                    for (int i = 0; i < foundNarrativeViewsCount; ++i)
+                    {
+                        narrativeViews.GetArrayElementAtIndex(startingSize + i).objectReferenceValue = foundNarrativeViews[i];
+                    }
+                    
+                    startingSize += foundNarrativeViewsCount;
                 }
 
                 serializedObject.ApplyModifiedProperties();

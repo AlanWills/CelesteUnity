@@ -31,15 +31,15 @@ namespace Celeste.Narrative.UI
             {
                 dialogueTypeStyles = new DialogueTypeStyle[3]
                 {
-                    new DialogueTypeStyle() { dialogueType = DialogueType.Speech, format = "{0}" },
-                    new DialogueTypeStyle() { dialogueType = DialogueType.Thinking, format = "<i>{0}</i>" },
-                    new DialogueTypeStyle() { dialogueType = DialogueType.Action, format = "<b>{0}</b>" }
+                    new() { dialogueType = DialogueType.Speech, format = "{0}" },
+                    new() { dialogueType = DialogueType.Thinking, format = "<i>{0}</i>" },
+                    new() { dialogueType = DialogueType.Action, format = "<b>{0}</b>" }
                 };
             }
 
             if (supportedUIPositions == null || supportedUIPositions.Count == 0)
             {
-                supportedUIPositions = supportedUIPositions ?? new List<UIPosition>();
+                supportedUIPositions ??= new List<UIPosition>();
 
                 foreach (var enumValue in Enum.GetValues(typeof(UIPosition)))
                 {
@@ -54,9 +54,9 @@ namespace Celeste.Narrative.UI
 
         public override bool IsValidForNode(FSMNode fsmNode)
         {
-            return fsmNode is IDialogueNode && 
-                !string.IsNullOrEmpty((fsmNode as IDialogueNode).Dialogue) &&
-                supportedUIPositions.Contains((fsmNode as IDialogueNode).UIPosition);
+            return fsmNode is IDialogueNode node && 
+                !string.IsNullOrEmpty(node.Dialogue) &&
+                supportedUIPositions.Contains(node.UIPosition);
         }
 
         public override void OnNodeEnter(FSMNode fsmNode)
@@ -80,7 +80,7 @@ namespace Celeste.Narrative.UI
 
         private void SetDialogueTypeStyle(DialogueType dialogueType)
         {
-            for (int i = 0, n = dialogueTypeStyles != null ? dialogueTypeStyles.Length : 0; i < n; ++i)
+            for (int i = 0, n = dialogueTypeStyles?.Length ?? 0; i < n; ++i)
             {
                 DialogueTypeStyle style = dialogueTypeStyles[i];
                 

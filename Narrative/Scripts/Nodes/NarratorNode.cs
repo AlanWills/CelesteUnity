@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
-using Celeste.DataStructures;
+using System.Diagnostics;
 using Celeste.FSM;
 using Celeste.Narrative.Characters;
+using Celeste.Narrative.Settings;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.UI;
+using Celeste.Tools;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using XNode.Attributes;
 
 namespace Celeste.Narrative
 {
     [CreateNodeMenu("Celeste/Narrative/Narrator")]
     [NodeTint(0, 0.4f, 0)]
-    public class NarratorNode : NarrativeNode, IPointerClickHandler, IDialogueNode, ICharacterNode
+    public class NarratorNode : NarrativeNode, IDialogueNode, ICharacterNode
     {
         #region Properties and Fields
 
@@ -81,9 +82,36 @@ namespace Celeste.Narrative
         [SerializeField, HideInNodeEditor] private Character character;
 
         private string tokenizedDialogue;
-        private bool isRead = false;
 
         #endregion
+        
+        #region Unity Methods
+
+        private void OnValidate()
+        {
+            TrySetNarratorCharacter();
+        }
+
+        #endregion
+
+        protected override void OnAddToGraph()
+        {
+            base.OnAddToGraph();
+            
+            TrySetNarratorCharacter();
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        private void TrySetNarratorCharacter()
+        {
+#if UNITY_EDITOR
+            if (character == null)
+            {
+                character = NarrativeEditorSettings.GetOrCreateSettings().narratorCharacter;
+                EditorOnly.SetDirty(this);
+            }
+#endif
+        }
 
         #region FSM Runtime Methods
 
@@ -92,21 +120,11 @@ namespace Celeste.Narrative
             base.OnEnter();
 
             tokenizedDialogue = TokenUtility.SubstituteTokens(dialogue, dialogueTokens);
-            isRead = false;
         }
 
         protected override FSMNode OnUpdate()
         {
-            return isRead ? base.OnUpdate() : this;
-        }
-
-        #endregion
-
-        #region IPointerClickHandler
-
-        public void OnPointerClick(PointerEventData pointerEventData)
-        {
-            isRead = true;
+            return this;
         }
 
         #endregion

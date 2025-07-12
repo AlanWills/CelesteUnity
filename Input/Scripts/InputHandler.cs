@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Celeste.Tools.Attributes.GUI;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Celeste.Input
@@ -8,6 +9,7 @@ namespace Celeste.Input
     {
         #region Properties and Fields
 
+        [HelpBox("Be aware that for touch input based platforms some of these event will never fire, since we do not have the notion of a pointer without input (e.g. desktop platforms have a mouse position even when not down).", HelpBoxMessageType.Warning)]
         [SerializeField] private UnityEvent<InputState> onPointerEnter = new UnityEvent<InputState>();
         [SerializeField] private UnityEvent<InputState> onPointerOver = new UnityEvent<InputState>();
         [SerializeField] private UnityEvent<InputState> onPointerExit = new UnityEvent<InputState>();
