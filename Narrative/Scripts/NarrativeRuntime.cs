@@ -17,8 +17,7 @@ namespace Celeste.Narrative
             ChapterRecord chapterRecord)
         {
             gameObject.name = nameof(NarrativeRuntime);
-
-            NarrativeGraph narrativeGraph = chapterRecord.Chapter.NarrativeGraph;
+            
             NarrativeRuntime runtime = gameObject.AddComponent<NarrativeRuntime>();
             runtime.SetupGraphAtRuntime(chapterRecord);
 

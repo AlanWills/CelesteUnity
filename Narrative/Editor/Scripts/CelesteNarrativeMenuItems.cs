@@ -16,7 +16,7 @@ namespace CelesteEditor.Narrative
         [MenuItem("Celeste/Save/Files/Delete Narrative Save", priority = 100)]
         public static void DeleteNarrativeSaveMenuItem()
         {
-            PersistenceUtility.DeletePersistentDataFile(NarrativeManager.FILE_NAME);
+            PersistenceUtility.DeletePersistentDataFile(NarrativeRecordManager.FILE_NAME);
         }
     }
 }

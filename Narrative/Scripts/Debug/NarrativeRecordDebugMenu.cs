@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Celeste.Narrative.Debug
 {
-    [CreateAssetMenu(fileName = nameof(NarrativeDebugMenu), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Debug/Narrative Debug Menu", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
-    public class NarrativeDebugMenu : DebugMenu
+    [CreateAssetMenu(fileName = nameof(NarrativeRecordDebugMenu), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Debug/Narrative Record Debug Menu", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
+    public class NarrativeRecordDebugMenu : DebugMenu
     {
         #region Properties and Fields
 
@@ -55,7 +55,7 @@ namespace Celeste.Narrative.Debug
                 {
                     ChapterRecord chapterRecord = storyRecord.GetChapterRecord(chapterRecordIndex);
 
-                    using (var horizontal = new GUILayout.HorizontalScope())
+                    using (new GUILayout.HorizontalScope())
                     {
                         GUILayout.Label(chapterRecord.ChapterName);
 

@@ -1,4 +1,5 @@
 ﻿using Celeste.FSM;
+using Celeste.Narrative.Backgrounds;
 using Celeste.Narrative.Events;
 using Celeste.Narrative.Loading;
 using Celeste.Narrative.Parameters;
@@ -15,6 +16,9 @@ namespace Celeste.Narrative
         [SerializeField] private ChapterRecordValue currentChapterRecord;
         [SerializeField] private NarrativeRuntimeEvent narrativeBegunEvent;
         [SerializeField] private NarrativeRuntimeEvent narrativeFinishedEvent;
+        [SerializeField] private FSMNodeEvent narrativeNodeEnter;
+        [SerializeField] private FSMNodeEvent narrativeNodeUpdate;
+        [SerializeField] private FSMNodeEvent narrativeNodeExit;
 
         private NarrativeRuntime currentRuntime;
 
@@ -25,10 +29,13 @@ namespace Celeste.Narrative
             chapterRecord.LoadChapterValueRecords();
             currentChapterRecord.Value = chapterRecord;
 
-            GameObject gameObject = new GameObject();
-            gameObject.transform.SetParent(transform);
-            currentRuntime = NarrativeRuntime.Create(gameObject, chapterRecord);
+            GameObject narrativeRuntimeGameObject = new GameObject();
+            narrativeRuntimeGameObject.transform.SetParent(transform);
+            currentRuntime = NarrativeRuntime.Create(narrativeRuntimeGameObject, chapterRecord);
             currentRuntime.OnStop.AddListener(OnNarrativeFinished);
+            currentRuntime.OnNodeEnter.AddListener(OnNarrativeNodeEnter);
+            currentRuntime.OnNodeUpdate.AddListener(OnNarrativeNodeUpdate);
+            currentRuntime.OnNodeExit.AddListener(OnNarrativeNodeExit);
 
             narrativeBegunEvent.Invoke(currentRuntime);
         }
@@ -49,6 +56,14 @@ namespace Celeste.Narrative
             BeginNarrativeRuntime(narrativeContext.chapterRecord);
         }
 
+        public void OnSetBackground(Background background)
+        {
+            if (currentRuntime != null)
+            {
+                currentRuntime.ChapterRecord.CurrentBackgroundGuid = background != null ? background.Guid : 0;
+            }
+        }
+
         public void OnCalculateCurrentChapterProgress()
         {
             if (currentChapterRecord.Value != null)
@@ -57,9 +72,32 @@ namespace Celeste.Narrative
             }
         }
 
+        public void OnTryGoToNextDefaultNode()
+        {
+            if (currentRuntime != null)
+            {
+                currentRuntime.TryGoToNextDefaultNode();
+            }
+        }
+
         private void OnNarrativeFinished(ILinearRuntime linearRuntime)
         {
             narrativeFinishedEvent.Invoke(currentRuntime);
+        }
+
+        private void OnNarrativeNodeEnter(FSMNode node)
+        {
+            narrativeNodeEnter.Invoke(node);
+        }
+
+        private void OnNarrativeNodeUpdate(FSMNode node)
+        {
+            narrativeNodeUpdate.Invoke(node);
+        }
+
+        private void OnNarrativeNodeExit(FSMNode node)
+        {
+            narrativeNodeExit.Invoke(node);
         }
 
         #endregion

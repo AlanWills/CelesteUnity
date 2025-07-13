@@ -26,7 +26,7 @@ namespace CelesteEditor.PropertyDrawers.Parameters
                     {
                         isConstantProperty.boolValue = EditorGUI.Toggle(constantToggleRect, isConstantProperty.boolValue, EditorStyles.radioButton);
 
-                        if (isConstantProperty.boolValue)
+                        if (isConstantProperty.boolValue && changeScope.changed)
                         {
                             serializedReference.FindProperty("referenceValue").objectReferenceValue = null;
                         }
@@ -36,11 +36,27 @@ namespace CelesteEditor.PropertyDrawers.Parameters
                     Rect valueRect = new Rect(constantToggleRect.x + gap, constantToggleRect.y, position.width - gap, position.height);
                     if (isConstantProperty.boolValue)
                     {
-                        EditorGUI.PropertyField(valueRect, serializedReference.FindProperty("constantValue"), GUIContent.none);
+                        SerializedProperty constantValueProperty = serializedReference.FindProperty("constantValue");
+                        if (constantValueProperty != null)
+                        {
+                            EditorGUI.PropertyField(valueRect, constantValueProperty, GUIContent.none);
+                        }
+                        else
+                        {
+                            EditorGUI.LabelField(valueRect, "ERROR - No Constant Value found on parameter...");
+                        }
                     }
                     else
                     {
-                        EditorGUI.PropertyField(valueRect, serializedReference.FindProperty("referenceValue"), GUIContent.none);
+                        SerializedProperty referenceValueProperty = serializedReference.FindProperty("referenceValue");
+                        if (referenceValueProperty != null)
+                        {
+                            EditorGUI.PropertyField(valueRect, referenceValueProperty, GUIContent.none);
+                        }
+                        else
+                        {
+                            EditorGUI.LabelField(valueRect, "ERROR - No Reference Value found on parameter...");
+                        }
                     }
                 }
 

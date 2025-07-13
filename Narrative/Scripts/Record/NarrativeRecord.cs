@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using Celeste.Narrative.Parameters;
 using UnityEngine;
 
 namespace Celeste.Narrative
@@ -12,8 +13,8 @@ namespace Celeste.Narrative
 
         public int NumStoryRecords  => storyRecords.Count;
 
-        public int LastPlayedStoryGuid { get; set; }
-        public int LastPlayedChapterGuid { get; set; }
+        public int LastPlayedStoryGuid { get; private set; }
+        public int LastPlayedChapterGuid { get; private set; }
         
         [NonSerialized] private List<StoryRecord> storyRecords = new List<StoryRecord>();
 
@@ -77,6 +78,18 @@ namespace Celeste.Narrative
             }
 
             return FindOrAddChapterRecord(story, chapter);
+        }
+
+        public void SetLastPlayedStoryAndChapter(ChapterRecord chapterRecord)
+        {
+            LastPlayedStoryGuid = chapterRecord.StoryRecord.Story.Guid;
+            LastPlayedChapterGuid = chapterRecord.Chapter.Guid;
+        }
+
+        public void SetLastPlayedStoryAndChapter(int storyGuid, int chapterGuid)
+        {
+            LastPlayedStoryGuid = storyGuid;
+            LastPlayedChapterGuid = chapterGuid;
         }
     }
 }

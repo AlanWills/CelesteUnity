@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    [AddComponentMenu("Celeste/Narrative/Narrative Manager")]
-    public class NarrativeManager : PersistentSceneManager<NarrativeManager, ProductionDTO>, IHasAssets
+    [AddComponentMenu("Celeste/Narrative/Narrative Record Manager")]
+    public class NarrativeRecordManager : PersistentSceneManager<NarrativeRecordManager, ProductionDTO>, IHasAssets
     {
         #region Properties and Fields
 
@@ -40,14 +40,12 @@ namespace Celeste.Narrative
 
         protected override void Deserialize(ProductionDTO dto)
         {
-            
-            UnityEngine.Debug.Assert(narrativeRecord != null, $"Could not find {nameof(NarrativeRecord)} in {nameof(NarrativeManager)}.", CelesteLog.Narrative);
-            narrativeRecord.LastPlayedStoryGuid = dto.lastPlayedStoryGuid;
-            narrativeRecord.LastPlayedChapterGuid = dto.lastPlayedChapterGuid;
+            UnityEngine.Debug.Assert(narrativeRecord != null, $"Could not find {nameof(NarrativeRecord)} in {nameof(NarrativeRecordManager)}.", CelesteLog.Narrative);
+            narrativeRecord.SetLastPlayedStoryAndChapter(dto.lastPlayedStoryGuid, dto.lastPlayedChapterGuid);
 
             foreach (StoryDTO storyDTO in dto.stories)
             {
-                UnityEngine.Debug.Assert(storyCatalogue != null, $"{nameof(StoryCatalogue)} asset has not been loaded in {nameof(NarrativeManager)}.", CelesteLog.Narrative);
+                UnityEngine.Debug.Assert(storyCatalogue != null, $"{nameof(StoryCatalogue)} asset has not been loaded in {nameof(NarrativeRecordManager)}.", CelesteLog.Narrative);
                 Story story = storyCatalogue.FindByGuid(storyDTO.guid);
                 UnityEngine.Debug.Assert(story != null, $"Could not find story with guid {storyDTO.guid}.", CelesteLog.Narrative);
                 StoryRecord storyRecord = narrativeRecord.FindOrAddStoryRecord(story);
@@ -59,7 +57,7 @@ namespace Celeste.Narrative
                     ChapterRecord chapterRecord = storyRecord.FindOrAddChapterRecord(chapter);
                     chapterRecord.CurrentNodePath = new FSMGraphNodePath(chapter.NarrativeGraph, chapterDTO.currentNodePath);
                     chapterRecord.CurrentBackgroundGuid = chapterDTO.currentBackgroundGuid;
-
+                    
                     foreach (CharacterDTO characterDTO in chapterDTO.characters)
                     {
                         CharacterRecord characterRecord = chapterRecord.FindCharacterRecord(characterDTO.guid);
@@ -92,8 +90,7 @@ namespace Celeste.Narrative
 
         public void OnNarrativeBegun(NarrativeRuntime narrativeRuntime)
         {
-            narrativeRecord.LastPlayedStoryGuid = narrativeRuntime.ChapterRecord.StoryRecord.Story.Guid;
-            narrativeRecord.LastPlayedChapterGuid = narrativeRuntime.ChapterRecord.Chapter.Guid;
+            narrativeRecord.SetLastPlayedStoryAndChapter(narrativeRuntime.ChapterRecord);
         }
 
         #endregion

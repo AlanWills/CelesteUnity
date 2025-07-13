@@ -13,19 +13,12 @@ namespace Celeste.Narrative.Backgrounds.Settings
     {
         #region Properties and Fields
 
-        public override int CurrentBackgroundGuid
-        {
-            get => currentChapterRecord.Value.CurrentBackgroundGuid;
-            set => currentChapterRecord.Value.CurrentBackgroundGuid = value;
-        }
-
         [SerializeField] private BackgroundCatalogueAssetReference backgroundCatalogue;
-        [SerializeField] private ChapterRecordValue currentChapterRecord;
-
+        
         [Header("Events")]
         [SerializeField] private BackgroundEventAssetReference setBackgroundEvent;
 
-        [NonSerialized] private bool loaded = false;
+        [NonSerialized] private bool loaded;
 
         #endregion
 
@@ -38,6 +31,8 @@ namespace Celeste.Narrative.Backgrounds.Settings
         {
             yield return backgroundCatalogue.LoadAssetAsync();
             yield return setBackgroundEvent.LoadAssetAsync();
+
+            loaded = true;
         }
 
         public override Background FindBackgroundByGuid(int guid)

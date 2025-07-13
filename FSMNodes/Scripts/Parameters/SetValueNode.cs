@@ -65,7 +65,43 @@ namespace Celeste.FSM.Nodes.Parameters
             SetValue(newValue.IsConstant ? GetInputValue(nameof(newValue), newValue.Value) : newValue.Value);
         }
 
-        protected abstract void SetValue(T newValue);
+        protected virtual void SetValue(T newValueToUse)
+        {
+            value.Value = newValueToUse;
+        }
+
+        #endregion
+    }
+    
+    [Serializable]
+    public abstract class SetValueNode<T, TValue> : FSMNode
+        where TValue : IValue<T>
+    {
+        #region Properties and Fields
+
+        public TValue value;
+        [Input]
+        public T newValue;
+
+        #endregion
+
+        #region FSM Runtime Methods
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+
+            Debug.Assert(value != null, $"Value is null in SetValueNode ({graph.name})");
+            Debug.Assert(newValue != null, $"New Value is null in SetValueNode ({graph.name})");
+
+            T newValueToUse = GetInputValue(nameof(newValue), newValue);
+            SetValue(newValueToUse);
+        }
+
+        protected virtual void SetValue(T newValueToUse)
+        {
+            value.Value = newValueToUse;
+        }
 
         #endregion
     }
