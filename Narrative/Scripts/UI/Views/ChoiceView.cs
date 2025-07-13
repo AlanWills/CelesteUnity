@@ -38,18 +38,18 @@ namespace Celeste.Narrative.UI
 
                 if (shouldAllocate)
                 {
-                    if (choice is ITextChoice && textChoicesAllocator.CanAllocate(1))
+                    if (choice is ITextChoice textChoice && textChoicesAllocator.CanAllocate(1))
                     {
                         GameObject choiceGameObject = textChoicesAllocator.Allocate();
                         TextChoiceController choiceController = choiceGameObject.GetComponent<TextChoiceController>();
-                        choiceController.Hookup(choice as ITextChoice, choiceNode.SelectChoice);
+                        choiceController.Hookup(textChoice, choiceNode.SelectChoice);
                         choiceGameObject.SetActive(true);
                     }
-                    else if (choice is ISpriteChoice && spriteChoicesAllocator.CanAllocate(1))
+                    else if (choice is ISpriteChoice spriteChoice && spriteChoicesAllocator.CanAllocate(1))
                     {
                         GameObject choiceGameObject = spriteChoicesAllocator.Allocate();
                         SpriteChoiceController choiceController = choiceGameObject.GetComponent<SpriteChoiceController>();
-                        choiceController.Hookup(choice as ISpriteChoice, choiceNode.SelectChoice);
+                        choiceController.Hookup(spriteChoice, choiceNode.SelectChoice);
                         choiceGameObject.SetActive(true);
                     }
                 }
