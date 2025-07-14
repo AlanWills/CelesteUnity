@@ -17,7 +17,7 @@ namespace Celeste.Narrative
 {
     [CreateNodeMenu("Celeste/Narrative/Choice")]
     [NodeTint(0, 0, 1f), NodeWidth(250)]
-    public class ChoiceNode : NarrativeNode, IChoiceNode, IDialogueNode
+    public class ChoiceNode : NarrativeNode, IChoiceNode, IDialogueNode, ICharacterNode
     {
         #region Properties and Fields
 

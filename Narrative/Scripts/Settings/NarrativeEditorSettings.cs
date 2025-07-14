@@ -20,6 +20,7 @@ namespace Celeste.Narrative.Settings
 
         #endregion
 
+#if UNITY_EDITOR
         public static NarrativeEditorSettings GetOrCreateSettings()
         {
             return GetOrCreateSettings(FOLDER_PATH, FILE_PATH);
@@ -31,5 +32,6 @@ namespace Celeste.Narrative.Settings
             
             narratorCharacter = EditorOnly.FindAsset<Character>("Narrator");
         }
+#endif
     }
 }

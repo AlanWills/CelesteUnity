@@ -118,7 +118,26 @@ namespace CelesteEditor.BuildSystem.Steps
                     else
                     {
                         Debug.LogWarning(
-                            $"Shader Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                            $"Unity Build In Shader Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
+                    }
+                }
+            }
+
+            // Unity Built In Assets
+            {
+                string unityBuiltInAssetsName = $"{settings.BuiltInBundleCustomNaming}_unitybuiltinassets";
+                string unityBuiltInAssetsPath = result.FileRegistry.GetFilePathForBundle(unityBuiltInAssetsName);
+
+                if (!string.IsNullOrEmpty(unityBuiltInAssetsPath) && !unityBuiltInAssetsPath.StartsWith(localBuildDir))
+                {
+                    if (settings.BuiltInBundleNaming == BuiltInBundleNaming.Custom)
+                    {
+                        bundledAssetBundleNames.Add(unityBuiltInAssetsName);
+                    }
+                    else
+                    {
+                        Debug.LogWarning(
+                            $"Unity Built In Assets Bundle Naming is not set to custom in Addressable Settings.  This is likely incorrect and may lead to caching not working as intended.");
                     }
                 }
             }
@@ -141,7 +160,7 @@ namespace CelesteEditor.BuildSystem.Steps
                     }
                 }
             }
-
+            
             foreach (var group in settings.groups)
             {
                 if (group.HasSchema<BundledGroupSchema>() &&
