@@ -1,4 +1,5 @@
-﻿using Celeste.Narrative.Characters;
+﻿using Celeste.Events;
+using Celeste.Narrative.Characters;
 using Celeste.Tools;
 using Celeste.Tools.Settings;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace Celeste.Narrative.Settings
         public const string FILE_PATH = FOLDER_PATH + "NarrativeEditorSettings.asset";
 
         public Character narratorCharacter;
+        public BackgroundEvent defaultSetBackgroundEvent;
 
         #endregion
 
@@ -31,6 +33,7 @@ namespace Celeste.Narrative.Settings
             base.OnCreate();
             
             narratorCharacter = EditorOnly.FindAsset<Character>("Narrator");
+            defaultSetBackgroundEvent = EditorOnly.FindAsset<BackgroundEvent>("SetBackground");
         }
 #endif
     }
