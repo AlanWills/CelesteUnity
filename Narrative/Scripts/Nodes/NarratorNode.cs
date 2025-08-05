@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Celeste.FSM;
 using Celeste.Narrative.Characters;
@@ -6,12 +7,13 @@ using Celeste.Narrative.Settings;
 using Celeste.Narrative.Tokens;
 using Celeste.Narrative.UI;
 using Celeste.Tools;
+using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 using XNode.Attributes;
 
 namespace Celeste.Narrative
 {
-    [CreateNodeMenu("Celeste/Narrative/Narrator")]
+    [Obsolete]
     [NodeTint(0, 0.4f, 0)]
     public class NarratorNode : NarrativeNode, IDialogueNode, ICharacterNode
     {
@@ -76,7 +78,7 @@ namespace Celeste.Narrative
             set { character = value; }
         }
 
-        [SerializeField, TextArea] private string dialogue;
+        [SerializeField, TextRegion(2)] private string dialogue;
         [SerializeField, HideInNodeEditor] private DialogueType dialogueType = DialogueType.Speech;
         [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         [SerializeField, HideInNodeEditor] private Character character;

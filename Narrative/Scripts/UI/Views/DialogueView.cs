@@ -84,7 +84,7 @@ namespace Celeste.Narrative.UI
             {
                 DialogueTypeStyle style = dialogueTypeStyles[i];
                 
-                if ((style.dialogueType & dialogueType) == dialogueType)
+                if (style.dialogueType == dialogueType)
                 {
                     dialogueText.text = string.Format(style.format, dialogueText.text);
                 }

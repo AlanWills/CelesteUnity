@@ -12,33 +12,35 @@ namespace CelesteEditor.Input.PropertyDrawers
     public class KeyCodePropertyDrawer : PropertyDrawer
     {
         private string parseText = "A";
+        private const float spacing = 4;
+        private const float textFieldWidth = 24;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUI.GetPropertyHeight(property) + 2 + GUI.skin.textField.CalcSize(new GUIContent(parseText)).y;
+            return EditorGUIUtility.singleLineHeight;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             label = EditorGUI.BeginProperty(position, label, property);
-
-            float propertyHeight = EditorGUI.GetPropertyHeight(property);
-            Rect propertyRect = position;
-            propertyRect.height = propertyHeight;
-            EditorGUI.PropertyField(propertyRect, property, label);
-
-            propertyRect.y += propertyHeight + 2;
-
+            
             GUIContent buttonContent = new GUIContent("Parse");
             float buttonWidth = GUI.skin.button.CalcSize(buttonContent).x;
-            float totalWidth = propertyRect.width;
-            propertyRect.width = totalWidth - buttonWidth - 5;
-            parseText = EditorGUI.TextField(propertyRect, "KeyCode Text", parseText);
-
-            propertyRect.x += totalWidth - buttonWidth;
-            propertyRect.width = buttonWidth;
             
-            if (GUI.Button(propertyRect, buttonContent))
+            Rect propertyRect = position;
+            propertyRect.width -= (spacing * 3 + textFieldWidth + buttonWidth);
+            EditorGUI.PropertyField(propertyRect, property, label);
+
+            Rect textFieldRect = propertyRect;
+            textFieldRect.x = propertyRect.width + spacing * 2;
+            textFieldRect.width = textFieldWidth;
+            parseText = EditorGUI.TextField(textFieldRect, GUIContent.none, parseText);
+
+            Rect parseButtonRect = textFieldRect;
+            parseButtonRect.x += textFieldRect.width + spacing;
+            parseButtonRect.width = buttonWidth;
+            
+            if (GUI.Button(parseButtonRect, buttonContent))
             {
                 if (Enum.TryParse(parseText, out KeyCode keyCode))
                 {

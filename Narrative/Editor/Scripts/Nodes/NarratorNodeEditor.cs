@@ -1,51 +1,56 @@
-﻿using Celeste.FSM;
+﻿using System.Collections.Generic;
 using Celeste.Narrative;
+using Celeste.Narrative.Settings;
+using Celeste.Narrative.Tokens;
 using CelesteEditor.FSM.Nodes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
-using UnityEngine;
 using XNodeEditor;
 
 namespace CelesteEditor.Narrative
 {
-    [CustomNodeEditor(typeof(NarratorNode))]
+    [NodeEditor.CustomNodeEditor(typeof(NarratorNode))]
     public class NarratorNodeEditor : FSMNodeEditor
     {
         #region GUI
-
+        
         public override void OnCreate()
         {
             base.OnCreate();
 
             serializedObject.Update();
-            serializedObject.FindProperty("character").objectReferenceValue = NodeConstants.instance.Narrator;
+            serializedObject.FindProperty("character").objectReferenceValue = NarrativeEditorSettings.GetOrCreateSettings().narratorCharacter;
             serializedObject.ApplyModifiedProperties();
         }
+
+        #endregion
+        
+        #region GUI
 
         public override void OnBodyGUI()
         {
             serializedObject.Update();
 
             NarratorNode narratorNode = target as NarratorNode;
-
-            DrawDefaultPortPair();
+            bool isTextEmptyBefore = string.IsNullOrEmpty(narratorNode.RawDialogue);
             
-            narratorNode.RawDialogue = EditorGUILayout.TextArea(narratorNode.RawDialogue, GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * 2));
-
-            EditorGUILayout.Space();
-
-            DrawNarratorNodeValues();
-
+            DrawFixGUI();
+            narratorNode.DrawFindDialogueTokensGUI();
+            DrawDefaultPortPair();
+            DrawDialogueNodeValues();
             serializedObject.ApplyModifiedProperties();
+            
+            if (isTextEmptyBefore && !string.IsNullOrEmpty(narratorNode.RawDialogue))
+            {
+                narratorNode.FindDialogueTokens();
+            }
+            else if (!isTextEmptyBefore && string.IsNullOrEmpty(narratorNode.RawDialogue))
+            {
+                narratorNode.DialogueTokens = new List<LocaToken>();
+            }
         }
 
-        private void DrawNarratorNodeValues()
+        private void DrawDialogueNodeValues()
         {
-            string[] excludes = { "m_Script", "graph", "position", "ports", "dialogue" };
+            string[] excludes = { "m_Script", "graph", "position", "ports" };
             DrawNodeProperties(serializedObject, excludes);
         }
 

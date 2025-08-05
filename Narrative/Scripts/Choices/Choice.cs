@@ -46,6 +46,8 @@ namespace Celeste.Narrative.Choices
 
         #endregion
 
+        public virtual void OnValidate() { }
+
         public virtual void CopyFrom(Choice original)
         {
             id = original.id;
@@ -65,7 +67,7 @@ namespace Celeste.Narrative.Choices
 
             return true;
         }
-
+        
         public virtual void OnSelected() { }
     }
 }

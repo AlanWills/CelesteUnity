@@ -13,7 +13,8 @@
         "Celeste.UnityProject",
         "Celeste.Tools.Editor",
         "XNode",
-        "XNodeEditor"
+        "XNodeEditor",
+        "Celeste.Objects"
     ],
     "includePlatforms": [
         "Editor"

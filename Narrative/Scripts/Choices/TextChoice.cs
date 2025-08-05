@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using Celeste.Tools;
+using UnityEditor;
 using UnityEngine;
 
 namespace Celeste.Narrative.Choices
@@ -14,9 +16,7 @@ namespace Celeste.Narrative.Choices
             set
             {
                 displayText = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -26,9 +26,7 @@ namespace Celeste.Narrative.Choices
             set
             {
                 dialogueType = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -37,15 +35,15 @@ namespace Celeste.Narrative.Choices
 
         #endregion
 
-        private void OnValidate()
+        public override void OnValidate()
         {
-#if UNITY_EDITOR
+            base.OnValidate();
+            
             if (string.IsNullOrEmpty(displayText))
             {
                 displayText = ID;
-                UnityEditor.EditorUtility.SetDirty(this);
+                EditorOnly.SetDirty(this);
             }
-#endif
         }
     }
 }

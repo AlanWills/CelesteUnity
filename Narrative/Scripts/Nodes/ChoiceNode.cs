@@ -112,6 +112,7 @@ namespace Celeste.Narrative
         }
 
         public int NumChoices => choices.Count;
+        public IReadOnlyList<Choice> Choices => choices;
 
         [HideIf(nameof(isLocalised)), TextRegion(2)] public string dialogue;
         [ShowIf(nameof(isLocalised)), LocalisationPreview] public LocalisationKey localisationKey;
@@ -187,17 +188,18 @@ namespace Celeste.Narrative
 
         #region Choice Management
 
-        public T AddChoice<T>(string name) where T : Choice
+        public T AddChoice<T>(string choiceName) where T : Choice
         {
-            return AddChoice(name, typeof(T)) as T;
+            return AddChoice(choiceName, typeof(T)) as T;
         }
 
-        public Choice AddChoice(string name, System.Type type)
+        public Choice AddChoice(string choiceName, System.Type type)
         {
             Choice choice = ScriptableObject.CreateInstance(type) as Choice;
-            choice.name = name;
+            choice.name = choiceName;
             choice.hideFlags = HideFlags.HideInHierarchy;
-            choice.ID = name;
+            choice.ID = choiceName;
+            choice.OnValidate();
             choices.Add(choice);
 
             if (!Application.isPlaying)
@@ -205,7 +207,7 @@ namespace Celeste.Narrative
                 EditorOnly.AddObjectToAsset(choice, graph);
             }
 
-            AddOutputPort(name);
+            AddOutputPort(choiceName);
 
             return choice;
         }

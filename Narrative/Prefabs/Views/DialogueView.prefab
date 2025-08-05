@@ -777,6 +777,6 @@ MonoBehaviour:
     format: '{0}'
   - dialogueType: 2
     format: <i>{0}</i>
-  - dialogueType: 4
+  - dialogueType: 3
     format: <b>{0}</b>
   supportedUIPositions: 00000000010000000200000003000000

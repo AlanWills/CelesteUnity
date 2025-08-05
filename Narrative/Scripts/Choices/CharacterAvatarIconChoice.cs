@@ -11,10 +11,7 @@ namespace Celeste.Narrative.Choices
     {
         #region Properties and Fields
 
-        public Sprite Sprite
-        {
-            get { return spriteCharacterCustomisation.Sprite; }
-        }
+        public Sprite Sprite => spriteCharacterCustomisation.Sprite;
 
         [SerializeField] private SpriteCharacterCustomisation spriteCharacterCustomisation;
         [SerializeField] private Character character;

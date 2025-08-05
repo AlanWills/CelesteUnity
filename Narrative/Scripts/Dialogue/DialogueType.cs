@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    [Flags]
     public enum DialogueType
     {
         Speech = 1,
         Thinking = 2,
-        Action = 4
+        Action = 3
     }
 
     [Serializable]

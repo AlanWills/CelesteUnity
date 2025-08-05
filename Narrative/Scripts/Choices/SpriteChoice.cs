@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Narrative.Choices
@@ -10,13 +11,11 @@ namespace Celeste.Narrative.Choices
 
         public Sprite Sprite
         {
-            get { return sprite; }
+            get => sprite;
             set
             {
                 sprite = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 

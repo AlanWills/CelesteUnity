@@ -10,6 +10,7 @@ using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 using XNode.Attributes;
 using Celeste.Narrative.Tokens;
+using Celeste.Tools;
 
 namespace Celeste.Narrative
 {
@@ -27,9 +28,7 @@ namespace Celeste.Narrative
                 if (position != value)
                 {
                     position = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
             }
         }
@@ -44,9 +43,7 @@ namespace Celeste.Narrative
                 if (dialogue != value)
                 {
                     dialogue = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
             }
         }
@@ -57,9 +54,7 @@ namespace Celeste.Narrative
             {
                 dialogueTokens.Clear();
                 dialogueTokens.AddRange(value);
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -71,9 +66,7 @@ namespace Celeste.Narrative
                 if (dialogueType != value)
                 {
                     dialogueType = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
             }
         }
@@ -86,9 +79,7 @@ namespace Celeste.Narrative
                 if (uiPosition != value)
                 {
                     uiPosition = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
             }
         }
@@ -101,24 +92,22 @@ namespace Celeste.Narrative
                 if (character != value)
                 {
                     character = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                    EditorOnly.SetDirty(this);
                 }
             }
         }
 
-        [HideIf(nameof(isLocalised)), TextRegion(2)] public string dialogue;
-        [ShowIf(nameof(isLocalised)), LocalisationPreview] public LocalisationKey localisationKey;
-        public bool isLocalised;
-        public DialogueType dialogueType = DialogueType.Speech;
-        [NodeEnum] public UIPosition uiPosition = UIPosition.Left;
+        [SerializeField, HideIf(nameof(isLocalised)), TextRegion(2)] private string dialogue;
+        [SerializeField, ShowIf(nameof(isLocalised)), LocalisationPreview] private LocalisationKey localisationKey;
+        [SerializeField] private bool isLocalised;
+        [SerializeField] private DialogueType dialogueType = DialogueType.Speech;
+        [SerializeField, NodeEnum] private UIPosition uiPosition = UIPosition.Left;
         [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
-        public Character character;
-        [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;
+        [SerializeField] private Character character;
+        [SerializeField, ShowIf(nameof(isLocalised))] private LanguageValue currentLanguage;
 
-        [System.NonSerialized] public string tokenizedDialogue;
-        [System.NonSerialized] public bool hasBeenLocalised;
+        [System.NonSerialized] private string tokenizedDialogue;
+        [System.NonSerialized] private bool hasBeenLocalised;
 
         #endregion
 

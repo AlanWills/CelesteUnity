@@ -5,6 +5,7 @@ using CelesteEditor.FSM.Nodes;
 using CelesteEditor.Narrative.Choices;
 using CelesteEditor.Popups;
 using System.Collections.Generic;
+using Celeste.Narrative.Tokens;
 using Celeste.Tools;
 using UnityEditor;
 using UnityEngine;
@@ -30,12 +31,13 @@ namespace CelesteEditor.Narrative
             serializedObject.Update();
 
             ChoiceNode choiceNode = target as ChoiceNode;
+            bool isTextEmptyBefore = string.IsNullOrEmpty(choiceNode.RawDialogue);
+            bool isCharacterSetBefore = choiceNode.Character != null;
+
+            DrawFixGUI();
+            choiceNode.DrawFindDialogueTokensGUI();
 
             NodeEditorGUILayout.PortField(choiceNode.GetInputPort(FSMNode.DEFAULT_INPUT_PORT_NAME));
-
-            choiceNode.RawDialogue = TextArea(choiceNode.RawDialogue, GUILayout.MinHeight(EditorGUIUtility.singleLineHeight * 2));
-
-            Space();
 
             DrawChoiceNodeValues();
 
@@ -95,11 +97,25 @@ namespace CelesteEditor.Narrative
             }
 
             serializedObject.ApplyModifiedProperties();
+            
+            if (isTextEmptyBefore && !string.IsNullOrEmpty(choiceNode.RawDialogue))
+            {
+                choiceNode.FindDialogueTokens();
+            }
+            else if (!isTextEmptyBefore && string.IsNullOrEmpty(choiceNode.RawDialogue))
+            {
+                choiceNode.DialogueTokens = new List<LocaToken>();
+            }
+
+            if (!isCharacterSetBefore && choiceNode.Character != null)
+            {
+                choiceNode.UIPosition = choiceNode.Character.DefaultUIPosition;
+            }
         }
 
         private void DrawChoiceNodeValues()
         {
-            string[] excludes = { "m_Script", "graph", "position", "ports", "choices", "dialogue" };
+            string[] excludes = { "m_Script", "graph", "position", "ports", "choices" };
             DrawNodeProperties(serializedObject, excludes);
         }
 
