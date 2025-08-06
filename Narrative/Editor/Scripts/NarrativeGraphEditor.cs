@@ -59,12 +59,22 @@ namespace CelesteEditor.Narrative
             NarrativeEditorSettings narrativeEditorSettings = NarrativeEditorSettings.GetOrCreateSettings();
             foreach (var fsmNodePrefabWithShortcut in narrativeEditorSettings.FSMNodePrefabsWithShortcuts)
             {
-                
+                string menuName = ObjectNames.NicifyVariableName(fsmNodePrefabWithShortcut.Prefab.name);
+                menu.AddItem(new GUIContent($"Celeste/Narrative/Prefabs/{menuName} ({fsmNodePrefabWithShortcut.ShortcutKey})"), false,
+                    () =>
+                    {
+                        TryCreateNodeFromPrefab(fsmNodePrefabWithShortcut.Prefab, pos);    
+                    });
             }
             
             foreach (var narrativeNodePrefabWithShortcut in narrativeEditorSettings.NarrativeNodePrefabsWithShortcuts)
             {
-                
+                string menuName = ObjectNames.NicifyVariableName(narrativeNodePrefabWithShortcut.Prefab.name);
+                menu.AddItem(new GUIContent($"Celeste/Narrative/Prefabs/{menuName} ({narrativeNodePrefabWithShortcut.ShortcutKey})"), false,
+                    () =>
+                    {
+                        TryCreateNodeFromPrefab(narrativeNodePrefabWithShortcut.Prefab, pos);    
+                    });
             }
         }
 
