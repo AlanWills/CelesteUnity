@@ -5,7 +5,6 @@ using System.Reflection;
 using Celeste.FSM.Prefabs;
 using Celeste.Narrative.Nodes.Events;
 using Celeste.Narrative.Settings;
-using Celeste.Narrative.UI;
 using Celeste.Objects;
 using Celeste.Tools;
 using UnityEditor;
@@ -56,6 +55,17 @@ namespace CelesteEditor.Narrative
             {
                 CreateSetBackgroundNode(pos);
             });
+            
+            NarrativeEditorSettings narrativeEditorSettings = NarrativeEditorSettings.GetOrCreateSettings();
+            foreach (var fsmNodePrefabWithShortcut in narrativeEditorSettings.FSMNodePrefabsWithShortcuts)
+            {
+                
+            }
+            
+            foreach (var narrativeNodePrefabWithShortcut in narrativeEditorSettings.NarrativeNodePrefabsWithShortcuts)
+            {
+                
+            }
         }
 
         #endregion
@@ -121,31 +131,46 @@ namespace CelesteEditor.Narrative
         private void CreateDialogueNode(Vector2 pos)
         {
             NarrativeNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().dialogueNodePrefab;
-            TryCreateNodeFromPrefab(nodePrefab, pos);
+            if (!TryCreateNodeFromPrefab(nodePrefab, pos))
+            {
+                CreateNode(typeof(DialogueNode), pos);
+            }
         }
 
         private void CreateNarratorNode(Vector2 pos)
         {
             NarrativeNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().narratorNodePrefab;
-            TryCreateNodeFromPrefab(nodePrefab, pos);
+            if (!TryCreateNodeFromPrefab(nodePrefab, pos))
+            {
+                CreateNode(typeof(NarrativeNode), pos);
+            }
         }
 
         private void CreateChoiceNode(Vector2 pos)
         {
             NarrativeNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().choiceNodePrefab;
-            TryCreateNodeFromPrefab(nodePrefab, pos);
+            if (!TryCreateNodeFromPrefab(nodePrefab, pos))
+            {
+                CreateNode(typeof(ChoiceNode), pos);
+            }
         }
 
         private void CreateTimedChoiceNode(Vector2 pos)
         {
             NarrativeNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().timedChoiceNodePrefab;
-            TryCreateNodeFromPrefab(nodePrefab, pos);
+            if (!TryCreateNodeFromPrefab(nodePrefab, pos))
+            {
+                CreateNode(typeof(TimedChoiceNode), pos);
+            }
         }
 
         private void CreateSetBackgroundNode(Vector2 pos)
         {
             FSMNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().setBackgroundNodePrefab;
-            TryCreateNodeFromPrefab(nodePrefab, pos);
+            if (!TryCreateNodeFromPrefab(nodePrefab, pos))
+            {
+                CreateNode(typeof(BackgroundEventRaiserNode), pos);
+            }
         }
 
         private bool TryCreateNodeFromPrefab<T>(AssetWrapperScriptableObject<T> prefab, Vector2 pos) where T : FSMNode
