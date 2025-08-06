@@ -4,11 +4,12 @@ using Celeste.Narrative.Choices;
 using Celeste.Tools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Celeste.Narrative
 {
-    [CreateNodeMenu("Celeste/Narrative/Timed Choice")]
+    [DisplayName("Timed Choice")]
     [NodeTint(0, 0, 1f)]
     public class TimedChoiceNode : DialogueNode, IChoiceNode, ITimedNode
     {

@@ -81,6 +81,7 @@ namespace Celeste.FSM.Nodes.Events
 
             ParameterisedEventRaiserNode<T, TValue, TReference, TEvent> eventRaiserNode = original as ParameterisedEventRaiserNode<T, TValue, TReference, TEvent>;
             argument = CreateParameter(eventRaiserNode.argument);
+            toRaise = eventRaiserNode.toRaise;
         }
 
         #endregion

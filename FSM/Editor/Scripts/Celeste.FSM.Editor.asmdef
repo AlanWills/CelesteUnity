@@ -8,8 +8,10 @@
         "Celeste.FSM.Nodes",
         "Celeste.Parameters",
         "Celeste.Tools",
+        "Celeste.Objects",
         "Celeste.Tools.Editor",
-        "Celeste.Validation.Editor"
+        "Celeste.Validation.Editor",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

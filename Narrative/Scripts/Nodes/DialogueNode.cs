@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Celeste.DataStructures;
+using System.ComponentModel;
 using Celeste.FSM;
 using Celeste.Localisation.Parameters;
 using Celeste.Localisation;
@@ -14,7 +14,7 @@ using Celeste.Tools;
 
 namespace Celeste.Narrative
 {
-    [CreateNodeMenu("Celeste/Narrative/Dialogue")]
+    [DisplayName("Dialogue Node")]
     [NodeTint(0, 0.4f, 0)]
     public class DialogueNode : NarrativeNode, IDialogueNode, ICharacterNode
     {
@@ -163,6 +163,22 @@ namespace Celeste.Narrative
         protected override FSMNode OnUpdate()
         {
             return this;
+        }
+
+        #endregion
+        
+        #region Copy Methods
+
+        protected override void OnCopyInGraph(FSMNode original)
+        {
+            base.OnCopyInGraph(original);
+            
+            DialogueNode dialogueNode = original as DialogueNode;
+            dialogue = dialogueNode.dialogue;
+            dialogueType = dialogueNode.dialogueType;
+            uiPosition = dialogueNode.UIPosition;
+            dialogueTokens.AddRange(dialogueNode.dialogueTokens);
+            character = dialogueNode.character;
         }
 
         #endregion

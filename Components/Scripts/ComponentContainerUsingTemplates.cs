@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Components
@@ -30,9 +31,7 @@ namespace Celeste.Components
         public void AddEmptyTemplate()
         {
             componentTemplates.Add(new Template());
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
+            EditorOnly.SetDirty(this);
         }
 
         public TComponent GetComponent(int index)
@@ -52,9 +51,7 @@ namespace Celeste.Components
                 var template = componentTemplates[index];
                 template.data = componentData;
                 componentTemplates[index] = template;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 

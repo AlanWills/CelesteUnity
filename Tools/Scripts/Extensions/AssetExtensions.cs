@@ -37,12 +37,12 @@ namespace Celeste.Tools
         }
 
         [Conditional("UNITY_EDITOR")]
-        public static void AddObjectToAsset(this Object objectToAdd, Object assetObject)
+        public static void AddObjectToAsset(this Object objectToAddToAsset, Object assetThatWillHoldObject)
         {
 #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.AddObjectToAsset(objectToAdd, assetObject);
-            UnityEditor.EditorUtility.SetDirty(assetObject);
-            UnityEditor.AssetDatabase.SaveAssetIfDirty(assetObject);
+            UnityEditor.AssetDatabase.AddObjectToAsset(objectToAddToAsset, assetThatWillHoldObject);
+            UnityEditor.EditorUtility.SetDirty(assetThatWillHoldObject);
+            UnityEditor.AssetDatabase.SaveAssetIfDirty(assetThatWillHoldObject);
 #endif
         }
 

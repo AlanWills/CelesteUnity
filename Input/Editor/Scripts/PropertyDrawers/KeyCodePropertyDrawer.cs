@@ -13,7 +13,7 @@ namespace CelesteEditor.Input.PropertyDrawers
     {
         private string parseText = "A";
         private const float spacing = 4;
-        private const float textFieldWidth = 24;
+        private const float textFieldWidth = 60;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -26,13 +26,13 @@ namespace CelesteEditor.Input.PropertyDrawers
             
             GUIContent buttonContent = new GUIContent("Parse");
             float buttonWidth = GUI.skin.button.CalcSize(buttonContent).x;
-            
+
             Rect propertyRect = position;
-            propertyRect.width -= (spacing * 3 + textFieldWidth + buttonWidth);
+            propertyRect.width -= (spacing * 2 + textFieldWidth + buttonWidth);
             EditorGUI.PropertyField(propertyRect, property, label);
 
             Rect textFieldRect = propertyRect;
-            textFieldRect.x = propertyRect.width + spacing * 2;
+            textFieldRect.x += propertyRect.width + spacing;
             textFieldRect.width = textFieldWidth;
             parseText = EditorGUI.TextField(textFieldRect, GUIContent.none, parseText);
 
@@ -45,6 +45,7 @@ namespace CelesteEditor.Input.PropertyDrawers
                 if (Enum.TryParse(parseText, out KeyCode keyCode))
                 {
                     property.enumValueIndex = Array.IndexOf(Enum.GetValues(typeof(KeyCode)), keyCode);
+                    parseText = string.Empty;
                 }
                 else
                 {

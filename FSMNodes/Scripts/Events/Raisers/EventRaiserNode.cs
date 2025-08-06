@@ -22,5 +22,17 @@ namespace Celeste.FSM.Nodes.Events
         }
 
         #endregion
+        
+        #region Copy
+
+        protected override void OnCopyInGraph(FSMNode original)
+        {
+            base.OnCopyInGraph(original);
+            
+            EventRaiserNode eventRaiser = original as EventRaiserNode;
+            toRaise = eventRaiser.toRaise;
+        }
+
+        #endregion
     }
 }

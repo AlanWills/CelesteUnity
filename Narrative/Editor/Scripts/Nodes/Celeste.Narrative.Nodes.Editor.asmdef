@@ -14,7 +14,8 @@
         "Celeste.Tools.Editor",
         "XNode",
         "XNodeEditor",
-        "Celeste.Objects"
+        "Celeste.Objects",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

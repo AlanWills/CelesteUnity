@@ -1,6 +1,7 @@
 ﻿using Celeste.DeckBuilding.Components;
 using CelesteEditor.Tools.Utils;
 using System;
+using System.Collections.Generic;
 
 namespace CelesteEditor.DeckBuilding.Cards
 {

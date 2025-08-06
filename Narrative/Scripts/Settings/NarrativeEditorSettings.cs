@@ -1,10 +1,15 @@
-﻿using Celeste.Events;
+﻿using System;
+using System.Collections.Generic;
+using Celeste.Events;
+using Celeste.FSM;
+using Celeste.FSM.Prefabs;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.Tokens;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using Celeste.Tools.Settings;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Celeste.Narrative.Settings
 {
@@ -14,25 +19,46 @@ namespace Celeste.Narrative.Settings
         order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
     public class NarrativeEditorSettings : EditorSettings<NarrativeEditorSettings>
     {
+        #region ShortcutForPrefab
+
+        [Serializable]
+        public struct ShortcutForFSMNodePrefab
+        {
+            public FSMNodePrefab Prefab;
+            public KeyCode ShortcutKey;
+        }
+        
+        [Serializable]
+        public struct ShortcutForNarrativeNodePrefab
+        {
+            public NarrativeNodePrefab Prefab;
+            public KeyCode ShortcutKey;
+        }
+
+        #endregion
+        
         #region Properties and Fields
 
         private const string FOLDER_PATH = "Assets/Narrative/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "NarrativeEditorSettings.asset";
 
-        public Character narratorCharacter;
-        public LocaTokens globalLocaTokens;
-        public BackgroundEvent defaultSetBackgroundEvent;
-        public bool hasAddDialogueNodeShortcut = true;
-        [ShowIf("hasAddDialogueNodeShortcut")] public KeyCode addDialogueNodeShortcutKey = KeyCode.D;
-        public bool hasAddNarratorNodeShortcut = true;
-        [ShowIf("hasAddNarratorNodeShortcut")] public KeyCode addNarratorNodeShortcutKey = KeyCode.N;
-        public bool hasAddChoiceNodeShortcut = true;
-        [ShowIf("hasAddChoiceNodeShortcut")] public KeyCode addChoiceNodeShortcutKey = KeyCode.C;
-        public bool hasAddTimedChoiceNodeShortcut = true;
-        [ShowIf("hasAddTimedChoiceNodeShortcut")] public KeyCode addTimedChoiceNodeShortcutKey = KeyCode.T;
-        public bool hasAddSetBackgroundNodeShortcut = true;
-        [ShowIf("hasAddSetBackgroundNodeShortcut")] public KeyCode addSetBackgroundNodeShortcutKey = KeyCode.B;
+        public IReadOnlyList<ShortcutForFSMNodePrefab> FSMNodePrefabsWithShortcuts => fsmNodePrefabsWithShortcuts;
+        public IReadOnlyList<ShortcutForNarrativeNodePrefab> NarrativeNodePrefabsWithShortcuts => narrativeNodePrefabsWithShortcuts;
 
+        [Header("Global Default Values")]
+        public LocaTokens globalLocaTokens;
+
+        [Header("Node Prefabs")]
+        public NarrativeNodePrefab dialogueNodePrefab;
+        public NarrativeNodePrefab narratorNodePrefab;
+        public NarrativeNodePrefab choiceNodePrefab;
+        public NarrativeNodePrefab timedChoiceNodePrefab;
+        public FSMNodePrefab setBackgroundNodePrefab;
+        
+        [Header("Node Prefab Shortcuts")] 
+        [SerializeField] private List<ShortcutForFSMNodePrefab> fsmNodePrefabsWithShortcuts = new();
+        [SerializeField] private List<ShortcutForNarrativeNodePrefab> narrativeNodePrefabsWithShortcuts = new();
+        
         #endregion
 
 #if UNITY_EDITOR
@@ -45,9 +71,7 @@ namespace Celeste.Narrative.Settings
         {
             base.OnCreate();
             
-            narratorCharacter = EditorOnly.FindAsset<Character>("Narrator");
             globalLocaTokens = EditorOnly.FindAsset<LocaTokens>("GlobalLocaTokens");
-            defaultSetBackgroundEvent = EditorOnly.FindAsset<BackgroundEvent>("SetBackground");
         }
 #endif
     }

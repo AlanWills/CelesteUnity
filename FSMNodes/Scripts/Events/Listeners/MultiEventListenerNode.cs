@@ -9,8 +9,10 @@ namespace Celeste.FSM.Nodes.Events
     [NodeTint(0.8f, 0.9f, 0)]
     public class MultiEventListenerNode : MultiEventNode
     {
-        public MultiEventListenerNode()
+        protected override void OnAddToGraph()
         {
+            base.OnAddToGraph();
+            
             RemoveDynamicPort(DEFAULT_OUTPUT_PORT_NAME);
         }
 

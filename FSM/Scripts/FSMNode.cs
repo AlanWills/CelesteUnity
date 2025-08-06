@@ -21,12 +21,6 @@ namespace Celeste.FSM
 
         #endregion
 
-        public FSMNode()
-        {
-            AddDefaultInputPort();
-            AddDefaultOutputPort();
-        }
-
         #region FSM Runtime Methods
 
         protected override void Init()
@@ -149,6 +143,8 @@ namespace Celeste.FSM
 
         public void AddToGraph() 
         {
+            AddDefaultInputPort();
+            AddDefaultOutputPort();
             OnAddToGraph();
         }
 

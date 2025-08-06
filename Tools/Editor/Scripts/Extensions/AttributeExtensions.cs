@@ -8,7 +8,7 @@ namespace CelesteEditor.Tools
     {
         public static string GetDisplayName(this Type t)
         {
-            DisplayNameAttribute displayName = t.GetCustomAttribute<DisplayNameAttribute>();
+            DisplayNameAttribute displayName = t.GetCustomAttribute<DisplayNameAttribute>(false);
             return displayName != null ? displayName.DisplayName : t.Name;
         }
     }

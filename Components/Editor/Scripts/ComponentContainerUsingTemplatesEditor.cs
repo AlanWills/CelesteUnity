@@ -43,11 +43,11 @@ namespace CelesteEditor.Components
                 {
                     GUILayout.Space(16);
 
-                    using (var vertical = new EditorGUILayout.VerticalScope())
+                    using (new EditorGUILayout.VerticalScope())
                     {
                         SerializedProperty componentTemplate = componentTemplatesProperty.GetArrayElementAtIndex(i);
                         SerializedProperty componentProperty = componentTemplate.FindPropertyRelative("component"); 
-                        var component = componentProperty.objectReferenceValue as Celeste.Components.BaseComponent;
+                        var component = componentProperty.objectReferenceValue as BaseComponent;
 
                         if (component == null)
                         {

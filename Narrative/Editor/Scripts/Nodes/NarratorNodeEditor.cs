@@ -1,28 +1,13 @@
 ﻿using System.Collections.Generic;
 using Celeste.Narrative;
-using Celeste.Narrative.Settings;
 using Celeste.Narrative.Tokens;
 using CelesteEditor.FSM.Nodes;
-using XNodeEditor;
 
 namespace CelesteEditor.Narrative
 {
-    [NodeEditor.CustomNodeEditor(typeof(NarratorNode))]
+    [CustomNodeEditor(typeof(NarratorNode))]
     public class NarratorNodeEditor : FSMNodeEditor
     {
-        #region GUI
-        
-        public override void OnCreate()
-        {
-            base.OnCreate();
-
-            serializedObject.Update();
-            serializedObject.FindProperty("character").objectReferenceValue = NarrativeEditorSettings.GetOrCreateSettings().narratorCharacter;
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        #endregion
-        
         #region GUI
 
         public override void OnBodyGUI()

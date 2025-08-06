@@ -14,7 +14,9 @@
         "Celeste.Events",
         "Celeste.Localisation",
         "Celeste.Tools",
-        "XNode.Extensions"
+        "XNode.Extensions",
+        "Celeste.UnityProject",
+        "Celeste.Objects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

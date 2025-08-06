@@ -8,6 +8,7 @@ using Celeste.Narrative.Choices;
 using Celeste.Narrative.UI;
 using Celeste.Tools.Attributes.GUI;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using XNode.Attributes;
 using Celeste.Narrative.Tokens;
@@ -15,7 +16,7 @@ using Celeste.Tools;
 
 namespace Celeste.Narrative
 {
-    [CreateNodeMenu("Celeste/Narrative/Choice")]
+    [DisplayName("Choice Node")]
     [NodeTint(0, 0, 1f), NodeWidth(250)]
     public class ChoiceNode : NarrativeNode, IChoiceNode, IDialogueNode, ICharacterNode
     {
@@ -130,11 +131,6 @@ namespace Celeste.Narrative
 
         #endregion
 
-        public ChoiceNode()
-        {
-            RemoveDynamicPort(DEFAULT_OUTPUT_PORT_NAME);
-        }
-
         #region Add/Remove/Copy
 
         private void OnValidate()
@@ -172,6 +168,13 @@ namespace Celeste.Narrative
                 newChoice.CopyFrom(originalChoice);
                 choices.Add(newChoice);
             }
+        }
+
+        protected override void OnAddToGraph()
+        {
+            base.OnAddToGraph();
+            
+            RemoveDynamicPort(DEFAULT_OUTPUT_PORT_NAME);
         }
 
         protected override void OnRemoveFromGraph()

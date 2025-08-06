@@ -87,34 +87,6 @@ namespace Celeste.Narrative
 
         #endregion
         
-        #region Unity Methods
-
-        private void OnValidate()
-        {
-            TrySetNarratorCharacter();
-        }
-
-        #endregion
-
-        protected override void OnAddToGraph()
-        {
-            base.OnAddToGraph();
-            
-            TrySetNarratorCharacter();
-        }
-
-        [Conditional("UNITY_EDITOR")]
-        private void TrySetNarratorCharacter()
-        {
-#if UNITY_EDITOR
-            if (character == null)
-            {
-                character = NarrativeEditorSettings.GetOrCreateSettings().narratorCharacter;
-                EditorOnly.SetDirty(this);
-            }
-#endif
-        }
-
         #region FSM Runtime Methods
 
         protected override void OnEnter()
