@@ -11,9 +11,9 @@ namespace CelesteEditor.Input.PropertyDrawers
     [CustomPropertyDrawer(typeof(KeyCode))]
     public class KeyCodePropertyDrawer : PropertyDrawer
     {
-        private string parseText = "A";
-        private const float spacing = 4;
-        private const float textFieldWidth = 60;
+        private string parseText = string.Empty;
+        private const float SPACING = 4;
+        private const float TEXT_FIELD_WIDTH = 60;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -28,16 +28,16 @@ namespace CelesteEditor.Input.PropertyDrawers
             float buttonWidth = GUI.skin.button.CalcSize(buttonContent).x;
 
             Rect propertyRect = position;
-            propertyRect.width -= (spacing * 2 + textFieldWidth + buttonWidth);
+            propertyRect.width -= (SPACING * 2 + TEXT_FIELD_WIDTH + buttonWidth);
             EditorGUI.PropertyField(propertyRect, property, label);
 
             Rect textFieldRect = propertyRect;
-            textFieldRect.x += propertyRect.width + spacing;
-            textFieldRect.width = textFieldWidth;
+            textFieldRect.x += propertyRect.width + SPACING;
+            textFieldRect.width = TEXT_FIELD_WIDTH;
             parseText = EditorGUI.TextField(textFieldRect, GUIContent.none, parseText);
 
             Rect parseButtonRect = textFieldRect;
-            parseButtonRect.x += textFieldRect.width + spacing;
+            parseButtonRect.x += textFieldRect.width + SPACING;
             parseButtonRect.width = buttonWidth;
             
             if (GUI.Button(parseButtonRect, buttonContent))

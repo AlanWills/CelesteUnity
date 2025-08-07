@@ -11,7 +11,7 @@ namespace Celeste.Events
         void Raise();
     }
 
-    public interface IEventRaiser<T>
+    public interface IEventRaiser<in T>
     {
         void Raise(T argument);
     }

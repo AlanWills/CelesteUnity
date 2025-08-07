@@ -1,0 +1,16 @@
+{
+    "name": "Celeste.Requests",
+    "rootNamespace": "Celeste.Requests",
+    "references": [
+        "Celeste.UnityProject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

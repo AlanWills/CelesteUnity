@@ -80,7 +80,12 @@ namespace Celeste.FSM.Nodes.Events
             base.OnCopyInGraph(original);
 
             ParameterisedEventRaiserNode<T, TValue, TReference, TEvent> eventRaiserNode = original as ParameterisedEventRaiserNode<T, TValue, TReference, TEvent>;
-            argument = CreateParameter(eventRaiserNode.argument);
+            
+            if (argument == null && eventRaiserNode.argument != null)
+            {
+                argument = CreateParameter(eventRaiserNode.argument);
+            }
+
             toRaise = eventRaiserNode.toRaise;
         }
 

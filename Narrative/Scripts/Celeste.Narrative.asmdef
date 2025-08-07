@@ -25,7 +25,8 @@
         "RecyclableScrollRect",
         "XNode.Extensions",
         "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "Celeste.Requests"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
