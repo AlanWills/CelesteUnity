@@ -1,7 +1,6 @@
 ﻿using Celeste.Assets;
 using Celeste.Narrative.Backgrounds.Settings;
 using System.Collections;
-using Celeste.FSM;
 using Celeste.Narrative.Requests;
 using Celeste.Requests;
 using UnityEngine;
@@ -14,6 +13,7 @@ namespace Celeste.Narrative.Backgrounds
     {
         #region Properties and Fields
 
+        [SerializeField] private RectTransform backgroundRectTransform;
         [SerializeField] private Image backgroundImage;
         [SerializeField] private AspectRatioFitter backgroundRatioFitter;
         [SerializeField] private BackgroundSettings backgroundSettings;
@@ -36,13 +36,9 @@ namespace Celeste.Narrative.Backgrounds
 
         private IEnumerator AnimateBackground(AnimateBackgroundRequestArgs args, SuccessCallback successCallback)
         {
-            RectTransform backgroundRectTransform = backgroundImage.GetComponent<RectTransform>();
-            Vector2 currentPosition = backgroundRectTransform.anchoredPosition;
-            float width = backgroundRectTransform.rect.width;
-            float startingPosition = width * args.StartOffset;
+            Vector2 startingPosition = backgroundRectTransform.anchoredPosition;
+            float width = backgroundRectTransform.rect.width / backgroundRatioFitter.aspectRatio;
             float finishingPosition = -width * args.FinishOffset;
-            
-            backgroundRectTransform.anchoredPosition = new Vector2(startingPosition, currentPosition.y);
             
             float currentTime = 0;
             while (currentTime < args.AnimationTime)
@@ -52,11 +48,11 @@ namespace Celeste.Narrative.Backgrounds
                 currentTime += Time.deltaTime;
 
                 float lerpTime = args.UseAnimCurve ? args.AnimationCurve.Evaluate(currentTime) : currentTime / args.AnimationTime;
-                float currentX = Mathf.Lerp(startingPosition, finishingPosition, lerpTime);
-                backgroundRectTransform.anchoredPosition = new Vector2(currentX, currentPosition.y);   
+                float currentX = Mathf.Lerp(startingPosition.x, finishingPosition, lerpTime);
+                backgroundRectTransform.anchoredPosition = new Vector2(currentX, startingPosition.y);   
             }
             
-            backgroundRectTransform.anchoredPosition = new Vector2(finishingPosition, currentPosition.y);
+            backgroundRectTransform.anchoredPosition = new Vector2(finishingPosition, startingPosition.y);
 
             backgroundAnimationCoroutine = null;
             successCallback();
@@ -77,6 +73,9 @@ namespace Celeste.Narrative.Backgrounds
                 backgroundImage.sprite = background.Sprite;
                 backgroundImage.enabled = true;
                 backgroundRatioFitter.aspectRatio = background.AspectRatio;
+
+                Vector2 currentAnchoredPosition = backgroundRectTransform.anchoredPosition;
+                backgroundRectTransform.anchoredPosition = new Vector2(0, currentAnchoredPosition.y);
             }
             else
             {

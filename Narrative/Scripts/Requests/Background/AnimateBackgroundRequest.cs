@@ -9,7 +9,6 @@ namespace Celeste.Narrative.Requests
     public struct AnimateBackgroundRequestArgs
     {
         public float AnimationTime;
-        public float StartOffset;
         public float FinishOffset;
         public bool UseAnimCurve;
         [ShowIf(nameof(UseAnimCurve))] public AnimationCurve AnimationCurve;
