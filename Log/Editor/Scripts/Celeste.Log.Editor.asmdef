@@ -5,6 +5,7 @@
         "Celeste.Log",
         "Celeste.Tools",
         "Celeste.Objects",
+        "Celeste.DataStructures",
         "Celeste.Objects.Editor"
     ],
     "includePlatforms": [

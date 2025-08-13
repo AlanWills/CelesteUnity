@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Celeste.Testing
 {
     [CreateAssetMenu(fileName = nameof(IntegrationTestsCatalogue), order = CelesteMenuItemConstants.TESTING_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.TESTING_MENU_ITEM + "Integration Tests Catalogue")]
-    public class IntegrationTestsCatalogue : ArrayScriptableObject<IntegrationTest>
+    public class IntegrationTestsCatalogue : ListScriptableObject<IntegrationTest>
     {
         public List<IntegrationTest> AllIntegrationTests
         {

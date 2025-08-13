@@ -71,9 +71,17 @@ namespace Celeste.Objects
 
         public void AddItem(T item)
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Add(item);
+            }
+        }
+
+        public void RemoveItem(int index)
+        {
+            using (new ChangeBlock(this))
+            {
+                ItemsImpl.RemoveAt(index);
             }
         }
 
@@ -81,7 +89,7 @@ namespace Celeste.Objects
         {
             if (itemIndex >= 0 && itemIndex < ItemsImpl.Count)
             {
-                using (ChangeBlock changeBlock = new ChangeBlock(this))
+                using (new ChangeBlock(this))
                 {
                     ItemsImpl.RemoveAt(itemIndex);
                 }
@@ -95,7 +103,7 @@ namespace Celeste.Objects
 
         public void SetItems(IReadOnlyList<T> newItems)
         {
-            using (ChangeBlock changeBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Clear();
                 ItemsImpl.AddRange(newItems);
@@ -104,7 +112,7 @@ namespace Celeste.Objects
 
         public void ClearItems()
         {
-            using (ChangeBlock changesBlock = new ChangeBlock(this))
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Clear();
             }
@@ -113,8 +121,8 @@ namespace Celeste.Objects
         public void ClearDuplicates()
         {
             HashSet<T> uniques = new HashSet<T>(ItemsImpl);
-            
-            using (ChangeBlock changesBlock = new ChangeBlock(this))
+
+            using (new ChangeBlock(this))
             {
                 ItemsImpl.Clear();
                 ItemsImpl.AddRange(uniques);

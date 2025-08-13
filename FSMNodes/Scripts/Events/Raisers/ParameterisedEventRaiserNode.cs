@@ -11,8 +11,8 @@ namespace Celeste.FSM.Nodes.Events
     {
         #region Properties and Fields
 
-        public T argument;
         public TEvent toRaise;
+        public T argument;
 
         #endregion
 
@@ -49,10 +49,10 @@ namespace Celeste.FSM.Nodes.Events
     {
         #region Properties and Fields
 
+        public TEvent toRaise;
+
         [Input]
         public TReference argument;
-
-        public TEvent toRaise;
 
         #endregion
 

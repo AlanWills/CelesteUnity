@@ -9,7 +9,7 @@ namespace Celeste.DataImporters
         fileName = nameof(DataImporterCatalogue), 
         menuName = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM + "Data Importer Catalogue",
         order = CelesteMenuItemConstants.DATAIMPORTERS_MENU_ITEM_PRIORITY)]
-    public class DataImporterCatalogue : ArrayScriptableObject<DataImporter>
+    public class DataImporterCatalogue : ListScriptableObject<DataImporter>
     {
         public IEnumerator ImportAll(
             Action<string, float> progressCallback = null,

@@ -179,7 +179,7 @@ namespace CelesteEditor.Narrative
             FSMNodePrefab nodePrefab = NarrativeEditorSettings.GetOrCreateSettings().setBackgroundNodePrefab;
             if (!TryCreateNodeFromPrefab(nodePrefab, pos))
             {
-                CreateNode(typeof(BackgroundEventRaiserNode), pos);
+                CreateNode(typeof(SetBackgroundEventRaiserNode), pos);
             }
         }
 

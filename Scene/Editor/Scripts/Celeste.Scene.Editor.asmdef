@@ -6,9 +6,9 @@
         "Celeste.Persistence",
         "Celeste.Tools",
         "Celeste.Objects",
+        "Celeste.DataStructures",
         "Celeste.Tools.Editor",
         "Celeste.Objects.Editor",
-        "Celeste.Unity.Editor",
         "Unity.Addressables.Editor"
     ],
     "includePlatforms": [

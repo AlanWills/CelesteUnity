@@ -2,14 +2,15 @@
     "name": "Celeste.UI.Editor",
     "rootNamespace": "CelesteEditor.UI",
     "references": [
-        "GUID:63423e2ab705d094891558ff032717e2",
+        "Celeste.UI",
         "Celeste.Objects",
         "Celeste.Events",
         "Celeste.DataStructures.Editor",
         "Celeste.Events.Editor",
-        "GUID:bc28c6dc120e98e408c12c7c01932dc4",
-        "GUID:e6fa967c34171154dbc9eb4c5ce4b57a",
-        "GUID:9747e433db94da64ab5b40ddfc6706ee"
+        "Celeste.Tools",
+        "Celeste.DataStructures",
+        "Celeste.Tools.Editor",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

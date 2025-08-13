@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Celeste.Narrative.Backgrounds
 {
     [CreateAssetMenu(fileName = nameof(BackgroundCatalogue), menuName = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM + "Backgrounds/Background Catalogue", order = CelesteMenuItemConstants.NARRATIVE_MENU_ITEM_PRIORITY)]
-    public class BackgroundCatalogue : ArrayScriptableObject<Background>
+    public class BackgroundCatalogue : ListScriptableObject<Background>
     {
         public Background FindByGuid(int guid)
         {

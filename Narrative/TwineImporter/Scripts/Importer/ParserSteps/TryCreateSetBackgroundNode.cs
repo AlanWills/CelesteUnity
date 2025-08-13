@@ -43,7 +43,7 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
         }
 
         [SerializeField] private string instruction = "SetBackground";
-        [SerializeField] private BackgroundEvent setBackgroundEvent;
+        [SerializeField] private SetBackgroundEvent setBackgroundEvent;
         [SerializeField] private List<BackgroundKey> backgroundKeys = new List<BackgroundKey>();
 
         #endregion
@@ -106,8 +106,8 @@ namespace Celeste.Narrative.TwineImporter.ParserSteps
             string[] splitText = parseContext.SplitStrippedLinksText;
 
             Background background = FindBackground(splitText[1]);
-            BackgroundEventRaiserNode backgroundEventRaiserNode = parseContext.Graph.AddNode<BackgroundEventRaiserNode>();
-            backgroundEventRaiserNode.argument.Value = background;
+            SetBackgroundEventRaiserNode backgroundEventRaiserNode = parseContext.Graph.AddNode<SetBackgroundEventRaiserNode>();
+            backgroundEventRaiserNode.argument.Background = background;
             backgroundEventRaiserNode.toRaise = setBackgroundEvent;
 
             parseContext.FSMNode = backgroundEventRaiserNode;

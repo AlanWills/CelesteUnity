@@ -1,6 +1,7 @@
 ﻿using Celeste.Assets;
 using Celeste.Narrative.Backgrounds.Settings;
 using System.Collections;
+using Celeste.Events;
 using Celeste.Narrative.Requests;
 using Celeste.Requests;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace Celeste.Narrative.Backgrounds
                 currentTime += Time.deltaTime;
 
                 float lerpTime = args.UseAnimCurve ? args.AnimationCurve.Evaluate(currentTime) : currentTime / args.AnimationTime;
-                float currentX = Mathf.Lerp(startingPosition.x, finishingPosition, lerpTime);
+                float currentX = Mathf.LerpUnclamped(startingPosition.x, finishingPosition, lerpTime);
                 backgroundRectTransform.anchoredPosition = new Vector2(currentX, startingPosition.y);   
             }
             
@@ -68,14 +69,23 @@ namespace Celeste.Narrative.Backgrounds
 
         private void OnSetBackground(Background background)
         {
-            if (background != null && background.Sprite != null)
+            OnSetBackground(new SetBackgroundEventArgs
             {
-                backgroundImage.sprite = background.Sprite;
+                Background = background,
+                Offset = background.DefaultOffset
+            });
+        }
+
+        private void OnSetBackground(SetBackgroundEventArgs setBackgroundEventArgs)
+        {
+            if (setBackgroundEventArgs.Background != null && setBackgroundEventArgs.Background.Sprite != null)
+            {
+                backgroundImage.sprite = setBackgroundEventArgs.Background.Sprite;
                 backgroundImage.enabled = true;
-                backgroundRatioFitter.aspectRatio = background.AspectRatio;
+                backgroundRatioFitter.aspectRatio = setBackgroundEventArgs.Background.AspectRatio;
 
                 Vector2 currentAnchoredPosition = backgroundRectTransform.anchoredPosition;
-                backgroundRectTransform.anchoredPosition = new Vector2(0, currentAnchoredPosition.y);
+                backgroundRectTransform.anchoredPosition = new Vector2(setBackgroundEventArgs.Offset, currentAnchoredPosition.y);
             }
             else
             {

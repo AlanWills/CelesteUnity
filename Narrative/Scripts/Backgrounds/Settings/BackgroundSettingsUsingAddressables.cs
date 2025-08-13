@@ -3,6 +3,7 @@ using Celeste.Narrative.Assets.References;
 using Celeste.Narrative.Parameters;
 using System;
 using System.Collections;
+using Celeste.Events;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,12 +41,12 @@ namespace Celeste.Narrative.Backgrounds.Settings
             return backgroundCatalogue.Asset.FindByGuid(guid);
         }
 
-        public override void AddSetBackgroundListener(UnityAction<Background> background)
+        public override void AddSetBackgroundListener(UnityAction<SetBackgroundEventArgs> background)
         {
             setBackgroundEvent.Asset.AddListener(background);
         }
 
-        public override void RemoveSetBackgroundListener(UnityAction<Background> background)
+        public override void RemoveSetBackgroundListener(UnityAction<SetBackgroundEventArgs> background)
         {
             setBackgroundEvent.Asset.RemoveListener(background);
         }

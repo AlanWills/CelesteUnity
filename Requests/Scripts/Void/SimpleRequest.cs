@@ -14,6 +14,7 @@ namespace Celeste.Requests
         
         public void SetHandler(IRequestHandler handler)
         {
+            Debug.Assert(requestHandler == null, $"Attempting to set a handler for request '{name}', but one has already been set.  The old one will be overridden, but this is a serious problem...");
             requestHandler = handler;
         }
 

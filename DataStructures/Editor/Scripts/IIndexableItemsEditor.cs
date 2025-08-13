@@ -20,7 +20,7 @@ namespace CelesteEditor.DataStructures
         protected virtual void OnEnable()
         {
             ItemsProperty = serializedObject.FindProperty("items");
-            supportsGuids = typeof(IIntGuid).IsAssignableFrom(typeof(TIndexableItem)) || typeof(IGuid).IsAssignableFrom(typeof(TIndexableItem));
+            supportsGuids = IIndexableItemsExtensions.SupportsGuids<TIndexableItem>();
         }
 
         public override void OnInspectorGUI()
@@ -94,7 +94,7 @@ namespace CelesteEditor.DataStructures
             TrySyncGuids();
         }
 
-        private void TrySyncGuids()
+        protected void TrySyncGuids()
         {
             if (supportsGuids)
             {
@@ -102,36 +102,10 @@ namespace CelesteEditor.DataStructures
             }
         }
 
-        protected void SyncGuids()
+        private void SyncGuids()
         {
-            if (!supportsGuids)
-            {
-                Debug.LogAssertion($"Type {typeof(TIndexableItem).Name} does not implement the {nameof(IGuid)} or {nameof(IIntGuid)} interface.");
-                return;
-            }
-
             IIndexableItems<TIndexableItem> indexableItems = target as IIndexableItems<TIndexableItem>;
-
-            for (int i = 0, n = indexableItems.NumItems; i < n; i++)
-            {
-                TIndexableItem item = indexableItems.GetItem(i);
-                
-                if (item != null)
-                {
-                    if (item is IIntGuid)
-                    {
-                        IIntGuid guid = item as IIntGuid;
-                        guid.Guid = i + 1;     // 1 index the guids
-                    }
-                    else if (item is IGuid)
-                    {
-                        IGuid guid = item as IGuid;
-                        guid.Guid = string.IsNullOrEmpty(guid.Guid) ? System.Guid.NewGuid().ToString() : guid.Guid;
-                    }
-
-                    EditorUtility.SetDirty(item);
-                }
-            }
+            indexableItems.SyncGuids();
 
             AssetDatabase.SaveAssets();
         }

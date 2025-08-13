@@ -9,7 +9,7 @@ namespace Celeste.DeckBuilding.Catalogue
         fileName = nameof(CardCatalogue), 
         menuName = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM + "Catalogue/Card Catalogue",
         order = CelesteMenuItemConstants.DECKBUILDING_MENU_ITEM_PRIORITY)]
-    public class CardCatalogue : ArrayScriptableObject<Card>
+    public class CardCatalogue : ListScriptableObject<Card>
     {
         public Card FindByGuid(int guid)
         {

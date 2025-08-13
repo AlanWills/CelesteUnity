@@ -1,4 +1,5 @@
 ﻿using Celeste.Objects;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Narrative.Backgrounds
@@ -10,20 +11,17 @@ namespace Celeste.Narrative.Backgrounds
 
         public int Guid
         {
-            get { return guid; }
+            get => guid;
             set
             {
                 guid = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
-        public Sprite Sprite
-        {
-            get { return sprite; }
-        }
+        public Sprite Sprite => sprite;
+        
+        public float DefaultOffset => defaultOffset;
 
         public float AspectRatio
         {
@@ -43,7 +41,8 @@ namespace Celeste.Narrative.Backgrounds
 
         [SerializeField] private int guid;
         [SerializeField] private Sprite sprite;
+        [SerializeField] private float defaultOffset;
 
-#endregion
+        #endregion
     }
 }

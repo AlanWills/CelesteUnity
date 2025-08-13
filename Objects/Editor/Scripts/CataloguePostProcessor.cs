@@ -2,13 +2,15 @@
 using Celeste.Objects;
 using Celeste.Tools;
 using System.Collections.Generic;
+using Celeste.DataStructures;
+using CelesteEditor.DataStructures;
 using UnityEditor;
 
 namespace CelesteEditor.Objects
 {
     public abstract class CataloguePostProcessor<TAsset, TCatalogue> : AssetPostprocessor 
         where TAsset : UnityEngine.Object
-        where TCatalogue : ListScriptableObject<TAsset>
+        where TCatalogue : UnityEngine.ScriptableObject, IIndexableItems<TAsset> 
     {
         protected static void HandleOnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
@@ -35,7 +37,7 @@ namespace CelesteEditor.Objects
                     else
                     {
                         UnityEngine.Debug.LogAssertion($"Detected and stripped out null item from {typeof(TCatalogue).Name} {catalogue.name}.");
-                        catalogue.RemoveItemAt(i);
+                        catalogue.RemoveItem(i);
                     }
                 }
 
@@ -76,6 +78,8 @@ namespace CelesteEditor.Objects
                     catalogue.AddItem(asset);
                 }
             }
+
+            catalogue.TrySyncGuids();
         }
 
         private static void ImportAssetsInDirectoriesAndSubDirectories(TCatalogue catalogue, HashSet<TAsset> existingItems)
@@ -106,6 +110,8 @@ namespace CelesteEditor.Objects
                     catalogue.AddItem(asset);
                 }
             }
+            
+            catalogue.TrySyncGuids();
         }
 
         private static void ImportAssetsInDirectoryOnly(TCatalogue catalogue, HashSet<TAsset> existingItems)
@@ -141,6 +147,8 @@ namespace CelesteEditor.Objects
                     catalogue.AddItem(asset);
                 }
             }
+            
+            catalogue.TrySyncGuids();
         }
 
         private static bool ShouldAddAsset(TAsset asset)
