@@ -17,24 +17,24 @@ namespace Celeste.FSM.Nodes.Parameters
 
         #region FSM Runtime
 
-        protected override void SetValue(int newValue)
+        protected override void SetValue(int _newValue)
         {
             switch (setMode)
             {
                 case SetMode.Absolute:
-                    value.Value = newValue;
+                    value.Value = _newValue;
                     break;
 
                 case SetMode.Increment:
-                    value += newValue;
+                    value += _newValue;
                     break;
 
                 case SetMode.Decrement:
-                    value -= newValue;
+                    value -= _newValue;
                     break;
 
                 default:
-                    Debug.LogAssertionFormat("Unhandled SetMode {0}", setMode);
+                    Debug.LogAssertion($"Unhandled SetMode {setMode}");
                     break;
             }
         }

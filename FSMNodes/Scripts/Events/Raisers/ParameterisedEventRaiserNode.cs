@@ -1,6 +1,7 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System;
+using UnityEditor.UIElements;
 
 namespace Celeste.FSM.Nodes.Events
 {
@@ -23,6 +24,7 @@ namespace Celeste.FSM.Nodes.Events
             base.OnCopyInGraph(original);
 
             ParameterisedEventRaiserNode<T, TEvent> eventRaiserNode = original as ParameterisedEventRaiserNode<T, TEvent>;
+            toRaise = eventRaiserNode.toRaise;
             argument = eventRaiserNode.argument;
         }
 
