@@ -10,13 +10,11 @@ namespace Celeste.Narrative.Persistence
     {
         public int guid;
         public string name;
-        public int avatarIconGuid;
 
         public CharacterDTO(CharacterRecord characterRecord)
         {
             guid = characterRecord.Character.Guid;
             name = characterRecord.Character.CharacterName;
-            avatarIconGuid = characterRecord.AvatarCustomisationGuid;
         }
     }
 }

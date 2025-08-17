@@ -25,20 +25,15 @@ namespace Celeste.Narrative
             set => position = value;
         }
 
-        public string Dialogue
-        {
-            get { return tokenizedDialogue; }
-        }
+        public string Dialogue => tokenizedDialogue;
 
         public string RawDialogue
         {
-            get { return dialogue; }
+            get => dialogue;
             set
             {
                 dialogue = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -48,35 +43,33 @@ namespace Celeste.Narrative
             {
                 dialogueTokens.Clear();
                 dialogueTokens.AddRange(value);
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
         public DialogueType DialogueType
         {
-            get { return dialogueType; }
+            get => dialogueType;
             set
             {
                 dialogueType = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
         public UIPosition UIPosition
         {
-            get { return UIPosition.Narrator; }
+            get => UIPosition.Narrator;
             set { }
         }
 
         public Character Character
         {
-            get { return character; }
-            set { character = value; }
+            get => character;
+            set => character = value;
         }
+        
+        public string Expression => string.Empty;
 
         [SerializeField, TextRegion(2)] private string dialogue;
         [SerializeField, HideInNodeEditor] private DialogueType dialogueType = DialogueType.Speech;

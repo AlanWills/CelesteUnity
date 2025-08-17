@@ -18,138 +18,20 @@ namespace Celeste.Narrative
 {
     [DisplayName("Choice Node")]
     [NodeTint(0, 0, 1f), NodeWidth(250)]
-    public class ChoiceNode : NarrativeNode, IChoiceNode, IDialogueNode, ICharacterNode
+    public class ChoiceNode : DialogueNode, IChoiceNode
     {
         #region Properties and Fields
-
-
-        Vector2 IDialogueNode.Position
-        {
-            get => position;
-            set
-            {
-                if (position != value)
-                {
-                    position = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
-                }
-            }
-        }
-
-        public string Dialogue => tokenizedDialogue;
-
-        public string RawDialogue
-        {
-            get => dialogue;
-            set
-            {
-                if (dialogue != value)
-                {
-                    dialogue = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
-                }
-            }
-        }
-
-        public IReadOnlyList<LocaToken> DialogueTokens
-        {
-            set
-            {
-                dialogueTokens.Clear();
-                dialogueTokens.AddRange(value);
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
-            }
-        }
-
-        public DialogueType DialogueType
-        {
-            get => dialogueType;
-            set
-            {
-                if (dialogueType != value)
-                {
-                    dialogueType = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
-                }
-            }
-        }
-
-        public UIPosition UIPosition
-        {
-            get => uiPosition;
-            set
-            {
-                if (uiPosition != value)
-                {
-                    uiPosition = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
-                }
-            }
-        }
-
-        public Character Character
-        {
-            get => character;
-            set
-            {
-                if (character != value)
-                {
-                    character = value;
-#if UNITY_EDITOR
-                    UnityEditor.EditorUtility.SetDirty(this);
-#endif
-                }
-            }
-        }
-
+        
         public int NumChoices => choices.Count;
         public IReadOnlyList<Choice> Choices => choices;
+        
+        [SerializeField] private List<Choice> choices = new();
 
-        [HideIf(nameof(isLocalised)), TextRegion(2)] public string dialogue;
-        [ShowIf(nameof(isLocalised)), LocalisationPreview] public LocalisationKey localisationKey;
-        public bool isLocalised;
-        public DialogueType dialogueType = DialogueType.Speech;
-        [NodeEnum] public UIPosition uiPosition;
-        [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
-        public Character character;
-        [ShowIf(nameof(isLocalised))] public LanguageValue currentLanguage;
-        [SerializeField] private List<Choice> choices = new List<Choice>();
-
-        [System.NonSerialized] private string tokenizedDialogue;
-        [System.NonSerialized] private bool hasBeenLocalised;
         [System.NonSerialized] private IChoice selectedChoice;
 
         #endregion
 
         #region Add/Remove/Copy
-
-        private void OnValidate()
-        {
-#if UNITY_EDITOR
-            if (isLocalised && currentLanguage == null)
-            {
-                currentLanguage = LocalisationEditorSettings.GetOrCreateSettings().currentLanguageValue;
-                UnityEditor.EditorUtility.SetDirty(this);
-            }
-#endif
-        }
-
-        protected override void Init()
-        {
-            base.Init();
-
-            hasBeenLocalised = false;
-        }
 
         protected override void OnCopyInGraph(FSMNode original)
         {
@@ -207,7 +89,7 @@ namespace Celeste.Narrative
 
             if (!Application.isPlaying)
             {
-                EditorOnly.AddObjectToAsset(choice, graph);
+                choice.AddObjectToAsset(graph);
             }
 
             AddOutputPort(choiceName);
@@ -255,9 +137,7 @@ namespace Celeste.Narrative
             Choice choice = choices.Get(currentIndex);
             choices[currentIndex] = choices[newIndex];
             choices[newIndex] = choice;
-#if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
-#endif
+            EditorOnly.SetDirty(this);
         }
 
         #endregion
@@ -267,26 +147,7 @@ namespace Celeste.Narrative
         protected override void OnEnter()
         {
             base.OnEnter();
-
-            UnityEngine.Debug.Assert(!isLocalised || currentLanguage != null, $"Current Language has not been set.");
-            UnityEngine.Debug.Assert(!isLocalised || localisationKey != null, $"Localisation Key has not been set.");
-
-            if (isLocalised &&
-                currentLanguage != null &&
-                localisationKey != null)
-            {
-                if (!hasBeenLocalised || string.IsNullOrEmpty(tokenizedDialogue))
-                {
-                    tokenizedDialogue = currentLanguage.Localise(localisationKey);
-                    hasBeenLocalised = true;
-                }
-            }
-            else
-            {
-                tokenizedDialogue = dialogue;
-            }
-
-            tokenizedDialogue = TokenUtility.SubstituteTokens(tokenizedDialogue, dialogueTokens);
+            
             selectedChoice = null;
         }
 

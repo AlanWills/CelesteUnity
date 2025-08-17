@@ -17,7 +17,7 @@ namespace Celeste.Narrative.Characters
         public void OnNarrativeBegin(NarrativeRuntime narrativeRuntime)
         {
             // Go through each character and resolve any customisations
-            ChapterRecord chapterRecord = narrativeRuntime.ChapterRecord;
+            /*ChapterRecord chapterRecord = narrativeRuntime.ChapterRecord;
 
             for (int i = 0, n = chapterRecord.NumCharacterRecords; i < n; ++i)
             {
@@ -29,7 +29,7 @@ namespace Celeste.Narrative.Characters
                     UnityEngine.Debug.Assert(customisation != null, $"Could not find customisation with guid {characterRecord.AvatarCustomisationGuid}.");
                     characterRecord.CharacterAvatarIcon = customisation.Sprite;
                 }
-            }
+            }*/
         }
 
         #endregion

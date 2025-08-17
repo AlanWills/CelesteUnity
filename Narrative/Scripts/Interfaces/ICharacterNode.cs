@@ -7,5 +7,6 @@ namespace Celeste.Narrative
     {
         UIPosition UIPosition { get; set; }
         Character Character { get; set; }
+        string Expression { get; }
     }
 }

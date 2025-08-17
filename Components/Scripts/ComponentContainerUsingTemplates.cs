@@ -1,6 +1,7 @@
 ﻿using Celeste.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Celeste.Tools;
 using UnityEngine;
 
@@ -57,7 +58,13 @@ namespace Celeste.Components
 
         public bool HasComponent<K>() where K : TComponent
         {
-            return componentTemplates.Exists(x => x is K);
+            return componentTemplates.Exists(x => x.component is K);
+        }
+
+        public K FindComponent<K>() where K : TComponent
+        {
+            var componentTemplate = componentTemplates.FirstOrDefault(x => x.component is K);
+            return componentTemplate.component as K;
         }
 
         public void RemoveComponent(int componentIndex)

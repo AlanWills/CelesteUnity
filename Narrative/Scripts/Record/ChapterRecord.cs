@@ -46,7 +46,7 @@ namespace Celeste.Narrative
             characterRecords.Capacity = chapter.NumCharacters;
             for (int i = 0, n = chapter.NumCharacters; i < n; ++i)
             {
-                AddCharacterRecord(chapter.GetCharacter(i), 0);
+                AddCharacterRecord(chapter.GetCharacter(i));
             }
 
             for (int i = 0, n = chapter.NumStringValues; i < n; ++i)
@@ -57,6 +57,11 @@ namespace Celeste.Narrative
             for (int i = 0, n = chapter.NumBoolValues; i < n; ++i)
             {
                 AddValueRecord(chapter.GetBoolValue(i));
+            }
+
+            for (int i = 0, n = chapter.NumIntValues; i < n; ++i)
+            {
+                AddValueRecord(chapter.GetIntValue(i));
             }
 
             CalculateProgress();
@@ -94,12 +99,9 @@ namespace Celeste.Narrative
             return characterRecords.Get(index);
         }
 
-        public CharacterRecord AddCharacterRecord(
-            Character character, 
-            int avatarCustomisationGuid)
+        public CharacterRecord AddCharacterRecord(Character character)
         {
             CharacterRecord characterRecord = new CharacterRecord(character);
-            characterRecord.AvatarCustomisationGuid = avatarCustomisationGuid;
             characterRecords.Add(characterRecord);
 
             return characterRecord;
@@ -140,6 +142,14 @@ namespace Celeste.Narrative
             return valueRecord;
         }
 
+        public ValueRecord AddValueRecord(IntValue boolValue)
+        {
+            ValueRecord valueRecord = new ValueRecord(boolValue);
+            valueRecords.Add(valueRecord);
+
+            return valueRecord;
+        }
+
         public ValueRecord FindValueRecord(string name)
         {
             return valueRecords.Find(x => string.CompareOrdinal(x.Name, name) == 0);
@@ -159,6 +169,10 @@ namespace Celeste.Narrative
 
                     case ValueType.Bool:
                         valueRecord.ApplyTo(Chapter.FindBoolValue(valueRecord.Name));
+                        break;
+
+                    case ValueType.Int:
+                        valueRecord.ApplyTo(Chapter.FindIntValue(valueRecord.Name));
                         break;
 
                     default:

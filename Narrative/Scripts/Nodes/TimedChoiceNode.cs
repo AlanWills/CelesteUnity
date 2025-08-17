@@ -15,23 +15,12 @@ namespace Celeste.Narrative
     {
         #region Properties and Fields
 
-        public float AllowedTime
-        {
-            get { return allowedTime; }
-        }
-
-        public float ElapsedTime
-        {
-            get { return elapsedTime; }
-        }
-
-        public int NumChoices
-        {
-            get { return choices.Count; }
-        }
+        public float AllowedTime => allowedTime;
+        public float ElapsedTime => elapsedTime;
+        public int NumChoices => choices.Count;
 
         [SerializeField] private float allowedTime = 4;
-        [SerializeField] private List<Choice> choices = new List<Choice>();
+        [SerializeField] private List<Choice> choices = new();
 
         private IChoice selectedChoice;
         private float elapsedTime;
@@ -84,7 +73,7 @@ namespace Celeste.Narrative
 
             if (!Application.isPlaying)
             {
-                EditorOnly.AddObjectToAsset(choice, graph);
+                choice.AddObjectToAsset(graph);
             }
 
             AddOutputPort(name);

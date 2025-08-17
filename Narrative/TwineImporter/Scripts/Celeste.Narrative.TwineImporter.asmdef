@@ -21,6 +21,7 @@
         "Celeste.UnityProject",
         "Celeste.Sound",
         "Celeste.Sound.Nodes",
+        "Celeste.Components",
         "Unity.Addressables",
         "Unity.ResourceManager"
     ],

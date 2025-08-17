@@ -7,6 +7,7 @@ using Celeste.Parameters;
 using Celeste.Twine;
 using System;
 using System.Collections.Generic;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Narrative
@@ -18,64 +19,51 @@ namespace Celeste.Narrative
 
         public int Guid
         {
-            get { return guid; }
+            get => guid;
             set
             {
-                guid = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                if (guid != value)
+                {
+                    guid = value;
+                    EditorOnly.SetDirty(this);
+                }
             }
         }
 
         public string ChapterName
         {
-            get { return chapterName; }
+            get => chapterName;
             set
             {
-                chapterName = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                if (string.CompareOrdinal(chapterName, value) != 0)
+                {
+                    chapterName = value;
+                    EditorOnly.SetDirty(this);
+                }
             }
         }
 
         public string ChapterDescription
         {
-            get { return chapterDescription; }
+            get => chapterDescription;
             set
             {
-                chapterDescription = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                if (string.CompareOrdinal(chapterDescription, value) != 0)
+                {
+                    chapterDescription = value;
+                    EditorOnly.SetDirty(this);
+                }
             }
         }
 
-        public Sprite ChapterThumbnail
-        {
-            get { return chapterThumbnail; }
-        }
+        public Sprite ChapterThumbnail => chapterThumbnail;
 
-        public int NumCharacters
-        {
-            get { return characters != null ? characters.Length : 0; }
-        }
+        public int NumCharacters => characters.Count;
+        public int NumStringValues => stringValues.Count;
+        public int NumBoolValues => boolValues.Count;
+        public int NumIntValues => intValues.Count;
 
-        public int NumStringValues
-        {
-            get { return stringValues != null ? stringValues.Length : 0; }
-        }
-
-        public int NumBoolValues
-        {
-            get { return boolValues != null ? boolValues.Length : 0; }
-        }
-
-        public bool HasBakedNarrativeGraph
-        {
-            get { return narrativeGraph != null; }
-        }
+        public bool HasBakedNarrativeGraph => narrativeGraph != null;
 
         public NarrativeGraph NarrativeGraph
         {
@@ -85,7 +73,8 @@ namespace Celeste.Narrative
                 {
                     return narrativeGraph;
                 }
-                else if (runtimeCreatedNarrativeGraph != null)
+
+                if (runtimeCreatedNarrativeGraph != null)
                 {
                     return runtimeCreatedNarrativeGraph;
                 }
@@ -99,13 +88,11 @@ namespace Celeste.Narrative
 
         public TwineStory TwineStory
         {
-            get { return twineStory; }
+            get => twineStory;
             set
             {
                 twineStory = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -119,13 +106,14 @@ namespace Celeste.Narrative
         [Header("Narrative Info")]
         [SerializeField] private NarrativeGraph narrativeGraph;
         [SerializeField] private TwineStory twineStory;
-        [SerializeField] private Character[] characters;
-        [SerializeField] private StringValue[] stringValues;
-        [SerializeField] private BoolValue[] boolValues;
+        [SerializeField] private List<Character> characters = new();
+        [SerializeField] private List<StringValue> stringValues = new();
+        [SerializeField] private List<BoolValue> boolValues = new();
+        [SerializeField] private List<IntValue> intValues = new();
 
         [NonSerialized] private NarrativeGraph runtimeCreatedNarrativeGraph;
 
-#endregion
+        #endregion
 
         #region Characters
 
@@ -134,12 +122,12 @@ namespace Celeste.Narrative
             return characters.Get(index);
         }
 
-        public Character FindCharacter(int guid)
+        public Character FindCharacter(int characterGuid)
         {
-            return characters.Find(x => x.Guid == guid);
+            return characters.Find(x => x.Guid == characterGuid);
         }
 
-#endregion
+        #endregion
 
         #region String Values
 
@@ -148,12 +136,12 @@ namespace Celeste.Narrative
             return stringValues.Get(index);
         }
 
-        public StringValue FindStringValue(string name)
+        public StringValue FindStringValue(string stringValueName)
         {
-            return stringValues.Find(x => string.CompareOrdinal(x.name, name) == 0);
+            return stringValues.Find(x => string.CompareOrdinal(x.name, stringValueName) == 0);
         }
 
-#endregion
+        #endregion
 
         #region Bool Values
 
@@ -162,53 +150,56 @@ namespace Celeste.Narrative
             return boolValues.Get(index);
         }
 
-        public BoolValue FindBoolValue(string name)
+        public BoolValue FindBoolValue(string boolValueName)
         {
-            return boolValues.Find(x => string.CompareOrdinal(x.name, name) == 0);
+            return boolValues.Find(x => string.CompareOrdinal(x.name, boolValueName) == 0);
         }
 
-#endregion
+        #endregion
+
+        #region Bool Values
+
+        public IntValue GetIntValue(int index)
+        {
+            return intValues.Get(index);
+        }
+
+        public IntValue FindIntValue(string intValueName)
+        {
+            return intValues.Find(x => string.CompareOrdinal(x.name, intValueName) == 0);
+        }
+
+        #endregion
 
         #region Utility Functions
 
         public void FindCharacters()
         {
             HashSet<Character> charactersLookup = new HashSet<Character>();
-
             FindCharacters(narrativeGraph, charactersLookup);
 
-            Array.Resize(ref characters, charactersLookup.Count);
-            
-            int characterIndex = 0;
-            foreach (Character character in charactersLookup)
-            {
-                characters[characterIndex] = character;
-                ++characterIndex;
-            }
+            characters.Clear();
+            characters.AddRange(charactersLookup);
         }
 
         private void FindCharacters(FSMGraph narrativeGraph, HashSet<Character> charactersLookup)
         {
             foreach (FSMNode node in narrativeGraph.nodes)
             {
-                if (node is ICharacterNode)
+                if (node is ICharacterNode characterNode)
                 {
-                    ICharacterNode characterNode = node as ICharacterNode;
-
-                    if (characterNode.Character != null && !charactersLookup.Contains(characterNode.Character))
+                    if (characterNode.Character != null)
                     {
                         charactersLookup.Add(characterNode.Character);
                     }
                 }
-                else if (node is SubFSMNode)
+                else if (node is SubFSMNode subFsmNode)
                 {
-                    SubFSMNode subFSMNode = node as SubFSMNode;
-
-                    FindCharacters(subFSMNode.SubFSM, charactersLookup);
+                    FindCharacters(subFsmNode.SubFSM, charactersLookup);
                 }
             }
         }
 
-#endregion
+        #endregion
     }
 }

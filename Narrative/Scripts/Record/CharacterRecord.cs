@@ -11,18 +11,11 @@ namespace Celeste.Narrative
         #region Properties and Fields
 
         public Character Character { get; }
-        public int AvatarCustomisationGuid { get; set; }
 
         public string CharacterName
         {
-            get { return Character.CharacterName; }
-            set { Character.CharacterName = value; }
-        }
-
-        public Sprite CharacterAvatarIcon
-        {
-            get { return Character.CharacterAvatarIcon; }
-            set { Character.CharacterAvatarIcon = value; }
+            get => Character.CharacterName;
+            set => Character.CharacterName = value;
         }
 
         #endregion

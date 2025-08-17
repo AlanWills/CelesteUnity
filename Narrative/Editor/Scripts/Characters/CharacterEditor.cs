@@ -1,30 +1,24 @@
-﻿using Celeste.Narrative.Characters;
-using Celeste.Tools;
+﻿using System;
+using Celeste.Narrative.Characters;
+using Celeste.Narrative.Characters.Components;
+using CelesteEditor.Components;
 using UnityEditor;
 using UnityEngine;
 
 namespace CelesteEditor.Narrative.Characters
 {
     [CustomEditor(typeof(Character))]
-    public class CharacterEditor : Editor
+    public class CharacterEditor : ComponentContainerUsingSubAssetsEditor<CharacterComponent>
     {
-        #region Create Menu Item
-
-        [MenuItem("Assets/Create/Celeste/Narrative/Characters/Character")]
-        public static void CreateCharacterMenuItem()
-        {
-            Character character = Character.Create(nameof(Character), EditorOnly.GetSelectionObjectPath());
-            EditorOnly.SelectAsset(character);
-        }
-
-        #endregion
+        protected override Type[] AllComponentTypes => NarrativeEditorConstants.AllCharacterComponentTypes;
+        protected override string[] AllComponentDisplayNames => NarrativeEditorConstants.AllCharacterComponentDisplayNames;
 
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Repair"))
+            if (GUILayout.Button("Initialize"))
             {
                 Character character = target as Character;
-                character.Repair();
+                character.Editor_Initialize();
             }
 
             base.OnInspectorGUI();

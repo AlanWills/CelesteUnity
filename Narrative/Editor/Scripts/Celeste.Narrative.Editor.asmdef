@@ -21,7 +21,9 @@
         "Celeste.Tools",
         "GUID:a1f8006c6bf77694e84c37e7a94b4f95",
         "GUID:9747e433db94da64ab5b40ddfc6706ee",
-        "GUID:c95af7bc4649e4b4da85b957be8cc138"
+        "GUID:c95af7bc4649e4b4da85b957be8cc138",
+        "GUID:0aa6a7942386ed9458be5c6e57e65b6c",
+        "GUID:3929a5ead9d38fd4baee29a23fbc5c44"
     ],
     "includePlatforms": [
         "Editor"

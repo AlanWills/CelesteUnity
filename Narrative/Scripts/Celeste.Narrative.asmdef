@@ -26,7 +26,8 @@
         "XNode.Extensions",
         "Unity.Addressables",
         "Unity.ResourceManager",
-        "Celeste.Requests"
+        "Celeste.Requests",
+        "Celeste.Components"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

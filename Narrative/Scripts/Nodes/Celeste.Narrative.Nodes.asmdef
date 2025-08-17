@@ -17,7 +17,8 @@
         "XNode.Extensions",
         "Celeste.UnityProject",
         "Celeste.Objects",
-        "Celeste.Requests"
+        "Celeste.Requests",
+        "Celeste.Components"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

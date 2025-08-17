@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.Narrative.UI
 {
-    [CustomEditor(typeof(CharacterView))]
+    [CustomEditor(typeof(Character2DAvatarView))]
     public class CharacterViewEditor : Editor
     {
     }

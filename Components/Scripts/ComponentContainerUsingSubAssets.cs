@@ -2,6 +2,7 @@
 using Celeste.Objects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Celeste.Components
@@ -34,6 +35,11 @@ namespace Celeste.Components
         public bool HasComponent<K>() where K : T
         {
             return components.Exists(x => x is K);
+        }
+
+        public K FindComponent<K>() where K : T
+        {
+            return components.FirstOrDefault(x => x is K) as K;
         }
 
         public void RemoveComponent(int componentIndex)

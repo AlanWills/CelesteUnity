@@ -342,7 +342,11 @@ namespace CelesteEditor.Narrative.TwineImporter
         {
             if (!TryFind(characterName, importerSettings.CharactersDirectory, out Character character))
             {
-                character = Character.Create(characterName, importerSettings.CharactersDirectory);
+                character = ScriptableObject.CreateInstance<Character>();
+                character.name = characterName;
+                character.CharacterName = characterName;
+                
+                AssetDatabase.CreateAsset(character, $"{importerSettings.CharactersDirectory}/{characterName}.asset");
             }
             
             AddCharacterToSettings(character);

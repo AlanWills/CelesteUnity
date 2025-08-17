@@ -7,7 +7,8 @@ namespace Celeste.Narrative
     public enum ValueType
     {
         String,
-        Bool
+        Bool,
+        Int
     }
 
     public class ValueRecord
@@ -34,6 +35,13 @@ namespace Celeste.Narrative
             Type = ValueType.Bool;
         }
 
+        public ValueRecord(IntValue value)
+        {
+            Name = value.name;
+            Value = value.Value;
+            Type = ValueType.Int;
+        }
+
         public void ApplyTo(StringValue value)
         {
             if (CheckType(ValueType.String))
@@ -47,6 +55,14 @@ namespace Celeste.Narrative
             if (CheckType(ValueType.Bool))
             {
                 value.Value = (bool)Value;
+            }
+        }
+
+        public void ApplyTo(IntValue value)
+        {
+            if (CheckType(ValueType.Int))
+            {
+                value.Value = (int)Value;
             }
         }
 

@@ -18,6 +18,7 @@ namespace CelesteEditor.Narrative.Production
         private SerializedProperty charactersProperty;
         private SerializedProperty stringValuesProperty;
         private SerializedProperty boolValuesProperty;
+        private SerializedProperty intValuesProperty;
 
         #endregion
 
@@ -26,6 +27,7 @@ namespace CelesteEditor.Narrative.Production
             charactersProperty = serializedObject.FindProperty("characters");
             stringValuesProperty = serializedObject.FindProperty("stringValues");
             boolValuesProperty = serializedObject.FindProperty("boolValues");
+            intValuesProperty = serializedObject.FindProperty("intValues");
         }
 
         public override void OnInspectorGUI()
@@ -43,6 +45,7 @@ namespace CelesteEditor.Narrative.Production
             {
                 FindValues<string, StringValue, StringReference>(stringValuesProperty);
                 FindValues<bool, BoolValue, BoolReference>(boolValuesProperty);
+                FindValues<int, IntValue, IntReference>(intValuesProperty);
             }
 
             DrawPropertiesExcluding(serializedObject, "m_Script");

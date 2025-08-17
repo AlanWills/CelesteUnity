@@ -104,6 +104,11 @@ namespace Celeste.Tilemaps.Tiles
             return components.HasComponent<K>();
         }
 
+        public K FindComponent<K>() where K : TileComponent
+        {
+            return components.FindComponent<K>();
+        }
+
         public void RemoveComponent(int componentIndex)
         {
             components.RemoveComponent(componentIndex);

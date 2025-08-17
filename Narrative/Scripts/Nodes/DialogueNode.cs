@@ -96,15 +96,18 @@ namespace Celeste.Narrative
                 }
             }
         }
+        
+        public string Expression => expression;
 
         [SerializeField, HideIf(nameof(isLocalised)), TextRegion(2)] private string dialogue;
         [SerializeField, ShowIf(nameof(isLocalised)), LocalisationPreview] private LocalisationKey localisationKey;
-        [SerializeField] private bool isLocalised;
+        [SerializeField, ShowIf(nameof(isLocalised))] private LanguageValue currentLanguage;
         [SerializeField] private DialogueType dialogueType = DialogueType.Speech;
         [SerializeField, NodeEnum] private UIPosition uiPosition = UIPosition.Left;
         [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         [SerializeField] private Character character;
-        [SerializeField, ShowIf(nameof(isLocalised))] private LanguageValue currentLanguage;
+        [SerializeField] private string expression;
+        [SerializeField] private bool isLocalised;
 
         [System.NonSerialized] private string tokenizedDialogue;
         [System.NonSerialized] private bool hasBeenLocalised;
