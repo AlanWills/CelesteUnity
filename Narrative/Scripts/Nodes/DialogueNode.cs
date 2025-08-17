@@ -4,6 +4,7 @@ using Celeste.FSM;
 using Celeste.Localisation.Parameters;
 using Celeste.Localisation;
 using Celeste.Localisation.Settings;
+using Celeste.Narrative.Attributes;
 using Celeste.Narrative.Characters;
 using Celeste.Narrative.UI;
 using Celeste.Tools.Attributes.GUI;
@@ -106,7 +107,7 @@ namespace Celeste.Narrative
         [SerializeField, NodeEnum] private UIPosition uiPosition = UIPosition.Left;
         [HideInNodeEditor, SerializeField] private List<LocaToken> dialogueTokens = new();
         [SerializeField] private Character character;
-        [SerializeField] private string expression;
+        [SerializeField, ExpressionFromCharacter(nameof(character))] private string expression;
         [SerializeField] private bool isLocalised;
 
         [System.NonSerialized] private string tokenizedDialogue;

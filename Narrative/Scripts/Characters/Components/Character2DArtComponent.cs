@@ -18,6 +18,8 @@ namespace Celeste.Narrative.Characters.Components
         #endregion
         
         #region Properties and Fields
+        
+        public int NumExpressionNames => expressionNames?.Length ?? 0;
 
         public string[] ExpressionNames
         {
@@ -25,17 +27,21 @@ namespace Celeste.Narrative.Characters.Components
             {
                 if (expressionNames == null || expressionNames.Length != expressions.Count)
                 {
-                    expressionNames = new string[expressions.Count];
+                    expressionNames = new string[expressions.Count + 1];
+                    expressionNames[DefaultExpressionNameIndex] = DEFAULT_EXPRESSION_NAME;
 
-                    for (int i = 0, n = expressionNames.Length; i < n; ++i)
+                    for (int i = 0, n = expressions.Count; i < n; ++i)
                     {
-                        expressionNames[i] = expressions[i].ExpressionName;
+                        expressionNames[i + 1] = expressions[i].ExpressionName;
                     }
                 }
                 
                 return expressionNames;
             }
         }
+        
+        private const string DEFAULT_EXPRESSION_NAME = "Default";
+        public const int DefaultExpressionNameIndex = 0;
         
         [SerializeField] private Sprite defaultExpression;
         [SerializeField] private List<Expression> expressions = new();
