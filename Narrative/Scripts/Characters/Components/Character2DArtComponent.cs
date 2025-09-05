@@ -25,7 +25,7 @@ namespace Celeste.Narrative.Characters.Components
         {
             get
             {
-                if (expressionNames == null || expressionNames.Length != expressions.Count)
+                if (expressionNames == null || expressionNames.Length != (expressions.Count + 1))
                 {
                     expressionNames = new string[expressions.Count + 1];
                     expressionNames[DefaultExpressionNameIndex] = DEFAULT_EXPRESSION_NAME;

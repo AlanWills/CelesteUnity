@@ -64,7 +64,10 @@ namespace Celeste.Narrative.Backgrounds
         public void OnNarrativeBegin(NarrativeRuntime narrativeRuntime)
         {
             Background background = backgroundSettings.FindBackgroundByGuid(narrativeRuntime.ChapterRecord.CurrentBackgroundGuid);
-            OnSetBackground(background); 
+            if (background != null)
+            {
+                OnSetBackground(background);
+            }
         }
 
         private void OnSetBackground(Background background)

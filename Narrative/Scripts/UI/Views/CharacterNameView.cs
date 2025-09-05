@@ -1,9 +1,7 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative.Characters;
-using Celeste.Narrative.Characters.Components;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Celeste.Narrative.UI
 {
@@ -33,10 +31,7 @@ namespace Celeste.Narrative.UI
 
         public override void OnNodeUpdate(FSMNode fsmNode) { }
 
-        public override void OnNodeExit(FSMNode fsmNode)
-        {
-            characterNameUI.SetActive(false);
-        }
+        public override void OnNodeExit(FSMNode fsmNode) { }
 
         #endregion
     }
