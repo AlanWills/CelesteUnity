@@ -1,7 +1,6 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System;
-using UnityEditor.UIElements;
 
 namespace Celeste.FSM.Nodes.Events
 {

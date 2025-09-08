@@ -1,4 +1,5 @@
-﻿using Celeste.FSM;
+﻿using Celeste.Events;
+using Celeste.FSM;
 using Celeste.Narrative.Backgrounds;
 using Celeste.Narrative.Events;
 using Celeste.Narrative.Loading;
@@ -39,6 +40,40 @@ namespace Celeste.Narrative
 
             narrativeBegunEvent.Invoke(currentRuntime);
         }
+        
+        #region Debug Callbacks
+
+        public void DebugNext()
+        {
+            if (currentRuntime == null)
+            {
+                return;
+            }
+            
+            currentRuntime.TryGoToNextDefaultNode();
+        }
+
+        public void DebugRestart()
+        {
+            if (currentRuntime == null)
+            {
+                return;
+            }
+
+            currentRuntime.JumpTo(currentRuntime.StartNode);
+        }
+        
+        public void DebugFinish()
+        {
+            if (currentRuntime == null)
+            {
+                return;
+            }
+
+            currentRuntime.JumpTo(currentRuntime.FinishNode);
+        }
+        
+        #endregion
 
         #region Callbacks
 
@@ -56,11 +91,11 @@ namespace Celeste.Narrative
             BeginNarrativeRuntime(narrativeContext.chapterRecord);
         }
 
-        public void OnSetBackground(Background background)
+        public void OnSetBackground(SetBackgroundEventArgs backgroundEventArgs)
         {
             if (currentRuntime != null)
             {
-                currentRuntime.ChapterRecord.CurrentBackgroundGuid = background != null ? background.Guid : 0;
+                currentRuntime.ChapterRecord.CurrentBackgroundGuid = backgroundEventArgs.Background != null ? backgroundEventArgs.Background.Guid : 0;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative.Loading;
 using Celeste.Scene.Events;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace Celeste.Narrative
@@ -9,6 +10,7 @@ namespace Celeste.Narrative
     public class NarrativeRuntime : FSMRuntime
     {
         public ChapterRecord ChapterRecord => record as ChapterRecord;
+        public FSMNode FinishNode => (graph as NarrativeGraph).FinishNode;
 
         #region Factory Functions
 
