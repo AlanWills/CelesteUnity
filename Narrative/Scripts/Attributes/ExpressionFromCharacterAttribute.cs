@@ -60,7 +60,7 @@ namespace Celeste.Narrative.Attributes
         {
             SerializedProperty characterProperty = property.serializedObject.FindProperty(CharacterProperyName);
             Character character = characterProperty.objectReferenceValue as Character;
-            character2DArtComponent = character.FindComponent<Character2DArtComponent>();
+            character2DArtComponent = character?.FindComponent<Character2DArtComponent>();
             return character2DArtComponent != null;
         }
 
