@@ -72,7 +72,7 @@ namespace Celeste.Web
 
             for (int i = 1; i < googleSheet.NumColumns; ++i)
             {
-                Debug.Assert(googleSheet.GetColumn(i).Values.Count == numRows, $"Inconsistent column values - looks like there's a bug in parsing.");
+                UnityEngine.Debug.Assert(googleSheet.GetColumn(i).Values.Count == numRows, $"Inconsistent column values - looks like there's a bug in parsing.");
             }
 
             return googleSheet;

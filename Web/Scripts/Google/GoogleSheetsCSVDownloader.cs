@@ -24,17 +24,17 @@ namespace Celeste.Web
 
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
-                Debug.Log("Starting Download...");
+                UnityEngine.Debug.Log("Starting Download...");
                 yield return webRequest.SendWebRequest();
 
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.Log("...Download Error: " + webRequest.error);
+                    UnityEngine.Debug.Log("...Download Error: " + webRequest.error);
                     downloadData = PlayerPrefs.GetString("LastDataDownloaded", null);
                 }
                 else
                 {
-                    Debug.Log("Download Success!");
+                    UnityEngine.Debug.Log("Download Success!");
                     downloadData = webRequest.downloadHandler.text;
                     PlayerPrefs.GetString("LastDataDownloaded");
                     PlayerPrefs.Save();

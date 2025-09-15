@@ -4,7 +4,11 @@
     "references": [
         "Celeste.DataStructures",
         "Celeste.DataImporters",
-        "Celeste.UnityProject"
+        "Celeste.UnityProject",
+        "Celeste.Debug",
+        "Unity.Netcode.Runtime",
+        "Unity.Networking.Transport",
+        "Celeste.Tools"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

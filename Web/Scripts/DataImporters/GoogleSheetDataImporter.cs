@@ -30,7 +30,7 @@ namespace Celeste.Web.DataImporters
         {
             if (string.IsNullOrEmpty(data))
             {
-                Debug.LogError($"Importer {name} did not receive any data from sheet id: {sheetId} and tab id {tabId}.");
+                UnityEngine.Debug.LogError($"Importer {name} did not receive any data from sheet id: {sheetId} and tab id {tabId}.");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace Celeste.Web.DataImporters
             
             if (googleSheet == null)
             {
-                Debug.LogError($"Importer {name} could not create correct CSV data from sheet id: {sheetId} and tab id: {tabId}.");
+                UnityEngine.Debug.LogError($"Importer {name} could not create correct CSV data from sheet id: {sheetId} and tab id: {tabId}.");
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace Celeste.Web.DataImporters
                 onGoogleSheetReceivedImportSteps[i].Execute(googleSheet);
             }
 
-            Debug.Log($"{name}: Import done!", this);
+            UnityEngine.Debug.Log($"{name}: Import done!", this);
         }
     }
 }
