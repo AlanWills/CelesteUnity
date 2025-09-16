@@ -21,7 +21,7 @@ namespace Celeste.Narrative.Debug
 
         protected override void OnDrawMenu()
         {
-            using (var horizontal = new GUILayout.HorizontalScope())
+            using (new GUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Load Last"))
                 {

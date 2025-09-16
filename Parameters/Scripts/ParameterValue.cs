@@ -29,7 +29,7 @@ namespace Celeste.Parameters
         [NonSerialized] private T value;
         public T Value 
         {
-            get { return Application.isPlaying ? value : DefaultValue; }
+            get => Application.isPlaying ? value : DefaultValue;
             set
             {
                 if (this.value == null && value == null)

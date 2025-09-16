@@ -1,7 +1,6 @@
 ﻿using Celeste.FSM;
 using Celeste.Narrative.Loading;
 using Celeste.Scene.Events;
-using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace Celeste.Narrative

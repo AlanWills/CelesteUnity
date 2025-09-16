@@ -8,7 +8,11 @@
         "Celeste.Debug",
         "Unity.Netcode.Runtime",
         "Unity.Networking.Transport",
-        "Celeste.Tools"
+        "Unity.Services.Multiplayer",
+        "Celeste.Tools",
+        "Celeste.Events",
+        "Unity.Services.Core",
+        "Unity.Services.Authentication"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
