@@ -12,7 +12,8 @@
         "Celeste.Tools",
         "Celeste.Events",
         "Unity.Services.Core",
-        "Unity.Services.Authentication"
+        "Unity.Services.Authentication",
+        "Celeste.Parameters"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

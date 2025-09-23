@@ -73,6 +73,8 @@ namespace Celeste.Log
             {
                 UnityEngine.Debug.unityLogger.logHandler = unityLogHandler;
             }
+            
+            logRecord.Shutdown();
         }
 
         #endregion

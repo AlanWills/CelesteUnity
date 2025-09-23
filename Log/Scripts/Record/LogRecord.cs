@@ -1,9 +1,10 @@
 using Celeste.Parameters;
-using Celeste.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Celeste.Events;
 using UnityEngine;
+using Semaphore = Celeste.Tools.Semaphore;
 
 namespace Celeste.Log
 {
@@ -19,6 +20,7 @@ namespace Celeste.Log
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private int defaultStackFramesToDiscard = 0;
 
+        [NonSerialized] private bool runtimeIsDebugBuild;
         [NonSerialized] private ILogHandler defaultUnityLogHandler;
         [NonSerialized] private ICustomLogHandler hudLogHandler;
         [NonSerialized] private List<ICustomLogHandler> customLogHandlers = new List<ICustomLogHandler>();
@@ -32,12 +34,20 @@ namespace Celeste.Log
 
         public void Initialize(ILogHandler _defaultUnityLogHandler, SectionLogSettingsCatalogue _sectionLogSettingsCatalogue)
         {
+            runtimeIsDebugBuild = isDebugBuild.Value;
             defaultUnityLogHandler = _defaultUnityLogHandler;
             hudLogHandler = new HudLogHandler();
             sectionLogSettingsCatalogue = _sectionLogSettingsCatalogue;
             logMessages.Clear();
             
             StackFramesToDiscard = defaultStackFramesToDiscard;
+            
+            isDebugBuild.AddValueChangedCallback(OnIsDebugBuildValueChanged);
+        }
+
+        public void Shutdown()
+        {
+            isDebugBuild.RemoveValueChangedCallback(OnIsDebugBuildValueChanged);
         }
 
         public void AddCustomLogHandler(ICustomLogHandler handler)
@@ -195,7 +205,7 @@ namespace Celeste.Log
 
         private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel, SectionLogSettings sectionLogSettings)
         {
-            if (isDebugBuild.Value)
+            if (runtimeIsDebugBuild)
             {
                 logMessages.Add(new LogMessage()
                 {
@@ -206,5 +216,14 @@ namespace Celeste.Log
                 });
             }
         }
+        
+        #region Callbacks
+
+        private void OnIsDebugBuildValueChanged(ValueChangedArgs<bool> args)
+        {
+            runtimeIsDebugBuild = args.newValue;
+        }
+        
+        #endregion
     }
 }

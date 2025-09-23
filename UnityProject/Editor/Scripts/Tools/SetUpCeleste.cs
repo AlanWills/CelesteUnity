@@ -10,7 +10,6 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using CelesteEditor.UnityProject.Constants;
 using Celeste.Bootstrap;
-using TMPro.EditorUtilities;
 using System.IO;
 using CelesteEditor.Scene.Settings;
 using Celeste.Sound.Settings;
@@ -23,7 +22,6 @@ using Celeste.Input.Settings;
 using CelesteEditor.BuildSystem.Data;
 using CelesteEditor.Scene;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using UnityEditor.PackageManager;
 using UnityEngine.SceneManagement;
 using Celeste.Sound;
@@ -33,7 +31,6 @@ using Celeste.Scene.Catalogue;
 using Celeste.Log;
 using TMPro;
 using System.Reflection;
-using NUnit.Framework.Internal;
 
 
 #if USE_ADDRESSABLES
