@@ -1,4 +1,5 @@
-﻿using Celeste.Web.Messages;
+﻿#if USE_NETCODE
+using Celeste.Web.Messages;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,7 +16,8 @@ namespace Celeste.Web.Objects
         private readonly NetworkObject networkObject;
         private readonly NetworkMessaging networkMessaging;
         private readonly INetworkingMessageSerializer serializer;
-        private readonly INetworkMessageDeserializer deserializer;
+        private readonly INetworkingMessageDeserializer deserializer;
+        private readonly INetworkingMessageHandler handler;
 
         #endregion
 
@@ -24,13 +26,17 @@ namespace Celeste.Web.Objects
             NetworkObject networkObject, 
             NetworkMessaging networkMessaging,
             INetworkingMessageSerializer serializer,
-            INetworkMessageDeserializer deserializer)
+            INetworkingMessageDeserializer deserializer,
+            INetworkingMessageHandler handler)
         {
             Id = clientId;
             this.networkObject = networkObject;
             this.networkMessaging = networkMessaging;
             this.serializer = serializer;
             this.deserializer = deserializer;
+            this.handler = handler;
+
+            networkMessaging.Setup(this);
         }
         
         public void SendMessageToServer(string message)
@@ -40,8 +46,32 @@ namespace Celeste.Web.Objects
 
         public void SendMessageToServer<T>(NetworkingMessage<T> message)
         {
-            string messageAsString = JsonUtility.ToJson(message);
+            string messageAsString = Serialize(message);
             SendMessageToServer(messageAsString);
         }
+
+        private string Serialize<T>(NetworkingMessage<T> message)
+        {
+            return serializer.Serialize(message);
+        }
+        
+        #region INetworkingMessageReceiver
+
+        void INetworkingMessageReceiver.OnNetworkingMessageReceived(string rawMessage)
+        {
+            NetworkingMessage message = deserializer.Deserialize(rawMessage);
+
+            if (handler.CanHandle(message))
+            {
+                handler.Handle(message);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Failed to handle message '{message.Id}' on Client '{Id}'.  Is message valid? {message.IsValid}.", CelesteLog.Web);
+            }
+        }
+        
+        #endregion
     }
 }
+#endif

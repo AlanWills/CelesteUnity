@@ -10,12 +10,17 @@ namespace Celeste.Web.Objects
         
         public void SendMessageToServer(string message)
         {
-            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message: {message}.");
+            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message: {message}.", CelesteLog.Web);
         }
 
         public void SendMessageToServer<T>(NetworkingMessage<T> message)
         {
-            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message: {message}.");
+            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message: {message}.", CelesteLog.Web);
+        }
+
+        void INetworkingMessageReceiver.OnNetworkingMessageReceived(string rawMessage)
+        {
+            UnityEngine.Debug.Log($"Server Networking disabled.  Discarding message: {rawMessage}.", CelesteLog.Web);
         }
     }
 }

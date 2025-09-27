@@ -22,13 +22,13 @@ namespace Celeste.Twine.Debug
 
         protected override void OnDrawMenu()
         {
-            using (var horizontal = new HorizontalScope())
+            using (new HorizontalScope())
             {
                 if (Button($"Import", ExpandWidth(false)))
                 {
 #if CELESTE_NATIVE_FILE_PICKER
                     string fileType = NativeFilePicker.ConvertExtensionToFileType(TwineStory.FILE_EXTENSION);
-                    NativeFilePicker.Permission permission = NativeFilePicker.PickFile((path) =>
+                    NativeFilePicker.PickFile(path =>
                     {
                         if (string.IsNullOrWhiteSpace(path))
                         {
@@ -39,9 +39,7 @@ namespace Celeste.Twine.Debug
                             HudLog.LogInfo($"Picked file: {path}");
                             twineRecord.ImportTwineStory(path);
                         }
-                    }, new string[] { fileType });
-
-                    HudLog.LogInfo($"Permission result: {permission}");
+                    }, fileType);
 #else
                     UnityEngine.Debug.LogAssertion("Cannot import files without Celeste Native File Picker.");
 #endif

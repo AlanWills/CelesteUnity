@@ -4,6 +4,6 @@ namespace Celeste.Web
 {
     public interface INetworkingMessageSerializer
     {
-        string Serialize<T>(NetworkingMessage<T> networkingMessage);
+        string Serialize<T>(NetworkingMessage<T> messagePayload);
     }
 }

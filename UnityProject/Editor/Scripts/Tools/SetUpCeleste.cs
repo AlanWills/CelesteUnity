@@ -91,8 +91,7 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool useNativeSharePackage;
         [LabelWidth(300)] public bool useNativeFilePickerPackage;
         [LabelWidth(300)] public bool useRuntimeInspectorPackage;
-        [LabelWidth(300)] public bool useUnityAndroidLogcatPackage;
-        [LabelWidth(300)] public bool removeUnityCollabPackage;
+        [LabelWidth(300)] public bool useLuaPackage;
         [LabelWidth(300)] public List<string> dependenciesToAdd;
         [LabelWidth(300)] public List<string> dependenciesToRemove;
 
@@ -164,8 +163,7 @@ namespace CelesteEditor.UnityProject
             useNativeSharePackage = true;
             useNativeFilePickerPackage = true;
             useRuntimeInspectorPackage = true;
-            useUnityAndroidLogcatPackage = true;
-            removeUnityCollabPackage = true;
+            useLuaPackage = false;
             dependenciesToAdd = new List<string>();
             dependenciesToRemove = new List<string>();
 
@@ -264,27 +262,22 @@ namespace CelesteEditor.UnityProject
 
             if (parameters.useNativeFilePickerPackage)
             {
-                dependenciesToAdd.Add("git@github.com:AlanWills/UnityNativeFilePicker.git");
+                dependenciesToAdd.Add(ThirdPartyPackageConstants.NATIVE_FILE_PICKER_PACKAGE);
             }
 
             if (parameters.useNativeSharePackage)
             {
-                dependenciesToAdd.Add("git@github.com:AlanWills/UnityNativeShare.git");
+                dependenciesToAdd.Add(ThirdPartyPackageConstants.NATIVE_SHARE_PACKAGE);
             }
 
             if (parameters.useRuntimeInspectorPackage)
             {
-                dependenciesToAdd.Add("git@github.com:AlanWills/UnityRuntimeInspector.git");
+                dependenciesToAdd.Add(ThirdPartyPackageConstants.RUNTIME_INSPECTOR_PACkKAGE);
             }
 
-            if (parameters.useUnityAndroidLogcatPackage)
+            if (parameters.useLuaPackage)
             {
-                dependenciesToAdd.Add("com.unity.mobile.android-logcat");
-            }
-
-            if (parameters.removeUnityCollabPackage)
-            {
-                dependenciesToRemove.Add("com.unity.collab-proxy");
+                dependenciesToAdd.Add(ThirdPartyPackageConstants.LUA_PACKAGE);
             }
 
             if (dependenciesToAdd.Count > 0)
@@ -292,8 +285,7 @@ namespace CelesteEditor.UnityProject
                 Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray(), packagesToRemove: dependenciesToRemove.ToArray());
             }
         }
-
-
+        
         private static void CreateModules(SetUpCelesteParameters parameters, SetUpCelesteResults results)
         {
             CreateLoading(parameters);

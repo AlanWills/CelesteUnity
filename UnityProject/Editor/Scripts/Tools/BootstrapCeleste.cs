@@ -15,12 +15,18 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300)] public bool useAddressables;
         [LabelWidth(300)] public bool useNewInputSystem;
         [LabelWidth(300)] public bool useTextMeshPro;
+        [LabelWidth(300)] public bool useUnityAndroidLogcatPackage;
+        [LabelWidth(300)] public bool removeUnityCollabPackage;
+        [LabelWidth(300)] public bool useNetCodeForGameObjects;
 
         public void UseDefaults()
         {
             useAddressables = true;
             useNewInputSystem = true;
             useTextMeshPro = true;
+            useUnityAndroidLogcatPackage = true;
+            removeUnityCollabPackage = true;
+            useNetCodeForGameObjects = false;
         }
     }
 
@@ -49,6 +55,8 @@ namespace CelesteEditor.UnityProject
             {
                 BootstrapCelesteConstants.EDITOR_COROUTINES_PACKAGE
             };
+            
+            List<string> dependenciesToRemove = new List<string>();
 
             if (parameters.useAddressables)
             {
@@ -60,9 +68,24 @@ namespace CelesteEditor.UnityProject
                 dependenciesToAdd.Add(BootstrapCelesteConstants.NEW_INPUT_SYSTEM_PACKAGE);
             }
 
+            if (parameters.useNetCodeForGameObjects)
+            {
+                dependenciesToAdd.Add(BootstrapCelesteConstants.NET_CODE_FOR_GAMEOBJECTS_PACKAGE);
+            }
+            
+            if (parameters.useUnityAndroidLogcatPackage)
+            {
+                dependenciesToAdd.Add(BootstrapCelesteConstants.ANDROID_LOGCAT_PACKAGE);
+            }
+
+            if (parameters.removeUnityCollabPackage)
+            {
+                dependenciesToRemove.Add(BootstrapCelesteConstants.UNITY_COLLAB_PACKAGE);
+            }
+
             if (dependenciesToAdd.Count > 0)
             {
-                s_addAndRemoveRequest = Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray());
+                s_addAndRemoveRequest = Client.AddAndRemove(packagesToAdd: dependenciesToAdd.ToArray(), packagesToRemove: dependenciesToRemove.ToArray());
                 UnityEngine.Debug.Log("Beginning bootstrap of Celeste dependencies...");
 
                 if (!s_addAndRemoveRequest.IsCompleted)

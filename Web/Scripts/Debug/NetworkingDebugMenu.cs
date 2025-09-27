@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Celeste.Debug.Menus;
+using Celeste.Web.Messages;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -30,7 +31,6 @@ namespace Celeste.Web.Debug
         [SerializeField] private NetworkingManagerAPI networkingManagerAPI;
 
         private readonly TaskAndStatus becomeHostTask = new();
-        private readonly TaskAndStatus becomeServerTask = new();
         private readonly TaskAndStatus becomeClientTask = new();
         private string joinCode;
         
@@ -108,7 +108,7 @@ namespace Celeste.Web.Debug
                     
                     if (GUILayout.Button("Ping Client"))
                     {
-                        server.SendMessageToClient($"Hello from Server to Client {connectedClient}!", connectedClient);
+                        server.SendMessageToClient(TestConnectionPayload.Create($"Hello from Server to Client {connectedClient}!"), connectedClient);
                     }
                 }
             }
@@ -121,7 +121,7 @@ namespace Celeste.Web.Debug
             
             if (GUILayout.Button("Ping Server"))
             {
-                client.SendMessageToServer($"Hello from Client {client.Id}!");
+                client.SendMessageToServer(TestConnectionPayload.Create($"Hello from Client {client.Id}!"));
             }
         }
     }

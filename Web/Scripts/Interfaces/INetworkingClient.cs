@@ -2,7 +2,7 @@
 
 namespace Celeste.Web
 {
-    public interface INetworkingClient : INetworkingObject
+    public interface INetworkingClient : INetworkingObject, INetworkingMessageReceiver
     {
         ulong Id { get; }
         

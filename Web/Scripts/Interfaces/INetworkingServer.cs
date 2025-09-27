@@ -3,7 +3,7 @@ using Celeste.Web.Messages;
 
 namespace Celeste.Web
 {
-    public interface INetworkingServer : INetworkingObject
+    public interface INetworkingServer : INetworkingObject, INetworkingMessageReceiver
     {
         bool HasJoinCode { get; }
         string JoinCode { get; }

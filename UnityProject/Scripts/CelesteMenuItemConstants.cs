@@ -35,6 +35,7 @@ namespace Celeste
         public const string LOCATIONSERVICES_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "LocationServices/";
         public const string LOG_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Log/";
         public const string LOGIC_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Logic/";
+        public const string LUA_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Lua/";
         public const string MATHS_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Maths/";
         public const string MEMORY_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Memory/";
         public const string NARRATIVE_MENU_ITEM = CELESTE_MENU_ITEM_ROOT + "Narrative/";
@@ -94,7 +95,8 @@ namespace Celeste
         public const int LOCATIONSERVICES_MENU_ITEM_PRIORITY = LOCALISATION_MENU_ITEM_PRIORITY + 1;
         public const int LOG_MENU_ITEM_PRIORITY = LOCATIONSERVICES_MENU_ITEM_PRIORITY + 1;
         public const int LOGIC_MENU_ITEM_PRIORITY = LOG_MENU_ITEM_PRIORITY + 1;
-        public const int MATHS_MENU_ITEM_PRIORITY = LOGIC_MENU_ITEM_PRIORITY + 1;
+        public const int LUA_MENU_ITEM_PRIORITY = LOGIC_MENU_ITEM_PRIORITY + 1;
+        public const int MATHS_MENU_ITEM_PRIORITY = LUA_MENU_ITEM_PRIORITY + 1;
         public const int MEMORY_MENU_ITEM_PRIORITY = MATHS_MENU_ITEM_PRIORITY + 1;
         public const int NARRATIVE_MENU_ITEM_PRIORITY = MEMORY_MENU_ITEM_PRIORITY + 1;
         public const int NOTIFICATIONS_MENU_ITEM_PRIORITY = NARRATIVE_MENU_ITEM_PRIORITY + 1;

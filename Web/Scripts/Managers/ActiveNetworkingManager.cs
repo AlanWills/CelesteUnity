@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#if USE_NETCODE
+using System;
 using System.Threading.Tasks;
 using Celeste.Parameters;
 using Celeste.Web.Messages;
@@ -23,14 +23,13 @@ namespace Celeste.Web.Managers
         public bool WillAutoSpawnPlayerPrefab => networkManager.NetworkConfig.AutoSpawnPlayerPrefabClientSide;
         public INetworkingServer Server { get; private set; } = new DisabledNetworkingServer();
         public INetworkingClient Client { get; private set; } = new DisabledNetworkingClient();
-        public bool HasConnectedClients => networkManager.ConnectedClients?.Count > 0;
-        public IEnumerable<ulong> ConnectedClients => networkManager.ConnectedClients.Keys;
         
         [SerializeField] private NetworkingManagerAPI api;
         [SerializeField] private NetworkManager networkManager;
         [SerializeField] private UnityTransport unityTransport;
-        [SerializeField] private NetworkingMessageSerializer networkingMessageSerializer;
-        [SerializeField] private NetworkingMessageDeserializer networkingMessageDeserializer;
+        [SerializeField] private NetworkingMessageSerializationFactory networkingMessageSerializationFactory;
+        [SerializeField] private NetworkingMessageHandlerFactory clientNetworkingMessageHandlerFactory;
+        [SerializeField] private NetworkingMessageHandlerFactory serverNetworkingMessageHandlerFactory;
         [SerializeField] private BoolValue isDebugBuild;
         [SerializeField] private LogLevel debugLogLevel =  LogLevel.Developer;
         [SerializeField] private LogLevel prodLogLevel = LogLevel.Error;
@@ -88,14 +87,16 @@ namespace Celeste.Web.Managers
                     joinCode, 
                     networkObject,
                     networkMessaging,
-                    networkingMessageSerializer,
-                    networkingMessageDeserializer);
+                    networkingMessageSerializationFactory,
+                    networkingMessageSerializationFactory,
+                    serverNetworkingMessageHandlerFactory);
                 Client = new ActiveNetworkingClient(
                     networkManager.LocalClientId, 
                     networkObject, 
                     networkMessaging,
-                    networkingMessageSerializer,
-                    networkingMessageDeserializer);
+                    networkingMessageSerializationFactory,
+                    networkingMessageSerializationFactory,
+                    clientNetworkingMessageHandlerFactory);
                 
                 // Add this manually here because we won't have the callback triggered for the Host's client object
                 Server.AddConnectedClient(networkManager.LocalClientId);
@@ -128,8 +129,9 @@ namespace Celeste.Web.Managers
                     networkManager.LocalClientId, 
                     networkManager.LocalClient.PlayerObject,
                     networkManager.LocalClient.PlayerObject.GetComponent<NetworkMessaging>(),
-                    networkingMessageSerializer,
-                    networkingMessageDeserializer);
+                    networkingMessageSerializationFactory,
+                    networkingMessageSerializationFactory,
+                    clientNetworkingMessageHandlerFactory);
                 progress?.Report("Becoming Client - Complete");
             }
             else
@@ -174,7 +176,7 @@ namespace Celeste.Web.Managers
             response.Approved = true;
 
             // If this is false, Netcode skips the Default Player Prefab auto-spawn:
-            UnityEngine.Debug.Assert(response.CreatePlayerObject, "Create Player Object was false!!!");
+            UnityEngine.Debug.Assert(response.CreatePlayerObject, "Create Player Object was false!!!", CelesteLog.Web);
             response.CreatePlayerObject = true;
         }
         
@@ -185,14 +187,14 @@ namespace Celeste.Web.Managers
                 return;
             }
                 
-            UnityEngine.Debug.Log($"Client {clientId} connected!");
+            UnityEngine.Debug.Log($"Client {clientId} connected!", CelesteLog.Web);
 
             // If the client already has a player, do nothing
             if (networkManager.ConnectedClients[clientId].PlayerObject != null)
             {
                 // Need to tweak this to be the same scene as our eventual network message bus/manager thing
                 SceneManager.MoveGameObjectToScene(networkManager.ConnectedClients[clientId].PlayerObject.gameObject, networkManager.gameObject.scene);
-                UnityEngine.Debug.Log($"PlayerObject was already spawned for {clientId}: {networkManager.ConnectedClients[clientId].PlayerObject.name}");
+                UnityEngine.Debug.Log($"PlayerObject was already spawned for {clientId}: {networkManager.ConnectedClients[clientId].PlayerObject.name}", CelesteLog.Web);
             }
             else
             {
@@ -202,11 +204,11 @@ namespace Celeste.Web.Managers
                 // Need to tweak this to be the same scene as our eventual network message bus/manager thing
                 GameObject playerInstance = Instantiate(networkManager.NetworkConfig.PlayerPrefab, networkManager.gameObject.scene) as GameObject;
                 NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
-                UnityEngine.Debug.Assert(netObj != null, $"Default player prefab must have a {nameof(NetworkObject)} component!");
+                UnityEngine.Debug.Assert(netObj != null, $"Default player prefab must have a {nameof(NetworkObject)} component!", CelesteLog.Web);
                 
                 // Spawn with ownership assigned to the client
                 netObj.SpawnAsPlayerObject(clientId, true);
-                UnityEngine.Debug.LogError($"Spawned player object for client {clientId}");
+                UnityEngine.Debug.LogError($"Spawned player object for client {clientId}", CelesteLog.Web);
             }
             
             Server.AddConnectedClient(clientId);
@@ -225,3 +227,4 @@ namespace Celeste.Web.Managers
         #endregion
     }
 }
+#endif

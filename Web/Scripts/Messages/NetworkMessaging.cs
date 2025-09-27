@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿#if USE_NETCODE
+using System.Collections.Generic;
 using Unity.Netcode;
 
 namespace Celeste.Web.Messages
 {
     public class NetworkMessaging : NetworkBehaviour
     {
+        #region Properties and Fields
+        
+        private INetworkingMessageReceiver receiver;
+        
+        #endregion
+
+        public void Setup(INetworkingMessageReceiver messageReceiver)
+        {
+            receiver = messageReceiver;
+        }
+
         public void SendMessageToServer(string message)
         {
             SendMessageToServerRpc(message);
@@ -13,8 +25,7 @@ namespace Celeste.Web.Messages
         [ServerRpc(RequireOwnership = false)]
         private void SendMessageToServerRpc(string message, ServerRpcParams rpcParams = default)
         {
-            ulong clientId = rpcParams.Receive.SenderClientId;
-            UnityEngine.Debug.Log($"Player '{clientId}' sent '{message}' to Server.");
+            receiver?.OnNetworkingMessageReceived(message);
         }
         
         public void SendMessageToAllClients(string message)
@@ -49,7 +60,8 @@ namespace Celeste.Web.Messages
         [ClientRpc]
         private void SendMessageToClientRpc(string message, ClientRpcParams rpcParams = default)
         {
-            UnityEngine.Debug.Log($"Client {NetworkManager.Singleton.LocalClientId} received: '{message}' from Server.");
+            receiver?.OnNetworkingMessageReceived(message);
         }
     }
 }
+#endif

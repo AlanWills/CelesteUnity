@@ -84,17 +84,17 @@ namespace CelesteEditor.UnityProject
                     referencedAssemblies.Add(assemblyName);
                 }
 
-                string editorScriptsDirectory = CreateAssembly(
+                CreateAssembly(
                     assemblyDirectoryPath,
                     "Editor",
                     $"{assemblyName}.Editor",
                     editorAssemblyNamespace,
                     referencedAssemblies,
-                    new string[] { "Editor" });
+                    new[] { "Editor" });
             }
 
             // Create the scene set asset if we want to
-            if (parameters.createSceneSet)
+            if (hasSceneMenuItem)
             {
                 SceneSet sceneSet = ScriptableObject.CreateInstance<SceneSet>();
                 sceneSet.name = $"{directoryName}SceneSet";
@@ -120,11 +120,11 @@ namespace CelesteEditor.UnityProject
             EditorOnly.CreateFolder(Path.Combine(directoryPath, "Scripts"));
 
             AsmDef assemblyDef = new AsmDef();
-            assemblyDef.autoReferenced = true;
+            assemblyDef.autoReferenced = false;
             assemblyDef.rootNamespace = assemblyNamespace;
             assemblyDef.name = assemblyName;
-            assemblyDef.references = references != null ? references.ToArray() : null;
-            assemblyDef.includePlatforms = includePlatforms != null ? includePlatforms.ToArray() : null;
+            assemblyDef.references = references?.ToArray();
+            assemblyDef.includePlatforms = includePlatforms?.ToArray();
 
             string scriptsDirectory = Path.Combine(directoryPath, "Scripts");
             File.WriteAllText(Path.Combine(scriptsDirectory, $"{assemblyName}.asmdef"), JsonUtility.ToJson(assemblyDef, true));
