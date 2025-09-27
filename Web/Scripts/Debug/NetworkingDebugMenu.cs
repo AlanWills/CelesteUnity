@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Celeste.Debug.Menus;
 using Celeste.Web.Messages;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace Celeste.Web.Debug
