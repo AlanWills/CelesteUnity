@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5937293966652041271}
   - component: {fileID: 8808588817734918078}
   m_Layer: 0
-  m_Name: NetworkManager
+  m_Name: NetworkingManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,10 +71,9 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 8808588817734918078}
-    PlayerPrefab: {fileID: 2853626621496608665, guid: d4bce6a9e914f884ca93a839436db509, type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
-      NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 0036ee721e66c4bbaac62aa1deffc548, type: 2}
+      NetworkPrefabsLists: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -93,7 +92,6 @@ MonoBehaviour:
     NetworkTopology: 0
     UseCMBService: 0
     AutoSpawnPlayerPrefabClientSide: 1
-    NetworkMessageMetrics: 1
     NetworkProfilingMetrics: 1
     OldPrefabList: []
   RunInBackground: 1

@@ -71,6 +71,7 @@ namespace CelesteEditor.UnityProject
             if (parameters.useNetCodeForGameObjects)
             {
                 dependenciesToAdd.Add(BootstrapCelesteConstants.NET_CODE_FOR_GAMEOBJECTS_PACKAGE);
+                dependenciesToAdd.Add(BootstrapCelesteConstants.MULTIPLAYER_SERVICES_PACKAGE);
             }
             
             if (parameters.useUnityAndroidLogcatPackage)

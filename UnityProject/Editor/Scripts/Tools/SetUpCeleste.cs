@@ -973,7 +973,7 @@ namespace CelesteEditor.UnityProject
                 $"It looks like a Game Systems Scene Set should have been created, but has not been... It's likely you'll need to fix up the {MainMenuConstants.SCENE_SET_NAME} scene set by hand.");
             if (parameters.needsGameSystemsScene && results.GameSystemsSceneSet != null)
             {
-                mainMenuSceneSet.MergeFrom(results.EngineSystemsSceneSet);
+                mainMenuSceneSet.MergeFrom(results.GameSystemsSceneSet);
             }
 
             mainMenuSceneSet.AddScene(MainMenuConstants.SCENE_NAME, parameters.DefaultSceneType, false);
