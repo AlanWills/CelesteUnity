@@ -34,6 +34,16 @@ namespace Celeste.Web.Debug
         
         #endregion
 
+        protected override void OnShowMenu()
+        {
+            base.OnShowMenu();
+
+            if (networkingManagerAPI.Server.HasJoinCode)
+            {
+                joinCode = networkingManagerAPI.Server.JoinCode;
+            }
+        }
+
         protected override void OnDrawMenu()
         {
             GUILayout.Label($"Has Default Player Prefab? {networkingManagerAPI.HasDefaultPlayerPrefab}");
@@ -58,6 +68,8 @@ namespace Celeste.Web.Debug
                     DrawNotConnectedToClientsGUI();
                 }
             }
+            
+            GUILayout.Label("------------------");
             
             if (networkingManagerAPI.Client.Exists)
             {
@@ -95,18 +107,17 @@ namespace Celeste.Web.Debug
 
         private static void DrawConnectedToClientsGUI(INetworkingServer server)
         {
-            GUILayout.Label($"Server Network Object Null?: {server.HasNetworkObject}");
             GUILayout.Label("Connected Clients", CelesteGUIStyles.BoldLabel);
 
             foreach (var connectedClient in server.ConnectedClients)
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    GUILayout.Label($"Client ID: {connectedClient}");
+                    GUILayout.Label($"Client ID: {connectedClient.Key}");
                     
                     if (GUILayout.Button("Ping Client"))
                     {
-                        server.SendMessageToClient(TestConnectionPayload.Create($"Hello from Server to Client {connectedClient}!"), connectedClient);
+                        server.SendMessageToClient(TestConnectionPayload.Create($"Hello from Server to Client {connectedClient.Key}!"), connectedClient.Key);
                     }
                 }
             }
@@ -115,7 +126,7 @@ namespace Celeste.Web.Debug
         private static void DrawConnectedToServerGUI(INetworkingClient client)
         {
             GUILayout.Label($"Client Id is: {client.Id}");
-            GUILayout.Label($"Client Network Object Null?: {client.HasNetworkObject}");
+            GUILayout.Label($"Client Network Object Exists?: {client.HasNetworkObject}");
             
             if (GUILayout.Button("Ping Server"))
             {

@@ -1,8 +1,6 @@
 ﻿#if USE_NETCODE
 using System.Collections.Generic;
 using Celeste.Web.Messages;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace Celeste.Web.Objects
 {
@@ -11,15 +9,23 @@ namespace Celeste.Web.Objects
         #region Properties and Fields
         
         public bool Exists => true;
-        public bool HasNetworkObject => networkObject != null && networkMessaging != null;
         public bool HasJoinCode => !string.IsNullOrEmpty(JoinCode);
         public string JoinCode { get; }
         public bool HasConnectedClients => connectedClients.Count > 0;
-        public IReadOnlyCollection<ulong> ConnectedClients => connectedClients;
+        public IReadOnlyCollection<KeyValuePair<ulong, ActiveNetworkingClient>> ConnectedClients => connectedClients;
 
-        private readonly HashSet<ulong> connectedClients = new();
-        private readonly NetworkObject networkObject;
-        private readonly NetworkMessaging networkMessaging;
+        public IEnumerable<ulong> ConnectedClientIds
+        {
+            get
+            {
+                foreach (var connectedClient in connectedClients)
+                {
+                    yield return connectedClient.Key;
+                }
+            }
+        }
+
+        private readonly Dictionary<ulong, ActiveNetworkingClient> connectedClients = new();
         private readonly INetworkingMessageSerializer serializer;
         private readonly INetworkingMessageDeserializer deserializer;
         private readonly INetworkingMessageHandler handler;
@@ -27,26 +33,21 @@ namespace Celeste.Web.Objects
         #endregion
 
         public ActiveNetworkingServer(
-            string joinCode, 
-            NetworkObject networkObject, 
-            NetworkMessaging networkMessaging,
+            string joinCode,
             INetworkingMessageSerializer serializer,
             INetworkingMessageDeserializer deserializer,
             INetworkingMessageHandler handler)
         {
             JoinCode = joinCode;
-            this.networkObject = networkObject;
-            this.networkMessaging = networkMessaging;
             this.serializer = serializer;
             this.deserializer = deserializer;
             this.handler = handler;
-            
-            networkMessaging.Setup(this);
         }
 
-        public void AddConnectedClient(ulong clientId)
+        public void AddConnectedClient(ActiveNetworkingClient client)
         {
-            connectedClients.Add(clientId);
+            connectedClients[client.Id] = client;
+            client.SetServerMessageReceiver(this);
         }
 
         public void RemoveConnectedClient(ulong clientId)
@@ -54,37 +55,42 @@ namespace Celeste.Web.Objects
             connectedClients.Remove(clientId);
         }
 
-        public void SendMessageToAllClients(string message)
-        {
-            networkMessaging.SendMessageToAllClients(message);
-        }
-
         public void SendMessageToAllClients<T>(NetworkingMessage<T> message)
         {
             string messageAsString = Serialize(message);
-            SendMessageToAllClients(messageAsString);
-        }
-
-        public void SendMessageToClients(string message, IReadOnlyList<ulong> clientIds)
-        {
-            networkMessaging.SendMessageToClients(message, clientIds);
+            foreach (var client in connectedClients)
+            {
+                client.Value.SendMessageToClient(messageAsString);
+            }
         }
 
         public void SendMessageToClients<T>(NetworkingMessage<T> message, IReadOnlyList<ulong> clientIds)
         {
             string messageAsString = Serialize(message);
-            SendMessageToClients(messageAsString, clientIds);
-        }
-
-        public void SendMessageToClient(string message, ulong clientId)
-        {
-            networkMessaging.SendMessageToClient(message, clientId);
+            foreach (var clientId in clientIds)
+            {
+                if (connectedClients.TryGetValue(clientId, out ActiveNetworkingClient client))
+                {
+                    client.SendMessageToClient(messageAsString);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError($"Failed to find Client with Id {clientId} registered with the Server.  Skipping sending message...");
+                }
+            }
         }
 
         public void SendMessageToClient<T>(NetworkingMessage<T> message, ulong clientId)
         {
             string messageAsString = Serialize(message);
-            SendMessageToClient(messageAsString, clientId);
+            if (connectedClients.TryGetValue(clientId, out ActiveNetworkingClient client))
+            {
+                client.SendMessageToClient(messageAsString);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Failed to find Client with Id {clientId} registered with the Server.  Skipping sending message...");
+            }
         }
 
         private string Serialize<T>(NetworkingMessage<T> message)

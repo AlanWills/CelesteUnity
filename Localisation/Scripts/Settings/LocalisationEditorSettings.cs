@@ -11,7 +11,7 @@ namespace Celeste.Localisation.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/Localisation/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "LocalisationEditorSettings.asset";
 
         public LanguageValue currentLanguageValue;

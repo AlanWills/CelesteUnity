@@ -10,7 +10,7 @@ namespace Celeste.Sound.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/Sound/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "SoundEditorSettings.asset";
 
         public BoolValue sfxEnabled;

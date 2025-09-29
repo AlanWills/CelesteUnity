@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Celeste.Web.Messages;
+using Celeste.Web.Objects;
 
 namespace Celeste.Web
 {
@@ -8,18 +9,14 @@ namespace Celeste.Web
         bool HasJoinCode { get; }
         string JoinCode { get; }
         bool HasConnectedClients { get; }
-        IReadOnlyCollection<ulong> ConnectedClients { get; }
+        IReadOnlyCollection<KeyValuePair<ulong, ActiveNetworkingClient>> ConnectedClients { get; }
+        IEnumerable<ulong> ConnectedClientIds { get; }
 
-        void AddConnectedClient(ulong clientId);
+        void AddConnectedClient(ActiveNetworkingClient networkingClient);
         void RemoveConnectedClient(ulong clientId);
         
-        void SendMessageToAllClients(string message);
         void SendMessageToAllClients<T>(NetworkingMessage<T> message);
-        
-        void SendMessageToClients(string message, IReadOnlyList<ulong> clientIds);
         void SendMessageToClients<T>(NetworkingMessage<T> message, IReadOnlyList<ulong> clientIds);
-        
-        void SendMessageToClient(string message, ulong clientId);
         void SendMessageToClient<T>(NetworkingMessage<T> message, ulong clientId);
     }
 }

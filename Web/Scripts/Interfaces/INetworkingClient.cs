@@ -5,8 +5,8 @@ namespace Celeste.Web
     public interface INetworkingClient : INetworkingObject, INetworkingMessageReceiver
     {
         ulong Id { get; }
+        bool HasNetworkObject { get; }
         
-        void SendMessageToServer(string message);
         void SendMessageToServer<T>(NetworkingMessage<T> message);
     }
 }

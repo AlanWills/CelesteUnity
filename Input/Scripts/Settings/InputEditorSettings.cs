@@ -11,7 +11,7 @@ namespace Celeste.Input.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/Input/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "InputEditorSettings.asset";
 
         public CameraValue InputCamera => inputCameraValue;

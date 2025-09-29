@@ -46,4 +46,7 @@ namespace Celeste.Web.Messages
             return  new NetworkingMessage { Id = Id, Payload = Payload };
         }
     }
+
+    [Serializable]
+    public struct EmptyPayload { }
 }

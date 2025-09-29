@@ -61,12 +61,16 @@ namespace Celeste.Web.Managers
 
         public void Shutdown()
         {
+            RemoveClientCallbacks();
             RemoveServerCallbacks();
         }
 
         public async Task BecomeHost(IProgress<string> progress)
         {
-            RemoveServerCallbacks();
+            SetUpServerCallbacks();
+            
+            Server = new DisabledNetworkingServer();
+            Client = new DisabledNetworkingClient();
             
             progress?.Report("Becoming Host - Signing In");
             await InitializeAndLogInUnityServices();
@@ -78,42 +82,30 @@ namespace Celeste.Web.Managers
             unityTransport.SetRelayServerData(allocation.ToRelayServerData(CONNECTION_TYPE));
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             
+            Server = new ActiveNetworkingServer(
+                joinCode,
+                networkingMessageSerializationFactory,
+                networkingMessageSerializationFactory,
+                serverNetworkingMessageHandlerFactory);
+
             if (networkManager.StartHost())
             {
-                NetworkObject networkObject = networkManager.LocalClient.PlayerObject;
-                NetworkMessaging networkMessaging = networkObject.GetComponent<NetworkMessaging>();
-
-                Server = new ActiveNetworkingServer(
-                    joinCode, 
-                    networkObject,
-                    networkMessaging,
-                    networkingMessageSerializationFactory,
-                    networkingMessageSerializationFactory,
-                    serverNetworkingMessageHandlerFactory);
-                Client = new ActiveNetworkingClient(
-                    networkManager.LocalClientId, 
-                    networkObject, 
-                    networkMessaging,
-                    networkingMessageSerializationFactory,
-                    networkingMessageSerializationFactory,
-                    clientNetworkingMessageHandlerFactory);
-                
-                // Add this manually here because we won't have the callback triggered for the Host's client object
-                Server.AddConnectedClient(networkManager.LocalClientId);
                 progress?.Report("Becoming Host - Complete");
             }
             else
             {
                 Server = new DisabledNetworkingServer();
-                Client = new DisabledNetworkingClient();
                 progress?.Report("Becoming Host - Failed");
             }
-            
-            SetUpServerCallbacks();
         }
 
         public async Task BecomeClient(IProgress<string> progress, string joinCode)
         {
+            SetUpClientCallbacks();
+            
+            Server = new DisabledNetworkingServer();
+            Client = new DisabledNetworkingClient();
+            
             progress?.Report("Becoming Client - Signing In");
             await InitializeAndLogInUnityServices();
 
@@ -124,36 +116,48 @@ namespace Celeste.Web.Managers
             
             if (!string.IsNullOrEmpty(joinCode) && networkManager.StartClient())
             {
-                Server = new DisabledNetworkingServer();
-                Client = new ActiveNetworkingClient(
-                    networkManager.LocalClientId, 
-                    networkManager.LocalClient.PlayerObject,
-                    networkManager.LocalClient.PlayerObject.GetComponent<NetworkMessaging>(),
-                    networkingMessageSerializationFactory,
-                    networkingMessageSerializationFactory,
-                    clientNetworkingMessageHandlerFactory);
                 progress?.Report("Becoming Client - Complete");
             }
             else
             {
-                Server = new DisabledNetworkingServer();
-                Client = new DisabledNetworkingClient();
                 progress?.Report("Becoming Client - Failed");
             }
         }
 
         private void SetUpServerCallbacks()
         {
-            networkManager.ConnectionApprovalCallback += OnConnectionApproval;
-            networkManager.OnClientConnectedCallback += OnClientConnected;
-            networkManager.OnClientDisconnectCallback += OnClientDisconnected;
+            RemoveServerCallbacks();
+
+            if (networkManager.NetworkConfig.ConnectionApproval)
+            {
+                networkManager.ConnectionApprovalCallback += OnConnectionApproval;
+            }
+
+            networkManager.OnClientConnectedCallback += OnClientConnectedToServer;
+            networkManager.OnClientDisconnectCallback += OnClientDisconnectedFromServer;
         }
 
         private void RemoveServerCallbacks()
         {
-            networkManager.ConnectionApprovalCallback -= OnConnectionApproval;
-            networkManager.OnClientConnectedCallback -= OnClientConnected;
-            networkManager.OnClientDisconnectCallback += OnClientDisconnected;
+            if (networkManager.NetworkConfig.ConnectionApproval)
+            {
+                networkManager.ConnectionApprovalCallback -= OnConnectionApproval;
+            }
+
+            networkManager.OnClientConnectedCallback -= OnClientConnectedToServer;
+            networkManager.OnClientDisconnectCallback += OnClientDisconnectedFromServer;
+        }
+
+        private void SetUpClientCallbacks()
+        {
+            RemoveClientCallbacks();
+            
+            networkManager.OnClientConnectedCallback += OnLocalClientConnected;
+        }
+
+        private void RemoveClientCallbacks()
+        {
+            networkManager.OnClientConnectedCallback -= OnLocalClientConnected;
         }
 
         private async Task InitializeAndLogInUnityServices()
@@ -180,13 +184,8 @@ namespace Celeste.Web.Managers
             response.CreatePlayerObject = true;
         }
         
-        private void OnClientConnected(ulong clientId)
-        {
-            if (!Server.Exists)
-            {
-                return;
-            }
-                
+        private void OnClientConnectedToServer(ulong clientId)
+        { 
             UnityEngine.Debug.Log($"Client {clientId} connected!", CelesteLog.Web);
 
             // If the client already has a player, do nothing
@@ -210,17 +209,46 @@ namespace Celeste.Web.Managers
                 netObj.SpawnAsPlayerObject(clientId, true);
                 UnityEngine.Debug.LogError($"Spawned player object for client {clientId}", CelesteLog.Web);
             }
+
+            networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
             
-            Server.AddConnectedClient(clientId);
+            NetworkObject networkObject = networkManager.ConnectedClients[clientId].PlayerObject;
+            UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
+            NetworkMessaging networkMessaging = networkObject.GetComponent<NetworkMessaging>();
+            UnityEngine.Debug.Assert(networkMessaging != null, $"Client Started, but {nameof(NetworkMessaging)} is null!", CelesteLog.Web);
+
+            ActiveNetworkingClient client = new ActiveNetworkingClient(
+                clientId,
+                networkMessaging,
+                networkingMessageSerializationFactory,
+                networkingMessageSerializationFactory,
+                clientNetworkingMessageHandlerFactory);
+            Server.AddConnectedClient(client);
         }
 
-        private void OnClientDisconnected(ulong clientId)
+        private void OnLocalClientConnected(ulong clientId)
         {
-            if (!Server.Exists)
+            if (networkManager.LocalClientId == clientId)
             {
-                return;
+                NetworkObject networkObject = networkManager.LocalClient.PlayerObject;
+                UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
+                NetworkMessaging networkMessaging = networkObject.GetComponent<NetworkMessaging>();
+                UnityEngine.Debug.Assert(networkMessaging != null, $"Client Started, but {nameof(NetworkMessaging)} is null!", CelesteLog.Web);
+
+                Client = new ActiveNetworkingClient(
+                    clientId,
+                    networkMessaging,
+                    networkingMessageSerializationFactory,
+                    networkingMessageSerializationFactory,
+                    clientNetworkingMessageHandlerFactory);
+                
+                networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
+                SceneManager.MoveGameObjectToScene(networkObject.gameObject, networkManager.gameObject.scene);
             }
-            
+        }
+
+        private void OnClientDisconnectedFromServer(ulong clientId)
+        {
             Server.RemoveConnectedClient(clientId);
         }
         

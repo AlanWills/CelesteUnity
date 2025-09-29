@@ -3,6 +3,5 @@
     public interface INetworkingObject
     {
         bool Exists { get; }
-        bool HasNetworkObject { get; }
     }
 }

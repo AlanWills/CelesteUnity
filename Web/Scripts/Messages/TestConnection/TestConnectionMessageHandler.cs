@@ -13,7 +13,7 @@ namespace Celeste.Web.Messages.TestConnection
         public override void Handle(NetworkingMessage message)
         {
             TestConnectionPayload testConnectionPayload = (TestConnectionPayload)message.Payload;
-            UnityEngine.Debug.Log(testConnectionPayload.Message);
+            UnityEngine.Debug.Log(testConnectionPayload.Message, CelesteLog.Web);
         }
     }
 }

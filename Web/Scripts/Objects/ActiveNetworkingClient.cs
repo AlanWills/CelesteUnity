@@ -1,7 +1,5 @@
 ﻿#if USE_NETCODE
 using Celeste.Web.Messages;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace Celeste.Web.Objects
 {
@@ -10,44 +8,48 @@ namespace Celeste.Web.Objects
         #region Properties and Fields
         
         public bool Exists => true;
-        public bool HasNetworkObject => networkObject != null && networkMessaging != null;
+        public bool HasNetworkObject => networkMessaging != null;
         public ulong Id { get; }
-
-        private readonly NetworkObject networkObject;
-        private readonly NetworkMessaging networkMessaging;
+        
         private readonly INetworkingMessageSerializer serializer;
         private readonly INetworkingMessageDeserializer deserializer;
-        private readonly INetworkingMessageHandler handler;
+        private readonly INetworkingMessageHandler clientMessageHandler;
+        private readonly NetworkMessaging networkMessaging;
 
         #endregion
 
         public ActiveNetworkingClient(
-            ulong clientId, 
-            NetworkObject networkObject, 
+            ulong clientId,
             NetworkMessaging networkMessaging,
             INetworkingMessageSerializer serializer,
             INetworkingMessageDeserializer deserializer,
-            INetworkingMessageHandler handler)
+            INetworkingMessageHandler clientMessageHandler)
         {
             Id = clientId;
-            this.networkObject = networkObject;
             this.networkMessaging = networkMessaging;
             this.serializer = serializer;
             this.deserializer = deserializer;
-            this.handler = handler;
+            this.clientMessageHandler = clientMessageHandler;
+            
+            networkMessaging.SetClientMessageReceiver(this); ;
+        }
 
-            networkMessaging.Setup(this);
+        public void SetServerMessageReceiver(INetworkingServer server)
+        {
+            networkMessaging.SetServerMessageReceiver(server);
+        }
+
+        public void SendMessageToClient(string messageAsString)
+        {
+            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
+            networkMessaging?.SendMessageToClient(messageAsString, Id);
         }
         
-        public void SendMessageToServer(string message)
-        {
-            networkMessaging.SendMessageToServer(message);
-        }
-
         public void SendMessageToServer<T>(NetworkingMessage<T> message)
         {
             string messageAsString = Serialize(message);
-            SendMessageToServer(messageAsString);
+            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
+            networkMessaging?.SendMessageToServer(messageAsString);
         }
 
         private string Serialize<T>(NetworkingMessage<T> message)
@@ -61,9 +63,9 @@ namespace Celeste.Web.Objects
         {
             NetworkingMessage message = deserializer.Deserialize(rawMessage);
 
-            if (handler.CanHandle(message))
+            if (clientMessageHandler.CanHandle(message))
             {
-                handler.Handle(message);
+                clientMessageHandler.Handle(message);
             }
             else
             {

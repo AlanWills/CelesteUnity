@@ -13,7 +13,7 @@ namespace Celeste.Debug.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/Debug/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "DebugEditorSettings.asset";
 
         public BoolValue isDebugBuildValue;

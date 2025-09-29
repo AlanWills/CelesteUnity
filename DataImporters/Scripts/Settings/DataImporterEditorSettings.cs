@@ -12,7 +12,7 @@ namespace Celeste.DataImporters.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/DataImporters/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "DataImporterEditorSettings.asset";
 
         public DataImporterCatalogue dataImporterCatalogue;

@@ -7,7 +7,7 @@ namespace Celeste.Persistence.Settings
     {
         #region Properties and Fields
 
-        public const string FOLDER_PATH = "Assets/Persistence/Editor/Data/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "PersistenceEditorSettings.asset";
 
         public SnapshotRecord snapshotRecord;
