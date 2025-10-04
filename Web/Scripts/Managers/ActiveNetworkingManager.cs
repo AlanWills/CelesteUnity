@@ -11,6 +11,7 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 namespace Celeste.Web.Managers
@@ -90,6 +91,14 @@ namespace Celeste.Web.Managers
 
             if (networkManager.StartHost())
             {
+                progress?.Report("Becoming Host - Started");
+
+                while (networkManager.LocalClient == null ||
+                       !networkManager.IsConnectedClient)
+                {
+                    await Task.Yield();
+                }
+
                 progress?.Report("Becoming Host - Complete");
             }
             else
@@ -116,6 +125,14 @@ namespace Celeste.Web.Managers
             
             if (!string.IsNullOrEmpty(joinCode) && networkManager.StartClient())
             {
+                progress?.Report("Becoming Client - Started");
+
+                while (networkManager.LocalClient == null ||
+                       !networkManager.IsConnectedClient)
+                {
+                    await Task.Yield();
+                }
+                
                 progress?.Report("Becoming Client - Complete");
             }
             else
@@ -217,13 +234,19 @@ namespace Celeste.Web.Managers
             NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
             UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
-            Client = new ActiveNetworkingClient(
+            ActiveNetworkingClient client = new ActiveNetworkingClient(
                 clientId,
                 networkMessageHandler,
                 networkingMessageSerializationFactory,
                 networkingMessageSerializationFactory,
                 clientNetworkingMessageHandlerFactory);
-            Server.AddConnectedClient(Client);
+
+            if (clientId == networkManager.LocalClientId)
+            {
+                Client = client;
+            }
+            
+            Server.AddConnectedClient(client);
         }
 
         private void OnLocalClientConnected(ulong clientId)

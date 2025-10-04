@@ -54,6 +54,8 @@ namespace Celeste.Web.Objects
             {
                 messageHandler.SetServer(this);
             }
+            
+            onClientConnected?.Invoke(client);
         }
 
         public void RemoveConnectedClient(ulong clientId)
