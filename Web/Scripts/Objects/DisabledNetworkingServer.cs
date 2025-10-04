@@ -10,10 +10,10 @@ namespace Celeste.Web.Objects
         public bool HasJoinCode => false;
         public string JoinCode => string.Empty;
         public bool HasConnectedClients => false;
-        public IReadOnlyCollection<KeyValuePair<ulong, ActiveNetworkingClient>> ConnectedClients { get; } = Array.Empty<KeyValuePair<ulong, ActiveNetworkingClient>>();
+        public IReadOnlyCollection<KeyValuePair<ulong, INetworkingClient>> ConnectedClients { get; } = Array.Empty<KeyValuePair<ulong, INetworkingClient>>();
         public IEnumerable<ulong> ConnectedClientIds { get; } = Array.Empty<ulong>();
 
-        public void AddConnectedClient(ActiveNetworkingClient client)
+        public void AddConnectedClient(INetworkingClient client)
         {
             UnityEngine.Debug.Log($"Server Networking disabled.  Not Adding Connected Client {client.Id}.", CelesteLog.Web);
         }
@@ -38,9 +38,19 @@ namespace Celeste.Web.Objects
             UnityEngine.Debug.Log($"Server Networking disabled.  Discarding message: {message}.", CelesteLog.Web);
         }
 
-        void INetworkingMessageReceiver.OnNetworkingMessageReceived(string rawMessage)
+        public void OnNetworkingMessageReceived(string rawMessage)
         {
             UnityEngine.Debug.Log($"Server Networking disabled.  Discarding message: {rawMessage}.", CelesteLog.Web);
+        }
+
+        public void AddOnClientConnectedCallback(Action<INetworkingClient> onClientConnected)
+        {
+            UnityEngine.Debug.Log($"Server Networking disabled.  Ignoring {nameof(AddOnClientConnectedCallback)}.", CelesteLog.Web);
+        }
+
+        public void RemoveOnClientConnectedCallback(Action<INetworkingClient> onClientConnected)
+        {
+            UnityEngine.Debug.Log($"Server Networking disabled.  Ignoring {nameof(RemoveOnClientConnectedCallback)}.", CelesteLog.Web);
         }
     }
 }

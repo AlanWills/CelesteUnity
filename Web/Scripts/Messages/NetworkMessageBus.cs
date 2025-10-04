@@ -3,25 +3,8 @@ using Unity.Netcode;
 
 namespace Celeste.Web.Messages
 {
-    public class NetworkMessaging : NetworkBehaviour
+    public class NetworkMessageBus : NetworkMessageHandler
     {
-        #region Properties and Fields
-        
-        private INetworkingMessageReceiver clientMessageReceiver;
-        private INetworkingMessageReceiver serverMessageReceiver;
-        
-        #endregion
-
-        public void SetClientMessageReceiver(INetworkingMessageReceiver messageReceiver)
-        {
-            clientMessageReceiver = messageReceiver;
-        }
-
-        public void SetServerMessageReceiver(INetworkingMessageReceiver messageReceiver)
-        {
-            serverMessageReceiver = messageReceiver;
-        }
-
         [ServerRpc]
         public void PingServerRpc(string message, ServerRpcParams rpcParams = default)
         {
@@ -40,8 +23,8 @@ namespace Celeste.Web.Messages
 #if NETWORK_MESSAGING_DEBUGGING
             UnityEngine.Debug.Log($"Message Received For Server: {message} ({name}).", CelesteLog.Web);
 #endif
-            UnityEngine.Debug.Assert(serverMessageReceiver != null, $"Server Message Receiver is null on {name}!", CelesteLog.Web);
-            serverMessageReceiver?.OnNetworkingMessageReceived(message);
+            UnityEngine.Debug.Assert(Server != null, $"Server is null on {name}!", CelesteLog.Web);
+            Server?.OnNetworkingMessageReceived(message);
         }
         
         public void SendMessageToClient(string message, ulong clientId)
@@ -62,8 +45,8 @@ namespace Celeste.Web.Messages
 #if NETWORK_MESSAGING_DEBUGGING
             UnityEngine.Debug.Log($"Message Received For Client: {message} ({name}).", CelesteLog.Web);
 #endif
-            UnityEngine.Debug.Assert(clientMessageReceiver != null, $"Client Message Receiver is null on {name}!", CelesteLog.Web);
-            clientMessageReceiver?.OnNetworkingMessageReceived(message);
+            UnityEngine.Debug.Assert(Client != null, $"Client is null on {name}!", CelesteLog.Web);
+            Client?.OnNetworkingMessageReceived(message);
         }
     }
 }

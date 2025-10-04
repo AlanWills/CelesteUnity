@@ -214,16 +214,16 @@ namespace Celeste.Web.Managers
             
             NetworkObject networkObject = networkManager.ConnectedClients[clientId].PlayerObject;
             UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
-            NetworkMessaging networkMessaging = networkObject.GetComponent<NetworkMessaging>();
-            UnityEngine.Debug.Assert(networkMessaging != null, $"Client Started, but {nameof(NetworkMessaging)} is null!", CelesteLog.Web);
+            NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
+            UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
-            ActiveNetworkingClient client = new ActiveNetworkingClient(
+            Client = new ActiveNetworkingClient(
                 clientId,
-                networkMessaging,
+                networkMessageHandler,
                 networkingMessageSerializationFactory,
                 networkingMessageSerializationFactory,
                 clientNetworkingMessageHandlerFactory);
-            Server.AddConnectedClient(client);
+            Server.AddConnectedClient(Client);
         }
 
         private void OnLocalClientConnected(ulong clientId)
@@ -232,18 +232,17 @@ namespace Celeste.Web.Managers
             {
                 NetworkObject networkObject = networkManager.LocalClient.PlayerObject;
                 UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
-                NetworkMessaging networkMessaging = networkObject.GetComponent<NetworkMessaging>();
-                UnityEngine.Debug.Assert(networkMessaging != null, $"Client Started, but {nameof(NetworkMessaging)} is null!", CelesteLog.Web);
+                NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
+                UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
                 Client = new ActiveNetworkingClient(
                     clientId,
-                    networkMessaging,
+                    networkMessageHandler,
                     networkingMessageSerializationFactory,
                     networkingMessageSerializationFactory,
                     clientNetworkingMessageHandlerFactory);
                 
                 networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
-                SceneManager.MoveGameObjectToScene(networkObject.gameObject, networkManager.gameObject.scene);
             }
         }
 

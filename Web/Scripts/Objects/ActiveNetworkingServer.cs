@@ -1,4 +1,5 @@
 ﻿#if USE_NETCODE
+using System;
 using System.Collections.Generic;
 using Celeste.Web.Messages;
 
@@ -12,7 +13,7 @@ namespace Celeste.Web.Objects
         public bool HasJoinCode => !string.IsNullOrEmpty(JoinCode);
         public string JoinCode { get; }
         public bool HasConnectedClients => connectedClients.Count > 0;
-        public IReadOnlyCollection<KeyValuePair<ulong, ActiveNetworkingClient>> ConnectedClients => connectedClients;
+        public IReadOnlyCollection<KeyValuePair<ulong, INetworkingClient>> ConnectedClients => connectedClients;
 
         public IEnumerable<ulong> ConnectedClientIds
         {
@@ -25,10 +26,11 @@ namespace Celeste.Web.Objects
             }
         }
 
-        private readonly Dictionary<ulong, ActiveNetworkingClient> connectedClients = new();
+        private readonly Dictionary<ulong, INetworkingClient> connectedClients = new();
         private readonly INetworkingMessageSerializer serializer;
         private readonly INetworkingMessageDeserializer deserializer;
         private readonly INetworkingMessageHandler handler;
+        private Action<INetworkingClient> onClientConnected;
 
         #endregion
 
@@ -44,10 +46,14 @@ namespace Celeste.Web.Objects
             this.handler = handler;
         }
 
-        public void AddConnectedClient(ActiveNetworkingClient client)
+        public void AddConnectedClient(INetworkingClient client)
         {
             connectedClients[client.Id] = client;
-            client.SetServerMessageReceiver(this);
+            
+            foreach (var messageHandler in client.NetworkMessageHandlers)
+            {
+                messageHandler.SetServer(this);
+            }
         }
 
         public void RemoveConnectedClient(ulong clientId)
@@ -60,7 +66,7 @@ namespace Celeste.Web.Objects
             string messageAsString = Serialize(message);
             foreach (var client in connectedClients)
             {
-                client.Value.SendMessageToClient(messageAsString);
+                client.Value.SendMessage(messageAsString);
             }
         }
 
@@ -69,9 +75,9 @@ namespace Celeste.Web.Objects
             string messageAsString = Serialize(message);
             foreach (var clientId in clientIds)
             {
-                if (connectedClients.TryGetValue(clientId, out ActiveNetworkingClient client))
+                if (connectedClients.TryGetValue(clientId, out INetworkingClient client))
                 {
-                    client.SendMessageToClient(messageAsString);
+                    client.SendMessage(messageAsString);
                 }
                 else
                 {
@@ -83,9 +89,9 @@ namespace Celeste.Web.Objects
         public void SendMessageToClient<T>(NetworkingMessage<T> message, ulong clientId)
         {
             string messageAsString = Serialize(message);
-            if (connectedClients.TryGetValue(clientId, out ActiveNetworkingClient client))
+            if (connectedClients.TryGetValue(clientId, out INetworkingClient client))
             {
-                client.SendMessageToClient(messageAsString);
+                client.SendMessage(messageAsString);
             }
             else
             {
@@ -98,9 +104,7 @@ namespace Celeste.Web.Objects
             return serializer.Serialize(message);
         }
         
-        #region INetworkingMessageReceiver
-
-        void INetworkingMessageReceiver.OnNetworkingMessageReceived(string rawMessage)
+        public void OnNetworkingMessageReceived(string rawMessage)
         {
             NetworkingMessage message = deserializer.Deserialize(rawMessage);
 
@@ -113,8 +117,16 @@ namespace Celeste.Web.Objects
                 UnityEngine.Debug.LogError($"Failed to handle message '{message.Id}' on Server.  Is message valid? {message.IsValid}.", CelesteLog.Web);
             }
         }
-        
-        #endregion
+
+        public void AddOnClientConnectedCallback(Action<INetworkingClient> onClientConnectedCallback)
+        {
+            onClientConnected += onClientConnectedCallback;
+        }
+
+        public void RemoveOnClientConnectedCallback(Action<INetworkingClient> onClientConnectedCallback)
+        {
+            onClientConnected -= onClientConnectedCallback;
+        }
     }
 }
 #endif

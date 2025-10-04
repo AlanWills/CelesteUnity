@@ -1,4 +1,5 @@
 ﻿#if USE_NETCODE
+using System.Collections.Generic;
 using Celeste.Web.Messages;
 
 namespace Celeste.Web.Objects
@@ -7,61 +8,75 @@ namespace Celeste.Web.Objects
     {
         #region Properties and Fields
         
-        public bool Exists => true;
-        public bool HasNetworkObject => networkMessaging != null;
         public ulong Id { get; }
+        public bool Exists => true;
+        public bool HasNetworkObject => networkMessageBus != null;
+        public IReadOnlyList<INetworkMessageHandler> NetworkMessageHandlers => networkMessageHandlers;
         
         private readonly INetworkingMessageSerializer serializer;
         private readonly INetworkingMessageDeserializer deserializer;
         private readonly INetworkingMessageHandler clientMessageHandler;
-        private readonly NetworkMessaging networkMessaging;
+        private readonly NetworkMessageBus networkMessageBus;
+        private readonly List<INetworkMessageHandler> networkMessageHandlers = new();
 
         #endregion
 
         public ActiveNetworkingClient(
             ulong clientId,
-            NetworkMessaging networkMessaging,
+            NetworkMessageBus networkMessageBus,
             INetworkingMessageSerializer serializer,
             INetworkingMessageDeserializer deserializer,
             INetworkingMessageHandler clientMessageHandler)
         {
             Id = clientId;
-            this.networkMessaging = networkMessaging;
+            this.networkMessageBus = networkMessageBus;
             this.serializer = serializer;
             this.deserializer = deserializer;
             this.clientMessageHandler = clientMessageHandler;
             
-            networkMessaging.SetClientMessageReceiver(this); ;
-        }
-
-        public void SetServerMessageReceiver(INetworkingServer server)
-        {
-            networkMessaging.SetServerMessageReceiver(server);
+            networkMessageHandlers.AddRange(networkMessageBus.GetComponentsInChildren<INetworkMessageHandler>());
+            foreach (INetworkMessageHandler clientMessaging in networkMessageHandlers)
+            {
+                clientMessaging.SetClient(this);
+            }
         }
 
         public void Ping(string message)
         {
-            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
-            networkMessaging?.PingClientRpc(message);
+            UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to send a message without {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
+            networkMessageBus?.PingClientRpc(message);
         }
 
         public void PingServer(string message)
         {
-            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
-            networkMessaging?.PingServerRpc(message);
+            UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to send a message without {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
+            networkMessageBus?.PingServerRpc(message);
         }
 
-        public void SendMessageToClient(string messageAsString)
+        public void SendMessage(string messageAsString)
         {
-            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
-            networkMessaging?.SendMessageToClient(messageAsString, Id);
+            UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to send a message without {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
+            networkMessageBus?.SendMessageToClient(messageAsString, Id);
         }
         
         public void SendMessageToServer<T>(NetworkingMessage<T> message)
         {
             string messageAsString = Serialize(message);
-            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
-            networkMessaging?.SendMessageToServerRpc(messageAsString);
+            UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to send a message without {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
+            networkMessageBus?.SendMessageToServerRpc(messageAsString);
+        }
+
+        public T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler
+        {
+            foreach (INetworkMessageHandler networkMessageHandler in networkMessageHandlers)
+            {
+                if (networkMessageHandler is T foundHandler)
+                {
+                    return foundHandler;
+                }
+            }
+
+            return default;
         }
 
         private string Serialize<T>(NetworkingMessage<T> message)
@@ -69,9 +84,7 @@ namespace Celeste.Web.Objects
             return serializer.Serialize(message);
         }
         
-        #region INetworkingMessageReceiver
-
-        void INetworkingMessageReceiver.OnNetworkingMessageReceived(string rawMessage)
+        public void OnNetworkingMessageReceived(string rawMessage)
         {
             NetworkingMessage message = deserializer.Deserialize(rawMessage);
 
@@ -84,8 +97,6 @@ namespace Celeste.Web.Objects
                 UnityEngine.Debug.LogError($"Failed to handle message '{message.Id}' on Client '{Id}'.  Is message valid? {message.IsValid}.", CelesteLog.Web);
             }
         }
-        
-        #endregion
     }
 }
 #endif
