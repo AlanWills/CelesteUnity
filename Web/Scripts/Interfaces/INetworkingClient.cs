@@ -6,7 +6,8 @@ namespace Celeste.Web
     {
         ulong Id { get; }
         bool HasNetworkObject { get; }
-        
+
+        void PingServer(string message);
         void SendMessageToServer<T>(NetworkingMessage<T> message);
     }
 }

@@ -39,6 +39,18 @@ namespace Celeste.Web.Objects
             networkMessaging.SetServerMessageReceiver(server);
         }
 
+        public void Ping(string message)
+        {
+            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
+            networkMessaging?.PingClientRpc(message);
+        }
+
+        public void PingServer(string message)
+        {
+            UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
+            networkMessaging?.PingServerRpc(message);
+        }
+
         public void SendMessageToClient(string messageAsString)
         {
             UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
@@ -49,7 +61,7 @@ namespace Celeste.Web.Objects
         {
             string messageAsString = Serialize(message);
             UnityEngine.Debug.Assert(networkMessaging != null, $"Attempting to send a message without {nameof(NetworkMessaging)} being set!", CelesteLog.Web);
-            networkMessaging?.SendMessageToServer(messageAsString);
+            networkMessaging?.SendMessageToServerRpc(messageAsString);
         }
 
         private string Serialize<T>(NetworkingMessage<T> message)

@@ -1,5 +1,4 @@
 ﻿#if USE_NETCODE
-using System.Collections.Generic;
 using Unity.Netcode;
 
 namespace Celeste.Web.Messages
@@ -23,36 +22,26 @@ namespace Celeste.Web.Messages
             serverMessageReceiver = messageReceiver;
         }
 
-        public void SendMessageToServer(string message)
+        [ServerRpc]
+        public void PingServerRpc(string message, ServerRpcParams rpcParams = default)
         {
-            SendMessageToServerRpc(message);
+            UnityEngine.Debug.Log($"Received message: {message} as a ping from Client {rpcParams.Receive.SenderClientId}.", CelesteLog.Web);
+        }
+
+        [ClientRpc]
+        public void PingClientRpc(string message, ClientRpcParams rpcParams = default)
+        {
+            UnityEngine.Debug.Log($"Received message: {message} as a ping from Server.", CelesteLog.Web);
         }
 
         [ServerRpc]
-        private void SendMessageToServerRpc(string message, ServerRpcParams rpcParams = default)
+        public void SendMessageToServerRpc(string message, ServerRpcParams rpcParams = default)
         {
 #if NETWORK_MESSAGING_DEBUGGING
             UnityEngine.Debug.Log($"Message Received For Server: {message} ({name}).", CelesteLog.Web);
 #endif
-            UnityEngine.Debug.Assert(serverMessageReceiver != null, $"Server Message Receiver is null on {name}!");
+            UnityEngine.Debug.Assert(serverMessageReceiver != null, $"Server Message Receiver is null on {name}!", CelesteLog.Web);
             serverMessageReceiver?.OnNetworkingMessageReceived(message);
-        }
-        
-        public void SendMessageToAllClients(string message)
-        {
-            SendMessageToClientRpc(message);
-        }
-        
-        public void SendMessageToClients(string message, IReadOnlyList<ulong> clientIds)
-        {
-            ClientRpcParams rpcParams = new ClientRpcParams
-            {
-                Send = new ClientRpcSendParams
-                {
-                    TargetClientIds = clientIds
-                }
-            };
-            SendMessageToClientRpc(message, rpcParams);
         }
         
         public void SendMessageToClient(string message, ulong clientId)
@@ -68,12 +57,12 @@ namespace Celeste.Web.Messages
         }
         
         [ClientRpc]
-        private void SendMessageToClientRpc(string message, ClientRpcParams rpcParams = default)
+        public void SendMessageToClientRpc(string message, ClientRpcParams rpcParams = default)
         {
 #if NETWORK_MESSAGING_DEBUGGING
             UnityEngine.Debug.Log($"Message Received For Client: {message} ({name}).", CelesteLog.Web);
 #endif
-            UnityEngine.Debug.Assert(clientMessageReceiver != null, $"Client Message Receiver is null on {name}!");
+            UnityEngine.Debug.Assert(clientMessageReceiver != null, $"Client Message Receiver is null on {name}!", CelesteLog.Web);
             clientMessageReceiver?.OnNetworkingMessageReceived(message);
         }
     }

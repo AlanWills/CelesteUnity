@@ -117,7 +117,7 @@ namespace Celeste.Web.Debug
                     
                     if (GUILayout.Button("Ping Client"))
                     {
-                        server.SendMessageToClient(TestConnectionPayload.Create($"Hello from Server to Client {connectedClient.Key}!"), connectedClient.Key);
+                        connectedClient.Value.Ping("Hello!");
                     }
                 }
             }
@@ -130,7 +130,7 @@ namespace Celeste.Web.Debug
             
             if (GUILayout.Button("Ping Server"))
             {
-                client.SendMessageToServer(TestConnectionPayload.Create($"Hello from Client {client.Id}!"));
+                client.PingServer($"Hello from Client {client.Id}!");
             }
         }
     }
