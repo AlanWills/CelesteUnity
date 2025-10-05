@@ -13,18 +13,7 @@ namespace Celeste.Web.Objects
         public bool HasJoinCode => !string.IsNullOrEmpty(JoinCode);
         public string JoinCode { get; }
         public bool HasConnectedClients => connectedClients.Count > 0;
-        public IReadOnlyCollection<KeyValuePair<ulong, INetworkingClient>> ConnectedClients => connectedClients;
-
-        public IEnumerable<ulong> ConnectedClientIds
-        {
-            get
-            {
-                foreach (var connectedClient in connectedClients)
-                {
-                    yield return connectedClient.Key;
-                }
-            }
-        }
+        public IReadOnlyDictionary<ulong, INetworkingClient> ConnectedClients => connectedClients;
 
         private readonly Dictionary<ulong, INetworkingClient> connectedClients = new();
         private readonly INetworkingMessageSerializer serializer;

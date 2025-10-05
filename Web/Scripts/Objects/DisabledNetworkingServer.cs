@@ -10,8 +10,7 @@ namespace Celeste.Web.Objects
         public bool HasJoinCode => false;
         public string JoinCode => string.Empty;
         public bool HasConnectedClients => false;
-        public IReadOnlyCollection<KeyValuePair<ulong, INetworkingClient>> ConnectedClients { get; } = Array.Empty<KeyValuePair<ulong, INetworkingClient>>();
-        public IEnumerable<ulong> ConnectedClientIds { get; } = Array.Empty<ulong>();
+        public IReadOnlyDictionary<ulong, INetworkingClient> ConnectedClients { get; } = new Dictionary<ulong, INetworkingClient>();
 
         public void AddConnectedClient(INetworkingClient client)
         {

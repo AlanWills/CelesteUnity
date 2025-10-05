@@ -9,8 +9,7 @@ namespace Celeste.Web
         bool HasJoinCode { get; }
         string JoinCode { get; }
         bool HasConnectedClients { get; }
-        IReadOnlyCollection<KeyValuePair<ulong, INetworkingClient>> ConnectedClients { get; }
-        IEnumerable<ulong> ConnectedClientIds { get; }
+        IReadOnlyDictionary<ulong, INetworkingClient> ConnectedClients { get; }
 
         void AddConnectedClient(INetworkingClient networkingClient);
         void RemoveConnectedClient(ulong clientId);
