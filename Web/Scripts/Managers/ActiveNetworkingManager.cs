@@ -141,6 +141,13 @@ namespace Celeste.Web.Managers
             }
         }
 
+        public NetworkObject Spawn(IProgress<string> progress, NetworkObject networkObject)
+        {
+            NetworkObject instance = Instantiate(networkObject, gameObject.scene) as NetworkObject;
+            instance.Spawn();
+            return instance;
+        }
+
         private void SetUpServerCallbacks()
         {
             RemoveServerCallbacks();

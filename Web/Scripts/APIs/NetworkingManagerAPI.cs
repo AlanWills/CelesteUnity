@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Celeste.Web.Managers;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Celeste.Web
@@ -46,6 +46,11 @@ namespace Celeste.Web
         public Task BecomeClient(IProgress<string> progress, string joinCode)
         {
             return impl.BecomeClient(progress, joinCode);
+        }
+
+        public NetworkObject Spawn(IProgress<string> progress, NetworkObject networkObject)
+        {
+            return impl.Spawn(progress, networkObject);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Unity.Netcode;
 
 namespace Celeste.Web
 {
@@ -15,5 +16,7 @@ namespace Celeste.Web
         
         Task BecomeHost(IProgress<string> progress);
         Task BecomeClient(IProgress<string> progress, string joinCode);
+        
+        NetworkObject Spawn(IProgress<string> progress, NetworkObject networkObject);
     }
 }
