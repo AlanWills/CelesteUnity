@@ -80,17 +80,17 @@ namespace Celeste.Memory
             }
         }
 
-        public GameObject AllocateWithResizeIfNecessary()
+        public GameObject AllocateWithResizeIfNecessary(bool shouldAllocateDisabled = false)
         {
             if (!CanAllocate(1))
             {
                 AddChunk();
             }
 
-            return Allocate();
+            return Allocate(shouldAllocateDisabled);
         }
 
-        public GameObject Allocate()
+        public GameObject Allocate(bool shouldAllocateDisabled = false)
         {
             GameObject gameObject = FindInactiveGameObject();
 #if ALLOCATOR_CHECKS
@@ -100,6 +100,7 @@ namespace Celeste.Memory
                 return null;
             }
 #endif
+            gameObject.SetActive(!shouldAllocateDisabled);
             ++allocated;
             return gameObject;
         }

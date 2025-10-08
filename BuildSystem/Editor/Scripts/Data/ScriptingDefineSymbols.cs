@@ -33,6 +33,7 @@ namespace CelesteEditor.BuildSystem.Data
             AddItem("KEY_CHECKS");
             AddItem("ALLOCATOR_CHECKS");
             AddItem("ENABLE_INPUT_SYSTEM");
+            AddItem("NETWORK_MESSAGING_DEBUGGING");
         }
 
         public void AddDefaultReleaseSymbols()
