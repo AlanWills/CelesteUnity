@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 #if USE_NEW_INPUT_SYSTEM
@@ -84,15 +85,27 @@ namespace Celeste.Input
 #if UNITY_ANDROID || UNITY_IOS
 #if USE_NEW_INPUT_SYSTEM
             GameObject hitGameObject = null;
-            var touches = Touch.activeTouches;
-            int numTouches = touches.Count;
+            List<Touch> validTouches = new List<Touch>(0);
+            {
+                var touches = Touch.activeTouches;
+                validTouches.Capacity = touches.Count;
+                
+                foreach (var touch in touches)
+                {
+                    if (IsPositionValid(touch.screenPosition))
+                    {
+                        validTouches.Add(touch);
+                    }
+                }
+            }
 
+            int numTouches = validTouches.Count;
             if (numTouches > 0)
             {
                 // Only update pointer state if we've actually touched down, otherwise leave it as it was the last time we touched the screen
                 // The hit game object and touches logic in the InputState should flag to other systems we've not hit anything
-                Vector3 touchPosition = touches[0].screenPosition;
-                ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(touchPosition, touches[0].touchId, eventSystem, uiInputModule);
+                Vector3 touchPosition = validTouches[0].screenPosition;
+                ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(touchPosition, validTouches[0].touchId, eventSystem, uiInputModule);
                 Vector3 touchWorldPosition = hitObject.Item1;
                 hitGameObject = hitObject.Item2;
 
@@ -100,7 +113,7 @@ namespace Celeste.Input
             }
             
             inputState.UpdatePointerOverObject(hitGameObject, numTouches == 1);
-            inputState.UpdateTouches(touches);
+            inputState.UpdateTouches(validTouches);
 #else
             GameObject hitGameObject = null;
             var touches = UnityEngine.Input.touches;
@@ -193,6 +206,16 @@ namespace Celeste.Input
             inputState.UpdateMouseButtonState(mouseButton, mouseButtonState);
         }
 #endif
+
+        private bool IsPositionValid(Vector2 position)
+        {
+            return !(float.IsNaN(position.x) ||
+                     float.IsNegativeInfinity(position.x) ||
+                     float.IsPositiveInfinity(position.x) ||
+                     float.IsNaN(position.y) ||
+                     float.IsNegativeInfinity(position.y) ||
+                     float.IsPositiveInfinity(position.y));
+        }
 
         #endregion
 
