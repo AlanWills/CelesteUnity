@@ -334,7 +334,12 @@ namespace CelesteEditor.BuildSystem
 #endif
             development = isDebugConfig;
             isDebugBuild = isDebugConfig;
-            buildOptions = BuildOptions.StrictMode | BuildOptions.ConnectToHost | BuildOptions.Development;
+            buildOptions = BuildOptions.StrictMode;
+
+            if (isDebugConfig)
+            {
+                buildOptions |= BuildOptions.ConnectToHost | BuildOptions.Development;
+            }
 
             scriptingDefineSymbols = EditorOnly.MustFindAsset<ScriptingDefineSymbols>(isDebugBuild ? "DebugScriptingDefineSymbols" : "ReleaseScriptingDefineSymbols");
             buildPreparationSteps = EditorOnly.MustFindAsset<BuildPreparationSteps>();
