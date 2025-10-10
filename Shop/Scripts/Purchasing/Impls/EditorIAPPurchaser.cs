@@ -10,7 +10,7 @@ namespace Celeste.Shop.Purchasing.Impls
         {
             foreach (IAP iap in iapCatalogue)
             {
-                iap.LocalisedPriceString = "£0.99";
+                iap.LocalisedPriceString = "Â£0.99";
                 iap.LocalisedTitle = iap.name;
                 iap.LocalisedDescription = $"{iap.name} Description";
                 iap.ISOCurrencyCode = "GBP";
