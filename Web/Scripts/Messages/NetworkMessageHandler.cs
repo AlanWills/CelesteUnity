@@ -1,3 +1,4 @@
+#if USE_NETCODE
 using System;
 using Unity.Netcode;
 
@@ -41,3 +42,4 @@ namespace Celeste.Web.Messages
         }
     }
 }
+#endif

@@ -11,7 +11,7 @@ namespace Celeste.Debug.Menus
         [NonSerialized] private bool visible;
         public bool Visible
         {
-            get { return visible; }
+            get => visible;
             set 
             {
                 if (visible && !value)
@@ -34,8 +34,11 @@ namespace Celeste.Debug.Menus
             get => menuPriority;
             set
             {
-                menuPriority = value;
-                EditorOnly.SetDirty(this);
+                if (menuPriority != value)
+                {
+                    menuPriority = value;
+                    EditorOnly.SetDirty(this);
+                }
             }
         }
 
@@ -82,7 +85,7 @@ namespace Celeste.Debug.Menus
         }
 
         protected virtual void OnShowMenu() { }
-        protected abstract void OnDrawMenu();
+        protected virtual void OnDrawMenu() { }
         protected virtual void OnHideMenu() { }
     }
 }

@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
+#if USE_NETCODE
 using Celeste.Web.Managers;
 using Unity.Netcode;
+#endif
 using UnityEngine;
 
 namespace Celeste.Web
 {
     [CreateAssetMenu(fileName = nameof(NetworkingManagerAPI), menuName = CelesteMenuItemConstants.WEB_MENU_ITEM + "API/Networking Manager", order = CelesteMenuItemConstants.WEB_MENU_ITEM_PRIORITY)]
-    public class NetworkingManagerAPI : ScriptableObject, INetworkingManager
+    public class NetworkingManagerAPI : ScriptableObject
+#if USE_NETCODE
+        , INetworkingManager
+#endif
     {
+#if USE_NETCODE
         #region Properties and Fields
         
         public bool HasDefaultPlayerPrefab => impl.HasDefaultPlayerPrefab;
@@ -52,5 +58,6 @@ namespace Celeste.Web
         {
             return impl.Spawn(progress, networkObject);
         }
+#endif
     }
 }

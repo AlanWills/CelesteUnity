@@ -9,6 +9,7 @@ namespace Celeste.Web.Debug
     [CreateAssetMenu(fileName = nameof(NetworkingDebugMenu), menuName = CelesteMenuItemConstants.WEB_MENU_ITEM + "Debug/Networking Debug Menu", order = CelesteMenuItemConstants.WEB_MENU_ITEM_PRIORITY)]
     public class NetworkingDebugMenu : DebugMenu
     {
+#if USE_NETCODE
         #region Task And Status
 
         private class TaskAndStatus : IProgress<string>
@@ -133,5 +134,6 @@ namespace Celeste.Web.Debug
                 client.PingServer($"Hello from Client {client.Id}!");
             }
         }
+#endif
     }
 }

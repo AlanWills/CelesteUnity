@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_NETCODE
+using System;
 using System.Threading.Tasks;
 using Celeste.Web.Objects;
 using Unity.Netcode;
@@ -46,3 +47,4 @@ namespace Celeste.Web.Managers
         }
     }
 }
+#endif

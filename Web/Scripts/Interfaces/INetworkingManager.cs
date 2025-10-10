@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_NETCODE
+using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
 
@@ -20,3 +21,4 @@ namespace Celeste.Web
         NetworkObject Spawn(IProgress<string> progress, NetworkObject networkObject);
     }
 }
+#endif
