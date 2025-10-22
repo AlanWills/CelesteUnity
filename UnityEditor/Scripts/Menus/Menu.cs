@@ -13,6 +13,9 @@ namespace CelesteEditor.Unity
             UnityEditor.Menu.AddMenuItem(name, shortcut, @checked, priority, execute, validate);
         }
 
-        public static void RebuildAllMenuItems() => UnityEditor.Menu.RebuildAllMenus();
+        public static void RebuildAllMenuItems()
+        {
+            UnityEditor.Menu.RebuildAllMenus();
+        }
     }
 }

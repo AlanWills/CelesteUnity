@@ -1,5 +1,4 @@
 using Celeste.Scene;
-using Celeste.Scene.Catalogue;
 using Celeste.Tools;
 using UnityEditor;
 
@@ -37,7 +36,7 @@ namespace CelesteEditor.Scene
                     {
                         sceneSet.EditorOnly_Load(UnityEngine.SceneManagement.LoadSceneMode.Single);
                     },
-                    () => { return true; });
+                    () => true);
             }
         }
     }

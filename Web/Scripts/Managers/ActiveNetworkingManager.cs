@@ -86,7 +86,6 @@ namespace Celeste.Web.Managers
             Server = new ActiveNetworkingServer(
                 joinCode,
                 networkingMessageSerializationFactory,
-                networkingMessageSerializationFactory,
                 serverNetworkingMessageHandlerFactory);
 
             if (networkManager.StartHost())
@@ -241,13 +240,8 @@ namespace Celeste.Web.Managers
             NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
             UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
-            ActiveNetworkingClient client = new ActiveNetworkingClient(
-                clientId,
-                networkMessageHandler,
-                networkingMessageSerializationFactory,
-                networkingMessageSerializationFactory,
-                clientNetworkingMessageHandlerFactory);
-
+            ActiveNetworkingClient client = new ActiveNetworkingClient(clientId, networkObject);
+            
             if (clientId == networkManager.LocalClientId)
             {
                 Client = client;
@@ -265,12 +259,7 @@ namespace Celeste.Web.Managers
                 NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
                 UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
-                Client = new ActiveNetworkingClient(
-                    clientId,
-                    networkMessageHandler,
-                    networkingMessageSerializationFactory,
-                    networkingMessageSerializationFactory,
-                    clientNetworkingMessageHandlerFactory);
+                Client = new ActiveNetworkingClient(clientId, networkObject);
                 
                 networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
             }

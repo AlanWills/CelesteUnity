@@ -13,12 +13,10 @@ namespace Celeste.Web
 
         void AddConnectedClient(INetworkingClient networkingClient);
         void RemoveConnectedClient(ulong clientId);
-        
-        void SendMessageToAllClients<T>(NetworkingMessage<T> message);
-        void SendMessageToClients<T>(NetworkingMessage<T> message, IReadOnlyList<ulong> clientIds);
-        void SendMessageToClient<T>(NetworkingMessage<T> message, ulong clientId);
+        void OnMessageReceived(string rawMessage);
         
         void AddOnClientConnectedCallback(Action<INetworkingClient> onClientConnected);
         void RemoveOnClientConnectedCallback(Action<INetworkingClient> onClientConnected);
+
     }
 }

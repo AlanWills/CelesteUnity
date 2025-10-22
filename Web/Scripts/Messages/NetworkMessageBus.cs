@@ -24,7 +24,7 @@ namespace Celeste.Web.Messages
             UnityEngine.Debug.Log($"Message Received For Server: {message} ({name}).", CelesteLog.Web);
 #endif
             UnityEngine.Debug.Assert(Server != null, $"Server is null on {name}!", CelesteLog.Web);
-            Server?.OnNetworkingMessageReceived(message);
+            Server?.OnMessageReceived(message);
         }
         
         public void SendMessageToClient(string message, ulong clientId)
@@ -46,7 +46,7 @@ namespace Celeste.Web.Messages
             UnityEngine.Debug.Log($"Message Received For Client: {message} ({name}).", CelesteLog.Web);
 #endif
             UnityEngine.Debug.Assert(Client != null, $"Client is null on {name}!", CelesteLog.Web);
-            Client?.OnNetworkingMessageReceived(message);
+            Client?.GetNetworkMessageHandler<IRawMessageNetworkHandler>().OnMessageReceived(message);
         }
     }
 }
