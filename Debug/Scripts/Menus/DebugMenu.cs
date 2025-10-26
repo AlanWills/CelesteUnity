@@ -87,5 +87,15 @@ namespace Celeste.Debug.Menus
         protected virtual void OnShowMenu() { }
         protected virtual void OnDrawMenu() { }
         protected virtual void OnHideMenu() { }
+
+        protected GUILayout.VerticalScope Section(string sectionTitle)
+        {
+            var verticalScope = new GUILayout.VerticalScope(GUI.skin.box);
+            
+            // Header
+            GUILayout.Label(sectionTitle, CelesteGUIStyles.BoldLabel);
+
+            return verticalScope;
+        }
     }
 }
