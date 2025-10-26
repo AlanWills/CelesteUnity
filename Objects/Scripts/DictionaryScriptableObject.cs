@@ -153,9 +153,9 @@ namespace Celeste.Objects
             foreach (var item in items)
             {
 #if KEY_CHECKS
-                if (itemsDictionary.TryGetValue(item.key, out TValue oldValue))
+                if (itemsDictionary.ContainsKey(item.key))
                 {
-                    Debug.LogAssertion($"{nameof(DictionaryScriptableObject<TKey, TValue>)} already contains an item with key {item.key}.  The old value {oldValue} will be replaced with {item.value}.");
+                    Debug.LogAssertion($"{nameof(DictionaryScriptableObject<TKey, TValue>)} already contains an item with key {item.key}.  The old value will be overridden.");
                 }
 #endif
                 itemsDictionary[item.key] = item.value;

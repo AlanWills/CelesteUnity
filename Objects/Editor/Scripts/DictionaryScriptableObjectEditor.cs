@@ -1,8 +1,10 @@
+using System;
 using Celeste.Objects;
 using Celeste.Tools;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace CelesteEditor.Objects
 {
@@ -10,8 +12,8 @@ namespace CelesteEditor.Objects
     {
         #region Properties and Fields
 
+        private readonly List<(TKey, TValue)> data = new List<(TKey, TValue)>();
         private int currentPage = 0;
-        private List<(TKey, TValue)> data = new List<(TKey, TValue)>();
 
         private const int ENTRIES_PER_PAGE = 40;
 
@@ -36,7 +38,7 @@ namespace CelesteEditor.Objects
                 FindAssets(EditorOnly.GetAssetFolderPath(target));
             }
 
-            using (var changeCheck = new EditorGUI.ChangeCheckScope())
+            using (new EditorGUI.ChangeCheckScope())
             {
                 DrawPropertiesExcluding(serializedObject, "m_Script");
 
@@ -48,9 +50,21 @@ namespace CelesteEditor.Objects
                     {
                         DrawEntry(data[i].Item1, data[i].Item2);
                     },
-                    () => false,
+                    () => true,
                     () => GUILayout.Button("-", GUILayout.ExpandWidth(false)),
-                    () => { },
+                    () =>
+                    {
+                        if (GUILayout.Button("+", GUILayout.ExpandWidth(false)))
+                        {
+                            TValue value = data[^1].Item2;
+                            TKey key = GetKey(value);
+                            
+                            DictionaryScriptableObject<TKey, TValue> dictionary = target as DictionaryScriptableObject<TKey, TValue>;
+                            dictionary.AddItem(key, value);
+
+                            data.Add(new ValueTuple<TKey, TValue>(key, value));
+                        }
+                    },
                     (i) =>
                     {
                         TKey key = data[i].Item1;
