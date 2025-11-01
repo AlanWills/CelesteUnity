@@ -300,4 +300,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformToRotate: {fileID: 7266699911472589988}
-  animateSpeed: 360
+  animateSpeed: -360

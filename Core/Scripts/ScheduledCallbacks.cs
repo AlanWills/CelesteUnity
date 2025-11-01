@@ -41,6 +41,11 @@ namespace Celeste.Core
             return handle;
         }
 
+        public CallbackHandle ScheduleInUtcFuture(long secondsInFuture, Action callback)
+        {
+            return Schedule(GameTime.UtcNowTimestamp + secondsInFuture, callback);
+        }
+
         public void Cancel(ICallbackHandle callbackHandle)
         {
             int index = callbacks.FindIndex(x => x.handle == callbackHandle);
