@@ -1,6 +1,8 @@
+using System;
 using Celeste.Loading;
 using Celeste.Scene.Events;
 using System.Collections;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -86,6 +88,20 @@ namespace Celeste.Core.Loading
             loadingOverlayUI.SetActive(false);
             enableInput.Invoke();
         }
+        
+        private IEnumerator ExecuteTaskWithOverlay(Task task)
+        {
+            disableInput.Invoke();
+            loadingOverlayUI.SetActive(true);
+
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+            
+            loadingOverlayUI.SetActive(false);
+            enableInput.Invoke();
+        }
 
         private IEnumerator ExecuteLoadJobSilently(LoadJob loadJob)
         {
@@ -119,6 +135,11 @@ namespace Celeste.Core.Loading
         public void OnExecuteLoadJobWithOverlay(LoadJob loadJob)
         {
             StartCoroutine(ExecuteLoadJobWithOverlay(loadJob));
+        }
+
+        public void OnExecuteTaskWithOverlay(Task task)
+        {
+            StartCoroutine(ExecuteTaskWithOverlay(task));
         }
 
         public void OnExecuteLoadJobSilently(LoadJob loadJob)
