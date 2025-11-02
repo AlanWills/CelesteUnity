@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Unity.Collections;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Celeste.DataStructures
 {
@@ -88,6 +90,20 @@ namespace Celeste.DataStructures
         public static ReadOnlyCollection<T> ToReadOnly<T>(this T[] array)
         {
             return new ReadOnlyCollection<T>(array);
+        }
+
+        public static T GetRandomItem<T>(this NativeArray<T>.ReadOnly array) where T : struct
+        {
+#if NULL_CHECKS
+            if (array == null)
+            {
+                Debug.LogAssertion($"Null source array.");
+                return default;
+            }
+#endif
+            int numItems = array.Length;
+            int randomIndex = UnityEngine.Random.Range(0, numItems);
+            return array[randomIndex];
         }
     }
 }
