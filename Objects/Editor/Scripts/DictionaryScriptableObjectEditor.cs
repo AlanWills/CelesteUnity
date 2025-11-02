@@ -56,7 +56,7 @@ namespace CelesteEditor.Objects
                     {
                         if (GUILayout.Button("+", GUILayout.ExpandWidth(false)))
                         {
-                            TValue value = data[^1].Item2;
+                            TValue value = data.Count > 0 ? data[^1].Item2 : null;
                             TKey key = GetKey(value);
                             
                             DictionaryScriptableObject<TKey, TValue> dictionary = target as DictionaryScriptableObject<TKey, TValue>;
