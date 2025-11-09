@@ -1,6 +1,7 @@
 ﻿#if USE_NETCODE
 using System;
 using System.Collections.Generic;
+using Celeste.Web.Managers;
 using Celeste.Web.Messages;
 
 namespace Celeste.Web.Objects
@@ -15,19 +16,23 @@ namespace Celeste.Web.Objects
         public bool HasConnectedClients => connectedClients.Count > 0;
         public IReadOnlyDictionary<ulong, INetworkingClient> ConnectedClients => connectedClients;
 
+        private readonly ActiveNetworkingManager networkingManager;
         private readonly Dictionary<ulong, INetworkingClient> connectedClients = new();
         private readonly INetworkingMessageDeserializer deserializer;
         private readonly INetworkingMessageHandler handler;
         private Action<INetworkingClient> onClientConnected;
+        private Action<ulong> onClientDisconnected;
 
         #endregion
 
         public ActiveNetworkingServer(
+            ActiveNetworkingManager networkingManager,
             string joinCode,
             INetworkingMessageDeserializer deserializer,
             INetworkingMessageHandler handler)
         {
             JoinCode = joinCode;
+            this.networkingManager = networkingManager;
             this.deserializer = deserializer;
             this.handler = handler;
         }
@@ -44,9 +49,11 @@ namespace Celeste.Web.Objects
             onClientConnected?.Invoke(client);
         }
 
-        public void RemoveConnectedClient(ulong clientId)
+        public void DisconnectClient(ulong clientId)
         {
             connectedClients.Remove(clientId);
+            networkingManager.DisconnectClientFromServer(clientId);
+            onClientDisconnected?.Invoke(clientId);
         }
 
         public void OnMessageReceived(string rawMessage)
@@ -63,6 +70,11 @@ namespace Celeste.Web.Objects
             }
         }
 
+        public void Shutdown()
+        {
+            networkingManager.ShutdownLocalServer();
+        }
+
         public void AddOnClientConnectedCallback(Action<INetworkingClient> onClientConnectedCallback)
         {
             onClientConnected += onClientConnectedCallback;
@@ -71,6 +83,16 @@ namespace Celeste.Web.Objects
         public void RemoveOnClientConnectedCallback(Action<INetworkingClient> onClientConnectedCallback)
         {
             onClientConnected -= onClientConnectedCallback;
+        }
+
+        public void AddOnClientDisconnectedCallback(Action<ulong> clientId)
+        {
+            onClientDisconnected += onClientDisconnected;
+        }
+
+        public void RemoveOnClientDisconnectedCallback(Action<ulong> clientId)
+        {
+            onClientDisconnected -= onClientDisconnected;
         }
     }
 }

@@ -11,7 +11,6 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 namespace Celeste.Web.Managers
@@ -62,13 +61,15 @@ namespace Celeste.Web.Managers
 
         public void Shutdown()
         {
-            RemoveClientCallbacks();
-            RemoveServerCallbacks();
+            DisconnectLocalClient();
+            ShutdownLocalServer();
+            
+            networkManager.Shutdown();
         }
 
         public async Task BecomeHost(IProgress<string> progress)
         {
-            SetUpServerCallbacks();
+            SetUpHostCallbacks();
             
             Server = new DisabledNetworkingServer();
             Client = new DisabledNetworkingClient();
@@ -84,6 +85,7 @@ namespace Celeste.Web.Managers
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             
             Server = new ActiveNetworkingServer(
+                this,
                 joinCode,
                 networkingMessageSerializationFactory,
                 serverNetworkingMessageHandlerFactory);
@@ -140,6 +142,47 @@ namespace Celeste.Web.Managers
             }
         }
 
+        public void ShutdownLocalServer()
+        {
+            if (Client.Exists)
+            {
+                // We don't register to ClientCallbacks so don't get notified of being disconnected
+                // As such, we shut down the Local Client here
+                DisconnectLocalClientImpl();
+            }
+            
+            if (Server.Exists)
+            {
+                RemoveServerCallbacks();
+
+                Server = new DisabledNetworkingServer();
+                networkManager.Shutdown();
+            }
+        }
+
+        public void DisconnectClientFromServer(ulong clientId)
+        {
+            if (clientId != networkManager.LocalClientId)
+            {
+                networkManager.DisconnectClient(clientId);
+            }
+            else
+            { 
+                UnityEngine.Debug.LogAssertion("You're attempting to disconnect the Client that is also the Host, which feels wrong.  " +
+                                               "It's better to shut down the Server which will also shut down the Local Client." +
+                                               "Otherwise you'll be left with the Server running, but not Local Client.");    
+            }
+        }
+
+        public void DisconnectLocalClient()
+        {
+            if (Client.Exists)
+            {
+                DisconnectLocalClientImpl();
+                networkManager.Shutdown();
+            }
+        }
+
         public NetworkObject Spawn(IProgress<string> progress, NetworkObject networkObject)
         {
             NetworkObject instance = Instantiate(networkObject, gameObject.scene) as NetworkObject;
@@ -147,7 +190,15 @@ namespace Celeste.Web.Managers
             return instance;
         }
 
-        private void SetUpServerCallbacks()
+        private void DisconnectLocalClientImpl()
+        {
+            RemoveClientCallbacks();
+
+            unityTransport.DisconnectLocalClient();
+            Client = new DisabledNetworkingClient();
+        }
+
+        private void SetUpHostCallbacks()
         {
             RemoveServerCallbacks();
 
@@ -176,11 +227,13 @@ namespace Celeste.Web.Managers
             RemoveClientCallbacks();
             
             networkManager.OnClientConnectedCallback += OnLocalClientConnected;
+            networkManager.OnClientDisconnectCallback += OnLocalClientDisconnected;
         }
 
         private void RemoveClientCallbacks()
         {
             networkManager.OnClientConnectedCallback -= OnLocalClientConnected;
+            networkManager.OnClientDisconnectCallback -= OnLocalClientDisconnected;
         }
 
         private async Task InitializeAndLogInUnityServices()
@@ -240,7 +293,7 @@ namespace Celeste.Web.Managers
             NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
             UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
 
-            ActiveNetworkingClient client = new ActiveNetworkingClient(clientId, networkObject);
+            ActiveNetworkingClient client = new ActiveNetworkingClient(this, clientId, networkObject);
             
             if (clientId == networkManager.LocalClientId)
             {
@@ -252,22 +305,34 @@ namespace Celeste.Web.Managers
 
         private void OnLocalClientConnected(ulong clientId)
         {
-            if (networkManager.LocalClientId == clientId)
+            if (networkManager.LocalClientId != clientId)
             {
-                NetworkObject networkObject = networkManager.LocalClient.PlayerObject;
-                UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
-                NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
-                UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
-
-                Client = new ActiveNetworkingClient(clientId, networkObject);
-                
-                networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
+                return;
             }
+            
+            NetworkObject networkObject = networkManager.LocalClient.PlayerObject;
+            UnityEngine.Debug.Assert(networkObject != null, "Client Started, but Player Object is null!", CelesteLog.Web);
+            NetworkMessageBus networkMessageHandler = networkObject.GetComponent<NetworkMessageBus>();
+            UnityEngine.Debug.Assert(networkMessageHandler != null, $"Client Started, but {nameof(NetworkMessageBus)} is null!", CelesteLog.Web);
+
+            Client = new ActiveNetworkingClient(this, clientId, networkObject);
+                
+            networkManager.ConnectedClients[clientId].PlayerObject.name = $"NetworkMessaging - Client Id {clientId}";
         }
 
         private void OnClientDisconnectedFromServer(ulong clientId)
         {
-            Server.RemoveConnectedClient(clientId);
+            UnityEngine.Debug.Log($"Client {clientId} successfully disconnected from {nameof(NetworkManager)}.", CelesteLog.Web);
+        }
+
+        private void OnLocalClientDisconnected(ulong clientId)
+        {
+            if (networkManager.LocalClientId != clientId)
+            {
+                return;
+            }
+            
+            DisconnectLocalClient();
         }
         
         #endregion

@@ -60,6 +60,11 @@ namespace Celeste.Web.Debug
             
             if (networkingManagerAPI.Server.Exists)
             {
+                if (GUILayout.Button("Shutdown"))
+                {
+                    networkingManagerAPI.Server.Shutdown();
+                }
+                
                 if (networkingManagerAPI.Server.HasConnectedClients)
                 {
                     DrawConnectedToClientsGUI(networkingManagerAPI.Server);
@@ -116,9 +121,14 @@ namespace Celeste.Web.Debug
                 {
                     GUILayout.Label($"Client ID: {connectedClient.Key}");
                     
-                    if (GUILayout.Button("Ping Client"))
+                    if (GUILayout.Button("Ping"))
                     {
                         connectedClient.Value.Ping("Hello!");
+                    }
+                    
+                    if (GUILayout.Button("Disconnect"))
+                    {
+                        connectedClient.Value.Disconnect();
                     }
                 }
             }
@@ -128,10 +138,18 @@ namespace Celeste.Web.Debug
         {
             GUILayout.Label($"Client Id is: {client.Id}");
             GUILayout.Label($"Client Network Object Exists?: {client.HasNetworkObject}");
-            
-            if (GUILayout.Button("Ping Server"))
+
+            using (new GUILayout.HorizontalScope())
             {
-                client.PingServer($"Hello from Client {client.Id}!");
+                if (GUILayout.Button("Ping Server"))
+                {
+                    client.PingServer($"Hello from Client {client.Id}!");
+                }
+                
+                if (GUILayout.Button("Disconnect"))
+                {
+                    client.Disconnect();
+                }
             }
         }
 #endif

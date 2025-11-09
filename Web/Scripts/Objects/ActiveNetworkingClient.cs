@@ -1,5 +1,6 @@
 ﻿#if USE_NETCODE
 using System.Collections.Generic;
+using Celeste.Web.Managers;
 using Celeste.Web.Messages;
 using Unity.Netcode;
 
@@ -14,15 +15,17 @@ namespace Celeste.Web.Objects
         public bool HasNetworkObject => networkObject != null;
         public IReadOnlyList<INetworkMessageHandler> NetworkMessageHandlers => networkMessageHandlers;
 
+        private readonly ActiveNetworkingManager networkingManager;
         private readonly NetworkObject networkObject;
         private readonly NetworkMessageBus networkMessageBus;
         private readonly List<INetworkMessageHandler> networkMessageHandlers = new();
 
         #endregion
 
-        public ActiveNetworkingClient(ulong clientId, NetworkObject networkObject)
+        public ActiveNetworkingClient(ActiveNetworkingManager networkingManager, ulong clientId, NetworkObject networkObject)
         {
             Id = clientId;
+            this.networkingManager = networkingManager;
             this.networkObject = networkObject;
             
             networkMessageHandlers.AddRange(networkObject.GetComponentsInChildren<INetworkMessageHandler>());
@@ -53,6 +56,11 @@ namespace Celeste.Web.Objects
             networkMessageBus?.SendMessageToClient(messageAsString, Id);
         }
         
+        public void Disconnect()
+        {
+            networkingManager.DisconnectLocalClient();
+        }
+
         public T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler
         {
             foreach (INetworkMessageHandler networkMessageHandler in networkMessageHandlers)

@@ -12,6 +12,8 @@ namespace Celeste.Web
         void PingServer(string message);
         void Ping(string message);
 
+        void Disconnect();
+
         T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler;
     }
 }

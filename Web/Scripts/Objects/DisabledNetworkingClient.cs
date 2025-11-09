@@ -16,14 +16,14 @@ namespace Celeste.Web.Objects
             UnityEngine.Debug.Log($"Client Networking disabled.  Discarding ping to Server: {message}.", CelesteLog.Web);
         }
 
-        public void SendMessageToServer<T>(NetworkingMessage<T> message)
-        {
-            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message to Server: {message}.", CelesteLog.Web);
-        }
-
         public void Ping(string message)
         {
             UnityEngine.Debug.Log($"Client Networking disabled.  Discarding ping: {message}.", CelesteLog.Web);
+        }
+
+        public void Disconnect()
+        {
+            UnityEngine.Debug.Log($"Client Networking disabled.  Ignoring {nameof(Disconnect)}.", CelesteLog.Web);
         }
 
         public void SendMessage(string message)

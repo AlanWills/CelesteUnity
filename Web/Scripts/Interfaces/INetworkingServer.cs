@@ -12,11 +12,16 @@ namespace Celeste.Web
         IReadOnlyDictionary<ulong, INetworkingClient> ConnectedClients { get; }
 
         void AddConnectedClient(INetworkingClient networkingClient);
-        void RemoveConnectedClient(ulong clientId);
+        void DisconnectClient(ulong clientId);
+        
         void OnMessageReceived(string rawMessage);
+
+        void Shutdown();
         
         void AddOnClientConnectedCallback(Action<INetworkingClient> onClientConnected);
         void RemoveOnClientConnectedCallback(Action<INetworkingClient> onClientConnected);
-
+        
+        void AddOnClientDisconnectedCallback(Action<ulong> clientId);
+        void RemoveOnClientDisconnectedCallback(Action<ulong> clientId);
     }
 }
