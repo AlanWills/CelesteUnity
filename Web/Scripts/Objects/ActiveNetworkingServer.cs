@@ -72,6 +72,13 @@ namespace Celeste.Web.Objects
 
         public void Shutdown()
         {
+            foreach (var client in ConnectedClients)
+            {
+                networkingManager.DisconnectClientFromServer(client.Key);
+                onClientDisconnected?.Invoke(client.Key);
+            }
+
+            connectedClients.Clear();
             networkingManager.ShutdownLocalServer();
         }
 

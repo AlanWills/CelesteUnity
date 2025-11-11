@@ -21,14 +21,19 @@ namespace Celeste.Web.Objects
             UnityEngine.Debug.Log($"Client Networking disabled.  Discarding ping: {message}.", CelesteLog.Web);
         }
 
+        public void RequestDisconnectFromServer()
+        {
+            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding disconnect request.", CelesteLog.Web);
+        }
+
+        public void FinaliseDisconnectFromServer()
+        {
+            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding finalise of disconnect.", CelesteLog.Web);
+        }
+
         public void Disconnect()
         {
             UnityEngine.Debug.Log($"Client Networking disabled.  Ignoring {nameof(Disconnect)}.", CelesteLog.Web);
-        }
-
-        public void SendMessage(string message)
-        {
-            UnityEngine.Debug.Log($"Client Networking disabled.  Discarding message: {message}.", CelesteLog.Web);
         }
 
         public T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler
@@ -36,9 +41,14 @@ namespace Celeste.Web.Objects
             return default;
         }
 
-        public void OnNetworkingMessageReceived(string rawMessage)
+        public void AddOnWillDisconnectCallback(Action<ulong> callback)
         {
-            UnityEngine.Debug.Log($"Server Networking disabled.  Discarding message: {rawMessage}.", CelesteLog.Web);
+            UnityEngine.Debug.Log($"Client Networking disabled.  Ignoring {nameof(AddOnWillDisconnectCallback)}.", CelesteLog.Web);
+        }
+
+        public void RemoveOnWillDisconnectCallback(Action<ulong> callback)
+        {
+            UnityEngine.Debug.Log($"Client Networking disabled.  Ignoring {nameof(RemoveOnWillDisconnectCallback)}.", CelesteLog.Web);
         }
     }
 }

@@ -121,14 +121,14 @@ namespace Celeste.Web.Debug
                 {
                     GUILayout.Label($"Client ID: {connectedClient.Key}");
                     
-                    if (GUILayout.Button("Ping"))
+                    if (GUILayout.Button("Ping Client"))
                     {
-                        connectedClient.Value.Ping("Hello!");
+                        connectedClient.Value.Ping("Hello from Server!");
                     }
                     
                     if (GUILayout.Button("Disconnect"))
                     {
-                        connectedClient.Value.Disconnect();
+                        server.DisconnectClient(connectedClient.Key);
                     }
                 }
             }
@@ -146,9 +146,9 @@ namespace Celeste.Web.Debug
                     client.PingServer($"Hello from Client {client.Id}!");
                 }
                 
-                if (GUILayout.Button("Disconnect"))
+                if (GUILayout.Button("Request Disconnect"))
                 {
-                    client.Disconnect();
+                    client.RequestDisconnectFromServer();
                 }
             }
         }

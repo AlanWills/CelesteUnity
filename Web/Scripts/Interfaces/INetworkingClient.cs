@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Celeste.Web.Messages;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Celeste.Web
 {
@@ -12,8 +12,12 @@ namespace Celeste.Web
         void PingServer(string message);
         void Ping(string message);
 
-        void Disconnect();
+        void RequestDisconnectFromServer();
+        void FinaliseDisconnectFromServer();
 
         T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler;
+
+        void AddOnWillDisconnectCallback(Action<ulong> callback);
+        void RemoveOnWillDisconnectCallback(Action<ulong> callback);
     }
 }

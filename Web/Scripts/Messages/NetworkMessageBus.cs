@@ -6,6 +6,13 @@ namespace Celeste.Web.Messages
     public class NetworkMessageBus : NetworkMessageHandler
     {
         [ServerRpc]
+        public void RequestDisconnectServerRpc(ulong clientIdToDisconnect, ServerRpcParams rpcParams = default)
+        {
+            UnityEngine.Debug.Log($"Received disconnect request for Client {clientIdToDisconnect} on Server from Client {rpcParams.Receive.SenderClientId}.", CelesteLog.Web);
+            Server.DisconnectClient(clientIdToDisconnect);
+        }
+
+        [ServerRpc]
         public void PingServerRpc(string message, ServerRpcParams rpcParams = default)
         {
             UnityEngine.Debug.Log($"Received message: {message} as a ping from Client {rpcParams.Receive.SenderClientId}.", CelesteLog.Web);

@@ -1,6 +1,6 @@
 ﻿#if USE_NETCODE
+using System;
 using System.Collections.Generic;
-using Celeste.Web.Managers;
 using Celeste.Web.Messages;
 using Unity.Netcode;
 
@@ -14,18 +14,17 @@ namespace Celeste.Web.Objects
         public bool Exists => true;
         public bool HasNetworkObject => networkObject != null;
         public IReadOnlyList<INetworkMessageHandler> NetworkMessageHandlers => networkMessageHandlers;
-
-        private readonly ActiveNetworkingManager networkingManager;
+        
         private readonly NetworkObject networkObject;
         private readonly NetworkMessageBus networkMessageBus;
         private readonly List<INetworkMessageHandler> networkMessageHandlers = new();
+        private Action<ulong> onWillDisconnect;
 
         #endregion
 
-        public ActiveNetworkingClient(ActiveNetworkingManager networkingManager, ulong clientId, NetworkObject networkObject)
+        public ActiveNetworkingClient(ulong clientId, NetworkObject networkObject)
         {
             Id = clientId;
-            this.networkingManager = networkingManager;
             this.networkObject = networkObject;
             
             networkMessageHandlers.AddRange(networkObject.GetComponentsInChildren<INetworkMessageHandler>());
@@ -44,6 +43,17 @@ namespace Celeste.Web.Objects
             networkMessageBus?.PingClientRpc(message);
         }
 
+        public void RequestDisconnectFromServer()
+        {
+            UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to request disconnect {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
+            networkMessageBus?.RequestDisconnectServerRpc(Id);
+        }
+
+        public void FinaliseDisconnectFromServer()
+        {
+            onWillDisconnect?.Invoke(Id);
+        }
+
         public void PingServer(string message)
         {
             UnityEngine.Debug.Assert(networkMessageBus != null, $"Attempting to send a message without {nameof(NetworkMessageBus)} being set!", CelesteLog.Web);
@@ -56,11 +66,6 @@ namespace Celeste.Web.Objects
             networkMessageBus?.SendMessageToClient(messageAsString, Id);
         }
         
-        public void Disconnect()
-        {
-            networkingManager.DisconnectLocalClient();
-        }
-
         public T GetNetworkMessageHandler<T>() where T : INetworkMessageHandler
         {
             foreach (INetworkMessageHandler networkMessageHandler in networkMessageHandlers)
@@ -72,6 +77,16 @@ namespace Celeste.Web.Objects
             }
 
             return default;
+        }
+
+        public void AddOnWillDisconnectCallback(Action<ulong> callback)
+        {
+            onWillDisconnect += callback;
+        }
+
+        public void RemoveOnWillDisconnectCallback(Action<ulong> callback)
+        {
+            onWillDisconnect -= callback;
         }
     }
 }

@@ -68,19 +68,16 @@ namespace Celeste.Debug.Menus
             {
                 GUILayout.Label(displayName, GUI.skin.label.New().Bold().UpperCentreAligned());
             }
-
-            if (Application.isPlaying)
+            
+            try
             {
                 OnDrawMenu();
             }
-            else
+            catch (Exception e)
             {
-                // If we're in Editor mode, swallow all exceptions as it's likely we're not in a complete state to properly draw the menu
-                try
-                {
-                    OnDrawMenu();
-                }
-                catch { }
+                // Swallow any exceptions from the Debug Menu as there's no point having everything fall over for debug functionality
+                // We still log them out though, so we can see what they are
+                UnityEngine.Debug.LogException(e);
             }
         }
 
