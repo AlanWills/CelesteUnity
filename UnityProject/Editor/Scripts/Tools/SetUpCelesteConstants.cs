@@ -61,6 +61,8 @@
         public const string DEBUG_SCENE_NAME = "GameSystemsDebug";
         public const string DEBUG_SCENE_PATH = SCENES_FOLDER_PATH + DEBUG_SCENE_NAME + ".unity";
         public const string SCENE_SET_NAME = "GameSystemsSceneSet";
+        public const string GAME_SYSTEMS_PREFAB_NAME = "GameSystems";
+        public const string GAME_SYSTEMS_DEBUG_PREFAB_NAME = "GameSystemsDebug";
     }
 
     public static class MainMenuConstants

@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CelesteEditor.Tools;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -39,7 +41,7 @@ namespace CelesteEditor.UnityProject
         [Tooltip("If true, a code project for editor script files will be created")] public bool hasEditorAssembly;
         [Tooltip("The dependencies to automatically add to the editor assembly")] [HideInInspector] public List<AssemblyDefinitionAsset> editorAssemblyDependencies = new List<AssemblyDefinitionAsset>();
         [Tooltip("If true, a menu item will be generated to allow you to load the appropriate scene set for this assembly")] public bool createSceneSet;
-        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIf(nameof(createSceneSet))] public string sceneSetAssetPath = "Assets/";
+        [Tooltip("The full path to the scene set asset in the project for this assembly")] [ShowIf(nameof(createSceneSet))] public string sceneSetFolder = "Assets/";
         [Tooltip("The full menu item path to load the scene set for this assembly")] [ShowIf(nameof(createSceneSet))] public string sceneSetMenuItemPath;
     }
 
@@ -100,9 +102,30 @@ namespace CelesteEditor.UnityProject
                 sceneSet.name = $"{directoryName}SceneSet";
                 sceneSet.MenuItemPath = parameters.sceneSetMenuItemPath;
 
-                EditorOnly.CreateAsset(sceneSet, parameters.sceneSetAssetPath);
-            }
+#if USE_ADDRESSABLES
+                const SceneType sceneType = SceneType.Addressable;
+#else
+                const SceneType sceneType = SceneType.Baked;
+#endif
+                sceneSet.AddScene(directoryName, sceneType, false);
+                sceneSet.AddScene($"{directoryName}Debug", sceneType, false);
+                
+                EditorOnly.CreateAsset(sceneSet, $"{parameters.sceneSetFolder}/{directoryName}.asset");
 
+                // Create normal scene
+                {
+                    UnityEngine.SceneManagement.Scene scene =
+                        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                    EditorSceneManager.SaveScene(scene, $"{parameters.sceneSetFolder}/{directoryName}.unity");
+                }
+
+                // Create debug scene
+                {
+                    UnityEngine.SceneManagement.Scene debugScene =
+                        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                    EditorSceneManager.SaveScene(debugScene, $"{parameters.sceneSetFolder}/{directoryName}Debug.unity");
+                }
+            }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

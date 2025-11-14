@@ -1,4 +1,5 @@
-﻿using Celeste;
+﻿using System;
+using Celeste;
 using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using System.Text;
@@ -31,6 +32,21 @@ namespace CelesteEditor.BuildSystem
         }
 
         [SerializeField, Tooltip("The .ipa extension will be added at runtime.")] private string ipaName;
+        
+        [SerializeField] private string iOSMinVersion = "14.0";
+
+        public string IOSMinVersion
+        {
+            get => iOSMinVersion;
+            set
+            {
+                if (string.CompareOrdinal(iOSMinVersion, value) != 0)
+                {
+                    iOSMinVersion = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
 
         [Header("Custom Build System Settings")]
         [SerializeField] private bool useiOSProjectBuilder = true;
@@ -68,8 +84,9 @@ namespace CelesteEditor.BuildSystem
             BuildTarget = BuildTarget.iOS;
             BuildTargetGroup = BuildTargetGroup.iOS;
             RunInXCodeAs = XcodeBuildConfig.Release;
+            IOSMinVersion = "14.0";
             useiOSProjectBuilder = true;
-            iOSProjectBuilderInstallPath = "C:/Users/alawi/iOS Project Builder for Unity";
+            iOSProjectBuilderInstallPath = Environment.GetEnvironmentVariable("UNITYBUILDER_PATH", EnvironmentVariableTarget.User);
 
 #if UNITY_EDITOR_WIN
             useTempDirectoryDuringBuild = true;
@@ -87,6 +104,7 @@ namespace CelesteEditor.BuildSystem
 
             PlayerSettings.stripEngineCode = false;
             PlayerSettings.iOS.buildNumber = Version.ToString();
+            PlayerSettings.iOS.targetOSVersionString = iOSMinVersion;
             UnityEngine.Debug.Log($"iOS version is now: {PlayerSettings.iOS.buildNumber}.");
         }
 

@@ -500,7 +500,6 @@ namespace CelesteEditor.UnityProject
                 CreateStartupFolders();
                 CreateStartupLoadJob(parameters);
                 CreateStartupScene(parameters);
-                CreateStartupAssemblies(parameters);
             }
         }
 
@@ -627,7 +626,6 @@ namespace CelesteEditor.UnityProject
                 CreateBootstrapFolders();
                 CreateBootstrapLoadJob(parameters, results);
                 CreateBootstrapScene(parameters);
-                CreateBootstrapAssemblies(parameters);
             }
         }
 
@@ -900,12 +898,12 @@ namespace CelesteEditor.UnityProject
         {
             // Create Game Systems Scene
             {
-                CreateScene(parameters, GameSystemsConstants.SCENE_NAME, GameSystemsConstants.SCENE_PATH);
+                CreateSceneWithPrefab(parameters, GameSystemsConstants.SCENE_NAME, GameSystemsConstants.SCENE_PATH, GameSystemsConstants.GAME_SYSTEMS_PREFAB_NAME);
             }
 
             // Create Game Systems Debug Scene
             {
-                CreateScene(parameters, GameSystemsConstants.DEBUG_SCENE_NAME, GameSystemsConstants.DEBUG_SCENE_PATH);
+                CreateSceneWithPrefab(parameters, GameSystemsConstants.DEBUG_SCENE_NAME, GameSystemsConstants.DEBUG_SCENE_PATH, GameSystemsConstants.GAME_SYSTEMS_DEBUG_PREFAB_NAME);
             }
 
             SceneSet gameSystemsSceneSet = ScriptableObject.CreateInstance<SceneSet>();
