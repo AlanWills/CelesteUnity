@@ -111,7 +111,7 @@ namespace CelesteEditor.UnityProject
                 }
                 else
                 {
-                    UnityEngine.Debug.LogError("There was an issue bootstrapping dependencies.  You may have to do this yourself...");
+                    UnityEngine.Debug.LogError($"There was an issue bootstrapping dependencies ({s_addAndRemoveRequest.Error.message}).  You may have to do this yourself...");
                 }
 
                 EditorUtility.ClearProgressBar();
