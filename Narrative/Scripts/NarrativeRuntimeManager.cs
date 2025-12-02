@@ -1,6 +1,5 @@
 ﻿using Celeste.Events;
 using Celeste.FSM;
-using Celeste.Narrative.Backgrounds;
 using Celeste.Narrative.Events;
 using Celeste.Narrative.Loading;
 using Celeste.Narrative.Parameters;
