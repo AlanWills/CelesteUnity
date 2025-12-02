@@ -2,7 +2,6 @@
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Loading;
 using Celeste.DeckBuilding.Match;
-using Celeste.DeckBuilding.Persistence;
 using Celeste.DeckBuilding.UI;
 using Celeste.FSM;
 using Celeste.Scene.Events;

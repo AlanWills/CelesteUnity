@@ -1,4 +1,6 @@
-﻿using Celeste.Events;
+﻿using System.Collections.Generic;
+using Celeste.Events;
+using Celeste.Parameters.Constraints;
 using UnityEngine;
 
 namespace Celeste.Parameters
@@ -6,6 +8,17 @@ namespace Celeste.Parameters
     [CreateAssetMenu(fileName = nameof(FloatValue), menuName = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM + "Numeric/Float/Float Value", order = CelesteMenuItemConstants.PARAMETERS_MENU_ITEM_PRIORITY)]
     public class FloatValue : ParameterValue<float, FloatValueChangedEvent>
     {
+        #region Properties and Fields
+
+        [SerializeField] private List<FloatConstraint> valueConstraints = new();
+
+        #endregion
+        
+        protected override float ConstrainValue(float input)
+        {
+            return valueConstraints.Constrain(input);
+        }
+
         #region Operators
 
         public static bool operator ==(FloatValue value, float f)

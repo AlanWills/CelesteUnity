@@ -1,5 +1,4 @@
-﻿using Celeste.Constants;
-using Celeste.DataStructures;
+﻿using Celeste.DataStructures;
 using Celeste.DeckBuilding.Cards;
 using Celeste.DeckBuilding.Events;
 using Celeste.DeckBuilding.Shuffler;

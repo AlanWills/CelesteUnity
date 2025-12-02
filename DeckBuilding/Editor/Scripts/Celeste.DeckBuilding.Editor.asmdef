@@ -2,12 +2,15 @@
     "name": "Celeste.DeckBuilding.Editor",
     "rootNamespace": "CelesteEditor.DeckBuilding",
     "references": [
-        "GUID:528ce73c7757c8f43b7b5c50e8671ad8",
-        "GUID:1e83f379d37edf04999a41dc4553067d",
+        "Celeste.DeckBuilding",
+        "Celeste.DataStructures",
+        "Celeste.DataStructures.Editor",
         "Celeste.Tools",
         "Celeste.Tools.Editor",
         "Celeste.Components",
-        "Celeste.Components.Editor"
+        "Celeste.Components.Editor",
+        "Celeste.Objects",
+        "Celeste.Objects.Editor"
     ],
     "includePlatforms": [
         "Editor"

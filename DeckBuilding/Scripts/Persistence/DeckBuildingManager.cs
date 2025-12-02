@@ -6,16 +6,13 @@ using UnityEngine;
 
 namespace Celeste.DeckBuilding.Persistence
 {
-    [AddComponentMenu("Celeste/Deck Building/Deck Building")]
+    [AddComponentMenu("Celeste/Deck Building/Deck Building Manager")]
     public class DeckBuildingManager : PersistentSceneManager<DeckBuildingManager, DeckBuildingDTO>
     {
         #region Properties and Fields
 
         public static readonly string FILE_NAME = "DeckBuilding.dat";
-        protected override string FileName
-        {
-            get { return FILE_NAME; }
-        }
+        protected override string FileName => FILE_NAME;
 
         [SerializeField] private CardCatalogue cardCatalogue;
         [SerializeField] private DeckBuildingRecord deckBuildingRecord;

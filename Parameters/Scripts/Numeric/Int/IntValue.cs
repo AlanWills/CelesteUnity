@@ -10,7 +10,7 @@ namespace Celeste.Parameters
     {
         #region Properties and Fields
 
-        [SerializeField] private List<IntConstraint> valueConstraints = new List<IntConstraint>();
+        [SerializeField] private List<IntConstraint> valueConstraints = new();
 
         #endregion
 

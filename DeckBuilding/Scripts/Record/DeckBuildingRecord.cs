@@ -28,7 +28,8 @@ namespace Celeste.DeckBuilding.Persistence
 
         public Deck CreateDeck()
         {
-            Deck deck = new Deck();
+            Deck deck = CreateInstance<Deck>();
+            deck.name = "RuntimeDeck";
             AddDeck(deck);
 
             return deck;

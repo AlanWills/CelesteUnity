@@ -110,7 +110,7 @@ namespace CelesteEditor.UnityProject
                 sceneSet.AddScene(directoryName, sceneType, false);
                 sceneSet.AddScene($"{directoryName}Debug", sceneType, false);
                 
-                EditorOnly.CreateAsset(sceneSet, $"{parameters.sceneSetFolder}/{directoryName}.asset");
+                EditorOnly.CreateAsset(sceneSet, $"{parameters.sceneSetFolder}/{sceneSet.name}.asset");
 
                 // Create normal scene
                 {

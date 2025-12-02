@@ -1,17 +1,9 @@
 ﻿using Celeste.DataStructures;
 using Celeste.FSM;
-using Celeste.Localisation.Parameters;
-using Celeste.Localisation;
-using Celeste.Localisation.Settings;
-using Celeste.Narrative.Characters;
 using Celeste.Narrative.Choices;
-using Celeste.Narrative.UI;
-using Celeste.Tools.Attributes.GUI;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
-using XNode.Attributes;
-using Celeste.Narrative.Tokens;
 using Celeste.Tools;
 
 namespace Celeste.Narrative
