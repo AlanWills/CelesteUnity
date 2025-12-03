@@ -88,7 +88,9 @@ namespace Celeste.Narrative.Backgrounds
                 backgroundRatioFitter.aspectRatio = setBackgroundEventArgs.Background.AspectRatio;
 
                 Vector2 currentAnchoredPosition = backgroundRectTransform.anchoredPosition;
-                backgroundRectTransform.anchoredPosition = new Vector2(setBackgroundEventArgs.Offset, currentAnchoredPosition.y);
+                float width = backgroundRectTransform.rect.width / backgroundRatioFitter.aspectRatio;
+                float xPosition = -width * setBackgroundEventArgs.Offset;
+                backgroundRectTransform.anchoredPosition = new Vector2(xPosition, currentAnchoredPosition.y);
             }
             else
             {
