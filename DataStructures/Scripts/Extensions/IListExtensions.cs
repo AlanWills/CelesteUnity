@@ -30,6 +30,24 @@ namespace Celeste.DataStructures
             return list[(int)index];
         }
 
+        public static LinkedListNode<T> Get<T>(this LinkedList<T> list, int index)
+        {
+#if INDEX_CHECKS
+            if (list.Count <= index)
+            {
+                Debug.LogAssertion($"Invalid index {index} into list.");
+                return default;
+            }
+#endif
+            LinkedListNode<T> node = list.First;
+            for (int i = 0; i < index; ++i)
+            {
+                node = node.Next;
+            }
+
+            return node;
+        }
+
         public static T GetRandomEntry<T>(this IReadOnlyList<T> list)
         {
             int index = UnityEngine.Random.Range(0, list.Count);
