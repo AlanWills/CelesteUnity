@@ -48,6 +48,18 @@ namespace Celeste.DataStructures
             return node;
         }
 
+        public static void AddBeforeOrFirst<T>(this LinkedList<T> list, LinkedListNode<T> before, T value)
+        {
+            if (before == null)
+            {
+                list.AddFirst(value);
+            }
+            else
+            {
+                list.AddBefore(before, value);
+            }
+        }
+
         public static T GetRandomEntry<T>(this IReadOnlyList<T> list)
         {
             int index = UnityEngine.Random.Range(0, list.Count);
