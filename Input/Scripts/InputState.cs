@@ -246,13 +246,16 @@ namespace Celeste.Input
 
             if (PreviousHitGameObject != newHitGameObject)
             {
-                if (PreviousHitGameObject != null)
+                bool didPreviouslyHit = PreviousHitGameObject != null;
+                bool hasCurrentlyHit = newHitGameObject != null;
+                
+                if (didPreviouslyHit)
                 {
                     currentInputHandler?.OnPointerExit(this);
                     pointerExitedGameObjectEvent.Invoke(PreviousHitGameObject, VerboseLogging);
                 }
 
-                if (newHitGameObject != null)
+                if (hasCurrentlyHit)
                 {
                     newInputHandler?.OnPointerEnter(this);
                     pointerEnteredGameObjectEvent.Invoke(newHitGameObject, VerboseLogging);
@@ -280,10 +283,16 @@ namespace Celeste.Input
 
                 if (PointerState.wasFirstUpThisFrame)
                 {
-                    // Be aware that for touch platforms this will never fire, since we don't have the notion of the pointer
-                    // over an object (since it could be anywhere!).  With a mouse or cursor we do have this notion.
                     newInputHandler?.OnPointerFirstUp(this);
                     pointerFirstUpFromGameObjectEvent?.Invoke(newHitGameObject, VerboseLogging);
+                }
+            }
+            else
+            {
+                if (PointerState.wasFirstUpThisFrame)
+                {
+                    currentInputHandler?.OnPointerFirstUp(this);
+                    pointerFirstUpFromGameObjectEvent?.Invoke(PreviousHitGameObject, VerboseLogging);
                 }
             }
         }
