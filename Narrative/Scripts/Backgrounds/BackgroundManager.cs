@@ -22,6 +22,15 @@ namespace Celeste.Narrative.Backgrounds
         private Coroutine backgroundAnimationCoroutine;
 
         #endregion
+        
+        #region Unity Methods
+
+        private void OnDestroy()
+        {
+            backgroundSettings.RemoveSetBackgroundListener(OnSetBackground);
+        }
+        
+        #endregion
 
         public bool ShouldLoadAssets()
         {
