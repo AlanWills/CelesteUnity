@@ -16,6 +16,8 @@ namespace Celeste.Features.Persistence
 
         [SerializeField] private FeatureCatalogue featureCatalogue;
         [SerializeField] private FeatureRecord featureRecord;
+        
+        [Header("Optional Fields")]
         [SerializeField] private RemoteConfigRecord remoteConfigRecord;
 
         private const string FEATURES_CONFIG_KEY = "FeaturesConfig";
