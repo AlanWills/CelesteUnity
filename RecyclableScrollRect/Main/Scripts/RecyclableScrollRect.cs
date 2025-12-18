@@ -38,24 +38,19 @@ namespace PolyAndCode.UI
         public DirectionType Direction;
         public VerticalDirectionType VerticalDirection = VerticalDirectionType.TopToBottom;
 
-        //Segments : coloums for vertical and rows for horizontal.
-        public int Segments => Screen.width > Screen.height ? _landscapeModeSegments : _portraitModeSegments;
-
         [SerializeField, Min(2)]
         private int _portraitModeSegments = 2;
 
         [SerializeField, Min(2)]
         private int _landscapeModeSegments = 4;
-
+        
         private RecyclingSystem _recyclingSystem;
         private Vector2 _prevAnchoredPos;
 
         protected override void Start()
         {
-            //defafult(built-in) in scroll rect can have both directions enabled, Recyclable scroll rect can be scrolled in only one direction.
-            //setting default as vertical, Initialize() will set this again. 
-            vertical = true;
-            horizontal = false;
+            vertical = Direction == DirectionType.Vertical;
+            horizontal = Direction == DirectionType.Horizontal;
 
             if (!Application.isPlaying) return;
 
@@ -67,14 +62,17 @@ namespace PolyAndCode.UI
         /// </summary>
         private void Initialize()
         {
+            Canvas parentCanvas = GetComponentInParent<Canvas>();
+            int segments = parentCanvas.pixelRect.width > parentCanvas.pixelRect.height ? _landscapeModeSegments : _portraitModeSegments;
+            
             //Contruct the recycling system.
             if (Direction == DirectionType.Vertical)
             {
-                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments, VerticalDirection);
+                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments, VerticalDirection);
             }
             else if (Direction == DirectionType.Horizontal)
             {
-                _recyclingSystem = new HorizontalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, Segments);
+                _recyclingSystem = new HorizontalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments);
             }
             vertical = Direction == DirectionType.Vertical;
             horizontal = Direction == DirectionType.Horizontal;

@@ -8,8 +8,8 @@ namespace Celeste.Tools.Attributes.GUI
 {
     public class ShowIfEnumAttribute : MultiPropertyAttribute, IVisibilityAttribute, IGetHeightAttribute
     {
-        public string PropertyName { get; private set; }
-        public int Value { get; private set; }
+        private string PropertyName { get; }
+        private int Value { get; }
 
         public ShowIfEnumAttribute(string propertyName, int value)
         {

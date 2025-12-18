@@ -370,11 +370,13 @@ namespace PolyAndCode.UI
             //Saving to reapply after anchoring. Width and height changes if anchoring is change. 
             float width = rectTransform.rect.width;
             float height = rectTransform.rect.height;
-
+            
+            Vector2 pos = IsGrid ? new Vector2(0, 1) : new Vector2(0, 0.5f);
+            
             //Setting top anchor 
-            rectTransform.anchorMin = new Vector2(0.5f, 1);
-            rectTransform.anchorMax = new Vector2(0.5f, 1);
-            rectTransform.pivot = new Vector2(0.5f, 1);
+            rectTransform.anchorMin = pos;
+            rectTransform.anchorMax = pos;
+            rectTransform.pivot = pos;
 
             //Reapply size
             rectTransform.sizeDelta = new Vector2(width, height);

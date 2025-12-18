@@ -2,7 +2,7 @@
 
 namespace Celeste.Events
 {
-    public interface IEvent
+    public interface IReadOnlyEvent
     {
         ICallbackHandle AddListener(IEventListener listener);
         ICallbackHandle AddListener(UnityAction callback);
@@ -11,11 +11,9 @@ namespace Celeste.Events
         void RemoveListener(UnityAction callback);
         void RemoveListener(ICallbackHandle callbackHandle);
 
-        void Invoke();
-        void InvokeSilently();
     }
-
-    public interface IEvent<T>
+    
+    public interface IReadOnlyEvent<T>
     {
         ICallbackHandle AddListener(IEventListener<T> listener);
         ICallbackHandle AddListener(UnityAction<T> callback);
@@ -23,8 +21,16 @@ namespace Celeste.Events
         void RemoveListener(IEventListener<T> listener);
         void RemoveListener(UnityAction<T> callback);
         void RemoveListener(ICallbackHandle callbackHandle);
-        void RemoveAllListeners();
+    }
 
+    public interface IEvent : IReadOnlyEvent
+    {
+        void Invoke();
+        void InvokeSilently();
+    }
+
+    public interface IEvent<T> : IReadOnlyEvent<T>
+    {
         void Invoke(T argument);
         void InvokeSilently(T argument);
     }
