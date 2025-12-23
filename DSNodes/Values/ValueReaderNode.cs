@@ -23,7 +23,7 @@ namespace Celeste.DS.Nodes.Values
             TValue valueParameter = GetInputValue(nameof(value), value);
             if (valueParameter == null)
             {
-                Debug.LogAssertion($"Could not find value parameter for ValueReaderNode {name} in DataGraph {graph.name}.  Default value was null? {value == null}.");
+                Debug.Assert(Application.isPlaying, $"Could not find value parameter for ValueReaderNode {name} in DataGraph {graph.name}.  Default value was null? {value == null}.");
                 return default;
             }
 
