@@ -16,8 +16,8 @@ namespace Celeste.LiveOps.Components
         [Serializable]
         public class CompletionRewardData : ComponentData
         {
-            public int rewardGuid;
-            public bool completionAwardRewarded;
+            public int RewardGuid;
+            public bool CompletionAwardRewarded;
         }
 
         #endregion
@@ -30,19 +30,19 @@ namespace Celeste.LiveOps.Components
         public int GetCompletionRewardGuid(Instance instance)
         {
             CompletionRewardData rewardData = instance.data as CompletionRewardData;
-            return rewardData.rewardGuid;
+            return rewardData.RewardGuid;
         }
 
         public Reward GetCompletionReward(Instance instance, RewardCatalogue rewardCatalogue)
         {
             CompletionRewardData rewardData = instance.data as CompletionRewardData;
-            return rewardCatalogue.MustFindByGuid(rewardData.rewardGuid);
+            return rewardCatalogue.MustFindByGuid(rewardData.RewardGuid);
         }
 
         public bool HasCompletionRewardBeenAwarded(Instance instance)
         {
             CompletionRewardData rewardData = instance.data as CompletionRewardData;
-            return rewardData.completionAwardRewarded;
+            return rewardData.CompletionAwardRewarded;
         }
 
         public void AwardCompletionReward(Instance instance, RewardCatalogue rewardCatalogue, int rewardMultiplier)
@@ -52,7 +52,7 @@ namespace Celeste.LiveOps.Components
             reward.AwardReward(rewardMultiplier);
         
             CompletionRewardData rewardData = instance.data as CompletionRewardData;
-            rewardData.completionAwardRewarded = true;
+            rewardData.CompletionAwardRewarded = true;
             instance.events.ComponentDataChanged.Invoke();
         }
     }

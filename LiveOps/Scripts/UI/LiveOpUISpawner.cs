@@ -45,7 +45,7 @@ namespace Celeste.LiveOps.UI
             spawnedUI.Add((liveOp, loadRequest.Asset));
         }
 
-        private void TryRemoveWidget(LiveOp liveOp)
+        private void TryRemoveUI(LiveOp liveOp)
         {
             // Remove spawning UI if it exists
             {
@@ -84,7 +84,7 @@ namespace Celeste.LiveOps.UI
             }
             else
             {
-                TryRemoveWidget(liveOp);
+                TryRemoveUI(liveOp);
             }
         }
 

@@ -14,7 +14,7 @@ namespace Celeste.LiveOps
         [Serializable]
         public class WidgetFromPrefabAssetData : ComponentData
         {
-            public string prefabKey;
+            public string PrefabKey;
         }
 
         #endregion
@@ -28,7 +28,7 @@ namespace Celeste.LiveOps
         {
             WidgetFromPrefabAssetData data = instance.data as WidgetFromPrefabAssetData;
             
-            return assets.InstantiateAsync(data.prefabKey, parent);
+            return assets.InstantiateAsync(data.PrefabKey, parent);
         }
     }
 }

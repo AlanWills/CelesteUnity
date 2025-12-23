@@ -81,6 +81,7 @@ Transform:
   - {fileID: 1364674805249414442}
   - {fileID: 2942837745987137566}
   - {fileID: 2534525828020179152}
+  - {fileID: 2397962656364661221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1317833093934125512
@@ -99,6 +100,51 @@ MonoBehaviour:
   assetsToLoad:
   - {fileID: 1317833093620173798}
   - {fileID: 1317833093552757122}
+--- !u!1 &2417943798134890285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2397962656364661221}
+  - component: {fileID: 8417243383411978809}
+  m_Layer: 0
+  m_Name: ScheduledCallbacksManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2397962656364661221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2417943798134890285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1317833093934125513}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8417243383411978809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2417943798134890285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5705bb6217172d94db6e2da3252e866e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Celeste.Core::Celeste.Core.ScheduledCallbackManager
+  scheduledCallbacks: {fileID: 11400000, guid: 0a82179c33ce5814db9bd7870e0c1224, type: 2}
 --- !u!1 &6471104288113220385
 GameObject:
   m_ObjectHideFlags: 0

@@ -145,6 +145,15 @@ namespace Celeste.LiveOps
                 yield break;
             }
 
+            if (liveOpDTO.isRecurring)
+            {
+                // Adjust the start timestamp if the liveops is recurring to put the start timestamp at the latest time in the past
+                // it could've started.  This greatly simplifies further scheduling
+                long timestampDiff = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
+                long numRepeats = timestampDiff / liveOpDTO.repeatsAfter;
+                liveOpStartTimestamp = startTimestamp + numRepeats * liveOpDTO.repeatsAfter;
+            }
+
             LiveOp liveOp = new LiveOp(
                 liveOpType,
                 liveOpSubType,
