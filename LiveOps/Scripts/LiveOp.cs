@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Events;
+using Celeste.Events;
 
 namespace Celeste.LiveOps
 {
@@ -22,9 +22,9 @@ namespace Celeste.LiveOps
             LiveOpConstants.NO_PROGRESS,
             LiveOpConstants.NO_ASSETS);
 
-        public UnityEvent<LiveOp> StateChanged { get; } = new UnityEvent<LiveOp>();
-        public UnityEvent<LiveOp> ProgressChanged { get; } = new UnityEvent<LiveOp>();
-        public UnityEvent<LiveOp> DataChanged { get; } = new UnityEvent<LiveOp>();
+        public IReadOnlyEvent<LiveOpStateChangedArgs> StateChanged => onStateChanged;
+        public IReadOnlyEvent<LiveOp> ProgressChanged => onProgressChanged;
+        public IReadOnlyEvent<LiveOp> DataChanged => onDataChanged;
 
         public InterfaceHandle<ILiveOpTimer> Timer { get; }
         public InterfaceHandle<ILiveOpProgress> Progress { get; }
@@ -72,8 +72,10 @@ namespace Celeste.LiveOps
             {
                 if (liveOpState != value)
                 {
+                    LiveOpState oldState = liveOpState;
                     liveOpState = value;
-                    StateChanged.Invoke(this);
+                    LiveOpStateChangedArgs args = new LiveOpStateChangedArgs(this, new ValueChangedArgs<LiveOpState>(oldState, value));
+                    onStateChanged.Invoke(args);
                 }
             }
         }
@@ -81,6 +83,9 @@ namespace Celeste.LiveOps
         private LiveOpComponents Components { get; }
 
         private LiveOpState liveOpState;
+        private GuaranteedLiveOpStateChangedEvent onStateChanged = new GuaranteedLiveOpStateChangedEvent();
+        private GuaranteedLiveOpEvent onProgressChanged = new GuaranteedLiveOpEvent();
+        private GuaranteedLiveOpEvent onDataChanged = new GuaranteedLiveOpEvent();
 
         #endregion
 
@@ -101,7 +106,7 @@ namespace Celeste.LiveOps
             StartTimestamp = startTimestamp;
             IsRecurring = isRecurring;
             RepeatsAfter = repeatsAfter;
-            State = liveOpState;
+            this.liveOpState = liveOpState; // Set private field to avoid triggering
             Components = components;
             Timer = timer;
             Progress = progress;
@@ -214,12 +219,12 @@ namespace Celeste.LiveOps
 
         private void OnProgressComponentDataChanged()
         {
-            ProgressChanged.Invoke(this);
+            onProgressChanged.Invoke(this);
         }
 
         private void OnDataChanged()
         {
-            DataChanged.Invoke(this);
+            onDataChanged.Invoke(this);
         }
 
         #endregion

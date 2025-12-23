@@ -3,6 +3,7 @@ using Celeste.Components;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.LiveOps.UI
@@ -87,16 +88,9 @@ namespace Celeste.LiveOps.UI
             return lhs.Type == rhs.Type && lhs.SubType == rhs.SubType;
         }
 
-        #region Callbacks
-
-        public void OnLiveOpAdded(LiveOp liveOp)
+        private void SpawnOrRemoveWidgetBasedOnState(LiveOpState liveOpState, LiveOp liveOp)
         {
-            OnLiveOpStateChanged(liveOp);
-        }
-
-        public void OnLiveOpStateChanged(LiveOp liveOp)
-        {
-            if (liveOp.State == LiveOpState.Running)
+            if (liveOpState == LiveOpState.Running)
             {
                 TrySpawnWidget(liveOp);
             }
@@ -104,6 +98,18 @@ namespace Celeste.LiveOps.UI
             {
                 TryRemoveWidget(liveOp);
             }
+        }
+
+        #region Callbacks
+
+        public void OnLiveOpAdded(LiveOp liveOp)
+        {
+            SpawnOrRemoveWidgetBasedOnState(liveOp.State, liveOp);
+        }
+
+        public void OnLiveOpStateChanged(LiveOpStateChangedArgs args)
+        {
+            SpawnOrRemoveWidgetBasedOnState(args.State.newValue, args.LiveOp);
         }
 
         #endregion

@@ -90,7 +90,7 @@ namespace Celeste.Debug.Menus
             var verticalScope = new GUILayout.VerticalScope(GUI.skin.box);
             
             // Header
-            GUILayout.Label(sectionTitle, CelesteGUIStyles.BoldLabel);
+            GUILayout.Label(sectionTitle, CelesteGUIStyles.BoldLabel.Colour(Color.white));
 
             return verticalScope;
         }

@@ -7,6 +7,9 @@ namespace Celeste.Events
 {
     [Serializable]
     public class LiveOpUnityEvent : UnityEvent<LiveOp> { }
+    
+    [Serializable]
+    public class GuaranteedLiveOpEvent : GuaranteedParameterisedEvent<LiveOpEvent, LiveOp> { }
 
     [Serializable]
     [CreateAssetMenu(fileName = nameof(LiveOpEvent), menuName = CelesteMenuItemConstants.EVENTS_MENU_ITEM + "Live Ops/Live Op Event", order = CelesteMenuItemConstants.EVENTS_MENU_ITEM_PRIORITY)]

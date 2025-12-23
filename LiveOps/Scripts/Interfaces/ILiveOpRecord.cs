@@ -8,6 +8,9 @@ namespace Celeste.LiveOps
         bool IsEnabled { get; }
         LiveOpState State { get; }
         LiveOp LiveOp { get; }
+        
+        IReadOnlyEvent<ValueChangedArgs<bool>> IsEnabledChanged { get; }
+        IReadOnlyEvent DataChanged { get; }
 
         void Enable(LiveOp liveOp);
         void Disable();
@@ -16,11 +19,5 @@ namespace Celeste.LiveOps
 
         void Finish();
         void Complete();
-
-        void AddIsEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
-        void RemoveIsEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback);
-
-        void AddDataChangedCallback(UnityAction callback);
-        void RemoveDataChangedCallback(UnityAction callback);
     }
 }

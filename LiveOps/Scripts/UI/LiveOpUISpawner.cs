@@ -3,6 +3,7 @@ using Celeste.Components;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Celeste.Events;
 using UnityEngine;
 
 namespace Celeste.LiveOps.UI
@@ -68,17 +69,9 @@ namespace Celeste.LiveOps.UI
             }
         }
 
-        #region Callbacks
-
-        public void OnLiveOpAdded(LiveOp liveOp)
+        private void SpawnOrRemoveWidgetBasedOnState(LiveOpState state, LiveOp liveOp)
         {
-            OnLiveOpStateChanged(liveOp);
-        }
-
-        public void OnLiveOpStateChanged(LiveOp liveOp)
-        {
-            if (liveOp.State == LiveOpState.Running ||
-                liveOp.State == LiveOpState.Completed)
+            if (state == LiveOpState.Running || state == LiveOpState.Completed)
             {
                 TrySpawnUI(liveOp);
             }
@@ -86,6 +79,18 @@ namespace Celeste.LiveOps.UI
             {
                 TryRemoveUI(liveOp);
             }
+        }
+
+        #region Callbacks
+
+        public void OnLiveOpAdded(LiveOp liveOp)
+        {
+            SpawnOrRemoveWidgetBasedOnState(liveOp.State, liveOp);
+        }
+
+        public void OnLiveOpStateChanged(LiveOpStateChangedArgs args)
+        {
+            SpawnOrRemoveWidgetBasedOnState(args.State.newValue, args.LiveOp);
         }
 
         #endregion

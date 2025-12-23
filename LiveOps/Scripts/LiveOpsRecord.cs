@@ -26,7 +26,7 @@ namespace Celeste.LiveOps
 
         [Header("Events")]
         [SerializeField] private LiveOpEvent liveOpAdded;
-        [SerializeField] private LiveOpEvent liveOpStateChanged;
+        [SerializeField] private LiveOpStateChangedEvent liveOpStateChanged;
         [SerializeField] private Events.Event save;
 
         [NonSerialized] private List<LiveOp> liveOps = new List<LiveOp>();
@@ -181,7 +181,7 @@ namespace Celeste.LiveOps
 
         public bool TryFindNextScheduledLiveOp<T>(out LiveOp nextScheduledLiveOp) where T : class
         {
-            LiveOp earliestDailyTasksLiveOp = null;
+            LiveOp nextLiveOp = null;
 
             for (int i = 0, n = NumLiveOps; i < n; ++i)
             {
@@ -189,14 +189,14 @@ namespace Celeste.LiveOps
 
                 if (liveOp.HasComponent<T>() && liveOp.StartTimestamp > GameTime.UtcNowTimestamp)
                 {
-                    if (earliestDailyTasksLiveOp == null || earliestDailyTasksLiveOp.StartTimestamp > liveOp.StartTimestamp)
+                    if (nextLiveOp == null || nextLiveOp.StartTimestamp > liveOp.StartTimestamp)
                     {
-                        earliestDailyTasksLiveOp = liveOp;
+                        nextLiveOp = liveOp;
                     }
                 }
             }
 
-            nextScheduledLiveOp = earliestDailyTasksLiveOp;
+            nextScheduledLiveOp = nextLiveOp;
             return nextScheduledLiveOp != null;
         }
 
@@ -330,12 +330,12 @@ namespace Celeste.LiveOps
             liveOp.DataChanged.RemoveListener(OnLiveOpDataChanged);
         }
 
-        private void OnLiveOpStateChanged(LiveOp liveOp)
+        private void OnLiveOpStateChanged(LiveOpStateChangedArgs args)
         {
-            Schedule(liveOp);
+            Schedule(args.LiveOp);
 
             save.Invoke();
-            liveOpStateChanged.Invoke(liveOp);
+            liveOpStateChanged.Invoke(args);
         }
 
         private void OnLiveOpProgressChanged(LiveOp liveOp)
