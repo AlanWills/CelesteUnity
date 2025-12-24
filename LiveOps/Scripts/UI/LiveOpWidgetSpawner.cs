@@ -15,8 +15,8 @@ namespace Celeste.LiveOps.UI
 
         [SerializeField] private LiveOpsRecord liveOps;
 
-        private List<ValueTuple<LiveOp, ILoadRequest<GameObject>>> spawningWidgets = new List<(LiveOp, ILoadRequest<GameObject>)>();
-        private List<ValueTuple<LiveOp, GameObject>> spawnedWidgets = new List<(LiveOp, GameObject)>();
+        private readonly List<ValueTuple<LiveOp, ILoadRequest<GameObject>>> spawningWidgets = new();
+        private readonly List<ValueTuple<LiveOp, GameObject>> spawnedWidgets = new();
 
         #endregion
 
@@ -26,7 +26,8 @@ namespace Celeste.LiveOps.UI
         {
             for (int i = 0, n = liveOps.NumLiveOps; i < n; ++i)
             {
-                TrySpawnWidget(liveOps.GetLiveOp(i));
+                LiveOp liveOp = liveOps.GetLiveOp(i);
+                SpawnOrRemoveWidgetBasedOnState(liveOp, liveOp.State);
             }
         }
 
@@ -50,7 +51,7 @@ namespace Celeste.LiveOps.UI
         {
             // If the live op is running, we add the widget
             UnityEngine.Debug.Assert(!spawnedWidgets.Exists(x => x.Item1 == liveOp), $"Widget already spawned for live op - the liveop may have been accidentally duplicated.");
-            ILoadRequest<GameObject> loadRequest = widget.iFace.LoadWidget(widget.instance, assets.iFace, transform);
+            ILoadRequest<GameObject> loadRequest = widget.iFace.SpawnWidget(widget.instance, assets.iFace, transform);
             spawningWidgets.Add((liveOp, loadRequest));
 
             yield return loadRequest;
@@ -88,9 +89,10 @@ namespace Celeste.LiveOps.UI
             return lhs.Type == rhs.Type && lhs.SubType == rhs.SubType;
         }
 
-        private void SpawnOrRemoveWidgetBasedOnState(LiveOpState liveOpState, LiveOp liveOp)
+        private void SpawnOrRemoveWidgetBasedOnState(LiveOp liveOp, LiveOpState liveOpState)
         {
-            if (liveOpState == LiveOpState.Running)
+            if (liveOp.TryFindComponent<ILiveOpWidget>(out var liveOpWidget) &&
+                liveOpWidget.iFace.ShouldSpawnWidget(liveOpWidget.instance, liveOpState))
             {
                 TrySpawnWidget(liveOp);
             }
@@ -104,12 +106,12 @@ namespace Celeste.LiveOps.UI
 
         public void OnLiveOpAdded(LiveOp liveOp)
         {
-            SpawnOrRemoveWidgetBasedOnState(liveOp.State, liveOp);
+            SpawnOrRemoveWidgetBasedOnState(liveOp, liveOp.State);
         }
 
         public void OnLiveOpStateChanged(LiveOpStateChangedArgs args)
         {
-            SpawnOrRemoveWidgetBasedOnState(args.State.newValue, args.LiveOp);
+            SpawnOrRemoveWidgetBasedOnState(args.LiveOp, args.State.newValue);
         }
 
         #endregion

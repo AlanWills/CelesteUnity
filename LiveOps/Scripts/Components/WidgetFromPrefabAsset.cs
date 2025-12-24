@@ -2,6 +2,8 @@
 using Celeste.Components;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.Overlays;
 using UnityEngine;
 
 namespace Celeste.LiveOps
@@ -15,6 +17,7 @@ namespace Celeste.LiveOps
         public class WidgetFromPrefabAssetData : ComponentData
         {
             public string PrefabKey;
+            public List<LiveOpState> StatesToShow = new();
         }
 
         #endregion
@@ -24,7 +27,12 @@ namespace Celeste.LiveOps
             return new WidgetFromPrefabAssetData();
         }
 
-        public ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets, Transform parent)
+        public bool ShouldSpawnWidget(Instance instance, LiveOpState state)
+        {
+            return (instance.data as WidgetFromPrefabAssetData).StatesToShow.Contains(state);
+        }
+
+        public ILoadRequest<GameObject> SpawnWidget(Instance instance, ILiveOpAssets assets, Transform parent)
         {
             WidgetFromPrefabAssetData data = instance.data as WidgetFromPrefabAssetData;
             
