@@ -1,9 +1,7 @@
 ﻿using Celeste.Assets;
 using Celeste.Components;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 namespace Celeste.LiveOps
