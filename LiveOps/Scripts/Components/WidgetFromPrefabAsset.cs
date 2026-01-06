@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Celeste.LiveOps
 {
     [CreateAssetMenu(fileName = nameof(WidgetFromPrefabAsset), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Widget/From Prefab Asset", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class WidgetFromPrefabAsset : Celeste.Components.BaseComponent, ILiveOpWidget
+    public class WidgetFromPrefabAsset : BaseComponent, ILiveOpWidget
     {
         #region Save Data
 
@@ -30,11 +30,11 @@ namespace Celeste.LiveOps
             return (instance.data as WidgetFromPrefabAssetData).StatesToShow.Contains(state);
         }
 
-        public ILoadRequest<GameObject> SpawnWidget(Instance instance, ILiveOpAssets assets, Transform parent)
+        public ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets)
         {
             WidgetFromPrefabAssetData data = instance.data as WidgetFromPrefabAssetData;
             
-            return assets.InstantiateAsync(data.PrefabKey, parent);
+            return assets.LoadAsync(data.PrefabKey);
         }
     }
 }

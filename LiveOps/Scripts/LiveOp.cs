@@ -32,7 +32,7 @@ namespace Celeste.LiveOps
 
         public long Type { get; }
         public long SubType { get; }
-        public long StartTimestamp { get; }
+        public long StartTimestamp { get; private set; }
         public bool IsRecurring { get; }
         public long RepeatsAfter { get; }
         public bool CanSchedule
@@ -83,9 +83,9 @@ namespace Celeste.LiveOps
         private LiveOpComponents Components { get; }
 
         private LiveOpState liveOpState;
-        private GuaranteedLiveOpStateChangedEvent onStateChanged = new GuaranteedLiveOpStateChangedEvent();
-        private GuaranteedLiveOpEvent onProgressChanged = new GuaranteedLiveOpEvent();
-        private GuaranteedLiveOpEvent onDataChanged = new GuaranteedLiveOpEvent();
+        private GuaranteedLiveOpStateChangedEvent onStateChanged = new();
+        private GuaranteedLiveOpEvent onProgressChanged = new();
+        private GuaranteedLiveOpEvent onDataChanged = new();
 
         #endregion
 
@@ -140,15 +140,14 @@ namespace Celeste.LiveOps
             }
         }
 
+        public void ComingSoon()
+        {
+            State = LiveOpState.ComingSoon;
+        }
+
         public void Start()
         {
             State = LiveOpState.Running;
-
-            if (IsRecurring)
-            {
-                // Reset the progress of this recurring liveop
-                Progress.iFace.ResetProgress(Progress.instance);
-            }
         }
 
         public void Complete()
@@ -159,6 +158,16 @@ namespace Celeste.LiveOps
         public void Finish()
         {
             State = LiveOpState.Finished;
+        }
+
+        public void AdjustStartTimestamp(long newStartTimestamp)
+        {
+            StartTimestamp = newStartTimestamp;
+        }
+
+        public void ResetProgress()
+        {
+            Progress.iFace.ResetProgress(Progress.instance);
         }
 
         public ComponentHandle<BaseComponent> GetComponent(int index)

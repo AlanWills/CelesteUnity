@@ -66,6 +66,11 @@ namespace Celeste.LiveOps.Components
             IsLoaded = true;
         }
 
+        public ILoadRequest<GameObject> LoadAsync(string key)
+        {
+            return LoadAddressableRequest<GameObject>.FromOperation(Addressables.LoadAssetAsync<GameObject>(key));
+        }
+
         public ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent)
         {
             return LoadAddressableRequest<GameObject>.FromOperation(Addressables.InstantiateAsync(key, parent: parent, trackHandle: false));

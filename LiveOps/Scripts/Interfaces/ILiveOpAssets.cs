@@ -11,6 +11,7 @@ namespace Celeste.LiveOps
 
         IEnumerator LoadAssets(Instance instance);
 
+        ILoadRequest<GameObject> LoadAsync(string key);
         ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent);
     }
 
@@ -21,6 +22,11 @@ namespace Celeste.LiveOps
         public IEnumerator LoadAssets(Instance instance)
         {
             yield break;
+        }
+
+        public ILoadRequest<GameObject> LoadAsync(string key)
+        {
+            return LoadAssetRequest<GameObject>.FromNothing();
         }
 
         public ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent)

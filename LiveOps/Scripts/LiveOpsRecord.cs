@@ -101,20 +101,6 @@ namespace Celeste.LiveOps
                 }
             }
 
-            if (liveOpState == LiveOpState.Finished)
-            {
-                UnityEngine.Debug.Log($"Live Op with type {liveOpDTO.type} starting at timestamp {liveOpDTO.startTimestamp} has finished, so will not be added.");
-
-                if (!liveOpDTO.isRecurring)
-                {
-                    // This live op is not recurring so we will not add it
-                    yield break;
-                }
-
-                // Set the state to ComingSoon, so it'll be handled properly when we schedule - we can't do more without the timer
-                liveOpState = LiveOpState.ComingSoon;
-            }
-
             LiveOpComponents liveOpComponents = new LiveOpComponents();
 
             UnityEngine.Debug.Assert(liveOpDTO.IsValid, $"Trying to add an invalid live to the live op record.");
@@ -145,15 +131,6 @@ namespace Celeste.LiveOps
                 yield break;
             }
 
-            if (liveOpDTO.isRecurring)
-            {
-                // Adjust the start timestamp if the liveops is recurring to put the start timestamp at the latest time in the past
-                // it could've started.  This greatly simplifies further scheduling
-                long timestampDiff = GameTime.UtcNowTimestamp - liveOpStartTimestamp;
-                long numRepeats = timestampDiff / liveOpDTO.repeatsAfter;
-                liveOpStartTimestamp = startTimestamp + numRepeats * liveOpDTO.repeatsAfter;
-            }
-
             LiveOp liveOp = new LiveOp(
                 liveOpType,
                 liveOpSubType,
@@ -168,15 +145,7 @@ namespace Celeste.LiveOps
 
             yield return liveOp.Load();
             
-            if (liveOp.CanSchedule)
-            {
-                liveOps.Add(liveOp);
-
-                SetUpLiveOpCallbacks(liveOp);
-                Schedule(liveOp);
-
-                liveOpAdded.Invoke(liveOp);
-            }
+            TrySchedule(liveOp);
         }
 
         public bool TryFindNextScheduledLiveOp<T>(out LiveOp nextScheduledLiveOp) where T : class
@@ -201,6 +170,21 @@ namespace Celeste.LiveOps
         }
 
         #region Scheduling
+
+        private void TrySchedule(LiveOp liveOp)
+        {
+            if (!liveOp.CanSchedule)
+            {
+                return;
+            }
+            
+            liveOps.Add(liveOp);
+
+            SetUpLiveOpCallbacks(liveOp);
+            Schedule(liveOp);
+
+            liveOpAdded.Invoke(liveOp);
+        }
 
         private void Schedule(LiveOp liveOp)
         {
@@ -310,6 +294,23 @@ namespace Celeste.LiveOps
         {
             TearDownLiveOpCallbacks(liveOp);
             liveOps.Remove(liveOp);
+            
+            if (liveOp.IsRecurring)
+            {
+                // Adjust the start timestamp if the liveops is recurring to put the start timestamp at the latest time in the past
+                // it could've started.  This greatly simplifies further scheduling
+                long timestampDiff = GameTime.UtcNowTimestamp - liveOp.StartTimestamp;
+                long numRepeats = timestampDiff / liveOp.RepeatsAfter;
+                long liveOpStartTimestamp = liveOp.StartTimestamp + numRepeats * liveOp.RepeatsAfter;
+                
+                liveOp.AdjustStartTimestamp(liveOpStartTimestamp);
+                liveOp.ResetProgress();
+                
+                //liveOpStateChanged.Invoke(new LiveOpStateChangedArgs(liveOp, new ValueChangedArgs<LiveOpState>(LiveOpState.Finished, LiveOpState.ComingSoon)));
+                liveOp.ComingSoon();
+                
+                TrySchedule(liveOp);
+            }
         }
 
         #endregion

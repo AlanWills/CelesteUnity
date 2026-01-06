@@ -51,14 +51,20 @@ namespace Celeste.LiveOps.UI
         {
             // If the live op is running, we add the widget
             UnityEngine.Debug.Assert(!spawnedWidgets.Exists(x => x.Item1 == liveOp), $"Widget already spawned for live op - the liveop may have been accidentally duplicated.");
-            ILoadRequest<GameObject> loadRequest = widget.iFace.SpawnWidget(widget.instance, assets.iFace, transform);
+            ILoadRequest<GameObject> loadRequest = widget.iFace.LoadWidget(widget.instance, assets.iFace);
             spawningWidgets.Add((liveOp, loadRequest));
 
             yield return loadRequest;
 
             int spawningIndex = spawningWidgets.FindIndex(x => x.Item1 == liveOp);
-            spawningWidgets.RemoveAt(spawningIndex);
-            spawnedWidgets.Add((liveOp, loadRequest.Asset));
+            if (spawningIndex >= 0)
+            {
+                var spawningWidget = spawningWidgets[spawningIndex];
+                spawningWidgets.RemoveAt(spawningIndex);
+
+                GameObject spawnedWidget = Instantiate(spawningWidget.Item2.Asset, transform);
+                spawnedWidgets.Add((liveOp, spawnedWidget));
+            }
         }
 
         private void TryRemoveWidget(LiveOp liveOp)

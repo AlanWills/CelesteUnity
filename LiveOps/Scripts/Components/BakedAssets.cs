@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Celeste.LiveOps.Components
 {
     [CreateAssetMenu(fileName = nameof(BakedAssets), menuName = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM + "Assets/Baked", order = CelesteMenuItemConstants.LIVEOPS_MENU_ITEM_PRIORITY)]
-    public class BakedAssets : Celeste.Components.BaseComponent, ILiveOpAssets
+    public class BakedAssets : BaseComponent, ILiveOpAssets
     {
         #region Baked Asset
 
@@ -32,6 +32,13 @@ namespace Celeste.LiveOps.Components
         public IEnumerator LoadAssets(Instance instance)
         {
             yield break;
+        }
+
+        public ILoadRequest<GameObject> LoadAsync(string key)
+        {
+            GameObject foundAsset = prefabs.Find(x => string.CompareOrdinal(key, x.key) == 0).prefab;
+            UnityEngine.Debug.Assert(foundAsset != null, $"Could not find baked asset with key {key}.");
+            return LoadAssetRequest<GameObject>.FromAsset(foundAsset);
         }
 
         public ILoadRequest<GameObject> InstantiateAsync(string key, Transform parent)

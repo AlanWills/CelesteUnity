@@ -7,7 +7,7 @@ namespace Celeste.LiveOps
     public interface ILiveOpWidget
     {
         bool ShouldSpawnWidget(Instance instance, LiveOpState state);
-        ILoadRequest<GameObject> SpawnWidget(Instance instance, ILiveOpAssets assets, Transform parent);
+        ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets);
     }
 
     public class NoLiveOpWidget : ILiveOpWidget
@@ -17,7 +17,7 @@ namespace Celeste.LiveOps
             return false;
         }
 
-        public ILoadRequest<GameObject> SpawnWidget(Instance instance, ILiveOpAssets assets, Transform parent)
+        public ILoadRequest<GameObject> LoadWidget(Instance instance, ILiveOpAssets assets)
         {
             return LoadAssetRequest<GameObject>.FromNothing();
         }
