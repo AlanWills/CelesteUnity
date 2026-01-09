@@ -2,7 +2,7 @@
     "name": "Celeste.Lua",
     "rootNamespace": "Celeste.Lua",
     "references": [
-        "Luny",
+        "Lua.Unity",
         "Celeste.Debug",
         "Celeste.UnityProject"
     ],
@@ -15,7 +15,7 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "de.codesmile.luny",
+            "name": "de.codesmile.luacsharp",
             "expression": "0.0.1",
             "define": "USE_LUA"
         }

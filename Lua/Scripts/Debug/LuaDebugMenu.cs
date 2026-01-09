@@ -1,6 +1,11 @@
 ﻿#if USE_LUA
+using System;
 using Celeste.Debug.Menus;
-using Luny;
+using Lua;
+using Lua.IO;
+using Lua.Platforms;
+using Lua.Standard;
+using Lua.Unity;
 using UnityEngine;
 
 namespace Celeste.Lua.Debug
@@ -8,15 +13,26 @@ namespace Celeste.Lua.Debug
     [CreateAssetMenu(fileName = nameof(LuaDebugMenu), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM + "Debug/Lua Debug Menu", order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
     public class LuaDebugMenu : DebugMenu
     {
-        [SerializeField] private LunyLuaAsset debugScriptAsset;
+        private LuaState state;
         
-        protected override void OnDrawMenu()
+        protected override void OnShowMenu()
         {
-            if (GUILayout.Button("Run Debug Script"))
-            {
-                LunyLuaScript debugScript = LunyLuaScript.LoadFromFileSystem(debugScriptAsset);
-                LunyRuntime.Singleton.Lua.RunScript(debugScript);
-            }
+            base.OnShowMenu();
+            
+            var platform = new LuaPlatform(
+                fileSystem: new FileSystem(),
+                osEnvironment: new UnityApplicationOsEnvironment(),
+                standardIO: new UnityStandardIO(),
+                timeProvider: TimeProvider.System);
+            state = LuaState.Create(platform);
+            state.OpenStandardLibraries();
+            state.OpenUnityLibraries();
+            state.ModuleLoader = new AddressablesModuleLoader();
+        }
+
+        protected override async void OnDrawMenu()
+        {
+            await state.DoStringAsync("if GUILayout.button(\"Test\") then print(\"Wubba Lubba Dub Dub\") end");
         }
     }
 }
