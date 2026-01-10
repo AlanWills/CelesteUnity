@@ -20,7 +20,7 @@ namespace Celeste.Memory
         [SerializeField, Min(0)]
         private uint allocateOnStart = 5;
 
-        private List<GameObject> cache = new List<GameObject>();
+        private readonly List<GameObject> cache = new List<GameObject>();
         private int allocated = 0;
 
         #endregion
@@ -110,7 +110,7 @@ namespace Celeste.Memory
 #if ALLOCATOR_CHECKS
             if (!cache.Contains(gameObject))
             {
-                Debug.LogAssertionFormat("GameObject {0} is not from allocator {1}", gameObject.name, name);
+                Debug.LogAssertion($"GameObject {gameObject} is not from allocator {name}");
                 return;
             }
 #endif
@@ -130,7 +130,7 @@ namespace Celeste.Memory
 
         public void DeallocateAll()
         {
-            for (int i = 0, n = cache.Count; i < n; ++i)
+            for (int i = 0, n = cache.Count; i < n && cache[i] != null; ++i)
             {
                 Deallocate(cache[i]);
             }
