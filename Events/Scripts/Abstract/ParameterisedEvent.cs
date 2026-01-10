@@ -12,7 +12,7 @@ namespace Celeste.Events
         [SerializeField] private string helpText;
 #endif
 
-        private List<UnityActionCallback<T>> gameEventListeners = new List<UnityActionCallback<T>>();
+        private readonly List<UnityActionCallback<T>> gameEventListeners = new();
 
         #endregion
 
