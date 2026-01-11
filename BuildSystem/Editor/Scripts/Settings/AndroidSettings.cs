@@ -1,7 +1,9 @@
 ﻿using Celeste;
 using Celeste.Tools.Attributes.GUI;
 using System.Text;
+#if UNITY_6000_0_OR_NEWER
 using Unity.Android.Types;
+#endif
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
