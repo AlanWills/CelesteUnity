@@ -3,10 +3,17 @@ projectPath = ""
 
 pipeline 
 {
-    agent any
-	environment 
+    agent {
+		node {
+			label 'built-in'
+		}
+	}
+	options {
+		skipDefaultCheckout()
+	}
+    environment 
     {
-        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.45f1/Editor/Unity.exe'
+        UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.2.7f2/Editor/Unity.exe'
     }
     stages 
     {
@@ -31,6 +38,37 @@ pipeline
                 }
             }
         }
+		stage('Clean Workspace') {
+			steps {
+				dir(env.WORKSPACE) {
+					bat """
+					git reset --hard HEAD
+					git clean -fdx -e Library -e Assets/Settings/PlayMode -e Logs -e Temp -e UserSettings
+					"""
+				}
+			}
+		}
+		stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'master']],
+                    userRemoteConfigs: [[
+                        url: 'git@github.com:AlanWills/Just-One.git',
+                        credentialsId: 'Alan-SSH-Key'
+                    ]],
+                    extensions: [
+						[$class: 'RelativeTargetDirectory', relativeTargetDir: '.'], // normal checkout
+						[$class: 'SubmoduleOption', 
+							recursiveSubmodules: true,        // clone submodules recursively
+							trackingSubmodules: false,        // set to true if you want to track branches in submodules
+							disableSubmodules: false,         // ensure submodules are not disabled
+							parentCredentials: true           // use parent repo credentials for submodules
+						]
+					]
+                ])
+            }
+        }
         stage('Build Unity Project')
         {
             steps
@@ -40,12 +78,11 @@ pipeline
                     buildName "iOS-" + CONFIGURATION
                     
                     methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "iOSPlayer"
-                    projectPath = WORKSPACE.replace('\\', '/')
-                    
-                    def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
-                     
-                    echo "Executing Unity Build Command: ${unityCommand}"
-                    bat unityCommand
+                    projectPath = "\"${env.WORKSPACE.replace('\\','/')}\""
+					def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
+
+					echo "Executing Unity Build Command: ${unityCommand}"
+					bat unityCommand
 
                     readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
 					
