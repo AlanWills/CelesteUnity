@@ -25,9 +25,17 @@ namespace Celeste.RemoteConfig.Debug
 
         protected override void OnDrawMenu()
         {
-            if (GUILayout.Button("Refresh"))
+            using (new GUILayout.HorizontalScope())
             {
-                remoteConfigJson = remoteConfigRecord.ToJson();
+                if (GUILayout.Button("Fetch"))
+                {
+                    remoteConfigRecord.FetchData();
+                }
+                
+                if (GUILayout.Button("Refresh Fetched Json"))
+                {
+                    remoteConfigJson = remoteConfigRecord.ToJson();
+                }    
             }
 
             using (new GUILayout.HorizontalScope())
@@ -51,7 +59,10 @@ namespace Celeste.RemoteConfig.Debug
                 }
             }
 
-            GUILayout.Label(remoteConfigJson);
+            using (Section("Fetched Json"))
+            {
+                GUILayout.Label(remoteConfigJson);
+            }
         }
     }
 }

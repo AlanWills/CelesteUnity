@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505bd33d51652af4a870b63ec508241b, type: 3}
+  m_Name: RemoteConfigDebugMenu
+  m_EditorClassIdentifier: Celeste.RemoteConfig::Celeste.RemoteConfig.Debug.RemoteConfigDebugMenu
+  displayName: Remote Config
+  menuPriority: 0
+  remoteConfigRecord: {fileID: 11400000, guid: a14e286dc19b9854aaeaa6e71212c32d, type: 2}

@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.RemoteConfig.Editor",
+    "rootNamespace": "CelesteEditor.RemoteConfig",
+    "references": [
+        "Celeste.RemoteConfig",
+        "Celeste.Persistence.Editor",
+        "Celeste.Persistence"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

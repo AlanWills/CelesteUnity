@@ -1,4 +1,5 @@
 ﻿using Celeste.Persistence;
+using Celeste.RemoteConfig.Objects;
 using Celeste.RemoteConfig.Persistence;
 using UnityEngine;
 
@@ -13,11 +14,32 @@ namespace Celeste.RemoteConfig
         protected override string FileName => FILE_NAME;
 
         [SerializeField] private RemoteConfigRecord remoteConfigRecord;
+        [SerializeField] private RemoteConfigEnvironmentIds environmentIds;
 #if UNITY_REMOTE_CONFIG
         [SerializeField] private DataSource defaultDataSource = DataSource.Unity;
 #else
         [SerializeField] private DataSource defaultDataSource = DataSource.Disabled;
 #endif
+#if UNITY_EDITOR
+        [Header("Editor Only")]
+        [SerializeField] private bool editorOnly_FetchOnStart = true;
+#endif
+
+        #endregion
+        
+        #region Unity Methods
+
+        protected override void Start()
+        {
+            base.Start();
+
+#if UNITY_EDITOR
+            if (editorOnly_FetchOnStart)
+            {
+                remoteConfigRecord.FetchData();
+            }
+#endif
+        }
 
         #endregion
 
@@ -25,7 +47,9 @@ namespace Celeste.RemoteConfig
 
         protected override void Deserialize(RemoteConfigManagerDTO dto)
         {
-            remoteConfigRecord.Initialize((DataSource)dto.dataSource);
+            DataSource dataSource = (DataSource)dto.dataSource;
+            remoteConfigRecord.Initialize(dataSource, environmentIds);
+            remoteConfigRecord.Deserialize(dto);
         }
 
         protected override RemoteConfigManagerDTO Serialize()
@@ -35,7 +59,7 @@ namespace Celeste.RemoteConfig
 
         protected override void SetDefaultValues()
         {
-            remoteConfigRecord.Initialize(defaultDataSource);
+            remoteConfigRecord.Initialize(defaultDataSource, environmentIds);
         }
 
         #endregion

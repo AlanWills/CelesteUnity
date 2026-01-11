@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda0b420f76b9514a9f77ead65e166fa, type: 3}
+  m_Name: RemoteConfigRecord
+  m_EditorClassIdentifier: Celeste.RemoteConfig::Celeste.RemoteConfig.RemoteConfigRecord
+  isDebugBuild: {fileID: 11400000, guid: 50039586d3d71834c8dbb6af9cae319c, type: 2}
+  unityProductionEnvironmentID: e8fc4f7d-2514-4aea-9bce-7f4622ad8a54
+  unityDevelopmentEnvironmentID: d169e4a2-6c86-4539-ab4d-a3c560109707
+  fetchedDataChanged: {fileID: 11400000, guid: d33ac7e7e92326f4486f98e5dbfcc4b3, type: 2}
+  save: {fileID: 11400000, guid: db9d763c522e0314c838b5131e94f4cf, type: 2}

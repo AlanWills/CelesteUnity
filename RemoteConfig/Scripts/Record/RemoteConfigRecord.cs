@@ -4,14 +4,17 @@ using FullSerializer;
 using System;
 using System.Threading.Tasks;
 using Celeste.DataStructures;
+using Celeste.RemoteConfig.Objects;
 using UnityEngine;
 
 namespace Celeste.RemoteConfig
 {
     public enum DataSource
     {
-        Unity,
         Disabled,
+#if UNITY_REMOTE_CONFIG
+        Unity = 1
+#endif
     }
 
     [CreateAssetMenu(fileName = nameof(RemoteConfigRecord), order = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM_PRIORITY, menuName = CelesteMenuItemConstants.REMOTECONFIG_MENU_ITEM + "Remote Config Record")]
@@ -39,12 +42,10 @@ namespace Celeste.RemoteConfig
         }
 
         [SerializeField] private BoolValue isDebugBuild;
-        [SerializeField] private string unityProductionEnvironmentID;
-        [SerializeField] private string unityDevelopmentEnvironmentID;
         [SerializeField] private Events.Event fetchedDataChanged;
         [SerializeField] private Events.Event save;
 
-        [NonSerialized] private string environmentID;
+        [NonSerialized] private RemoteConfigEnvironmentIds environmentIDs;
         [NonSerialized] private string fetchedJson = string.Empty;
         [NonSerialized] private fsDataDictionary fetchedData = new fsDataDictionary();
         [NonSerialized] private IRemoteConfigImpl impl = new DisabledRemoteConfigImpl();
@@ -52,8 +53,10 @@ namespace Celeste.RemoteConfig
 
         #endregion
 
-        public void Initialize(DataSource dataSource)
-        {   
+        public void Initialize(DataSource dataSource, RemoteConfigEnvironmentIds environmentIds)
+        {
+            environmentIDs = environmentIds;
+            
             SetDataSourceInternal(dataSource);
         }
 
@@ -66,13 +69,11 @@ namespace Celeste.RemoteConfig
                 default:
                 case DataSource.Disabled:
                     impl = new DisabledRemoteConfigImpl();
-                    environmentID = "";
                     break;
 
 #if UNITY_REMOTE_CONFIG
                 case DataSource.Unity:
                     impl = new UnityRemoteConfigImpl();
-                    environmentID = isDebugBuild.Value ? unityDevelopmentEnvironmentID : unityProductionEnvironmentID;
                     break;
 #endif
             }
@@ -84,6 +85,8 @@ namespace Celeste.RemoteConfig
         public void Deserialize(RemoteConfigManagerDTO remoteConfigManagerDTO)
         {
             DeserializeData(remoteConfigManagerDTO.cachedConfig);
+            
+            fetchedDataChanged.Invoke();
         }
 
         private void DeserializeData(string json)
@@ -115,7 +118,7 @@ namespace Celeste.RemoteConfig
 
         public async Task FetchData()
         {
-            await impl.FetchData(environmentID);
+            await impl.FetchData(environmentIDs, isDebugBuild.Value);
         }
 
         public string ToJson()

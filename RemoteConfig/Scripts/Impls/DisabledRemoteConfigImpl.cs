@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Celeste.RemoteConfig.Objects;
 
 namespace Celeste.RemoteConfig
 {
     public class DisabledRemoteConfigImpl : IRemoteConfigImpl
     {
-        public Task FetchData(string environmentId)
+        public Task FetchData(RemoteConfigEnvironmentIds environmentIds, bool isDebugBuild)
         {
             return Task.CompletedTask;
         }

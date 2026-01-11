@@ -3,6 +3,7 @@ using Celeste.Logic;
 using Celeste.Objects;
 using Celeste.Parameters;
 using System;
+using Celeste.Tools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,13 +16,11 @@ namespace Celeste.Features
 
         public int Guid
         {
-            get { return guid; }
+            get => guid;
             set
             {
                 guid = value;
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(this);
-#endif
+                EditorOnly.SetDirty(this);
             }
         }
 
@@ -29,8 +28,8 @@ namespace Celeste.Features
 
         public bool IsEnabled
         {
-            get { return !IsKilled && isEnabled.Value; }
-            set { isEnabled.Value = value; }
+            get => !IsKilled && isEnabled.Value;
+            set => isEnabled.Value = value;
         }
         
         [SerializeField] private int guid;
@@ -69,7 +68,7 @@ namespace Celeste.Features
         public void Revive()
         {
             IsKilled = false;
-            IsEnabled = canEnable?.IsMet ?? false;
+            IsEnabled = canEnable?.IsMet ?? true;
         }
 
         public void AddOnEnabledChangedCallback(UnityAction<ValueChangedArgs<bool>> callback)

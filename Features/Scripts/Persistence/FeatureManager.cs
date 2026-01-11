@@ -20,8 +20,6 @@ namespace Celeste.Features.Persistence
         [Header("Optional Fields")]
         [SerializeField] private RemoteConfigRecord remoteConfigRecord;
 
-        private const string FEATURES_CONFIG_KEY = "FeaturesConfig";
-
         #endregion
 
         #region Unity Methods
@@ -74,16 +72,11 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
-
-                if (featuresConfig != null)
+                foreach (Feature feature in featureCatalogue.Items)
                 {
-                    foreach (Feature feature in featureCatalogue.Items)
+                    if (remoteConfigRecord.GetBool(feature.name, false))
                     {
-                        if (featuresConfig.GetBool(feature.name, false))
-                        {
-                            enabledFeatures.Add(feature.Guid);
-                        }
+                        enabledFeatures.Add(feature.Guid);
                     }
                 }
             }
@@ -97,16 +90,11 @@ namespace Celeste.Features.Persistence
 
             if (remoteConfigRecord != null)
             {
-                IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
-
-                if (featuresConfig != null)
+                foreach (Feature feature in featureCatalogue.Items)
                 {
-                    foreach (Feature feature in featureCatalogue.Items)
+                    if (remoteConfigRecord.GetBool(feature.name, false) && Enumerable.Contains(desiredEnabledFeatures, feature.Guid))
                     {
-                        if (featuresConfig.GetBool(feature.name, false) && Enumerable.Contains(desiredEnabledFeatures, feature.Guid))
-                        {
-                            enabledFeatures.Add(feature.Guid);
-                        }
+                        enabledFeatures.Add(feature.Guid);
                     }
                 }
             }
@@ -114,38 +102,33 @@ namespace Celeste.Features.Persistence
             return enabledFeatures;
         }
 
-        private void SyncKilledFeaturesFromRemoteConfig()
+        private void SyncFeaturesFromRemoteConfig()
         {
             if (remoteConfigRecord == null)
             {
                 return;
             }
 
-            IDataDictionary featuresConfig = remoteConfigRecord.GetObjectAsDictionary(FEATURES_CONFIG_KEY);
-
-            if (featuresConfig != null)
+            for (int i = 0, n = featureRecord.NumFeatures; i < n; ++i)
             {
-                for (int i = 0, n = featureRecord.NumFeatures; i < n; ++i)
-                {
-                    Feature feature = featureRecord.GetFeature(i);
+                Feature feature = featureRecord.GetFeature(i);
                     
-                    if (featuresConfig.GetBool(feature.name, false))
-                    {
-                        feature.Kill();
-                    }
-                    else
-                    {
-                        feature.Revive();
-                    }
+                if (remoteConfigRecord.GetBool(feature.name, false))
+                {
+                    feature.Kill();
+                }
+                else
+                {
+                    feature.Revive();
                 }
             }
         }
 
         #region Callbacks
 
-        public void OnRemoteConfigChanged()
+        public void OnRemoteConfigFetched()
         {
-            SyncKilledFeaturesFromRemoteConfig();
+            SyncFeaturesFromRemoteConfig();
         }
 
         #endregion

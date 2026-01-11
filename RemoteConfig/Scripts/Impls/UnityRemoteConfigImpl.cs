@@ -7,6 +7,7 @@ using UnityEngine;
 using Celeste.RemoteConfig;
 using System;
 using Celeste;
+using Celeste.RemoteConfig.Objects;
 
 public class UnityRemoteConfigImpl : IRemoteConfigImpl
 {
@@ -20,8 +21,9 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
 
     #endregion
 
-    public async Task FetchData(string environmentId)
+    public async Task FetchData(RemoteConfigEnvironmentIds environmentIds, bool isDebugBuild)
     {
+        string environmentId = environmentIds.GetEnvironmentId(DataSource.Unity, isDebugBuild);
         RemoteConfigService.Instance.SetEnvironmentID(environmentId);
         await FetchRemoteConfig();
     }
@@ -59,27 +61,13 @@ public class UnityRemoteConfigImpl : IRemoteConfigImpl
         {
             await InitializeRemoteConfigAsync();
         }
-
-        RemoteConfigService.Instance.FetchCompleted += OnDataFetched;
-        RemoteConfigService.Instance.FetchConfigs(new userAttributes(), new appAttributes());
-
-        while (isDataFetched == false)
-        {
-            await Task.Yield();
-        }
-    }
-
-    #region Callbacks
-
-    private void OnDataFetched(ConfigResponse configResponse)
-    {
-        string configResponseString = RemoteConfigService.Instance.appConfig.config.ToString();
+        
+        RuntimeConfig runtimeConfig = await RemoteConfigService.Instance.FetchConfigsAsync(new userAttributes(), new appAttributes());
+        string configResponseString = runtimeConfig.config.ToString();
         Debug.Log($"RemoteConfigService.Instance.appConfig fetched: {configResponseString}", CelesteLog.RemoteConfig);
 
         isDataFetched = true;
         onDataFetched?.Invoke(configResponseString);
     }
-
-    #endregion
 }
 #endif
