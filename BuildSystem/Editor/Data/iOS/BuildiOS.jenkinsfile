@@ -14,6 +14,7 @@ pipeline
     environment 
     {
         UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.2.7f2/Editor/Unity.exe'
+		BRANCH = 'master'
     }
     stages 
     {
@@ -52,7 +53,7 @@ pipeline
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: 'master']],
+                    branches: [[name: "${env.BRANCH}"]],
                     userRemoteConfigs: [[
                         url: 'git@github.com:AlanWills/Just-One.git',
                         credentialsId: 'Alan-SSH-Key'
@@ -163,10 +164,11 @@ pipeline
             }
             steps
             {
+				sh "git checkout ${env.BRANCH} || git checkout -b ${env.BRANCH}"
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built iOS and updating version"'
-				sh "git pull origin ${env.GIT_BRANCH} --rebase"
-                sh "git push --set-upstream origin ${env.GIT_BRANCH}"
+				sh "git pull origin ${env.BRANCH} --rebase"
+                sh "git push --set-upstream origin ${env.BRANCH}"
             }
         }
 		stage('Artifact Build')
