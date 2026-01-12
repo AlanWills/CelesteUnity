@@ -45,10 +45,17 @@ pipeline
 		stage('Clean Workspace') {
 			steps {
 				dir(env.WORKSPACE) {
-					bat """
-					git reset --hard HEAD
-					git clean -fdx -e Library -e Assets/Settings/PlayMode -e Logs -e Temp -e UserSettings
-					"""
+					script {
+						// fileExists works for both files and directories
+						if (fileExists('.git')) {
+							bat """
+							git reset --hard HEAD
+							git clean -fdx -e Library -e Assets/Settings/PlayMode -e Logs -e Temp -e UserSettings
+							"""
+						} else {
+							echo "No .git directory found. Skipping cleanup."
+						}
+					}
 				}
 			}
 		}
