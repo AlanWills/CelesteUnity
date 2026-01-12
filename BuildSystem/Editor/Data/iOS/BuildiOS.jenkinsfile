@@ -137,7 +137,7 @@ pipeline
             {
 				script
 				{
-					buildScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/build.cmd" + '" "' + "${buildPath}" + '" -xcname "Unity-iPhone" -xcpname "iPhone-target" -xcconf "Release" -archs "arm64" -multicore -lld -strip bitcode -pngcrush -ipa -identity "' + "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}" + '" -provision "' + "${env.PROVISIONING_PROFILE}" + '"'
+					buildScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/build.cmd" + '" "' + "${buildPath}" + '" -xcname "Unity-iPhone" -xcpname "Unity-iPhone" -xcconf "Release" -archs "arm64" -multicore -lld -strip bitcode -pngcrush -ipa -identity "' + "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}" + '" -provision "' + "${env.PROVISIONING_PROFILE}" + '"'
 					echo "${buildScript}"
 					bat "${buildScript}"
 				}
