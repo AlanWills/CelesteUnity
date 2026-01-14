@@ -178,7 +178,6 @@ pipeline
             }
             steps
             {
-				sh "git checkout ${env.BRANCH} || git checkout -b ${env.BRANCH}"
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built iOS and updating version"'
 				sh "git pull origin ${env.BRANCH} --rebase"
