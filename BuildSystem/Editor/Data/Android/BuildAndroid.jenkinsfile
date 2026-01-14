@@ -70,6 +70,7 @@ pipeline
                     ]],
                     extensions: [
 						[$class: 'RelativeTargetDirectory', relativeTargetDir: '.'], // normal checkout
+						[$class: 'LocalBranch', localBranch: "${env.BRANCH}"],
 						[$class: 'SubmoduleOption', 
 							recursiveSubmodules: true,        // clone submodules recursively
 							trackingSubmodules: false,        // set to true if you want to track branches in submodules
