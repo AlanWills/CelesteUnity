@@ -27,13 +27,13 @@ pipeline
                     properties([
                         buildDiscarder(
                             logRotator(
-                                artifactDaysToKeepStr: '', 
-                                artifactNumToKeepStr: '', 
-                                numToKeepStr: '1')), 
+                                artifactDaysToKeepStr: '14', 
+                                artifactNumToKeepStr: '1', 
+                                numToKeepStr: '5')), 
                         parameters([
                             choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'), 
                             booleanParam(defaultValue: true, name: 'UPLOAD_BUILD_TO_TESTFLIGHT'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS_TO_STORAGE')
+                            booleanParam(defaultValue: false, name: 'UPLOAD_ASSETS_TO_STORAGE')
                         ])
                     ])
                 }
@@ -115,7 +115,7 @@ pipeline
 				script
 				{
 					tempBuildPath = "${env.TEMP_DIRECTORY_PATH}/Build-${env.BUILD_VERSION}-${params.CONFIGURATION}"
-					deleteCommand = "/usr/bin/find ${env.TEMP_DIRECTORY_PATH}/* -not -path " + '"' + "${env.TEMP_DIRECTORY_PATH}/builder*" + '" -prune -exec rm -rf {} \\;'
+					def deleteCommand = "/usr/bin/find ${env.TEMP_DIRECTORY_PATH}/* -not -path " + '"' + "${env.TEMP_DIRECTORY_PATH}/builder*" + '" -prune -exec rm -rf {} \\;'
 					
 					echo "${deleteCommand}"
 					sh "${deleteCommand}"
@@ -124,25 +124,32 @@ pipeline
 				}
 			}
 		}
-        stage('Build iOS Project')
-        {
-            when
-            {
-                expression
-                {
-                    return currentBuild.currentResult == "SUCCESS"
-                }
-            }
-            steps
-            {
-				script
-				{
-					buildScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/build.cmd" + '" "' + "${buildPath}" + '" -xcname "Unity-iPhone" -xcpname "Unity-iPhone" -xcconf "Release" -archs "arm64" -multicore -lld -strip bitcode -pngcrush -ipa -identity "' + "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}" + '" -provision "' + "${env.PROVISIONING_PROFILE}" + '"'
-					echo "${buildScript}"
-					bat "${buildScript}"
+        stage('Build iOS Project') {
+			when {
+				expression { return currentBuild.currentResult == null || currentBuild.currentResult == "SUCCESS" }
+			}
+			steps {
+				script {
+					// 1. Define your paths (using forward slashes for safety)
+					def tool = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/build.cmd"
+					def sdk = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/SDK-iOS"
+					def keychain = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/Keychain"
+					def identity = "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}"
+					def provision = "${env.PROVISIONING_PROFILE}"
+
+					// 2. Use the dir block to change the working directory
+					dir(buildPath) {
+						echo "Current working directory is now: ${pwd()}"
+						
+						// Since we are now INSIDE buildPath, we can use "." to refer to the current folder
+						def buildCmd = "\"${tool}\" -xcname \"Unity-iPhone\" -xcpname \"Unity-iPhone\" -xcconf \"Release\" -sdk \"${sdk}\" -keychain \"${keychain}\" -archs arm64 -multicore -lld -pngcrush -ipa -identity \"${identity}\" -provision \"${provision}\""
+						
+						echo "Running build command: ${buildCmd}"
+						bat "${buildCmd}"
+					}
 				}
-            }
-        }
+			}
+		}
 		stage('Copy .ipa From Temp Directory')
 		{
 			when
@@ -205,11 +212,15 @@ pipeline
             {
 				script
 				{
-					ipaWorkspaceLocationForUpload = "${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
-					ipaWorkspaceLocationForUpload = ipaWorkspaceLocationForUpload.replace('/', '\\')
-					uploadScript = '"' + "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd" + '" -v "' + "${ipaWorkspaceLocationForUpload}" + '" -asclogin "' + "${env.ASC_USERNAME}" + '" -ascpassword "' + "${env.ASC_PASSWORD}" + '" -ascprovider ""'
-					echo "${uploadScript}"
-					bat "${uploadScript}"
+					def uploadTool = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd"
+					def ipaPath    = "${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
+					def user       = env.ASC_USERNAME
+					def password   = env.ASC_PASSWORD
+					
+					def uploadCmd = "\"{tool}\" -v \"{ipaPath}\" -asclogin ${user} -ascpassword ${password} -ascprovider \"\""
+					
+					echo "Running upload command: ${uploadCmd}"
+					bat "${uploadCmd}"
 				}
             }
         }
