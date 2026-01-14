@@ -212,14 +212,19 @@ pipeline
 				script
 				{
 					def uploadTool = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd"
-					def ipaPath    = "${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
+					def ipaPath    = "${env.WORKSPACE}/${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
 					def user       = env.ASC_USERNAME
 					def password   = env.ASC_PASSWORD
 					
-					def uploadCmd = "\"{tool}\" -v \"{ipaPath}\" -asclogin ${user} -ascpassword ${password} -ascprovider \"\""
-					
-					echo "Running upload command: ${uploadCmd}"
-					bat "${uploadCmd}"
+					// 2. Use the dir block to change the working directory
+					dir(buildPath) {
+						echo "Current working directory is now: ${pwd()}"
+						
+						def uploadCmd = "\"${uploadTool}\" -v \"${ipaPath}\" -asclogin ${user} -ascpassword ${password} -ascprovider \"\""
+						
+						echo "Running upload command: ${uploadCmd}"
+						bat "${uploadCmd}"
+					}
 				}
             }
         }
