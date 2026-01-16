@@ -1,5 +1,5 @@
-buildPath = ""
 projectPath = ""
+buildPath = ""
 
 pipeline 
 {
@@ -115,7 +115,7 @@ pipeline
 			{
 				script
 				{
-					tempBuildPath = "${env.TEMP_DIRECTORY_PATH}/Build-${env.BUILD_VERSION}-${params.CONFIGURATION}"
+					def tempBuildPath = "${env.TEMP_DIRECTORY_PATH}/Build-${env.BUILD_VERSION}-${params.CONFIGURATION}"
 					def deleteCommand = "/usr/bin/find ${env.TEMP_DIRECTORY_PATH}/* -not -path " + '"' + "${env.TEMP_DIRECTORY_PATH}/builder*" + '" -prune -exec rm -rf {} \\;'
 					
 					echo "${deleteCommand}"
@@ -163,7 +163,7 @@ pipeline
             {
 				script
 				{
-					sh "cp -r ${tempBuildPath}/Packages ${projectPath}/${env.BUILD_LOCATION}/Packages"
+					sh "cp -r ${buildPath}/Packages ${projectPath}/${env.BUILD_LOCATION}/Packages"
 				}
             }
 		}
@@ -211,16 +211,19 @@ pipeline
             {
 				script
 				{
-					def uploadTool = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd"
-					def ipaPath    = "${env.WORKSPACE}/${env.BUILD_LOCATION}/Packages/${env.IPA_NAME}.ipa"
-					def user       = env.ASC_USERNAME
-					def password   = env.ASC_PASSWORD
+					def uploadTool   = "${env.IOS_PROJECT_BUILDER_INSTALL_PATH}/upload.cmd"
+					def ipaPath      = "${buildPath}/Packages/${env.IPA_NAME}.ipa"
+					def identity     = "${env.DISTRIBUTION_CERTIFICATE}:${env.PRIVATE_KEY}:${env.PRIVATE_KEY_PASSWORD}"
+					def provision    = "${env.PROVISIONING_PROFILE}"
+					def user         = env.ASC_USERNAME
+					def password     = env.ASC_PASSWORD
+					def packagesPath = "${buildPath}/Packages"
 					
 					// 2. Use the dir block to change the working directory
-					dir(buildPath) {
+					dir(packagesPath) {
 						echo "Current working directory is now: ${pwd()}"
 						
-						def uploadCmd = "\"${uploadTool}\" -v \"${ipaPath}\" -asclogin ${user} -ascpassword ${password} -ascprovider \"\""
+						def uploadCmd = "\"${uploadTool}\" -identity \"${identity}\" -entitlements \"\" -artwork \"\" -provision \"${provision}\" -v \"${ipaPath}\" -asclogin ${user} -ascpassword ${password} -ascprovider \"\""
 						
 						echo "Running upload command: ${uploadCmd}"
 						bat "${uploadCmd}"
