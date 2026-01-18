@@ -49,7 +49,7 @@ namespace Celeste.Debug.Menus
 
         #region Unity Methods
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (string.IsNullOrWhiteSpace(displayName))
             {

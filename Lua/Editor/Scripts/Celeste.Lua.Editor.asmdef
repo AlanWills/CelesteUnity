@@ -2,7 +2,12 @@
     "name": "Celeste.Lua.Editor",
     "rootNamespace": "CelesteEditor.Lua",
     "references": [
-        "Celeste.Lua"
+        "Celeste.Lua",
+        "Celeste.Tools",
+        "Celeste.UnityProject",
+        "Celeste.DataStructures.Editor",
+        "Lua.Unity",
+        "Celeste.Tools.Editor"
     ],
     "includePlatforms": [
         "Editor"

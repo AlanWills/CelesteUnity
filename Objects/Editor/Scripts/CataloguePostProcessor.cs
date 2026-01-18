@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace CelesteEditor.Objects
 {
-    public abstract class CataloguePostProcessor<TAsset, TCatalogue> : AssetPostprocessor 
+    public class CataloguePostProcessor<TAsset, TCatalogue> : AssetPostprocessor 
         where TAsset : UnityEngine.Object
         where TCatalogue : UnityEngine.ScriptableObject, IIndexableItems<TAsset> 
     {
@@ -151,7 +151,7 @@ namespace CelesteEditor.Objects
             catalogue.TrySyncGuids();
         }
 
-        private static bool ShouldAddAsset(TAsset asset)
+        private static bool ShouldAddAsset(object asset)
         {
             if (asset is IAutomaticImportAssetSettings settings)
             {
