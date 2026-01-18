@@ -49,7 +49,7 @@ namespace Celeste.Lua.Debug
                 
                 if (onShowMenuFunction != null)
                 {
-                    onShowMenuFunction.Func.Invoke();
+                    //onShowMenuFunction.Func.Invoke();
                 }
             }
         }

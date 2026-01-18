@@ -26,10 +26,10 @@ namespace Celeste.Lua
         public void Initialize(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts)
         {
             var platform = new LuaPlatform(
-                fileSystem: new FileSystem(),
-                osEnvironment: new UnityApplicationOsEnvironment(),
-                standardIO: new UnityStandardIO(),
-                timeProvider: TimeProvider.System);
+                FileSystem: new FileSystem(),
+                OsEnvironment: new UnityApplicationOsEnvironment(),
+                StandardIO: new UnityStandardIO(),
+                TimeProvider: TimeProvider.System);
             luaState = LuaState.Create(platform);
             luaState.OpenStandardLibraries();
 
@@ -55,7 +55,7 @@ namespace Celeste.Lua
 
         public ValueTask<LuaValue[]> ExecuteScriptAsync(LuaScript luaScript)
         {
-            if (!luaScript.TryCompile())
+            if (!luaScript.TryCompile(luaState))
             {
                 UnityEngine.Debug.LogError($"Failed to load lua script '{luaScript.name}' as it has compiler errors.");
                 return new ValueTask<LuaValue[]>();
@@ -71,9 +71,9 @@ namespace Celeste.Lua
             return luaState.DoStringAsync(luaScript.Text);
         }
 
-        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction)
+        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, ReadOnlySpan<LuaValue> arguments)
         {
-            return luaState.Ca(luaFunction);
+            return luaState.CallAsync(luaFunction, arguments);
         }
 #endif
     }
