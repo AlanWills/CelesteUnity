@@ -9,7 +9,7 @@ namespace Lua.Unity.Editor
 {
     public static class LuaMenuItems
     {
-        [MenuItem("Assets/Celeste/" + CelesteMenuItemConstants.LUA_MENU_ITEM + "New Lua Script", priority = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
+        [MenuItem("Assets/Create/" + CelesteMenuItemConstants.LUA_MENU_ITEM + "New Lua Script", priority = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
         public static void CreateNewLuaScript()
         {
             string currentlySelectedObjectFolder = EditorOnly.GetSelectionObjectPath();

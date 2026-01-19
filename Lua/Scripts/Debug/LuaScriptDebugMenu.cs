@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Celeste.Lua.Debug
 {
-    [CreateAssetMenu(fileName = nameof(LuaScriptDebugMenu), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM, order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
+    [CreateAssetMenu(fileName = nameof(LuaScriptDebugMenu), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM + "Debug/Lua Script Debug Menu", order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
     public class LuaScriptDebugMenu : DebugMenu
     {
         #region Properties and Fields
