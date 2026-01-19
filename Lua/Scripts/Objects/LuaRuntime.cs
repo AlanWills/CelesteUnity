@@ -96,11 +96,6 @@ namespace Celeste.Lua
             return ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
         }
 
-        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction)
-        {
-            return ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
-        }
-
         public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, ReadOnlySpan<LuaValue> arguments)
         {
             if (luaFunction == null || luaFunction == LuaValue.Nil)
