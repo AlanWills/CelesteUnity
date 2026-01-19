@@ -60,20 +60,77 @@ namespace Celeste.Lua
                 UnityEngine.Debug.LogError($"Failed to load lua script '{luaScript.name}' as it has compiler errors.");
                 return new ValueTask<LuaValue[]>();
             }
+            
+#if LUA_EXCEPTION_CHECKS
+            try
+#endif
+            {
+                return luaState.DoStringAsync(luaScript.Text);
+            }
+#if LUA_EXCEPTION_CHECKS
+            catch (LuaParseException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua script '{luaScript.name}' as it has a parsing error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaCompileException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua script '{luaScript.name}' as it has a compilation error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaRuntimeException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua script '{luaScript.name}' as it has a runtime error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua script '{luaScript.name}' as it has an unknown error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+#endif
+        }
 
-            // Possibly catch exceptions here, maybe only in development?
-            /*
-             * catch (LuaRuntimeException)
-{
-    // Handle runtime exceptions
-}
-             */
-            return luaState.DoStringAsync(luaScript.Text);
+        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction)
+        {
+            return ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
         }
 
         public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, ReadOnlySpan<LuaValue> arguments)
         {
-            return luaState.CallAsync(luaFunction, arguments);
+            if (luaFunction == null || luaFunction == LuaValue.Nil)
+            {
+                return new ValueTask<LuaValue[]>();
+            }
+            
+#if LUA_EXCEPTION_CHECKS
+            try
+#endif
+            {
+                return luaState.CallAsync(luaFunction, arguments);
+            }
+#if LUA_EXCEPTION_CHECKS
+            catch (LuaParseException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua function '{luaFunction.Name}' as it has a parsing error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaCompileException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua function '{luaFunction.Name}' as it has a compilation error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaRuntimeException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua function '{luaFunction.Name}' as it has a runtime error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua function '{luaFunction.Name}' as it has an unknown error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+#endif
         }
 #endif
     }

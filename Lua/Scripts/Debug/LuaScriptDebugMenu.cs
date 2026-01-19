@@ -14,9 +14,15 @@ namespace Celeste.Lua.Debug
         #region Properties and Fields
 
         [SerializeField] private LuaScript debugMenuLuaScript;
+        [SerializeField] private string onShowMenuFunctionName = "onShowMenu";
+        [SerializeField] private string onDrawMenuFunctionName = "onDrawMenu";
+        [SerializeField] private string onHideMenuFunctionName = "onHideMenu";
         [SerializeField] private LuaRuntime luaRuntime;
 
         [NonSerialized] private LuaTable debugMenuTable;
+        [NonSerialized] private LuaFunction onShowMenuFunction;
+        [NonSerialized] private LuaFunction onDrawMenuFunction;
+        [NonSerialized] private LuaFunction onHideMenuFunction;
 
         #endregion
 
@@ -43,25 +49,25 @@ namespace Celeste.Lua.Debug
 
             debugMenuTable = (await luaRuntime.ExecuteScriptAsync(debugMenuLuaScript)).AsTable();
 
-            if (debugMenuTable.TryGetValue("OnShowMenu", out var value))
-            {
-                LuaFunction onShowMenuFunction = value.ReadFunction();
+            onShowMenuFunction = debugMenuTable.GetFunction(onShowMenuFunctionName);
+            onDrawMenuFunction = debugMenuTable.GetFunction(onDrawMenuFunctionName);
+            onHideMenuFunction = debugMenuTable.GetFunction(onHideMenuFunctionName);
                 
-                if (onShowMenuFunction != null)
-                {
-                    //onShowMenuFunction.Func.Invoke();
-                }
-            }
+            await luaRuntime.ExecuteFunctionAsync(onShowMenuFunction);
         }
 
-        protected override void OnDrawMenu()
+        protected override async void OnDrawMenu()
         {
             base.OnDrawMenu();
+            
+            await luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction);
         }
 
-        protected override void OnHideMenu()
+        protected override async void OnHideMenu()
         {
             base.OnHideMenu();
+            
+            await luaRuntime.ExecuteFunctionAsync(onHideMenuFunction);
         }
     }
 }

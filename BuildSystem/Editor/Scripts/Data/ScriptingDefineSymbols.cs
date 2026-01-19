@@ -34,6 +34,7 @@ namespace CelesteEditor.BuildSystem.Data
             AddItem("ALLOCATOR_CHECKS");
             AddItem("ENABLE_INPUT_SYSTEM");
             AddItem("NETWORK_MESSAGING_DEBUGGING");
+            AddItem("LUA_EXCEPTION_CHECKS");
         }
 
         public void AddDefaultReleaseSymbols()
