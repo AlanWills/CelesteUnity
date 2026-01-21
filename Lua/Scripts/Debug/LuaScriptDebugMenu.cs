@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Celeste.Debug.Menus;
 using Celeste.Lua.Settings;
 using Celeste.Tools;
+using Celeste.Tools.Attributes.GUI;
 using Lua;
 using Lua.Unity;
 using UnityEngine;
@@ -13,11 +15,12 @@ namespace Celeste.Lua.Debug
     {
         #region Properties and Fields
 
-        [SerializeField] private LuaScript debugMenuLuaScript;
-        [SerializeField] private string onShowMenuFunctionName = "onShowMenu";
-        [SerializeField] private string onDrawMenuFunctionName = "onDrawMenu";
-        [SerializeField] private string onHideMenuFunctionName = "onHideMenu";
         [SerializeField] private LuaRuntime luaRuntime;
+        [SerializeField] private LuaScriptAndVariables script;
+        [SerializeField] private bool showAdvancedSettings = false;
+        [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onShowMenuFunctionName = "onShowMenu";
+        [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onDrawMenuFunctionName = "onDrawMenu";
+        [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onHideMenuFunctionName = "onHideMenu";
 
         [NonSerialized] private LuaTable debugMenuTable;
         [NonSerialized] private LuaFunction onShowMenuFunction;
@@ -47,7 +50,7 @@ namespace Celeste.Lua.Debug
         {
             base.OnShowMenu();
 
-            debugMenuTable = (await luaRuntime.ExecuteScriptAsync(debugMenuLuaScript)).AsTable();
+            debugMenuTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
 
             onShowMenuFunction = debugMenuTable.GetFunction(onShowMenuFunctionName);
             onDrawMenuFunction = debugMenuTable.GetFunction(onDrawMenuFunctionName);

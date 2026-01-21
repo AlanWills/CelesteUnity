@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Lua;
 using Lua.Unity;
 
@@ -15,6 +16,19 @@ namespace Celeste.Lua
             
             function = default;
             return false;
+        }
+
+        public static void InjectVariables(this LuaTable table, IReadOnlyList<ScriptVariable> variables)
+        {
+            if (table == null || table == LuaValue.Nil)
+            {
+                return;
+            }
+            
+            foreach (var variable in variables)
+            {
+                table.SetValue(variable.Name, LuaValue.FromObject(variable.Value));
+            }
         }
     }
 }
