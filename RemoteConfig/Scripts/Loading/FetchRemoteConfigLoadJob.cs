@@ -19,21 +19,18 @@ namespace Celeste.RemoteConfig
         {
             setOutput("Fetching Data");
 
-            Task fetchTask = remoteConfigRecord.FetchData();
-            setProgress(0.25f);
+            UnityEngine.Debug.Assert(remoteConfigRecord != null, $"Remote Config Record was null in load job {name}!  Fetching remote config will be skipped...");
+            if (remoteConfigRecord != null)
+            {
+                Task fetchTask = remoteConfigRecord.FetchData();
+                setProgress(0.25f);
 
-            while (!fetchTask.IsCompleted)
-            {
-                yield return null;
-            }
+                while (!fetchTask.IsCompleted)
+                {
+                    yield return null;
+                }
 
-            if (fetchTask.IsCompletedSuccessfully)
-            {
-                setOutput("Fetching Data Succeeded!");
-            }
-            else
-            {
-                setOutput("Fetching Data Failed!");
+                setOutput(fetchTask.IsCompletedSuccessfully ? "Fetching Data Succeeded!" : "Fetching Data Failed!");
             }
 
             setProgress(1.0f);
