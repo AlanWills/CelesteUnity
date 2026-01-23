@@ -26,7 +26,20 @@ namespace Celeste.Lua
         public static async ValueTask<LuaTable> ExecuteScriptAsClassAsync(this LuaRuntime lua, LuaScriptAndVariables scriptAndVariables)
         {
             LuaTable luaTable = await ExecuteScriptAsClassAsync(lua, scriptAndVariables.Script);
-            luaTable.InjectVariables(scriptAndVariables.Variables);
+            
+            foreach (var variable in scriptAndVariables.Variables)
+            {
+                if (lua.CanProxy(variable.Value))
+                {
+                    lua.Proxy(luaTable, variable);
+                }
+                else
+                {
+                    luaTable.SetValue(variable.Name, LuaValue.FromObject(variable.Value));
+                }
+            }
+            
+            //luaTable.InjectVariables(scriptAndVariables.Variables);
 
             return luaTable;
         }

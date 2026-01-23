@@ -12,8 +12,10 @@ namespace Celeste.Lua.Settings
         public const string FILE_PATH = FOLDER_PATH + "LuaEditorSettings.asset";
 
         public LuaRuntime LuaRuntime => luaRuntime;
+        public bool CompileScriptsOnReload => compileScriptsOnReload;
         
         [SerializeField] private LuaRuntime luaRuntime;
+        [SerializeField] private bool compileScriptsOnReload = true;
         
         #endregion
 

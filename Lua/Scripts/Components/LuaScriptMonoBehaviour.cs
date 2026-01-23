@@ -1,6 +1,7 @@
 using System;
 using Celeste.Tools.Attributes.GUI;
 #if USE_LUA
+using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
 using Celeste.Lua.Settings;
@@ -14,9 +15,12 @@ namespace Celeste.Lua
 #if USE_LUA
         #region Properties and Fields
 
+        protected LuaRuntime LuaRuntime => luaRuntime;
+        protected LuaTable ComponentTable => componentTable;
+        
         [SerializeField] private LuaRuntime luaRuntime;
-        [SerializeField] private LuaScriptAndVariables script;
-        [SerializeField] private bool showAdvancedSettings;
+        [SerializeField, InlineDataInInspector] private LuaScriptAndVariables script;
+        [SerializeField] protected bool showAdvancedSettings;
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string awakeFunctionName = "awake";
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string startFunctionName = "start";
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onEnableFunctionName = "onEnable";
@@ -30,7 +34,7 @@ namespace Celeste.Lua
         
         #region Unity Methods
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
 #if UNITY_EDITOR
             if (luaRuntime == null)
@@ -40,57 +44,51 @@ namespace Celeste.Lua
 #endif
         }
         
-        private async void Awake()
+        protected virtual async void Awake()
         {
-            RunScriptIfNecessary();
-            
-            LuaFunction awakeFunction = componentTable.GetFunction(awakeFunctionName);
-            await luaRuntime.ExecuteFunctionAsync(awakeFunction, componentTable);
+            await ExecuteLuaFunction(awakeFunctionName);
         }
         
-        private async void Start()
+        protected virtual async void Start()
         {
-            RunScriptIfNecessary();
-            
-            LuaFunction startFunction = componentTable.GetFunction(startFunctionName);
-            await luaRuntime.ExecuteFunctionAsync(startFunction, componentTable);
+            await ExecuteLuaFunction(startFunctionName);
         }
 
-        private async void OnEnable()
+        protected virtual async void OnEnable()
         {
-            RunScriptIfNecessary();
-            
-            LuaFunction onEnableFunction = componentTable.GetFunction(onEnableFunctionName);
-            await luaRuntime.ExecuteFunctionAsync(onEnableFunction, componentTable);
+            await ExecuteLuaFunction(onEnableFunctionName);
         }
         
-        private async void OnDisable()
+        protected virtual async void OnDisable()
         {
-            RunScriptIfNecessary();
-            
-            LuaFunction onDisableFunction = componentTable.GetFunction(onDisableFunctionName);
-            await luaRuntime.ExecuteFunctionAsync(onDisableFunction, componentTable);
+            await ExecuteLuaFunction(onDisableFunctionName);
         }
         
-        private async void OnDestroy()
+        protected virtual async void OnDestroy()
         {
-            RunScriptIfNecessary();
-            
-            LuaFunction onDestroyFunction = componentTable.GetFunction(onDestroyFunctionName);
-            await luaRuntime.ExecuteFunctionAsync(onDestroyFunction, componentTable);
+            await ExecuteLuaFunction(onDestroyFunctionName);
         }
         
         #endregion
 
-        private async void RunScriptIfNecessary()
+        protected async ValueTask<LuaValue[]> ExecuteLuaFunction(string functionName)
+        {
+            await RunScriptIfNecessary();
+            
+            LuaFunction function = componentTable.GetFunction(functionName);
+            return await luaRuntime.ExecuteFunctionAsync(function, componentTable);
+        }
+
+        private async ValueTask<LuaTable> RunScriptIfNecessary()
         {
             if (scriptRun)
             {
-                return;
+                return componentTable;
             }
             
             scriptRun = true;
             componentTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
+            return componentTable;
         }
 #endif
     }

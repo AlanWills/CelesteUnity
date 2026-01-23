@@ -5,9 +5,9 @@ using Lua.Unity;
 namespace Celeste.Lua
 {
     [Serializable]
-    public readonly struct LuaScriptAndVariables
+    public struct LuaScriptAndVariables
     {
-        public readonly LuaScript Script;
-        public readonly List<ScriptVariable> Variables;
+        public LuaScript Script;
+        public List<ScriptVariable> Variables;
     }
 }

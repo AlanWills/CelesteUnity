@@ -1,0 +1,20 @@
+{
+    "name": "Celeste.UI.Lua",
+    "rootNamespace": "Celeste.UI",
+    "references": [
+        "Celeste.Lua",
+        "Celeste.UI",
+        "Celeste.Tools",
+        "Lua.Unity",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

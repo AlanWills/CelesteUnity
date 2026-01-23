@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lua;
-using Lua.IO;
-using Lua.Platforms;
 using Lua.Standard;
 using Lua.Unity;
-using Lua.Unity.Interfaces;
 using UnityEngine;
 
 namespace Celeste.Lua
@@ -20,22 +17,18 @@ namespace Celeste.Lua
         public bool IsInitialized => luaState != null;
 
         [NonSerialized] private LuaState luaState;
+        [NonSerialized] private readonly Dictionary<Type, Action<LuaTable, ScriptVariable>> proxies = new();
 
         #endregion
 
         public void Initialize(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts)
         {
-            var platform = new LuaPlatform(
-                FileSystem: new FileSystem(),
-                OsEnvironment: new UnityApplicationOsEnvironment(),
-                StandardIO: new UnityStandardIO(),
-                TimeProvider: TimeProvider.System);
-            luaState = LuaState.Create(platform);
+            luaState = LuaUtility.CreateUnityLuaState();
             luaState.OpenStandardLibraries();
 
             foreach (ILuaLibrary luaLibrary in librariesToOpen)
             {
-                luaState.OpenLibrary(luaLibrary);
+                OpenLibrary(luaLibrary);
             }
             
 #if USE_ADDRESSABLES
@@ -136,6 +129,36 @@ namespace Celeste.Lua
                 return new ValueTask<LuaValue[]>();
             }
 #endif
+        }
+
+        public void OpenLibrary(ILuaLibrary luaLibrary)
+        {
+            luaState.OpenLibrary(luaLibrary);
+        }
+
+        public void BindProxy<T, TProxy>(Action<LuaTable, ScriptVariable> factoryFunc) 
+            where T : UnityEngine.Object 
+            where TProxy : ILuaProxy, new()
+        {
+            proxies[typeof(T)] = factoryFunc;
+        }
+        
+        public bool CanProxy(UnityEngine.Object obj)
+        {
+            return proxies.ContainsKey(obj.GetType());
+        }
+
+        public void Proxy(LuaTable luaTable, ScriptVariable scriptVariable)
+        {
+            if (proxies.TryGetValue(scriptVariable.Value.GetType(), out var factoryFunc))
+            {
+                factoryFunc(luaTable, scriptVariable);
+            }
+        }
+
+        public void SetEnvironmentVariable<T>(string variableName, T value)
+        {
+            luaState.Environment[variableName] = LuaValue.FromObject(value);
         }
 #endif
     }

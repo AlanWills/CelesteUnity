@@ -3,9 +3,9 @@ using System;
 namespace Celeste.Lua
 {
     [Serializable]
-    public readonly struct ScriptVariable
+    public struct ScriptVariable
     {
-        public readonly string Name;
-        public readonly UnityEngine.Object Value;
+        public string Name;
+        public UnityEngine.Object Value;
     }
 }

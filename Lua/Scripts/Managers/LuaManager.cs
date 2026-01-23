@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Celeste.Lua.Catalogues;
-using Lua.Unity.Interfaces;
-using Lua.Unity.Libraries;
+using Celeste.Lua.Proxies;
 using UnityEngine;
 
 namespace Celeste.Lua.Managers
@@ -23,8 +22,8 @@ namespace Celeste.Lua.Managers
             luaRuntime.Initialize(new List<ILuaLibrary>
             {
                 GUILayoutLibrary.Instance
-            }, 
-            runOnInitializeScripts.Items);
+            }, runOnInitializeScripts.Items);
+            //luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
         }
 
         private void OnDestroy()
