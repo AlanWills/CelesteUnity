@@ -1,7 +1,7 @@
 ﻿using Celeste.Lua;
 using TMPro;
 using Lua;
-using Lua.Unity;
+using UnityEngine;
 
 namespace Celeste.UI.Lua
 {
@@ -22,7 +22,7 @@ namespace Celeste.UI.Lua
         [LuaMember("color")]
         public void SetColor(float r, float g, float b, float a)
         {
-            textComponent.color = new UnityEngine.Color(r, g, b, a);
+            textComponent.color = new Color(r, g, b, a);
         }
 
         [LuaMember("fontSize")]
@@ -34,7 +34,7 @@ namespace Celeste.UI.Lua
         
         private readonly TextMeshProUGUI textComponent;
 
-        public const string kName = "TextMeshProUGUI";
+        private const string kName = "TextMeshProUGUI";
         
         #endregion
 
@@ -47,12 +47,14 @@ namespace Celeste.UI.Lua
             textComponent = component;
         }
 
-        public static void Proxy(LuaTable luaTable, ScriptVariable scriptVariable)
+        public static ILuaProxy Proxy(Object obj)
         {
-            var proxy = new LuaTextMeshProUGUIProxy(scriptVariable.Value as TextMeshProUGUI);
-            var lv = LuaValue.FromObject(proxy);
-            UnityEngine.Debug.Log($"Type: {lv.Type}");
-            luaTable.SetValue(scriptVariable.Name, lv);
+            if (obj is TextMeshProUGUI textMeshPro)
+            {
+                return new LuaTextMeshProUGUIProxy(textMeshPro);
+            }
+
+            return null;
         }
     }
 }

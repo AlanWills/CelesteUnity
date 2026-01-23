@@ -17,7 +17,7 @@ namespace Celeste.Lua
         public bool IsInitialized => luaState != null;
 
         [NonSerialized] private LuaState luaState;
-        [NonSerialized] private readonly Dictionary<Type, Action<LuaTable, ScriptVariable>> proxies = new();
+        [NonSerialized] private readonly Dictionary<Type, Func<UnityEngine.Object, ILuaProxy>> proxies = new();
 
         #endregion
 
@@ -136,10 +136,12 @@ namespace Celeste.Lua
             luaState.OpenLibrary(luaLibrary);
         }
 
-        public void BindProxy<T, TProxy>(Action<LuaTable, ScriptVariable> factoryFunc) 
+        public void BindProxy<T, TProxy>(Func<UnityEngine.Object, ILuaProxy> factoryFunc) 
             where T : UnityEngine.Object 
             where TProxy : ILuaProxy, new()
         {
+            TProxy proxy = new TProxy();
+            SetEnvironmentVariable(proxy.Name, proxy);
             proxies[typeof(T)] = factoryFunc;
         }
         
@@ -148,12 +150,14 @@ namespace Celeste.Lua
             return proxies.ContainsKey(obj.GetType());
         }
 
-        public void Proxy(LuaTable luaTable, ScriptVariable scriptVariable)
+        public ILuaProxy CreateProxy(UnityEngine.Object obj)
         {
-            if (proxies.TryGetValue(scriptVariable.Value.GetType(), out var factoryFunc))
+            if (proxies.TryGetValue(obj.GetType(), out var factoryFunc))
             {
-                factoryFunc(luaTable, scriptVariable);
+                return factoryFunc(obj);
             }
+
+            return null;
         }
 
         public void SetEnvironmentVariable<T>(string variableName, T value)

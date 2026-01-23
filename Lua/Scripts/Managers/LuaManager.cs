@@ -2,6 +2,7 @@
 using Celeste.Lua.Catalogues;
 using Celeste.Lua.Proxies;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Celeste.Lua.Managers
 {
@@ -12,6 +13,7 @@ namespace Celeste.Lua.Managers
 
         [SerializeField] private LuaRuntime luaRuntime;
         [SerializeField] private LuaScriptCatalogue runOnInitializeScripts;
+        [SerializeField] private UnityEvent<LuaRuntime> bindProxies;
 
         #endregion
         
@@ -23,7 +25,9 @@ namespace Celeste.Lua.Managers
             {
                 GUILayoutLibrary.Instance
             }, runOnInitializeScripts.Items);
-            //luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
+            
+            luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
+            bindProxies.Invoke(luaRuntime);
         }
 
         private void OnDestroy()

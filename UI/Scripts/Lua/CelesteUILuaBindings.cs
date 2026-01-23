@@ -6,11 +6,8 @@ namespace Celeste.UI.Lua
 {
     public class CelesteUILuaBindings : MonoBehaviour
     {
-        [SerializeField] private LuaRuntime luaRuntime;
-
-        private void Awake()
+        public void Bind(LuaRuntime luaRuntime)
         {
-            luaRuntime.SetEnvironmentVariable(LuaTextMeshProUGUIProxy.kName, new LuaTextMeshProUGUIProxy());
             luaRuntime.BindProxy<TextMeshProUGUI, LuaTextMeshProUGUIProxy>(LuaTextMeshProUGUIProxy.Proxy);
         }
     }

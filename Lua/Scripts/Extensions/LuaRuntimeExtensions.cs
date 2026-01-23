@@ -11,12 +11,12 @@ namespace Celeste.Lua
             var returnValues = (await luaRuntime.ExecuteScriptAsync(script));
             if (returnValues == null || returnValues.Length != 1)
             {
-                return default;
+                return null;
             }
 
             if (returnValues[0].Type != LuaValueType.Table)
             {
-                return default;
+                return null;
             }
             
             LuaTable luaTable = returnValues[0].ReadTable();
@@ -31,7 +31,8 @@ namespace Celeste.Lua
             {
                 if (lua.CanProxy(variable.Value))
                 {
-                    lua.Proxy(luaTable, variable);
+                    ILuaProxy proxy = lua.CreateProxy(variable.Value);
+                    luaTable.SetValue(variable.Name, LuaValue.FromObject(proxy));
                 }
                 else
                 {
@@ -39,8 +40,6 @@ namespace Celeste.Lua
                 }
             }
             
-            //luaTable.InjectVariables(scriptAndVariables.Variables);
-
             return luaTable;
         }
     }
