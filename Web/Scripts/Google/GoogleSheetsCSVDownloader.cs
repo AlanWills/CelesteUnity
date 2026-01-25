@@ -20,8 +20,7 @@ namespace Celeste.Web
         public static IEnumerator DownloadData(string sheetId, string tabId, System.Action<string> onCompleted)
         {
             string url = string.Format(urlFormat, sheetId, tabId);
-            string downloadData = null;
-
+            
             using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
             {
                 UnityEngine.Debug.Log("Starting Download...");
@@ -30,18 +29,13 @@ namespace Celeste.Web
                 if (webRequest.result != UnityWebRequest.Result.Success)
                 {
                     UnityEngine.Debug.Log("...Download Error: " + webRequest.error);
-                    downloadData = PlayerPrefs.GetString("LastDataDownloaded", null);
                 }
                 else
                 {
                     UnityEngine.Debug.Log("Download Success!");
-                    downloadData = webRequest.downloadHandler.text;
-                    PlayerPrefs.GetString("LastDataDownloaded");
-                    PlayerPrefs.Save();
+                    onCompleted(webRequest.downloadHandler.text);
                 }
             }
-
-            onCompleted(downloadData);
         }
     }
 }
