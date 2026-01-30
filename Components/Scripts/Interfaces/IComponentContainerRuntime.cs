@@ -1,8 +1,9 @@
-﻿using UnityEngine.Events;
+﻿using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Celeste.Components
 {
-    public interface IComponentContainerRuntime<T> where T : BaseComponent
+    public interface IComponentContainerRuntime<T> : IEnumerable<ComponentHandle<T>> where T : BaseComponent
     {
         UnityEvent ComponentDataChanged { get; }
 

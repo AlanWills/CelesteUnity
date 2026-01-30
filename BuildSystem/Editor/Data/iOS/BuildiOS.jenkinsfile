@@ -142,7 +142,7 @@ pipeline
 						echo "Current working directory is now: ${pwd()}"
 						
 						// Since we are now INSIDE buildPath, we can use "." to refer to the current folder
-						def buildCmd = "\"${tool}\" -xcname \"Unity-iPhone\" -xcpname \"Unity-iPhone\" -xcconf \"Release\" -sdk \"${sdk}\" -archs arm64 -multicore -lld -pngcrush -ipa -identity \"${identity}\" -provision \"${provision}\""
+						def buildCmd = "\"${tool}\" -xcname \"Unity-iPhone\" -xcpname \"Unity-iPhone\" -xcconf \"Release\" -sdk \"${sdk}\" -archs arm64 -lld -pngcrush -ipa -identity \"${identity}\" -provision \"${provision}\""
 						
 						echo "Running build command: ${buildCmd}"
 						bat "${buildCmd}"

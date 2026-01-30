@@ -1,6 +1,7 @@
 ﻿using Celeste.Components.Persistence;
 using Celeste.DataStructures;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,7 +21,7 @@ namespace Celeste.Components
 
         private static int sInstanceId;
 
-        [NonSerialized] private List<ComponentHandle<T>> components = new List<ComponentHandle<T>>();
+        [NonSerialized] private readonly List<ComponentHandle<T>> components = new();
 
         #endregion
 
@@ -183,6 +184,16 @@ namespace Celeste.Components
                     yield return c.AsInterface<K>();
                 }
             }
+        }
+
+        IEnumerator<ComponentHandle<T>> IEnumerable<ComponentHandle<T>>.GetEnumerator()
+        {
+            return components.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (this as IEnumerable<ComponentHandle<T>>).GetEnumerator();
         }
     }
 }

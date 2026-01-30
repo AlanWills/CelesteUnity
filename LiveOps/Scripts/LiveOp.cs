@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Celeste.Events;
 
 namespace Celeste.LiveOps
@@ -148,6 +149,15 @@ namespace Celeste.LiveOps
         public void Start()
         {
             State = LiveOpState.Running;
+
+            foreach (var component in Components)
+            {
+                if (component.Is<ILiveOpStartHandler>())
+                {
+                    var liveOpStartHandler = component.AsInterface<ILiveOpStartHandler>();
+                    liveOpStartHandler.iFace.OnLiveOpStarted(liveOpStartHandler.instance);
+                }
+            }
         }
 
         public void Complete()
@@ -184,6 +194,17 @@ namespace Celeste.LiveOps
         {
             return Components.TryFindComponent(out iFace);
         }
+        
+        #region Debug
+
+        [Conditional("DEVELOPMENT")]
+        public void DebugOnly_ResetProgress(LiveOpState liveOpState)
+        {
+            Progress.iFace.ResetProgress(Progress.instance);
+            State = liveOpState;
+        }
+        
+        #endregion
 
         #region Operators
 

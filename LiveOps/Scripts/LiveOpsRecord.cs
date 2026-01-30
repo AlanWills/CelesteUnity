@@ -305,8 +305,6 @@ namespace Celeste.LiveOps
                 
                 liveOp.AdjustStartTimestamp(liveOpStartTimestamp);
                 liveOp.ResetProgress();
-                
-                //liveOpStateChanged.Invoke(new LiveOpStateChangedArgs(liveOp, new ValueChangedArgs<LiveOpState>(LiveOpState.Finished, LiveOpState.ComingSoon)));
                 liveOp.ComingSoon();
                 
                 TrySchedule(liveOp);
