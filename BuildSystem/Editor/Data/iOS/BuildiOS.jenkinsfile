@@ -180,7 +180,7 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built iOS and updating version"'
-				sh "git pull origin ${env.BRANCH} --rebase"
+				sh "git pull origin ${env.BRANCH} --rebase -X theirs"
                 sh "git push --set-upstream origin ${env.BRANCH}"
             }
         }
