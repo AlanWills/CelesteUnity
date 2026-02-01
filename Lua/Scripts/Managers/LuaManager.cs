@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if USE_LUA
+using System.Collections.Generic;
 using Celeste.Lua.Catalogues;
 using Celeste.Lua.Proxies;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Celeste.Lua.Managers
 {
     public class LuaManager : MonoBehaviour
     {
-#if USE_LUA
         #region Properties and Fields
 
         [SerializeField] private LuaRuntime luaRuntime;
@@ -36,6 +36,6 @@ namespace Celeste.Lua.Managers
         }
 
         #endregion
-#endif
     }
 }
+#endif

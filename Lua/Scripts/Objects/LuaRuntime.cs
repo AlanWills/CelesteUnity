@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_LUA
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lua;
@@ -11,7 +12,6 @@ namespace Celeste.Lua
     [CreateAssetMenu(fileName = nameof(LuaRuntime), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM + "Lua Runtime", order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
     public class LuaRuntime : ScriptableObject
     {
-#if USE_LUA
         #region Properties and Fields
 
         public bool IsInitialized => luaState != null;
@@ -164,6 +164,6 @@ namespace Celeste.Lua
         {
             luaState.Environment[variableName] = LuaValue.FromObject(value);
         }
-#endif
     }
 }
+#endif

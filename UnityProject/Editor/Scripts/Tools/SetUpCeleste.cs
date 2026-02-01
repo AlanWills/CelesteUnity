@@ -463,22 +463,22 @@ namespace CelesteEditor.UnityProject
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_COMMON_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.COMMON_JENKINS_BUILD_FILES_FOLDER);
             }
 
-            if (parameters.useWindowsBuildJenkinsFiles)
+            if (parameters.runsOnWindows && parameters.useWindowsBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WINDOWS_JENKINS_BUILD_FILES_FOLDER);
             }
 
-            if (parameters.useAndroidBuildJenkinsFiles)
+            if (parameters.runsOnAndroid && parameters.useAndroidBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_ANDROID_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.ANDROID_JENKINS_BUILD_FILES_FOLDER);
             }
 
-            if (parameters.useiOSBuildJenkinsFiles)
+            if (parameters.runsOniOS && parameters.useiOSBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_IOS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.IOS_JENKINS_BUILD_FILES_FOLDER);
             }
 
-            if (parameters.useWebGLBuildJenkinsFiles)
+            if (parameters.runsOnWebGL && parameters.useWebGLBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WEBGL_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WEBGL_JENKINS_BUILD_FILES_FOLDER);
             }

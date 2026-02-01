@@ -117,14 +117,14 @@ namespace Celeste.Input
 #else
             GameObject hitGameObject = null;
             var touches = UnityEngine.Input.touches;
-            int numTouches = touches.Count;
+            int numTouches = touches.Length;
 
             if (numTouches > 0)
             {
                 // Only update pointer state if we've actually touched down, otherwise leave it as it was the last time we touched the screen
                 // The hit game object and touches logic in the InputState should flag to other systems we've not hit anything
-                Vector3 touchPosition = touches[0].screenPosition;
-                ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(touchPosition, touches[0].touchId, eventSystem, uiInputModule);
+                Vector3 touchPosition = touches[0].position;
+                ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(touchPosition, eventSystem);
                 Vector3 touchWorldPosition = hitObject.Item1;
                 hitGameObject = hitObject.Item2;
 

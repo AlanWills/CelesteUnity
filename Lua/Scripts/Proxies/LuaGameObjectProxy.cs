@@ -1,4 +1,5 @@
-﻿using Lua;
+﻿#if USE_LUA
+using Lua;
 using UnityEngine;
 
 namespace Celeste.Lua.Proxies
@@ -29,3 +30,4 @@ namespace Celeste.Lua.Proxies
         }
     }
 }
+#endif

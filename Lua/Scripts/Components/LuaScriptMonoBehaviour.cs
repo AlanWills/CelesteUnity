@@ -1,18 +1,16 @@
+#if USE_LUA
 using System;
 using Celeste.Tools.Attributes.GUI;
-#if USE_LUA
 using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
 using Celeste.Lua.Settings;
-#endif
 using UnityEngine;
 
 namespace Celeste.Lua
 {
     public class LuaScriptMonoBehaviour : MonoBehaviour
     {
-#if USE_LUA
         #region Properties and Fields
 
         protected LuaRuntime LuaRuntime => luaRuntime;
@@ -90,6 +88,6 @@ namespace Celeste.Lua
             componentTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
             return componentTable;
         }
-#endif
     }
 }
+#endif

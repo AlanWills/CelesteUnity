@@ -1,4 +1,5 @@
-﻿using Celeste.Lua.Catalogues;
+﻿#if USE_LUA
+using Celeste.Lua.Catalogues;
 using CelesteEditor.Objects;
 using Lua.Unity;
 
@@ -12,3 +13,4 @@ namespace CelesteEditor.Lua.PostProcessors
         }
     }
 }
+#endif

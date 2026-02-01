@@ -1,3 +1,4 @@
+#if USE_LUA
 using System;
 using Celeste.Events;
 using Celeste.Lua;
@@ -40,3 +41,4 @@ namespace Celeste.UI
         }
     }
 }
+#endif

@@ -200,7 +200,7 @@ namespace CelesteEditor.BuildSystem
             ScriptingBackend = ScriptingImplementation.IL2CPP;
             RequiresWritePermission = true;
             MinSdkVersion = AndroidSdkVersions.AndroidApiLevel28;
-            TargetSdkVersion = (AndroidSdkVersions)DEFAULT_TARGET_SDK_VERSION;
+            TargetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
             UseFastlane = false;
             FastlaneUploadTrackName = DEFAULT_GOOGLE_PLAY_TRACK;
         }

@@ -1,3 +1,4 @@
+#if USE_LUA
 using System;
 using System.Collections.Generic;
 using Lua.Unity;
@@ -11,3 +12,4 @@ namespace Celeste.Lua
         public List<ScriptVariable> Variables;
     }
 }
+#endif

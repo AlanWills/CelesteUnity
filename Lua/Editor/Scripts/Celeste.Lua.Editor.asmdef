@@ -6,11 +6,11 @@
         "Celeste.Tools",
         "Celeste.UnityProject",
         "Celeste.DataStructures.Editor",
-        "Lua.Unity",
         "Celeste.Objects",
         "Celeste.DataStructures",
         "Celeste.Tools.Editor",
-        "Celeste.Objects.Editor"
+        "Celeste.Objects.Editor",
+        "Lua.Unity"
     ],
     "includePlatforms": [
         "Editor"
@@ -24,7 +24,7 @@
     "versionDefines": [
         {
             "name": "de.codesmile.luny",
-            "expression": "0.0.1",
+            "expression": "",
             "define": "USE_LUA"
         }
     ],

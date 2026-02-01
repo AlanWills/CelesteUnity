@@ -1,3 +1,4 @@
+#if USE_LUA
 using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
@@ -44,3 +45,4 @@ namespace Celeste.Lua
         }
     }
 }
+#endif

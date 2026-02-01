@@ -147,6 +147,6 @@
         public const string NATIVE_FILE_PICKER_PACKAGE = "git@github.com:AlanWills/UnityNativeFilePicker.git";
         public const string NATIVE_SHARE_PACKAGE = "git@github.com:AlanWills/UnityNativeShare.git";
         public const string RUNTIME_INSPECTOR_PACkKAGE = "git@github.com:AlanWills/UnityRuntimeInspector.git";
-        public const string LUA_PACKAGE = "git@github.com:CodeSmile-0000011110110111/de.codesmile.luny.git";
+        public const string LUA_PACKAGE = "git@github.com:AlanWills/Lua-CSharp-Unity.git";
     }
 }

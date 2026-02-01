@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#if USE_LUA
+using System;
 using Celeste.Debug.Menus;
 using Celeste.Lua.Settings;
 using Celeste.Tools;
@@ -74,3 +74,4 @@ namespace Celeste.Lua.Debug
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if USE_LUA
 using Lua;
 using Lua.Standard;
 
@@ -28,3 +29,4 @@ namespace Celeste.Lua
         }
     }
 }
+#endif

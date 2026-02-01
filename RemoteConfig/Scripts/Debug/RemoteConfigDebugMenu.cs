@@ -49,6 +49,7 @@ namespace Celeste.RemoteConfig.Debug
                     }
                 }
 
+#if UNITY_REMOTE_CONFIG
                 using (new GUIEnabledScope(remoteConfigRecord.DataSource != DataSource.Unity))
                 {
                     if (GUILayout.Button("Unity"))
@@ -57,6 +58,7 @@ namespace Celeste.RemoteConfig.Debug
                         remoteConfigJson = remoteConfigRecord.ToJson();
                     }
                 }
+#endif
             }
 
             using (Section("Fetched Json"))

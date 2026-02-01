@@ -1,4 +1,5 @@
-﻿using Celeste.Objects;
+﻿#if USE_LUA
+using Celeste.Objects;
 using Lua.Unity;
 using UnityEngine;
 
@@ -9,3 +10,4 @@ namespace Celeste.Lua.Catalogues
     {
     }
 }
+#endif

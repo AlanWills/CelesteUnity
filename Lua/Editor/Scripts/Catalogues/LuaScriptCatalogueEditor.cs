@@ -1,4 +1,5 @@
-﻿using Celeste.Lua.Catalogues;
+﻿#if USE_LUA
+using Celeste.Lua.Catalogues;
 using CelesteEditor.DataStructures;
 using UnityEditor;
 
@@ -9,3 +10,4 @@ namespace Lua.Unity.Editor.Catalogues
     {
     }
 }
+#endif

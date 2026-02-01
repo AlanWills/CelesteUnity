@@ -1,4 +1,5 @@
-﻿using Celeste.Lua;
+﻿#if USE_LUA
+using Celeste.Lua;
 using TMPro;
 using Lua;
 using UnityEngine;
@@ -58,3 +59,4 @@ namespace Celeste.UI.Lua
         }
     }
 }
+#endif

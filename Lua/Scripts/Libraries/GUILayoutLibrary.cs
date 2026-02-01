@@ -1,3 +1,4 @@
+#if USE_LUA
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,3 +36,4 @@ namespace Celeste.Lua
         }
     }
 }
+#endif

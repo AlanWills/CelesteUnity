@@ -1,4 +1,5 @@
-﻿using Celeste.Tools;
+﻿#if USE_LUA
+using Celeste.Tools;
 using Lua;
 using Lua.Unity;
 using UnityEditor;
@@ -32,3 +33,4 @@ namespace CelesteEditor.Lua.PostProcessors
         }
     }
 }
+#endif

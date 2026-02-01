@@ -1,4 +1,5 @@
-﻿using Celeste.Lua.Settings;
+﻿#if USE_LUA
+using Celeste.Lua.Settings;
 using CelesteEditor.Tools.Settings;
 using UnityEditor;
 
@@ -21,3 +22,4 @@ namespace CelesteEditor.Lua.Settings
         }
     }
 }
+#endif

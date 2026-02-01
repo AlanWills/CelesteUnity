@@ -18,12 +18,12 @@
     "versionDefines": [
         {
             "name": "de.codesmile.luacsharp",
-            "expression": "0.0.1",
+            "expression": "",
             "define": "USE_LUA"
         },
         {
             "name": "com.unity.addressables",
-            "expression": "0.0.1",
+            "expression": "",
             "define": "USE_ADDRESSABLES"
         }
     ],
