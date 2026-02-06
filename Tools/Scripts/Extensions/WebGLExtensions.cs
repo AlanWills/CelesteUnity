@@ -1,4 +1,8 @@
-﻿namespace Celeste.Tools
+﻿#if UNITY_WEBGL && !UNITY_EDITOR
+using System.Runtime.InteropServices;
+#endif
+
+namespace Celeste.Tools
 {
     public static class WebGLExtensions
     {

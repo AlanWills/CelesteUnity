@@ -64,8 +64,9 @@ namespace Celeste.Loading
             Debug.Log($"Using addressables sub-folder '{subFolder}'.");
 
             var bundleCacheFileURL = GetCachedAssetBundlesPath(subFolder);
+            Debug.Log($"{nameof(bundleCacheFileURL)} is: '{subFolder}'.");
 
-#if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
+#if (UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL) && !UNITY_EDITOR
             var url = bundleCacheFileURL;
 #else
             var url = Path.GetFullPath(bundleCacheFileURL);
@@ -90,7 +91,7 @@ namespace Celeste.Loading
             Debug.Log($"Beginning to load bundle cache info at {url}.");
             string cachedBundlesInfo = "";
 
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if (UNITY_ANDROID || UNITY_WEBGL) && !UNITY_EDITOR
             var loadBundleCacheRequest = UnityWebRequest.Get(url);
             yield return loadBundleCacheRequest.SendWebRequest();
 

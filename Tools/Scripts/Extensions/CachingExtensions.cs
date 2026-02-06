@@ -1,10 +1,15 @@
-﻿using System.IO;
+﻿#if UNITY_WEBGL
+using System.IO;
 using UnityEngine;
+#endif
 
 namespace Celeste.Tools
 {
     public static class CachingExtensions
     {
+#if UNITY_WEBGL
+        public static void ClearCache() { }
+#else
         public static void ClearCache()
         {
             if (Caching.ClearCache())
@@ -27,5 +32,6 @@ namespace Celeste.Tools
                 Debug.Log($"Skipping clearing of addressables cache in persistent data as it does not exist.");
             }
         }
+#endif
     }
 }

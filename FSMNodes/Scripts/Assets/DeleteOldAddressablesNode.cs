@@ -1,5 +1,7 @@
 ﻿using Celeste.FSM;
+#if !UNITY_WEBGL
 using UnityEngine;
+#endif
 
 namespace Celeste.FSM.Nodes.Assets
 {
@@ -12,10 +14,12 @@ namespace Celeste.FSM.Nodes.Assets
         {
             base.OnEnter();
 
+#if !UNITY_WEBGL
             if (Caching.ClearCache())
             {
                 Debug.Log("Deleted asset bundle cache");
             }
+#endif
         }
 
         #endregion
