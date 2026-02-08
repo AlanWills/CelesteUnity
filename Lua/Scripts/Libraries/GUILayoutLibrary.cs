@@ -24,7 +24,20 @@ namespace Celeste.Lua
 
         private GUILayoutLibrary()
         {
+            functions.Add(new(kName, "label", Label));
             functions.Add(new(kName, "button", Button));
+            functions.Add(new(kName, "textInput", TextInput));
+            functions.Add(new(kName, "beginHorizontal", BeginHorizontal));
+            functions.Add(new(kName, "endHorizontal", EndHorizontal));
+        }
+        
+        private ValueTask<int> Label(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string text = context.GetArgument<string>(0);
+            GUILayout.Label(text ?? string.Empty);
+            return new ValueTask<int>(context.Return());
         }
         
         private ValueTask<int> Button(
@@ -32,7 +45,33 @@ namespace Celeste.Lua
             CancellationToken cancellationToken)
         {
             string text = context.GetArgument<string>(0);
-            return new ValueTask<int>(context.Return(GUILayout.Button(text)));
+            bool result = GUILayout.Button(text ?? string.Empty);
+            return new ValueTask<int>(context.Return(result));
+        }
+        
+        private ValueTask<int> TextInput(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string text = context.GetArgument<string>(0);
+            string newText = GUILayout.TextField(text ?? string.Empty, GUILayout.MaxWidth(400));
+            return new ValueTask<int>(context.Return(newText));
+        }
+        
+        private ValueTask<int> BeginHorizontal(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            GUILayout.BeginHorizontal();
+            return new ValueTask<int>(context.Return());
+        }
+        
+        private ValueTask<int> EndHorizontal(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            GUILayout.EndHorizontal();
+            return new ValueTask<int>(context.Return());
         }
     }
 }

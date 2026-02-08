@@ -62,7 +62,7 @@ namespace Celeste.Lua.Debug
         protected override async void OnDrawMenu()
         {
             base.OnDrawMenu();
-            
+
             await luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction, debugMenuTable);
         }
 
