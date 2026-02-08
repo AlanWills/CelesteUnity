@@ -40,6 +40,7 @@ namespace Celeste.Notifications.Record
             impl = new IOSNotificationSystem();
 #endif
             isInitialized = impl.Initialize();
+            UnityEngine.Debug.Assert(isInitialized, "Failed to initialize the notification record!");
             return isInitialized;
         }
 
