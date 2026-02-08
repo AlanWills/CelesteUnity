@@ -167,6 +167,19 @@ namespace Celeste.DataStructures
             return -1;
         }
 
+        public static T Find<T>(this IReadOnlyList<T> list, Predicate<T> predicate)
+        {
+            foreach (var item in list)
+            {
+                if (predicate(item))
+                {
+                    return item;
+                }
+            }
+
+            return default;
+        }
+
         public static void AssignFrom<T>(this List<T> list, IEnumerable<T> source)
         {
             list.Clear();

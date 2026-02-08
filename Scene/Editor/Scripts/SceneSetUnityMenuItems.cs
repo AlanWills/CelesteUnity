@@ -11,7 +11,7 @@ namespace CelesteEditor.Scene
         {
             EditorApplication.delayCall += AddForAllSceneSets;
         }
-
+        
         public static void AddForAllSceneSets()
         {
             foreach (SceneSet sceneSet in EditorOnly.FindAssets<SceneSet>())
