@@ -1,4 +1,4 @@
-﻿#if UNITY_WEBGL
+﻿#if !UNITY_WEBGL
 using System.IO;
 using UnityEngine;
 #endif
