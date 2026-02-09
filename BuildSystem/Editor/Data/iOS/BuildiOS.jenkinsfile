@@ -62,8 +62,8 @@ pipeline
                     $class: 'GitSCM',
                     branches: [[name: "${env.BRANCH}"]],
                     userRemoteConfigs: [[
-                        url: 'git@github.com:AlanWills/Just-One.git',
-                        credentialsId: 'Alan-SSH-Key'
+                        url: '[REPO_URL_HERE]',
+                        credentialsId: '[SSH_KEY_NAME_HERE]'
                     ]],
                     extensions: [
 						[$class: 'RelativeTargetDirectory', relativeTargetDir: '.'], // normal checkout

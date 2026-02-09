@@ -17,6 +17,12 @@ namespace CelesteEditor.Lua.PostProcessors
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
+            if (BuildPipeline.isBuildingPlayer)
+            {
+                // Don't do this when making a build to avoid error log 
+                return;
+            }
+            
             LuaState luaState = LuaUtility.CreateUnityLuaState();
             
             foreach (LuaScript luaScript in EditorOnly.FindAssets<LuaScript>())
