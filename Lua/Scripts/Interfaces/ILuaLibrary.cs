@@ -1,4 +1,3 @@
-#if USE_LUA
 using System.Collections.Generic;
 using Lua.Standard;
 
@@ -10,4 +9,3 @@ namespace Celeste.Lua
         IReadOnlyList<LibraryFunction> Functions { get; }
     }
 }
-#endif

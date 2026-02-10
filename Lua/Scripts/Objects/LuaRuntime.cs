@@ -1,5 +1,4 @@
-﻿#if USE_LUA
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lua;
@@ -7,6 +6,7 @@ using Lua.Standard;
 using Lua.Unity;
 using UnityEngine;
 
+#if USE_LUA
 namespace Celeste.Lua
 {
     [CreateAssetMenu(fileName = nameof(LuaRuntime), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM + "Lua Runtime", order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
@@ -165,6 +165,55 @@ namespace Celeste.Lua
             LuaValue luaValue = LuaValue.FromObject(value);
             luaState.Environment[variableName] = luaValue;
         }
+    }
+}
+#else
+namespace Celeste.Lua
+{
+    public class LuaRuntime : ScriptableObject
+    {
+        #region Properties and Fields
+
+        public bool IsInitialized => false;
+
+        #endregion
+
+        public void Initialize(
+            IReadOnlyList<ILuaLibrary> librariesToOpen,
+            IReadOnlyList<LuaScript> loadOnInitializeScripts) { }
+
+        public void Shutdown() { }
+
+        public ValueTask<LuaValue[]> ExecuteScriptAsync(LuaScript luaScript)
+        {
+            return new ValueTask<LuaValue[]>();
+        }
+
+        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction)
+        {
+            return ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
+        }
+
+        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, LuaValue argument)
+        {
+            return ExecuteFunctionAsync(luaFunction, new[] { argument });
+        }
+
+        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, ReadOnlySpan<LuaValue> arguments)
+        {
+            return new ValueTask<LuaValue[]>();
+        }
+
+        public void OpenLibrary(ILuaLibrary luaLibrary) { }
+
+        public void BindProxy<T, TProxy>(Func<UnityEngine.Object, ILuaProxy> factoryFunc)
+            where T : UnityEngine.Object
+            where TProxy : ILuaProxy, new() {}
+
+        public bool CanProxy(UnityEngine.Object obj) => false;
+        public ILuaProxy CreateProxy(UnityEngine.Object obj) => null;
+        
+        public void SetEnvironmentVariable<T>(string variableName, T value) { }
     }
 }
 #endif
