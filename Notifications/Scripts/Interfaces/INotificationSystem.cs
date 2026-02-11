@@ -27,5 +27,7 @@ namespace Celeste.Notifications
         void ScheduleNotification(Notification notification, DateTimeOffset dateTime, string intentData);
         void CancelNotification(Notification notification);
         void CancelAllNotifications();
+
+        bool TryGetLastNotificationIntent(out string data);
     }
 }

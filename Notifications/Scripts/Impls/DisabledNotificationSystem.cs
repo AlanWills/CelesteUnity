@@ -38,5 +38,11 @@ namespace Celeste.Notifications.Impls
         public void ScheduleNotification(Notification channel, DateTimeOffset dateTime, string intentData) { }
         public void CancelNotification(Notification channel) { }
         public void CancelAllNotifications() { }
+        
+        public bool TryGetLastNotificationIntent(out string data)
+        {
+            data = string.Empty;
+            return false;
+        }
     }
 }

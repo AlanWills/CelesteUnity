@@ -18,7 +18,6 @@ namespace Celeste.Notifications.Record
         public bool PermissionsRequested => impl.PermissionsRequested;
         public bool PermissionsGranted => impl.PermissionsGranted;
         public string LastRespondedNotificationData => impl.LastRespondedNotificationData;
-
         public int NumNotificationChannels => notificationChannelCatalogue.NumItems;
 
         [SerializeField] private NotificationChannelCatalogue notificationChannelCatalogue;
@@ -130,6 +129,11 @@ namespace Celeste.Notifications.Record
         public NotificationChannel GetNotificationChannel(int index)
         {
             return notificationChannelCatalogue.GetItem(index);
+        }
+
+        public bool TryGetLastNotificationIntent(out string data)
+        {
+            return impl.TryGetLastNotificationIntent(out data);
         }
 
         #region Callbacks

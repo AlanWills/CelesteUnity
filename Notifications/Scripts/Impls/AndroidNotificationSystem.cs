@@ -124,9 +124,9 @@ namespace Celeste.Notifications.Impls
                 SendNotification(androidNotification, notificationChannelId, notificationId);
                 UnityEngine.Debug.Log($"Notification with id {notificationId} had an unknown status and has been resent.", CelesteLog.Notifications);
             }
-            else if (notificationStatus == NotificationStatus.Unknown)
+            else
             {
-                UnityEngine.Debug.LogError($"Notification with id {notificationId} could not be scheduled due to unknown status.", CelesteLog.Notifications);
+                UnityEngine.Debug.LogError($"Notification with id {notificationId} could not be scheduled due to unhandled status.", CelesteLog.Notifications);
             }
         }
 
@@ -138,6 +138,20 @@ namespace Celeste.Notifications.Impls
         public void CancelAllNotifications()
         {
             AndroidNotificationCenter.CancelAllNotifications();
+        }
+
+        public bool TryGetLastNotificationIntent(out string data)
+        {
+            AndroidNotificationIntentData intentData = AndroidNotificationCenter.GetLastNotificationIntent();
+
+            if (intentData != null && !string.IsNullOrEmpty(intentData.Notification.IntentData))
+            {
+                data = intentData.Notification.IntentData;
+                return true;
+            }
+
+            data = string.Empty;
+            return false;
         }
 
         private void SendNotification(

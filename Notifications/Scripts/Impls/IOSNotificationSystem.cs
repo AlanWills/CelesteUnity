@@ -123,6 +123,13 @@ namespace Celeste.Notifications.Impls
             iOSNotificationCenter.RemoveAllDeliveredNotifications();
         }
 
+        public bool TryGetLastNotificationIntent(out string data)
+        {
+            // TODO
+            data = string.Empty;
+            return false;
+        }
+
         private iOSNotificationCalendarTrigger CreateCalendarTrigger(Notification notification, DateTimeOffset dateTimeOffset)
         {
             return new iOSNotificationCalendarTrigger()
