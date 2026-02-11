@@ -49,28 +49,49 @@ namespace Celeste.Lua.Debug
         protected override async void OnShowMenu()
         {
             base.OnShowMenu();
-
+            
             debugMenuTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
 
             onShowMenuFunction = debugMenuTable.GetFunction(onShowMenuFunctionName);
             onDrawMenuFunction = debugMenuTable.GetFunction(onDrawMenuFunctionName);
             onHideMenuFunction = debugMenuTable.GetFunction(onHideMenuFunctionName);
-                
-            await luaRuntime.ExecuteFunctionAsync(onShowMenuFunction, debugMenuTable);
+
+            try
+            {
+                await luaRuntime.ExecuteFunctionAsync(onShowMenuFunction, debugMenuTable);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogException(e);
+            }
         }
 
         protected override async void OnDrawMenu()
         {
             base.OnDrawMenu();
 
-            await luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction, debugMenuTable);
+            try
+            {
+                await luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction, debugMenuTable);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogException(e);
+            }
         }
 
         protected override async void OnHideMenu()
         {
             base.OnHideMenu();
-            
-            await luaRuntime.ExecuteFunctionAsync(onHideMenuFunction, debugMenuTable);
+
+            try
+            {
+                await luaRuntime.ExecuteFunctionAsync(onHideMenuFunction, debugMenuTable);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogException(e);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Celeste.Lua
 {
     [CreateAssetMenu(fileName = nameof(LuaRuntime), menuName = CelesteMenuItemConstants.LUA_MENU_ITEM + "Lua Runtime", order = CelesteMenuItemConstants.LUA_MENU_ITEM_PRIORITY)]
-    public class LuaRuntime : ScriptableObject
+    public class LuaRuntime : ScriptableObject, ILuaRuntime
     {
         #region Properties and Fields
 
@@ -82,16 +82,6 @@ namespace Celeste.Lua
                 return new ValueTask<LuaValue[]>();
             }
 #endif
-        }
-
-        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction)
-        {
-            return ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
-        }
-
-        public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, LuaValue argument)
-        {
-            return ExecuteFunctionAsync(luaFunction, new[] { argument });
         }
 
         public ValueTask<LuaValue[]> ExecuteFunctionAsync(LuaFunction luaFunction, ReadOnlySpan<LuaValue> arguments)
@@ -170,7 +160,7 @@ namespace Celeste.Lua
 #else
 namespace Celeste.Lua
 {
-    public class LuaRuntime : ScriptableObject
+    public class LuaRuntime : ScriptableObject, ILuaRuntime
     {
         #region Properties and Fields
 

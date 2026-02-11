@@ -8,7 +8,7 @@ namespace Celeste.Lua.Settings
     {
         #region Properties and Fields
         
-        public const string FOLDER_PATH = "Assets/Editor/Lua/";
+        public const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "LuaEditorSettings.asset";
 
         public LuaRuntime LuaRuntime => luaRuntime;

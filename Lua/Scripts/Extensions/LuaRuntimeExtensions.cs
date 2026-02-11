@@ -1,4 +1,5 @@
 #if USE_LUA
+using System;
 using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
@@ -7,7 +8,7 @@ namespace Celeste.Lua
 {
     public static class LuaRuntimeExtensions
     {
-        public static async ValueTask<LuaTable> ExecuteScriptAsClassAsync(this LuaRuntime luaRuntime, LuaScript script)
+        public static async ValueTask<LuaTable> ExecuteScriptAsClassAsync(this ILuaRuntime luaRuntime, LuaScript script)
         {
             var returnValues = (await luaRuntime.ExecuteScriptAsync(script));
             if (returnValues == null || returnValues.Length != 1)
@@ -24,7 +25,7 @@ namespace Celeste.Lua
             return luaTable;
         }
         
-        public static async ValueTask<LuaTable> ExecuteScriptAsClassAsync(this LuaRuntime lua, LuaScriptAndVariables scriptAndVariables)
+        public static async ValueTask<LuaTable> ExecuteScriptAsClassAsync(this ILuaRuntime lua, LuaScriptAndVariables scriptAndVariables)
         {
             LuaTable luaTable = await ExecuteScriptAsClassAsync(lua, scriptAndVariables.Script);
             
@@ -42,6 +43,16 @@ namespace Celeste.Lua
             }
             
             return luaTable;
+        }
+        
+        public static ValueTask<LuaValue[]> ExecuteFunctionAsync(this ILuaRuntime runtime, LuaFunction luaFunction)
+        {
+            return runtime.ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
+        }
+
+        public static ValueTask<LuaValue[]> ExecuteFunctionAsync(this ILuaRuntime luaRuntime, LuaFunction luaFunction, LuaValue argument)
+        {
+            return luaRuntime.ExecuteFunctionAsync(luaFunction, new[] { argument });
         }
     }
 }

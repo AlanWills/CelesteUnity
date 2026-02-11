@@ -29,6 +29,8 @@ namespace Celeste.Lua
             functions.Add(new(kName, "textInput", TextInput));
             functions.Add(new(kName, "beginHorizontal", BeginHorizontal));
             functions.Add(new(kName, "endHorizontal", EndHorizontal));
+            functions.Add(new(kName, "beginSection", BeginSection));
+            functions.Add(new(kName, "endSection", EndSection));
         }
         
         private ValueTask<int> Label(
@@ -71,6 +73,30 @@ namespace Celeste.Lua
             CancellationToken cancellationToken)
         {
             GUILayout.EndHorizontal();
+            return new ValueTask<int>(context.Return());
+        }
+        
+        public ValueTask<int> BeginSection(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            if (context.ArgumentCount > 0)
+            {
+                string sectionTitle = context.GetArgument<string>(0);
+                GUILayout.Label(sectionTitle ?? string.Empty, CelesteGUIStyles.BoldLabel.Colour(Color.white));
+            }
+
+            return new ValueTask<int>(context.Return());
+        }
+
+        public ValueTask<int> EndSection(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            GUILayout.EndVertical();
+            
             return new ValueTask<int>(context.Return());
         }
     }
