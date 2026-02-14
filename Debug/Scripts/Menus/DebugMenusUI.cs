@@ -128,9 +128,6 @@ namespace Celeste.Debug.Menus
                     }
 
                     GUILayout.EndVertical();
-
-                    // Right padding (approx 25px) to ensure buttons don't slide under the vertical scrollbar
-                    GUILayout.Space(25);
                     GUILayout.EndHorizontal();
                 }
             }
