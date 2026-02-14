@@ -128,6 +128,8 @@ namespace Celeste.Debug.Menus
                     }
 
                     GUILayout.EndVertical();
+                    
+                    GUILayout.Space(10); // Right padding
                     GUILayout.EndHorizontal();
                 }
             }
