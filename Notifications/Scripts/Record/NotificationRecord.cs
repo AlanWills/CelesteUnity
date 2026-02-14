@@ -91,6 +91,11 @@ namespace Celeste.Notifications.Record
             }
         }
 
+        public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset)
+        {
+            ScheduleNotification(notification, dateTimeOffset, notification.IntentData);
+        }
+
         public void ScheduleNotification(Notification notification, DateTimeOffset dateTimeOffset, string intentData)
         {
             if (!impl.PermissionsGranted)

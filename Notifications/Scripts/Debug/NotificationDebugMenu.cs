@@ -77,10 +77,7 @@ namespace Celeste.Notifications.Debug
 
                         if (GUILayout.Button("Schedule in 30s"))
                         {
-                            notificationRecord.ScheduleNotification(
-                                notification,
-                                DateTime.Now.AddSeconds(30),
-                                string.Empty);
+                            notificationRecord.ScheduleNotification(notification, DateTime.Now.AddSeconds(30));
                         }
 
                         if (GUILayout.Button("Cancel"))

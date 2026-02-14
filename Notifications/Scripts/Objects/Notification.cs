@@ -28,6 +28,7 @@ namespace Celeste.Notifications.Objects
         public string Title => title;
         public string SubTitle => subTitle;
         public string Text => text;
+        public string IntentData => intentData;
         public int Number => number;
         public bool ShowTimestamp => showTimestamp;
         public string SmallIcon => smallIcon;
@@ -41,6 +42,7 @@ namespace Celeste.Notifications.Objects
         [SerializeField] private string title;
         [SerializeField] private string subTitle;
         [SerializeField] private string text;
+        [SerializeField] private string intentData;
         [SerializeField] private int number;
         [SerializeField] private bool showTimestamp = true;
         [SerializeField] private string smallIcon;
