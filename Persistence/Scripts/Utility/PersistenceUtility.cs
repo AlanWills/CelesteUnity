@@ -1,6 +1,7 @@
 using Celeste.Tools;
 using FullSerializer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -125,6 +126,23 @@ namespace Celeste.Persistence
             fsResult deserializeResult = serializer.TryDeserialize(data, ref obj);
 
             return new ValueTuple<fsResult, T>(deserializeResult, obj);
+        }
+
+        public static ValueTuple<fsResult, Dictionary<string, fsData>> DeserializeObject(string json)
+        {
+            fsResult parseResult = fsJsonParser.Parse(json, out fsData data);
+            
+            if (!parseResult.Succeeded)
+            {
+                return new ValueTuple<fsResult, Dictionary<string, fsData>>(parseResult, new Dictionary<string, fsData>(StringComparer.Ordinal));
+            }
+
+            if (!data.IsDictionary)
+            {
+                return new ValueTuple<fsResult, Dictionary<string, fsData>>(parseResult, new Dictionary<string, fsData>(StringComparer.Ordinal));
+            }
+
+            return new ValueTuple<fsResult, Dictionary<string, fsData>>(parseResult, data.AsDictionary);
         }
 
         public static void DeletePersistentDataFile(string fileNameAndExtension)
