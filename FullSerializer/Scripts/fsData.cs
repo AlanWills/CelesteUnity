@@ -214,6 +214,16 @@ namespace FullSerializer {
             get {
                 return Cast<double>();
             }
+            set
+            {
+                if (!IsDouble)
+                {
+                    UnityEngine.Debug.LogAssertion($"Attempting to set a field to a Double when it is of type {Type}.");
+                    return;
+                }
+
+                _value = value;
+            }
         }
 
         /// <summary>
@@ -224,6 +234,16 @@ namespace FullSerializer {
         public Int64 AsInt64 {
             get {
                 return Cast<Int64>();
+            }
+            set
+            {
+                if (!IsInt64)
+                {
+                    UnityEngine.Debug.LogAssertion($"Attempting to set a field to an Int64 when it is of type {Type}.");
+                    return;
+                }
+
+                _value = value;
             }
         }
 
@@ -236,6 +256,16 @@ namespace FullSerializer {
             get {
                 return Cast<bool>();
             }
+            set
+            {
+                if (!IsBool)
+                {
+                    UnityEngine.Debug.LogAssertion($"Attempting to set a field to a Bool when it is of type {Type}.");
+                    return;
+                }
+
+                _value = value;
+            }
         }
 
         /// <summary>
@@ -246,6 +276,16 @@ namespace FullSerializer {
         public string AsString {
             get {
                 return Cast<string>();
+            }
+            set
+            {
+                if (!IsString)
+                {
+                    UnityEngine.Debug.LogAssertion($"Attempting to set a field to a String when it is of type {Type}.");
+                    return;
+                }
+
+                _value = value;
             }
         }
 
