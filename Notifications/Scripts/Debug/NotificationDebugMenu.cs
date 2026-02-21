@@ -62,6 +62,9 @@ namespace Celeste.Notifications.Debug
                 notificationRecord.CancelAllNotifications();
             }
 
+            GUILayout.Label("Notifications", CelesteGUIStyles.BoldLabel);
+            GUILayout.Space(4);
+            
             currentNotificationsChannelPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentNotificationsChannelPage,
                 NOTIFICATIONS_CHANNEL_PER_PAGE,
@@ -71,22 +74,32 @@ namespace Celeste.Notifications.Debug
                     var notification = notificationCatalogue.GetItem(index);
                     var notificationStatus = notificationRecord.GetNotificationStatus(notification);
 
-                    using (new GUILayout.HorizontalScope())
+                    using (Section(notification.name))
                     {
-                        GUILayout.Label($"{notification.name} ({notification.ID}) - {notificationStatus}");
+                        GUILayout.Label($"ID: {notification.ID}");
+                        GUILayout.Label($"Status: {notificationStatus}");
+                        GUILayout.Label($"Title: {notification.Title}");
+                        GUILayout.Label($"Intent Data: {notification.IntentData}");
 
-                        if (GUILayout.Button("Schedule in 30s"))
+                        using (new GUILayout.HorizontalScope())
                         {
-                            notificationRecord.ScheduleNotification(notification, DateTime.Now.AddSeconds(30));
-                        }
+                            if (GUILayout.Button("Schedule in 30s"))
+                            {
+                                notificationRecord.ScheduleNotification(notification, DateTime.Now.AddSeconds(30));
+                            }
 
-                        if (GUILayout.Button("Cancel"))
-                        {
-                            notificationRecord.CancelNotification(notification);
+                            if (GUILayout.Button("Cancel"))
+                            {
+                                notificationRecord.CancelNotification(notification);
+                            }
                         }
                     }
                 });
 
+            GUILayout.Space(4);
+            GUILayout.Label("Notification Channels", CelesteGUIStyles.BoldLabel);
+            GUILayout.Space(4);
+            
             currentNotificationsPage = GUIExtensions.ReadOnlyPaginatedList(
                 currentNotificationsPage,
                 NOTIFICATIONS_PER_PAGE,
@@ -94,9 +107,13 @@ namespace Celeste.Notifications.Debug
                 (index) =>
                 {
                     var notificationChannel = notificationChannelCatalogue.GetItem(index);
-                    notificationChannel.Enabled = GUILayout.Toggle(
-                        notificationChannel.Enabled,
-                        $"{notificationChannel.name} ({notificationChannel.ID})");
+
+                    using (Section(notificationChannel.DisplayName))
+                    {
+                        GUILayout.Label($"ID: {notificationChannel.ID}");
+                        
+                        notificationChannel.Enabled = GUILayout.Toggle(notificationChannel.Enabled, "Enabled");
+                    }
                 });
         }
     }
