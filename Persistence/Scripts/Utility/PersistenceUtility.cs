@@ -157,5 +157,15 @@ namespace Celeste.Persistence
                 UnityEngine.Debug.Log($"Deleted save file at {filePath}.");
             }
         }
+
+        public static void DeletePersistentDataFolder(string relativeFolderPath)
+        {
+            string folderPath = Path.Combine(Application.persistentDataPath, relativeFolderPath);
+            if (Directory.Exists(folderPath))
+            {
+                Directory.Delete(folderPath);
+                UnityEngine.Debug.Log($"Deleted folder at {folderPath}.");
+            }
+        }
     }
 }

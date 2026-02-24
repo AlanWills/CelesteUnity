@@ -21,10 +21,17 @@ namespace CelesteEditor.Persistence
         {
             OpenWithDefaultApp(Application.persistentDataPath);
         }
-
-        public static void OpenPersistentFile(string fileName)
+        
+        public static void OpenFolderInPersistentData(string relativeFolderPath)
         {
-            OpenWithDefaultApp(Path.Combine(Application.persistentDataPath, fileName));
+            string folderPath = Path.Combine(Application.persistentDataPath, relativeFolderPath);
+            OpenWithDefaultApp(folderPath);
+        }
+
+        public static void OpenFileInPersistentData(string relativeFilePath)
+        {
+            string folderPath = Path.Combine(Application.persistentDataPath, relativeFilePath);
+            OpenWithDefaultApp(folderPath);
         }
     }
 }
