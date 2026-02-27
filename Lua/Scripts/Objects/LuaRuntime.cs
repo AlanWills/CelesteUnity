@@ -124,6 +124,7 @@ namespace Celeste.Lua
         public void OpenLibrary(ILuaLibrary luaLibrary)
         {
             luaState.OpenLibrary(luaLibrary);
+            luaLibrary.LuaRuntime = this;
         }
 
         public void BindProxy<T, TProxy>(Func<UnityEngine.Object, ILuaProxy> factoryFunc) 

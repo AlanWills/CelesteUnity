@@ -16,6 +16,7 @@ namespace Celeste.Lua
         
         public string Name => kName;
         public IReadOnlyList<LibraryFunction> Functions => functions;
+        public LuaRuntime LuaRuntime { private get; set; }
         
         private const string kName = "GUILayout";
         private readonly List<LibraryFunction> functions = new();

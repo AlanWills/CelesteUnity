@@ -23,7 +23,8 @@ namespace Celeste.Lua.Managers
         {
             luaRuntime.Initialize(new List<ILuaLibrary>
             {
-                GUILayoutLibrary.Instance
+                GUILayoutLibrary.Instance,
+                UIToolkitLibrary.Instance
             }, runOnInitializeScripts.Items);
             
             luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);

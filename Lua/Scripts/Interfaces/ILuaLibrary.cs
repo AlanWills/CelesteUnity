@@ -7,5 +7,6 @@ namespace Celeste.Lua
     {
         string Name { get; }
         IReadOnlyList<LibraryFunction> Functions { get; }
+        LuaRuntime LuaRuntime { set; }
     }
 }

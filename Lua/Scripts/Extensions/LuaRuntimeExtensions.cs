@@ -50,9 +50,9 @@ namespace Celeste.Lua
             return runtime.ExecuteFunctionAsync(luaFunction, ReadOnlySpan<LuaValue>.Empty);
         }
 
-        public static ValueTask<LuaValue[]> ExecuteFunctionAsync(this ILuaRuntime luaRuntime, LuaFunction luaFunction, LuaValue argument)
+        public static ValueTask<LuaValue[]> ExecuteFunctionAsync(this ILuaRuntime luaRuntime, LuaFunction luaFunction, params LuaValue[] argument)
         {
-            return luaRuntime.ExecuteFunctionAsync(luaFunction, new[] { argument });
+            return luaRuntime.ExecuteFunctionAsync(luaFunction, argument);
         }
     }
 }
