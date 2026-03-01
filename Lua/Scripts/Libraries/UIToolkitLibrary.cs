@@ -7,6 +7,7 @@ using Celeste.Lua.Proxies;
 using Lua;
 using Lua.Standard;
 using Lua.Unity;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Celeste.Lua
@@ -36,6 +37,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "foldout", Foldout));
             functions.Add(new(kName, "list", List));
             functions.Add(new(kName, "visualElement", VisualElement));
+            functions.Add(new(kName, "button", Button));
         }
         
         private ValueTask<int> Label(
@@ -44,10 +46,9 @@ namespace Celeste.Lua
         {
             LuaTable settings = context.GetArgument<LuaTable>(0);
             string fieldLabel = settings.GetString("label") ?? string.Empty;
-            string fieldValue = settings.GetString("value") ?? string.Empty;
             LuaTable style = settings.GetTable("style");
             
-            var label = new Label(fieldLabel) { text = fieldValue };
+            var label = new Label(fieldLabel);
             
             ApplyStyle(label, style);
             
@@ -227,6 +228,24 @@ namespace Celeste.Lua
             return new ValueTask<int>(context.Return(new LuaVisualElementProxy(visualElement)));
         }
 
+        private ValueTask<int> Button(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            LuaTable settings = context.GetArgument<LuaTable>(0);
+            string text = settings.GetString("text", string.Empty);
+            LuaTable style = settings.GetTable("style");
+            LuaFunction callback = settings.GetFunction("callback");
+            Button button = new Button(() =>
+            {
+                LuaRuntime.ExecuteFunctionAsync(callback);
+            }) { text = text };
+            
+            ApplyStyle(button, style);
+            
+            return new ValueTask<int>(context.Return(new LuaVisualElementProxy(button)));
+        }
+
         public static void ApplyStyle(VisualElement visualElement, LuaTable luaTable)
         {
             if (luaTable == null || luaTable == LuaValue.Nil)
@@ -234,44 +253,73 @@ namespace Celeste.Lua
                 return;
             }
 
-            if (luaTable.TryGetValue("minHeight", out LuaValue minHeightValue) &&
-                minHeightValue.TryRead(out float minHeight))
-            { 
-                visualElement.style.minHeight = minHeight;
-            }
-
-            string flexDirectionString = luaTable.GetString("flexDirection");
-            if (!string.IsNullOrEmpty(flexDirectionString))
+            // Min Height
             {
-                if (Enum.TryParse(flexDirectionString, out FlexDirection flexDirection))
+                if (luaTable.TryGetValue("minHeight", out LuaValue minHeightValue) &&
+                    minHeightValue.TryRead(out float minHeight))
                 {
-                    visualElement.style.flexDirection = flexDirection;
-                }
-                else
-                {
-                    UnityEngine.Debug.LogAssertion(
-                        $"Failed to parse flex direction string {flexDirectionString} as a {nameof(FlexDirection)} value.");
+                    visualElement.style.minHeight = minHeight;
                 }
             }
 
-            string alignItemsString = luaTable.GetString("alignItems");
-            if (!string.IsNullOrEmpty(alignItemsString))
+            // Flex Direction
             {
-                if (Enum.TryParse(alignItemsString, out Align alignItems))
+                string flexDirectionString = luaTable.GetString("flexDirection");
+                if (!string.IsNullOrEmpty(flexDirectionString))
                 {
-                    visualElement.style.alignItems = alignItems;
-                }
-                else
-                {
-                    UnityEngine.Debug.LogAssertion(
-                        $"Failed to parse align items string {alignItemsString} as an {nameof(Align)} value.");
+                    if (Enum.TryParse(flexDirectionString, out FlexDirection flexDirection))
+                    {
+                        visualElement.style.flexDirection = flexDirection;
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion(
+                            $"Failed to parse flex direction string {flexDirectionString} as a {nameof(FlexDirection)} value.");
+                    }
                 }
             }
 
-            if (luaTable.TryGetValue("flexGrow", out LuaValue flexGrowValue) &&
-                flexGrowValue.TryRead(out float flexGrow))
-            { 
-                visualElement.style.flexGrow = flexGrow;
+            // Align Items
+            {
+                string alignItemsString = luaTable.GetString("alignItems");
+                if (!string.IsNullOrEmpty(alignItemsString))
+                {
+                    if (Enum.TryParse(alignItemsString, out Align alignItems))
+                    {
+                        visualElement.style.alignItems = alignItems;
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion(
+                            $"Failed to parse align items string {alignItemsString} as an {nameof(Align)} value.");
+                    }
+                }
+            }
+
+            // Flex Grow
+            {
+                if (luaTable.TryGetValue("flexGrow", out LuaValue flexGrowValue) &&
+                    flexGrowValue.TryRead(out float flexGrow))
+                {
+                    visualElement.style.flexGrow = flexGrow;
+                }
+            }
+
+            // Font Style And Weight
+            {
+                string fontStyleAndWeight = luaTable.GetString("fontStyleAndWeight");
+                if (!string.IsNullOrEmpty(fontStyleAndWeight))
+                {
+                    if (Enum.TryParse(fontStyleAndWeight, out FontStyle fontStyle))
+                    {
+                        visualElement.style.unityFontStyleAndWeight = fontStyle;
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion(
+                            $"Failed to parse align items string {fontStyleAndWeight} as an {nameof(FontStyle)} value.");
+                    }
+                }
             }
         }
     }
