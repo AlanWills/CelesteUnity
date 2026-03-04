@@ -321,6 +321,15 @@ namespace Celeste.Lua
                     }
                 }
             }
+            
+            // Margin Left
+            {
+                if (luaTable.TryGetValue("marginLeft", out LuaValue marginLeftValue) &&
+                    marginLeftValue.TryRead(out float marginLeft))
+                {
+                    visualElement.style.marginLeft = marginLeft;
+                }
+            }
         }
     }
 }

@@ -153,6 +153,7 @@ namespace Celeste.Lua
 
         public void SetEnvironmentVariable<T>(string variableName, T value)
         {
+            UnityEngine.Debug.Assert(value != null, $"Attempting to set environment variable '{variableName}' to a null value.");
             LuaValue luaValue = LuaValue.FromObject(value);
             luaState.Environment[variableName] = luaValue;
         }
