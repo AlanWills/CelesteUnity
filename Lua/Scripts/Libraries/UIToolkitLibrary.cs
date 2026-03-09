@@ -38,6 +38,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "list", List));
             functions.Add(new(kName, "visualElement", VisualElement));
             functions.Add(new(kName, "button", Button));
+            functions.Add(new(kName, "dropdown", Dropdown));
         }
         
         private ValueTask<int> Label(
@@ -244,6 +245,43 @@ namespace Celeste.Lua
             ApplyStyle(button, style);
             
             return new ValueTask<int>(context.Return(new LuaVisualElementProxy(button)));
+        }
+
+        private ValueTask<int> Dropdown(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            LuaTable settings = context.GetArgument<LuaTable>(0);
+            string label = settings.GetString("label", string.Empty);
+            string value = settings.GetString("value", string.Empty);
+            LuaTable valuesTable = settings.GetTable("values");
+            LuaTable style = settings.GetTable("style");
+            LuaFunction valueChangedFunction = settings.GetFunction("valueChanged");
+            
+            List<string> values = new List<string>(valuesTable.ArrayLength);
+            foreach (var v in valuesTable)
+            {
+                values.Add(v.Value.As<string>());
+            }
+
+            if (values.Count > 0 && !values.Contains(value))
+            {
+                // UI Toolkit does not like dropdowns that set a value to one not in the list
+                value = values[0];
+            }
+            
+            DropdownField dropdown = new DropdownField(
+                label,
+                values,
+                value);
+            dropdown.RegisterValueChangedCallback(evt =>
+            {
+                LuaRuntime.ExecuteFunctionAsync(valueChangedFunction, evt.newValue);
+            });
+            
+            ApplyStyle(dropdown, style);
+            
+            return new ValueTask<int>(context.Return(new LuaVisualElementProxy(dropdown)));
         }
 
         public static void ApplyStyle(VisualElement visualElement, LuaTable luaTable)
