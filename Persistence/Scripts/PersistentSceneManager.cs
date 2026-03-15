@@ -181,7 +181,7 @@ namespace Celeste.Persistence
 
             if (saveTask.IsCompletedSuccessfully)
             {
-                UnityEngine.Debug.Log($"{name} saved successfully.", CelesteLog.Core);
+                UnityEngine.Debug.Log($"{name} saved successfully.", CelesteLog.Persistence);
             }
             else
             {

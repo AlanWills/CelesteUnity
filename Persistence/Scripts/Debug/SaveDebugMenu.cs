@@ -43,6 +43,13 @@ namespace Celeste.Persistence
                     {
                         File.Delete(file);
                     }
+                    
+                    if (GUILayout.Button("Log Contents"))
+                    {
+                        string fileContents = File.ReadAllText(file);
+                        UnityEngine.Debug.Log($"File Contents for '{fileName}':", CelesteLog.Debug);
+                        UnityEngine.Debug.Log(fileContents, CelesteLog.Debug);
+                    }
                 }
             }
         }

@@ -70,6 +70,12 @@ namespace Celeste.Persistence
             WebGLExtensions.SyncFiles();
         }
 
+        public static void WriteTextToFile(string filePath, string fileContents)
+        {
+            File.WriteAllText(filePath, fileContents);
+            WebGLExtensions.SyncFiles();
+        }
+        
         public static async Task SaveAsync<T>(string filePath, T persistenceDTO)
         {
             // Is async file saving possible in WebGL?
@@ -82,8 +88,8 @@ namespace Celeste.Persistence
                 if (result.Succeeded)
                 {
                     string jsonData = fsJsonPrinter.CompressedJson(data);
-                    byte[] bytes = Encoding.UTF8.GetBytes(jsonData);
-                    await File.WriteAllBytesAsync(filePath, bytes);
+                    //await File.WriteAllTextAsync(filePath, jsonData);v
+                    File.WriteAllText(filePath, jsonData);
                 }
                 
 #if UNITY_EDITOR
