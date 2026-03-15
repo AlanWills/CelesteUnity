@@ -261,12 +261,13 @@ namespace Celeste.Lua
             List<string> values = new List<string>(valuesTable.ArrayLength);
             foreach (var v in valuesTable)
             {
-                values.Add(v.Value.As<string>());
+                values.Add(v.Key.As<string>());
             }
 
             if (values.Count > 0 && !values.Contains(value))
             {
                 // UI Toolkit does not like dropdowns that set a value to one not in the list
+                UnityEngine.Debug.LogAssertion($"Failed to find current value {value} in list of available values for dropdown.");
                 value = values[0];
             }
             
