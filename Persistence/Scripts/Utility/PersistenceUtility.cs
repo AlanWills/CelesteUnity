@@ -30,9 +30,8 @@ namespace Celeste.Persistence
             {
                 return default;
             }
-
-            byte[] serializedBytes = File.ReadAllBytes(filePath);
-            string serializedJson = Encoding.UTF8.GetString(serializedBytes);
+            
+            string serializedJson = File.ReadAllText(filePath);
             var deserializeResult = Deserialize<T>(serializedJson);
 
             return deserializeResult.Item1.Failed ? default : deserializeResult.Item2;
@@ -48,8 +47,7 @@ namespace Celeste.Persistence
                 if (result.Succeeded)
                 {
                     string jsonData = fsJsonPrinter.CompressedJson(data);
-                    byte[] bytes = Encoding.UTF8.GetBytes(jsonData);
-                    File.WriteAllBytes(filePath, bytes);
+                    File.WriteAllText(filePath, jsonData);
                 }
                 
 #if UNITY_EDITOR
@@ -78,8 +76,15 @@ namespace Celeste.Persistence
         
         public static async Task SaveAsync<T>(string filePath, T persistenceDTO)
         {
-            // Is async file saving possible in WebGL?
-
+#if UNITY_WEGL
+            // Async saving is not possible in WebGL due to issues with File.WriteAllTextAsync etc.
+            // So we fake it here
+            // We have to do SyncFiles to deal with the browser async saving
+            Save(filePath, persistenceDTO);
+            WebGLExtensions.SyncFiles();
+            await Task.Yield();
+#else
+            
             // Save binary file
             {
                 // Serialize the data
@@ -88,8 +93,7 @@ namespace Celeste.Persistence
                 if (result.Succeeded)
                 {
                     string jsonData = fsJsonPrinter.CompressedJson(data);
-                    //await File.WriteAllTextAsync(filePath, jsonData);v
-                    File.WriteAllText(filePath, jsonData);
+                    await File.WriteAllTextAsync(filePath, jsonData);
                 }
                 
 #if UNITY_EDITOR
@@ -105,9 +109,7 @@ namespace Celeste.Persistence
                 }
 #endif
             }
-            
-            // Needed to deal with browser async saving
-            WebGLExtensions.SyncFiles();
+#endif
         }
         
         #endregion

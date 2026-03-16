@@ -38,7 +38,7 @@ namespace Celeste.Persistence
 
         [NonSerialized] private SaveState currentSaveState = SaveState.None;
         [NonSerialized] private bool saveRequested = false;
-        [NonSerialized] private Semaphore loadingLock = new Semaphore();
+        [NonSerialized] private readonly Semaphore loadingLock = new Semaphore();
         [NonSerialized] private IVersioned mostRecentlyLoadedVersion;
 
         #endregion
@@ -170,7 +170,7 @@ namespace Celeste.Persistence
 
             currentSaveState = SaveState.Pending;
 
-            Task saveTask = SaveAsync();
+            Task saveTask = SerializeAndSaveAsync();
 
             while (!saveTask.IsCompleted)
             {
@@ -185,7 +185,9 @@ namespace Celeste.Persistence
             }
             else
             {
-                UnityEngine.Debug.LogError($"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}", CelesteLog.Persistence.WithContext(this));
+                UnityEngine.Debug.LogError(
+                    $"{name} saved unsuccessfully: {(saveTask.Exception != null ? saveTask.Exception : "no exception")}",
+                    CelesteLog.Persistence.WithContext(this));
             }
 
             if (saveRequested)
@@ -207,7 +209,7 @@ namespace Celeste.Persistence
             yield return DoSave();
         }
 
-        private async Task SaveAsync()
+        private async Task SerializeAndSaveAsync()
         {
             TDTO serializedInstance = SerializeWithVersionInfo();
 
