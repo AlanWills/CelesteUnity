@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Celeste.Tools;
 using Lua;
 using Lua.Standard;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "endHorizontal", EndHorizontal));
             functions.Add(new(kName, "beginSection", BeginSection));
             functions.Add(new(kName, "endSection", EndSection));
+            functions.Add(new (kName, "plusMinusField", PlusMinusField));
         }
         
         private ValueTask<int> Label(
@@ -77,7 +79,7 @@ namespace Celeste.Lua
             return new ValueTask<int>(context.Return());
         }
         
-        public ValueTask<int> BeginSection(
+        private ValueTask<int> BeginSection(
             LuaFunctionExecutionContext context,
             CancellationToken cancellationToken)
         {
@@ -92,13 +94,24 @@ namespace Celeste.Lua
             return new ValueTask<int>(context.Return());
         }
 
-        public ValueTask<int> EndSection(
+        private ValueTask<int> EndSection(
             LuaFunctionExecutionContext context,
             CancellationToken cancellationToken)
         {
             GUILayout.EndVertical();
             
             return new ValueTask<int>(context.Return());
+        }
+
+        private ValueTask<int> PlusMinusField(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string label = context.GetArgument<string>(0);
+            int currentValue = context.GetArgument<int>(1);
+            int newValue = GUIExtensions.PlusMinusField(label, currentValue);
+            
+            return new ValueTask<int>(context.Return(newValue));
         }
     }
 }
