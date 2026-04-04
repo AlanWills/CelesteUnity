@@ -34,6 +34,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "beginSection", BeginSection));
             functions.Add(new(kName, "endSection", EndSection));
             functions.Add(new (kName, "plusMinusField", PlusMinusField));
+            functions.Add(new (kName, "intField", IntField));
         }
         
         private ValueTask<int> Label(
@@ -110,6 +111,17 @@ namespace Celeste.Lua
             string label = context.GetArgument<string>(0);
             int currentValue = context.GetArgument<int>(1);
             int newValue = GUIExtensions.PlusMinusField(label, currentValue);
+            
+            return new ValueTask<int>(context.Return(newValue));
+        }
+
+        private ValueTask<int> IntField(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string label = context.GetArgument<string>(0);
+            int currentValue = context.GetArgument<int>(1);
+            int newValue = GUIExtensions.IntField(label, currentValue);
             
             return new ValueTask<int>(context.Return(newValue));
         }

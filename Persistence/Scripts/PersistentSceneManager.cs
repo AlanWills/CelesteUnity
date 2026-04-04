@@ -228,9 +228,6 @@ namespace Celeste.Persistence
             return serializedInstance;
         }
 
-        protected virtual void OnSaveStart() { }
-        protected virtual void OnSaveFinish() { }
-
         protected abstract TDTO Serialize();
         protected abstract void Deserialize(TDTO dto);
         protected abstract void SetDefaultValues();

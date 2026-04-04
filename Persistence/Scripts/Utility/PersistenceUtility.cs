@@ -37,12 +37,12 @@ namespace Celeste.Persistence
             return deserializeResult.Item1.Failed ? default : deserializeResult.Item2;
         }
 
-        public static void Save<T>(string filePath, T persistenceDTO)
+        public static void Save<T>(string filePath, T persistenceDto)
         {
             // Save binary file
             {
                 // Serialize the data
-                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+                fsResult result = serializer.TrySerialize(persistenceDto, out fsData data);
 
                 if (result.Succeeded)
                 {
@@ -74,7 +74,7 @@ namespace Celeste.Persistence
             WebGLExtensions.SyncFiles();
         }
         
-        public static async Task SaveAsync<T>(string filePath, T persistenceDTO)
+        public static async Task SaveAsync<T>(string filePath, T persistenceDto)
         {
 #if UNITY_WEGL
             // Async saving is not possible in WebGL due to issues with File.WriteAllTextAsync etc.
@@ -88,7 +88,7 @@ namespace Celeste.Persistence
             // Save binary file
             {
                 // Serialize the data
-                fsResult result = serializer.TrySerialize(persistenceDTO, out fsData data);
+                fsResult result = serializer.TrySerialize(persistenceDto, out fsData data);
 
                 if (result.Succeeded)
                 {
