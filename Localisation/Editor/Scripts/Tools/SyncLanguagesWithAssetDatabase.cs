@@ -28,7 +28,6 @@ namespace CelesteEditor.Localisation.Tools
         [Header("Data")]
         [SerializeField] private LanguageCatalogue languageCatalogue;
         [SerializeField] private LocalisationKeyCatalogue localisationKeyCatalogue;
-        [SerializeField] private string localisationKeyCategoriesDirectory = "Assets/Localisation/Data/Categories";
         [SerializeField] private string audioDirectory = "Assets/Localisation/Audio";
 
         #endregion

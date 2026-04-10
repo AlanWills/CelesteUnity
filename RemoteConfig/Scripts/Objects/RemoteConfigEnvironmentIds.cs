@@ -25,8 +25,6 @@ namespace Celeste.RemoteConfig.Objects
 #if UNITY_REMOTE_CONFIG
                 case DataSource.Unity:
                     return isDebugBuild ? unityDevelopmentEnvironmentId : unityProductionEnvironmentId;
-#else
-                    return string.Empty;
 #endif
                 default:
                     UnityEngine.Debug.LogAssertion(

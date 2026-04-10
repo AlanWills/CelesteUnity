@@ -48,6 +48,11 @@ namespace Celeste.Lua
 
         public ValueTask<LuaValue[]> ExecuteScriptAsync(LuaScript luaScript)
         {
+            if (string.IsNullOrWhiteSpace(luaScript.Text))
+            {
+                return new ValueTask<LuaValue[]>();
+            }
+            
             if (!luaScript.TryCompile(luaState))
             {
                 UnityEngine.Debug.LogError($"Failed to load lua script '{luaScript.name}' as it has compiler errors.");

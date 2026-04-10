@@ -17,7 +17,7 @@ namespace Celeste.Lua.Debug
 
         [SerializeField] private LuaRuntime luaRuntime;
         [SerializeField, InlineDataInInspector] private LuaScriptAndVariables script;
-        [SerializeField] private bool showAdvancedSettings = false;
+        [SerializeField] private bool showAdvancedSettings;
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onShowMenuFunctionName = "onShowMenu";
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onDrawMenuFunctionName = "onDrawMenu";
         [SerializeField, ShowIf(nameof(showAdvancedSettings))] private string onHideMenuFunctionName = "onHideMenu";
