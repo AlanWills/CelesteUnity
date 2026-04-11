@@ -136,8 +136,36 @@ namespace Celeste.Persistence
             return new ValueTuple<fsResult, T>(deserializeResult, obj);
         }
 
+        public static ValueTuple<fsResult, List<fsData>> DeserializeList(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                return new ValueTuple<fsResult, List<fsData>>(fsResult.Warn("Inputted json was empty or whitespace!"), new List<fsData>());
+            }
+            
+            fsResult parseResult = fsJsonParser.Parse(json, out fsData data);
+            
+            if (!parseResult.Succeeded)
+            {
+                return new ValueTuple<fsResult, List<fsData>>(parseResult, new List<fsData>());
+            }
+
+            if (!data.IsList)
+            {
+                return new ValueTuple<fsResult, List<fsData>>(parseResult, new List<fsData>());
+            }
+
+            return new ValueTuple<fsResult, List<fsData>>(parseResult, data.AsList);
+        }
+
         public static ValueTuple<fsResult, Dictionary<string, fsData>> DeserializeObject(string json)
         {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                return new ValueTuple<fsResult, Dictionary<string, fsData>>(fsResult.Warn("Inputted json was empty or whitespace!"),
+                    new Dictionary<string, fsData>(StringComparer.Ordinal));
+            }
+            
             fsResult parseResult = fsJsonParser.Parse(json, out fsData data);
             
             if (!parseResult.Succeeded)

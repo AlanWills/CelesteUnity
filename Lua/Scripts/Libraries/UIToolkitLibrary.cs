@@ -61,13 +61,14 @@ namespace Celeste.Lua
             CancellationToken cancellationToken)
         {
             LuaTable settings = context.GetArgument<LuaTable>(0);
-            string fieldLabel = settings.GetString("label") ?? string.Empty;
-            string fieldValue = settings.GetString("value") ?? string.Empty;
+            string fieldLabel = settings.GetString("label");
+            string fieldText = settings.GetString("text");
             bool isDelayed = settings.GetBool("delayed");
+            bool multiline = settings.GetBool("multiline");
             LuaFunction valueChanged = settings.GetFunction("valueChanged");
             LuaTable style = settings.GetTable("style");
 
-            var textField = new TextField(fieldLabel) { value = fieldValue, isDelayed = isDelayed };
+            var textField = new TextField(fieldLabel) { value = fieldText, isDelayed = isDelayed, multiline = multiline};
             textField.RegisterValueChangedCallback(evt =>
             {
                 UnityEngine.Debug.Assert(LuaRuntime != null, $"Lua Runtime not set on {nameof(UIToolkitLibrary)}!");
@@ -75,6 +76,7 @@ namespace Celeste.Lua
             });
             
             ApplyStyle(textField, style);
+            ApplyTextFieldStyle(textField, style);
             
             return new ValueTask<int>(context.Return(new LuaVisualElementProxy(textField)));
         }
@@ -368,6 +370,33 @@ namespace Celeste.Lua
                 {
                     visualElement.style.marginLeft = marginLeft;
                 }
+            }
+            
+            // Unity Text Align
+            {
+                string textAlignString = luaTable.GetString("textAlign");
+                if (!string.IsNullOrEmpty(textAlignString))
+                {
+                    if (Enum.TryParse(textAlignString, out TextAnchor textAnchor))
+                    {
+                        visualElement.style.unityTextAlign = textAnchor;
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogAssertion(
+                            $"Failed to parse text align string {textAlignString} as a {nameof(TextAnchor)} value.");
+                    }
+                }
+            }
+        }
+
+        private static void ApplyTextFieldStyle(TextField textField, LuaTable luaTable)
+        {
+            var inputText = textField.Q(className: UnityEngine.UIElements.TextField.inputUssClassName);
+            if (inputText != null)
+            {
+                LuaTable inputTextStyle = luaTable.GetTable("inputTextStyle");
+                ApplyStyle(inputText, inputTextStyle);
             }
         }
     }
