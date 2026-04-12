@@ -436,20 +436,40 @@ namespace Celeste.Lua
                     }
                 }
             }
+            
+            // Font Size
+            {
+                if (luaTable.TryGetValue("fontSize", out LuaValue fontSizeValue) &&
+                    fontSizeValue.TryRead(out float fontSize))
+                {
+                    visualElement.style.fontSize = fontSize;
+                }
+            }
         }
 
-        private static void ApplyTextFieldStyle(TextField textField, LuaTable luaTable)
+        private static void ApplyTextFieldStyle(TextField textField, LuaTable style)
         {
-            var inputText = textField.Q(className: UnityEngine.UIElements.TextField.inputUssClassName);
-            if (inputText != null)
+            if (style == null || style == LuaValue.Nil)
             {
-                LuaTable inputTextStyle = luaTable.GetTable("inputTextStyle");
+                return;
+            }
+            
+            var inputText = textField.Q(className: UnityEngine.UIElements.TextField.inputUssClassName);
+            if (inputText != null && 
+                style.TryGetValue("inputTextStyle", out LuaValue inputTextStyleValue) &&
+                inputTextStyleValue.TryRead(out LuaTable inputTextStyle))
+            {
                 ApplyStyle(inputText, inputTextStyle);
             }
         }
 
         private static void ApplyListStyle(ListView listView, LuaTable style)
         {
+            if (style == null || style == LuaValue.Nil)
+            {
+                return;
+            }
+            
             if (style.TryGetValue("itemHeight", out LuaValue itemHeightValue) &&
                 itemHeightValue.TryRead(out float itemHeight))
             {
