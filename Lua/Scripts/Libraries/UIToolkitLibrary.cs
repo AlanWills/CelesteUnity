@@ -1,5 +1,6 @@
 ﻿#if USE_LUA
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "visualElement", VisualElement));
             functions.Add(new(kName, "button", Button));
             functions.Add(new(kName, "dropdown", Dropdown));
+            functions.Add(new (kName, "applyStyle", ApplyStyle));
         }
         
         private ValueTask<int> Label(
@@ -170,8 +172,7 @@ namespace Celeste.Lua
             CancellationToken cancellationToken)
         {
             LuaTable settings = context.GetArgument<LuaTable>(0);
-            LuaValue listProxyValue = settings.GetValue("items");
-            int itemHeight = settings.GetInt("itemHeight", 40);
+            LuaValue items = settings.GetValue("items");
             bool showAddRemoveFooter = settings.GetBool("showAddRemoveFooter", true);
             bool reorderable = settings.GetBool("reorderable", true);
             LuaTable style = settings.GetTable("style");
@@ -179,11 +180,35 @@ namespace Celeste.Lua
             LuaFunction bindItemFunction = settings.GetFunction("bindItem");
             LuaFunction itemAddedFunction = settings.GetFunction("itemAdded");
             LuaFunction itemRemovedFunction = settings.GetFunction("itemRemoved");
+
+            IList listItems = null;
+
+            if (items.TryRead(out LuaTable luaTable))
+            {
+                listItems = new List<LuaValue>(luaTable.ArrayLength);
+                
+                for (int i = 1; i <= luaTable.ArrayLength; ++i)
+                {
+                    if (luaTable.TryGetValue(i, out LuaValue v))
+                    {
+                        listItems.Add(v);
+                    }
+                }
+            }
+            else if (items.TryRead(out LuaListProxy luaListProxy))
+            {
+                listItems = luaListProxy.List;
+            }
+            
+            if (listItems == null)
+            {
+                UnityEngine.Debug.LogAssertion("Failed to determine list items when creating UIToolkit List.");
+                return new ValueTask<int>(context.Return(LuaValue.Nil));
+            }
             
             var listView = new ListView
             {
-                itemsSource = listProxyValue.As<LuaListProxy>().List,
-                fixedItemHeight = itemHeight,
+                itemsSource = listItems,
                 showAddRemoveFooter = showAddRemoveFooter,
                 reorderable = reorderable,
                 makeItem = () =>
@@ -194,26 +219,37 @@ namespace Celeste.Lua
                 },
                 bindItem = (element, index) =>
                 {
-                    LuaRuntime.ExecuteFunctionAsync(bindItemFunction, LuaValue.FromObject(new LuaVisualElementProxy(element)), index);
-                }
-            };
-
-            listView.itemsAdded += (indices) =>
-            {
-                foreach (int index in indices)
-                {
-                    LuaRuntime.ExecuteFunctionAsync(itemAddedFunction, index); 
-                }
-            };
-            listView.itemsRemoved += (indices) =>
-            {
-                foreach (int index in indices)
-                {
-                    LuaRuntime.ExecuteFunctionAsync(itemRemovedFunction, index); 
+                    // Lua Indices expect 1 indexing
+                    LuaRuntime.ExecuteFunctionAsync(bindItemFunction, LuaValue.FromObject(new LuaVisualElementProxy(element)), index + 1);
                 }
             };
             
+            if (itemAddedFunction != null)
+            {
+                listView.itemsAdded += (indices) =>
+                {
+                    foreach (int index in indices)
+                    {
+                        // Lua Indices expect 1 indexing
+                        LuaRuntime.ExecuteFunctionAsync(itemAddedFunction, index + 1);
+                    }
+                };
+            }
+
+            if (itemRemovedFunction != null)
+            {
+                listView.itemsRemoved += (indices) =>
+                {
+                    foreach (int index in indices)
+                    {
+                        // Lua Indices expect 1 indexing
+                        LuaRuntime.ExecuteFunctionAsync(itemRemovedFunction, index + 1);
+                    }
+                };
+            }
+
             ApplyStyle(listView, style);
+            ApplyListStyle(listView, style);
 
             return new ValueTask<int>(context.Return(new LuaVisualElementProxy(listView)));
         }
@@ -285,6 +321,18 @@ namespace Celeste.Lua
             ApplyStyle(dropdown, style);
             
             return new ValueTask<int>(context.Return(new LuaVisualElementProxy(dropdown)));
+        }
+
+        private ValueTask<int> ApplyStyle(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            LuaVisualElementProxy visualElementProxy = context.GetArgument<LuaVisualElementProxy>(0);
+            LuaTable style = context.GetArgument<LuaTable>(1);
+
+            ApplyStyle(visualElementProxy.VisualElement, style);
+            
+            return new ValueTask<int>(context.Return());
         }
 
         public static void ApplyStyle(VisualElement visualElement, LuaTable luaTable)
@@ -397,6 +445,21 @@ namespace Celeste.Lua
             {
                 LuaTable inputTextStyle = luaTable.GetTable("inputTextStyle");
                 ApplyStyle(inputText, inputTextStyle);
+            }
+        }
+
+        private static void ApplyListStyle(ListView listView, LuaTable style)
+        {
+            if (style.TryGetValue("itemHeight", out LuaValue itemHeightValue) &&
+                itemHeightValue.TryRead(out float itemHeight))
+            {
+                listView.fixedItemHeight = itemHeight;
+            }
+
+            if (style.TryGetValue("allowDynamicHeights", out LuaValue allowDynamicHeightsValue) &&
+                allowDynamicHeightsValue.TryRead(out bool allowDynamicHeights))
+            {
+                listView.virtualizationMethod = allowDynamicHeights ? CollectionVirtualizationMethod.DynamicHeight : CollectionVirtualizationMethod.FixedHeight;
             }
         }
     }
