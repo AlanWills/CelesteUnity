@@ -22,6 +22,38 @@ namespace Celeste.Tools
             }
         }
         
+        public static async void FireAndForget(this ValueTask task, string context = null)
+        {
+            try
+            {
+                await task;
+            }
+            catch (Exception e)
+            {
+                string message = string.IsNullOrEmpty(context) 
+                    ? $"[Async Error]: {e}" 
+                    : $"[Async Error - {context}]: {e}";
+            
+                UnityEngine.Debug.LogError(message);
+            }
+        }
+        
+        public static async void FireAndForget<T>(this ValueTask<T> task, string context = null)
+        {
+            try
+            {
+                await task;
+            }
+            catch (Exception e)
+            {
+                string message = string.IsNullOrEmpty(context) 
+                    ? $"[Async Error]: {e}" 
+                    : $"[Async Error - {context}]: {e}";
+            
+                UnityEngine.Debug.LogError(message);
+            }
+        }
+
         public static async void FireAndForget(this Awaitable task, string context = null)
         {
             try

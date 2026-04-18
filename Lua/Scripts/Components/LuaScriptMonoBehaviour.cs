@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
 using Celeste.Lua.Settings;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Lua
@@ -42,29 +43,29 @@ namespace Celeste.Lua
 #endif
         }
         
-        protected virtual async void Awake()
+        protected virtual void Awake()
         {
-            await ExecuteLuaFunction(awakeFunctionName);
+            ExecuteLuaFunction(awakeFunctionName).FireAndForget($"{name}.{nameof(Awake)}");
         }
         
-        protected virtual async void Start()
+        protected virtual void Start()
         {
-            await ExecuteLuaFunction(startFunctionName);
+            ExecuteLuaFunction(startFunctionName).FireAndForget($"{name}.{nameof(Start)}");
         }
 
-        protected virtual async void OnEnable()
+        protected virtual void OnEnable()
         {
-            await ExecuteLuaFunction(onEnableFunctionName);
+            ExecuteLuaFunction(onEnableFunctionName).FireAndForget($"{name}.{nameof(OnEnable)}");
         }
         
-        protected virtual async void OnDisable()
+        protected virtual void OnDisable()
         {
-            await ExecuteLuaFunction(onDisableFunctionName);
+            ExecuteLuaFunction(onDisableFunctionName).FireAndForget($"{name}.{nameof(OnDisable)}");
         }
         
-        protected virtual async void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            await ExecuteLuaFunction(onDestroyFunctionName);
+            ExecuteLuaFunction(onDestroyFunctionName).FireAndForget($"{name}.{nameof(OnDestroy)}");
         }
         
         #endregion

@@ -2,6 +2,7 @@
 using System;
 using Celeste.Events;
 using Celeste.Lua;
+using Celeste.Tools;
 using Celeste.Tools.Attributes.GUI;
 using UnityEngine;
 
@@ -20,24 +21,24 @@ namespace Celeste.UI
         
         #endregion
 
-        public async void Show(IPopupArgs args)
+        public void Show(IPopupArgs args)
         {
-            await ExecuteLuaFunction(showFunctionName);
+            ExecuteLuaFunction(showFunctionName).FireAndForget($"{name}.{nameof(Show)}");
         }
 
-        public async void Hide()
+        public void Hide()
         {
-            await ExecuteLuaFunction(hideFunctionName);
+            ExecuteLuaFunction(hideFunctionName).FireAndForget($"{name}.{nameof(Hide)}");
         }
 
-        public async void ConfirmPressed()
+        public void ConfirmPressed()
         {
-            await ExecuteLuaFunction(confirmPressedFunctionName);
+            ExecuteLuaFunction(confirmPressedFunctionName).FireAndForget($"{name}.{nameof(ConfirmPressed)}");
         }
 
-        public async void ClosePressed()
+        public void ClosePressed()
         {
-            await ExecuteLuaFunction(closePressedFunctionName);
+            ExecuteLuaFunction(closePressedFunctionName).FireAndForget($"{name}.{nameof(ClosePressed)}");
         }
     }
 }

@@ -18,12 +18,13 @@ namespace Celeste.FSM.Nodes.Flow
 
         #endregion
 
-        public WaitForSceneNode()
+        protected override void OnAddToGraph()
         {
-            RemoveDynamicPort(DEFAULT_OUTPUT_PORT_NAME);
+            base.OnAddToGraph();
 
             AddOutputPort(FOUND_OUTPUT_PORT);
             AddOutputPort(NOT_FOUND_OUTPUT_PORT);
+            RemoveDefaultOutputPort();
         }
 
         #region FSM Runtime

@@ -13,6 +13,7 @@ namespace Celeste.FSM.Nodes.Logic
         public string Name;
         public Condition Condition;
         public bool UseArgument;
+        public bool ForceCheck;
 
         public IfCondition(string name, Condition condition)
         {
@@ -33,7 +34,7 @@ namespace Celeste.FSM.Nodes.Logic
 
         public uint NumConditions => (uint)conditions.Count;
 
-        [SerializeField] private List<IfCondition> conditions = new List<IfCondition>();
+        [SerializeField] private List<IfCondition> conditions = new();
 
         #endregion
 
@@ -134,6 +135,11 @@ namespace Celeste.FSM.Nodes.Logic
                 if (condition.UseArgument)
                 {
                     condition.Condition.SetVariable(_argument);
+                }
+
+                if (condition.ForceCheck)
+                {
+                    condition.Condition.Check();
                 }
 
                 if (condition.Condition.IsMet)

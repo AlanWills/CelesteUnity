@@ -36,7 +36,7 @@ namespace Celeste.Logic
         }
 
         [SerializeField] private bool negate = false;
-        [SerializeField] private GuaranteedBoolValueChangedEvent onIsMetChanged = new GuaranteedBoolValueChangedEvent();
+        [SerializeField] private GuaranteedBoolValueChangedEvent onIsMetChanged = new();
 
         [NonSerialized] private bool isMet = false;
         [NonSerialized] private int initCount = 0;
@@ -111,8 +111,7 @@ namespace Celeste.Logic
             T asset = ScriptableObject.CreateInstance<T>();
             asset.name = name;
             asset.hideFlags = HideFlags.HideInHierarchy;
-
-            EditorOnly.AddObjectToAsset(asset, this);
+            asset.AddObjectToAsset(this);
 
             return asset;
         }
