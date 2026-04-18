@@ -4,6 +4,8 @@ namespace Celeste.Events
 {
     public interface IReadOnlyEvent
     {
+        event UnityAction InvokedEvent;
+        
         ICallbackHandle AddListener(IEventListener listener);
         ICallbackHandle AddListener(UnityAction callback);
 
@@ -15,6 +17,8 @@ namespace Celeste.Events
     
     public interface IReadOnlyEvent<T>
     {
+        event UnityAction<T> InvokedEvent;
+
         ICallbackHandle AddListener(IEventListener<T> listener);
         ICallbackHandle AddListener(UnityAction<T> callback);
 

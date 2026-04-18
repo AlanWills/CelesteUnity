@@ -8,6 +8,12 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
+        public event UnityAction<T> InvokedEvent
+        {
+            add => AddListener(value);
+            remove => RemoveListener(value);
+        }
+
 #if UNITY_EDITOR
         [SerializeField] private string helpText;
 #endif

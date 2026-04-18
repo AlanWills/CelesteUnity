@@ -10,13 +10,19 @@ namespace Celeste.Events
     public class Event : ScriptableObject, IEvent
     {
         #region Properties and Fields
+        
+        public event UnityAction InvokedEvent
+        {
+            add => AddListener(value);
+            remove => RemoveListener(value);
+        }
 
 #if UNITY_EDITOR
         [SerializeField, TextArea] private string helpText;
 #endif
 
-        private List<UnityActionCallback> gameEventListeners = new List<UnityActionCallback>();
-        private List<UnityActionCallback> cachedListeners = new List<UnityActionCallback>();
+        private readonly List<UnityActionCallback> gameEventListeners = new();
+        private readonly List<UnityActionCallback> cachedListeners = new();
 
         #endregion
 

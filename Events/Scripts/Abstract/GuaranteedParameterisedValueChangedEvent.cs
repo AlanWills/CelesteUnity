@@ -9,6 +9,12 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
+        public event UnityAction<ValueChangedArgs<TParam>> InvokedEvent
+        {
+            add => AddListener(value);
+            remove => RemoveListener(value);
+        }
+
         private TEvent EventImpl
         {
             get

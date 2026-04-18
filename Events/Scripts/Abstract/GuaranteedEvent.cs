@@ -9,6 +9,12 @@ namespace Celeste.Events
     {
         #region Properties and Fields
 
+        public event UnityAction InvokedEvent
+        {
+            add => AddListener(value);
+            remove => RemoveListener(value);
+        }
+
         private Event BakedEvent
         {
             get
