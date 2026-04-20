@@ -43,7 +43,7 @@ namespace Celeste.FSM.Nodes.Flow
                 currentTime += Time.deltaTime;
 
                 UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneByName(sceneName);
-                if (scene != null && scene.IsValid())
+                if (scene.IsValid())
                 {
                     Debug.LogFormat("Found scene {0}", sceneName);
                     return GetConnectedNodeFromOutput(FOUND_OUTPUT_PORT);

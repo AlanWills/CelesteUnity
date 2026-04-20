@@ -30,7 +30,7 @@ namespace CelesteEditor.Objects
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     selectedTypeIndex =
-                        EditorGUILayout.Popup("Node Type", selectedTypeIndex, assetDisplayNames.ToArray());
+                        EditorGUILayout.Popup("Type", selectedTypeIndex, assetDisplayNames.ToArray());
 
                     if (GUILayout.Button("Refresh Choices", GUILayout.ExpandWidth(false)))
                     {
