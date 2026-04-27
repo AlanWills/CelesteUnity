@@ -58,6 +58,48 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        [SerializeField] private string companyName;
+        public string CompanyName
+        {
+            get => companyName;
+            set
+            {
+                if (string.CompareOrdinal(companyName, value) != 0)
+                {
+                    companyName = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField] private string productName;
+        public string ProductName
+        {
+            get => productName;
+            set
+            {
+                if (string.CompareOrdinal(productName, value) != 0)
+                {
+                    productName = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
+        [SerializeField] private string applicationIdentifier;
+        public string ApplicationIdentifier
+        {
+            get => applicationIdentifier;
+            set
+            {
+                if (string.CompareOrdinal(applicationIdentifier, value) != 0)
+                {
+                    applicationIdentifier = value;
+                    EditorUtility.SetDirty(this);
+                }
+            }
+        }
+
         [SerializeField]
         [Tooltip("The directory relative to the project directory that the build will be created in." + STRING_SUBSTITUTION_HELP)]
         private string buildDirectory;
@@ -393,6 +435,9 @@ namespace CelesteEditor.BuildSystem
 
             EditorUserBuildSettings.development = development;
             EditorUserBuildSettings.waitForManagedDebugger = waitForManagedDebugger;
+            PlayerSettings.companyName = CompanyName;
+            PlayerSettings.productName = ProductName;
+            PlayerSettings.applicationIdentifier = ApplicationIdentifier;
             PlayerSettings.bundleVersion = Version.ToString();
             PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup, scriptingDefineSymbols.ToArray());
 
@@ -476,19 +521,24 @@ namespace CelesteEditor.BuildSystem
             LogExtensions.Clear();
 
             Switch();
-            BuildAssets();  // Always build assets, as the latest addressables data must be in the build
-            Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
+            
+            // Always build assets, as the latest addressables data must be in the build
+            bool success = BuildAssets();
 
-            PrepareForBuild(buildPlayerOptions);
-
-            BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
-            bool success = buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
-
-            foreach (BuildPostProcessStep buildPostProcessStep in buildPostProcessSteps)
+            if (success)
             {
-                if (success || !buildPostProcessStep.OnlyExecuteOnSuccess)
+                Debug.Log($"Location Path Name: {buildPlayerOptions.locationPathName}");
+                PrepareForBuild(buildPlayerOptions);
+
+                BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
+                success &= buildReport != null && buildReport.summary.result == BuildResult.Succeeded;
+
+                foreach (BuildPostProcessStep buildPostProcessStep in buildPostProcessSteps)
                 {
-                    buildPostProcessStep.Execute(buildPlayerOptions, buildReport, this);
+                    if (success || !buildPostProcessStep.OnlyExecuteOnSuccess)
+                    {
+                        buildPostProcessStep.Execute(buildPlayerOptions, buildReport, this);
+                    }
                 }
             }
 
@@ -499,6 +549,10 @@ namespace CelesteEditor.BuildSystem
             else if (Application.isBatchMode)
             {
                 EditorApplication.Exit(1);
+            }
+            else
+            {
+                Debug.LogError("Build Failed!  Check the log for more details...");
             }
         }
 
@@ -565,9 +619,8 @@ namespace CelesteEditor.BuildSystem
             Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, "AddressableAssetSettingsDefaultObject is null");
         }
 #endif
-
-        [Conditional("USE_ADDRESSABLES")]
-        public void BuildAssets()
+        
+        public bool BuildAssets()
         {
 #if USE_ADDRESSABLES
             LogExtensions.Clear();
@@ -578,8 +631,16 @@ namespace CelesteEditor.BuildSystem
             Debug.Log("Beginning to build content");
             AddressableAssetSettings.BuildPlayerContent(out var result);
 
+            if (!string.IsNullOrEmpty(result.Error))
+            { 
+                Debug.LogAssertion($"Asset Build failed with error: '{result.Error}'.  This will most likely have generated a non-functioning build!");
+                return false;
+            }
+            
             PostProcessAssetsForBuild(result);
             Debug.Log("Finished building content");
+            
+            return true;
 #endif
         }
 

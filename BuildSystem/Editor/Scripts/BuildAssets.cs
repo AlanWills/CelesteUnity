@@ -133,12 +133,12 @@ namespace CelesteEditor.BuildSystem
             };
 
             Application.logMessageReceived += logDelegate;
-            platformSettings.BuildAssets();
+            bool buildResult = platformSettings.BuildAssets();
             Application.logMessageReceived -= logDelegate;
 
-            if (hasThrownAnException)
+            if (!buildResult || hasThrownAnException)
             {
-                Debug.LogErrorFormat("Exception thrown during asset building: {0}", exceptionMessage);
+                Debug.LogErrorFormat("Exception or error thrown during asset building: {0}", exceptionMessage);
             }
 
             if (Application.isBatchMode)

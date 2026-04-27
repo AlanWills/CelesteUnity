@@ -766,9 +766,33 @@ PrefabInstance:
     m_TransformParent: {fileID: 4631722049241556947}
     m_Modifications:
     - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4631722048699673501}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Celeste.UI.Popups.Popup, Celeste.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273997970847861940, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6273997970847861946, guid: 5ad33c064e044a844a7e9873d3666427, type: 3}
       propertyPath: m_Name
       value: CloseButton

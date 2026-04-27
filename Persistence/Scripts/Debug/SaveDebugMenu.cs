@@ -10,7 +10,7 @@ namespace Celeste.Persistence
     public class SaveDebugMenu : DebugMenu
     {
         [SerializeField]
-        private List<string> ignoreFiles = new List<string>()
+        private List<string> ignoreFiles = new()
         {
             "global-metadata.dat",
             "System.Data.dll-resources.dat",
@@ -25,7 +25,8 @@ namespace Celeste.Persistence
             {
                 foreach (string file in filesInPersistentData)
                 {
-                    if (file.EndsWith(".dat", System.StringComparison.Ordinal))
+                    if (file.EndsWith($".{PersistenceConstants.DAT_FILE_EXTENSION}", System.StringComparison.Ordinal) ||
+                        file.EndsWith($".{PersistenceConstants.DEBUG_FILE_EXTENSION}", System.StringComparison.Ordinal))
                     {
                         File.Delete(file);
                     }
