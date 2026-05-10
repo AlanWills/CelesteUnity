@@ -21,15 +21,25 @@ namespace Celeste.Persistence
         {
             var filesInPersistentData = Directory.GetFiles(Application.persistentDataPath, "*.*", SearchOption.AllDirectories).Where(x => !ignoreFiles.Contains(Path.GetFileName(x)));
 
-            if (GUILayout.Button("Delete All '.dat' Files"))
+            using (new GUILayout.HorizontalScope())
             {
-                foreach (string file in filesInPersistentData)
+                if (GUILayout.Button("Delete '.dat' Files"))
                 {
-                    if (file.EndsWith($".{PersistenceConstants.DAT_FILE_EXTENSION}", System.StringComparison.Ordinal) ||
-                        file.EndsWith($".{PersistenceConstants.DEBUG_FILE_EXTENSION}", System.StringComparison.Ordinal))
+                    foreach (string file in filesInPersistentData)
                     {
-                        File.Delete(file);
+                        if (file.EndsWith($".{PersistenceConstants.DAT_FILE_EXTENSION}",
+                                System.StringComparison.Ordinal) ||
+                            file.EndsWith($".{PersistenceConstants.DEBUG_FILE_EXTENSION}",
+                                System.StringComparison.Ordinal))
+                        {
+                            File.Delete(file);
+                        }
                     }
+                }
+
+                if (GUILayout.Button("Delete Folder"))
+                {
+                    Directory.Delete(Application.persistentDataPath, true);
                 }
             }
 
