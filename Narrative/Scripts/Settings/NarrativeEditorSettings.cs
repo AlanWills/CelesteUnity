@@ -39,7 +39,7 @@ namespace Celeste.Narrative.Settings
         
         #region Properties and Fields
 
-        private const string FOLDER_PATH = "Assets/Narrative/Editor/Data/";
+        private const string FOLDER_PATH = "Assets/Editor/Data/";
         public const string FILE_PATH = FOLDER_PATH + "NarrativeEditorSettings.asset";
 
         public IReadOnlyList<ShortcutForFSMNodePrefab> FSMNodePrefabsWithShortcuts => fsmNodePrefabsWithShortcuts;
