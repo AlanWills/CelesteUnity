@@ -1,13 +1,16 @@
+#if USE_LUA
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lua;
 using Lua.Unity;
+#endif
 
 namespace Celeste.Lua
 {
     public interface ILuaRuntime
     {
+#if USE_LUA
         void Initialize(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts);
         void Shutdown();
 
@@ -21,5 +24,6 @@ namespace Celeste.Lua
             where TProxy : ILuaProxy, new();
         bool CanProxy(UnityEngine.Object obj);
         ILuaProxy CreateProxy(UnityEngine.Object obj);
+#endif
     }
 }

@@ -616,7 +616,7 @@ namespace CelesteEditor.BuildSystem
                 AddressableAssetSettingsDefaultObject.Settings = AssetDatabase.LoadAssetAtPath<AddressableAssetSettings>(AddressableAssetSettingsDefaultObject.DefaultAssetPath);
             }
 
-            Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, "AddressableAssetSettingsDefaultObject is null");
+            Debug.Assert(AddressableAssetSettingsDefaultObject.Settings != null, $"{nameof(AddressableAssetSettingsDefaultObject)} Settings is null");
         }
 #endif
         
@@ -639,9 +639,8 @@ namespace CelesteEditor.BuildSystem
             
             PostProcessAssetsForBuild(result);
             Debug.Log("Finished building content");
-            
+#endif      
             return true;
-#endif
         }
 
         public bool UpdateAssets()
