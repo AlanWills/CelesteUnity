@@ -58,6 +58,7 @@ namespace CelesteEditor.UnityProject
             string parentDirectory = parameters.parentDirectory;
             string directoryName = parameters.directoryName;
             string assemblyName = parameters.assemblyName;
+            string assemblyDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(parentDirectory, directoryName) : directoryName;
             bool hasRuntimeAssembly = parameters.hasRuntimeAssembly;
             bool hasEditorAssembly = parameters.hasEditorAssembly;
             bool hasSceneMenuItem = parameters.createSceneSet;
@@ -70,20 +71,22 @@ namespace CelesteEditor.UnityProject
             if (hasRuntimeAssembly)
             {
                 List<string> referencedAssemblies = parameters.runtimeAssemblyDependencies.Count > 0 ? new List<string>(parameters.runtimeAssemblyDependencies.Select(x => x.name)) : new List<string>();
-                CreateAssembly(parentDirectory, directoryName, assemblyName, assemblyName, referencedAssemblies);
+                CreateAssembly(
+                    assemblyDirectoryPath, 
+                    "Runtime", 
+                    $"{assemblyName}.Runtime", assemblyName, referencedAssemblies);
             }
 
             if (hasEditorAssembly)
             {
                 int indexOfFirstDelimiter = assemblyName.IndexOf('.');
                 string editorAssemblyNamespace = indexOfFirstDelimiter >= 0 ? $"{assemblyName.Insert(indexOfFirstDelimiter, "Editor")}" : $"{assemblyName}Editor";
-                string assemblyDirectoryPath = !string.IsNullOrEmpty(parentDirectory) ? Path.Combine(parentDirectory, directoryName) : directoryName;
-
+                
                 List<string> referencedAssemblies = parameters.editorAssemblyDependencies.Count > 0 ? new List<string>(parameters.editorAssemblyDependencies.Select(x => x.name)) : new List<string>();
 
                 if (hasRuntimeAssembly)
                 {
-                    referencedAssemblies.Add(assemblyName);
+                    referencedAssemblies.Add($"{assemblyName}.Runtime");
                 }
 
                 CreateAssembly(

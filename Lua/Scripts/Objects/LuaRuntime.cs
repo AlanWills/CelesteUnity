@@ -162,6 +162,11 @@ namespace Celeste.Lua
             LuaValue luaValue = LuaValue.FromObject(value);
             luaState.Environment[variableName] = luaValue;
         }
+
+        public void ClearEnvironmentVariable(string variableName)
+        {
+            luaState.Environment.SetNil(variableName);
+        }
     }
 }
 #else

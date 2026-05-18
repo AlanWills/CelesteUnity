@@ -7,7 +7,8 @@
         "Celeste.UnityProject",
         "Celeste.Objects",
         "Celeste.Tools",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "Celeste.Assets"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
