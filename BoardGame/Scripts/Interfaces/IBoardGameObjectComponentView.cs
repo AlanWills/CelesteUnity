@@ -2,7 +2,7 @@
 
 namespace Celeste.BoardGame
 {
-    public interface IBoardGameObjectComponentUIController
+    public interface IBoardGameObjectComponentView
     {
         void Hookup(BoardGameObjectRuntime boardGameObjectRuntime);
         void Shutdown();

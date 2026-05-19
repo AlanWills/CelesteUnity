@@ -1,11 +1,9 @@
 ﻿using Celeste.BoardGame.Components;
-using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Persistence;
 using Celeste.Components;
 using Celeste.DataStructures;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Celeste.Events;
 
 namespace Celeste.BoardGame.Runtime
 {
@@ -15,14 +13,19 @@ namespace Celeste.BoardGame.Runtime
 
         public int NumBoardGameObjectRuntimes => boardGameObjectRuntimes.Count;
 
-        private BoardGame boardGame;
-        private List<BoardGameObjectRuntime> boardGameObjectRuntimes = new List<BoardGameObjectRuntime>();
+        private readonly IIndexableItems<BoardGameObject> boardGameObjectCatalogue;
+        private readonly IEvent<BoardGameObjectAddedArgs> boardGameObjectAddedEvent;
+        private readonly List<BoardGameObjectRuntime> boardGameObjectRuntimes = new();
 
         #endregion
 
-        public BoardGameRuntime(BoardGame boardGame)
+        public BoardGameRuntime(
+            BoardGame boardGame,
+            IIndexableItems<BoardGameObject> catalogue,
+            IEvent<BoardGameObjectAddedArgs> boardGameObjectAdded)
         {
-            this.boardGame = boardGame;
+            boardGameObjectCatalogue = catalogue;
+            boardGameObjectAddedEvent = boardGameObjectAdded;
 
             InitializeComponents(boardGame);
         }
@@ -34,6 +37,8 @@ namespace Celeste.BoardGame.Runtime
                 boardGameObjectRuntime.ComponentDataChanged.RemoveListener(OnBoardGameObjectRuntimeChanged);
                 boardGameObjectRuntime.ShutdownComponents();
             }
+            
+            ShutdownComponents();
         }
 
         public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObject boardGameObject)
@@ -47,7 +52,7 @@ namespace Celeste.BoardGame.Runtime
 
         public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObjectRuntimeDTO boardGameObjectDTO)
         {
-            BoardGameObject boardGameObject = boardGame.FindBoardGameObject(boardGameObjectDTO.guid);
+            BoardGameObject boardGameObject =  boardGameObjectCatalogue.FindItem(x => x.Guid == boardGameObjectDTO.guid);
             if (boardGameObject == null)
             {
                 UnityEngine.Debug.LogAssertion($"Could not find board game object with guid {boardGameObjectDTO.guid}.");
@@ -58,6 +63,11 @@ namespace Celeste.BoardGame.Runtime
             boardGameObjectRuntime.LoadComponents(boardGameObjectDTO.components.ToLookup());
             boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
             boardGameObjectRuntimes.Add(boardGameObjectRuntime);
+            boardGameObjectAddedEvent?.Invoke(new BoardGameObjectAddedArgs
+            {
+                boardGameRuntime = this,
+                boardGameObjectRuntime = boardGameObjectRuntime,
+            });
 
             return boardGameObjectRuntime;
         }
@@ -77,9 +87,19 @@ namespace Celeste.BoardGame.Runtime
             return boardGameObjectRuntimes.Find(x => string.CompareOrdinal(x.Name, name) == 0);
         }
 
-        public void MoveBoardGameObjectRuntime(BoardGameObjectRuntime runtime, string newLocation)
+        public BoardGameRuntimeDTO Serialize()
         {
+            return new BoardGameRuntimeDTO(this);
+        }
+
+        public void Deserialize(BoardGameRuntimeDTO dto)
+        {
+            LoadComponents(dto.components);
             
+            foreach (BoardGameObjectRuntimeDTO boardGameObjectRuntimeDTO in dto.boardGameObjectRuntimes)
+            {
+                AddBoardGameObjectRuntime(boardGameObjectRuntimeDTO);
+            }
         }
 
         #region Callbacks

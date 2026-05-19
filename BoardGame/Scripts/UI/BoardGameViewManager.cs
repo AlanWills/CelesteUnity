@@ -1,5 +1,4 @@
-﻿using Celeste.BoardGame.Events;
-using Celeste.BoardGame.Interfaces;
+﻿using Celeste.BoardGame.Interfaces;
 using Celeste.BoardGame.Runtime;
 using Celeste.Components;
 using Celeste.Events;
@@ -10,14 +9,14 @@ using UnityEngine;
 
 namespace Celeste.BoardGame.UI
 {
-    [AddComponentMenu("Celeste/Board Game/UI/Board Game UI Manager")]
-    public class BoardGameUIManager : MonoBehaviour
+    [AddComponentMenu("Celeste/Board Game/Board Game View Manager")]
+    public class BoardGameViewManager : MonoBehaviour
     {
         #region Properties and Fields
 
         [SerializeField] private Transform boardAnchor;
 
-        [NonSerialized] private List<BoardGameObjectUIController> boardGameObjectUIControllers = new List<BoardGameObjectUIController>();
+        [NonSerialized] private readonly List<BoardGameObjectView> boardGameObjectViews = new();
 
         #endregion
 
@@ -30,13 +29,13 @@ namespace Celeste.BoardGame.UI
                 UnityEngine.Debug.Assert(boardGameObjectLocation != null, $"Failed to find location {currentLocation}.");
 
                 GameObject gameObject = boardGameObjectActor.iFace.InstantiateActor(boardGameObjectActor.instance, boardGameObjectLocation);
-                BoardGameObjectUIController uiController = gameObject.GetComponent<BoardGameObjectUIController>();
+                BoardGameObjectView view = gameObject.GetComponent<BoardGameObjectView>();
                 ILayoutContainer container = boardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
 
-                if (uiController != null)
+                if (view != null)
                 {
-                    uiController.Hookup(boardGameObjectRuntime);
-                    boardGameObjectUIControllers.Add(uiController);
+                    view.Hookup(boardGameObjectRuntime);
+                    boardGameObjectViews.Add(view);
                 }
 
                 if (container != null)
@@ -62,21 +61,21 @@ namespace Celeste.BoardGame.UI
 
                 ILayoutContainer oldLocationContainer = oldBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
                 ILayoutContainer newLocationContainer = newBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
-                BoardGameObjectUIController uiController = boardGameObjectUIControllers.Find(x => x.BoardGameObjectRuntime == boardGameObjectRuntime);
+                BoardGameObjectView view = boardGameObjectViews.Find(x => x.BoardGameObjectRuntime == boardGameObjectRuntime);
 
-                if (uiController != null)
+                if (view != null)
                 {
-                    uiController.transform.SetParent(newBoardGameObjectLocation);
+                    view.transform.SetParent(newBoardGameObjectLocation);
                 }
 
                 if (oldLocationContainer != null)
                 {
-                    oldLocationContainer.OnChildRemoved(uiController.gameObject);
+                    oldLocationContainer.OnChildRemoved(view.gameObject);
                 }
 
                 if (newLocationContainer != null)
                 {
-                    newLocationContainer.OnChildAdded(uiController.gameObject);
+                    newLocationContainer.OnChildAdded(view.gameObject);
                 }
             }
         }
@@ -125,7 +124,7 @@ namespace Celeste.BoardGame.UI
 
         public void OnBoardGameRuntimeShutdown(BoardGameShutdownArgs args)
         {
-            foreach (var boardGameObjectUIController in boardGameObjectUIControllers)
+            foreach (var boardGameObjectUIController in boardGameObjectViews)
             {
                 boardGameObjectUIController.Shutdown();
             }

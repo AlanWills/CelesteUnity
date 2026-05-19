@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CelesteEditor.BoardGame.UI
 {
-    [CustomEditor(typeof(Die2DBoardGameObjectComponentUIController))]
+    [CustomEditor(typeof(Die2DBoardGameObjectComponentView))]
     public class Die2DBoardGameObjectComponentUIControllerEditor : Editor
     {
         private int desiredValue;
@@ -17,7 +17,7 @@ namespace CelesteEditor.BoardGame.UI
 
                 if (GUILayout.Button("Set Value", GUILayout.ExpandWidth(false)))
                 {
-                    (target as Die2DBoardGameObjectComponentUIController).SetValue(desiredValue);
+                    (target as Die2DBoardGameObjectComponentView).SetValue(desiredValue);
                 }
             }
 

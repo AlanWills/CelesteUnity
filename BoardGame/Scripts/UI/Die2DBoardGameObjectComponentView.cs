@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Celeste.BoardGame.UI
 {
     [AddComponentMenu("Celeste/Board Game/UI/Die 2D UI Controller")]
-    public class Die2DBoardGameObjectComponentUIController : MonoBehaviour, IBoardGameObjectComponentUIController
+    public class Die2DBoardGameObjectComponentView : MonoBehaviour, IBoardGameObjectComponentView
     {
         #region Properties and Fields
 

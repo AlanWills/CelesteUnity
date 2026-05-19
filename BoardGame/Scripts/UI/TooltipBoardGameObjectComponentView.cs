@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Celeste.BoardGame.UI
 {
     [AddComponentMenu("Celeste/Board Game/UI/Tooltip UI Controller")]
-    public class TooltipBoardGameObjectComponentUIController : MonoBehaviour, IBoardGameObjectComponentUIController
+    public class TooltipBoardGameObjectComponentView : MonoBehaviour, IBoardGameObjectComponentView
     {
         #region Properties and Fields
 

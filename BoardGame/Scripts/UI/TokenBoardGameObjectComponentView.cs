@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Celeste.BoardGame.UI
 {
     [AddComponentMenu("Celeste/Board Game/UI/Token UI Controller")]
-    public class TokenBoardGameObjectComponentUIController : MonoBehaviour, IBoardGameObjectComponentUIController
+    public class TokenBoardGameObjectComponentView : MonoBehaviour, IBoardGameObjectComponentView
     {
         #region Properties and Fields
 

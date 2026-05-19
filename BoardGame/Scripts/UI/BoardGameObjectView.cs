@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Celeste.BoardGame.UI
 {
     [AddComponentMenu("Celeste/Board Game/UI/Board Game Object UI Controller")]
-    public class BoardGameObjectUIController : MonoBehaviour
+    public class BoardGameObjectView : MonoBehaviour
     {
         #region Properties and Fields
 
         public BoardGameObjectRuntime BoardGameObjectRuntime { get; private set; }
 
-        [SerializeField] private List<GameObject> componentUIControllers = new List<GameObject>();
+        [SerializeField] private List<GameObject> componentViews = new();
 
         #endregion
 
@@ -19,11 +19,11 @@ namespace Celeste.BoardGame.UI
 
         private void OnValidate()
         {
-            componentUIControllers.Clear();
+            componentViews.Clear();
 
-            foreach (var componentUIController in GetComponents<IBoardGameObjectComponentUIController>())
+            foreach (var componentView in GetComponents<IBoardGameObjectComponentView>())
             {
-                componentUIControllers.Add((componentUIController as MonoBehaviour).gameObject);
+                componentViews.Add((componentView as MonoBehaviour).gameObject);
             }
         }
 
@@ -33,19 +33,19 @@ namespace Celeste.BoardGame.UI
         {
             BoardGameObjectRuntime = runtime;
 
-            foreach (var component in componentUIControllers)
+            foreach (var component in componentViews)
             {
-                component.GetComponent<IBoardGameObjectComponentUIController>().Hookup(runtime);
+                component.GetComponent<IBoardGameObjectComponentView>().Hookup(runtime);
             }
         }
 
         public void Shutdown()
         {
-            foreach (var component in componentUIControllers)
+            foreach (var component in componentViews)
             {
                 if (component != null)
                 {
-                    component.GetComponent<IBoardGameObjectComponentUIController>().Shutdown();
+                    component.GetComponent<IBoardGameObjectComponentView>().Shutdown();
                 }
             }
 
