@@ -15,7 +15,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
         [SerializeField] private UseCardOnActorEvent useCardOnActor;
         [SerializeField] private CardRuntimeEvent useCardOnAll;
 
-        private List<CardRuntime> cardsCache = new List<CardRuntime>();
+        private List<CardInstance> cardsCache = new List<CardInstance>();
 
         protected override BTNode OnEvaluate(BTBlackboard btBlackboard)
         {
@@ -25,11 +25,11 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime card = currentHand.GetCard(i);
+                CardInstance card = currentHand.GetCard(i);
 
                 if (card.CanPlay && card.SupportsDamageEffect())
                 {
-                    CardRuntime target = FindBestTarget(card, opponentDeck.Stage);
+                    CardInstance target = FindBestTarget(card, opponentDeck.Stage);
 
                     // Only use this card if there is actually a valid target
                     if (target != null)
@@ -38,7 +38,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
                         {
                             useCardOnActor.Invoke(new UseCardOnActorArgs()
                             {
-                                cardRuntime = card,
+                                cardInstance = card,
                                 actor = target
                             });
                         }
@@ -55,14 +55,14 @@ namespace Celeste.DeckBuilding.Nodes.AI
             return GetDefaultOutputConnectedNode();
         }
 
-        private CardRuntime FindBestTarget(CardRuntime effect, Stage opponentStage)
+        private CardInstance FindBestTarget(CardInstance effect, Stage opponentStage)
         {
             using (var cache = new ClearScope(cardsCache))
             {
                 int damage = effect.GetDamage();
                 for (int i = 0, n = opponentStage.NumCards; i < n; ++i)
                 {
-                    CardRuntime target = opponentStage.GetCard(i);
+                    CardInstance target = opponentStage.GetCard(i);
 
                     if (effect.CanUseEffectOn(target))
                     {

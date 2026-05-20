@@ -5,8 +5,8 @@
     {
         bool enabled { get; set; }
 
-        bool IsValidFor(IComponentContainerRuntime<T> container, IRuntimeAddedContext context);
-        void Hookup(IComponentContainerRuntime<T> container, IRuntimeAddedContext context);
+        bool IsValidFor(IComponentContainerInstance<T> container, IRuntimeAddedContext context);
+        void Hookup(IComponentContainerInstance<T> container, IRuntimeAddedContext context);
         void Shutdown();
     }
 }

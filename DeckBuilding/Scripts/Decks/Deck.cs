@@ -56,9 +56,9 @@ namespace Celeste.DeckBuilding.Decks
         [SerializeField] private CardRuntimeEvent cardAddedToRemovedPileEvent;
         [SerializeField] private CardRuntimeEvent cardRemovedFromRemovedPileEvent;
 
-        [NonSerialized] private List<CardRuntime> drawPile = new List<CardRuntime>();
-        [NonSerialized] private List<CardRuntime> discardPile = new List<CardRuntime>();
-        [NonSerialized] private List<CardRuntime> removedPile = new List<CardRuntime>();
+        [NonSerialized] private List<CardInstance> drawPile = new List<CardInstance>();
+        [NonSerialized] private List<CardInstance> discardPile = new List<CardInstance>();
+        [NonSerialized] private List<CardInstance> removedPile = new List<CardInstance>();
 
         #endregion
 
@@ -66,25 +66,25 @@ namespace Celeste.DeckBuilding.Decks
 
         public void AddCardToDrawPile(Card card)
         {
-            AddCardToDrawPile(new CardRuntime(this, card));
+            AddCardToDrawPile(new CardInstance(this, card));
         }
 
-        public void AddCardToDrawPile(CardRuntime cardRuntime)
+        public void AddCardToDrawPile(CardInstance cardInstance)
         {
-            drawPile.Add(cardRuntime);
-            cardAddedToDrawPileEvent.Invoke(cardRuntime);
+            drawPile.Add(cardInstance);
+            cardAddedToDrawPileEvent.Invoke(cardInstance);
         }
 
-        public CardRuntime RemoveCardFromDrawPile(int index)
+        public CardInstance RemoveCardFromDrawPile(int index)
         {
-            CardRuntime card = drawPile.Get(index);
+            CardInstance card = drawPile.Get(index);
             cardRemovedFromDrawPileEvent.Invoke(card);
             drawPile.RemoveAt(index);
 
             return card;
         }
 
-        public CardRuntime DrawCard()
+        public CardInstance DrawCard()
         {
             if (drawPile.Count + discardPile.Count == 0)
             {
@@ -98,7 +98,7 @@ namespace Celeste.DeckBuilding.Decks
             }
 
             UnityEngine.Debug.Assert(NumCardsInDrawPile > 0, "No cards left in draw pile.");
-            CardRuntime card = drawPile[NumCardsInDrawPile - 1];
+            CardInstance card = drawPile[NumCardsInDrawPile - 1];
             drawPile.RemoveAt(NumCardsInDrawPile - 1);
             cardRemovedFromDrawPileEvent.Invoke(card);
 
@@ -109,7 +109,7 @@ namespace Celeste.DeckBuilding.Decks
         {
             for (int i = NumCardsInDiscardPile - 1; i >= 0; --i)
             {
-                CardRuntime card = RemoveCardFromDiscardPile(i);
+                CardInstance card = RemoveCardFromDiscardPile(i);
                 AddCardToDrawPile(card);
             }
         }
@@ -119,12 +119,12 @@ namespace Celeste.DeckBuilding.Decks
             cardShuffler.Shuffle(drawPile);
         }
 
-        public CardRuntime GetCardInDrawPile(int index)
+        public CardInstance GetCardInDrawPile(int index)
         {
             return drawPile.Get(index);
         }
 
-        public CardRuntime PeekTopCardOfDrawPile()
+        public CardInstance PeekTopCardOfDrawPile()
         {
             UnityEngine.Debug.Assert(!DrawPileEmpty, $"Attempting to peek top card of draw pile when it is empty.");
             return NumCardsInDrawPile > 0 ? drawPile[NumCardsInDrawPile - 1] : null;
@@ -136,30 +136,30 @@ namespace Celeste.DeckBuilding.Decks
 
         public void AddCardToDiscardPile(Card card)
         {
-            AddCardToDiscardPile(new CardRuntime(this, card));
+            AddCardToDiscardPile(new CardInstance(this, card));
         }
 
-        public void AddCardToDiscardPile(CardRuntime cardRuntime)
+        public void AddCardToDiscardPile(CardInstance cardInstance)
         {
-            discardPile.Add(cardRuntime);
-            cardAddedToDiscardPileEvent.Invoke(cardRuntime);
+            discardPile.Add(cardInstance);
+            cardAddedToDiscardPileEvent.Invoke(cardInstance);
         }
 
-        public CardRuntime RemoveCardFromDiscardPile(int index)
+        public CardInstance RemoveCardFromDiscardPile(int index)
         {
-            CardRuntime card = discardPile.Get(index);
+            CardInstance card = discardPile.Get(index);
             cardRemovedFromDiscardPileEvent.Invoke(card);
             discardPile.RemoveAt(index);
 
             return card;
         }
 
-        public CardRuntime GetCardInDiscardPile(int index)
+        public CardInstance GetCardInDiscardPile(int index)
         {
             return discardPile.Get(index);
         }
 
-        public CardRuntime PeekTopCardOfDiscardPile()
+        public CardInstance PeekTopCardOfDiscardPile()
         {
             UnityEngine.Debug.Assert(!DiscardPileEmpty, $"Attempting to peek top card of discard pile when it is empty.");
             return NumCardsInDiscardPile > 0 ? discardPile[NumCardsInDiscardPile - 1] : null;
@@ -171,30 +171,30 @@ namespace Celeste.DeckBuilding.Decks
 
         public void AddCardToRemovedPile(Card card)
         {
-            AddCardToRemovedPile(new CardRuntime(this, card));
+            AddCardToRemovedPile(new CardInstance(this, card));
         }
 
-        public void AddCardToRemovedPile(CardRuntime cardRuntime)
+        public void AddCardToRemovedPile(CardInstance cardInstance)
         {
-            removedPile.Add(cardRuntime);
-            cardAddedToRemovedPileEvent.Invoke(cardRuntime);
+            removedPile.Add(cardInstance);
+            cardAddedToRemovedPileEvent.Invoke(cardInstance);
         }
 
-        public CardRuntime RemoveCardFromRemovedPile(int index)
+        public CardInstance RemoveCardFromRemovedPile(int index)
         {
-            CardRuntime card = removedPile.Get(index);
+            CardInstance card = removedPile.Get(index);
             cardRemovedFromRemovedPileEvent.Invoke(card);
             removedPile.RemoveAt(index);
 
             return card;
         }
 
-        public CardRuntime GetCardInRemovedPile(int index)
+        public CardInstance GetCardInRemovedPile(int index)
         {
             return removedPile.Get(index);
         }
 
-        public CardRuntime PeekTopCardOfRemovedPile()
+        public CardInstance PeekTopCardOfRemovedPile()
         {
             UnityEngine.Debug.Assert(!RemovedPileEmpty, $"Attempting to peek top card of removed pile when it is empty.");
             return NumCardsInRemovedPile > 0 ? removedPile[NumCardsInRemovedPile - 1] : null;
@@ -206,7 +206,7 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Draw Pile Events
 
-        public ICallbackHandle AddCardAddedToDrawPileEventCallback(UnityAction<CardRuntime> callback)
+        public ICallbackHandle AddCardAddedToDrawPileEventCallback(UnityAction<CardInstance> callback)
         {
             return cardAddedToDrawPileEvent.AddListener(callback);
         }
@@ -216,7 +216,7 @@ namespace Celeste.DeckBuilding.Decks
             cardAddedToDrawPileEvent.RemoveListener(callback);
         }
 
-        public ICallbackHandle AddCardRemovedFromDrawPileEventCallback(UnityAction<CardRuntime> callback)
+        public ICallbackHandle AddCardRemovedFromDrawPileEventCallback(UnityAction<CardInstance> callback)
         {
             return cardRemovedFromDrawPileEvent.AddListener(callback);
         }
@@ -230,7 +230,7 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Discard Pile Events
 
-        public ICallbackHandle AddCardAddedToDiscardPileEventCallback(UnityAction<CardRuntime> callback)
+        public ICallbackHandle AddCardAddedToDiscardPileEventCallback(UnityAction<CardInstance> callback)
         {
             return cardAddedToDiscardPileEvent.AddListener(callback);
         }
@@ -240,7 +240,7 @@ namespace Celeste.DeckBuilding.Decks
             cardAddedToDiscardPileEvent.RemoveListener(callback);
         }
 
-        public ICallbackHandle AddCardRemovedFromDiscardPileEventCallback(UnityAction<CardRuntime> callback)
+        public ICallbackHandle AddCardRemovedFromDiscardPileEventCallback(UnityAction<CardInstance> callback)
         {
             return cardRemovedFromDiscardPileEvent.AddListener(callback);
         }
@@ -254,7 +254,7 @@ namespace Celeste.DeckBuilding.Decks
 
         #region Removed Pile Events
 
-        public ICallbackHandle AddCardAddedToRemovedPileEventCallback(UnityAction<CardRuntime> callback)
+        public ICallbackHandle AddCardAddedToRemovedPileEventCallback(UnityAction<CardInstance> callback)
         {
             return cardAddedToRemovedPileEvent.AddListener(callback);
         }
@@ -264,7 +264,7 @@ namespace Celeste.DeckBuilding.Decks
             cardAddedToRemovedPileEvent.RemoveListener(callback);
         }
 
-        public ICallbackHandle AddCardRemovedFromRemovedPileEventCallback(UnityAction<CardRuntime> cardRuntime)
+        public ICallbackHandle AddCardRemovedFromRemovedPileEventCallback(UnityAction<CardInstance> cardRuntime)
         {
             return cardRemovedFromRemovedPileEvent.AddListener(cardRuntime);
         }

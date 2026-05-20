@@ -7,12 +7,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class EffectComponentExtensions
     {
-        public static bool SupportsEffect(this CardRuntime card)
+        public static bool SupportsEffect(this CardInstance card)
         {
             return card.HasComponent<EffectComponent>();
         }
 
-        public static bool CanUseEffectOn(this CardRuntime card, CardRuntime target)
+        public static bool CanUseEffectOn(this CardInstance card, CardInstance target)
         {
             var effectComponent = card.FindComponent<EffectComponent>();
 #if COMPONENT_CHECKS
@@ -24,7 +24,7 @@ namespace Celeste.DeckBuilding.Extensions
             return effectComponent.component.CanUseOn(effectComponent.instance, card, target);
         }
 
-        public static IDeckMatchCommand UseEffectOn(this CardRuntime card, CardRuntime target)
+        public static IDeckMatchCommand UseEffectOn(this CardInstance card, CardInstance target)
         {
             var effectComponent = card.FindComponent<EffectComponent>();
 #if COMPONENT_CHECKS
@@ -36,7 +36,7 @@ namespace Celeste.DeckBuilding.Extensions
             return effectComponent.component.UseOn(effectComponent.instance, target);
         }
 
-        public static bool EffectRequiresTarget(this CardRuntime card)
+        public static bool EffectRequiresTarget(this CardInstance card)
         {
             var effectComponent = card.FindComponent<EffectComponent>();
 #if COMPONENT_CHECKS

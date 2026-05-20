@@ -6,6 +6,6 @@ namespace Celeste.DeckBuilding.Shuffler
 {
     public abstract class CardShuffler : ScriptableObject
     {
-        public abstract void Shuffle(List<CardRuntime> cards);
+        public abstract void Shuffle(List<CardInstance> cards);
     }
 }

@@ -22,16 +22,16 @@ namespace Celeste.BoardGame.UI
 
         #endregion
 
-        public void Hookup(BoardGameObjectRuntime runtime)
+        public void Hookup(BoardGameObjectInstance instance)
         {
-            if (runtime.TryFindComponent(out die2D))
+            if (instance.TryFindComponent(out die2D))
             {
                 UpdateUI();
 
                 die2D.iFace.AddValueChangedListener(die2D.instance, OnValueChangedArgs);
             }
 
-            runtime.TryFindComponent(out tooltip);
+            instance.TryFindComponent(out tooltip);
         }
 
         public void Shutdown()

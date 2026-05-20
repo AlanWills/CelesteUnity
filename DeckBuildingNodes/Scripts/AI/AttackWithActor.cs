@@ -17,7 +17,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
             DeckMatchPlayerRuntime controlledDeck = btBlackboard.GetObject<DeckMatchPlayerRuntime>(DeckBuildingAIBlackboardKeys.CONTROLLED_DECK);
             DeckMatchPlayerRuntime opponentDeck = btBlackboard.GetObject<DeckMatchPlayerRuntime>(DeckBuildingAIBlackboardKeys.OPPONENT_DECK);
 
-            CardRuntime readyActor = controlledDeck.Stage.FindCard(x => x.SupportsCombat() && x.IsReady());
+            CardInstance readyActor = controlledDeck.Stage.FindCard(x => x.SupportsCombat() && x.IsReady());
             if (readyActor == null)
             {
                 return GetDefaultOutputConnectedNode();
@@ -36,7 +36,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
             return this;
         }
 
-        private CardRuntime FindBestTarget(CardRuntime attacker, Stage opponentStage)
+        private CardInstance FindBestTarget(CardInstance attacker, Stage opponentStage)
         {
             int strength = attacker.GetStrength();
             var killableTarget = opponentStage.FindKillableCard(strength);

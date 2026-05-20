@@ -16,7 +16,7 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        public void Hookup(CardRuntime card)
+        public void Hookup(CardInstance card)
         {
             var infoComponent = card.FindComponent<InfoComponent>();
             if (infoComponent.IsValid)

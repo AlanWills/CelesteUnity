@@ -8,11 +8,11 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct CostChangedArgs
     {
-        public CardRuntime card;
+        public CardInstance card;
         public int oldCost;
         public int newCost;
 
-        public CostChangedArgs(CardRuntime card, int oldCost, int newCost)
+        public CostChangedArgs(CardInstance card, int oldCost, int newCost)
         {
             this.card = card;
             this.oldCost = oldCost;

@@ -6,9 +6,9 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct RefreshCard : IDeckMatchCommand
     {
-        private CardRuntime card;
+        private CardInstance card;
 
-        public RefreshCard(CardRuntime card)
+        public RefreshCard(CardInstance card)
         {
             this.card = card;
         }

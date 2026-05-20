@@ -7,8 +7,8 @@ namespace Celeste.DeckBuilding.Logic
 {
     public struct EffectRequirementArgs
     {
-        public CardRuntime effect;
-        public CardRuntime target;
+        public CardInstance effect;
+        public CardInstance target;
     }
 
     public abstract class EffectRequirement : ScriptableObject, IRequirement<EffectRequirementArgs>

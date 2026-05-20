@@ -12,7 +12,7 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
-        public CardRuntime Card { get; private set; }
+        public CardInstance Card { get; private set; }
 
         private bool isMouseOver = false;
         public bool IsMouseOver
@@ -44,7 +44,7 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        public void Hookup(CardRuntime card)
+        public void Hookup(CardInstance card)
         {
             Card = card;
             IsMouseOver = false;

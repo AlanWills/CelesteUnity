@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct DecreaseMaxHealth : IDeckMatchCommand
     {
-        private CardRuntime actorToApplyTo;
+        private CardInstance actorToApplyTo;
         private int maxHealthDecrease;
 
-        public DecreaseMaxHealth(CardRuntime actorToApplyTo, int maxHealthDecrease)
+        public DecreaseMaxHealth(CardInstance actorToApplyTo, int maxHealthDecrease)
         {
             this.actorToApplyTo = actorToApplyTo;
             this.maxHealthDecrease = maxHealthDecrease;

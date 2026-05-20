@@ -7,7 +7,7 @@ namespace Celeste.DeckBuilding.Interfaces
         Transform transform { get; }
         GameObject gameObject { get; }
 
-        void Hookup(CardRuntime card);
-        bool IsForCard(CardRuntime card);
+        void Hookup(CardInstance card);
+        bool IsForCard(CardInstance card);
     }
 }

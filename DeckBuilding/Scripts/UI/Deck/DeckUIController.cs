@@ -115,50 +115,50 @@ namespace Celeste.DeckBuilding.UI
 
         private Sprite GetDrawPileTopCardSprite()
         {
-            CardRuntime topCard = deck.PeekTopCardOfDrawPile();
+            CardInstance topCard = deck.PeekTopCardOfDrawPile();
             return showDrawPileFaceUp ? topCard.CardFront : topCard.CardBack;
         }
 
         private Sprite GetDiscardPileTopCardSprite()
         {
-            CardRuntime topCard = deck.PeekTopCardOfDiscardPile();
+            CardInstance topCard = deck.PeekTopCardOfDiscardPile();
             return showDiscardPileFaceUp ? topCard.CardFront : topCard.CardBack;
         }
 
         private Sprite GetRemovedPileTopCardSprite()
         {
-            CardRuntime topCard = deck.PeekTopCardOfRemovedPile();
+            CardInstance topCard = deck.PeekTopCardOfRemovedPile();
             return showRemovedPileFaceUp ? topCard.CardFront : topCard.CardBack;
         }
 
         #region Callbacks
 
-        public void OnCardAddedToDrawPile(CardRuntime card)
+        public void OnCardAddedToDrawPile(CardInstance card)
         {
             UpdateDrawPileUI();
         }
 
-        public void OnCardRemovedFromDrawPile(CardRuntime card)
+        public void OnCardRemovedFromDrawPile(CardInstance card)
         {
             UpdateDrawPileUI();
         }
 
-        public void OnCardAddedToDiscardPile(CardRuntime card)
+        public void OnCardAddedToDiscardPile(CardInstance card)
         {
             UpdateDiscardPileUI();
         }
 
-        public void OnCardRemovedFromDiscardPile(CardRuntime card)
+        public void OnCardRemovedFromDiscardPile(CardInstance card)
         {
             UpdateDiscardPileUI();
         }
 
-        public void OnCardAddedToRemovedPile(CardRuntime card)
+        public void OnCardAddedToRemovedPile(CardInstance card)
         {
             UpdateRemovedPileUI();
         }
 
-        public void OnCardRemovedFromRemovedPile(CardRuntime card)
+        public void OnCardRemovedFromRemovedPile(CardInstance card)
         {
             UpdateRemovedPileUI();
         }

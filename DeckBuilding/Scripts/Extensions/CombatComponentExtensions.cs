@@ -9,12 +9,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class CombatComponentExtensions
     {
-        public static bool SupportsCombat(this CardRuntime card)
+        public static bool SupportsCombat(this CardInstance card)
         {
             return card.HasComponent<CombatComponent>();
         }
 
-        public static bool IsReady(this CardRuntime card)
+        public static bool IsReady(this CardInstance card)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -27,7 +27,7 @@ namespace Celeste.DeckBuilding.Extensions
             return combatComponent.component.IsReady(combatComponent.instance);
         }
 
-        public static void SetReady(this CardRuntime card, bool ready)
+        public static void SetReady(this CardInstance card, bool ready)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -41,7 +41,7 @@ namespace Celeste.DeckBuilding.Extensions
         }
 
 
-        public static void Refresh(this CardRuntime card)
+        public static void Refresh(this CardInstance card)
         {
             if (card.SupportsCombat())
             {
@@ -49,14 +49,14 @@ namespace Celeste.DeckBuilding.Extensions
             }
         }
 
-        public static void Exhaust(this CardRuntime card)
+        public static void Exhaust(this CardInstance card)
         {
             if (card.SupportsCombat())
             {
                 card.SetReady(false);
             }
         }
-        public static int GetStrength(this CardRuntime card)
+        public static int GetStrength(this CardInstance card)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -69,7 +69,7 @@ namespace Celeste.DeckBuilding.Extensions
             return combatComponent.component.GetStrength(combatComponent.instance);
         }
 
-        public static void SetStrength(this CardRuntime card, int strength)
+        public static void SetStrength(this CardInstance card, int strength)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -82,7 +82,7 @@ namespace Celeste.DeckBuilding.Extensions
             combatComponent.component.SetStrength(combatComponent.instance, Mathf.Max(0, strength));
         }
 
-        public static void AddOnStrengthChangedCallback(this CardRuntime card, UnityAction<StrengthChangedArgs> callback)
+        public static void AddOnStrengthChangedCallback(this CardInstance card, UnityAction<StrengthChangedArgs> callback)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -96,7 +96,7 @@ namespace Celeste.DeckBuilding.Extensions
             events.OnStrengthChanged.AddListener(callback);
         }
 
-        public static void RemoveOnStrengthChangedCallback(this CardRuntime card, UnityAction<StrengthChangedArgs> callback)
+        public static void RemoveOnStrengthChangedCallback(this CardInstance card, UnityAction<StrengthChangedArgs> callback)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -110,7 +110,7 @@ namespace Celeste.DeckBuilding.Extensions
             events.OnStrengthChanged.RemoveListener(callback);
         }
 
-        public static void AddOnReadyChangedCallback(this CardRuntime card, UnityAction<bool> callback)
+        public static void AddOnReadyChangedCallback(this CardInstance card, UnityAction<bool> callback)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS
@@ -124,7 +124,7 @@ namespace Celeste.DeckBuilding.Extensions
             events.OnReadyChanged.AddListener(callback);
         }
 
-        public static void RemoveOnReadyChangedCallback(this CardRuntime card, UnityAction<bool> callback)
+        public static void RemoveOnReadyChangedCallback(this CardInstance card, UnityAction<bool> callback)
         {
             var combatComponent = card.FindComponent<CombatComponent>();
 #if COMPONENT_CHECKS

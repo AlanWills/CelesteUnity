@@ -9,7 +9,7 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct BeginAttackActorArgs
     {
-        public CardRuntime attacker;
+        public CardInstance attacker;
         public Vector3 position;
     }
 

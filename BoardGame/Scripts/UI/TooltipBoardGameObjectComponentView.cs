@@ -16,11 +16,11 @@ namespace Celeste.BoardGame.UI
 
         #endregion
 
-        public void Hookup(BoardGameObjectRuntime runtime)
+        public void Hookup(BoardGameObjectInstance instance)
         {
-            if (!runtime.TryFindComponent(out tooltip))
+            if (!instance.TryFindComponent(out tooltip))
             {
-                UnityEngine.Debug.LogAssertion($"Could not find component implementing {nameof(IBoardGameObjectTooltip)} interface on board game object {runtime.Name}.");
+                UnityEngine.Debug.LogAssertion($"Could not find component implementing {nameof(IBoardGameObjectTooltip)} interface on board game object {instance.Name}.");
             }
         }
 

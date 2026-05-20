@@ -13,9 +13,9 @@ namespace CelesteEditor.DeckBuilding
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime cardRuntime = currentHand.GetCard(i);
+                CardInstance cardInstance = currentHand.GetCard(i);
 
-                GUILayout.Label($"{cardRuntime.CardName} {cardRuntime.CardGuid}");
+                GUILayout.Label($"{cardInstance.CardName} {cardInstance.CardGuid}");
             }
 
             base.OnInspectorGUI();

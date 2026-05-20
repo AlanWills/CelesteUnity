@@ -20,9 +20,9 @@ namespace Celeste.BoardGame.UI
 
         #endregion
 
-        private void AddBoardGameObjectUI(BoardGameObjectRuntime boardGameObjectRuntime, InterfaceHandle<IBoardGameLocations> locations)
+        private void AddBoardGameObjectUI(BoardGameObjectInstance boardGameObjectInstance, InterfaceHandle<IBoardGameLocations> locations)
         {
-            if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
+            if (boardGameObjectInstance.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
             {
                 string currentLocation = boardGameObjectActor.iFace.GetCurrentLocationName(boardGameObjectActor.instance);
                 Transform boardGameObjectLocation = locations.IsValid ? locations.iFace.FindLocation(currentLocation) : null;
@@ -34,7 +34,7 @@ namespace Celeste.BoardGame.UI
 
                 if (view != null)
                 {
-                    view.Hookup(boardGameObjectRuntime);
+                    view.Hookup(boardGameObjectInstance);
                     boardGameObjectViews.Add(view);
                 }
 
@@ -46,12 +46,12 @@ namespace Celeste.BoardGame.UI
         }
 
         private void MoveBoardGameObjectUI(
-            BoardGameObjectRuntime boardGameObjectRuntime, 
+            BoardGameObjectInstance boardGameObjectInstance, 
             InterfaceHandle<IBoardGameLocations> locations,
             string oldLocation,
             string newLocation)
         {
-            if (boardGameObjectRuntime.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
+            if (boardGameObjectInstance.TryFindComponent<IBoardGameObjectActor>(out var boardGameObjectActor))
             {
                 Transform oldBoardGameObjectLocation = locations.IsValid ? locations.iFace.FindLocation(oldLocation) : null;
                 UnityEngine.Debug.Assert(oldBoardGameObjectLocation != null, $"Failed to find old location {oldLocation}.");
@@ -61,7 +61,7 @@ namespace Celeste.BoardGame.UI
 
                 ILayoutContainer oldLocationContainer = oldBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
                 ILayoutContainer newLocationContainer = newBoardGameObjectLocation.gameObject.GetComponent<ILayoutContainer>();
-                BoardGameObjectView view = boardGameObjectViews.Find(x => x.BoardGameObjectRuntime == boardGameObjectRuntime);
+                BoardGameObjectView view = boardGameObjectViews.Find(x => x.BoardGameObjectInstance == boardGameObjectInstance);
 
                 if (view != null)
                 {
@@ -84,42 +84,42 @@ namespace Celeste.BoardGame.UI
 
         public void OnBoardGameReady(BoardGameReadyArgs args)
         {
-            BoardGameRuntime boardGameRuntime = args.boardGameRuntime;
+            BoardGameInstance boardGameInstance = args.BoardGameInstance;
 
-            if (boardGameRuntime.TryFindComponent<IBoardGameActor>(out var boardActor))
+            if (boardGameInstance.TryFindComponent<IBoardGameActor>(out var boardActor))
             {
                 boardActor.iFace.InstantiateActor(boardActor.instance, boardAnchor);
             }
 
-            if (!boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
+            if (!boardGameInstance.TryFindComponent<IBoardGameLocations>(out var locations))
             {
                 UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
             }
 
-            for (int i = 0, n = boardGameRuntime.NumBoardGameObjectRuntimes; i < n; ++i)
+            for (int i = 0, n = boardGameInstance.NumBoardGameObjectRuntimes; i < n; ++i)
             {
-                AddBoardGameObjectUI(boardGameRuntime.GetBoardGameObjectRuntime(i), locations);
+                AddBoardGameObjectUI(boardGameInstance.GetBoardGameObjectRuntime(i), locations);
             }
         }
 
         public void OnBoardGameObjectAdded(BoardGameObjectAddedArgs args)
         {
-            if (!args.boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
+            if (!args.BoardGameInstance.TryFindComponent<IBoardGameLocations>(out var locations))
             {
                 UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
             }
 
-            AddBoardGameObjectUI(args.boardGameObjectRuntime, locations);
+            AddBoardGameObjectUI(args.BoardGameObjectInstance, locations);
         }
 
         public void OnBoardGameObjectMoved(BoardGameObjectMovedArgs args)
         {
-            if (!args.boardGameRuntime.TryFindComponent<IBoardGameLocations>(out var locations))
+            if (!args.BoardGameInstance.TryFindComponent<IBoardGameLocations>(out var locations))
             {
                 UnityEngine.Debug.LogAssertion($"Could not find locations interface on board.  This is almost certainly an error...");
             }
 
-            MoveBoardGameObjectUI(args.boardGameObjectRuntime, locations, args.oldLocation, args.newLocation);
+            MoveBoardGameObjectUI(args.BoardGameObjectInstance, locations, args.oldLocation, args.newLocation);
         }
 
         public void OnBoardGameRuntimeShutdown(BoardGameShutdownArgs args)

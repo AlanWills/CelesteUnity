@@ -9,8 +9,8 @@ namespace Celeste.Events
 	[Serializable]
 	public struct BoardGameObjectMovedArgs
 	{
-		public BoardGameRuntime boardGameRuntime;
-		public BoardGameObjectRuntime boardGameObjectRuntime;
+		public BoardGameInstance BoardGameInstance;
+		public BoardGameObjectInstance BoardGameObjectInstance;
 		public string oldLocation;
 		public string newLocation;
 	}

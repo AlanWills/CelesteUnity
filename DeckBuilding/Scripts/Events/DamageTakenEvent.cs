@@ -8,12 +8,12 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct DamageTakenArgs
     {
-        public CardRuntime cardRuntime;
+        public CardInstance cardInstance;
         public int damageTaken;
 
-        public DamageTakenArgs(CardRuntime cardRuntime, int damageTaken)
+        public DamageTakenArgs(CardInstance cardInstance, int damageTaken)
         {
-            this.cardRuntime = cardRuntime;
+            this.cardInstance = cardInstance;
             this.damageTaken = damageTaken;
         }
     }

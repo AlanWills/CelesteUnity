@@ -11,8 +11,8 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
-        private CardRuntime _pendingActor;
-        private CardRuntime PendingActor
+        private CardInstance _pendingActor;
+        private CardInstance PendingActor
         {
             get { return _pendingActor; }
             set
@@ -68,7 +68,7 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        private void AttackActorWithPendingActor(CardRuntime target)
+        private void AttackActorWithPendingActor(CardInstance target)
         {
             UnityEngine.Debug.Assert(target != null, "Target for Pending Actor is null.  Cannot attack.");
             attackActorWithActorEvent.Invoke(new AttackActorWithActorArgs() { attacker = PendingActor, target = target });

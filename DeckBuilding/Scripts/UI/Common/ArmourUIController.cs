@@ -15,11 +15,11 @@ namespace Celeste.DeckBuilding.UI
         [SerializeField] private GameObject armourUI;
         [SerializeField] private TextMeshProUGUI armourText;
 
-        private CardRuntime card;
+        private CardInstance card;
 
         #endregion
 
-        public void Hookup(CardRuntime card)
+        public void Hookup(CardInstance card)
         {
             this.card = card;
 

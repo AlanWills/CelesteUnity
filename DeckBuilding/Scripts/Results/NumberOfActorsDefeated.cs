@@ -40,9 +40,9 @@ namespace Celeste.DeckBuilding.Results
 
         protected override void OnRelease() { }
 
-        public override void OnCardRemovedFromStage(CardRuntime cardRuntime)
+        public override void OnCardRemovedFromStage(CardInstance cardInstance)
         {
-            int indexOfCard = cardsToDefeat.FindIndex(x => cardRuntime.IsForCard(x));
+            int indexOfCard = cardsToDefeat.FindIndex(x => cardInstance.IsForCard(x));
             if (indexOfCard >= 0)
             {
                 ++cardsDefeated;

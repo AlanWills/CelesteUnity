@@ -49,7 +49,7 @@ namespace Celeste.DeckBuilding.Commands
 
         #endregion
 
-        private void TryUseCardOnActor(CardRuntime card, CardRuntime target)
+        private void TryUseCardOnActor(CardInstance card, CardInstance target)
         {
             if (card.SupportsEffect() && card.CanUseEffectOn(target))
             {
@@ -57,7 +57,7 @@ namespace Celeste.DeckBuilding.Commands
             }
         }
 
-        private void TryUseCardOnAllActors(CardRuntime card, DeckMatchPlayerRuntime friendlyDeck, DeckMatchPlayerRuntime enemyDeck)
+        private void TryUseCardOnAllActors(CardInstance card, DeckMatchPlayerRuntime friendlyDeck, DeckMatchPlayerRuntime enemyDeck)
         {
             if (card.SupportsEffect() && !card.EffectRequiresTarget())
             {
@@ -66,11 +66,11 @@ namespace Celeste.DeckBuilding.Commands
             }
         }
 
-        private void TryUseCardOnActorsInStage(CardRuntime card, Stage stage)
+        private void TryUseCardOnActorsInStage(CardInstance card, Stage stage)
         {
             for (int i = 0, n = stage.NumCards; i < n; ++i)
             {
-                CardRuntime target = stage.GetCard(i);
+                CardInstance target = stage.GetCard(i);
 
                 if (card.CanUseEffectOn(target))
                 {
@@ -135,22 +135,22 @@ namespace Celeste.DeckBuilding.Commands
 
         #region Play Cards
 
-        public void OnPlayerDeckPlaysCard(CardRuntime card)
+        public void OnPlayerDeckPlaysCard(CardInstance card)
         {
             TryUseCardOnAllActors(card, deckMatchRuntime.PlayerDeckRuntime, deckMatchRuntime.EnemyDeckRuntime);
         }
 
-        public void OnEnemyDeckPlaysCard(CardRuntime card)
+        public void OnEnemyDeckPlaysCard(CardInstance card)
         {
             TryUseCardOnAllActors(card, deckMatchRuntime.EnemyDeckRuntime, deckMatchRuntime.PlayerDeckRuntime);
         }
 
         public void OnPlayerUseCardOnActor(UseCardOnActorArgs args)
         {
-            TryUseCardOnActor(args.cardRuntime, args.actor);
+            TryUseCardOnActor(args.cardInstance, args.actor);
         }
 
-        public void OnPlayerCardCancelled(CardRuntime card)
+        public void OnPlayerCardCancelled(CardInstance card)
         {
             AddCommand(new PlayerDeckAddsCard(card));
 
@@ -162,7 +162,7 @@ namespace Celeste.DeckBuilding.Commands
 
         public void OnEnemyUseCardOnActor(UseCardOnActorArgs args)
         {
-            TryUseCardOnActor(args.cardRuntime, args.actor);
+            TryUseCardOnActor(args.cardInstance, args.actor);
         }
 
         #endregion

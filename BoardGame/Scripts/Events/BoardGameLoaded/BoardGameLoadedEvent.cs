@@ -8,7 +8,7 @@ namespace Celeste.Events
     [Serializable]
     public struct BoardGameLoadedArgs
     {
-        public BoardGameRuntime boardGameRuntime;
+        public BoardGameInstance BoardGameInstance;
     }
 
     [Serializable]

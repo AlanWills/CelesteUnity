@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Celeste.DeckBuilding
 {
     [Serializable]
-    public class CardRuntime : ComponentContainerRuntime<CardComponent>
+    public class CardInstance : ComponentContainerInstance<CardComponent>
     {
         #region Events
 
@@ -64,7 +64,7 @@ namespace Celeste.DeckBuilding
 
         #endregion
 
-        public CardRuntime(Deck deck, Card card)
+        public CardInstance(Deck deck, Card card)
         {
             this.deck = deck;
             this.card = card;

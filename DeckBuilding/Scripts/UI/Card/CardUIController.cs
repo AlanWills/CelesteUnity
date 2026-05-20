@@ -21,7 +21,7 @@ namespace Celeste.DeckBuilding.UI
         [SerializeField] private StrengthUIController strengthController;
         [SerializeField] private DamageUIController damageController;
 
-        private CardRuntime card;
+        private CardInstance card;
         private bool canPlay = false;
         private bool dragging = false;
         private Vector2 startDragLocalPosition;
@@ -31,7 +31,7 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        public void Hookup(CardRuntime card)
+        public void Hookup(CardInstance card)
         {
             this.card = card;
             this.card.OnCanPlayChanged.AddListener(OnCanPlayChanged);
@@ -60,7 +60,7 @@ namespace Celeste.DeckBuilding.UI
             card.OnFaceUpChanged.AddListener(OnFaceUpChanged);
         }
 
-        public bool IsForCard(CardRuntime card)
+        public bool IsForCard(CardInstance card)
         {
             return this.card == card;
         }

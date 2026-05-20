@@ -50,7 +50,7 @@ namespace Celeste.DeckBuilding.Cards
             return new DamageEffectComponentEvents();
         }
 
-        public override IDeckMatchCommand UseOn(Instance instance, CardRuntime target)
+        public override IDeckMatchCommand UseOn(Instance instance, CardInstance target)
         {
             return new ApplyDamage(target, GetDamage(instance));
         }

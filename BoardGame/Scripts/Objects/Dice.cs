@@ -24,22 +24,22 @@ namespace Celeste.BoardGame.Objects
         [Header("Events")]
         [SerializeField] private MoveBoardGameObjectEvent moveBoardGameObjectEvent;
 
-        [NonSerialized] private List<BoardGameObjectRuntime> dice = new List<BoardGameObjectRuntime>();
+        [NonSerialized] private List<BoardGameObjectInstance> dice = new List<BoardGameObjectInstance>();
 
         #endregion
 
-        public void AddDie(BoardGameObjectRuntime die)
+        public void AddDie(BoardGameObjectInstance die)
         {
             UnityEngine.Debug.Assert(die.HasComponent<IBoardGameObjectDie>(), $"No {nameof(IBoardGameObjectDie)} found on {die.Name}.");
             dice.Add(die);
         }
 
-        public void RemoveDie(BoardGameObjectRuntime die)
+        public void RemoveDie(BoardGameObjectInstance die)
         {
             dice.Remove(die);
         }
 
-        public BoardGameObjectRuntime GetDie(int index)
+        public BoardGameObjectInstance GetDie(int index)
         {
             return dice.Get(index);
         }
@@ -61,12 +61,12 @@ namespace Celeste.BoardGame.Objects
             }
         }
 
-        public void MoveDiceTo(BoardGameObjectRuntime die, string location)
+        public void MoveDiceTo(BoardGameObjectInstance die, string location)
         {
             UnityEngine.Debug.Assert(dice.Contains(die), $"Could not find inputted die {die.Name} in {name}.");
             moveBoardGameObjectEvent.Invoke(new MoveBoardGameObjectArgs()
             {
-                boardGameObjectRuntime = die,
+                BoardGameObjectInstance = die,
                 newLocation = location
             });
         }

@@ -17,7 +17,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime card = currentHand.GetCard(i);
+                CardInstance card = currentHand.GetCard(i);
 
                 // Should only be able to use this if we have a card which costs more than zero
                 // which isn't the card we're currently trying to play

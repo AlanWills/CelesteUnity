@@ -5,21 +5,20 @@ namespace Celeste.Components
     public abstract class ComponentController<TComponent, TBaseComponent, TRuntime> : MonoBehaviour, IComponentController<TBaseComponent>
         where TComponent : TBaseComponent
         where TBaseComponent : BaseComponent
-        where TRuntime : class, IComponentContainerRuntime<TBaseComponent>
+        where TRuntime : class, IComponentContainerInstance<TBaseComponent>
     {
         public ComponentHandle<TComponent> Component { get; private set; }
         public TRuntime Runtime { get; private set; }
-        protected IComponentContainerController<IComponentContainerRuntime<TBaseComponent>, TBaseComponent> RuntimeController => Runtime.Controller;
 
         bool IComponentController<TBaseComponent>.IsValidFor(
-            IComponentContainerRuntime<TBaseComponent> container,
+            IComponentContainerInstance<TBaseComponent> container,
             IRuntimeAddedContext context)
         {
             return container.TryFindComponent(out ComponentHandle<TComponent> componentHandle) && CheckIsValidFor(componentHandle, container, context);
         }
         
         void IComponentController<TBaseComponent>.Hookup(
-            IComponentContainerRuntime<TBaseComponent> container, 
+            IComponentContainerInstance<TBaseComponent> container, 
             IRuntimeAddedContext context)
         {
             bool didFindComponent = container.TryFindComponent(out ComponentHandle<TComponent> componentHandle);
@@ -42,7 +41,7 @@ namespace Celeste.Components
 
         protected virtual bool CheckIsValidFor(
             ComponentHandle<TComponent> componentHandle,
-            IComponentContainerRuntime<TBaseComponent> container, 
+            IComponentContainerInstance<TBaseComponent> container, 
             IRuntimeAddedContext context) => true;
         protected abstract void DoHookup(IRuntimeAddedContext context);
         protected abstract void DoShutdown();

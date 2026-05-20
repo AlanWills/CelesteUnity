@@ -20,14 +20,14 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime card = currentHand.GetCard(i);
+                CardInstance card = currentHand.GetCard(i);
 
                 if (card.CanPlay && card.SupportsHealArmourEffect())
                 {
                     // We try and find a target which would benefit from this card
                     // Even if we can target everyone, there's no point using the card
                     // unless at least one actor will benefit from it
-                    CardRuntime target = FindBestTarget(card, controlledDeck.Stage);
+                    CardInstance target = FindBestTarget(card, controlledDeck.Stage);
 
                     if (target != null)
                     {
@@ -35,7 +35,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
                         {
                             useCardOnActor.Invoke(new UseCardOnActorArgs()
                             {
-                                cardRuntime = card,
+                                cardInstance = card,
                                 actor = target
                             });
                         }
@@ -52,15 +52,15 @@ namespace Celeste.DeckBuilding.Nodes.AI
             return GetDefaultOutputConnectedNode();
         }
 
-        private CardRuntime FindBestTarget(CardRuntime effect, Stage stage)
+        private CardInstance FindBestTarget(CardInstance effect, Stage stage)
         {
-            CardRuntime bestTarget = null;
+            CardInstance bestTarget = null;
             int bestArmourDiff = 0;
 
             // Find the target which would benefit the most from having its armour healed
             for (int i = 0, n = stage.NumCards; i < n; ++i)
             {
-                CardRuntime actor = stage.GetCard(i);
+                CardInstance actor = stage.GetCard(i);
                 
                 if (effect.CanUseEffectOn(actor))
                 {

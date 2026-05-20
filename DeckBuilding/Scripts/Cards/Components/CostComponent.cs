@@ -56,7 +56,7 @@ namespace Celeste.DeckBuilding.Cards
             return costData.Cost;
         }
 
-        public void SetCost(Instance instance, CardRuntime card, int cost)
+        public void SetCost(Instance instance, CardInstance card, int cost)
         {
             CostComponentData costData = instance.data as CostComponentData;
             if (costData.Cost != cost)

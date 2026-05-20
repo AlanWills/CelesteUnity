@@ -12,8 +12,9 @@ namespace Celeste.Components
         #region Properties and Fields
 
         public int NumComponents => components.Count;
+        public IReadOnlyList<T> Components => components;
 
-        [SerializeField] private List<T> components = new List<T>();
+        [SerializeField] private List<T> components = new();
 
         #endregion
 

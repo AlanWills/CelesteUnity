@@ -3,12 +3,11 @@ using UnityEngine.Events;
 
 namespace Celeste.Components
 {
-    public interface IComponentContainerRuntime<T> : IEnumerable<ComponentHandle<T>> where T : BaseComponent
+    public interface IComponentContainerInstance<T> : IEnumerable<ComponentHandle<T>> where T : BaseComponent
     {
         UnityEvent ComponentDataChanged { get; }
 
         int NumComponents { get; }
-        IComponentContainerController<IComponentContainerRuntime<T>, T> Controller { get; set; }
 
         void InitializeComponents(IComponentContainerUsingSubAssets<T> componentContainer);
         void InitializeComponents(IComponentContainerUsingTemplates<T> componentContainer);

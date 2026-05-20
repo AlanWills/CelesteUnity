@@ -16,7 +16,7 @@ namespace Celeste.Tilemaps.Tiles
 
         [HideInInspector, SerializeField] private TileComponents components;
 
-        [NonSerialized] private ComponentContainerRuntime<TileComponent> componentRuntimes = new ComponentContainerRuntime<TileComponent>();
+        [NonSerialized] private ComponentContainerInstance<TileComponent> componentInstances = new ComponentContainerInstance<TileComponent>();
         [NonSerialized] private bool hasCheckedForTileDataComponent = false;
         [NonSerialized] private bool hasCheckedForTileAnimationDataComponent = false;
         [NonSerialized] private InterfaceHandle<ITileDataComponent> tileDataComponent = InterfaceHandle<ITileDataComponent>.NULL;
@@ -41,7 +41,7 @@ namespace Celeste.Tilemaps.Tiles
 
         public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go)
         {
-            componentRuntimes.InitializeComponents(components);
+            componentInstances.InitializeComponents(components);
 
             return base.StartUp(position, tilemap, go);
         }
@@ -50,7 +50,7 @@ namespace Celeste.Tilemaps.Tiles
         {
             if (!hasCheckedForTileDataComponent)
             {
-                componentRuntimes.TryFindComponent(out tileDataComponent);
+                componentInstances.TryFindComponent(out tileDataComponent);
                 hasCheckedForTileDataComponent = true;
             }
 
@@ -66,7 +66,7 @@ namespace Celeste.Tilemaps.Tiles
         {
             if (!hasCheckedForTileAnimationDataComponent)
             {
-                componentRuntimes.TryFindComponent(out tileAnimationDataComponent);
+                componentInstances.TryFindComponent(out tileAnimationDataComponent);
                 hasCheckedForTileAnimationDataComponent = true;
             }
 

@@ -33,7 +33,7 @@ namespace Celeste.DeckBuilding.Cards
             return healArmourData;
         }
 
-        public override IDeckMatchCommand UseOn(Instance instance, CardRuntime target)
+        public override IDeckMatchCommand UseOn(Instance instance, CardInstance target)
         {
             return new HealArmour(target, GetArmourToHeal(instance));
         }

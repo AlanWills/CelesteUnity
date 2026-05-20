@@ -2,7 +2,7 @@
 
 namespace Celeste.LiveOps
 {
-    public class LiveOpComponents : ComponentContainerRuntime<BaseComponent>
+    public class LiveOpComponents : ComponentContainerInstance<BaseComponent>
     {
     }
 }

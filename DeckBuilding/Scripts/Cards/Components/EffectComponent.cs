@@ -20,7 +20,7 @@ namespace Celeste.DeckBuilding.Cards
             return singleTarget;
         }
 
-        public bool CanUseOn(Instance instance, CardRuntime effect, CardRuntime target)
+        public bool CanUseOn(Instance instance, CardInstance effect, CardInstance target)
         {
             EffectRequirementArgs args = new EffectRequirementArgs()
             {
@@ -39,6 +39,6 @@ namespace Celeste.DeckBuilding.Cards
             return true;
         }
 
-        public abstract IDeckMatchCommand UseOn(Instance instance, CardRuntime target);
+        public abstract IDeckMatchCommand UseOn(Instance instance, CardInstance target);
     }
 }

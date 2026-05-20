@@ -10,8 +10,8 @@ namespace Celeste.DeckBuilding.UI
     {
         #region Properties and Fields
 
-        private CardRuntime _pendingCard;
-        private CardRuntime PendingCard
+        private CardInstance _pendingCard;
+        private CardInstance PendingCard
         {
             get { return _pendingCard; }
             set
@@ -74,10 +74,10 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        private void UsePendingCardOnActor(CardRuntime target)
+        private void UsePendingCardOnActor(CardInstance target)
         {
             UnityEngine.Debug.Assert(target != null, "Target for pending card is null.  Cannot use card.");
-            useCardOnActorEvent.Invoke(new UseCardOnActorArgs() { cardRuntime = PendingCard, actor = target });
+            useCardOnActorEvent.Invoke(new UseCardOnActorArgs() { cardInstance = PendingCard, actor = target });
             PendingCard = null;
         }
 
@@ -96,7 +96,7 @@ namespace Celeste.DeckBuilding.UI
 
         #region Callbacks
 
-        public void OnPlayerCardPlayed(CardRuntime card)
+        public void OnPlayerCardPlayed(CardInstance card)
         {
             if (card.SupportsEffect())
             {

@@ -20,14 +20,14 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime card = currentHand.GetCard(i);
+                CardInstance card = currentHand.GetCard(i);
 
                 if (card.CanPlay && card.SupportsModifyMaxArmourEffect())
                 {
                     // We try and find a target which would benefit from this card
                     // Even if we can target everyone, there's no point using the card
                     // unless at least one actor will benefit from it
-                    CardRuntime target = controlledDeck.Stage.FindCard(x => card.CanUseEffectOn(x));
+                    CardInstance target = controlledDeck.Stage.FindCard(x => card.CanUseEffectOn(x));
 
                     if (target != null)
                     {
@@ -35,7 +35,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
                         {
                             useCardOnActor.Invoke(new UseCardOnActorArgs()
                             {
-                                cardRuntime = card,
+                                cardInstance = card,
                                 actor = target
                             });
                         }

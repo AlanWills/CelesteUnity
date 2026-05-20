@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct ModifyCost : IDeckMatchCommand
     {
-        private CardRuntime actorToApplyTo;
+        private CardInstance actorToApplyTo;
         private int costModifier;
 
-        public ModifyCost(CardRuntime actorToApplyTo, int costModifier)
+        public ModifyCost(CardInstance actorToApplyTo, int costModifier)
         {
             this.actorToApplyTo = actorToApplyTo;
             this.costModifier = costModifier;

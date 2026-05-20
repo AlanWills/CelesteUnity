@@ -8,12 +8,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class HealthComponentExtensions
     {
-        public static bool SupportsHealth(this CardRuntime card)
+        public static bool SupportsHealth(this CardInstance card)
         {
             return card.HasComponent<HealthComponent>();
         }
 
-        public static int GetMaxHealth(this CardRuntime card)
+        public static int GetMaxHealth(this CardInstance card)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -26,7 +26,7 @@ namespace Celeste.DeckBuilding.Extensions
             return healthComponent.component.GetMaxHealth(healthComponent.instance);
         }
 
-        public static void SetMaxHealth(this CardRuntime card, int health)
+        public static void SetMaxHealth(this CardInstance card, int health)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -39,19 +39,19 @@ namespace Celeste.DeckBuilding.Extensions
             healthComponent.component.SetMaxHealth(healthComponent.instance, card, health);
         }
 
-        public static void IncreaseMaxHealth(this CardRuntime card, int increaseAmount)
+        public static void IncreaseMaxHealth(this CardInstance card, int increaseAmount)
         {
             UnityEngine.Debug.Assert(increaseAmount >= 0, $"{increaseAmount} is not a valid value.");
             SetMaxHealth(card, GetMaxHealth(card) + increaseAmount);
         }
 
-        public static void DecreaseMaxHealth(this CardRuntime card, int decreaseAmount)
+        public static void DecreaseMaxHealth(this CardInstance card, int decreaseAmount)
         {
             UnityEngine.Debug.Assert(decreaseAmount >= 0, $"{decreaseAmount} is not a valid value.");
             SetMaxHealth(card, GetMaxHealth(card) - decreaseAmount);
         }
 
-        public static int GetHealth(this CardRuntime card)
+        public static int GetHealth(this CardInstance card)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -64,7 +64,7 @@ namespace Celeste.DeckBuilding.Extensions
             return healthComponent.component.GetHealth(healthComponent.instance);
         }
 
-        public static void SetHealth(this CardRuntime card, int health)
+        public static void SetHealth(this CardInstance card, int health)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -77,17 +77,17 @@ namespace Celeste.DeckBuilding.Extensions
             healthComponent.component.SetHealth(healthComponent.instance, card, health);
         }
 
-        public static void RemoveHealth(this CardRuntime card, int healthToRemove)
+        public static void RemoveHealth(this CardInstance card, int healthToRemove)
         {
             SetHealth(card, GetHealth(card) - healthToRemove);
         }
 
-        public static void AddHealth(this CardRuntime card, int healthToAdd)
+        public static void AddHealth(this CardInstance card, int healthToAdd)
         {
             SetHealth(card, GetHealth(card) + healthToAdd);
         }
 
-        public static void AddOnHealthChangedCallback(this CardRuntime card, UnityAction<HealthChangedArgs> callback)
+        public static void AddOnHealthChangedCallback(this CardInstance card, UnityAction<HealthChangedArgs> callback)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -100,7 +100,7 @@ namespace Celeste.DeckBuilding.Extensions
             healthComponent.component.AddOnHealthChangedCallback(healthComponent.instance, callback);
         }
 
-        public static void RemoveOnHealthChangedCallback(this CardRuntime card, UnityAction<HealthChangedArgs> callback)
+        public static void RemoveOnHealthChangedCallback(this CardInstance card, UnityAction<HealthChangedArgs> callback)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -113,7 +113,7 @@ namespace Celeste.DeckBuilding.Extensions
             healthComponent.component.RemoveOnHealthChangedCallback(healthComponent.instance, callback);
         }
 
-        public static void AddOnDieCallback(this CardRuntime card, UnityAction<DieArgs> callback)
+        public static void AddOnDieCallback(this CardInstance card, UnityAction<DieArgs> callback)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS
@@ -126,7 +126,7 @@ namespace Celeste.DeckBuilding.Extensions
             healthComponent.component.AddOnDieCallback(healthComponent.instance, callback);
         }
 
-        public static void RemoveOnDieCallback(this CardRuntime card, UnityAction<DieArgs> callback)
+        public static void RemoveOnDieCallback(this CardInstance card, UnityAction<DieArgs> callback)
         {
             var healthComponent = card.FindComponent<HealthComponent>();
 #if COMPONENT_CHECKS

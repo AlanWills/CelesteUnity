@@ -9,8 +9,8 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct UseCardOnActorArgs
     {
-        public CardRuntime cardRuntime;
-        public CardRuntime actor;
+        public CardInstance cardInstance;
+        public CardInstance actor;
     }
 
     [Serializable]

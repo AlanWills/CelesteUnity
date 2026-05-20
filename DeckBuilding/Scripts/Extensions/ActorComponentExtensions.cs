@@ -6,12 +6,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class ActorComponentExtensions
     {
-        public static bool SupportsActor(this CardRuntime card)
+        public static bool SupportsActor(this CardInstance card)
         {
             return card.HasComponent<ActorComponent>();
         }
 
-        public static bool IsOnStage(this CardRuntime card)
+        public static bool IsOnStage(this CardInstance card)
         {
             var actorComponent = card.FindComponent<ActorComponent>();
 #if COMPONENT_CHECKS
@@ -24,7 +24,7 @@ namespace Celeste.DeckBuilding.Extensions
             return actorComponent.component.IsOnStage(actorComponent.instance);
         }
 
-        public static void SetOnStage(this CardRuntime card, bool isOnStage)
+        public static void SetOnStage(this CardInstance card, bool isOnStage)
         {
             var actorComponent = card.FindComponent<ActorComponent>();
 #if COMPONENT_CHECKS

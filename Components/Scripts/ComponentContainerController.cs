@@ -3,17 +3,15 @@ using UnityEngine;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerController<TComponent, TRuntime> : MonoBehaviour, IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>
-        where TRuntime : IComponentContainerRuntime<TComponent> 
+    public class ComponentContainerController<TInstance, TComponent> : MonoBehaviour, IComponentContainerController<TInstance, TComponent>
+        where TInstance : IComponentContainerInstance<TComponent> 
         where TComponent : BaseComponent
     {
         #region Properties and Fields
 
-        IComponentContainerRuntime<TComponent> IComponentContainerController<IComponentContainerRuntime<TComponent>, TComponent>.Runtime => Runtime;
+        public TInstance Instance { get; private set; }
 
-        public TRuntime Runtime { get; private set; }
-
-        [SerializeField] private List<GameObject> componentControllers = new List<GameObject>();
+        [SerializeField] private List<Component> componentControllers = new();
 
         #endregion
 
@@ -25,24 +23,23 @@ namespace Celeste.Components
 
             foreach (var componentController in GetComponentsInChildren<IComponentController<TComponent>>())
             {
-                componentControllers.Add((componentController as MonoBehaviour).gameObject);
+                componentControllers.Add(componentController as Component);
             }
         }
 
         #endregion
 
-        public void Hookup(TRuntime runtime, IRuntimeAddedContext context)
+        public void Hookup(TInstance instance, IRuntimeAddedContext context)
         {
-            Runtime = runtime;
-            Runtime.Controller = this;
+            Instance = instance;
 
-            foreach (var componentControllerGameObject in componentControllers)
+            foreach (var component in componentControllers)
             {
-                var componentController = componentControllerGameObject.GetComponent<IComponentController<TComponent>>();
+                var componentController = component as IComponentController<TComponent>;
 
-                if (componentController.IsValidFor(runtime, context))
+                if (componentController.IsValidFor(instance, context))
                 {
-                    componentController.Hookup(runtime, context);
+                    componentController.Hookup(instance, context);
                     componentController.enabled = true;
                 }
                 else
@@ -57,13 +54,10 @@ namespace Celeste.Components
         {
             foreach (var component in componentControllers)
             {
-                if (component != null)
-                {
-                    component.GetComponent<IComponentController<TComponent>>().Shutdown();
-                }
+                (component as IComponentController<TComponent>)?.Shutdown();
             }
 
-            Runtime = default;
+            Instance = default;
         }
     }
 }

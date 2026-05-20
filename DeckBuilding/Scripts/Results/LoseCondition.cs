@@ -24,6 +24,6 @@ namespace Celeste.DeckBuilding.Results
         protected abstract void OnHookup();
         protected abstract void OnRelease();
 
-        public virtual void OnCardRemovedFromStage(CardRuntime card) { }
+        public virtual void OnCardRemovedFromStage(CardInstance card) { }
     }
 }

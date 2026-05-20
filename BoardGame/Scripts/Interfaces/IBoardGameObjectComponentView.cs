@@ -4,7 +4,7 @@ namespace Celeste.BoardGame
 {
     public interface IBoardGameObjectComponentView
     {
-        void Hookup(BoardGameObjectRuntime boardGameObjectRuntime);
+        void Hookup(BoardGameObjectInstance boardGameObjectInstance);
         void Shutdown();
     }
 }

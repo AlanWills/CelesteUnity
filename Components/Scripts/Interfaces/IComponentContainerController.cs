@@ -2,14 +2,15 @@
 
 namespace Celeste
 {
-    public interface IComponentContainerController<TRuntime, TComponent> 
-        where TRuntime : IComponentContainerRuntime<TComponent>
+    public interface IComponentContainerController<TInstance, TComponent> 
+        where TInstance : IComponentContainerInstance<TComponent>
         where TComponent : BaseComponent
     {
-        TRuntime Runtime { get; }
+        TInstance Instance { get; }
         UnityEngine.Transform transform { get; }
         UnityEngine.GameObject gameObject { get; }
 
+        void Hookup(TInstance instance, IRuntimeAddedContext context);
         void Shutdown();
     }
 }

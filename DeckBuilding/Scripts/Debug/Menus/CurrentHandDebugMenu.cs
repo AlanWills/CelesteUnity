@@ -27,7 +27,7 @@ namespace Celeste.DeckBuilding.Debug
 
                     if (GUILayout.Button("Draw From", GUILayout.ExpandWidth(false)))
                     {
-                        CardRuntime card = sourceDeck.DrawCard();
+                        CardInstance card = sourceDeck.DrawCard();
                         currentHand.AddCard(card);
                     }
                 }
@@ -37,7 +37,7 @@ namespace Celeste.DeckBuilding.Debug
             {
                 using (var horizontal = new GUILayout.HorizontalScope())
                 {
-                    CardRuntime card = currentHand.GetCard(i);
+                    CardInstance card = currentHand.GetCard(i);
                     GUILayout.Label(card.CardName);
 
                     if (GUILayout.Button("Discard", GUILayout.ExpandWidth(false)))

@@ -33,7 +33,7 @@ namespace Celeste.DeckBuilding.Cards
             return modifyCostData;
         }
 
-        public override IDeckMatchCommand UseOn(Instance instance, CardRuntime target)
+        public override IDeckMatchCommand UseOn(Instance instance, CardInstance target)
         {
             return new ModifyCost(target, GetCostModifier(instance));
         }

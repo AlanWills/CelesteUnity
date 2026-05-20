@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct HealHealth : IDeckMatchCommand
     {
-        private CardRuntime actorToApplyTo;
+        private CardInstance actorToApplyTo;
         private int healthToHeal;
 
-        public HealHealth(CardRuntime actorToApplyTo, int healthToHeal)
+        public HealHealth(CardInstance actorToApplyTo, int healthToHeal)
         {
             this.actorToApplyTo = actorToApplyTo;
             this.healthToHeal = healthToHeal;

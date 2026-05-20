@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct ApplyDamage : IDeckMatchCommand
     {
-        private CardRuntime actorToApplyTo;
+        private CardInstance actorToApplyTo;
         private int damage;
 
-        public ApplyDamage(CardRuntime actorToApplyTo, int damage)
+        public ApplyDamage(CardInstance actorToApplyTo, int damage)
         {
             this.actorToApplyTo = actorToApplyTo;
             this.damage = damage;

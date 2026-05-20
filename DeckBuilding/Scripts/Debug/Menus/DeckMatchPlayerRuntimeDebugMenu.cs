@@ -67,7 +67,7 @@ namespace Celeste.DeckBuilding.Debug.Menus
             }
         }
 
-        private void DrawHandCardGUI(CardRuntime card)
+        private void DrawHandCardGUI(CardInstance card)
         {
             using (GUILayout.HorizontalScope horizontal = new GUILayout.HorizontalScope())
             {
@@ -85,7 +85,7 @@ namespace Celeste.DeckBuilding.Debug.Menus
             }
         }
 
-        private void DrawActorGUI(CardRuntime card)
+        private void DrawActorGUI(CardInstance card)
         {
             GUILayout.Label(card.CardName);
 

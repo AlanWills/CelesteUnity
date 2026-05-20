@@ -25,24 +25,24 @@ namespace Celeste.BoardGame.Persistence
             }
         }
 
-        public BoardGameRuntimeDTO(BoardGameRuntime boardGameRuntime)
+        public BoardGameRuntimeDTO(BoardGameInstance boardGameInstance)
         {
             {
-                components.Capacity = boardGameRuntime.NumComponents;
+                components.Capacity = boardGameInstance.NumComponents;
 
-                for (int i = 0, n = boardGameRuntime.NumComponents; i < n; ++i)
+                for (int i = 0, n = boardGameInstance.NumComponents; i < n; ++i)
                 {
-                    components.Add(ComponentDTO.From(boardGameRuntime.GetComponent(i)));
+                    components.Add(ComponentDTO.From(boardGameInstance.GetComponent(i)));
                 }
             }
 
             {
-                boardGameObjectRuntimes.Capacity = boardGameRuntime.NumBoardGameObjectRuntimes;
+                boardGameObjectRuntimes.Capacity = boardGameInstance.NumBoardGameObjectRuntimes;
                 boardGameObjectRuntimes.Clear();
 
-                for (int i = 0, n = boardGameRuntime.NumBoardGameObjectRuntimes; i < n; ++i)
+                for (int i = 0, n = boardGameInstance.NumBoardGameObjectRuntimes; i < n; ++i)
                 {
-                    boardGameObjectRuntimes.Add(new BoardGameObjectRuntimeDTO(boardGameRuntime.GetBoardGameObjectRuntime(i)));
+                    boardGameObjectRuntimes.Add(new BoardGameObjectRuntimeDTO(boardGameInstance.GetBoardGameObjectRuntime(i)));
                 }
             }
         }

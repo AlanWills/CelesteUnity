@@ -22,16 +22,16 @@ namespace Celeste.BoardGame.UI
 
         #endregion
 
-        public void Hookup(BoardGameObjectRuntime runtime)
+        public void Hookup(BoardGameObjectInstance instance)
         {
-            if (runtime.TryFindComponent(out token))
+            if (instance.TryFindComponent(out token))
             {
                 UpdateUI();
 
                 token.iFace.AddIsFaceUpChangedCallback(token.instance, OnIsFaceUpChanged);
             }
 
-            runtime.TryFindComponent(out tooltip);
+            instance.TryFindComponent(out tooltip);
         }
 
         public void Shutdown()

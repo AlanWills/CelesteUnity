@@ -11,14 +11,14 @@ namespace Celeste.DeckBuilding.Persistence
         public int deckGuid;
         public List<ComponentDTO> components = new List<ComponentDTO>();
 
-        public CardRuntimeDTO(CardRuntime cardRuntime)
+        public CardRuntimeDTO(CardInstance cardInstance)
         {
-            cardGuid = cardRuntime.CardGuid;
-            deckGuid = cardRuntime.DeckGuid;
+            cardGuid = cardInstance.CardGuid;
+            deckGuid = cardInstance.DeckGuid;
 
-            for (int i = 0, n = cardRuntime.NumComponents; i < n; ++i)
+            for (int i = 0, n = cardInstance.NumComponents; i < n; ++i)
             {
-                var componentHandle = cardRuntime.GetComponent(i);
+                var componentHandle = cardInstance.GetComponent(i);
                 components.Add(ComponentDTO.From(componentHandle));
             }
         }

@@ -16,7 +16,7 @@ namespace Celeste.DeckBuilding.Nodes.AI
 
             for (int i = 0, n = currentHand.NumCards; i < n; ++i)
             {
-                CardRuntime card = currentHand.GetCard(i);
+                CardInstance card = currentHand.GetCard(i);
 
                 if (card.CanPlay && 
                     card.SupportsActor() &&

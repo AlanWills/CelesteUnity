@@ -16,7 +16,7 @@ namespace Celeste.DeckBuilding.Managers
         {
             for (int i = 0; i < args.quantity; ++i)
             {
-                CardRuntime card = args.deck.DrawCard();
+                CardInstance card = args.deck.DrawCard();
                 currentHand.AddCard(card);
             }
         }

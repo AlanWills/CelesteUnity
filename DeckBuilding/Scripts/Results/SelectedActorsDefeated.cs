@@ -40,9 +40,9 @@ namespace Celeste.DeckBuilding.Results
 
         protected override void OnRelease() { }
 
-        public override void OnCardRemovedFromStage(CardRuntime cardRuntime)
+        public override void OnCardRemovedFromStage(CardInstance cardInstance)
         {
-            int indexOfCard = cards.FindIndex(x => cardRuntime.IsForCard(x));
+            int indexOfCard = cards.FindIndex(x => cardInstance.IsForCard(x));
             if (indexOfCard >= 0)
             {
                 UnityEngine.Debug.Assert(indexOfCard < cardsDefeated.Count, $"Mismatch between cards and cardsDefeated.  Index Of Card {indexOfCard}, CardsDefeated Count {cardsDefeated.Count}.");

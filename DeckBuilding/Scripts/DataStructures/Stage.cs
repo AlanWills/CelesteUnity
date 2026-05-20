@@ -20,16 +20,16 @@ namespace Celeste.DeckBuilding
         [SerializeField] private CardRuntimeEvent actorAddedEvent;
         [SerializeField] private CardRuntimeEvent actorRemovedEvent;
 
-        private List<CardRuntime> cards = new List<CardRuntime>();
+        private List<CardInstance> cards = new List<CardInstance>();
 
         #endregion
 
-        public CardRuntime GetCard(int index)
+        public CardInstance GetCard(int index)
         {
             return cards.Get(index);
         }
 
-        public void AddCard(CardRuntime card)
+        public void AddCard(CardInstance card)
         {
             cards.Add(card);
             card.SetOnStage(true);
@@ -40,7 +40,7 @@ namespace Celeste.DeckBuilding
 
         public void RemoveCard(int index)
         {
-            CardRuntime card = cards.Get(index);
+            CardInstance card = cards.Get(index);
 
             if (card != null)
             {
@@ -55,7 +55,7 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public void RemoveCard(CardRuntime card)
+        public void RemoveCard(CardInstance card)
         {
             if (cards.Remove(card))
             {
@@ -70,12 +70,12 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public CardRuntime FindCard(Predicate<CardRuntime> predicate)
+        public CardInstance FindCard(Predicate<CardInstance> predicate)
         {
             return cards.Find(predicate);
         }
 
-        public CardRuntime FindKillableCard(int damage)
+        public CardInstance FindKillableCard(int damage)
         {
             return FindCard(x => x.SupportsHealth() && x.GetHealth() <= damage);
         }
@@ -84,7 +84,7 @@ namespace Celeste.DeckBuilding
 
         private void OnCardDied(DieArgs dieArgs)
         {
-            RemoveCard(dieArgs.cardRuntime);
+            RemoveCard(dieArgs.cardInstance);
         }
 
         #endregion

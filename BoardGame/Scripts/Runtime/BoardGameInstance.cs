@@ -7,7 +7,7 @@ using Celeste.Events;
 
 namespace Celeste.BoardGame.Runtime
 {
-    public class BoardGameRuntime : ComponentContainerRuntime<BoardGameComponent>
+    public class BoardGameInstance : ComponentContainerInstance<BoardGameComponent>
     {
         #region Properties and Fields
 
@@ -15,11 +15,11 @@ namespace Celeste.BoardGame.Runtime
 
         private readonly IIndexableItems<BoardGameObject> boardGameObjectCatalogue;
         private readonly IEvent<BoardGameObjectAddedArgs> boardGameObjectAddedEvent;
-        private readonly List<BoardGameObjectRuntime> boardGameObjectRuntimes = new();
+        private readonly List<BoardGameObjectInstance> boardGameObjectRuntimes = new();
 
         #endregion
 
-        public BoardGameRuntime(
+        public BoardGameInstance(
             BoardGame boardGame,
             IIndexableItems<BoardGameObject> catalogue,
             IEvent<BoardGameObjectAddedArgs> boardGameObjectAdded)
@@ -32,7 +32,7 @@ namespace Celeste.BoardGame.Runtime
 
         public void Shutdown()
         {
-            foreach (BoardGameObjectRuntime boardGameObjectRuntime in boardGameObjectRuntimes)
+            foreach (BoardGameObjectInstance boardGameObjectRuntime in boardGameObjectRuntimes)
             {
                 boardGameObjectRuntime.ComponentDataChanged.RemoveListener(OnBoardGameObjectRuntimeChanged);
                 boardGameObjectRuntime.ShutdownComponents();
@@ -41,16 +41,16 @@ namespace Celeste.BoardGame.Runtime
             ShutdownComponents();
         }
 
-        public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObject boardGameObject)
+        public BoardGameObjectInstance AddBoardGameObjectRuntime(BoardGameObject boardGameObject)
         {
-            BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
-            boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
-            boardGameObjectRuntimes.Add(boardGameObjectRuntime);
+            BoardGameObjectInstance boardGameObjectInstance = new BoardGameObjectInstance(boardGameObject);
+            boardGameObjectInstance.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
+            boardGameObjectRuntimes.Add(boardGameObjectInstance);
 
-            return boardGameObjectRuntime;
+            return boardGameObjectInstance;
         }
 
-        public BoardGameObjectRuntime AddBoardGameObjectRuntime(BoardGameObjectRuntimeDTO boardGameObjectDTO)
+        public BoardGameObjectInstance AddBoardGameObjectRuntime(BoardGameObjectRuntimeDTO boardGameObjectDTO)
         {
             BoardGameObject boardGameObject =  boardGameObjectCatalogue.FindItem(x => x.Guid == boardGameObjectDTO.guid);
             if (boardGameObject == null)
@@ -59,30 +59,30 @@ namespace Celeste.BoardGame.Runtime
                 return null;
             }
 
-            BoardGameObjectRuntime boardGameObjectRuntime = new BoardGameObjectRuntime(boardGameObject);
-            boardGameObjectRuntime.LoadComponents(boardGameObjectDTO.components.ToLookup());
-            boardGameObjectRuntime.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
-            boardGameObjectRuntimes.Add(boardGameObjectRuntime);
+            BoardGameObjectInstance boardGameObjectInstance = new BoardGameObjectInstance(boardGameObject);
+            boardGameObjectInstance.LoadComponents(boardGameObjectDTO.components.ToLookup());
+            boardGameObjectInstance.ComponentDataChanged.AddListener(OnBoardGameObjectRuntimeChanged);
+            boardGameObjectRuntimes.Add(boardGameObjectInstance);
             boardGameObjectAddedEvent?.Invoke(new BoardGameObjectAddedArgs
             {
-                boardGameRuntime = this,
-                boardGameObjectRuntime = boardGameObjectRuntime,
+                BoardGameInstance = this,
+                BoardGameObjectInstance = boardGameObjectInstance,
             });
 
-            return boardGameObjectRuntime;
+            return boardGameObjectInstance;
         }
 
-        public BoardGameObjectRuntime GetBoardGameObjectRuntime(int index)
+        public BoardGameObjectInstance GetBoardGameObjectRuntime(int index)
         {
             return boardGameObjectRuntimes.Get(index);
         }
 
-        public BoardGameObjectRuntime FindBoardGameObjectRuntime(int instanceId)
+        public BoardGameObjectInstance FindBoardGameObjectRuntime(int instanceId)
         {
             return boardGameObjectRuntimes.Find(x => x.InstanceId == instanceId);
         }
 
-        public BoardGameObjectRuntime FindBoardGameObjectRuntime(string name)
+        public BoardGameObjectInstance FindBoardGameObjectRuntime(string name)
         {
             return boardGameObjectRuntimes.Find(x => string.CompareOrdinal(x.Name, name) == 0);
         }

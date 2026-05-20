@@ -6,12 +6,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class ModifyMaxHealthEffectComponentExtensions
     {
-        public static bool SupportsModifyMaxHealthEffect(this CardRuntime card)
+        public static bool SupportsModifyMaxHealthEffect(this CardInstance card)
         {
             return card.HasComponent<ModifyMaxHealthEffectComponent>();
         }
 
-        public static int GetMaxArmourModifier(this CardRuntime card)
+        public static int GetMaxArmourModifier(this CardInstance card)
         {
             var modifyMaxHealthComponent = card.FindComponent<ModifyMaxHealthEffectComponent>();
 #if COMPONENT_CHECKS

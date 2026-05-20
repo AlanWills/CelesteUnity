@@ -33,7 +33,7 @@ namespace Celeste.DeckBuilding.Cards
             return modifyMaxArmourData;
         }
 
-        public override IDeckMatchCommand UseOn(Instance instance, CardRuntime target)
+        public override IDeckMatchCommand UseOn(Instance instance, CardInstance target)
         {
             int maxArmourModifier = GetMaxArmourModifier(instance);
             if (maxArmourModifier >= 0)

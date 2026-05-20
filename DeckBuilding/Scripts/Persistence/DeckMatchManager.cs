@@ -111,13 +111,13 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        private CardRuntime CreateCardRuntime(CardRuntimeDTO cardRuntimeDTO, Deck deck)
+        private CardInstance CreateCardRuntime(CardRuntimeDTO cardRuntimeDTO, Deck deck)
         {
             Card card = cardCatalogue.FindByGuid(cardRuntimeDTO.cardGuid);
-            CardRuntime cardRuntime = new CardRuntime(deck, card);
-            cardRuntime.LoadComponents(cardRuntimeDTO.components.ToLookup());
+            CardInstance cardInstance = new CardInstance(deck, card);
+            cardInstance.LoadComponents(cardRuntimeDTO.components.ToLookup());
 
-            return cardRuntime;
+            return cardInstance;
         }
 
         private void SetDefaultValues(DeckMatchPlayerRuntime deckRuntime)

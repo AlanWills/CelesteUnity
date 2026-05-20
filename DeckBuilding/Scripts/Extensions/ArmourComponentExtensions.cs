@@ -8,12 +8,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class ArmourComponentExtensions
     {
-        public static bool SupportsArmour(this CardRuntime card)
+        public static bool SupportsArmour(this CardInstance card)
         {
             return card.HasComponent<ArmourComponent>();
         }
 
-        public static int GetMaxArmour(this CardRuntime card)
+        public static int GetMaxArmour(this CardInstance card)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS
@@ -26,7 +26,7 @@ namespace Celeste.DeckBuilding.Extensions
             return armourComponent.component.GetMaxArmour(armourComponent.instance);
         }
 
-        public static void SetMaxArmour(this CardRuntime card, int maxArmour)
+        public static void SetMaxArmour(this CardInstance card, int maxArmour)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS
@@ -39,19 +39,19 @@ namespace Celeste.DeckBuilding.Extensions
             armourComponent.component.SetMaxArmour(armourComponent.instance, maxArmour);
         }
 
-        public static void IncreaseMaxArmour(this CardRuntime card, int increaseAmount)
+        public static void IncreaseMaxArmour(this CardInstance card, int increaseAmount)
         {
             UnityEngine.Debug.Assert(increaseAmount >= 0, $"{increaseAmount} is not a valid value.");
             SetMaxArmour(card, GetMaxArmour(card) + increaseAmount);
         }
 
-        public static void DecreaseMaxArmour(this CardRuntime card, int decreaseAmount)
+        public static void DecreaseMaxArmour(this CardInstance card, int decreaseAmount)
         {
             UnityEngine.Debug.Assert(decreaseAmount >= 0, $"{decreaseAmount} is not a valid value.");
             SetMaxArmour(card, GetMaxArmour(card) - decreaseAmount);
         }
 
-        public static int GetArmour(this CardRuntime card)
+        public static int GetArmour(this CardInstance card)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS
@@ -64,7 +64,7 @@ namespace Celeste.DeckBuilding.Extensions
             return armourComponent.component.GetArmour(armourComponent.instance);
         }
 
-        public static void SetArmour(this CardRuntime card, int armour)
+        public static void SetArmour(this CardInstance card, int armour)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS
@@ -77,17 +77,17 @@ namespace Celeste.DeckBuilding.Extensions
             armourComponent.component.SetArmour(armourComponent.instance, armour);
         }
 
-        public static void AddArmour(this CardRuntime card, int armourToAdd)
+        public static void AddArmour(this CardInstance card, int armourToAdd)
         {
             SetArmour(card, GetArmour(card) + armourToAdd);
         }
 
-        public static void RemoveArmour(this CardRuntime card, int armourToRemove)
+        public static void RemoveArmour(this CardInstance card, int armourToRemove)
         {
             SetArmour(card, GetArmour(card) - armourToRemove);
         }
 
-        public static void AddOnArmourChangedCallback(this CardRuntime card, UnityAction<ArmourChangedArgs> callback)
+        public static void AddOnArmourChangedCallback(this CardInstance card, UnityAction<ArmourChangedArgs> callback)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS
@@ -100,7 +100,7 @@ namespace Celeste.DeckBuilding.Extensions
             armourComponent.component.AddOnArmourChangedCallback(armourComponent.instance, callback);
         }
 
-        public static void RemoveOnArmourChangedCallback(this CardRuntime card, UnityAction<ArmourChangedArgs> callback)
+        public static void RemoveOnArmourChangedCallback(this CardInstance card, UnityAction<ArmourChangedArgs> callback)
         {
             var armourComponent = card.FindComponent<ArmourComponent>();
 #if COMPONENT_CHECKS

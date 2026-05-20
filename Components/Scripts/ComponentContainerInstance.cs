@@ -8,7 +8,7 @@ using UnityEngine.Events;
 
 namespace Celeste.Components
 {
-    public class ComponentContainerRuntime<T> : IComponentContainerRuntime<T> where T : BaseComponent
+    public class ComponentContainerInstance<T> : IComponentContainerInstance<T> where T : BaseComponent
     {
         #region Properties and Fields
 
@@ -16,8 +16,9 @@ namespace Celeste.Components
 
         public int InstanceId { get; }
         public int ParentInstanceId { get; }
-        public IComponentContainerController<IComponentContainerRuntime<T>, T> Controller { get; set; }
+        public IComponentContainerController<IComponentContainerInstance<T>, T> Controller { get; set; }
         public int NumComponents => components.Count;
+        public IReadOnlyList<ComponentHandle<T>> Components => components;
 
         private static int sInstanceId;
 
@@ -25,11 +26,11 @@ namespace Celeste.Components
 
         #endregion
 
-        public ComponentContainerRuntime() : this(0)
+        public ComponentContainerInstance() : this(0)
         {
         }
 
-        public ComponentContainerRuntime(int parentInstanceId)
+        public ComponentContainerInstance(int parentInstanceId)
         {
             InstanceId = ++sInstanceId;
             ParentInstanceId = parentInstanceId;

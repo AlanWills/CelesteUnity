@@ -6,12 +6,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class HealArmourEffectComponentExtensions
     {
-        public static bool SupportsHealArmourEffect(this CardRuntime card)
+        public static bool SupportsHealArmourEffect(this CardInstance card)
         {
             return card.HasComponent<HealArmourEffectComponent>();
         }
 
-        public static int GetArmourToHeal(this CardRuntime card)
+        public static int GetArmourToHeal(this CardInstance card)
         {
             var healArmourComponent = card.FindComponent<HealArmourEffectComponent>();
 #if COMPONENT_CHECKS

@@ -42,7 +42,7 @@ namespace Celeste.DeckBuilding.UI
 
         #endregion
 
-        private void AllocateCardController(CardRuntime card)
+        private void AllocateCardController(CardInstance card)
         {
             if (cardsAllocator.CanAllocate(1))
             {
@@ -59,7 +59,7 @@ namespace Celeste.DeckBuilding.UI
             }
         }
 
-        private void DeallocateCardController(CardRuntime card)
+        private void DeallocateCardController(CardInstance card)
         {
             int cardControllerIndex = cardControllers.FindIndex(x => x.IsForCard(card));
             if (cardControllerIndex >= 0)
@@ -72,12 +72,12 @@ namespace Celeste.DeckBuilding.UI
 
         #region Callbacks
 
-        public void OnCardAdded(CardRuntime card)
+        public void OnCardAdded(CardInstance card)
         {
             AllocateCardController(card);
         }
 
-        public void OnCardRemoved(CardRuntime card)
+        public void OnCardRemoved(CardInstance card)
         {
             DeallocateCardController(card);
         }

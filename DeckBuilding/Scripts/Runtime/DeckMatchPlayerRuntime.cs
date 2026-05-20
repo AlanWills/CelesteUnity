@@ -63,12 +63,12 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public void AddCardToDrawPile(CardRuntime card)
+        public void AddCardToDrawPile(CardInstance card)
         {
             deck.AddCardToDrawPile(card);
         }
 
-        public void AddCardToHand(CardRuntime card)
+        public void AddCardToHand(CardInstance card)
         {
             if (!currentHand.IsFull)
             {
@@ -81,12 +81,12 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public void AddCardToDiscardPile(CardRuntime card)
+        public void AddCardToDiscardPile(CardInstance card)
         {
             deck.AddCardToDiscardPile(card);
         }
 
-        public void AddCardToRemovedPile(CardRuntime card)
+        public void AddCardToRemovedPile(CardInstance card)
         {
             deck.AddCardToRemovedPile(card);
         }
@@ -99,7 +99,7 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public void AddCardToStage(CardRuntime card)
+        public void AddCardToStage(CardInstance card)
         {
             UnityEngine.Debug.Assert(card.SupportsActor(), $"Could not add card '{card.CardName}' to stage, it does not support it.");
             if (card.SupportsActor())
@@ -136,7 +136,7 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        private void UpdateCanPlayCard(CardRuntime card)
+        private void UpdateCanPlayCard(CardInstance card)
         {
             if (card.HasCardStatus(CardStatus.CannotPlay))
             {
@@ -170,26 +170,26 @@ namespace Celeste.DeckBuilding
 
         #region Callbacks
 
-        public void OnCardAddedToHand(CardRuntime cardRuntime)
+        public void OnCardAddedToHand(CardInstance cardInstance)
         {
-            if (cardRuntime.SupportsCost())
+            if (cardInstance.SupportsCost())
             {
-                var costComponent = cardRuntime.FindComponent<CostComponent>();
+                var costComponent = cardInstance.FindComponent<CostComponent>();
                 costComponent.component.AddOnCostChangedCallback(costComponent.instance, OnCostChanged);
             }
 
-            cardRuntime.OnPlayCardSuccess.AddListener(OnPlayCardSuccess);
+            cardInstance.OnPlayCardSuccess.AddListener(OnPlayCardSuccess);
         }
 
-        public void OnCardRemovedFromHand(CardRuntime cardRuntime)
+        public void OnCardRemovedFromHand(CardInstance cardInstance)
         {
-            var costComponent = cardRuntime.FindComponent<CostComponent>();
+            var costComponent = cardInstance.FindComponent<CostComponent>();
             if (costComponent.IsValid)
             {
                 costComponent.component.RemoveOnCostChangedCallback(costComponent.instance, OnCostChanged);
             }
             
-            cardRuntime.OnPlayCardSuccess.RemoveListener(OnPlayCardSuccess);
+            cardInstance.OnPlayCardSuccess.RemoveListener(OnPlayCardSuccess);
         }
 
         public void OnResourcesChanged(int newResources)
@@ -202,7 +202,7 @@ namespace Celeste.DeckBuilding
             UpdateCanPlayCard(costChangedArgs.card);
         }
 
-        private void OnPlayCardSuccess(CardRuntime card)
+        private void OnPlayCardSuccess(CardInstance card)
         {
             CurrentHand.RemoveCard(card);
 
@@ -228,7 +228,7 @@ namespace Celeste.DeckBuilding
             cardPlayedEvent.Invoke(card);
         }
 
-        public void OnCardRemovedFromStage(CardRuntime card)
+        public void OnCardRemovedFromStage(CardInstance card)
         {
             UpdateCanPlayCards();
         }

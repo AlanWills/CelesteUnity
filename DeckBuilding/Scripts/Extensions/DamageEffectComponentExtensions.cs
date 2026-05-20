@@ -6,12 +6,12 @@ namespace Celeste.DeckBuilding.Extensions
 {
     public static class DamageEffectComponentExtensions
     {
-        public static bool SupportsDamageEffect(this CardRuntime card)
+        public static bool SupportsDamageEffect(this CardInstance card)
         {
             return card.HasComponent<DamageEffectComponent>();
         }
 
-        public static int GetDamage(this CardRuntime card)
+        public static int GetDamage(this CardInstance card)
         {
             var damageComponent = card.FindComponent<DamageEffectComponent>();
 #if COMPONENT_CHECKS
@@ -24,7 +24,7 @@ namespace Celeste.DeckBuilding.Extensions
             return damageComponent.component.GetDamage(damageComponent.instance);
         }
 
-        public static void SetDamage(this CardRuntime card, int damage)
+        public static void SetDamage(this CardInstance card, int damage)
         {
             var damageComponent = card.FindComponent<DamageEffectComponent>();
 #if COMPONENT_CHECKS
@@ -37,7 +37,7 @@ namespace Celeste.DeckBuilding.Extensions
             damageComponent.component.SetDamage(damageComponent.instance, Mathf.Max(0, damage));
         }
 
-        public static void ApplyDamage(this CardRuntime card, int damage)
+        public static void ApplyDamage(this CardInstance card, int damage)
         {
             if (card.SupportsArmour())
             {

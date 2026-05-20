@@ -41,7 +41,7 @@ namespace Celeste.DeckBuilding.UI
             return actorUIControllers.Get(index);
         }
 
-        private void TryAddCardActorUI(CardRuntime card)
+        private void TryAddCardActorUI(CardInstance card)
         {
             if (cardActorUIAllocator.CanAllocate(1))
             {
@@ -58,7 +58,7 @@ namespace Celeste.DeckBuilding.UI
             }
         }
 
-        private void TryRemoveCardActorUI(CardRuntime card)
+        private void TryRemoveCardActorUI(CardInstance card)
         {
             ActorUIController actorUIController = actorUIControllers.Find(x => x.Card == card);
             
@@ -75,12 +75,12 @@ namespace Celeste.DeckBuilding.UI
 
         #region Callbacks
 
-        public void OnActorAdded(CardRuntime card)
+        public void OnActorAdded(CardInstance card)
         {
             TryAddCardActorUI(card);
         }
 
-        public void OnActorRemoved(CardRuntime card)
+        public void OnActorRemoved(CardInstance card)
         {
             TryRemoveCardActorUI(card);
         }

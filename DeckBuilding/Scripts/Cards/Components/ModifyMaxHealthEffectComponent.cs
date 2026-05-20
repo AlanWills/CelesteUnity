@@ -33,7 +33,7 @@ namespace Celeste.DeckBuilding.Cards
             return modifyMaxHealthData;
         }
 
-        public override IDeckMatchCommand UseOn(Instance instance, CardRuntime target)
+        public override IDeckMatchCommand UseOn(Instance instance, CardInstance target)
         {
             int maxHealthModifier = GetMaxHealthModifier(instance);
             if (maxHealthModifier >= 0)

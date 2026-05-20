@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct AttackActor : IDeckMatchCommand
     {
-        private CardRuntime attacker;
-        private CardRuntime target;
+        private CardInstance attacker;
+        private CardInstance target;
 
-        public AttackActor(CardRuntime attacker, CardRuntime target)
+        public AttackActor(CardInstance attacker, CardInstance target)
         {
             this.attacker = attacker;
             this.target = target;

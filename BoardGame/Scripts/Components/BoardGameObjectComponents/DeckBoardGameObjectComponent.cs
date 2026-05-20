@@ -88,7 +88,7 @@ namespace Celeste.BoardGame.Components
         {
 
             cardAddedToDrawPileCallback = deck.AddCardAddedToDrawPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInDrawPile.Add(cardRuntime.CardGuid);
@@ -97,7 +97,7 @@ namespace Celeste.BoardGame.Components
                 });
 
             cardRemovedFromDrawPileCallback = deck.AddCardRemovedFromDrawPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInDrawPile.Remove(cardRuntime.CardGuid);
@@ -106,7 +106,7 @@ namespace Celeste.BoardGame.Components
                 });
 
             cardAddedToDiscardPileCallback = deck.AddCardAddedToDiscardPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInDiscardPile.Add(cardRuntime.CardGuid);
@@ -115,7 +115,7 @@ namespace Celeste.BoardGame.Components
                 });
 
             cardRemovedFromDiscardPileCallback = deck.AddCardRemovedFromDiscardPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInDiscardPile.Remove(cardRuntime.CardGuid);
@@ -124,7 +124,7 @@ namespace Celeste.BoardGame.Components
                 });
 
             cardAddedToRemovedPileCallback = deck.AddCardAddedToRemovedPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInRemovedPile.Add(cardRuntime.CardGuid);
@@ -133,7 +133,7 @@ namespace Celeste.BoardGame.Components
                 });
 
             cardRemovedFromRemovedPileCallback = deck.AddCardRemovedFromRemovedPileEventCallback(
-                (CardRuntime cardRuntime) =>
+                (CardInstance cardRuntime) =>
                 {
                     SaveData saveData = instance.data as SaveData;
                     saveData.cardsInRemovedPile.Remove(cardRuntime.CardGuid);

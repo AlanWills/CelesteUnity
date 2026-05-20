@@ -21,13 +21,13 @@ namespace Celeste.DeckBuilding
         [SerializeField] private CardRuntimeEvent cardAddedEvent;
         [SerializeField] private CardRuntimeEvent cardRemovedEvent;
 
-        [NonSerialized] private List<CardRuntime> cards = new List<CardRuntime>();
+        [NonSerialized] private List<CardInstance> cards = new List<CardInstance>();
 
         #endregion
 
         #region Card Management
 
-        public void AddCard(CardRuntime card)
+        public void AddCard(CardInstance card)
         {
             UnityEngine.Debug.Assert(!IsFull, $"Trying to add card to hand, but it is already full ({NumCards}).");
             if (!IsFull)
@@ -39,12 +39,12 @@ namespace Celeste.DeckBuilding
             }
         }
 
-        public CardRuntime GetCard(int index)
+        public CardInstance GetCard(int index)
         {
             return cards.Get(index);
         }
 
-        public bool RemoveCard(CardRuntime card)
+        public bool RemoveCard(CardInstance card)
         {
             if (cards.Remove(card))
             {
@@ -59,7 +59,7 @@ namespace Celeste.DeckBuilding
 
         public bool RemoveCard(int index)
         {
-            CardRuntime card = cards.Get(index);
+            CardInstance card = cards.Get(index);
 
             if (card != null)
             {
@@ -72,7 +72,7 @@ namespace Celeste.DeckBuilding
             return false;
         }
 
-        public bool HasCard(Predicate<CardRuntime> predicate)
+        public bool HasCard(Predicate<CardInstance> predicate)
         {
             return cards.Exists(predicate);
         }
@@ -81,9 +81,9 @@ namespace Celeste.DeckBuilding
 
         #region Callbacks
 
-        private void OnPlayCardSuccess(CardRuntime cardRuntime)
+        private void OnPlayCardSuccess(CardInstance cardInstance)
         {
-            RemoveCard(cardRuntime);
+            RemoveCard(cardInstance);
         }
 
         #endregion

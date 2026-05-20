@@ -6,10 +6,10 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct IncreaseMaxArmour : IDeckMatchCommand
     {
-        private CardRuntime actorToApplyTo;
+        private CardInstance actorToApplyTo;
         private int maxArmourIncrease;
 
-        public IncreaseMaxArmour(CardRuntime actorToApplyTo, int maxArmourIncrease)
+        public IncreaseMaxArmour(CardInstance actorToApplyTo, int maxArmourIncrease)
         {
             this.actorToApplyTo = actorToApplyTo;
             this.maxArmourIncrease = maxArmourIncrease;

@@ -6,9 +6,9 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct ExhaustCard : IDeckMatchCommand
     {
-        private CardRuntime card;
+        private CardInstance card;
 
-        public ExhaustCard(CardRuntime card)
+        public ExhaustCard(CardInstance card)
         {
             this.card = card;
         }

@@ -60,7 +60,7 @@ namespace Celeste.DeckBuilding.Cards
             return healthData.MaxHealth;
         }
 
-        public void SetMaxHealth(Instance instance, CardRuntime card, int maxHealth)
+        public void SetMaxHealth(Instance instance, CardInstance card, int maxHealth)
         {
             HealthComponentData healthData = instance.data as HealthComponentData;
             if (healthData.MaxHealth != maxHealth)
@@ -81,7 +81,7 @@ namespace Celeste.DeckBuilding.Cards
             return healthData.Health;
         }
 
-        public void SetHealth(Instance instance, CardRuntime card, int newHealth)
+        public void SetHealth(Instance instance, CardInstance card, int newHealth)
         {
             HealthComponentData healthData = instance.data as HealthComponentData;
             if (healthData.Health != newHealth)
@@ -99,7 +99,7 @@ namespace Celeste.DeckBuilding.Cards
             }
         }
 
-        public void RemoveHealth(Instance instance, CardRuntime card, int amount)
+        public void RemoveHealth(Instance instance, CardInstance card, int amount)
         {
             HealthComponentData healthData = instance.data as HealthComponentData;
             if (amount != 0)

@@ -8,11 +8,11 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct DieArgs
     {
-        public CardRuntime cardRuntime;
+        public CardInstance cardInstance;
 
-        public DieArgs(CardRuntime cardRuntime)
+        public DieArgs(CardInstance cardInstance)
         {
-            this.cardRuntime = cardRuntime;
+            this.cardInstance = cardInstance;
         }
     }
 

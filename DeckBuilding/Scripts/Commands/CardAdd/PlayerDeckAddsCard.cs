@@ -5,9 +5,9 @@ namespace Celeste.DeckBuilding.Commands
 {
     public struct PlayerDeckAddsCard : IDeckMatchCommand
     {
-        private CardRuntime card;
+        private CardInstance card;
 
-        public PlayerDeckAddsCard(CardRuntime card)
+        public PlayerDeckAddsCard(CardInstance card)
         {
             this.card = card;
         }

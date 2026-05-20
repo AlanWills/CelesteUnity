@@ -9,8 +9,8 @@ namespace Celeste.DeckBuilding.Events
     [Serializable]
     public struct AttackActorWithActorArgs
     {
-        public CardRuntime attacker;
-        public CardRuntime target;
+        public CardInstance attacker;
+        public CardInstance target;
     }
 
     [Serializable]

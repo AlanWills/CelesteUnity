@@ -3,18 +3,18 @@ using Celeste.Components;
 
 namespace Celeste.BoardGame.Runtime
 {
-    public class BoardGameObjectRuntime : ComponentContainerRuntime<BoardGameObjectComponent>
+    public class BoardGameObjectInstance : ComponentContainerInstance<BoardGameObjectComponent>
     {
         #region Properties and Fields
 
         public int Guid => boardGameObject.Guid;
         public string Name => boardGameObject.name;
 
-        private BoardGameObject boardGameObject;
+        private readonly BoardGameObject boardGameObject;
 
         #endregion
 
-        public BoardGameObjectRuntime(BoardGameObject boardGameObject)
+        public BoardGameObjectInstance(BoardGameObject boardGameObject)
         {
             this.boardGameObject = boardGameObject;
 

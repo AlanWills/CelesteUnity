@@ -9,7 +9,7 @@ namespace Celeste.BoardGame.UI
     {
         #region Properties and Fields
 
-        public BoardGameObjectRuntime BoardGameObjectRuntime { get; private set; }
+        public BoardGameObjectInstance BoardGameObjectInstance { get; private set; }
 
         [SerializeField] private List<GameObject> componentViews = new();
 
@@ -29,13 +29,13 @@ namespace Celeste.BoardGame.UI
 
         #endregion
 
-        public void Hookup(BoardGameObjectRuntime runtime)
+        public void Hookup(BoardGameObjectInstance instance)
         {
-            BoardGameObjectRuntime = runtime;
+            BoardGameObjectInstance = instance;
 
             foreach (var component in componentViews)
             {
-                component.GetComponent<IBoardGameObjectComponentView>().Hookup(runtime);
+                component.GetComponent<IBoardGameObjectComponentView>().Hookup(instance);
             }
         }
 
@@ -49,7 +49,7 @@ namespace Celeste.BoardGame.UI
                 }
             }
 
-            BoardGameObjectRuntime = null;
+            BoardGameObjectInstance = null;
         }
     }
 }
