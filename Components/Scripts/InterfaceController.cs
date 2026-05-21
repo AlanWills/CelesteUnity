@@ -2,57 +2,57 @@
 
 namespace Celeste.Components
 {
-    public abstract class ComponentController<TComponent, TBaseComponent, TInstance> : MonoBehaviour, IComponentController<TBaseComponent>
-        where TComponent : TBaseComponent
+    public abstract class InterfaceController<TInterface, TBaseComponent, TInstance> : MonoBehaviour, IComponentController<TBaseComponent>
         where TBaseComponent : BaseComponent
         where TInstance : class, IComponentContainerInstance<TBaseComponent>
+        where TInterface : class
     {
-        public ComponentHandle<TComponent> Component { get; private set; }
+        public InterfaceHandle<TInterface> Interface { get; private set; }
         public TInstance Instance { get; private set; }
 
         bool IComponentController<TBaseComponent>.IsValidFor(
             IComponentContainerInstance<TBaseComponent> container,
             IRuntimeAddedContext context)
         {
-            return container.TryFindComponent(out ComponentHandle<TComponent> componentHandle) && CheckIsValidFor(componentHandle, container, context);
+            return container.TryFindComponent(out InterfaceHandle<TInterface> interfaceHandle) && CheckIsValidFor(interfaceHandle, container, context);
         }
         
         void IComponentController<TBaseComponent>.Hookup(
             IComponentContainerInstance<TBaseComponent> container, 
             IRuntimeAddedContext context)
         {
-            bool didFindComponent = container.TryFindComponent(out ComponentHandle<TComponent> componentHandle);
-            Debug.Assert(didFindComponent, "Attempting to hookup a component controller that is not being given a valid component handle.");
-            Component = componentHandle;
+            bool didFindInterface = container.TryFindComponent(out InterfaceHandle<TInterface> interfaceHandle);
+            Debug.Assert(didFindInterface, "Attempting to hookup an interface controller that is not being given a valid interface handle.");
+            Interface = interfaceHandle;
             
             Debug.Assert(container is TInstance, $"Attempting to hookup a container that is not of type {typeof(TInstance).Name}.");
             Instance = container as TInstance;
-
+            
             DoHookup(context);
             
-            Component.instance.events.ComponentDataChanged.AddListener(OnComponentDataChanged);
+            Interface.instance.events.ComponentDataChanged.AddListener(OnInterfaceDataChanged);
         }
 
         void IComponentController<TBaseComponent>.Shutdown()
         {
-            if (Component.IsValid)
+            if (Interface.IsValid)
             {
-                Component.instance.events.ComponentDataChanged.RemoveListener(OnComponentDataChanged);
+                Interface.instance.events.ComponentDataChanged.RemoveListener(OnInterfaceDataChanged);
             }
 
             DoShutdown();
             
-            Component = ComponentHandle<TComponent>.NULL;
+            Interface = InterfaceHandle<TInterface>.NULL;
             Instance = null;
         }
 
         protected virtual bool CheckIsValidFor(
-            ComponentHandle<TComponent> componentHandle,
+            InterfaceHandle<TInterface> interfaceHandle,
             IComponentContainerInstance<TBaseComponent> container, 
             IRuntimeAddedContext context) => true;
         protected abstract void DoHookup(IRuntimeAddedContext context);
         protected abstract void DoShutdown();
         
-        protected virtual void OnComponentDataChanged() { }
+        protected virtual void OnInterfaceDataChanged() { }
     }
 }

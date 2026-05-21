@@ -165,7 +165,7 @@ namespace Celeste.Lua
 
         public void ClearEnvironmentVariable(string variableName)
         {
-            luaState.Environment.SetNil(variableName);
+            luaState?.Environment.SetNil(variableName);
         }
     }
 }

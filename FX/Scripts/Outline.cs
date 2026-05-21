@@ -48,7 +48,7 @@ namespace Celeste.FX
             }
 
             outlineMaterial.SetColor("_OutlineColour", outlineColour);
-            outlineMaterial.SetInt("_OutlineThickness", outlineThickness);
+            outlineMaterial.SetInt("_OutlineWidth", outlineThickness);
 
             if (rendererToOutline != null)
             {
