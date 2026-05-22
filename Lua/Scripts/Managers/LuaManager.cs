@@ -1,6 +1,7 @@
 ﻿#if USE_LUA
 using System.Collections.Generic;
 using Celeste.Lua.Catalogues;
+using Celeste.Lua.Maths;
 using Celeste.Lua.Proxies;
 using UnityEngine;
 using UnityEngine.Events;
@@ -27,6 +28,7 @@ namespace Celeste.Lua.Managers
                 UIToolkitLibrary.Instance
             }, runOnInitializeScripts.Items);
             
+            luaRuntime.SetEnvironmentVariable(LuaVector2Int.kLuaName, new LuaVector2Int());
             luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
             bindProxies.Invoke(luaRuntime);
         }

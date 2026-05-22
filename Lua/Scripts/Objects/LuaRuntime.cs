@@ -125,7 +125,42 @@ namespace Celeste.Lua
             }
 #endif
         }
-
+        public ValueTask<LuaValue[]> ExecuteStringAsync(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return new ValueTask<LuaValue[]>();
+            }
+            
+#if LUA_EXCEPTION_CHECKS
+            try
+#endif
+            {
+                return luaState.DoStringAsync(text);
+            }
+#if LUA_EXCEPTION_CHECKS
+            catch (LuaParseException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua string as it has a parsing error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaCompileException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua string as it has a compilation error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (LuaRuntimeException e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua string as it has a runtime error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError($"Failed to execute lua string as it has an unknown error: {e.Message}.");
+                return new ValueTask<LuaValue[]>();
+            }
+#endif
+        }
         public void OpenLibrary(ILuaLibrary luaLibrary)
         {
             luaState.OpenLibrary(luaLibrary);

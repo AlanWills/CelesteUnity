@@ -1,5 +1,7 @@
 ﻿#if USE_LUA
+using System;
 using Celeste.Debug.Menus;
+using Celeste.Tools;
 using UnityEngine;
 
 namespace Celeste.Lua.Debug
@@ -10,12 +12,27 @@ namespace Celeste.Lua.Debug
         #region Properties and Fields
         
         [SerializeField] private LuaRuntime luaRuntime;
+
+        [NonSerialized] private string luaScriptText;
         
         #endregion
         
         protected override void OnDrawMenu()
         {
             GUILayout.Label($"Is Initialized: {luaRuntime.IsInitialized}");
+
+            using (new GUILayout.HorizontalScope())
+            {
+                using (new GUIEnabledScope(!string.IsNullOrEmpty(luaScriptText)))
+                {
+                    if (GUILayout.Button("Execute"))
+                    {
+                        luaRuntime.ExecuteStringAsync(luaScriptText).FireAndForget("Lua Runtime Debug Menu");
+                    }
+                }
+
+                luaScriptText = GUILayout.TextArea(luaScriptText, GUILayout.MinHeight(400));
+            }
         }
     }
 }
