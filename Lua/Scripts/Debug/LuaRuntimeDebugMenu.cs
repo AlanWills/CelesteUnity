@@ -21,18 +21,15 @@ namespace Celeste.Lua.Debug
         {
             GUILayout.Label($"Is Initialized: {luaRuntime.IsInitialized}");
 
-            using (new GUILayout.HorizontalScope())
+            using (new GUIEnabledScope(!string.IsNullOrEmpty(luaScriptText)))
             {
-                using (new GUIEnabledScope(!string.IsNullOrEmpty(luaScriptText)))
+                if (GUILayout.Button("Execute"))
                 {
-                    if (GUILayout.Button("Execute"))
-                    {
-                        luaRuntime.ExecuteStringAsync(luaScriptText).FireAndForget("Lua Runtime Debug Menu");
-                    }
+                    luaRuntime.ExecuteStringAsync(luaScriptText).FireAndForget("Lua Runtime Debug Menu");
                 }
-
-                luaScriptText = GUILayout.TextArea(luaScriptText, GUILayout.MinHeight(400));
             }
+
+            luaScriptText = GUILayout.TextArea(luaScriptText, GUILayout.MinHeight(400));
         }
     }
 }

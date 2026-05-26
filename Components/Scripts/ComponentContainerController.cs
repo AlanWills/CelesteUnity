@@ -48,10 +48,14 @@ namespace Celeste.Components
                     componentController.enabled = false;
                 }
             }
+            
+            DoHookup(context);
         }
 
         public void Shutdown()
         {
+            DoShutdown();
+            
             foreach (var component in componentControllers)
             {
                 (component as IComponentController<TComponent>)?.Shutdown();
@@ -59,5 +63,8 @@ namespace Celeste.Components
 
             Instance = default;
         }
+        
+        protected virtual void DoHookup(IRuntimeAddedContext context) { }
+        protected virtual void DoShutdown() { }
     }
 }

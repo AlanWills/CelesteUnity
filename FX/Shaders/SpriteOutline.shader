@@ -6,7 +6,7 @@ Shader "Celeste/Sprite Outline"
         _Color ("Tint", Color) = (1,1,1,1)
         
         [Header(Outline Settings)]
-        _OutlineColor ("Outline Color", Color) = (1, 1, 1, 1)
+        _OutlineColour ("Outline Colour", Color) = (1, 1, 1, 1)
         _OutlineWidth ("Outline Width", Range(0, 10)) = 1
     }
 
@@ -51,7 +51,7 @@ Shader "Celeste/Sprite Outline"
             sampler2D _MainTex;
             float4 _MainTex_TexelSize; // Automatically populated by Unity
             
-            fixed4 _OutlineColor;
+            fixed4 _OutlineColour;
             float _OutlineWidth;
 
             v2f vert(appdata_t IN)
@@ -91,7 +91,7 @@ Shader "Celeste/Sprite Outline"
                     if (alpha > 0.1)
                     {
                         // Return the outline color with its own alpha intact
-                        return fixed4(_OutlineColor.rgb, _OutlineColor.a * alpha);
+                        return fixed4(_OutlineColour.rgb, _OutlineColour.a * alpha);
                     }
                 }
 
