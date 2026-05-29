@@ -1,6 +1,7 @@
 ﻿using System;
 using Celeste.Parameters;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 #if USE_NEW_INPUT_SYSTEM
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 #else
@@ -51,6 +52,17 @@ namespace Celeste.Tilemaps
         #endregion
 
         #region Utility Functions
+
+        public void CentreCamera()
+        {
+            Tilemap t = tilemap.Value;
+            Vector3 worldMin = t.transform.TransformPoint(t.localBounds.min); 
+            Vector3 worldMax = t.transform.TransformPoint(t.localBounds.max);
+            Vector3 currentPosition = transform.position;
+            currentPosition.x = (worldMin.x + worldMax.x) / 2;
+            currentPosition.y = (worldMin.y + worldMax.y) / 2;
+            transform.position = currentPosition;
+        }
 
         public void StartDrag(Vector2 mousePosition)
         {
