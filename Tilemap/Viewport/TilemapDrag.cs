@@ -18,6 +18,8 @@ namespace Celeste.Tilemaps
 
         [SerializeField] private TilemapReference tilemap;
         [SerializeField] private FloatReference dragSpeed;
+        [SerializeField] private float xPadding;
+        [SerializeField] private float yPadding;
 
         private Camera cameraToDrag;
         private float timeSinceFingerDown = 0;
@@ -127,13 +129,41 @@ namespace Celeste.Tilemaps
 #endif
         }
 
-        private void ClampCamera()
+        public void ClampCamera()
         {
-            Bounds bounds = tilemap.Value.localBounds;
-            Vector3 currentPosition = transform.position;
-            currentPosition.x = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
-            currentPosition.y = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
-            transform.position = currentPosition;
+            Tilemap t = tilemap.Value;
+            Bounds bounds = t.localBounds;
+            Vector3 worldSpaceMin = t.layoutGrid.LocalToWorld(bounds.min) - new Vector3(xPadding, yPadding, 0);
+            Vector3 worldSpaceMax = t.layoutGrid.LocalToWorld(bounds.max) + new Vector3(xPadding, yPadding, 0);
+            
+            float mapMinX = Mathf.Min(worldSpaceMin.x, worldSpaceMax.x);
+            float mapMaxX = Mathf.Max(worldSpaceMin.x, worldSpaceMax.x);
+            float mapMinY = Mathf.Min(worldSpaceMin.y, worldSpaceMax.y);
+            float mapMaxY = Mathf.Max(worldSpaceMin.y, worldSpaceMax.y);
+            float camHalfHeight = cameraToDrag.orthographicSize;
+            float camHalfWidth = camHalfHeight * cameraToDrag.aspect;
+            
+            float minX = mapMinX + camHalfWidth;
+            float maxX = mapMaxX - camHalfWidth;
+            float minY = mapMinY + camHalfHeight;
+            float maxY = mapMaxY - camHalfHeight;
+
+            Vector3 cameraPosition = transform.position;
+            
+            if (maxX < minX)
+            {
+                minX = maxX = (mapMinX + mapMaxX) / 2f;
+            }
+            
+            if (maxY < minY)
+            {
+                minY = maxY = (mapMinY + mapMaxY) / 2f;
+            }
+
+            float clampedX = Mathf.Clamp(cameraPosition.x, minX, maxX);
+            float clampedY = Mathf.Clamp(cameraPosition.y, minY, maxY);
+
+            transform.position = new Vector3(clampedX, clampedY, cameraPosition.z);
         }
 
         #endregion

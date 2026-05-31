@@ -1,7 +1,9 @@
 ﻿using Celeste.Events;
 using Celeste.Parameters;
 using System;
+using Celeste.Tools;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Celeste.Tilemaps
 {
@@ -15,44 +17,61 @@ namespace Celeste.Tilemaps
         {
             get
             {
-                Bounds bounds = tilemap.Value.localBounds;
-                float xSize = (bounds.size.x + xPadding / ppu) * Screen.height / (Screen.width * 2.0f);
-                float ySize = (bounds.size.y + yPadding / ppu) * 0.5f;
-
-                return Math.Max(xSize, ySize);
+                Tilemap t = tilemap.Value;
+                Bounds bounds = t.localBounds;
+                Vector3 minWorldSpace = t.layoutGrid.LocalToWorld(bounds.min) - new Vector3(xPadding, yPadding, 0);
+                Vector3 maxWorldSpace = t.layoutGrid.LocalToWorld(bounds.max) + new Vector3(xPadding, yPadding, 0);
+                float mapWidth = Mathf.Abs(maxWorldSpace.x - minWorldSpace.x);
+                float mapHeight = Mathf.Abs(maxWorldSpace.y - minWorldSpace.y);
+                float sizeNeededForHeight = mapHeight / 2f;
+                float cameraWidthNeeded = mapWidth / 2f;
+                float sizeNeededForWidth = cameraWidthNeeded / cameraToZoom.aspect;
+                
+                return Mathf.Max(sizeNeededForHeight, sizeNeededForWidth);
             }
         }
 
-        [SerializeField]
-        private TilemapValue tilemap;
-
-        [SerializeField]
-        private float ppu;
-
-        [SerializeField]
-        private float xPadding;
-
-        [SerializeField]
-        private float yPadding;
-
-        [SerializeField]
-        private FloatValue minZoom;
-
-        [SerializeField]
-        private FloatValue maxZoom;
-
-        [SerializeField]
-        private FloatValue zoomSpeed;
+        [SerializeField] private Camera cameraToZoom;
+        [SerializeField] private TilemapReference tilemap;
+        [SerializeField] private float xPadding;
+        [SerializeField] private float yPadding;
+        [SerializeField] private FloatReference minZoom;
+        [SerializeField] private FloatReference maxZoom;
+        [SerializeField] private FloatReference zoomSpeed;
         
-        private Camera cameraToZoom;
-
         #endregion
 
         #region Unity Methods
 
-        private void Start()
+        private void OnValidate()
         {
-            cameraToZoom = GetComponent<Camera>();
+            this.TryGet(ref cameraToZoom);
+            
+            if (tilemap == null)
+            {
+                tilemap = ScriptableObject.CreateInstance<TilemapReference>();
+            }
+
+            if (minZoom == null)
+            {
+                minZoom = ScriptableObject.CreateInstance<FloatReference>();
+                minZoom.IsConstant = true;
+                minZoom.Value = 1f;
+            }
+
+            if (maxZoom == null)
+            {
+                maxZoom = ScriptableObject.CreateInstance<FloatReference>();
+                maxZoom.IsConstant = true;
+                maxZoom.Value = 1f;
+            }
+
+            if (zoomSpeed == null)
+            {
+                zoomSpeed = ScriptableObject.CreateInstance<FloatReference>();
+                zoomSpeed.IsConstant = true;
+                zoomSpeed.Value = 1f;
+            }
         }
 
         #endregion
@@ -103,18 +122,25 @@ namespace Celeste.Tilemaps
             // Zoom out
             cameraToZoom.orthographicSize += zoomAmount;
             
-            FitCamera();
+            ClampCamera();
         }
 
-        private void FitCamera()
+        private void ClampCamera()
         {
             float fitSize = FitSize;
-            cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize, fitSize / maxZoom.Value, fitSize / minZoom.Value);
+            
+            // To handle the situations where fitSize goes below the bounds of these two values
+            // We must ensure we have sufficient zoom to fit the tilemap otherwise things will just look odd
+            float minSize = Mathf.Min(fitSize, minZoom.Value);
+            float maxSize = Mathf.Min(fitSize, maxZoom.Value);
+            cameraToZoom.orthographicSize = Mathf.Clamp(cameraToZoom.orthographicSize, minSize, maxSize);
         }
 
-        public void FullZoomOut()
+        public void FitCamera()
         {
             cameraToZoom.orthographicSize = FitSize;
+            
+            ClampCamera();
         }
 
 #endregion

@@ -8,7 +8,7 @@ namespace Celeste.Tools
         {
             if (component == null)
             {
-                component = monoBehaviour.GetComponent<T>();
+                monoBehaviour.TryGetComponent(out component);
             }
         }
 
