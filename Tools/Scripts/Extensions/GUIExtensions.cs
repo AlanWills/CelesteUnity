@@ -37,18 +37,7 @@ namespace Celeste.Tools
                     FlexibleSpace();
                 }
 
-                string currentIntText = currentInt.ToString();
-                currentIntText = TextField(currentIntText, MinWidth(40), ExpandWidth(true));
-
-                if (GUI.changed)
-                {
-                    if (int.TryParse(currentIntText, out int newInt))
-                    {
-                        currentInt = newInt;
-                    }
-                }
-
-                return currentInt;
+                return InternalIntTextField(currentInt);
             }
         }
 
@@ -79,6 +68,23 @@ namespace Celeste.Tools
                 }
 
                 return currentFloat;
+            }
+        }
+
+        public static Vector2Int Vector2IntField(string label, Vector2Int current)
+        {
+            using (new HorizontalScope())
+            {
+                if (!string.IsNullOrEmpty(label))
+                {
+                    Label(label, MaxWidth(150));
+                    FlexibleSpace();
+                }
+
+                current.x = InternalIntTextField(current.x);
+                current.y = InternalIntTextField(current.y);
+
+                return current;
             }
         }
 
@@ -282,6 +288,22 @@ namespace Celeste.Tools
             }
 
             return currentPage;
+        }
+
+        private static int InternalIntTextField(int current)
+        {
+            string currentXText = current.ToString();
+            currentXText = TextField(currentXText, MinWidth(40), ExpandWidth(true));
+
+            if (GUI.changed)
+            {
+                if (int.TryParse(currentXText, out int newX))
+                {
+                    current = newX;
+                }
+            }
+
+            return current;
         }
     }
 }

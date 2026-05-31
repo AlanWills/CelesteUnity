@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Celeste.Lua.Maths;
 using Celeste.Tools;
 using Lua;
 using Lua.Standard;
@@ -35,6 +36,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "endSection", EndSection));
             functions.Add(new (kName, "plusMinusField", PlusMinusField));
             functions.Add(new (kName, "intField", IntField));
+            functions.Add(new (kName, "vector2IntField", Vector2IntField));
         }
         
         private ValueTask<int> Label(
@@ -124,6 +126,17 @@ namespace Celeste.Lua
             int newValue = GUIExtensions.IntField(label, currentValue);
             
             return new ValueTask<int>(context.Return(newValue));
+        }
+
+        private ValueTask<int> Vector2IntField(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string label = context.GetArgument<string>(0);
+            LuaVector2Int currentValue = context.GetArgument<LuaVector2Int>(1);
+            currentValue.v = GUIExtensions.Vector2IntField(label, currentValue.v);
+            
+            return new ValueTask<int>(context.Return(currentValue));
         }
     }
 }

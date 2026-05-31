@@ -24,7 +24,11 @@ namespace Celeste.Lua.Maths
             set => vector = new Vector2Int(vector.x, value);
         }
 
-        public Vector2Int v => vector;
+        public Vector2Int v
+        {
+            get => vector;
+            set => vector = value;
+        }
 
         private Vector2Int vector;
 
