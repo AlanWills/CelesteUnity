@@ -37,6 +37,7 @@ namespace Celeste.Lua
             functions.Add(new (kName, "plusMinusField", PlusMinusField));
             functions.Add(new (kName, "intField", IntField));
             functions.Add(new (kName, "vector2IntField", Vector2IntField));
+            functions.Add(new (kName, "readOnlyPaginatedListField", ReadOnlyPaginatedListField));
         }
         
         private ValueTask<int> Label(
@@ -137,6 +138,24 @@ namespace Celeste.Lua
             currentValue.v = GUIExtensions.Vector2IntField(label, currentValue.v);
             
             return new ValueTask<int>(context.Return(currentValue));
+        }
+
+        private ValueTask<int> ReadOnlyPaginatedListField(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            int currentPage = context.GetArgument<int>(0);
+            int entriesPerPage = context.GetArgument<int>(1);
+            int numItems = context.GetArgument<int>(2);
+            LuaFunction drawItemFunction = context.GetArgument<LuaFunction>(3);
+            
+            currentPage = GUIExtensions.ReadOnlyPaginatedList(
+                currentPage,
+                entriesPerPage,
+                numItems,
+                index => LuaRuntime.ExecuteFunctionAsync(drawItemFunction, index).FireAndForget(nameof(ReadOnlyPaginatedListField)));
+            
+            return new ValueTask<int>(context.Return(currentPage));
         }
     }
 }
