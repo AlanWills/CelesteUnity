@@ -168,7 +168,7 @@ namespace Celeste.Persistence
             // We wait until the end of frame, just to buy a bit more time
             yield return new WaitForEndOfFrame();
 
-            currentSaveState = SaveState.Pending;
+            currentSaveState = SaveState.InProgress;
 
             Task saveTask = SerializeAndSaveAsync();
 
