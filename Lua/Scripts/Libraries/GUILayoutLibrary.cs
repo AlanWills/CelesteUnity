@@ -153,7 +153,7 @@ namespace Celeste.Lua
                 currentPage,
                 entriesPerPage,
                 numItems,
-                index => LuaRuntime.ExecuteFunctionAsync(drawItemFunction, index).FireAndForget(nameof(ReadOnlyPaginatedListField)));
+                index => LuaRuntime.ExecuteFunctionAsync(drawItemFunction, index));
             
             return new ValueTask<int>(context.Return(currentPage));
         }
