@@ -18,6 +18,7 @@ namespace Celeste
         public static SectionLogSettings RemoteConfig => instance?.remoteConfigLogSettings;
         public static SectionLogSettings Debug => instance?.debugLogSettings;
         public static SectionLogSettings Web => instance?.webLogSettings;
+        public static SectionLogSettings Lua => instance?.luaLogSettings;
 
         [SerializeField] private SectionLogSettings coreLogSettings;
         [SerializeField] private SectionLogSettings persistenceLogSettings;
@@ -29,6 +30,7 @@ namespace Celeste
         [SerializeField] private SectionLogSettings remoteConfigLogSettings;
         [SerializeField] private SectionLogSettings debugLogSettings;
         [SerializeField] private SectionLogSettings webLogSettings;
+        [SerializeField] private SectionLogSettings luaLogSettings;
 
         [NonSerialized] private static CelesteLog instance;
 

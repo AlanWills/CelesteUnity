@@ -11,7 +11,7 @@ namespace Celeste.Lua
     public interface ILuaRuntime
     {
 #if USE_LUA
-        void Initialize(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts);
+        ValueTask InitializeAsync(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts);
         void Shutdown();
 
         ValueTask<LuaValue[]> ExecuteScriptAsync(LuaScript luaScript);

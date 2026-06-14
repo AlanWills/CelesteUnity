@@ -22,11 +22,6 @@ namespace Celeste.Lua.Proxies
         
         #region Unity Methods
 
-        private void OnEnable()
-        {
-            TryBind();
-        }
-
         private void OnDisable()
         {
             TryUnbind();
@@ -43,9 +38,14 @@ namespace Celeste.Lua.Proxies
 
         public IEnumerator LoadAssets()
         {
+            while (!luaRuntime.IsInitialized)
+            {
+                // Potentially an infinite loop here, dunno if we should exit out after a certain amount of time
+                // This is really only intended to deal with the case where you load straight into a scene in the editor
+                yield return null;
+            }
+            
             TryBind();
-
-            yield break;
         }
         
         #endregion

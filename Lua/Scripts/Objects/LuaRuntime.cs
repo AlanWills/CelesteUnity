@@ -14,14 +14,14 @@ namespace Celeste.Lua
     {
         #region Properties and Fields
 
-        public bool IsInitialized => luaState != null;
+        public bool IsInitialized { get; private set; }
 
         [NonSerialized] private LuaState luaState;
         [NonSerialized] private readonly Dictionary<Type, Func<UnityEngine.Object, ILuaProxy>> proxies = new();
 
         #endregion
 
-        public void Initialize(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts)
+        public async ValueTask InitializeAsync(IReadOnlyList<ILuaLibrary> librariesToOpen, IReadOnlyList<LuaScript> loadOnInitializeScripts)
         {
             luaState = LuaUtility.CreateUnityLuaState();
             luaState.OpenStandardLibraries();
@@ -37,12 +37,15 @@ namespace Celeste.Lua
 
             foreach (LuaScript luaScript in loadOnInitializeScripts)
             {
-                ExecuteScriptAsync(luaScript);
+                await ExecuteScriptAsync(luaScript);
             }
+
+            IsInitialized = true;
         }
 
         public void Shutdown()
         {
+            IsInitialized = false;
             luaState = null;
         }
 
