@@ -76,6 +76,27 @@ namespace Celeste.Lua
             f = luaValue.ReadFunction();
             return true;
         }
+        
+        public static bool TryGetTable(
+            this LuaTable luaTable, 
+            string key, 
+            out LuaTable t)
+        {
+            t = null;
+            
+            if (!luaTable.TryGetValue(key, out LuaValue luaValue))
+            {
+                return false;
+            }
+
+            if (!luaValue.IsTable())
+            {
+                return false;
+            }
+            
+            t = luaValue.ReadTable();
+            return true;
+        }
 
         public static bool TryGet<T>(this LuaTable luaTable, string key, out T value)
         {
