@@ -153,6 +153,17 @@ namespace Celeste.RemoteConfig
             return (deserializedObject == null || deserializedObject.Equals(default(T))) ? defaultValue : deserializedObject;
         }
 
+        public void OverrideObject<T>(string key, T currentValue)
+        {
+            string objectAsString = fetchedData.GetObjectAsString(key, string.Empty);
+            if (string.IsNullOrEmpty(objectAsString))
+            {
+                return;
+            }
+
+            JsonUtility.FromJsonOverwrite(objectAsString, currentValue);
+        }
+
         public string GetString(string key, string defaultValue)
         {
             return fetchedData.GetString(key, defaultValue);
