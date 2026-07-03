@@ -109,5 +109,20 @@ namespace Celeste.Lua
 
             return luaValue.TryRead(out value);
         }
+
+        public static T TryGet<T>(this LuaTable luaTable, string key, T defaultValue = default)
+        {
+            if (!luaTable.TryGetValue(key, out LuaValue luaValue))
+            {
+                return defaultValue;
+            }
+
+            if (!luaValue.TryRead(out T value))
+            {
+                return defaultValue;
+            }
+
+            return value;
+        }
     }
 }
