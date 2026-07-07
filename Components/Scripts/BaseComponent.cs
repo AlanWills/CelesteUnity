@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -101,16 +102,19 @@ namespace Celeste.Components
             this.instance = instance;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Is<K>() where K : class
         {
             return component is K;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public InterfaceHandle<K> AsInterface<K>() where K : class
         {
             return new InterfaceHandle<K>(component as K, instance);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComponentHandle<K> AsComponent<K>() where K : TComponent
         {
             return new ComponentHandle<K>(component as K, instance);

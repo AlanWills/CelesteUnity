@@ -106,7 +106,15 @@ namespace Celeste.Components
 
         public bool HasComponent<K>() where K : class
         {
-            return components.Exists(x => x.component is K);
+            for (int i = 0, n = components.Count; i < n; ++i)
+            {
+                if (components[i].Is<K>())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void RemoveComponent(int componentIndex)
@@ -148,11 +156,11 @@ namespace Celeste.Components
 
         public bool TryFindComponent<K>(out InterfaceHandle<K> iFace) where K : class
         {
-            foreach (var c in components)
+            for (int i = 0, n = components.Count; i < n; ++i)
             {
-                if (c.Is<K>())
+                if (components[i].Is<K>())
                 {
-                    iFace = c.AsInterface<K>();
+                    iFace = components[i].AsInterface<K>();
                     return true;
                 }
             }
@@ -163,11 +171,11 @@ namespace Celeste.Components
 
         public bool TryFindComponent<K>(out ComponentHandle<K> component) where K : T
         {
-            foreach (var c in components)
+            for (int i = 0, n = components.Count; i < n; ++i)
             {
-                if (c.Is<K>())
+                if (components[i].Is<K>())
                 {
-                    component = c.AsComponent<K>();
+                    component = components[i].AsComponent<K>();
                     return true;
                 }
             }
@@ -178,11 +186,11 @@ namespace Celeste.Components
 
         public IEnumerable<InterfaceHandle<K>> FindComponents<K>() where K : class
         {
-            foreach (var c in components)
+            for (int i = 0, n = components.Count; i < n; ++i)
             {
-                if (c.Is<K>())
+                if (components[i].Is<K>())
                 {
-                    yield return c.AsInterface<K>();
+                    yield return components[i].AsInterface<K>();
                 }
             }
         }

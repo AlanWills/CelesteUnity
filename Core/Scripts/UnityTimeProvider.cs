@@ -5,6 +5,7 @@ namespace Celeste.Core
 {
     public struct UnityTimeProvider : ITimeProvider
     {
-        public float DeltaTime => Time.deltaTime;
+        public float Time => UnityEngine.Time.time;
+        public float DeltaTime => UnityEngine.Time.deltaTime;
     }
 }
