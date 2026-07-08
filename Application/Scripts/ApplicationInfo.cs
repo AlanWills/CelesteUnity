@@ -9,27 +9,14 @@ namespace Celeste.Application
     {
         #region Properties and Fields
 
-        [SerializeField]
-        private BoolValue isEditor;
-        public static bool IsEditor
-        {
-            get { return Instance.isEditor.Value; }
-        }
+        public static bool IsEditor => Instance.isEditor.Value;
+        public static bool IsMobile => Instance.isMobile.Value;
+        public static bool IsDebugBuild => Instance.isDebugBuild.Value;
 
-        [SerializeField]
-        private BoolValue isMobile;
-        public static bool IsMobile
-        {
-            get { return Instance.isMobile.Value; }
-        }
-
-        [SerializeField]
-        private BoolValue isDebugBuild;
-        public static bool IsDebugBuild
-        {
-            get { return Instance.isDebugBuild.Value; }
-        }
-
+        [SerializeField] private BoolValue isEditor;
+        [SerializeField] private BoolValue isMobile;
+        [SerializeField] private BoolValue isDebugBuild;
+        
         #endregion
 
         #region Unity Methods

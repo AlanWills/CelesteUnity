@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6175683919976353802}
   - component: {fileID: 1806671322067147077}
   - component: {fileID: 4708798523260792029}
+  - component: {fileID: 8764370303258625130}
   m_Layer: 5
   m_Name: DebugManager
   m_TagString: Untagged
@@ -159,12 +160,25 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
     m_ActionId: 9be253e6-de41-4a1b-b31b-8fbc3ad6f917
-    m_ActionName: UI/Point[/Mouse/position,/Pen/position,/Touchscreen/touch0/position,/Touchscreen/touch1/position,/Touchscreen/touch2/position,/Touchscreen/touch3/position,/Touchscreen/touch4/position,/Touchscreen/touch5/position,/Touchscreen/touch6/position,/Touchscreen/touch7/position,/Touchscreen/touch8/position,/Touchscreen/touch9/position]
+    m_ActionName: 'UI/Point[/Mouse/position,/Pen/position,/Touchscreen/touch0/position,/Touchscreen/touch1/position,/Touchscreen/touch2/position,/Touchscreen/touch3/position,/Touchscreen/touch4/position,/Touchscreen/touch5/position,/Touchscreen/touch6/position,/Touchscreen/touch7/position,/Touchscreen/touch8/position,/Touchscreen/touch9/position]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8764370303258625130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3014676550613481676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 801d189046bd45a2ab3898a4b3ad3100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Celeste.Debug::Celeste.Debug.Managers.DebugManager
+  isDeveloperConsoleEnabled: {fileID: 11400000, guid: f8f3ab3e4b9ab7543bed8a4fd2e9cca8, type: 2}
 --- !u!1 &6175683921614214144
 GameObject:
   m_ObjectHideFlags: 0

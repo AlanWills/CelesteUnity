@@ -43,6 +43,11 @@ namespace Celeste.Persistence
                 }
             }
 
+            if (GUILayout.Button("Clear Player Prefs"))
+            {
+                PlayerPrefs.DeleteAll();
+            }
+
             foreach (string file in filesInPersistentData)
             {
                 using (new GUILayout.HorizontalScope())
