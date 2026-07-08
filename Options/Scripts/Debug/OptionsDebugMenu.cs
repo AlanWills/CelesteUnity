@@ -30,69 +30,73 @@ namespace Celeste.Options.Debug
             // Bool Options
             {
                 GUILayout.Space(5);
-                GUILayout.Label("Bool Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
-                GUILayout.Space(5);
-
-                boolOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
-                    boolOptionsCurrentPage,
-                    ENTRIES_PER_PAGE,
-                    options.NumBoolOptions,
-                    (i) =>
-                    {
-                        BoolOption boolOption = options.GetBoolOption(i);
-                        GUILayout.Label($"{boolOption.DisplayName}: {boolOption.Value}");
-                    });
+                using (Section("Bool Options"))
+                {
+                    boolOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
+                        boolOptionsCurrentPage,
+                        ENTRIES_PER_PAGE,
+                        options.NumBoolOptions,
+                        (i) =>
+                        {
+                            BoolOption boolOption = options.GetBoolOption(i);
+                            boolOption.Value = GUILayout.Toggle(boolOption.Value, boolOption.DisplayName);
+                        });
+                }
             }
 
             // Int Options
             {
                 GUILayout.Space(5);
-                GUILayout.Label("Int Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
-                GUILayout.Space(5);
-
-                intOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
-                    intOptionsCurrentPage,
-                    ENTRIES_PER_PAGE,
-                    options.NumIntOptions,
-                    (i) =>
-                    {
-                        IntOption intOption = options.GetIntOption(i);
-                        GUILayout.Label($"{intOption.DisplayName}: {intOption.Value}");
-                    });
+                using (Section("Int Options"))
+                {
+                    intOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
+                        intOptionsCurrentPage,
+                        ENTRIES_PER_PAGE,
+                        options.NumIntOptions,
+                        (i) =>
+                        {
+                            IntOption intOption = options.GetIntOption(i);
+                            intOption.Value = GUIExtensions.IntField(intOption.DisplayName, intOption.Value);
+                        });
+                }
             }
 
             // Float Options
             {
                 GUILayout.Space(5);
-                GUILayout.Label("Float Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
-                GUILayout.Space(5);
-
-                floatOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
-                    floatOptionsCurrentPage,
-                    ENTRIES_PER_PAGE,
-                    options.NumFloatOptions,
-                    (i) =>
-                    {
-                        FloatOption floatOption = options.GetFloatOption(i);
-                        GUILayout.Label($"{floatOption.DisplayName}: {floatOption.Value}");
-                    });
+                using (Section("Float Options"))
+                {
+                    floatOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
+                        floatOptionsCurrentPage,
+                        ENTRIES_PER_PAGE,
+                        options.NumFloatOptions,
+                        (i) =>
+                        {
+                            FloatOption floatOption = options.GetFloatOption(i);
+                            floatOption.Value = GUIExtensions.FloatField(floatOption.DisplayName, floatOption.Value);
+                        });
+                }
             }
 
             // String Options
             {
                 GUILayout.Space(5);
-                GUILayout.Label("String Options", GUI.skin.label.New().Bold().MiddleCentreAligned());
-                GUILayout.Space(5);
-
-                stringOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
-                    stringOptionsCurrentPage,
-                    ENTRIES_PER_PAGE,
-                    options.NumStringOptions,
-                    (i) =>
-                    {
-                        StringOption stringOption = options.GetStringOption(i);
-                        GUILayout.Label($"{stringOption.DisplayName}: {stringOption.Value}");
-                    });
+                using (Section("String Options"))
+                {
+                    stringOptionsCurrentPage = GUIExtensions.ReadOnlyPaginatedList(
+                        stringOptionsCurrentPage,
+                        ENTRIES_PER_PAGE,
+                        options.NumStringOptions,
+                        (i) =>
+                        {
+                            using (new GUILayout.HorizontalScope())
+                            {
+                                StringOption stringOption = options.GetStringOption(i);
+                                GUILayout.Label(stringOption.DisplayName);
+                                stringOption.Value = GUILayout.TextField(stringOption.Value);
+                            }
+                        });
+                }
             }
         }
     }

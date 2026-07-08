@@ -11,8 +11,9 @@ namespace Celeste.Application
 
         private int FrameRate
         {
-            set 
-            { 
+            set
+            {
+                QualitySettings.vSyncCount = 0;
                 UnityEngine.Application.targetFrameRate = value; 
             }
         }
