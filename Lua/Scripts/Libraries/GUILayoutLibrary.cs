@@ -36,6 +36,7 @@ namespace Celeste.Lua
             functions.Add(new(kName, "endSection", EndSection));
             functions.Add(new (kName, "plusMinusField", PlusMinusField));
             functions.Add(new (kName, "intField", IntField));
+            functions.Add(new (kName, "toggle", Toggle));
             functions.Add(new (kName, "vector2IntField", Vector2IntField));
             functions.Add(new (kName, "readOnlyPaginatedListField", ReadOnlyPaginatedListField));
         }
@@ -125,6 +126,17 @@ namespace Celeste.Lua
             string label = context.GetArgument<string>(0);
             int currentValue = context.GetArgument<int>(1);
             int newValue = GUIExtensions.IntField(label, currentValue);
+            
+            return new ValueTask<int>(context.Return(newValue));
+        }
+
+        private ValueTask<int> Toggle(
+            LuaFunctionExecutionContext context,
+            CancellationToken cancellationToken)
+        {
+            string label = context.GetArgument<string>(0);
+            bool currentValue = context.GetArgument<bool>(1);
+            bool newValue = GUILayout.Toggle(currentValue, label);
             
             return new ValueTask<int>(context.Return(newValue));
         }
