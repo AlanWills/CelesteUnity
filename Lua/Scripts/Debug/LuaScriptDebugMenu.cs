@@ -49,28 +49,41 @@ namespace Celeste.Lua.Debug
         protected override async void OnShowMenu()
         {
             base.OnShowMenu();
-            
-            debugMenuTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
 
-            onShowMenuFunction = debugMenuTable.GetFunction(onShowMenuFunctionName);
-            onDrawMenuFunction = debugMenuTable.GetFunction(onDrawMenuFunctionName);
-            onHideMenuFunction = debugMenuTable.GetFunction(onHideMenuFunctionName);
+            if (luaRuntime.IsInitialized)
+            {
+                debugMenuTable = await luaRuntime.ExecuteScriptAsClassAsync(script);
 
-            luaRuntime.ExecuteFunctionAsync(onShowMenuFunction, debugMenuTable).FireAndForget();
+                onShowMenuFunction = debugMenuTable.GetFunction(onShowMenuFunctionName);
+                onDrawMenuFunction = debugMenuTable.GetFunction(onDrawMenuFunctionName);
+                onHideMenuFunction = debugMenuTable.GetFunction(onHideMenuFunctionName);
+
+                luaRuntime.ExecuteFunctionAsync(onShowMenuFunction, debugMenuTable).FireAndForget();
+            }
         }
 
         protected override void OnDrawMenu()
         {
             base.OnDrawMenu();
 
-            luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction, debugMenuTable).FireAndForget();
+            if (luaRuntime.IsInitialized)
+            {
+                luaRuntime.ExecuteFunctionAsync(onDrawMenuFunction, debugMenuTable).FireAndForget();
+            }
+            else
+            {
+                GUILayout.Label("Lua Runtime is not initialized yet!");
+            }
         }
 
         protected override void OnHideMenu()
         {
             base.OnHideMenu();
 
-            luaRuntime.ExecuteFunctionAsync(onHideMenuFunction, debugMenuTable).FireAndForget();
+            if (luaRuntime.IsInitialized)
+            {
+                luaRuntime.ExecuteFunctionAsync(onHideMenuFunction, debugMenuTable).FireAndForget();
+            }
         }
     }
 }

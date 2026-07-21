@@ -39,7 +39,7 @@ namespace Celeste.Lua
             {
                 await ExecuteScriptAsync(luaScript);
             }
-
+            
             IsInitialized = true;
         }
 
