@@ -47,12 +47,19 @@ namespace Celeste.Lua.Managers
             {
                 yield return null;
             }
-            
-            UnityEngine.Debug.Log("Lua Runtime initialized successfully!", CelesteLog.Lua);
-            
-            luaRuntime.SetEnvironmentVariable(LuaVector2Int.kLuaName, new LuaVector2Int());
-            luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
-            bindProxies.Invoke(luaRuntime);
+
+            if (valueTask.IsCompletedSuccessfully)
+            {
+                UnityEngine.Debug.Log("Lua Runtime initialized successfully!", CelesteLog.Lua);
+                
+                luaRuntime.SetEnvironmentVariable(LuaVector2Int.kLuaName, new LuaVector2Int());
+                luaRuntime.BindProxy<GameObject, LuaGameObjectProxy>(LuaGameObjectProxy.Bind);
+                bindProxies.Invoke(luaRuntime);
+            }
+            else
+            {
+                UnityEngine.Debug.LogError($"Lua Runtime initialization failed.");
+            }
         }
     }
 }
