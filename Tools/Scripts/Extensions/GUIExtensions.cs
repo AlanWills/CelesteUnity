@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 using static UnityEngine.GUILayout;
 
@@ -48,6 +49,11 @@ namespace Celeste.Tools
 
         public static float FloatField(string label, float currentFloat)
         {
+            return FloatField(label, currentFloat, 0, 1);
+        }
+
+        public static float FloatField(string label, float currentFloat, float minValue, float maxValue)
+        {
             using (new HorizontalScope())
             {
                 if (!string.IsNullOrEmpty(label))
@@ -56,12 +62,13 @@ namespace Celeste.Tools
                     FlexibleSpace();
                 }
 
-                string currentFloatText = currentFloat.ToString();
+                string currentFloatText = currentFloat.ToString(CultureInfo.CurrentCulture);
                 currentFloatText = TextField(currentFloatText, MinWidth(40));
 
                 if (GUI.changed)
                 {
-                    if (float.TryParse(currentFloatText, out float newFloat))
+                    if (float.TryParse(currentFloatText, out float newFloat) &&
+                        minValue <= newFloat && newFloat <= maxValue)
                     {
                         currentFloat = newFloat;
                     }

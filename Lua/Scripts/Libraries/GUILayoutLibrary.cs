@@ -93,7 +93,7 @@ namespace Celeste.Lua
             if (context.ArgumentCount > 0)
             {
                 string sectionTitle = context.GetArgument<string>(0);
-                GUILayout.Label(sectionTitle ?? string.Empty, CelesteGUIStyles.BoldLabel.Colour(Color.white));
+                GUILayout.Label(sectionTitle ?? string.Empty, CelesteGUIStyles.BoldLabel.New().Colour(Color.white));
             }
 
             return new ValueTask<int>(context.Return());

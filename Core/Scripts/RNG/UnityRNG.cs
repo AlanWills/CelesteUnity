@@ -8,5 +8,10 @@ namespace Celeste.Core
         {
             return UnityEngine.Random.Range(inclusiveMin, inclusiveMax + 1);
         }
+
+        public float FromRange01()
+        {
+            return UnityEngine.Random.value;
+        }
     }
 }

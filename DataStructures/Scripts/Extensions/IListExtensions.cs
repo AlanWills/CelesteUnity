@@ -185,5 +185,15 @@ namespace Celeste.DataStructures
             list.Clear();
             list.AddRange(source);
         }
+
+        public static void Fill<T>(this List<T> list, T value)
+        {
+            list.Clear();
+
+            for (int i = 0, n = list.Capacity; i < n; ++i)
+            {
+                list.Add(value);
+            }
+        }
     }
 }

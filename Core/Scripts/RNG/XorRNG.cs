@@ -190,5 +190,10 @@ namespace Celeste.Core
         {
             return Next(inclusiveMin, inclusiveMax + 1);
         }
+
+        float IRNG.FromRange01()
+        {
+            return (float)Sample();
+        }
     }
 }
