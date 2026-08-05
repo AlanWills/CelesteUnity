@@ -13,7 +13,7 @@ namespace Celeste.DeckBuilding.UI
         #region Properties and Fields
 
         [SerializeField] private CurrentHand currentHand;
-        [SerializeField] private GameObjectAllocator cardsAllocator;
+        [SerializeField] private GameObjectAllocator_List cardsAllocator;
 
         [NonSerialized] private List<ICardUIController> cardControllers = new List<ICardUIController>();
 

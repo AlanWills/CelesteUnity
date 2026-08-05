@@ -27,7 +27,7 @@ namespace Celeste.Twine.UI
 
         #region Factory Methods
 
-        public static TwineNodeUIController From(TwineNode twineNode, GameObjectAllocator allocator)
+        public static TwineNodeUIController From(TwineNode twineNode, GameObjectAllocator_List allocator)
         {
             GameObject twineNodeUIGameObject = allocator.AllocateWithResizeIfNecessary();
             if (twineNodeUIGameObject == null)

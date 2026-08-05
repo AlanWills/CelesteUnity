@@ -13,7 +13,9 @@
         "Celeste.Persistence",
         "Celeste.CloudSave",
         "Unity.TextMeshPro",
-        "Celeste.DataStructures"
+        "Celeste.DataStructures",
+        "QC.Match.Runtime",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

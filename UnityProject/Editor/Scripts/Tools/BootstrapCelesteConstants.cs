@@ -10,5 +10,6 @@ namespace CelesteEditor.UnityProject
         public const string ANDROID_LOGCAT_PACKAGE = "com.unity.mobile.android-logcat";
         public const string UNITY_COLLAB_PACKAGE = "com.unity.collab-proxy";
         public const string MULTIPLAYER_SERVICES_PACKAGE = "com.unity.services.multiplayer";
+        public const string UNI_TASK_PACKAGE = "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask";
     }
 }

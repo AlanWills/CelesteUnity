@@ -17,7 +17,7 @@ namespace Celeste.DeckBuilding.UI
             get { return actorUIControllers.Count; }
         }
 
-        [SerializeField] private GameObjectAllocator cardActorUIAllocator;
+        [SerializeField] private GameObjectAllocator_List cardActorUIAllocator;
 
         private List<ActorUIController> actorUIControllers = new List<ActorUIController>();
 

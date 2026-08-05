@@ -53,7 +53,8 @@ namespace CelesteEditor.UnityProject
 
             List<string> dependenciesToAdd = new List<string>
             {
-                BootstrapCelesteConstants.EDITOR_COROUTINES_PACKAGE
+                BootstrapCelesteConstants.EDITOR_COROUTINES_PACKAGE,
+                BootstrapCelesteConstants.UNI_TASK_PACKAGE
             };
             
             List<string> dependenciesToRemove = new List<string>();

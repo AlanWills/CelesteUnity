@@ -30,7 +30,7 @@ namespace Celeste.Log
 
         [SerializeField] private LogLevel defaultLogLevel = LogLevel.Assert | LogLevel.Exception | LogLevel.Error | LogLevel.Warning;
         [SerializeField] private LogMessageList logMessages;
-        [SerializeField] private GameObjectAllocator hudMessages;
+        [SerializeField] private GameObjectAllocator_List hudMessages;
         [SerializeField] private Color infoColour = Color.white;
         [SerializeField] private Color warningColour = Color.yellow;
         [SerializeField] private Color errorColour = Color.red;

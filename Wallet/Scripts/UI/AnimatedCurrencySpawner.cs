@@ -11,7 +11,7 @@ namespace Celeste.Wallet.UI
         #region Properties and Fields
 
         [SerializeField] private AnimatedCurrencyTransformCache animatedCurrencyTransformCache;
-        [SerializeField] private GameObjectAllocator animatedCurrencyAllocator;
+        [SerializeField] private GameObjectAllocator_List animatedCurrencyAllocator;
         [SerializeField] private RectTransform fallbackSource;
         [SerializeField] private float animationDuration = 1;
         [SerializeField] private float spawnDelay = 0.05f;

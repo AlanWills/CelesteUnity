@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Celeste.Memory
 {
-    [AddComponentMenu("Celeste/Memory/Game Object Allocator")]
-    public class GameObjectAllocator : MonoBehaviour, IEnumerable<GameObject>
+    [AddComponentMenu("Celeste/Memory/Game Object Allocator (List)")]
+    public class GameObjectAllocator_List : MonoBehaviour, IEnumerable<GameObject>
     {
         #region Properties and Fields
 

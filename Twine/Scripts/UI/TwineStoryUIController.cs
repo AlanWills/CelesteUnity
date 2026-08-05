@@ -10,7 +10,7 @@ namespace Celeste.Twine.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private GameObjectAllocator twineNodeUIAllocator;
+        [SerializeField] private GameObjectAllocator_List twineNodeUIAllocator;
         [SerializeField] private ShowPopupEvent showEditTwineNodePopup;
 
         private TwineStory twineStory;

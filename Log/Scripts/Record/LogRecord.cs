@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Celeste.Events;
+using Cysharp.Threading.Tasks;
+using QC.Match;
 using UnityEngine;
 using Semaphore = Celeste.Tools.Semaphore;
 
@@ -29,6 +31,8 @@ namespace Celeste.Log
         [NonSerialized] private Semaphore loggingException = new Semaphore();
         [NonSerialized] private Semaphore loggingNormally = new Semaphore();
         [NonSerialized] private List<LogMessage> logMessages = new List<LogMessage>();
+        
+        [NonSerialized] private Channel<RawUnityLog> logMessagesChannel;
 
         #endregion
 
@@ -38,16 +42,39 @@ namespace Celeste.Log
             defaultUnityLogHandler = _defaultUnityLogHandler;
             hudLogHandler = new HudLogHandler();
             sectionLogSettingsCatalogue = _sectionLogSettingsCatalogue;
-            logMessages.Clear();
-            
             StackFramesToDiscard = defaultStackFramesToDiscard;
+
+            logMessages.Clear();
+            logMessagesChannel = Channel.CreateSingleConsumerUnbounded<RawUnityLog>();
             
             isDebugBuild.AddValueChangedCallback(OnIsDebugBuildValueChanged);
+            
+            ProcessLogsAsync().Forget();
         }
 
         public void Shutdown()
         {
             isDebugBuild.RemoveValueChangedCallback(OnIsDebugBuildValueChanged);
+            
+            logMessagesChannel?.Writer.TryComplete();
+        }
+
+        [HideInCallstack]
+        private async UniTask ProcessLogsAsync()
+        {
+            await UniTask.SwitchToMainThread();
+            
+            await foreach (var nextLog in logMessagesChannel.Reader.ReadAllAsync())
+            {
+                if (nextLog.logType == LogType.Exception)
+                {
+                    HandleLogException(nextLog);
+                }
+                else
+                {
+                    HandleLog(nextLog);
+                }
+            }
         }
 
         public void AddCustomLogHandler(ICustomLogHandler handler)
@@ -107,9 +134,60 @@ namespace Celeste.Log
                 return;
             }
 
+            logMessagesChannel.Writer.TryWrite(new RawUnityLog
+            {
+                logType = LogType.Exception,
+                context = context,
+                format = "{0}",
+                args = new object[] { exception }
+            });
+        }
+
+        [HideInCallstack]
+        public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)
+        {
+            if (loggingNormally.Locked)
+            {
+                // Prevent infinite loops
+                return;
+            }
+
+            logMessagesChannel.Writer.TryWrite(new RawUnityLog
+            {
+                logType = logType,
+                context = context,
+                format = format,
+                args = args
+            });
+        }
+
+        public void Clear()
+        {
+            logMessages.Clear();
+        }
+
+        private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel, SectionLogSettings sectionLogSettings)
+        {
+            if (runtimeIsDebugBuild)
+            {
+                logMessages.Add(new LogMessage
+                {
+                    message = message,
+                    stackTrace = stackTrace,
+                    logType = logLevel,
+                    sectionLogSettings = sectionLogSettings
+                });
+            }
+        }
+        
+        [HideInCallstack]
+        private void HandleLogException(RawUnityLog rawUnityLog)
+        {
             using (loggingException.Lock())
             {
-                string formattedException = string.Empty;
+                UnityEngine.Object context = rawUnityLog.context;
+                Exception exception = rawUnityLog.args[0] as Exception;
+                string formattedException;
 
                 if (context is SectionLogSettings logSettings)
                 {
@@ -148,19 +226,18 @@ namespace Celeste.Log
         }
 
         [HideInCallstack]
-        public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)
+        private void HandleLog(RawUnityLog rawUnityLog)
         {
-            if (loggingNormally.Locked)
-            {
-                // Prevent infinite loops
-                return;
-            }
-
             using (loggingNormally.Lock())
             {
+                UnityEngine.Object context = rawUnityLog.context;
+                string format = rawUnityLog.format;
+                LogType logType = rawUnityLog.logType;
+                object[] args = rawUnityLog.args;
+                
                 StackTrace stackTrace = new StackTrace(StackFramesToDiscard, true);
                 string stackTraceString = stackTrace.ToString();
-                string formattedLog = string.Empty;
+                string formattedLog;
 
                 if (context is SectionLogSettings logSettings)
                 {
@@ -195,25 +272,6 @@ namespace Celeste.Log
 
                     TrackLogMessage(formattedLog, stackTraceString, logType.ToLogLevel(), null);
                 }
-            }
-        }
-
-        public void Clear()
-        {
-            logMessages.Clear();
-        }
-
-        private void TrackLogMessage(string message, string stackTrace, LogLevel logLevel, SectionLogSettings sectionLogSettings)
-        {
-            if (runtimeIsDebugBuild)
-            {
-                logMessages.Add(new LogMessage()
-                {
-                    message = message,
-                    stackTrace = stackTrace,
-                    logType = logLevel,
-                    sectionLogSettings = sectionLogSettings
-                });
             }
         }
         

@@ -11,7 +11,7 @@ namespace Celeste.Rewards.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private GameObjectAllocator rewardItemUIAllocator;
+        [SerializeField] private GameObjectAllocator_List rewardItemUIAllocator;
 
         #endregion
 

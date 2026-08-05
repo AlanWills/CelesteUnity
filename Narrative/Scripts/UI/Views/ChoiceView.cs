@@ -16,8 +16,8 @@ namespace Celeste.Narrative.UI
     {
         #region Properties and Fields
 
-        [SerializeField] private GameObjectAllocator textChoicesAllocator;
-        [SerializeField] private GameObjectAllocator spriteChoicesAllocator;
+        [SerializeField] private GameObjectAllocator_List textChoicesAllocator;
+        [SerializeField] private GameObjectAllocator_List spriteChoicesAllocator;
 
         #endregion
 
