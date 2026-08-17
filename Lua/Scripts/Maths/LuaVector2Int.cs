@@ -1,3 +1,4 @@
+#if USE_LUA
 using Lua;
 using UnityEngine;
 
@@ -68,3 +69,4 @@ namespace Celeste.Lua.Maths
         }
     }
 }
+#endif

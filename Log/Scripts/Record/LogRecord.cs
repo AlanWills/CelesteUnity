@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Celeste.Events;
 using Cysharp.Threading.Tasks;
-using QC.Match;
 using UnityEngine;
 using Semaphore = Celeste.Tools.Semaphore;
 

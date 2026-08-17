@@ -1,8 +1,9 @@
-﻿using System;
+﻿#if USE_LUA
+using System;
+using UnityEngine;
 using Celeste.Lua.Maths;
 using Lua;
 using Lua.Unity;
-using UnityEngine;
 
 namespace Celeste.Lua
 {
@@ -126,3 +127,5 @@ namespace Celeste.Lua
         }
     }
 }
+
+#endif
