@@ -10,12 +10,7 @@
         "Celeste.Localisation",
         "Celeste.UnityProject",
         "Celeste.Events",
-        "Unity.TextMeshPro",
-        "UnityEngine.Purchasing",
-        "UnityEngine.Purchasing.Stores",
-        "UnityEngine.Purchasing.Security",
-        "UnityEngine.Purchasing.SecurityCore",
-        "UnityEngine.Purchasing.SecurityStub"
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -27,8 +22,8 @@
     "versionDefines": [
         {
             "name": "com.unity.purchasing",
-            "expression": "0.0.1",
-            "define": "USE_UNITY_PURCHASING"
+            "expression": "5.0.0",
+            "define": "USE_NEW_UNITY_PURCHASING"
         }
     ],
     "noEngineReferences": false
