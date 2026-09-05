@@ -148,8 +148,8 @@ namespace Celeste.Input
 #if USE_NEW_INPUT_SYSTEM
             Mouse mouse = Mouse.current;
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-
-            ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(mousePosition, 0, eventSystem, uiInputModule);
+            
+            ValueTuple<Vector3, GameObject> hitObject = inputState.CalculateHitObjectAndWorldPosition(mousePosition, mouse.deviceId, eventSystem, uiInputModule);
             inputState.UpdatePointerPosition(mousePosition, hitObject.Item1);
             inputState.UpdatePointerOverObject(hitObject.Item2, mouse.leftButton.isPressed);
 
