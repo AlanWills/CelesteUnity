@@ -38,6 +38,7 @@ namespace Celeste.Tilemaps
         [SerializeField] private FloatReference minZoom;
         [SerializeField] private FloatReference maxZoom;
         [SerializeField] private FloatReference zoomSpeed;
+        [SerializeField] private FloatReference zoomIncrement;
         
         #endregion
 
@@ -71,6 +72,13 @@ namespace Celeste.Tilemaps
                 zoomSpeed = ScriptableObject.CreateInstance<FloatReference>();
                 zoomSpeed.IsConstant = true;
                 zoomSpeed.Value = 1f;
+            }
+
+            if (zoomIncrement == null)
+            {
+                zoomIncrement = ScriptableObject.CreateInstance<FloatReference>();
+                zoomIncrement.IsConstant = true;
+                zoomIncrement.Value = 1f;
             }
         }
 
@@ -141,6 +149,16 @@ namespace Celeste.Tilemaps
             cameraToZoom.orthographicSize = FitSize;
             
             ClampCamera();
+        }
+
+        public void ZoomOutIncrement()
+        {
+            ApplyZoom(zoomIncrement.Value);
+        }
+        
+        public void ZoomInIncrement()
+        {
+            ApplyZoom(zoomIncrement.Value * -1);
         }
 
 #endregion
