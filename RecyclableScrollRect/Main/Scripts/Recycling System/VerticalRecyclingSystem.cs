@@ -27,6 +27,7 @@ namespace PolyAndCode.UI
         private List<RectTransform> _cellPool;
         private List<ICell> _cachedCells;
         private Bounds _recyclableViewBounds;
+        private float _minPoolCoverage;
 
         //Temps, Flags 
         private readonly Vector3[] _corners = new Vector3[4];
@@ -41,7 +42,15 @@ namespace PolyAndCode.UI
         private Vector2 zeroVector = Vector2.zero;
 
         #region INIT
-        public VerticalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int coloumns, VerticalDirectionType direction)
+        public VerticalRecyclingSystem(
+            RectTransform prototypeCell, 
+            RectTransform viewport, 
+            RectTransform content, 
+            IRecyclableScrollRectDataSource dataSource, 
+            bool isGrid, 
+            int coloumns, 
+            VerticalDirectionType direction,
+            float minPoolCoverage)
         {
             PrototypeCell = prototypeCell;
             Viewport = viewport;
@@ -51,6 +60,7 @@ namespace PolyAndCode.UI
             _coloumns = isGrid ? coloumns : 1;
             _recyclableViewBounds = new Bounds();
             _direction = direction;
+            _minPoolCoverage = minPoolCoverage;
         }
 
         /// <summary>
@@ -75,14 +85,14 @@ namespace PolyAndCode.UI
             //Set content height according to no of rows
             int noOfRows = (int)Mathf.Ceil((float)_cellPool.Count / (float)_coloumns);
             float contentYSize = noOfRows * _cellHeight;
-            SetAnchorUsingDirection(Content);
+            SetAnchor(Content, IsGrid, _direction);
             Content.sizeDelta = new Vector2(Content.sizeDelta.x, contentYSize);
 
             if (onInitialized != null) onInitialized();
         }
 
         /// <summary>
-        /// Sets the uppper and lower bounds for recycling cells.
+        /// Sets the upper and lower bounds for recycling cells.
         /// </summary>
         private void SetRecyclingBounds()
         {
@@ -135,7 +145,7 @@ namespace PolyAndCode.UI
             _cellHeight = PrototypeCell.sizeDelta.x > 0 ? PrototypeCell.sizeDelta.y / PrototypeCell.sizeDelta.x * _cellWidth : PrototypeCell.sizeDelta.y;
 
             //Get the required pool coverage and mininum size for the Cell pool
-            float requriedCoverage = MinPoolCoverage * Viewport.rect.height;
+            float requriedCoverage = 2 * Viewport.rect.height;//MinPoolCoverage * Viewport.rect.height;
             int minPoolSize = Math.Min(MinPoolSize, DataSource.GetItemCount());
 
             //create cells untill the Pool area is covered and pool size is the minimum required
@@ -145,7 +155,7 @@ namespace PolyAndCode.UI
                 RectTransform item = (UnityEngine.Object.Instantiate(PrototypeCell.gameObject)).GetComponent<RectTransform>();
                 item.name = "Cell";
                 item.sizeDelta = new Vector2(_cellWidth, _cellHeight);
-                SetAnchorUsingDirection(item);
+                SetAnchor(item, IsGrid, _direction);
                 _cellPool.Add(item);
                 item.SetParent(Content, false);
 
@@ -169,7 +179,7 @@ namespace PolyAndCode.UI
 
                 //Setting data for Cell
                 _cachedCells.Add(item.GetComponent<ICell>());
-                DataSource.SetCell(_cachedCells[_cachedCells.Count - 1], poolSize);
+                DataSource.SetCell(_cachedCells[^1], poolSize);
 
                 //Update the Pool size
                 poolSize++;
@@ -365,15 +375,32 @@ namespace PolyAndCode.UI
         /// Anchoring cell and content rect transforms to top preset. Makes repositioning easy.
         /// </summary>
         /// <param name="rectTransform"></param>
-        private void SetTopAnchor(RectTransform rectTransform)
+        private static void SetTopAnchor(RectTransform rectTransform, bool isGrid)
         {
             //Saving to reapply after anchoring. Width and height changes if anchoring is change. 
             float width = rectTransform.rect.width;
             float height = rectTransform.rect.height;
             
-            Vector2 pos = IsGrid ? new Vector2(0, 1) : new Vector2(0, 0.5f);
+            Vector2 pos = isGrid ? new Vector2(0, 1) : new Vector2(0, 0.5f);
             
             //Setting top anchor 
+            rectTransform.anchorMin = pos;
+            rectTransform.anchorMax = pos;
+            rectTransform.pivot = pos;
+
+            //Reapply size
+            rectTransform.sizeDelta = new Vector2(width, height);
+        }
+
+        private static void SetBottomAnchor(RectTransform rectTransform, bool isGrid)
+        {
+            //Saving to reapply after anchoring. Width and height changes if anchoring is change. 
+            float width = rectTransform.rect.width;
+            float height = rectTransform.rect.height;
+
+            Vector2 pos = isGrid ? new Vector2(0, 0) : new Vector2(0, 0.5f);
+            
+            //Setting bottom anchor 
             rectTransform.anchorMin = pos;
             rectTransform.anchorMax = pos;
             rectTransform.pivot = pos;
@@ -397,30 +424,15 @@ namespace PolyAndCode.UI
             rectTransform.sizeDelta = new Vector2(width, height);
         }
 
-        private void SetBottomAnchor(RectTransform rectTransform)
+        private static void SetAnchor(RectTransform rectTransform, bool isGrid, VerticalDirectionType directionType)
         {
-            //Saving to reapply after anchoring. Width and height changes if anchoring is change. 
-            float width = rectTransform.rect.width;
-            float height = rectTransform.rect.height;
-
-            //Setting top anchor 
-            rectTransform.anchorMin = new Vector2(0.5f, 0);
-            rectTransform.anchorMax = new Vector2(0.5f, 0);
-            rectTransform.pivot = new Vector2(0.5f, 0);
-
-            //Reapply size
-            rectTransform.sizeDelta = new Vector2(width, height);
-        }
-
-        private void SetAnchorUsingDirection(RectTransform rectTransform)
-        {
-            if (_direction == VerticalDirectionType.TopToBottom)
+            if (directionType == VerticalDirectionType.TopToBottom)
             {
-                SetTopAnchor(rectTransform);
+                SetTopAnchor(rectTransform, isGrid);
             }
             else
             {
-                SetBottomAnchor(rectTransform);
+                SetBottomAnchor(rectTransform, isGrid);
             }
         }
 

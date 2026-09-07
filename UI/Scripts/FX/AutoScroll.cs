@@ -1,8 +1,6 @@
-﻿using System;
-using Celeste.Tools;
+﻿using Celeste.Tools;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace Celeste.UI.FX
 {

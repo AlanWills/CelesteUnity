@@ -44,6 +44,8 @@ namespace PolyAndCode.UI
         [SerializeField, Min(2)]
         private int _landscapeModeSegments = 4;
         
+        public float MinPoolCoverage = 1.5f;
+        
         private RecyclingSystem _recyclingSystem;
         private Vector2 _prevAnchoredPos;
 
@@ -60,7 +62,7 @@ namespace PolyAndCode.UI
         /// <summary>
         /// Initialization when selfInitalize is true. Assumes that data source is set in controller's Awake.
         /// </summary>
-        private void Initialize()
+        private void Initialize(Action onInitialized = null)
         {
             Canvas parentCanvas = GetComponentInParent<Canvas>();
             int segments = parentCanvas.pixelRect.width > parentCanvas.pixelRect.height ? _landscapeModeSegments : _portraitModeSegments;
@@ -68,11 +70,11 @@ namespace PolyAndCode.UI
             //Contruct the recycling system.
             if (Direction == DirectionType.Vertical)
             {
-                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments, VerticalDirection);
+                _recyclingSystem = new VerticalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments, VerticalDirection, MinPoolCoverage);
             }
             else if (Direction == DirectionType.Horizontal)
             {
-                _recyclingSystem = new HorizontalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments);
+                _recyclingSystem = new HorizontalRecyclingSystem(PrototypeCell, viewport, content, DataSource, IsGrid, segments, MinPoolCoverage);
             }
             vertical = Direction == DirectionType.Vertical;
             horizontal = Direction == DirectionType.Horizontal;
@@ -81,17 +83,20 @@ namespace PolyAndCode.UI
             onValueChanged.RemoveListener(OnValueChangedListener);
             //Adding listener after pool creation to avoid any unwanted recycling behaviour.(rare scenerio)
             StartCoroutine(_recyclingSystem.InitCoroutine(() =>
-                                                               onValueChanged.AddListener(OnValueChangedListener)
-                                                              ));
+            {
+                verticalNormalizedPosition = 0;
+                onValueChanged.AddListener(OnValueChangedListener);
+                onInitialized?.Invoke();
+            }));
         }
 
         /// <summary>
         /// public API for Initializing when datasource is not set in controller's Awake. Make sure selfInitalize is set to false. 
         /// </summary>
-        public void Initialize(IRecyclableScrollRectDataSource dataSource)
+        public void Initialize(IRecyclableScrollRectDataSource dataSource, Action onInitialized = null)
         {
             DataSource = dataSource;
-            Initialize();
+            Initialize(onInitialized);
         }
 
         /// <summary>

@@ -35,6 +35,7 @@ namespace PolyAndCode.UI
         SerializedProperty _type;
         SerializedProperty _portraitModeSegments;
         SerializedProperty _landscapeModeSegments;
+        SerializedProperty _minPoolCoverage;
 
         AnimBool m_ShowElasticity;
         AnimBool m_ShowDecelerationRate;
@@ -61,6 +62,7 @@ namespace PolyAndCode.UI
             _type = serializedObject.FindProperty("IsGrid");
             _portraitModeSegments = serializedObject.FindProperty(nameof(_portraitModeSegments));
             _landscapeModeSegments = serializedObject.FindProperty(nameof(_landscapeModeSegments));
+            _minPoolCoverage = serializedObject.FindProperty(nameof(RecyclableScrollRect.MinPoolCoverage));
 
             m_ShowElasticity = new AnimBool(Repaint);
             m_ShowDecelerationRate = new AnimBool(Repaint);
@@ -108,6 +110,7 @@ namespace PolyAndCode.UI
                 EditorUtility.SetDirty(_script);
             }
 
+            EditorGUILayout.PropertyField(_minPoolCoverage);
             EditorGUILayout.PropertyField(_selfInitialize);
             EditorGUILayout.PropertyField(m_Viewport);
             EditorGUILayout.PropertyField(m_Content);

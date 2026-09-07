@@ -24,7 +24,7 @@ namespace PolyAndCode.UI
         private List<RectTransform> _cellPool;
         private List<ICell> _cachedCells;
         private Bounds _recyclableViewBounds;
-
+        private float _minPoolCoverage;
 
         //Temps, Flags
         private readonly Vector3[] _corners = new Vector3[4];
@@ -38,7 +38,14 @@ namespace PolyAndCode.UI
         //Cached zero vector 
         private Vector2 zeroVector = Vector2.zero;
         #region INIT
-        public HorizontalRecyclingSystem(RectTransform prototypeCell, RectTransform viewport, RectTransform content, IRecyclableScrollRectDataSource dataSource, bool isGrid, int rows)
+        public HorizontalRecyclingSystem(
+            RectTransform prototypeCell, 
+            RectTransform viewport, 
+            RectTransform content, 
+            IRecyclableScrollRectDataSource dataSource, 
+            bool isGrid, 
+            int rows,
+            float minPoolCoverage)
         {
             PrototypeCell = prototypeCell;
             Viewport = viewport;
@@ -47,6 +54,7 @@ namespace PolyAndCode.UI
             IsGrid = isGrid;
             _rows = isGrid ? rows : 1;
             _recyclableViewBounds = new Bounds();
+            _minPoolCoverage = minPoolCoverage;
         }
 
         /// <summary>
@@ -125,7 +133,7 @@ namespace PolyAndCode.UI
             float posY = 0;
 
             //Get the required pool coverage and mininum size for the Cell pool
-            float requriedCoverage = MinPoolCoverage * Viewport.rect.width;
+            float requriedCoverage = _minPoolCoverage * Viewport.rect.width;
             int minPoolSize = Math.Min(MinPoolSize, DataSource.GetItemCount());
 
             //create cells untill the Pool area is covered and pool size is the minimum required
