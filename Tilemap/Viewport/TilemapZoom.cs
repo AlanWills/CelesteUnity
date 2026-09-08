@@ -2,6 +2,7 @@
 using Celeste.Parameters;
 using System;
 using Celeste.Tools;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -18,23 +19,40 @@ namespace Celeste.Tilemaps
             get
             {
                 Tilemap t = tilemap.Value;
-                Bounds bounds = t.localBounds;
-                Vector3 minWorldSpace = t.layoutGrid.LocalToWorld(bounds.min) - new Vector3(xPadding, yPadding, 0);
-                Vector3 maxWorldSpace = t.layoutGrid.LocalToWorld(bounds.max) + new Vector3(xPadding, yPadding, 0);
-                float mapWidth = Mathf.Abs(maxWorldSpace.x - minWorldSpace.x);
-                float mapHeight = Mathf.Abs(maxWorldSpace.y - minWorldSpace.y);
-                float sizeNeededForHeight = mapHeight / 2f;
-                float cameraWidthNeeded = mapWidth / 2f;
-                float sizeNeededForWidth = cameraWidthNeeded / cameraToZoom.aspect;
+                Bounds bounds = t.GetComponent<TilemapRenderer>().bounds;
                 
-                return Mathf.Max(sizeNeededForHeight, sizeNeededForWidth);
+                // Scale safeArea.rect by lossyScale in case Canvas Scaler is active
+                Vector3[] corners = new Vector3[4];
+                safeArea.GetWorldCorners(corners);
+    
+                float safeWidthInPixels = Vector3.Distance(corners[0], corners[3]);
+                float safeHeightInPixels = Vector3.Distance(corners[0], corners[1]);
+
+                // Screen dimensions
+                float screenWidth = Screen.currentResolution.width;
+                float screenHeight = Screen.currentResolution.height;
+
+                // 4. Calculate the fraction of the screen occupied by the safe area (0.0 to 1.0)
+                float safeAreaWidthRatio = safeWidthInPixels / screenWidth;
+                float safeAreaHeightRatio = safeHeightInPixels / screenHeight;
+
+                // 5. Calculate world size required to fit inside the Safe Area
+                // If safe area is half the screen height, the camera needs twice the vertical height to fit the map
+                float effectiveWorldWidthNeeded = bounds.size.x / safeAreaWidthRatio;
+                float effectiveWorldHeightNeeded = bounds.size.y / safeAreaHeightRatio;
+
+                // 6. Calculate orthographic sizes required for both axes
+                float sizeNeededForHeight = effectiveWorldWidthNeeded / 2f / cameraToZoom.aspect; // Width constrained
+                float sizeNeededForVerticalHeight = effectiveWorldHeightNeeded / 2f;         // Height constrained
+
+                // Return the larger size to ensure the map fits both horizontally and vertically inside the safe area
+                return Mathf.Max(sizeNeededForVerticalHeight, sizeNeededForHeight);
             }
         }
 
         [SerializeField] private Camera cameraToZoom;
         [SerializeField] private TilemapReference tilemap;
-        [SerializeField] private float xPadding;
-        [SerializeField] private float yPadding;
+        [SerializeField] private RectTransform safeArea;
         [SerializeField] private FloatReference minZoom;
         [SerializeField] private FloatReference maxZoom;
         [SerializeField] private FloatReference zoomSpeed;
