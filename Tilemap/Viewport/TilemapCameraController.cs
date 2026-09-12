@@ -212,8 +212,8 @@ namespace Celeste.Tilemaps
 
             // Position camera so tilemap center aligns with safe area center
             Bounds tilemapWorldBounds = TilemapWorldBounds;
-            Vector3 targetCamPosition = tilemapWorldBounds.center - new Vector3(worldOffsetX, worldOffsetY, 0f);
-            targetCamPosition.z = cameraToControl.transform.position.z; // Preserve Z depth
+            Vector3 targetCamPosition = tilemapWorldBounds.center - new Vector3(worldOffsetX, worldOffsetY, 0);
+            targetCamPosition.z = cameraToControl.transform.position.z;
 
             cameraToControl.transform.position = targetCamPosition;
         }
@@ -319,7 +319,7 @@ namespace Celeste.Tilemaps
                 safeAreaHalfHeightWorld,
                 worldOffsetY);
 
-            transform.position = new Vector3(clampedX, clampedY, cameraPosition.z);
+            cameraToControl.transform.position = new Vector3(clampedX, clampedY, cameraPosition.z);
         }
 
         #endregion
