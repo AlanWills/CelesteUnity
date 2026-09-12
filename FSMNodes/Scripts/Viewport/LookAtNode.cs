@@ -19,7 +19,7 @@ namespace Celeste.FSM.Nodes.Viewport
         #region Properties and Fields
 
         public Vector3Reference targetPosition;
-        [SerializeField] private CameraReference camera;
+        [SerializeField] private CameraValue camera;
         public LookAxis lookAxis;
         public float time = 0;
 
@@ -40,11 +40,6 @@ namespace Celeste.FSM.Nodes.Viewport
             {
                 targetPosition = CreateParameter<Vector3Reference>($"{name}_targetPosition");
             }
-
-            if (camera == null)
-            {
-                camera = CreateParameter<CameraReference>($"{name}_camera");
-            }
         }
 
         protected override void OnRemoveFromGraph()
@@ -52,7 +47,6 @@ namespace Celeste.FSM.Nodes.Viewport
             base.OnRemoveFromGraph();
 
             RemoveParameter(targetPosition);
-            RemoveParameter(camera);
         }
 
         protected override void OnCopyInGraph(FSMNode original)
@@ -61,7 +55,7 @@ namespace Celeste.FSM.Nodes.Viewport
 
             LookAtNode lookAtNode = original as LookAtNode;
             targetPosition = CreateParameter(lookAtNode.targetPosition);
-            camera = CreateParameter(lookAtNode.camera);
+            camera = lookAtNode.camera;
         }
 
         #endregion
