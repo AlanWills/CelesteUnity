@@ -1,9 +1,5 @@
 ﻿using Celeste.Parameters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Celeste.FSM.Nodes.Viewport
@@ -23,8 +19,10 @@ namespace Celeste.FSM.Nodes.Viewport
         #region Properties and Fields
 
         public Vector3Reference targetPosition;
+        [SerializeField] private CameraReference camera;
         public LookAxis lookAxis;
         public float time = 0;
+
 
         private float currentTime = 0;
         private Vector3 currentStartingPosition;
@@ -40,7 +38,12 @@ namespace Celeste.FSM.Nodes.Viewport
 
             if (targetPosition == null)
             {
-                targetPosition = CreateParameter<Vector3Reference>(name + "_targetPosition");
+                targetPosition = CreateParameter<Vector3Reference>($"{name}_targetPosition");
+            }
+
+            if (camera == null)
+            {
+                camera = CreateParameter<CameraReference>($"{name}_camera");
             }
         }
 
@@ -49,6 +52,7 @@ namespace Celeste.FSM.Nodes.Viewport
             base.OnRemoveFromGraph();
 
             RemoveParameter(targetPosition);
+            RemoveParameter(camera);
         }
 
         protected override void OnCopyInGraph(FSMNode original)
@@ -57,6 +61,7 @@ namespace Celeste.FSM.Nodes.Viewport
 
             LookAtNode lookAtNode = original as LookAtNode;
             targetPosition = CreateParameter(lookAtNode.targetPosition);
+            camera = CreateParameter(lookAtNode.camera);
         }
 
         #endregion
@@ -68,7 +73,7 @@ namespace Celeste.FSM.Nodes.Viewport
             base.OnEnter();
 
             currentTime = 0;
-            currentStartingPosition = Camera.main.transform.position;
+            currentStartingPosition = camera.Value.transform.position;
 
             if (lookAxis == LookAxis.X)
             {
@@ -90,7 +95,7 @@ namespace Celeste.FSM.Nodes.Viewport
         protected override FSMNode OnUpdate()
         {
             currentTime = Math.Min(time, currentTime + Time.deltaTime);
-            Camera.main.transform.position = Vector3.Lerp(currentStartingPosition, currentTargetPosition, time != 0 ? currentTime / time : 1);
+            camera.Value.transform.position = Vector3.Lerp(currentStartingPosition, currentTargetPosition, time != 0 ? currentTime / time : 1);
 
             return currentTime < time ? this : base.OnUpdate();
         }
