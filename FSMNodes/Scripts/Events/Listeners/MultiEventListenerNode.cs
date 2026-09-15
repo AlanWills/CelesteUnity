@@ -35,21 +35,6 @@ namespace Celeste.FSM.Nodes.Events
             return this;
         }
 
-        protected override void OnExit()
-        {
-            base.OnExit();
-
-            foreach (EventCondition eventCondition in this)
-            {
-                // Consume all invocations of events - completely refresh
-                while (eventCondition.HasEventFired())
-                {
-                    Debug.LogFormat("Name: {0} silently consumed by MEL Node", eventCondition.name);
-                    eventCondition.ConsumeEvent();
-                }
-            }
-        }
-
         #endregion
     }
 }

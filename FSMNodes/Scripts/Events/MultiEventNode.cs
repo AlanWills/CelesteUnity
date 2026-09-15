@@ -138,6 +138,15 @@ namespace Celeste.FSM.Nodes.Events
 
         #endregion
 
+        protected static void ResetEvent(EventCondition eventCondition)
+        {
+            while (eventCondition.HasEventFired())
+            {
+                Debug.Log($"Name: {eventCondition.name} silently consumed by MEL Node");
+                eventCondition.ConsumeEvent();
+            }
+        }
+        
         #region FSM Runtime Methods
 
         protected override void OnEnter()
@@ -146,6 +155,8 @@ namespace Celeste.FSM.Nodes.Events
 
             foreach (EventCondition eventCondition in this)
             {
+                ResetEvent(eventCondition);
+                
                 eventCondition.AddListener();
             }
         }
@@ -156,6 +167,8 @@ namespace Celeste.FSM.Nodes.Events
 
             foreach (EventCondition eventCondition in this)
             {
+                ResetEvent(eventCondition);
+                
                 eventCondition.RemoveListener();
             }
         }
