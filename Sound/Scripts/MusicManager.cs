@@ -1,9 +1,11 @@
-﻿using Celeste.Assets;
+﻿using System;
+using Celeste.Assets;
 using Celeste.Events;
 using Celeste.Sound.Settings;
 using Celeste.Tools;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Celeste.Sound
 {
@@ -34,14 +36,6 @@ namespace Celeste.Sound
 
         #region Unity Methods
 
-        private void OnEnable()
-        {
-            if (audioSource.playOnAwake)
-            {
-                NextTrack();
-            }
-        }
-
         private void OnDisable()
         {
             musicSettings.ShutdownListener(this);
@@ -64,7 +58,7 @@ namespace Celeste.Sound
         public IEnumerator LoadAssets()
         {
             yield return musicSettings.LoadAssets();
-
+            
             musicSettings.SetupListener(this);
         }
 
