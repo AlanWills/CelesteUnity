@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Celeste.FSM.Nodes.Events
 {
     [Serializable]
-    [CreateNodeMenu("Celeste/Events/Raisers/Vector3IntEvent Raiser")]
+    [CreateNodeMenu("Celeste/Events/Raisers/Vector3Int Event Raiser")]
     public class Vector3IntEventRaiserNode : ParameterisedEventRaiserNode<Vector3Int, Vector3IntValue, Vector3IntReference, Vector3IntEvent>
     {
     }
