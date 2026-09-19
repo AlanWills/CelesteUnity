@@ -40,9 +40,17 @@ namespace Celeste.Logic
 
         private void OnDestroy()
         {
+            if (conditionSettings.Conditions == null)
+            {
+                return;
+            }
+            
             foreach (var condition in conditionSettings.Conditions)
             {
-                condition.Shutdown();
+                if (condition != null)
+                {
+                    condition.Shutdown();
+                }
             }
         }
 

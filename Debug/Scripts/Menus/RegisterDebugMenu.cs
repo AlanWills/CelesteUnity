@@ -11,14 +11,20 @@ namespace Celeste.Debug.Menus
         [SerializeField] private DebugMenuEvent registerDebugMenu;
         [SerializeField] private DebugMenuEvent deregisterDebugMenu;
 
-        private void Start()
+        private void OnEnable()
         {
-            registerDebugMenu.InvokeSilently(debugMenu);
+            if (debugMenu != null)
+            {
+                registerDebugMenu?.InvokeSilently(debugMenu);
+            }
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            deregisterDebugMenu.InvokeSilently(debugMenu);
+            if (debugMenu != null)
+            {
+                deregisterDebugMenu?.InvokeSilently(debugMenu);
+            }
         }
     }
 }
