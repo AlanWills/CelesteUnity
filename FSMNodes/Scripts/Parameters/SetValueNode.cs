@@ -62,7 +62,8 @@ namespace Celeste.FSM.Nodes.Parameters
             Debug.AssertFormat(value != null, "Value is null in SetValueNode ({0})", graph.name);
             Debug.AssertFormat(newValue != null, "New Value is null in SetValueNode ({0})", graph.name);
 
-            SetValue(newValue.IsConstant ? GetInputValue(nameof(newValue), newValue.Value) : newValue.Value);
+            T newValueFromInputOrParameter = GetInputValue(nameof(newValue), newValue.Value);
+            SetValue(newValueFromInputOrParameter);
         }
 
         protected virtual void SetValue(T newValueToUse)
