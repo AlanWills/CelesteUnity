@@ -13,8 +13,10 @@ namespace Celeste.Debug.Menus
 
         private void OnEnable()
         {
+            UnityEngine.Debug.Assert(debugMenu != null, $"No {nameof(debugMenu)} assigned in {nameof(RegisterDebugMenu)} on object {name}.", this);
             if (debugMenu != null)
             {
+                UnityEngine.Debug.Assert(registerDebugMenu != null, $"No {nameof(registerDebugMenu)} variable assigned in {nameof(RegisterDebugMenu)} on object {name}.", this);
                 registerDebugMenu?.InvokeSilently(debugMenu);
             }
         }
