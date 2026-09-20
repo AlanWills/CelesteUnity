@@ -112,7 +112,7 @@ pipeline
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built Windows and updating version"'
                 sh "git pull origin ${env.BRANCH} --rebase -X theirs"
-                sh "git push --set-upstream origin ${env.GIT_BRANCH}"
+                sh "git push --set-upstream origin ${env.BRANCH}"
             }
         }
 		stage('Artifact Build')
