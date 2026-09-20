@@ -44,23 +44,5 @@ namespace CelesteEditor.BuildSystem
             PlayerSettings.fullScreenMode = fullScreenMode;
             PlayerSettings.resizableWindow = resizeableWindow;
         }
-
-        protected override void DoInjectBuildEnvVars(StringBuilder stringBuilder)
-        {
-            DirectoryInfo rootFolder = new DirectoryInfo(Application.dataPath).Parent;
-            DirectoryInfo buildFolder = new DirectoryInfo(Path.Combine(BuildDirectory, OutputName)).Parent;
-
-            stringBuilder.AppendLine();
-
-            if (buildFolder.FullName.StartsWith(rootFolder.FullName))
-            {
-                // +1 for getting rid of \\ too
-                stringBuilder.Append($"BUILD_DIRECTORY={buildFolder.FullName.Substring(rootFolder.FullName.Length + 1)}");
-            }
-            else
-            {
-                stringBuilder.Append($"BUILD_DIRECTORY={buildFolder.FullName}");
-            }
-        }
     }
 }
