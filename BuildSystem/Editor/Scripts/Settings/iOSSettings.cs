@@ -114,7 +114,6 @@ namespace CelesteEditor.BuildSystem
 
             if (useiOSProjectBuilder)
             {
-                
                 stringBuilder.AppendLine($"USE_IOS_PROJECT_BUILDER={useiOSProjectBuilder}");
                 stringBuilder.AppendLine($"IOS_PROJECT_BUILDER_INSTALL_PATH={EditorOnly.EnsureDelimitersCorrect(iOSProjectBuilderInstallPath)}");
                 
