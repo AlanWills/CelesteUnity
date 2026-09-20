@@ -104,11 +104,13 @@ pipeline
 					echo "Executing Unity Build Command: ${unityCommand}"
 					bat unityCommand
 
-                    readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    def buildEnvFile = "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt"
+					loadEnvProperties(buildEnvFile, true)
+                    
+					def assetsEnvFile = "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt"
+                    loadEnvProperties(assetsEnvFile, true)
                     
                     buildName "Android-" + configAndOutput + "-" + env.BUILD_VERSION
-                    
-                    readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
 				}
             }
         }
@@ -256,4 +258,34 @@ pipeline
             }
         }
     }   
+}
+
+/**
+ * Reads a properties file and injects key-value pairs into the Jenkins environment.
+ *
+ * @param filePath Path to the properties file relative to workspace or absolute.
+ * @param verbose  Whether to log each loaded environment variable (default: true).
+ */
+def loadEnvProperties(String filePath, boolean verbose = true) {
+    if (!fileExists(filePath)) {
+        error "loadEnvProperties: File not found at '${filePath}'"
+    }
+
+    Map props = readProperties(file: filePath)
+
+    if (props.isEmpty()) {
+        echo "loadEnvProperties: Warning - '${filePath}' is empty or contains no valid properties."
+        return
+    }
+
+    for (entry in props) {
+        String key = entry.key.toString().trim()
+        String value = entry.value.toString().trim()
+
+        env[key] = value
+
+        if (verbose) {
+            echo "loadEnvProperties: Set env.${key} = ${value}"
+        }
+    }
 }
