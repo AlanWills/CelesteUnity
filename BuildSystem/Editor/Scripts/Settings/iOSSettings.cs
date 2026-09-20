@@ -50,7 +50,7 @@ namespace CelesteEditor.BuildSystem
 
         [Header("Custom Build System Settings")]
         [SerializeField] private bool useiOSProjectBuilder = true;
-        [SerializeField, ShowIf(nameof(useiOSProjectBuilder))] private string iOSProjectBuilderInstallPath = "C:/Users/alawi/iOS Project Builder for Unity";
+        [SerializeField, ShowIf(nameof(useiOSProjectBuilder))] private string iOSProjectBuilderInstallPath = "C:/Users/alawi/Project Builder for Unity";
         [SerializeField, ShowIf(nameof(useiOSProjectBuilder)), Tooltip("A recommended setting")] private bool useTempDirectoryDuringBuild = true;
         [SerializeField, ShowIfAll(nameof(useiOSProjectBuilder), nameof(useTempDirectoryDuringBuild))] private string tempDirectoryPath = "C:/iOS";
 
