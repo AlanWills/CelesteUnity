@@ -20,6 +20,8 @@ namespace CelesteEditor.BuildSystem
         private SerializedProperty androidReleaseBundleProperty;
         private SerializedProperty windowsDebugProperty;
         private SerializedProperty windowsReleaseProperty;
+        private SerializedProperty macDebugProperty;
+        private SerializedProperty macReleaseProperty;
         private SerializedProperty webGLDebugProperty;
         private SerializedProperty webGLReleaseProperty;
 
@@ -40,6 +42,8 @@ namespace CelesteEditor.BuildSystem
             androidReleaseBundleProperty = allPlatformSettings.FindProperty("m_androidReleaseBundle");
             windowsDebugProperty = allPlatformSettings.FindProperty("m_windowsDebug");
             windowsReleaseProperty = allPlatformSettings.FindProperty("m_windowsRelease");
+            macDebugProperty = allPlatformSettings.FindProperty("m_macDebug");
+            macReleaseProperty = allPlatformSettings.FindProperty("m_macRelease");
             webGLDebugProperty = allPlatformSettings.FindProperty("m_webGLDebug");
             webGLReleaseProperty = allPlatformSettings.FindProperty("m_webGLRelease");
         }
@@ -51,6 +55,7 @@ namespace CelesteEditor.BuildSystem
             DrawAndroidSettings();
             DrawiOSSettings();
             DrawWindowsSettings();
+            DrawMacSettings();
             DrawWebGLSettings();
 
             allPlatformSettings.ApplyModifiedProperties();

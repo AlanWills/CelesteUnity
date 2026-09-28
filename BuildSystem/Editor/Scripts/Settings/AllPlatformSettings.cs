@@ -23,20 +23,30 @@ namespace CelesteEditor.BuildSystem
         public AndroidSettings AndroidReleaseBundle => m_androidReleaseBundle;
         public WindowsSettings WindowsDebug => m_windowsDebug;
         public WindowsSettings WindowsRelease => m_windowsRelease;
+        public MacSettings MacDebug => m_macDebug;
+        public MacSettings MacRelease => m_macRelease;
         public WebGLSettings WebGLDebug => m_webGLDebug;
         public WebGLSettings WebGLRelease => m_webGLRelease;
 
+        [Header("iOS")]
         [SerializeField] private iOSSettings m_iOSDebug;
         [SerializeField] private iOSSettings m_iOSRelease;
 
+        [Header("Android")]
         [SerializeField] private AndroidSettings m_androidDebugApk;
         [SerializeField] private AndroidSettings m_androidDebugBundle;
         [SerializeField] private AndroidSettings m_androidReleaseApk;
         [SerializeField] private AndroidSettings m_androidReleaseBundle;
 
+        [Header("Windows")]
         [SerializeField] private WindowsSettings m_windowsDebug;
         [SerializeField] private WindowsSettings m_windowsRelease;
+        
+        [Header("Mac")]
+        [SerializeField] private MacSettings m_macDebug;
+        [SerializeField] private MacSettings m_macRelease;
 
+        [Header("Web GL")]
         [SerializeField] private WebGLSettings m_webGLDebug;
         [SerializeField] private WebGLSettings m_webGLRelease;
 
@@ -45,6 +55,7 @@ namespace CelesteEditor.BuildSystem
         public const string iOSPlatformSettingsPath = AllPlatformSettingsDirectory + "iOS";
         public const string AndroidPlatformSettingsPath = AllPlatformSettingsDirectory + "Android";
         public const string WindowsPlatformSettingsPath = AllPlatformSettingsDirectory + "Windows";
+        public const string MacPlatformSettingsPath = AllPlatformSettingsDirectory + "Mac";
         public const string WebGLPlatformSettingsPath = AllPlatformSettingsDirectory + "WebGL";
 
         #endregion
@@ -68,6 +79,17 @@ namespace CelesteEditor.BuildSystem
             AppVersion appVersion = CreateVersionAsset(WindowsPlatformSettingsPath, "WindowsAppVersion");
             m_windowsDebug.Version = appVersion;
             m_windowsRelease.Version = appVersion;
+        }
+
+        public void CreateMacSettings()
+        {
+            m_macDebug = FindOrCreateMacSettingsAsset(MacPlatformSettingsPath, "MacDebug", true);
+            m_macRelease = FindOrCreateMacSettingsAsset(MacPlatformSettingsPath, "MacRelease", false);
+            EditorUtility.SetDirty(this);
+
+            AppVersion appVersion = CreateVersionAsset(MacPlatformSettingsPath, "MacAppVersion");
+            m_macDebug.Version = appVersion;
+            m_macRelease.Version = appVersion;
         }
 
         public void CreateAndroidSettings()
@@ -124,6 +146,17 @@ namespace CelesteEditor.BuildSystem
             bool isDebugConfig)
         {
             return FindOrCreatePlatformSettingsAsset<WindowsSettings>(
+                folder, 
+                settingsName, 
+                s => s.SetDefaultValues(isDebugConfig));
+        }
+
+        public static MacSettings FindOrCreateMacSettingsAsset(
+            string folder,
+            string settingsName,
+            bool isDebugConfig)
+        {
+            return FindOrCreatePlatformSettingsAsset<MacSettings>(
                 folder, 
                 settingsName, 
                 s => s.SetDefaultValues(isDebugConfig));
