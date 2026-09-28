@@ -63,6 +63,34 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
+        #region Mac
+
+        [MenuItem("Celeste/Assets/Debug/Update Mac Assets", validate = true)]
+        public static bool ValidateUpdateDebugMacAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().MacDebug != null;
+        }
+
+        [MenuItem("Celeste/Assets/Debug/Update Mac Assets", validate = false)]
+        public static void UpdateDebugMacAssets()
+        {
+            AllPlatformSettings.GetOrCreateSettings().MacDebug.UpdateAssetsAndExit();
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update Mac Assets", validate = true)]
+        public static bool ValidateUpdateReleaseMacAssets()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().MacRelease != null;
+        }
+
+        [MenuItem("Celeste/Assets/Release/Update Mac Assets", validate = false)]
+        public static void UpdateReleaseMacAssets()
+        {
+            AllPlatformSettings.GetOrCreateSettings().MacRelease.UpdateAssetsAndExit();
+        }
+
+        #endregion
+
         #region iOS
 
         [MenuItem("Celeste/Assets/Debug/Update iOS Assets", validate = true)]

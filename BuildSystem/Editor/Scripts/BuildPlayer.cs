@@ -90,6 +90,36 @@ namespace CelesteEditor.BuildSystem
 
         #endregion
 
+        #region Mac
+
+        [MenuItem("Celeste/Builds/Debug/Mac", validate = true)]
+        public static bool ValidateBuildDebugMacPlayer()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().MacDebug != null;
+        }
+
+        [MenuItem("Celeste/Builds/Debug/Mac", validate = false)]
+        public static void BuildDebugMacPlayer()
+        {
+            AllPlatformSettings.GetOrCreateSettings().MacDebug.BuildPlayer();
+            AllPlatformSettings.GetOrCreateSettings().MacDebug.IncrementBuild();
+        }
+
+        [MenuItem("Celeste/Builds/Release/Mac", validate = true)]
+        public static bool ValidateBuildReleaseMacPlayer()
+        {
+            return AllPlatformSettings.GetOrCreateSettings().MacRelease != null;
+        }
+
+        [MenuItem("Celeste/Builds/Release/Mac", validate = false)]
+        public static void BuildReleaseMacPlayer()
+        {
+            AllPlatformSettings.GetOrCreateSettings().MacRelease.BuildPlayer();
+            AllPlatformSettings.GetOrCreateSettings().MacRelease.IncrementBuild();
+        }
+
+        #endregion
+
         #region iOS
 
         [MenuItem("Celeste/Builds/Debug/iOS", validate = true)]

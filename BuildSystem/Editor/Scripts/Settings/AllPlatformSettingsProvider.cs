@@ -67,7 +67,7 @@ namespace CelesteEditor.BuildSystem
             EditorGUILayout.LabelField("iOS", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
-            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            using (new EditorGUI.IndentLevelScope())
             {
                 SettingsGUI(
                     iOSDebugProperty,
@@ -87,7 +87,7 @@ namespace CelesteEditor.BuildSystem
             EditorGUILayout.LabelField("Android", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
-            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            using (new EditorGUI.IndentLevelScope())
             {
                 SettingsGUI(
                     androidDebugApkProperty,
@@ -133,7 +133,7 @@ namespace CelesteEditor.BuildSystem
             EditorGUILayout.LabelField("Windows", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
-            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            using (new EditorGUI.IndentLevelScope())
             {
                 SettingsGUI(
                     windowsDebugProperty,
@@ -147,13 +147,33 @@ namespace CelesteEditor.BuildSystem
             }
         }
 
+        private void DrawMacSettings()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Mac", CelesteGUIStyles.BoldLabel);
+            EditorGUILayout.Space();
+
+            using (new EditorGUI.IndentLevelScope())
+            {
+                SettingsGUI(
+                    macDebugProperty,
+                    "Mac Debug",
+                    () => AllPlatformSettings.FindOrCreateMacSettingsAsset(AllPlatformSettings.MacPlatformSettingsPath, "MacDebug", true));
+
+                SettingsGUI(
+                    macReleaseProperty,
+                    "Mac Release",
+                    () => AllPlatformSettings.FindOrCreateMacSettingsAsset(AllPlatformSettings.MacPlatformSettingsPath, "MacRelease", false));
+            }
+        }
+
         private void DrawWebGLSettings()
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("WebGL", CelesteGUIStyles.BoldLabel);
             EditorGUILayout.Space();
 
-            using (EditorGUI.IndentLevelScope indent = new EditorGUI.IndentLevelScope())
+            using (new EditorGUI.IndentLevelScope())
             {
                 SettingsGUI(
                     webGLDebugProperty,

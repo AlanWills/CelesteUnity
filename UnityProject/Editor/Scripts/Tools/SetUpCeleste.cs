@@ -98,6 +98,7 @@ namespace CelesteEditor.UnityProject
         [Header("Build System")]
         [LabelWidth(300)] public bool needsBuildSystem;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnWindows;
+        [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnMac;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnAndroid;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOniOS;
         [LabelWidth(300), ShowIf(nameof(needsBuildSystem))] public bool runsOnWebGL;
@@ -107,6 +108,8 @@ namespace CelesteEditor.UnityProject
         [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnWindows))]
         [Tooltip("If true, copies of Windows template jenkins files will be added to the project for customisation and usage")]
         public bool useWindowsBuildJenkinsFiles;
+        [Tooltip("If true, copies of Mac template jenkins files will be added to the project for customisation and usage")]
+        public bool useMacBuildJenkinsFiles;
         [LabelWidth(300), ShowIfAll(nameof(needsBuildSystem), nameof(runsOnAndroid))]
         [Tooltip("If true, copies of the Android template jenkins files will be added to the project for customisation and usage")]
         public bool useAndroidBuildJenkinsFiles;
@@ -169,11 +172,13 @@ namespace CelesteEditor.UnityProject
 
             needsBuildSystem = true;
             runsOnWindows = true;
+            runsOnMac = true;
             runsOnAndroid = true;
             runsOniOS = true;
             runsOnWebGL = true;
             useCommonJenkinsFiles = true;
             useWindowsBuildJenkinsFiles = true;
+            useMacBuildJenkinsFiles = true;
             useAndroidBuildJenkinsFiles = true;
             useiOSBuildJenkinsFiles = true;
             useWebGLBuildJenkinsFiles = true;
@@ -441,6 +446,11 @@ namespace CelesteEditor.UnityProject
                 AllPlatformSettings.GetOrCreateSettings().CreateWindowsSettings();
             }
 
+            if (parameters.runsOnMac)
+            {
+                AllPlatformSettings.GetOrCreateSettings().CreateMacSettings();
+            }
+
             if (parameters.runsOnAndroid)
             {
                 AllPlatformSettings.GetOrCreateSettings().CreateAndroidSettings();
@@ -466,6 +476,11 @@ namespace CelesteEditor.UnityProject
             if (parameters.runsOnWindows && parameters.useWindowsBuildJenkinsFiles)
             {
                 CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_WINDOWS_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.WINDOWS_JENKINS_BUILD_FILES_FOLDER);
+            }
+
+            if (parameters.runsOnMac && parameters.useMacBuildJenkinsFiles)
+            {
+                CopyDirectoryRecursively(parameters.BuildSystemConstants.CELESTE_MAC_JENKINS_BUILD_FILES_FOLDER, BuildSystemConstants.MAC_JENKINS_BUILD_FILES_FOLDER);
             }
 
             if (parameters.runsOnAndroid && parameters.useAndroidBuildJenkinsFiles)
