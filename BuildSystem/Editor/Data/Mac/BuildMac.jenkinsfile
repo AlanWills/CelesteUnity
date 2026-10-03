@@ -1,9 +1,17 @@
 pipeline 
 {
-    agent any
+    agent {
+		node {
+			label 'built-in'
+		}
+	}
+	options {
+		skipDefaultCheckout()
+	}
     environment 
     {
         UNITY_PATH = 'C:/Program Files/Unity/Hub/Editor/6000.0.45f1/Editor/Unity.exe'
+		BRANCH = 'master'
     }
     stages 
     {
@@ -21,11 +29,50 @@ pipeline
                                 numToKeepStr: '1')), 
                         parameters([
                             choice(choices: ['Debug', 'Release'], name: 'CONFIGURATION'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD'), 
-                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS')
+                            booleanParam(defaultValue: true, name: 'UPLOAD_BUILD_TO_STORAGE'), 
+                            booleanParam(defaultValue: true, name: 'UPLOAD_ASSETS_TO_STORAGE')
                         ])
                     ])
                 }
+            }
+        }
+		stage('Clean Workspace') {
+			steps {
+				dir(env.WORKSPACE) {
+					script {
+						// fileExists works for both files and directories
+						if (fileExists('.git')) {
+							bat """
+							git reset --hard HEAD
+							git clean -fdx -e Library -e Assets/Settings/PlayMode -e Logs -e Temp -e UserSettings
+							"""
+						} else {
+							echo "No .git directory found. Skipping cleanup."
+						}
+					}
+				}
+			}
+		}
+		stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "${env.BRANCH}"]],
+                    userRemoteConfigs: [[
+                        url: '[REPO_URL_HERE]',
+                        credentialsId: '[SSH_KEY_NAME_HERE]'
+                    ]],
+                    extensions: [
+						[$class: 'RelativeTargetDirectory', relativeTargetDir: '.'], // normal checkout
+						[$class: 'LocalBranch', localBranch: "${env.BRANCH}"],
+						[$class: 'SubmoduleOption', 
+							recursiveSubmodules: true,        // clone submodules recursively
+							trackingSubmodules: false,        // set to true if you want to track branches in submodules
+							disableSubmodules: false,         // ensure submodules are not disabled
+							parentCredentials: true           // use parent repo credentials for submodules
+						]
+					]
+                ])
             }
         }
         stage('Build')
@@ -37,17 +84,19 @@ pipeline
                     buildName "Mac-" + CONFIGURATION
                     
                     def methodToInvoke = "CelesteEditor.BuildSystem.BuildPlayer.Build" + params.CONFIGURATION + "MacPlayer"
-                    def projectPath = WORKSPACE.replace('\\', '/')
+                    def projectPath = "\"${env.WORKSPACE.replace('\\','/')}\""
                     def unityCommand = "\"${env.UNITY_PATH}\" -quit -batchmode -nographics -executeMethod ${methodToInvoke} -projectPath ${projectPath}"
                                         
                     echo "Executing Unity Build Command: ${unityCommand}"
                     bat unityCommand
 
-                    readProperties(file: "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt").each {key, value -> env[key] = value }
+                    def buildEnvFile = "${env.WORKSPACE}/Library/BUILD_ENV_VARS.txt"
+					loadEnvProperties(buildEnvFile, true)
+                    
+					def assetsEnvFile = "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt"
+                    loadEnvProperties(assetsEnvFile, true)
                     
                     buildName "Mac-" + CONFIGURATION + "-" + env.BUILD_VERSION
-                    
-                    readProperties(file: "${env.WORKSPACE}/Library/ASSETS_ENV_VARS.txt").each {key, value -> env[key] = value }
                 }
             }
         }
@@ -64,21 +113,22 @@ pipeline
             {
                 sh "git add ."
                 sh 'git commit --allow-empty -m "Built Mac and updating version"'
-                sh "git push --set-upstream origin ${env.GIT_BRANCH}"
+                sh "git pull origin ${env.BRANCH} --rebase -X theirs"
+                sh "git push --set-upstream origin ${env.BRANCH}"
             }
         }
 		stage('Artifact Build')
 		{
 			steps 
 			{
-				archiveArtifacts artifacts: '${env.BUILD_LOCATION}/*.*', onlyIfSuccessful: true
+				archiveArtifacts artifacts: "${env.BUILD_DIRECTORY}", onlyIfSuccessful: true
 			}
 		}
 		stage('Artifact Assets')
 		{
 			steps 
 			{
-				archiveArtifacts artifacts: '${env.ASSETS_SOURCE}/*.*', onlyIfSuccessful: true
+				archiveArtifacts artifacts: "${env.ASSETS_SOURCE}/*.*", onlyIfSuccessful: true
 			}
 		}
         stage('Upload Build')
@@ -87,7 +137,7 @@ pipeline
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_BUILD_TO_STORAGE
                 }
             }
             steps
@@ -105,7 +155,7 @@ pipeline
             {
                 expression
                 {
-                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS
+                    return currentBuild.currentResult == "SUCCESS" && params.UPLOAD_ASSETS_TO_STORAGE
                 }
             }
             steps
@@ -119,4 +169,34 @@ pipeline
             }
         }
     }   
+}
+
+/**
+ * Reads a properties file and injects key-value pairs into the Jenkins environment.
+ *
+ * @param filePath Path to the properties file relative to workspace or absolute.
+ * @param verbose  Whether to log each loaded environment variable (default: true).
+ */
+def loadEnvProperties(String filePath, boolean verbose = true) {
+    if (!fileExists(filePath)) {
+        error "loadEnvProperties: File not found at '${filePath}'"
+    }
+
+    Map props = readProperties(file: filePath)
+
+    if (props.isEmpty()) {
+        echo "loadEnvProperties: Warning - '${filePath}' is empty or contains no valid properties."
+        return
+    }
+
+    for (entry in props) {
+        String key = entry.key.toString().trim()
+        String value = entry.value.toString().trim()
+
+        env[key] = value
+
+        if (verbose) {
+            echo "loadEnvProperties: Set env.${key} = ${value}"
+        }
+    }
 }
