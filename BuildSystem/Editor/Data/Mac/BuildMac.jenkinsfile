@@ -121,7 +121,7 @@ pipeline
 		{
 			steps 
 			{
-				archiveArtifacts artifacts: "${env.BUILD_DIRECTORY}", onlyIfSuccessful: true
+				archiveArtifacts artifacts: "${env.BUILD_LOCATION}", onlyIfSuccessful: true
 			}
 		}
 		stage('Artifact Assets')
